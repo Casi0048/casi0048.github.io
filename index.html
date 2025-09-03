@@ -3457,9 +3457,7 @@
             try { audio.pause(); audio.currentTime = 0; } catch(e){}
           }
         
-          function flash() {
-  const el = document.getElementById("flash");
-  if (!el) return;
+          function flash(){
             // posizione/parametri casuali
             const xPerc = 15 + Math.random()*70;
             const yPerc = 10 + Math.random()*65;
@@ -4824,9 +4822,7 @@
             bolt = createEl('div', { id:'bolt' }, 'position:fixed;left:50%;top:50%;width:3px;height:56vh;background:linear-gradient(#fff,rgba(255,255,255,0));box-shadow:0 0 16px rgba(255,255,255,.9),0 0 32px rgba(255,255,255,.6);opacity:0;pointer-events:none;z-index:6;transform-origin:top;');
             document.body.appendChild(bolt);
           }
-          function flash() {
-  const el = document.getElementById("flash");
-  if (!el) return;
+          function flash(){
             var xPerc = 15 + Math.random()*70;
             var yPerc = 10 + Math.random()*65;
             var angle  = -25 + Math.random()*50;
@@ -8699,4 +8695,32 @@
         }
       })();
    </script>
+
+<script>
+function flash() {
+  const lightning = document.getElementById('lightning');
+  if (!lightning) return;
+  lightning.style.transition = 'opacity 0.15s';
+  lightning.style.opacity = '1';
+
+  const bolt = document.createElement('div');
+  bolt.className = 'bolt';
+  lightning.appendChild(bolt);
+
+  requestAnimationFrame(() => {
+    bolt.style.transform = 'translate(-50%, -50%) rotate(12deg) scaleY(1)';
+  });
+
+  setTimeout(() => {
+    lightning.style.opacity = '0';
+    if (bolt.parentNode) bolt.parentNode.removeChild(bolt);
+  }, 400);
+}
+</script>
+
+
+<script>
+setInterval(flash, 8000);
+</script>
+
 </body></html>
