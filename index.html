@@ -16,7 +16,7 @@
 <meta content="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/immagini%20per%20sito/Socrates_Louvre.jpg" property="og:image"/>
 <!-- Preloads -->
 <link as="image" fetchpriority="high" href="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/immagini%20per%20sito/Socrates_Louvre.jpg" rel="preload"/>
-<link as="fetch" crossorigin="" fetchpriority="low" href="https://casi0048.github.io/suoni/thunder-sound.mp3" rel="preload" type="audio/mpeg"/>
+
 <!-- Fonts -->
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -2062,7 +2062,7 @@
                       if (audioEl){
                         try {
                           audioEl.currentTime = 0;
-                          var p = audioEl.play();
+                          var p = audioEl.play().catch(()=>{});
                           if (p && p.then) return p.catch(function(){ return webAudioThunder(); });
                           return Promise.resolve();
                         } catch(_){ return webAudioThunder(); }
@@ -3449,7 +3449,7 @@
         
           function playThunder(){
             if (!thunderOn || !audio) return;
-            try { audio.currentTime = 0; audio.play().catch(()=>{}); } catch(e){}
+            try { audio.currentTime = 0; audio.play().catch(()=>{}).catch(()=>{}); } catch(e){}
           }
         
           function stopThunderAudio(){
@@ -3457,7 +3457,9 @@
             try { audio.pause(); audio.currentTime = 0; } catch(e){}
           }
         
-          function flash(){
+          function flash() {
+  const el = document.getElementById("flash");
+  if (!el) return;
             // posizione/parametri casuali
             const xPerc = 15 + Math.random()*70;
             const yPerc = 10 + Math.random()*65;
@@ -3623,7 +3625,7 @@
           window.triggerExplosion = function(){
             try{
               const ex = document.getElementById('explosionSound');
-              if (ex){ ex.currentTime = 0; ex.play().catch(()=>{}); }
+              if (ex){ ex.currentTime = 0; ex.play().catch(()=>{}).catch(()=>{}); }
             }catch(e){}
             burst();
           };
@@ -3631,7 +3633,7 @@
           host.addEventListener('click', () => {
             try{
               const ex = document.getElementById('explosionSound');
-              if (ex){ ex.currentTime = 0; ex.play().catch(()=>{}); }
+              if (ex){ ex.currentTime = 0; ex.play().catch(()=>{}).catch(()=>{}); }
             }catch(e){}
             chars.forEach(el => { el.style.opacity=1; el.style.transform='translate(0,0)'; });
             burst();
@@ -3782,7 +3784,7 @@
             const audio = document.getElementById("russell-audio");
             try {
               audio.currentTime = 0;
-              audio.play();
+              audio.play().catch(()=>{});
             } catch (err) {}
           }
         });
@@ -4348,7 +4350,7 @@
           // Eventi
           btn.addEventListener('click', () => {
             if (audio.paused){
-              audio.play().catch(()=>{});
+              audio.play().catch(()=>{}).catch(()=>{});
               btn.textContent = '⏸️';
             } else {
               audio.pause();
@@ -4394,7 +4396,7 @@
               if (!a) continue;
               try {
                 a.muted = false;
-                await a.play();
+                await a.play().catch(()=>{});
                 a.pause(); a.currentTime = 0;
               } catch (_) {}
             }
@@ -4439,7 +4441,7 @@
                 });
         
                 audioEl.currentTime = 0;
-                await audioEl.play();
+                await audioEl.play().catch(()=>{});
                 console.log('[AUDIO OK]', src);
                 return true; // riprodotto
               } catch (e) {
@@ -4761,7 +4763,7 @@
           var thunderOn = false;
           function playThunder(){
             if (!thunderOn || !audio) return;
-            try { audio.currentTime = 0; audio.play().catch(function(){}); } catch(e){}
+            try { audio.currentTime = 0; audio.play().catch(()=>{}).catch(function(){}); } catch(e){}
           }
           function stopThunder(){
             if (!audio) return;
@@ -4822,7 +4824,9 @@
             bolt = createEl('div', { id:'bolt' }, 'position:fixed;left:50%;top:50%;width:3px;height:56vh;background:linear-gradient(#fff,rgba(255,255,255,0));box-shadow:0 0 16px rgba(255,255,255,.9),0 0 32px rgba(255,255,255,.6);opacity:0;pointer-events:none;z-index:6;transform-origin:top;');
             document.body.appendChild(bolt);
           }
-          function flash(){
+          function flash() {
+  const el = document.getElementById("flash");
+  if (!el) return;
             var xPerc = 15 + Math.random()*70;
             var yPerc = 10 + Math.random()*65;
             var angle  = -25 + Math.random()*50;
@@ -4903,7 +4907,7 @@
           async function playOnce(){
             try {
               audio.currentTime = 0;
-              await audio.play();      // dentro il click => sbloccato ovunque
+              await audio.play().catch(()=>{});      // dentro il click => sbloccato ovunque
             } catch(e) {
               console.warn('Playback bloccato:', e);
             }
@@ -4923,7 +4927,7 @@
         
           // (Opzionale) se hai uno script di lampi che chiama il tuono, usa questo hook globale:
           window.playThunderIfOn = function(){
-            if (thunderOn) { try { audio.currentTime = 0; audio.play().catch(()=>{}); } catch(e){} }
+            if (thunderOn) { try { audio.currentTime = 0; audio.play().catch(()=>{}).catch(()=>{}); } catch(e){} }
           };
         
           updateLabel();
@@ -6181,7 +6185,7 @@
             var boom = document.getElementById('explosionSound');
             if (boom){
               try{ boom.currentTime = 0; }catch(e){}
-              var p = boom.play();
+              var p = boom.play().catch(()=>{});
               if (p && typeof p.catch === 'function'){
                 p.catch(function(err){ console.warn('Audio esplosione bloccato:', err); });
               }
@@ -6337,7 +6341,7 @@
             var boom = document.getElementById('explosionSound');
             if (boom){
               try{ boom.currentTime = 0; }catch(e){}
-              var p = boom.play();
+              var p = boom.play().catch(()=>{});
               if (p && typeof p.catch === 'function'){
                 p.catch(function(err){ console.warn('Audio esplosione bloccato:', err); });
               }
@@ -6615,7 +6619,7 @@
             var boom = document.getElementById('explosionSound');
             if (boom){
               try{ boom.currentTime = 0; }catch(e){}
-              var p = boom.play();
+              var p = boom.play().catch(()=>{});
               if (p && typeof p.catch === 'function'){
                 p.catch(function(err){ console.warn('Audio esplosione bloccato:', err); });
               }
@@ -6891,7 +6895,7 @@
             var boom = document.getElementById('explosionSound');
             if (boom){
               try{ boom.currentTime = 0; }catch(e){}
-              var p = boom.play();
+              var p = boom.play().catch(()=>{});
               if (p && typeof p.catch === 'function'){
                 p.catch(function(err){ console.warn('Audio esplosione bloccato:', err); });
               }
@@ -7324,7 +7328,7 @@
             var boom = document.getElementById('explosionSound');
             if (boom){
               try{ boom.currentTime = 0; }catch(e){}
-              var p = boom.play();
+              var p = boom.play().catch(()=>{});
               if (p && typeof p.catch === 'function'){
                 p.catch(function(err){ console.warn('Audio esplosione bloccato:', err); });
               }
@@ -7526,7 +7530,7 @@
             window.toggleThunder = function(){
               window.__thOn = !window.__thOn;
               if (window.__thOn){
-                try{ audio.currentTime = 0; audio.play().catch(()=>{});}catch(e){}
+                try{ audio.currentTime = 0; audio.play().catch(()=>{}).catch(()=>{});}catch(e){}
               }else{
                 try{ audio.pause(); audio.currentTime = 0; }catch(e){}
               }
@@ -7694,7 +7698,7 @@
             });
             window.playThunderIfOn = window.playThunderIfOn || function(){
               if (window.thunderOn && audio) {
-                try { audio.currentTime = 0; audio.play().catch(function(){}); } catch(e){}
+                try { audio.currentTime = 0; audio.play().catch(()=>{}).catch(function(){}); } catch(e){}
               }
             };
           }
@@ -7793,17 +7797,17 @@
           let unlocked=false;
           function unlockOnce(){
             if (unlocked) return; unlocked=true;
-            [thunder, explosion].forEach(a=>{ try{ a.play().then(()=>a.pause()).catch(()=>{});}catch(_){}});
+            [thunder, explosion].forEach(a=>{ try{ a.play().catch(()=>{}).then(()=>a.pause()).catch(()=>{});}catch(_){}});
             window.removeEventListener('pointerdown', unlockOnce, {passive:true});
             window.removeEventListener('keydown',     unlockOnce);
           }
           window.addEventListener('pointerdown', unlockOnce, {passive:true});
           window.addEventListener('keydown',     unlockOnce);
           window.setThunderOn = function(on){
-            try{ if(on){ thunder.currentTime=0; thunder.play(); } else { thunder.pause(); } }catch(e){}
+            try{ if(on){ thunder.currentTime=0; thunder.play().catch(()=>{}); } else { thunder.pause(); } }catch(e){}
           };
           window.playExplosion = function(){
-            try{ explosion.currentTime=0; explosion.play().catch(()=>{});}catch(e){}
+            try{ explosion.currentTime=0; explosion.play().catch(()=>{}).catch(()=>{});}catch(e){}
           };
         })();
    </script>
@@ -8151,7 +8155,7 @@
             ev.preventDefault();
             if (isSafari) { playSafari(); return; }
             if (!audio) return;
-            try { audio.currentTime = 0; var p = audio.play(); if (p && p.catch) p.catch(function(e){}); } catch(e){}
+            try { audio.currentTime = 0; var p = audio.play().catch(()=>{}); if (p && p.catch) p.catch(function(e){}); } catch(e){}
           }, {passive:false});
         })();
    </script>
@@ -8193,7 +8197,7 @@
             // “tocca” anche il baseEl per compatibilità
             const all = [baseEl, ...pool];
             for (const a of all) {
-              try { a.muted = false; await a.play(); a.pause(); a.currentTime = 0; } catch(_) {}
+              try { a.muted = false; await a.play().catch(()=>{}); a.pause(); a.currentTime = 0; } catch(_) {}
             }
           };
           window.addEventListener('pointerdown', unlock, {once:true, capture:true, passive:true});
@@ -8212,7 +8216,7 @@
             }
             try {
               a.currentTime = 0;
-              const p = a.play();
+              const p = a.play().catch(()=>{});
               if (p && p.catch) p.catch(()=>{ /* Safari può rifiutare promesse se non “unlocked” */ });
             } catch(_){}
           }
@@ -8353,7 +8357,7 @@
         function tryPlay(){
           if (!audioElement || !sources || i >= sources.length) return;
           audioElement.src = sources[i];
-          const p = audioElement.play();
+          const p = audioElement.play().catch(()=>{});
           if (p && typeof p.catch === 'function'){
             p.catch(() => { i++; tryPlay(); });
           }
