@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Il concetto di Dio in Spinoza: Deus sive Natura | Pensiero Profondo</title>
+    <meta name="description" content="Un'analisi approfondita del panteismo spinoziano e la sua rivoluzionaria concezione della divinità come natura">
+    <meta name="keywords" content="Spinoza, filosofia, Dio, natura, panteismo, metafisica, etica, ragione">
+    <meta name="author" content="Pensiero Profondo">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Modalità Normale */
+            --normal-bg: #f5f2e8;
+            --normal-text: #333333;
+            --normal-accent: #8a6d3b;
+            --normal-secondary: #6b5b3c;
+            --normal-border: #d4c9ab;
+            
+            /* Modalità Notturna */
+            --night-bg: #121212;
+            --night-text: #e0e0e0;
+            --night-accent: #b89446;
+            --night-secondary: #a0a0a0;
+            --night-border: #333333;
+            
+            /* Modalità Filosofica */
+            --philo-bg: #1e1e1e;
+            --philo-text: #e0d6c2;
+            --philo-accent: #c8b090;
+            --philo-secondary: #9f8e6f;
+            --philo-border: #4a4130;
+            
+            /* Modalità Contemplativa */
+            --contemp-bg: #f8f6f0;
+            --contemp-text: #2a2a2a;
+            --contemp-accent: #7d6b4f;
+            --contemp-secondary: #5c5140;
+            --contemp-border: #d6cfbd;
+            
+            /* Valori correnti */
+            --bg: var(--normal-bg);
+            --text: var(--normal-text);
+            --accent: var(--normal-accent);
+            --secondary: var(--normal-secondary);
+            --border: var(--normal-border);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            font-family: 'Crimson Pro', serif;
+            transition: all 0.5s ease;
+            padding: 0;
+        }
+
+        /* Modalità di lettura */
+        .reading-modes {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .mode-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .mode-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .normal-mode { background: var(--normal-bg); color: var(--normal-text); }
+        .night-mode { background: var(--night-bg); color: var(--night-text); }
+        .philo-mode { background: var(--philo-bg); color: var(--philo-text); }
+        .contemp-mode { background: var(--contemp-bg); color: var(--contemp-text); }
+
+        /* Header */
+        .article-header {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1589994965851-a8f479c573a9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80') no-repeat center center/cover;
+            color: white;
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .article-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .article-meta {
+            font-style: italic;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        /* Contenuto */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .article-content {
+            font-size: 1.2rem;
+            line-height: 1.9;
+        }
+
+        .intro {
+            font-size: 1.4rem;
+            font-style: italic;
+            border-left: 4px solid var(--accent);
+            padding-left: 2rem;
+            margin-bottom: 3rem;
+            color: var(--secondary);
+        }
+
+        .section {
+            margin-bottom: 3rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 2rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .section-content {
+            display: grid;
+            grid-template-rows: 1fr;
+            transition: grid-template-rows 0.5s ease;
+        }
+
+        .section-content.collapsed {
+            grid-template-rows: 0fr;
+        }
+
+        .section-content > div {
+            overflow: hidden;
+        }
+
+        .toggle-btn {
+            background: none;
+            border: none;
+            color: var(--accent);
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .quote {
+            background: rgba(138, 109, 59, 0.1);
+            border-left: 4px solid var(--accent);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+        }
+
+        .quote-source {
+            display: block;
+            text-align: right;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            color: var(--secondary);
+        }
+
+        .concept-box {
+            background: rgba(138, 109, 59, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .concept-title {
+            font-weight: bold;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Footer articolo */
+        .article-footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .tag {
+            background: var(--accent);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.5rem;
+            background: var(--accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .article-title {
+                font-size: 2.5rem;
+            }
+            
+            .reading-modes {
+                top: 10px;
+                right: 10px;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .intro {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Modalità di lettura -->
+    <div class="reading-modes">
+        <button class="mode-btn normal-mode" title="Modalità Normale" onclick="setMode('normal')">N</button>
+        <button class="mode-btn night-mode" title="Modalità Notturna" onclick="setMode('night')"><i class="fas fa-moon"></i></button>
+        <button class="mode-btn philo-mode" title="Modalità Filosofica" onclick="setMode('philo')">Φ</button>
+        <button class="mode-btn contemp-mode" title="Modalità Contemplativa" onclick="setMode('contemp')">C</button>
+    </div>
+
+    <!-- Header articolo -->
+    <header class="article-header">
+        <h1 class="article-title">Il concetto di Dio in Spinoza: Deus sive Natura</h1>
+        <p class="article-meta">Di KRK • 4 Settembre 2025 • Metafisica</p>
+    </header>
+
+    <!-- Contenuto articolo -->
+    <div class="container">
+        <article class="article-content">
+            <p class="intro">"Dio è la causa immanente e non transitiva di tutte le cose" — con questa radicale affermazione, Spinoza sovverte secoli di pensiero teologico, fondando un sistema filosofico in cui Dio e Natura coincidono in un'unica sostanza infinita. <br> “Spinoza (1632-77) è il più nobile ed il più degno di amore dei grandi filosofi. Se qualcun altro lo ha superato dal punto di vista intellettuale, dal punto di vista etico è superiore a tutti.” (B. Russell)</p>
+
+            <section class="section">
+                <div class="section-title">
+                    <h2>Il contesto storico-intellettuale</h2>
+                    <button class="toggle-btn" onclick="toggleSection(this)">Mostra meno <i class="fas fa-chevron-up"></i></button>
+                </div>
+                <div class="section-content">
+                    <div>
+                        <p>Baruch Spinoza (1632-1677) sviluppa il suo pensiero in un'epoca di profonda trasformazione intellettuale. Cresciuto nella comunità ebraica di Amsterdam, viene scomunicato per le sue idee eretiche all'età di 24 anni. Il suo pensiero matura in dialogo critico con Cartesio, dei cui concetti fa un uso originale e sovversivo.</p>
+                        
+                        <div class="concept-box">
+                            <div class="concept-title">Cartesio vs Spinoza</div>
+                            <p>Mentre Cartesio distingue radicalmente res cogitans (sostanza pensante) e res extensa (sostanza estesa), Spinoza unifica tutto in un'unica sostanza divina, i cui attributi infiniti includono sia il pensiero che l'estensione.</p>
+                        </div>
+                        
+                        <p>L'Olanda del XVII secolo, con la sua relativa tolleranza religiosa, offre a Spinoza il contesto ideale per sviluppare un pensiero radicale che unisce rigore dimostrativo e visione panteistica dell'universo.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="section-title">
+                    <h2>Dio come Sostanza Unica</h2>
+                    <button class="toggle-btn" onclick="toggleSection(this)">Mostra più <i class="fas fa-chevron-down"></i></button>
+                </div>
+                <div class="section-content collapsed">
+                    <div>
+                        <p>Nel sistema spinoziano, Dio è definito come "la sostanza costituita da infiniti attributi, ciascuno dei quali esprime un'essenza eterna e infinita". Questa definizione rivoluzionaria implica:</p>
+                        
+                        <ul>
+                            <li>L'unicità della sostanza divina ("Deus sive Natura")</li>
+                            <li>L'assoluta infinità degli attributi divini</li>
+                            <li>L'immanenza di Dio nel mondo</li>
+                            <li>La negazione di un Dio personale e provvidenziale</li>
+                        </ul>
+                        
+                        <div class="quote">
+                            "Per causa di sé intendo ciò la cui essenza implica l'esistenza, ossia ciò la cui natura non può essere concepita se non esistente."
+                            <span class="quote-source">— Spinoza, Etica, Parte I, Definizione I</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="section-title">
+                    <h2>Gli attributi e i modi</h2>
+                    <button class="toggle-btn" onclick="toggleSection(this)">Mostra più <i class="fas fa-chevron-down"></i></button>
+                </div>
+                <div class="section-content collapsed">
+                    <div>
+                        <p>La sostanza unica (Dio) si manifesta attraverso infiniti attributi, di cui gli umani ne conoscono solo due: il pensiero e l'estensione. Questi attributi non sono proprietà di Dio, ma modi in cui la sostanza divina si esprime.</p>
+                        
+                        <div class="concept-box">
+                            <div class="concept-title">Attributi vs Modi</div>
+                            <p>Gli attributi esprimono la natura essenziale di Dio, mentre i modi sono le modificazioni finite degli attributi, cioè le cose particolari che esistono nel mondo.</p>
+                        </div>
+                        
+                        <p>Il rapporto tra Dio e il mondo è quindi non di creazione ex nihilo, ma di manifestazione necessaria: il mondo è in Dio come i modi sono nella sostanza, e tutto segue necessariamente dalla natura divina.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="section-title">
+                    <h2>La critica al finalismo</h2>
+                    <button class="toggle-btn" onclick="toggleSection(this)">Mostra più <i class="fas fa-chevron-down"></i></button>
+                </div>
+                <div class="section-content collapsed">
+                    <div>
+                        <p>Uno degli aspetti più radicali del pensiero di Spinoza è la critica alla concezione finalistica della natura. Per Spinoza, Dio non agisce in vista di scopi, ma tutto segue necessariamente dalla sua natura.</p>
+                        
+                        <div class="quote">
+                            "La natura non ha alcun fine prestabilito e tutte le cause finali sono solo invenzioni umane."
+                            <span class="quote-source">— Spinoza, Etica, Parte I, Appendice</span>
+                        </div>
+                        
+                        <p>Questa posizione anticiperà la visione scientifica moderna della natura, liberandola da proiezioni antropomorfe e aprendo la strada a una comprensione meccanicistica dei fenomeni naturali.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="section-title">
+                    <h2>Implicazioni etiche e politiche</h2>
+                    <button class="toggle-btn" onclick="toggleSection(this)">Mostra più <i class="fas fa-chevron-down"></i></button>
+                </div>
+                <div class="section-content collapsed">
+                    <div>
+                        <p>La concezione spinoziana di Dio ha profonde conseguenze etiche e politiche. Se Dio è immanente alla natura, allora:</p>
+                        
+                        <ul>
+                            <li>La libertà umana consiste nella comprensione della necessità naturale</li>
+                            <li>La beatitudine deriva dalla conoscenza intellettuale di Dio</li>
+                            <li>La politica deve fondarsi sulla ragione e non su rivelazioni divine</li>
+                            <li>La tolleranza religiosa è necessaria per la pace sociale</li>
+                        </ul>
+                        
+                        <div class="concept-box">
+                            <div class="concept-title">Amor Dei Intellectualis</div>
+                            <p>L'amore intellettuale di Dio è per Spinoza il culmine del processo conoscitivo: non un sentimento passivo, ma un attivo comprendere che noi siamo parte della natura divina.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="section-title">
+                    <h2>Eredita e influenza</h2>
+                    <button class="toggle-btn" onclick="toggleSection(this)">Mostra più <i class="fas fa-chevron-down"></i></button>
+                </div>
+                <div class="section-content collapsed">
+                    <div>
+                        <p>Il panteismo spinoziano ha influenzato profondamente il pensiero moderno e contemporaneo:</p>
+                        
+                        <ul>
+                            <li>L'Illuminismo tedesco (Lessing, Goethe)</li>
+                            <li>L'idealismo tedesco (Schelling, Hegel)</li>
+                            <li>Il materialismo (Marx, Althusser)</li>
+                            <li>La psicanalisi (Freud, Lacan)</li>
+                            <li>Le neuroscienze (Damasio)</li>
+                        </ul>
+                        
+                        <div class="quote">
+                            "Essere spinoziani è il punto di partenza di ogni filosofia."
+                            <span class="quote-source">— Hegel, Lezioni sulla storia della filosofia</span>
+                        </div>
+                        
+                        <p>Anche se per più di un secolo dopo la sua morte Spinoza fu considerato un "maledetto", il suo pensiero è oggi riconosciuto come una delle vette della filosofia occidentale.</p>
+                    </div>
+                </div>
+            </section>
+
+            <footer class="article-footer">
+                <div class="tags">
+                    <span class="tag">Spinoza</span>
+                    <span class="tag">Panteismo</span>
+                    <span class="tag">Filosofia moderna</span>
+                    <span class="tag">Metafisica</span>
+                    <span class="tag">Etica</span>
+                </div>
+
+                <div class="navigation">
+                    <a href="#" class="nav-btn"><i class="fas fa-arrow-left"></i> Articolo Precedente</a>
+                    <a href="#" class="nav-btn">Articolo Successivo <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </footer>
+        </article>
+    </div>
+
+    <script>
+        // Gestione modalità di lettura
+        function setMode(mode) {
+            document.documentElement.classList.remove('normal-mode', 'night-mode', 'philo-mode', 'contemp-mode');
+            document.documentElement.classList.add(mode + '-mode');
+            
+            switch(mode) {
+                case 'normal':
+                    document.documentElement.style.setProperty('--bg', 'var(--normal-bg)');
+                    document.documentElement.style.setProperty('--text', 'var(--normal-text)');
+                    document.documentElement.style.setProperty('--accent', 'var(--normal-accent)');
+                    document.documentElement.style.setProperty('--secondary', 'var(--normal-secondary)');
+                    document.documentElement.style.setProperty('--border', 'var(--normal-border)');
+                    break;
+                case 'night':
+                    document.documentElement.style.setProperty('--bg', 'var(--night-bg)');
+                    document.documentElement.style.setProperty('--text', 'var(--night-text)');
+                    document.documentElement.style.setProperty('--accent', 'var(--night-accent)');
+                    document.documentElement.style.setProperty('--secondary', 'var(--night-secondary)');
+                    document.documentElement.style.setProperty('--border', 'var(--night-border)');
+                    break;
+                case 'philo':
+                    document.documentElement.style.setProperty('--bg', 'var(--philo-bg)');
+                    document.documentElement.style.setProperty('--text', 'var(--philo-text)');
+                    document.documentElement.style.setProperty('--accent', 'var(--philo-accent)');
+                    document.documentElement.style.setProperty('--secondary', 'var(--philo-secondary)');
+                    document.documentElement.style.setProperty('--border', 'var(--philo-border)');
+                    break;
+                case 'contemp':
+                    document.documentElement.style.setProperty('--bg', 'var(--contemp-bg)');
+                    document.documentElement.style.setProperty('--text', 'var(--contemp-text)');
+                    document.documentElement.style.setProperty('--accent', 'var(--contemp-accent)');
+                    document.documentElement.style.setProperty('--secondary', 'var(--contemp-secondary)');
+                    document.documentElement.style.setProperty('--border', 'var(--contemp-border)');
+                    break;
+            }
+            
+            // Salva la preferenza
+            localStorage.setItem('readingMode', mode);
+        }
+        
+        // Gestione sezioni espandibili
+        function toggleSection(btn) {
+            const section = btn.closest('.section');
+            const content = section.querySelector('.section-content');
+            const isCollapsed = content.classList.contains('collapsed');
+            
+            if (isCollapsed) {
+                content.classList.remove('collapsed');
+                btn.innerHTML = 'Mostra meno <i class="fas fa-chevron-up"></i>';
+            } else {
+                content.classList.add('collapsed');
+                btn.innerHTML = 'Mostra più <i class="fas fa-chevron-down"></i>';
+            }
+        }
+        
+        // Carica la modalità preferita
+        const savedMode = localStorage.getItem('readingMode');
+        if (savedMode) {
+            setMode(savedMode);
+        }
+        
+        // Espandi la prima sezione all'apertura della pagina
+        document.addEventListener('DOMContentLoaded', function() {
+            const firstSection = document.querySelector('.section');
+            const firstContent = firstSection.querySelector('.section-content');
+            const firstButton = firstSection.querySelector('.toggle-btn');
+            
+            firstContent.classList.remove('collapsed');
+            firstButton.innerHTML = 'Mostra meno <i class="fas fa-chevron-up"></i>';
+        });
+    </script>
+</body>
+</html>
