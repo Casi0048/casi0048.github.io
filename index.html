@@ -47,7 +47,7 @@
       box-sizing: border-box
     }
 
-    html,
+  html,
     body {
       height: 100%;
       margin: 0
@@ -632,7 +632,7 @@
       background: #000;
       color: #fff;
       text-align: center;
-      padding: 24px
+      padding: 5px
     }
 
     /* Mobile: nascondo elementi laterali per spazio */
@@ -4090,11 +4090,13 @@ html, body { overflow-y: auto !important; }
         footer {
           background: #06060d;
           color: #e9eef5;
-          margin-top: 48px;
+          margin-top: auto; /* invece di 175px */
+          margin-top: 175px;
           /* 👈 spazio fisso sopra il footer */
           position: relative;
           z-index: 0;
         }
+
 
         footer::before {
           content: "";
@@ -4111,14 +4113,14 @@ html, body { overflow-y: auto !important; }
 
         .footer-wrap {
           max-width: 1200px;
-          margin: 0 auto;
-          padding: 45px 16px;
+          margin: auto;
+          padding: 5px 16px;
         }
 
         .footer-columns {
           display: grid;
           grid-template-columns: 2fr 1fr 1fr;
-          gap: 22px;
+          gap: 12px;
           align-items: start;
           text-align: left;
           /* Allineamento a sinistra */
@@ -9116,6 +9118,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
   setInterval(spawnComet, 8000 + Math.random()*8000); // una cometa ogni 8–16s
   update();
+})();
+</script>
+
+
+<style id="sticky-footer-shell">
+  #page-shell{ min-height:100vh; display:flex; flex-direction:column; }
+  #page-shell > main{ flex:1 0 auto; }
+  #page-shell > footer{ margin:0 !important; margin-top:auto !important; flex-shrink:0; position:relative !important; bottom:0; left:0; width:100%; z-index:20; }
+</style>
+<script id="sticky-footer-shell-js">
+(function(){
+  try{
+    var main = document.querySelector('main');
+    var footer = document.querySelector('footer');
+    if(!main || !footer) return;
+    // Create wrapper
+    var shell = document.createElement('div');
+    shell.id = 'page-shell';
+    // Insert before main
+    var parent = main.parentNode;
+    parent.insertBefore(shell, main);
+    // Move main and all siblings up to and including footer inside shell
+    var node = main;
+    while(node){
+      var next = node.nextSibling;
+      shell.appendChild(node);
+      if(node === footer) break;
+      node = next;
+    }
+  }catch(e){ console.warn('sticky-footer-shell error', e); }
 })();
 </script>
 
