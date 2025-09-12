@@ -2638,6 +2638,7 @@ html, body { overflow-y: auto !important; }
 </head>
 
 <body>
+<div id="page-shell">
 <div class="nebula-overlay"></div>
   <div class="slider-vertical">
     <div class="slider-inner">
@@ -4090,7 +4091,7 @@ html, body { overflow-y: auto !important; }
         footer {
           background: #06060d;
           color: #e9eef5;
-          margin-top: 48px;
+          margin-top: 45px;
           /* 👈 spazio fisso sopra il footer */
           position: relative;
           z-index: 0;
@@ -4868,198 +4869,7 @@ html, body { overflow-y: auto !important; }
         </div>
       </div>
       <!-- Pulsante per riaprire -->
-      <button class="ctrl-btn btn-link" id="manage-cookies" title="Gestisci consenso cookie" type="button">
-        
-      </button>
-      <script>
-        (function(){
-            
-          // Global opener: works even if other listeners fail
-          window.openCookiePrefs = function(){
-          try { if (typeof openModal === 'function') { openModal(); return; } } catch(e){}
-          try {
-          var m = document.getElementById('cookie-modal');
-          if (m){
-          m.setAttribute('aria-hidden','false');
-          m.style.display = 'flex';
-          }
-          } catch(_) {}
-          };
-          // Delegated click for the cookie badge (works even if badge is injected after this script)
-          document.addEventListener('click', function(ev){
-          var btn = ev.target && ev.target.closest ? ev.target.closest('#cookie-fab') : null;
-          if (!btn) return;
-          try { openModal(); }
-          catch(e){
-          try { var m = document.getElementById('cookie-modal'); if (m) m.setAttribute('aria-hidden','false'); } catch(_) {}
-          }
-          });
-          const $banner = document.getElementById('cookie-banner');
-            const $modal  = document.getElementById('cookie-modal');
-            const $manage = document.getElementById('manage-cookies') || document.getElementById('cookie-manage');
-          const $fab = document.getElementById('cookie-fab');
-          if ($manage) $manage.hidden = true; // replace text link with floating badge
-          
-            const $accept = document.getElementById('cookie-accept');
-            const $decline = document.getElementById('cookie-decline');
-            const $customize = document.getElementById('cookie-customize');
-          
-            const $save = document.getElementById('cookie-save');
-            const $cancel = document.getElementById('cookie-cancel');
-            const $close = document.getElementById('cookie-close');
-          
-            const $an = document.getElementById('consent-analytics');
-            const $pr = document.getElementById('consent-preferences');
-            const $mk = document.getElementById('consent-marketing');
-          
-            function getConsent(){
-              try{ return JSON.parse(localStorage.getItem(KEY)); }catch(e){ return null; }
-            }
-            function setConsent(c){
-              localStorage.setItem(KEY, JSON.stringify(c));
-              applyConsent(c);
-            }
-            function applyConsent(c){
-              // Qui puoi caricare/fermare script in base al consenso.
-              // Esempi (da implementare solo se ti servono):
-              // if(c.analytics){ loadAnalytics(); } else { disableAnalytics(); }
-              // if(c.marketing){ loadMarketing(); } else { disableMarketing(); }
-            }
-          
-            function showBanner(){
-          $banner.hidden = false;
-          try{
-          const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-          if (!reduce && window.gsap){
-          gsap.fromTo($banner, {y:24, opacity:0}, {y:0, opacity:1, duration:.55, ease:'power3.out'});
-          }
-          }catch(e){}
-          }
-            function hideBanner(){
-          try{
-          const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-          if (!reduce && window.gsap){
-          gsap.to($banner, {y:16, opacity:0, duration:.35, ease:'power2.in', onComplete(){ $banner.hidden = true; }});
-          return;
-          }
-          }catch(e){}
-          $banner.hidden = true;
-          }
-            function openModal(){
-          try{
-          const c = getConsent() || {};
-          if ($an) $an.checked = !!c.analytics;
-          if ($pr) $pr.checked = !!c.preferences;
-          if ($mk) $mk.checked = !!c.marketing;
-          }catch(e){}
-          try{
-          $modal.removeAttribute('hidden');
-          $modal.setAttribute('aria-hidden','false');
-          $modal.style.display = 'flex';
-          $modal.classList.add('force-open');
-          const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-          const panel = $modal.querySelector ? $modal.querySelector('.cookie-modal__panel') : null;
-          if (!reduce && window.gsap && panel){
-          gsap.fromTo($modal, {opacity:0}, {opacity:1, duration:.25, ease:'power2.out'});
-          gsap.fromTo(panel, {y:20, opacity:0}, {y:0, opacity:1, duration:.4, ease:'power3.out'});
-          }
-          }catch(e){}
-          }
-          }catch(_){}
-          const c = getConsent() || {};
-          $an.checked = !!c.analytics;
-          $pr.checked = !!c.preferences;
-          $mk.checked = !!c.marketing;
-          $modal.setAttribute('aria-hidden','false');
-          try{
-          const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-          if (!reduce && window.gsap){
-          const panel = $modal.querySelector('.cookie-modal__panel');
-          gsap.fromTo($modal, {opacity:0}, {opacity:1, duration:.25, ease:'power2.out'});
-          gsap.fromTo(panel, {y:20, opacity:0}, {y:0, opacity:1, duration:.4, ease:'power3.out'});
-          }
-          }catch(e){}
-          };
-              $an.checked = !!c.analytics;
-              $pr.checked = !!c.preferences;
-              $mk.checked = !!c.marketing;
-              $modal.setAttribute('aria-hidden','false');
-            }
-            function closeModal(){
-          try{
-          if ($modal){
-          const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-          const panel = $modal.querySelector ? $modal.querySelector('.cookie-modal__panel') : null;
-          if (!reduce && window.gsap && panel){
-            gsap.to(panel, {y:10, opacity:0, duration:.22, ease:'power2.in'});
-            gsap.to($modal, {opacity:0, duration:.22, ease:'power2.in', onComplete(){
-              $modal.setAttribute('aria-hidden','true');
-              $modal.classList.remove('force-open');
-              $modal.style.display = 'none';
-              $modal.setAttribute('hidden','');
-            }});
-          } else {
-            $modal.setAttribute('aria-hidden','true');
-            $modal.classList.remove('force-open');
-            $modal.style.display = 'none';
-            $modal.setAttribute('hidden','');
-          }
-          }
-          }catch(e){}
-          }
-          }catch(_){}
-          try{
-          const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-          if (!reduce && window.gsap){
-          const panel = $modal.querySelector('.cookie-modal__panel');
-          gsap.to(panel, {y:10, opacity:0, duration:.22, ease:'power2.in'});
-          gsap.to($modal, {opacity:0, duration:.22, ease:'power2.in', onComplete(){ $modal.setAttribute('aria-hidden','true'); }});
-          return;
-          }
-          }catch(e){}
-          $modal.setAttribute('aria-hidden','true');
-          }
-          
-            // Pulsanti banner
-            $accept.addEventListener('click', ()=>{
-              setConsent({ essential:true, analytics:true, preferences:true, marketing:true, date:Date.now() });
-              hideBanner(); if ($manage) if ($manage) $manage.hidden = true; // keep text button hidden (badge replaces it)
-            });
-            $decline.addEventListener('click', ()=>{
-              setConsent({ essential:true, analytics:false, preferences:false, marketing:false, date:Date.now() });
-              hideBanner(); if ($manage) if ($manage) $manage.hidden = true; // keep text button hidden (badge replaces it)
-            });
-            $customize.addEventListener('click', openModal);
-          
-            // Modal
-          document.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ closeModal(); }});
-          $save.addEventListener('click', ()=>{
-          setConsent({
-          essential:true,
-          analytics:$an && $an.checked,
-          preferences:$pr && $pr.checked,
-          marketing:$mk && $mk.checked,
-          date:Date.now()
-          });
-          closeModal();
-          hideBanner();
-          if ($manage) $manage.hidden = true;
-          });
-          closeModal(); hideBanner(); if ($manage) if ($manage) $manage.hidden = true; // keep text button hidden (badge replaces it)
-            });
-            [$cancel,$close].filter(Boolean).forEach(btn=> btn.addEventListener('click', closeModal));
-            if ($modal) $modal.addEventListener('click', (e)=>{ if(e.target === $modal) closeModal(); });
-            document.addEventListener('keydown', (e)=>{ try{ if(e.key==='Escape') closeModal(); }catch(_){}});
-          
-            // Riapertura
-            if ($manage) $manage.addEventListener('click', openModal);
-          
-            // Init
-            const consent = getConsent();
-            if(consent){ hideBanner(); if ($manage) if ($manage) $manage.hidden = true; // keep text button hidden (badge replaces it) applyConsent(consent); }
-            else { showBanner(); }
-          })();
-      </script>
+     
       <!-- injected: universal thunder + lightning + cookie controller -->
       <script>
         (function(){
@@ -9113,6 +8923,33 @@ document.addEventListener('DOMContentLoaded', () => {
   update();
 })();
 </script>
+
+</div>
+
+<style>
+#page-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#page-shell > main {
+  flex: 1 0 auto;
+}
+
+#page-shell > footer {
+  margin-top: auto;
+  position: relative !important;
+  z-index: 0 !important;
+  background: #06060d;
+  color: #e9eef5;
+}
+
+/* Nascondi il banner cookie in basso al centro */
+.cookie-banner {
+  display: none !important;
+}
+</style>
 
 </body>
 </html>
