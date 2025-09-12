@@ -9122,34 +9122,30 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 
-<style id="sticky-footer-shell">
-  #page-shell{ min-height:100vh; display:flex; flex-direction:column; }
-  #page-shell > main{ flex:1 0 auto; }
-  #page-shell > footer{ margin:0 !important; margin-top:auto !important; flex-shrink:0; position:relative !important; bottom:0; left:0; width:100%; z-index:20; }
+<style>
+  html, body {
+    min-height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  main#main-content {
+    flex: 1 0 auto;
+  }
+
+  .footer-wrap {
+    margin-top: auto;
+    flex-shrink: 0;
+    position: relative !important;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 20;
+    background: #06060d;
+    color: #e9eef5;
+  }
 </style>
-<script id="sticky-footer-shell-js">
-(function(){
-  try{
-    var main = document.querySelector('main');
-    var footer = document.querySelector('footer');
-    if(!main || !footer) return;
-    // Create wrapper
-    var shell = document.createElement('div');
-    shell.id = 'page-shell';
-    // Insert before main
-    var parent = main.parentNode;
-    parent.insertBefore(shell, main);
-    // Move main and all siblings up to and including footer inside shell
-    var node = main;
-    while(node){
-      var next = node.nextSibling;
-      shell.appendChild(node);
-      if(node === footer) break;
-      node = next;
-    }
-  }catch(e){ console.warn('sticky-footer-shell error', e); }
-})();
-</script>
 
 </body>
 </html>
