@@ -46,6 +46,117 @@
     * {
       box-sizing: border-box
     }
+/* Aggiungi questo al body */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* Modifica il main per far sì che cresca e spinga il footer in basso */
+main {
+    flex: 1 0 auto;
+}
+
+/* Modifica il footer */
+footer {
+    background: #06060d;
+    color: #e9eef5;
+    margin-top:auto; /* Questo spingerà il footer in fondo */
+    position: relative;
+    z-index: 0;
+    padding: 12px 0; /* Ridotto ulteriormente */
+    width: 100%;
+}
+
+.footer-wrap {
+    max-width: 1200px;
+   margin: 0 auto;
+    padding: 12px 16px; /* Ridotto il padding verticale */
+}
+
+.footer-columns {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 12px; /* Ridotto ulteriormente */
+    align-items: start;
+    text-align: left;
+}
+
+.footer-columns h3,
+.footer-columns h4 {
+    margin: 0.1rem 0 0.3rem;
+    color: #ffd86a;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.2px;
+    font-size: 0.9rem;
+}
+
+.footer-columns p {
+    margin: 0.1rem 0;
+    color: #00bb2d;
+    line-height: 1.3;
+    font-size: 0.85rem;
+}
+
+.footer-columns ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.footer-columns li {
+    margin: 0.1rem 0;
+    font-size: 0.85rem;
+}
+
+.footer-legal {
+    margin-top: 8px;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    flex-wrap: wrap;
+    font-size: 0.8rem;
+}
+
+.social {
+    margin-top: 0.4rem;
+    display: flex;
+    gap: 6px;
+}
+
+.social a {
+    width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
+}
+
+/* Per mobile */
+@media (max-width: 980px) {
+    .footer-columns {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    
+    footer {
+        padding: 8px 0;
+    }
+    
+    .footer-wrap {
+        padding: 8px 12px;
+    }
+    
+    .footer-columns h3,
+    .footer-columns h4 {
+        font-size: 0.85rem;
+    }
+    
+    .footer-columns p,
+    .footer-columns li {
+        font-size: 0.8rem;
+    }
+}
 
     html,
     body {
@@ -365,21 +476,21 @@
 
     /* Welcome */
     .welcome-section {
-      padding: 14px 16px 10px;
+      padding: 14px 16px 80px;
       text-align: center
     }
 
    .welcome-title {
-         font-family: "Cinzel Decorative", cursive;
-         font-weight: 700;
-         font-size: 3.05rem;
-         color: transparent;
-         background: linear-gradient(90deg, #00f6ff, #00b7ff, #009dff, #00f6ff);
-         -webkit-background-clip: text;
-         background-clip: text;
-         filter: drop-shadow(0 0 18px rgba(0, 220, 255, 0.75)) drop-shadow(0 0 30px rgba(0, 180, 255, 0.65));
-         animation: titlePulse 6s infinite;
-         }
+      font-family: 'Cinzel Decorative', cursive;
+      font-weight: 700;
+      font-size: 3.05rem;
+      color: transparent;
+      background: linear-gradient(90deg, #ffd700, #ffaa00, #fff7b0, #ffd700);
+      -webkit-background-clip: text;
+      background-clip: text;
+      filter: drop-shadow(0 0 12px rgba(255, 215, 0, .35));
+      animation: titlePulse 6s infinite;
+    }
 
     @keyframes titlePulse {
 
@@ -1268,7 +1379,7 @@
         "Twemoji Mozilla", sans-serif;
     }
   </style>
-  
+  <!-- RIMOSSO: stelle cadenti/canvas -->
   <style>
     /* === MENU FIXED UNDER TOP BAR === */
     header {
@@ -1588,7 +1699,7 @@
     }
   </style>
   <!-- ===== ANIMAZIONI/COSMO ===== -->
-
+<!-- RIMOSSO: cosmo dinamico (galaxy, stars, meteors, stardust, planets) -->
   <!-- Fix conservativi per click footer e link -->
   <style id="fix-conservativo">
     /* Lascia passare i click dai layer decorativi al contenuto */
@@ -2579,7 +2690,7 @@ html, body { overflow-y: auto !important; }
     z-index: 1;
     pointer-events: none;
     mix-blend-mode: screen;
-    animation: nebula-float 620s infinite linear; /* più lenta */
+    animation: nebula-float 120s infinite linear; /* più lenta */
     transform-origin: center;
   }
   @keyframes nebula-float {
@@ -2589,35 +2700,13 @@ html, body { overflow-y: auto !important; }
 </style>
 
 
-
-
-
-<style id="comet-css">
-#comet-canvas {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  z-index: 1;
-  pointer-events: none;
-}
-</style>
-
-
-<style id="cosmos-fix">
+<style id="stars-lightning-css">
+/* --- Stars & Lightning layers --- */
 #star-canvas {
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  z-index: 0;
-  pointer-events: none;
-  display: block !important;
-  visibility: visible !important;
-}
-#comet-canvas {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  z-index: 1;
+  z-index: 0;              /* sotto il contenuto, sopra il body */
   pointer-events: none;
   display: block !important;
   visibility: visible !important;
@@ -2625,20 +2714,38 @@ html, body { overflow-y: auto !important; }
 #lightning {
   position: fixed;
   inset: 0;
-  z-index: 3;
+  z-index: 2;              /* sopra stelle/nebula, sotto UI */
   pointer-events: none;
   display: block !important;
   visibility: visible !important;
+  mix-blend-mode: screen;
 }
-.nebula-overlay {
-  z-index: 0; /* nebula sopra stelle/comete, sotto lampi */
+.bolt {
+  position: absolute;
+  top: -10%;
+  width: 3px;
+  height: 120%;
+  opacity: 0;
+  background: linear-gradient(to bottom,
+    rgba(255,255,255,0.0) 0%,
+    rgba(255,255,255,0.9) 20%,
+    rgba(255,255,255,0.7) 60%,
+    rgba(255,255,255,0.0) 100%
+  );
+  box-shadow: 0 0 12px rgba(255,255,255,0.85), 0 0 28px rgba(80,180,255,0.5);
+  transform: rotate(0.5deg);
+  transition: opacity 120ms ease-out;
+}
+/* assicurati che contenuti restino sopra */
+header, main, footer, .container, .menu, .top-bar, .content {
+  position: relative;
+  z-index: 3;
 }
 </style>
 
 </head>
 
 <body>
-<div id="page-shell">
 <div class="nebula-overlay"></div>
   <div class="slider-vertical">
     <div class="slider-inner">
@@ -2832,7 +2939,6 @@ html, body { overflow-y: auto !important; }
     <canvas id="nebula"></canvas>
     <!-- Stelle + Comete sopra la galassia -->
     <canvas id="star-canvas"></canvas>
-<canvas id="comet-canvas"></canvas></canvas>
     <!-- Lightning overlay -->
     <div id="lightning"></div>
     <div aria-hidden="true" class="bolt" id="bolt"></div>
@@ -2928,7 +3034,7 @@ html, body { overflow-y: auto !important; }
     <!-- Header & Mega Menu -->
     <header>
       <!-- ===== ANIMAZIONI/COSMO ===== -->
-
+<!-- RIMOSSO: cosmo dinamico (galaxy, stars, meteors, stardust, planets) -->
       <div class="menu-container">
         <nav class="menu-desktop" aria-label="Menu principale">
           <ul role="menu">
@@ -3642,7 +3748,7 @@ html, body { overflow-y: auto !important; }
             let w, h, stars = [], comets = [];
             function resize(){
               w = canvas.width = innerWidth; h = canvas.height = innerHeight;
-              stars = Array.from({length: Math.min(800, Math.floor(w*h/4500))}, () => ({
+              stars = Array.from({length: Math.min(360, Math.floor(w*h/4500))}, () => ({
                 x: Math.random()*w, y: Math.random()*h, r: Math.random()*1.4 + 0.2, s: Math.random()*0.6 + 0.1, a: Math.random()*Math.PI*2
               }));
             }
@@ -4088,122 +4194,82 @@ html, body { overflow-y: auto !important; }
           });
       </script>
       <style>
-        footer {
-          background: #06060d;
-          color: #e9eef5;
-          margin-top: 45px;
-          /* 👈 spazio fisso sopra il footer */
-          position: relative;
-          z-index: 0;
-        }
+       footer {
+    background: #06060d;
+    color: #e9eef5;
+    margin-top: 20px; /* Ridotto da 45px */
+    position: relative;
+    z-index: 0;
+    padding: 16px 0; /* Ridotto il padding verticale */
+    min-height: auto; /* Assicura che non abbia un'altezza minima */
+}
 
-        footer::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 1px;
-          background: linear-gradient(90deg,
-              transparent,
-              rgba(255, 215, 0, 0.4),
-              transparent);
-        }
+.footer-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px; /* Ridotto da 28px */
+}
 
-        .footer-wrap {
-          max-width: 1200px;
-          margin: 0 auto;
-          padding: 45px 16px;
-        }
+.footer-columns {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 16px; /* Ridotto da 22px */
+    align-items: start;
+    text-align: left;
+}
 
-        .footer-columns {
-          display: grid;
-          grid-template-columns: 2fr 1fr 1fr;
-          gap: 22px;
-          align-items: start;
-          text-align: left;
-          /* Allineamento a sinistra */
-        }
+.footer-columns h3,
+.footer-columns h4 {
+    margin: 0.1rem 0 0.4rem; /* Ridotto il margine */
+    color: #ffd86a;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.3px;
+    font-size: 0.95rem; /* Leggermente più piccolo */
+}
 
-        .footer-columns h3,
-        .footer-columns h4 {
-          margin: 0.2rem 0 0.6rem;
-          color: #ffd86a;
-          font-family: 'Cinzel', serif;
-          letter-spacing: 0.3px;
-        }
+.footer-columns p {
+    margin: 0.1rem 0;
+    color: #00bb2d;
+    line-height: 1.4; /* Ridotto da 1.6 */
+    font-size: 0.9rem; /* Leggermente più piccolo */
+}
 
-        .footer-columns p {
-          margin: 0.2rem 0;
-          color: #00bb2d;
-          /* e/o #cfe8ff se serve doppio colore */
-          line-height: 1.6;
-        }
+.footer-columns ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
 
-        .footer-columns ul {
-          list-style: none;
-          margin: 0;
-          padding: 0;
-        }
+.footer-columns li {
+    margin: 0.15rem 0; /* Ridotto da 0.25rem */
+    font-size: 0.9rem; /* Leggermente più piccolo */
+}
 
-        .footer-columns li {
-          margin: 0.25rem 0;
-        }
+.footer-legal {
+    margin-top: 12px; /* Ridotto da 16px */
+    display: flex;
+    gap: 8px; /* Ridotto da 10px */
+    align-items: center;
+    flex-wrap: wrap;
+    font-size: 0.85rem; /* Leggermente più piccolo */
+}
 
-        .footer-columns a {
-          color: #9ad0ff;
-          font-weight: 700;
-          text-decoration: none;
-        }
-
-        .footer-columns a:hover {
-          color: #ffffff;
-        }
-
-        .social {
-          margin-top: 0.6rem;
-          display: flex;
-          gap: 10px;
-        }
-
-        .social a {
-          display: inline-flex;
-          width: 36px;
-          height: 36px;
-          align-items: center;
-          justify-content: center;
-          border: 1px solid rgba(255, 215, 0, 0.25);
-          border-radius: 50%;
-          background: rgba(0, 0, 0, 0.25);
-        }
-
-        .social a:hover {
-          box-shadow: 0 0 12px rgba(255, 215, 0, 0.25);
-        }
-
-        .footer-legal {
-          margin-top: 16px;
-          display: flex;
-          gap: 10px;
-          align-items: center;
-          flex-wrap: wrap;
-          opacity: 0.9;
-        }
-
-        .footer-legal .dot {
-          opacity: 0.5;
-        }
-
-        @media (max-width: 980px) {
-          .footer-columns {
-            grid-template-columns: 1fr;
-            gap: 14px;
-          }
-        }
-
-        .cookie-modal.force-open {
-          display: flex !important;
-        }
+/* Per mobile */
+@media (max-width: 980px) {
+    .footer-columns {
+        grid-template-columns: 1fr;
+        gap: 12px; /* Ridotto da 14px */
+    }
+    
+    footer {
+        padding: 12px 0;
+        margin-top: 15px;
+    }
+    
+    .footer-wrap {
+        padding: 12px;
+    }
+}
       </style>
       <!-- 🎬 INIZIO PLAYER (destro) -->
       <div class="video-container" id="video-right">
@@ -4479,7 +4545,7 @@ html, body { overflow-y: auto !important; }
       <style>
         .video-container {
           position: fixed;
-          bottom: 50px;
+          bottom: 60px;
           right: 80px;
           width: 280px;
           z-index: 99;
@@ -5589,7 +5655,7 @@ html, body { overflow-y: auto !important; }
           }
           
           let stars = [];
-          for (let i = 0; i < 50; i++) {
+          for (let i = 0; i < 20; i++) {
             stars.push(new ShootingStar());
           }
           
@@ -5627,7 +5693,7 @@ html, body { overflow-y: auto !important; }
             resize();
           
             // Parametri regolabili
-            const COUNT = 40;     // quante stelle simultanee
+            const COUNT     = 7;     // quante stelle simultanee
           
           
           const MIN_SPEED = 1;
@@ -5769,7 +5835,7 @@ html, body { overflow-y: auto !important; }
           
             // Config
             const cfg = {
-              count: 300,          // quante particelle
+              count: 160,          // quante particelle
               minSize: 0.5,        // rem
               maxSize: 1,          // rem
               floatDist: 100,      // raggio di oscillazione
@@ -8874,83 +8940,141 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 });
 </script>
-<script id="comet-js">
+
+
+<script id="stars-lightning-js">
 (function(){
-  const cometCanvas = document.getElementById('comet-canvas');
-  if (!cometCanvas) return;
-  const ctx = cometCanvas.getContext('2d');
-  let comets = [];
+  // --- Stars ---
+  const starCanvas = document.getElementById('star-canvas');
+  if (starCanvas) {
+    const sctx = starCanvas.getContext('2d');
+    const stars = [];
+    const STAR_COUNT = 220;
+    let tw = 0;
 
-  function resize(){
-    cometCanvas.width = innerWidth;
-    cometCanvas.height = innerHeight;
-  }
-  window.addEventListener('resize', resize, {passive:true});
-  resize();
+    function resizeStars(){
+      starCanvas.width = innerWidth;
+      starCanvas.height = innerHeight;
+      stars.length = 0;
+      for (let i=0; i<STAR_COUNT; i++){
+        stars.push({
+          x: Math.random()*starCanvas.width,
+          y: Math.random()*starCanvas.height,
+          r: Math.random()*1.4 + 0.4,
+          p: Math.random()*Math.PI*2
+        });
+      }
+    }
+    window.addEventListener('resize', resizeStars, {passive:true});
+    resizeStars();
 
-  function spawnComet(){
-    const y = Math.random() * cometCanvas.height/2;
-    comets.push({
-      x: -100,
-      y: y,
-      vx: 6 + Math.random()*4,
-      vy: 2 + Math.random()*2,
-      life: 0
-    });
-  }
-
-  function update(){
-    ctx.clearRect(0,0,cometCanvas.width,cometCanvas.height);
-    comets.forEach(c => {
-      c.x += c.vx;
-      c.y += c.vy;
-      c.life += 1;
-      // trail
-      const grad = ctx.createLinearGradient(c.x-80, c.y-80, c.x, c.y);
-      grad.addColorStop(0, 'rgba(255,255,255,0)');
-      grad.addColorStop(1, 'rgba(255,255,255,0.8)');
-      ctx.fillStyle = grad;
-      ctx.beginPath();
-      ctx.arc(c.x, c.y, 2.5, 0, Math.PI*2);
-      ctx.fill();
-    });
-    // remove old comets
-    comets = comets.filter(c => c.x < cometCanvas.width+100 && c.y < cometCanvas.height+100);
-    requestAnimationFrame(update);
+    function drawStars(){
+      tw += 0.02;
+      sctx.clearRect(0,0,starCanvas.width,starCanvas.height);
+      for (const st of stars){
+        const a = 0.5 + 0.5*Math.sin(tw + st.p);
+        sctx.globalAlpha = 0.3 + 0.7*a;
+        sctx.beginPath();
+        sctx.arc(st.x, st.y, st.r, 0, Math.PI*2);
+        sctx.fillStyle = '#fff';
+        sctx.fill();
+      }
+      sctx.globalAlpha = 1;
+      requestAnimationFrame(drawStars);
+    }
+    drawStars();
   }
 
-  setInterval(spawnComet, 8000 + Math.random()*8000); // una cometa ogni 8–16s
-  update();
+  // --- Lightning (vertical bolts) ---
+  const lightning = document.getElementById('lightning');
+  if (lightning) {
+    const MIN = 7000; // 7s
+    const MAX = 9000; // 9s
+
+    function flash(){
+      // posizione casuale, larghezza casuale minima
+      const x = Math.random()*100;
+      const w = 2 + Math.random()*3;
+      const bolt = document.createElement('div');
+      bolt.className = 'bolt';
+      bolt.style.left = x + 'vw';
+      bolt.style.width = w + 'px';
+
+      lightning.appendChild(bolt);
+      // fade-in
+      requestAnimationFrame(()=>{
+        bolt.style.opacity = '1';
+        // fade-out poco dopo
+        setTimeout(()=>{
+          bolt.style.opacity = '0';
+          setTimeout(()=> bolt.remove(), 220);
+        }, 140);
+      });
+      // lampo secondario debole
+      setTimeout(()=>{
+        const bolt2 = bolt.cloneNode(true);
+        lightning.appendChild(bolt2);
+        requestAnimationFrame(()=>{
+          bolt2.style.opacity = '0.6';
+          setTimeout(()=>{
+            bolt2.style.opacity = '0';
+            setTimeout(()=> bolt2.remove(), 220);
+          }, 120);
+        });
+      }, 90);
+    }
+
+    function schedule(){
+      const wait = MIN + Math.random()*(MAX - MIN);
+      setTimeout(()=>{ flash(); schedule(); }, wait);
+    }
+    schedule();
+  }
 })();
 </script>
 
-</div>
 
 <style>
-#page-shell {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+/* Comete */
+.comet {
+  position: absolute;
+  top: -50px;
+  left: 0;
+  width: 2px;
+  height: 80px;
+  background: linear-gradient(-45deg, rgba(255,255,255,0.8), transparent);
+  opacity: 0.7;
+  transform: rotate(-45deg);
+  animation: comet-fall linear infinite;
+  pointer-events: none;
+  z-index: 0;
 }
 
-#page-shell > main {
-  flex: 1 0 auto;
-}
-
-#page-shell > footer {
-  margin-top: auto;
-  position: relative !important;
-  z-index: 0 !important;
-  background: #06060d;
-  color: #e9eef5;
-}
-
-/* Nascondi il banner cookie in basso al centro */
-.cookie-banner {
-  display: none !important;
+@keyframes comet-fall {
+  0% {
+    transform: translateX(0) translateY(0) rotate(-45deg);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateX(600px) translateY(600px) rotate(-45deg);
+    opacity: 0;
+  }
 }
 </style>
 
+<script>
+// Genera comete in modo random
+function spawnComet() {
+  const comet = document.createElement("div");
+  comet.classList.add("comet");
+  comet.style.left = Math.random() * window.innerWidth + "px";
+  comet.style.animationDuration = (3 + Math.random() * 4) + "s";
+  document.body.appendChild(comet);
+  setTimeout(() => comet.remove(), 7000); // rimuovi dopo animazione
+}
+// ogni 8 secondi una cometa
+setInterval(spawnComet, 8000);
+</script>
+
 </body>
 </html>
-
