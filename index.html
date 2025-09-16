@@ -590,10 +590,36 @@ footer {
     }
 
     .caret::after {
+      /* cursore lampeggiante */
       content: "|";
       animation: blink 1s infinite;
       opacity: .8
     }
+
+
+/* === Fix definitivo anti-saltello per typing === */
+.typing-wrap {
+  min-height: 3.2em;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.typing-effect {
+  display: inline-block;
+  min-width: 60ch;   /* adatta al testo più lungo */
+  text-align: center;
+  white-space: nowrap;
+}
+
+.caret {
+  display: inline-block;
+  width: 1ch;
+  text-align: left;
+  position: absolute;
+  right: 0;  /* fissato a destra del testo */
+}
+
 
     @keyframes blink {
 
@@ -952,6 +978,21 @@ footer {
       transform: translateY(0) !important;
     }
 
+    
+/* === FILOSOFIA CLASSICA (3° li): aggancia a sinistra, apri verso destra/centro === */
+.menu-desktop>ul>li.dropdown:nth-child(3)>.mega-menu {
+  left: 0 !important;
+  right: auto !important;
+  transform: translateY(0.62rem) !important; /* niente translateX(-50%) */
+}
+
+.menu-desktop>ul>li.dropdown:nth-child(3):hover>.mega-menu,
+.menu-desktop>ul>li.dropdown:nth-child(3):focus-within>.mega-menu,
+.menu-desktop>ul>li.dropdown:nth-child(3)>.mega-menu:hover {
+  transform: translateY(0) !important;
+}
+
+
     /* === FILOSOFIA POLACCA (7° li): aggancia a destra, apri verso sinistra/centro === */
     .menu-desktop>ul>li.dropdown:nth-child(7)>.mega-menu {
       right: 0 !important;
@@ -1250,25 +1291,6 @@ footer {
   opacity: 0;
   pointer-events: none;
   z-index: 9998;
-}
-.lightning.active {
-  animation: thunderFlash 0.6s ease-in-out;
-}
-/* Thunder flash sempre sopra */
-@keyframes thunderFlash {
-  0% { opacity: 0; }
-  25% { opacity: 1; }
-  50% { opacity: 0; }
-  75% { opacity: 1; }
-  100% { opacity: 0; }
-}
-.lightning {
-  position: fixed;
-  inset: 0;
-  background: rgba(255,255,255,0.85);
-  opacity: 0;
-  pointer-events: none;
-  z-index: 30000; /* sopra menu, overlay, CSE */
 }
 .lightning.active {
   animation: thunderFlash 0.6s ease-in-out;
@@ -1652,7 +1674,7 @@ footer {
   <style data-typing-cls-fallback="">
     /* Fallback anti-CLS per typing: riserva ~2 righe */
     .typing-wrap {
-      min-height: 2.6em;
+      min-height: 3.2em;  /* fix saltello CLS */
     }</style>
   <style id="repel-vars" type="text/css">
     :root {
@@ -2745,11 +2767,6 @@ header, main, footer, .container, .menu,
 </head>
 
 <body>
-
-<audio id="thunder-sound" preload="auto">
-  <source src="sounds/thunder.mp3" type="audio/mpeg">
-</audio>
-
 <div class="nebula-overlay"></div>
   <div class="slider-vertical">
     <div class="slider-inner">
@@ -9025,78 +9042,13 @@ setInterval(spawnSmallComet, 4000);
 
 
 
-
-
-
 <script>
 function playThunder() {
   const flash = document.createElement("div");
   flash.className = "lightning active";
   document.body.appendChild(flash);
-
-  // riproduci audio
-  const sound = document.getElementById("thunder-sound");
-  if (sound) {
-    sound.currentTime = 0;
-    sound.play().catch(()=>{});
-  }
-
   setTimeout(() => flash.remove(), 600);
 }
-</script>
-<script>
-(function(){
-  // Usa l'audio già in pagina
-  const thunderSound = document.getElementById('thunder-sound');
-
-  // Sblocco audio su iOS/Safari: al primo tap/tasto esegue play/pause muto per “autorizzare” l'audio
-  function unlockAudioOnce(){
-    if (!thunderSound) return cleanupUnlock();
-    const prevMuted = thunderSound.muted;
-    thunderSound.muted = true;
-    thunderSound.play().then(()=>{
-      thunderSound.pause();
-      thunderSound.currentTime = 0;
-      thunderSound.muted = prevMuted;
-      cleanupUnlock();
-    }).catch(()=> cleanupUnlock());
-  }
-  function cleanupUnlock(){
-    window.removeEventListener('pointerdown', unlockAudioOnce);
-    window.removeEventListener('keydown', unlockAudioOnce);
-    window.removeEventListener('touchstart', unlockAudioOnce);
-  }
-  window.addEventListener('pointerdown', unlockAudioOnce, { once:true });
-  window.addEventListener('keydown', unlockAudioOnce, { once:true });
-  window.addEventListener('touchstart', unlockAudioOnce, { once:true, passive:true });
-
-  // Effetto visivo + audio
-  window.playThunder = function(){
-    // flash
-    const flash = document.createElement('div');
-    flash.className = 'lightning active';
-    document.body.appendChild(flash);
-    setTimeout(()=> flash.remove(), 600);
-
-    // suono
-    if (thunderSound){
-      try {
-        thunderSound.currentTime = 0;
-        thunderSound.volume = 0.9;   // regola a piacere
-        thunderSound.play().catch(()=>{ /* ignoriamo blocchi se non ancora sbloccato */ });
-      } catch(e){}
-    }
-  };
-
-  // Aggancio automatico ai possibili pulsanti "Tuono"
-  const selectors = ['#thunder-btn', '#tuono', '#btn-thunder', '[data-action="thunder"]'];
-  selectors.forEach(sel => {
-    document.querySelectorAll(sel).forEach(el => {
-      el.addEventListener('click', window.playThunder);
-      el.addEventListener('touchend', window.playThunder, { passive:true });
-    });
-  });
-})();
 </script>
 
 </body>
