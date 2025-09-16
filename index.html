@@ -34,19 +34,95 @@
   <script defer="" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <!-- ===== STILI PRINCIPALI ===== -->
 <style>
-:root {
-  --header-offset: 190px;   /* desktop */
+
+/* ===== Regole consolidate e flessibili ===== */
+
+/* Menu principale centrato e flessibile */
+.menu-container {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 92%;
+  z-index: 2000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.8rem 1.2rem;
+  background: transparent;
+  backdrop-filter: blur(0.6rem);
+  -webkit-backdrop-filter: blur(0.6rem);
+  border-radius: 1rem;
+  border: 0.125rem solid rgba(72, 209, 204, 0.6); /* 2px */
+  box-shadow: 0 0.5rem 2rem rgba(0, 30, 60, 0.4);
 }
 
-@media (max-width: 980px) {
+/* Top-bar sotto il menu */
+.top-bar {
+  position: fixed;
+  top: 5.5rem; /* circa 4.5rem */
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.9rem; /* 0.88rem */
+  padding: 0.5rem 0.75rem; /* 0.5rem 0.75rem */
+  background: transparent;
+  z-index: 1500;
+}
+
+/* Quotes-bar con margine flessibile */
+.quotes-bar {
+  position: relative;
+  z-index: 880;
+  margin: 6rem auto 0; /* 5.62rem */
+  max-width: 75rem; /* 75.0rem */
+  width: 95%;
+  background: rgba(0, 0, 0, 0);
+  border: 1px solid rgba(255, 215, 0, .15);
+  padding: 0.6rem 0.9rem; /* 0.62rem 0.88rem */
+  border-radius: 0.5rem; /* 0.5rem */
+  text-align: center;
+}
+
+
+
+:root {
+  --menu-h: 4.5rem;
+  --topbar-gap: 0.5rem;
+}
+
+/* MENU fissato in cima e sopra la top-bar */
+
+
+
+
+/* TOP-BAR subito sotto */
+
+
+
+
+/* Pannello di ricerca allineato sotto la top-bar */
+#search-results-panel {
+  top: calc(var(--menu-h) + var(--topbar-gap)) !important;
+  height: calc(100% - (var(--menu-h) + var(--topbar-gap))) !important;
+}
+
+
+:root {
+  --header-offset: 11.88rem;   /* desktop */
+}
+
+@media (max-width: 61.25rem) {
   :root {
-    --header-offset: 140px; /* tablet */
+    --header-offset: 8.75rem; /* tablet */
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 37.5rem) {
   :root {
-    --header-offset: 100px; /* mobile */
+    --header-offset: 6.25rem; /* mobile */
   }
 }
 
@@ -83,20 +159,20 @@ footer {
     margin-top:auto; /* Questo spingerà il footer in fondo */
     position: relative;
     z-index: 0;
-    padding: 12px 0; /* Ridotto ulteriormente */
+    padding: 0.75rem 0; /* Ridotto ulteriormente */
     width: 100%;
 }
 
 .footer-wrap {
-    max-width: 1200px;
+    max-width: 75.0rem;
    margin: 0 auto;
-    padding: 12px 16px; /* Ridotto il padding verticale */
+    padding: 0.75rem 1.0rem; /* Ridotto il padding verticale */
 }
 
 .footer-columns {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr;
-    gap: 12px; /* Ridotto ulteriormente */
+    gap: 0.75rem; /* Ridotto ulteriormente */
     align-items: start;
     text-align: left;
 }
@@ -129,9 +205,9 @@ footer {
 }
 
 .footer-legal {
-    margin-top: 8px;
+    margin-top: 0.5rem;
     display: flex;
-    gap: 6px;
+    gap: 0.38rem;
     align-items: center;
     flex-wrap: wrap;
     font-size: 0.8rem;
@@ -140,28 +216,28 @@ footer {
 .social {
     margin-top: 0.4rem;
     display: flex;
-    gap: 6px;
+    gap: 0.38rem;
 }
 
 .social a {
-    width: 28px;
-    height: 28px;
+    width: 1.75rem;
+    height: 1.75rem;
     font-size: 0.8rem;
 }
 
 /* Per mobile */
-@media (max-width: 980px) {
+@media (max-width: 61.25rem) {
     .footer-columns {
         grid-template-columns: 1fr;
-        gap: 8px;
+        gap: 0.5rem;
     }
     
     footer {
-        padding: 8px 0;
+        padding: 0.5rem 0;
     }
     
     .footer-wrap {
-        padding: 8px 12px;
+        padding: 0.5rem 0.75rem;
     }
     
     .footer-columns h3,
@@ -199,7 +275,7 @@ footer {
 
     a:hover {
       color: #fff;
-      text-shadow: 0 0 6px #33ccff
+      text-shadow: 0 0 0.38rem #33ccff
     }
 
     /* Layers: nebula behind, stars/comets above it */
@@ -233,64 +309,52 @@ footer {
     .bolt {
       position: fixed;
       width: 2px;
-      height: 160px;
+      height: 10.0rem;
       background: linear-gradient(#fff, rgba(255, 255, 255, .4));
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%) rotate(12deg) scaleY(0);
-      box-shadow: 0 0 18px rgba(255, 255, 255, .9);
+      box-shadow: 0 0 1.12rem rgba(255, 255, 255, .9);
       z-index: 55;
       opacity: .7;
     }
 
     /* Top bar + logo + translate + search + buttons */
-    .top-bar {
-      position: fixed;
-      top: 14px;
-      left: 0;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 14px;
-      padding: 8px 12px;
-      background: transparent;   var(--glass);
-      z-index: 1000;
-    }
+    
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin-right: 10px;
+      gap: 0.62rem;
+      margin-right: 0.62rem;
       text-decoration: none;
     }
 
     .brand svg {
-      width: 34px;
-      height: 34px;
-      filter: drop-shadow(0 0 6px rgba(255, 215, 0, .5))
+      width: 2.12rem;
+      height: 2.12rem;
+      filter: drop-shadow(0 0 0.38rem rgba(255, 215, 0, .5))
     }
 
     .brand span {
       font-family: 'Cinzel Decorative', cursive;
       font-weight: 700;
-      letter-spacing: .5px;
+      letter-spacing: .0.31rem;
       background: linear-gradient(90deg, #ffd700, #fff7b0, #ffd700);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      text-shadow: 0 0 10px rgba(255, 215, 0, .35);
+      text-shadow: 0 0 0.62rem rgba(255, 215, 0, .35);
     }
 
     .bar-right {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 0.62rem;
     }
 
     #google_translate_element {
-      min-width: 160px;
+      min-width: 10.0rem;
     }
 
     .ctrl-btn {
@@ -298,7 +362,7 @@ footer {
       background: rgba(20, 20, 40, .75);
       color: #e9eef5;
       padding: .45rem .6rem;
-      border-radius: 6px;
+      border-radius: 0.38rem;
       font-weight: 600;
       cursor: pointer;
       transition: .2s;
@@ -307,7 +371,7 @@ footer {
 
     .ctrl-btn:hover {
       color: #fff;
-      box-shadow: 0 0 10px rgba(255, 215, 0, .25)
+      box-shadow: 0 0 0.62rem rgba(255, 215, 0, .25)
     }
 
     .ctrl-btn:active {
@@ -316,17 +380,17 @@ footer {
 
     /* SEARCH BOX */
     .search-container input {
-      width: 260px;
+      width: 16.25rem;
       max-width: 52vw;
-      height: 40px;
+      height: 2.5rem;
       /* altezza fissa, cliccabile ovunque */
-      line-height: 40px !important;
+      line-height: 2.5rem !important;
       /* centra il cursore */
       padding: 0 2.4rem 0 2.4rem;
       /* spazio a sinistra e destra per lente e crocetta */
       background: rgba(20, 20, 40, .78);
       border: 1px solid var(--menu-border);
-      border-radius: 6px;
+      border-radius: 0.38rem;
       color: #e0e0e0;
       font-weight: 300;
       font-size: .95rem;
@@ -338,7 +402,7 @@ footer {
 
     .search-container input:focus {
       border-color: rgba(255, 215, 0, .5);
-      box-shadow: 0 0 12px rgba(255, 215, 0, .18)
+      box-shadow: 0 0 0.75rem rgba(255, 215, 0, .18)
     }
 
     .search-icon {
@@ -349,44 +413,18 @@ footer {
     }
 
     header {
-      margin-top: 76px;
+      margin-top: 4.75rem;
       display: flex;
       justify-content: center;
       z-index: 900
     }
 
     
-.menu-container {
-    max-width: 1500px;
-    width: 92%;
-    position: fixed;
-    top: 1px;
-    left: 4%;
-    z-index: 999;
-    padding: 0.8rem 1.2rem;
-    background: transparent;   /* sfondo trasparente */
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-radius: 16px;
-    border: 2px solid rgba(72, 209, 204, 0.6);
-    box-shadow: 0 8px 32px rgba(0, 30, 60, 0.4);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 
-.menu-container a {
-    border: 1px solid rgba(72, 209, 204, 0.7);
-    border-radius: 6px;
-    padding: 4px 10px;
-    margin: 0 4px;
-    text-decoration: none;
-    color: inherit;
-}
 
-.menu-container a:hover {
-    background: rgba(72, 209, 204, 0.1);
-}
+
+
+
 
     nav.menu-desktop ul {
       display: flex;
@@ -416,10 +454,10 @@ footer {
       font-weight: 700;
       font-size: 1.35rem;
       padding: .45rem .7rem;
-      border-radius: 6px;
+      border-radius: 0.38rem;
       transition: .25s;
       text-decoration: none;
-      text-shadow: 0 0 6px #33ccff99;
+      text-shadow: 0 0 0.38rem #33ccff99;
     }
 
     .menu-btn:hover,
@@ -434,19 +472,19 @@ footer {
     .mega-menu {
       position: absolute;
       top: 100%;
-      left: 50%;
-      transform: translateX(-50%) translateY(10px);
-      width: 980px;
+     
+      transform: translateX(-50%) translateY(0.62rem);
+      width: 61.25rem;
       max-width: 94vw;
       background: var(--menu-bg);
       border: 1px solid var(--menu-border);
       border-top: 0;
-      padding: 14px;
+      padding: 0.88rem;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-      box-shadow: 0 15px 30px rgba(0, 0, 0, .4);
-      backdrop-filter: blur(10px);
+      gap: 0.88rem;
+      box-shadow: 0 0.94rem 1.88rem rgba(0, 0, 0, .4);
+      backdrop-filter: blur(0.62rem);
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
@@ -487,40 +525,19 @@ footer {
 
     .mega-menu a:hover {
       color: #fff;
-      transform: translateX(3px)
+      transform: translateX(0.19rem)
     }
 
     /* QUOTES BAR sotto la barra del menu */
-    .quotes-bar {
-      position: relative;
-      z-index: 880;
-      margin: 10px auto 0;
-      max-width: 1200px;
-      width: 95%;
-      background: rgba(0, 0, 0, 0);
-      border: 1px solid rgba(255, 215, 0, .15);
-      padding: 10px 14px;
-      border-radius: 8px;
-      text-align: center;
-    }
+    
 
-    .quotes-bar .quote-text {
-      font-family: 'EB Garamond', serif;
-      font-size: 1.12rem;
-      font-style: italic;
-      color: #00CFFF;
-      font-weight: 700;
-    }
+    
 
-    .quotes-bar .author {
-      margin-left: 6px;
-      color: #ffd86a;
-      font-size: 1rem
-    }
+    
 
     /* Welcome */
     .welcome-section {
-      padding: 14px 16px 120px;
+      padding: 0.88rem 1.0rem 7.5rem;
       text-align: center
     }
 
@@ -532,7 +549,7 @@ footer {
          background: linear-gradient(90deg, #00f6ff, #00b7ff, #009dff, #00f6ff);
          -webkit-background-clip: text;
          background-clip: text;
-         filter: drop-shadow(0 0 18px rgba(0, 220, 255, 0.75)) drop-shadow(0 0 30px rgba(0, 180, 255, 0.65));
+         filter: drop-shadow(0 0 1.12rem rgba(0, 220, 255, 0.75)) drop-shadow(0 0 1.88rem rgba(0, 180, 255, 0.65));
          animation: titlePulse 6s infinite;
          }
     @keyframes titlePulse {
@@ -548,13 +565,13 @@ footer {
     }
 
     .welcome-subtitle {
-      margin-top: -20px;
+      margin-top: -1.25rem;
       color: #9ad0ff;
       font-size: 1.5rem
     }
 
     .typing-wrap {
-      margin-top: 10px;
+      margin-top: 0.62rem;
       display: flex;
       justify-content: center;
     }
@@ -593,12 +610,12 @@ footer {
 
     /* Exploding text */
     .exploding-text {
-      margin: 16px auto 0;
+      margin: 1.0rem auto 0;
       font-family: 'EB Garamond', serif;
       font-size: 1.25rem;
       font-style: italic;
       color: #e7f6ff;
-      letter-spacing: .5px;
+      letter-spacing: .0.31rem;
       display: inline-block;
       cursor: pointer;
       user-select: none;
@@ -623,7 +640,7 @@ footer {
       will-change: transform, opacity;
       user-select: none;
       white-space: nowrap;
-      text-shadow: 0 0 10px rgba(255, 215, 0, .35);
+      text-shadow: 0 0 0.62rem rgba(255, 215, 0, .35);
       opacity: .95;
       pointer-events: auto;
       cursor: default;
@@ -633,19 +650,19 @@ footer {
     /* =====INIZIO SLIDER VERTICALE SINISTRA — STABILE ===== */
     .slider-vertical {
       position: fixed;
-      left: 52px;
-      top: 120px;
-      width: 180px;
-      height: 320px;
+      left: 3.25rem;
+      top: 7.5rem;
+      width: 11.25rem;
+      height: 20.0rem;
       /* viewport dello slider: fissa */
       z-index: 930;
       overflow: hidden;
       /* evita scroll interni */
       border: 1px solid rgba(255, 215, 0, .18);
-      border-radius: 12px;
+      border-radius: 0.75rem;
       background: rgba(10, 10, 25, .45);
-      backdrop-filter: blur(6px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, .35);
+      backdrop-filter: blur(0.38rem);
+      box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, .35);
     }
 
     .slider-vertical .slider-inner {
@@ -658,28 +675,28 @@ footer {
 
     .slide-vertical {
       width: 100%;
-      padding: 10px 10px 14px;
+      padding: 0.62rem 0.62rem 0.88rem;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
+      gap: 0.5rem;
       /* Altezza totale dello “slide” coerente:
-         140px immagine + ~44px caption + padding */
+         8.75rem immagine + ~2.75rem caption + padding */
       box-sizing: border-box;
     }
 
     .slide-vertical img {
       width: 100%;
-      height: 140px;
+      height: 8.75rem;
       /* tutte le immagini stessa altezza */
       object-fit: contain;
       /* nessun crop; usa cover se preferisci riempire */
       display: block;
       /* elimina line-gap */
       background: rgba(0, 0, 0, .25);
-      border-radius: 10px;
+      border-radius: 0.62rem;
       border: 1px solid rgba(255, 255, 255, .1);
-      box-shadow: 0 6px 14px rgba(0, 0, 0, .25);
+      box-shadow: 0 0.38rem 0.88rem rgba(0, 0, 0, .25);
     }
 
     /* Didascalia con altezza uniforme → niente scossoni */
@@ -689,7 +706,7 @@ footer {
       font-size: .92rem;
       text-align: center;
       color: #ffe9b8;
-      text-shadow: 0 0 8px rgba(255, 215, 0, .25);
+      text-shadow: 0 0 0.5rem rgba(255, 215, 0, .25);
       /* blocco stabile: 2 righe max senza saltelli */
       min-height: 2.6em;
       /* ~2 righe di testo */
@@ -707,19 +724,19 @@ footer {
     /* ===== BLOB ANIMATO DESTRA (Ultimi articoli) ===== */
     .articles-blob {
       position: fixed;
-      right: 14px;
-      top: 250px;
-      width: 300px;
+      right: 0.88rem;
+      top: 15.62rem;
+      width: 18.75rem;
       max-width: 32vw;
       z-index: 930;
-      padding: 14px 16px;
+      padding: 0.88rem 1.0rem;
       color: #e9eef5;
       border: 1px solid rgba(255, 215, 0, .18);
       border-radius: 45% 55% 50% 50%/55% 45% 55% 45%;
       background: radial-gradient(120% 120% at 10% 10%, rgba(255, 215, 0, .18), rgba(0, 180, 255, .14) 40%, rgba(0, 0, 0, .38) 78%);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, .4), inset 0 0 24px rgba(0, 140, 255, .15);
+      box-shadow: 0 0.62rem 1.88rem rgba(0, 0, 0, .4), inset 0 0 1.5rem rgba(0, 140, 255, .15);
       animation: blobMorph 14s ease-in-out infinite;
-      backdrop-filter: blur(8px);
+      backdrop-filter: blur(0.5rem);
     }
 
     @keyframes blobMorph {
@@ -729,7 +746,7 @@ footer {
       }
 
       33% {
-        transform: scale(1.02) translateY(-3px);
+        transform: scale(1.02) translateY(-0.19rem);
         border-radius: 55% 45% 45% 55%/45% 55% 45% 55%;
       }
 
@@ -747,17 +764,17 @@ footer {
     .articles-blob h3 {
       margin: .2rem 0 .5rem;
       font-family: 'Cinzel', serif;
-      letter-spacing: .3px;
+      letter-spacing: .0.19rem;
       color: #ffd86a;
       font-size: 1.1rem;
-      text-shadow: 0 0 10px rgba(255, 215, 0, .35);
+      text-shadow: 0 0 0.62rem rgba(255, 215, 0, .35);
     }
 
     .articles-blob ul {
       list-style: none;
       padding: 0;
       margin: 0;
-      max-height: 300px;
+      max-height: 18.75rem;
       overflow: auto
     }
 
@@ -765,7 +782,7 @@ footer {
       margin: .35rem 0;
       display: flex;
       align-items: center;
-      gap: 8px
+      gap: 0.5rem
     }
 
     .articles-blob li i {
@@ -786,11 +803,11 @@ footer {
       background: #000;
       color: #fff;
       text-align: center;
-      padding: 24px
+      padding: 1.5rem
     }
 
     /* Mobile: nascondo elementi laterali per spazio */
-    @media (max-width: 980px) {
+    @media (max-width: 61.25rem) {
 
       .slider-vertical,
       .articles-blob {
@@ -806,38 +823,36 @@ footer {
       }
 
       .bar-right {
-        gap: 6px
+        gap: 0.38rem
       }
 
       #google_translate_element {
-        min-width: 120px
+        min-width: 7.5rem
       }
 
       .ctrl-btn {
         padding: .35rem .5rem
       }
 
-      .quotes-bar {
-        width: 92%
-      }
+      
     }
 
     /* INIZIO AGGIUNTE RESTRINGIMENTO COLONNE SUBMENU */
     /* === Mega-menu più stretto (4 colonne compatte) === */
     .menu-desktop .mega-menu.columns-4 {
-      width: 700px !important;
-      /* prima ~980px */
-      grid-template-columns: repeat(4, 200px) !important;
+      width: 43.75rem !important;
+      /* prima ~61.25rem */
+      grid-template-columns: repeat(4, 12.5rem) !important;
       /* larghezza di ogni colonna */
-      gap: 8px 12px !important;
+      gap: 0.5rem 0.75rem !important;
       /* spazi più stretti */
-      padding: 10px 12px !important;
+      padding: 0.62rem 0.75rem !important;
     }
 
     /* Colonne: contenuto più denso + scrollbar se serve */
     .menu-desktop .mega-menu.columns-4>div {
-      padding: 4px 6px;
-      max-height: 450px;
+      padding: 0.25rem 0.38rem;
+      max-height: 28.12rem;
       /* evita menu troppo alti */
       overflow: auto;
       /* scrollbar solo quando serve */
@@ -845,7 +860,7 @@ footer {
 
     /* Titoli e link compattati */
     .menu-desktop .mega-menu.columns-4>div h4 {
-      margin: 0 0 6px;
+      margin: 0 0 0.38rem;
       font-size: .95rem;
     }
 
@@ -857,12 +872,7 @@ footer {
 
     /* === 1) IL MENU SOPRA A TUTTO === */
     header,
-    .menu-container,
-    nav.menu-desktop {
-      position: relative !important;
-      z-index: 9999 !important;
-      /* sopra top-bar, slider, blob, player */
-    }
+    
 
     .menu-desktop .mega-menu {
       z-index: 10000 !important;
@@ -874,29 +884,29 @@ footer {
       background: rgba(8, 18, 40, 0.98) !important;
       /* sfondo pannello */
       border: 1px solid rgba(255, 215, 0, 0.28) !important;
-      box-shadow: 0 18px 40px rgba(0, 0, 0, .55) !important;
+      box-shadow: 0 1.12rem 2.5rem rgba(0, 0, 0, .55) !important;
     }
 
     .menu-desktop .mega-menu.columns-4>div {
       background: rgba(3, 10, 24, 0.92) !important;
       /* sfondo singole colonne */
       border: 1px solid rgba(255, 255, 255, 0.06) !important;
-      border-radius: 8px !important;
-      padding: 8px 10px !important;
+      border-radius: 0.5rem !important;
+      padding: 0.5rem 0.62rem !important;
     }
 
     /* === 3) COLONNE PIÙ STRETTE (opzionale ma utile) === */
     .menu-desktop .mega-menu.columns-4 {
-      width: 820px !important;
-      grid-template-columns: repeat(4, 180px) !important;
-      gap: 10px 12px !important;
-      padding: 12px !important;
+      width: 51.25rem !important;
+      grid-template-columns: repeat(4, 11.25rem) !important;
+      gap: 0.62rem 0.75rem !important;
+      padding: 0.75rem !important;
     }
 
     /* === 4) TESTO DENTRO LE COLONNE (leggibilità) === */
     .menu-desktop .mega-menu.columns-4>div h4 {
       color: #ffd86a !important;
-      margin: 0 0 6px !important;
+      margin: 0 0 0.38rem !important;
       font-size: .95rem !important;
     }
 
@@ -932,7 +942,7 @@ footer {
     .menu-desktop>ul>li.dropdown:nth-child(2)>.mega-menu {
       left: 0 !important;
       right: auto !important;
-      transform: translateY(10px) !important;
+      transform: translateY(0.62rem) !important;
       /* niente translateX(-50%) */
     }
 
@@ -946,7 +956,7 @@ footer {
     .menu-desktop>ul>li.dropdown:nth-child(7)>.mega-menu {
       right: 0 !important;
       left: auto !important;
-      transform: translateY(10px) !important;
+      transform: translateY(0.62rem) !important;
       /* niente translateX(-50%) */
     }
 
@@ -958,9 +968,9 @@ footer {
 
     /* (Opzionale) dimensioni più contenute per tutte le versioni a 4 colonne */
     .menu-desktop .mega-menu.columns-4 {
-      width: min(880px, 94vw) !important;
-      grid-template-columns: repeat(4, minmax(160px, 1fr)) !important;
-      gap: 10px 12px !important;
+      width: min(55.0rem, 94vw) !important;
+      grid-template-columns: repeat(4, minmax(10.0rem, 1fr)) !important;
+      gap: 0.62rem 0.75rem !important;
     }
 
     /* === SOLO: larghezza colonne dei mega-menu a 4 colonne === */
@@ -969,13 +979,13 @@ footer {
       width: max-content !important;
       max-width: 96vw !important;
       /* non oltre lo schermo */
-      grid-template-columns: repeat(4, minmax(230px, 1fr)) !important;
+      grid-template-columns: repeat(4, minmax(14.38rem, 1fr)) !important;
       /* ← cambia 230 se vuoi più largo */
     }
 
     /* ogni colonna non scende sotto la misura scelta */
     .menu-desktop .mega-menu.columns-4>div {
-      min-width: 220px !important;
+      min-width: 13.75rem !important;
       /* coerente con il valore sopra */
     }
 
@@ -983,9 +993,9 @@ footer {
     .menu-desktop .mega-menu a {
       position: relative;
       display: block;
-      padding: .14rem 22px .14rem 10px;
+      padding: .14rem 1.38rem .14rem 0.62rem;
       /* spazio per freccetta a destra */
-      border-radius: 6px;
+      border-radius: 0.38rem;
       /* evidenza fluida che “riempie” il link */
       background-image: linear-gradient(90deg, rgba(255, 215, 0, .14), rgba(0, 180, 255, .12));
       background-size: 0% 100%;
@@ -997,9 +1007,9 @@ footer {
       content: "›";
       /* freccetta elegante */
       position: absolute;
-      right: 8px;
+      right: 0.5rem;
       top: 50%;
-      transform: translateY(-50%) translateX(-6px);
+      transform: translateY(-50%) translateX(-0.38rem);
       /* parte nascosta */
       opacity: 0;
       font-size: .95em;
@@ -1028,7 +1038,7 @@ footer {
     /* Focus tastiera ben visibile */
     .menu-desktop .mega-menu a:focus-visible {
       box-shadow: 0 0 0 2px rgba(255, 215, 0, .45);
-      border-radius: 6px;
+      border-radius: 0.38rem;
     }
 
     /* Opzionale: stato “attivo” se vuoi segnare la pagina corrente */
@@ -1043,21 +1053,21 @@ footer {
       /* #061C1E */
       border-color: rgba(95, 224, 197, 0.24) !important;
       /* bordo con riflesso teal */
-      box-shadow: 0 22px 45px rgba(0, 0, 0, .55) !important;
+      box-shadow: 0 1.38rem 2.81rem rgba(0, 0, 0, .55) !important;
     }
 
     .menu-desktop .mega-menu.columns-4>div {
       background: rgba(8, 36, 38, 0.94) !important;
       /* #082426 */
       border: 1px solid rgba(255, 255, 255, 0.06) !important;
-      border-radius: 8px !important;
+      border-radius: 0.5rem !important;
     }
 
     /* I link #cfe8ff restano ben leggibili su petrolio */
     .menu-desktop .mega-menu,
     .menu-desktop .mega-menu.columns-4>div {
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(0.5rem);
+      -webkit-backdrop-filter: blur(0.5rem);
     }
 
     /* === COOKIE BANNER & MODAL (Echi di Sofia) === */
@@ -1069,12 +1079,12 @@ footer {
 
     .cookie-actions {
       display: flex;
-      gap: 8px;
+      gap: 0.5rem;
       flex-wrap: wrap
     }
 
     .btn {
-      border-radius: 8px;
+      border-radius: 0.5rem;
       padding: .55rem .8rem;
       font-weight: 600;
       cursor: pointer;
@@ -1112,7 +1122,7 @@ footer {
       display: none;
       align-items: center;
       justify-content: center;
-      padding: 16px;
+      padding: 1.0rem;
       z-index: 999999;
     }
 
@@ -1121,11 +1131,11 @@ footer {
     }
 
     .cookie-modal__panel {
-      width: min(640px, 92vw);
+      width: min(40.0rem, 92vw);
       background: rgba(10, 10, 30, .98);
       border: 1px solid rgba(255, 215, 0, .28);
-      border-radius: 14px;
-      padding: 16px 16px 12px;
+      border-radius: 0.88rem;
+      padding: 1.0rem 1.0rem 0.75rem;
       position: relative;
       color: #e9eef5;
     }
@@ -1168,22 +1178,22 @@ footer {
     .cookie-modal__actions {
       display: flex;
       justify-content: flex-end;
-      gap: 10px;
+      gap: 0.62rem;
       margin-top: .6rem
     }
 
     .cookie-close {
       position: absolute;
-      top: 8px;
-      right: 10px;
-      width: 34px;
-      height: 34px;
-      border-radius: 8px;
+      top: 0.5rem;
+      right: 0.62rem;
+      width: 2.12rem;
+      height: 2.12rem;
+      border-radius: 0.5rem;
       background: rgba(255, 255, 255, .06);
       color: #fff;
       border: 1px solid rgba(255, 255, 255, .15);
       cursor: pointer;
-      font-size: 20px;
+      font-size: 1.25rem;
       line-height: 1;
     }
 
@@ -1195,15 +1205,15 @@ footer {
     .cookie-manage {
       position: fixed;
       left: 50%;
-      bottom: 8px;
+      bottom: 0.5rem;
       transform: translateX(-50%);
       background: rgba(10, 10, 30, .8);
       color: #cfe8ff;
       border: 1px solid rgba(255, 215, 0, .28);
-      border-radius: 999px;
+      border-radius: 62.44rem;
       padding: .35rem .7rem;
       font-size: .85rem;
-      backdrop-filter: blur(6px);
+      backdrop-filter: blur(0.38rem);
       z-index: 20001;
     }
 
@@ -1216,13 +1226,55 @@ footer {
     /* FINE AGGIUNTE RESTRINGIMENTO COLONNE SUBMENU */
     .ctrl-btn.active {
       border-color: #ffd86a;
-      box-shadow: 0 0 18px rgba(255, 215, 0, .45), inset 0 0 10px rgba(255, 215, 0, .25);
+      box-shadow: 0 0 1.12rem rgba(255, 215, 0, .45), inset 0 0 0.62rem rgba(255, 215, 0, .25);
     }
 
     .cookie-modal.force-open {
       display: flex !important;
     }
-  </style>
+/* === Thunder / Lightning effect restored === */
+@keyframes thunderFlash {
+  0%   { opacity: 0; }
+  25%  { opacity: 1; }
+  50%  { opacity: 0; }
+  75%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+.lightning {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 9998;
+}
+.lightning.active {
+  animation: thunderFlash 0.6s ease-in-out;
+}
+/* Thunder flash sempre sopra */
+@keyframes thunderFlash {
+  0% { opacity: 0; }
+  25% { opacity: 1; }
+  50% { opacity: 0; }
+  75% { opacity: 1; }
+  100% { opacity: 0; }
+}
+.lightning {
+  position: fixed;
+  inset: 0;
+  background: rgba(255,255,255,0.85);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 30000; /* sopra menu, overlay, CSE */
+}
+.lightning.active {
+  animation: thunderFlash 0.6s ease-in-out;
+}
+
+</style>
   <style>
     .translate-box {
       display: inline-flex;
@@ -1234,7 +1286,7 @@ footer {
       appearance: none;
       padding: .45rem .8rem;
       border: 1px solid var(--menu-border, #2f3a3f);
-      border-radius: 10px;
+      border-radius: 0.62rem;
       background: rgba(20, 20, 40, .78);
       color: #e6f0f3;
       font-size: .95rem;
@@ -1257,7 +1309,7 @@ footer {
     .gsc-option-menu {
       background: var(--cse-card, #111) !important;
       border: 1px solid rgba(255, 255, 255, .15) !important;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, .35) !important;
+      box-shadow: 0 0.38rem 1.12rem rgba(0, 0, 0, .35) !important;
     }
 
     .gsc-option-menu-item {
@@ -1292,19 +1344,19 @@ footer {
     .cookie-fab {
       position: fixed;
       left: auto;
-      right: 16px;
-      bottom: 16px;
+      right: 1.0rem;
+      bottom: 1.0rem;
       z-index: 1000000;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      padding: 10px 14px;
-      border-radius: 999px;
+      gap: 0.5rem;
+      padding: 0.62rem 0.88rem;
+      border-radius: 62.44rem;
       background: var(--card-2, #0f141a);
       color: var(--txt, #eaeaea);
       border: 1px solid rgba(255, 255, 255, .18);
-      box-shadow: 0 10px 26px rgba(0, 0, 0, .45);
+      box-shadow: 0 0.62rem 1.62rem rgba(0, 0, 0, .45);
       cursor: pointer;
       pointer-events: auto;
       user-select: none;
@@ -1334,36 +1386,22 @@ footer {
       .cookie-fab {
         position: fixed;
         left: auto;
-        right: 16px;
-        bottom: 16px;
+        right: 1.0rem;
+        bottom: 1.0rem;
         z-index: 20050;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        gap: 8px;
-        padding: 10px 14px;
-        border-radius: 999px;
+        gap: 0.5rem;
+        padding: 0.62rem 0.88rem;
+        border-radius: 62.44rem;
         background: var(--card-2, #0f141a);
         color: var(--txt, #eaeaea);
         border: 1px solid rgba(255, 255, 255, .18);
-        box-shadow: 0 10px 26px rgba(0, 0, 0, .45);
+        box-shadow: 0 0.62rem 1.62rem rgba(0, 0, 0, .45);
         cursor: pointer;
         user-select: none;
       }
-
-      .cookie-fab .emoji {
-        font-size: 1rem;
-        line-height: 1;
-      }
-
-      .cookie-fab .label {
-        font-weight: 600;
-        letter-spacing: .2px;
-      }
-    }
-
-    .cookie-modal.force-open {
-      display: flex !important;
     }
 
     .symbol-rotator {
@@ -1373,8 +1411,7 @@ footer {
       white-space: nowrap;
       overflow: visible;
       /* non hidden */
-    }
-  </style>
+    }</style>
   <style>
     /* Fallback font per simboli/emoji */
     .particle,
@@ -1382,55 +1419,27 @@ footer {
       font-family: system-ui, "Segoe UI", Roboto, "Noto Sans", "Noto Sans Symbols 2",
         "DejaVu Sans", Symbola, "Apple Color Emoji", "Segoe UI Emoji",
         "Twemoji Mozilla", sans-serif;
-    }
-  </style>
+    }</style>
   <!-- RIMOSSO: stelle cadenti/canvas -->
   <style>
     /* === MENU FIXED UNDER TOP BAR === */
     header {
-      margin-top: 66px !important;
+      margin-top: 4.12rem !important;
       /* distanza dalla top-bar */
-      padding-bottom: 8px !important;
+      padding-bottom: 0.5rem !important;
       /* spazio riservato per il menu fisso */
       display: flex;
       justify-content: center;
-      z-index: 900;
+      z-index: 0;
     }
 
    /* Menu Container con bordo che abbraccia tutte le voci */
         
-.menu-container {
-    max-width: 1500px;
-    width: 92%;
-    position: fixed;
-    top: 1px;
-    left: 4%;
-    z-index: 999;
-    padding: 0.8rem 1.2rem;
-    background: transparent;   /* sfondo trasparente */
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-radius: 16px;
-    border: 2px solid rgba(72, 209, 204, 0.6);
-    box-shadow: 0 8px 32px rgba(0, 30, 60, 0.4);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: auto;
-}
 
-.menu-container a {
-    border: 1px solid rgba(72, 209, 204, 0.7);
-    border-radius: 6px;
-    padding: 4px 10px;
-    margin: 0 4px;
-    text-decoration: none;
-    color: inherit;
-}
 
-.menu-container a:hover {
-    background: rgba(72, 209, 204, 0.1);
-}
+
+
+
 
 
     /* === SEARCH: caret centered + larger clickable area + stable clear === */
@@ -1441,8 +1450,8 @@ footer {
     }
 
     .search-container input {
-      height: 40px !important;
-      line-height: 40px !important;
+      height: 2.5rem !important;
+      line-height: 2.5rem !important;
       padding: 0 2.6rem 0 3rem !important;
       /* spazio per lente a sinistra e crocetta a destra */
       box-sizing: border-box !important;
@@ -1469,14 +1478,13 @@ footer {
 
     .search-container .clear-icon:hover {
       filter: brightness(1.1);
-    }
-  </style>
+    }</style>
   <style>
     /* Pulsante Tuono */
     #play-thunder {
-      min-width: 60px;
+      min-width: 3.75rem;
       /* larghezza minima */
-      min-height: 44px !important;
+      min-height: 2.75rem !important;
       /* altezza minima */
       padding: 0.6rem 1.2rem;
       display: inline-flex;
@@ -1489,16 +1497,15 @@ footer {
 
     /* Pulsante Esplodi */
     #explode-btn {
-      min-width: 60px;
-      min-height: 44px !important;
+      min-width: 3.75rem;
+      min-height: 2.75rem !important;
       padding: 0.6rem 1.2rem;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       user-select: none;
-    }
-  </style>
+    }</style>
   <style>
     .exploding-text.explode {
       animation: explodeAnim 1.2s forwards;
@@ -1519,19 +1526,18 @@ footer {
         opacity: 1;
         transform: scale(1);
       }
-    }
-  </style>
+    }</style>
   <style data-cookie-remove="">
     /* Disattiva banner cookie legacy: resta solo il fab a biscottino + modal preferenze */
     
   </style>
   <style data-cookie-fab-vars="">
     :root {
-      --cookie-fab-bottom: 18px;
+      --cookie-fab-bottom: 1.12rem;
       /* regola posizione verticale */
-      --cookie-fab-right: 18px;
+      --cookie-fab-right: 1.12rem;
       /* regola posizione orizzontale */
-      --cookie-fab-size: 44px;
+      --cookie-fab-size: 2.75rem;
       /* altezza minima del bottone */
     }
 
@@ -1545,12 +1551,11 @@ footer {
     .cookie-fab .emoji {
       font-size: calc(var(--cookie-fab-size) * 0.5) !important;
       line-height: 1;
-    }
-  </style>
+    }</style>
   <style data-cookie-fab-bob="">
     :root {
       /* Impostazioni animazione (puoi modificarle) */
-      --cookie-bob-amp: 8px;
+      --cookie-bob-amp: 0.5rem;
       /* ampiezza del su/giù */
       --cookie-bob-duration: 3.6s;
       /* durata del ciclo */
@@ -1595,8 +1600,7 @@ footer {
             */
     html[data-cookie-bob="off"] #cookie-fab.cookie-fab {
       animation: none !important;
-    }
-  </style>
+    }</style>
   <style data-cse-suggest-css="">
     #cse-suggest {
       position: fixed;
@@ -1604,9 +1608,9 @@ footer {
       display: none;
       background: rgba(10, 10, 30, .98);
       border: 1px solid rgba(255, 215, 0, .25);
-      border-radius: 10px;
-      box-shadow: 0 16px 36px rgba(0, 0, 0, .55);
-      padding: 6px;
+      border-radius: 0.62rem;
+      box-shadow: 0 1.0rem 2.25rem rgba(0, 0, 0, .55);
+      padding: 0.38rem;
       max-height: 56vh;
       overflow: auto;
     }
@@ -1618,9 +1622,9 @@ footer {
     #cse-suggest .item {
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 8px 10px;
-      border-radius: 8px;
+      gap: 0.62rem;
+      padding: 0.5rem 0.62rem;
+      border-radius: 0.5rem;
       color: #cfe8ff;
       text-decoration: none;
     }
@@ -1641,24 +1645,21 @@ footer {
       letter-spacing: .02em;
       text-transform: uppercase;
       opacity: .85;
-      padding: 6px 8px;
-      margin: 4px 4px 2px;
+      padding: 0.38rem 0.5rem;
+      margin: 0.25rem 0.25rem 2px;
       border-bottom: 1px dashed rgba(255, 255, 255, .15);
-    }
-  </style>
+    }</style>
   <style data-typing-cls-fallback="">
     /* Fallback anti-CLS per typing: riserva ~2 righe */
     .typing-wrap {
       min-height: 2.6em;
-    }
-  </style>
+    }</style>
   <style id="repel-vars" type="text/css">
     :root {
-      --repel-radius: 120px;
-      --repel-strength: 28px;
+      --repel-radius: 7.5rem;
+      --repel-strength: 1.75rem;
       --repel-ease: 160ms cubic-bezier(.2, .6, .3, 1);
-    }
-  </style>
+    }</style>
   <style data-repel-css="">
     [data-repel-item] {
       display: inline-block;
@@ -1676,8 +1677,7 @@ footer {
     html[data-repel="off"] [data-repel-item] {
       transition: none;
       transform: none !important;
-    }
-  </style>
+    }</style>
   <script data-repel-js="">
     (function(){
        const RS = getComputedStyle(document.documentElement);
@@ -1718,8 +1718,7 @@ footer {
     /* Anti-CLS exploding text: evita il wrap durante l'animazione */
     .exploding-text {
       white-space: nowrap !important;
-    }
-  </style>
+    }</style>
   <!-- ===== ANIMAZIONI/COSMO ===== -->
 <!-- RIMOSSO: cosmo dinamico (galaxy, stars, meteors, stardust, planets) -->
   <!-- Fix conservativi per click footer e link -->
@@ -1742,33 +1741,32 @@ footer {
     footer {
       position: relative;
       z-index: 20;
-    }
-  </style>
+    }</style>
   <style>
     /* Dizionario filosofico — CLICK-SAFE (senza JS), compatto */
     .edx-dict {
       background: rgba(10, 10, 30, .9);
       border: 1px solid rgba(255, 215, 0, .35);
-      border-radius: 10px;
-      box-shadow: 0 6px 14px rgba(0, 0, 0, .28);
-      margin: 8px 0;
+      border-radius: 0.62rem;
+      box-shadow: 0 0.38rem 0.88rem rgba(0, 0, 0, .28);
+      margin: 0.5rem 0;
       position: relative;
       z-index: 1;
     }
 
     .edx-dict[open] {
-      box-shadow: 0 8px 18px rgba(0, 0, 0, .35);
+      box-shadow: 0 0.5rem 1.12rem rgba(0, 0, 0, .35);
     }
 
     .edx-dict__head {
       list-style: none;
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 4px 8px;
+      gap: 0.62rem;
+      padding: 0.25rem 0.5rem;
       cursor: pointer;
       user-select: none;
-      min-height: 26px;
+      min-height: 1.62rem;
     }
 
     .edx-dict__head::-webkit-details-marker {
@@ -1795,25 +1793,25 @@ footer {
 
     .edx-dict__body {
       border-top: 1px solid rgba(255, 255, 255, .08);
-      padding: 6px 8px;
+      padding: 0.38rem 0.5rem;
     }
 
     .edx-dict__controls {
       display: flex;
-      gap: 6px;
+      gap: 0.38rem;
       align-items: center;
     }
 
     .edx-dict__controls input[name="query"] {
       box-sizing: border-box;
       flex: 1;
-      min-width: 160px;
-      height: 22px;
-      line-height: 22px;
+      min-width: 10.0rem;
+      height: 1.38rem;
+      line-height: 1.38rem;
       padding: 0 .55rem;
       background: rgba(20, 20, 40, .78);
       border: 1px solid rgba(255, 215, 0, .28);
-      border-radius: 6px;
+      border-radius: 0.38rem;
       color: #e9eef5;
       font-size: .85rem;
     }
@@ -1825,18 +1823,18 @@ footer {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      height: 22px;
+      height: 1.38rem;
       padding: 0 .45rem;
       line-height: 1;
       font-size: .8rem;
       border: 1px solid rgba(255, 215, 0, .28);
       background: rgba(255, 255, 255, .06);
       color: #e9eef5;
-      border-radius: 6px;
+      border-radius: 0.38rem;
       cursor: pointer;
     }
 
-    @media (max-width:980px) {
+    @media (max-width:61.25rem) {
       .edx-dict {
         display: none
       }
@@ -1855,17 +1853,17 @@ footer {
 
     /* più aria sotto il box */
     .edx-dict {
-      margin: 16px 0 16px;
+      margin: 1.0rem 0 1.0rem;
     }
 
     .edx-dict[open] {
-      margin-bottom: 24px;
+      margin-bottom: 1.5rem;
     }
 
     /* opzionale: anche l’iframe parte un po’ più giù */
     aside iframe,
     .sidebar iframe {
-      margin-top: 12px;
+      margin-top: 0.75rem;
       display: block;
     }
 
@@ -1888,13 +1886,13 @@ footer {
       /* non cattura click mentre il box è aperto */
       filter: opacity(.6) grayscale(.2);
       /* feedback visivo, facoltativo */
-      margin-top: 12px;
+      margin-top: 0.75rem;
       /* piccolo distacco extra */
     }
 
     /* regola definitiva, vince su tutto */
     body .edx-dict {
-      margin-bottom: 32px !important;
+      margin-bottom: 2.0rem !important;
     }
 
     < !------------------------>
@@ -1906,8 +1904,8 @@ footer {
       color: #ffd86a;
       /* testo leggibile */
       border: 1px solid rgba(255, 215, 0, .35);
-      border-radius: 6px;
-      padding: 2px 6px;
+      border-radius: 0.38rem;
+      padding: 2px 0.38rem;
       font-size: .85rem;
       font-family: 'Cinzel', serif;
       cursor: pointer;
@@ -1919,37 +1917,21 @@ footer {
       /* scuro uniforme */
       color: #e9eef5;
       /* testo chiaro */
-    }
-  </style>
+    }</style>
   <!-- ===== Dizionario filosofico — multi-fonte, compatto ===== -->
   <style>
     .edx-dict {
       background: rgba(10, 10, 30, .9);
       border: 1px solid rgba(255, 215, 0, .35);
-      border-radius: 10px;
-      box-shadow: 0 6px 14px rgba(0, 0, 0, .28);
-      margin: 16px 0 32px;
+      border-radius: 0.62rem;
+      box-shadow: 0 0.38rem 0.88rem rgba(0, 0, 0, .28);
+      margin: 1.0rem 0 2.0rem;
       position: relative;
       z-index: 10;
     }
 
     .edx-dict[open] {
-      box-shadow: 0 8px 18px rgba(0, 0, 0, .35)
-    }
-
-    .edx-dict__head {
-      list-style: none;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 4px 8px;
-      cursor: pointer;
-      user-select: none;
-      min-height: 26px;
-    }
-
-    .edx-dict__head::-webkit-details-marker {
-      display: none
+      box-shadow: 0 0.5rem 1.12rem rgba(0, 0, 0, .35)
     }
 
     .edx-dict__title {
@@ -1966,41 +1948,37 @@ footer {
       transition: transform .2s ease
     }
 
-    .edx-dict[open] .edx-dict__chev {
-      transform: rotate(180deg)
-    }
-
     .edx-dict__body {
       border-top: 1px solid rgba(255, 255, 255, .08);
-      padding: 6px 8px
+      padding: 0.38rem 0.5rem
     }
 
     .edx-dict__controls {
       display: flex;
-      gap: 6px;
+      gap: 0.38rem;
       align-items: center;
       flex-wrap: wrap
     }
 
     .edx-dict__select {
-      height: 22px;
+      height: 1.38rem;
       padding: 0 .4rem;
       font-size: .8rem;
       border: 1px solid rgba(255, 215, 0, .28);
-      border-radius: 6px;
+      border-radius: 0.38rem;
       background: rgba(255, 255, 255, .06);
       color: #e9eef5;
     }
 
     .edx-dict__input {
       flex: 1;
-      min-width: 150px;
-      height: 22px;
-      line-height: 22px;
+      min-width: 9.38rem;
+      height: 1.38rem;
+      line-height: 1.38rem;
       padding: 0 .55rem;
       background: rgba(20, 20, 40, .78);
       border: 1px solid rgba(255, 215, 0, .28);
-      border-radius: 6px;
+      border-radius: 0.38rem;
       color: #e9eef5;
       font-size: .85rem;
       box-sizing: border-box;
@@ -2012,12 +1990,12 @@ footer {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      height: 22px;
+      height: 1.38rem;
       padding: 0 .45rem;
       line-height: 1;
       font-size: .8rem;
       border: 1px solid rgba(255, 215, 0, .28);
-      border-radius: 6px;
+      border-radius: 0.38rem;
       cursor: pointer;
       background: rgba(255, 255, 255, .06);
       color: #e9eef5;
@@ -2035,55 +2013,54 @@ footer {
     /* se è subito sopra un iframe, tieni aria e blocca click quando aperto */
     .edx-dict[open]+iframe {
       pointer-events: none;
-      margin-top: 12px;
+      margin-top: 0.75rem;
       filter: opacity(.85)
     }
 
     /* stacco definitivo sotto anche se altri CSS sovrascrivono */
     body .edx-dict {
-      margin-bottom: 32px !important;
+      margin-bottom: 2.0rem !important;
     }
 
-    @media (max-width:980px) {
+    @media (max-width:61.25rem) {
       .edx-dict {
         display: none
       }
-    }
-  </style>
+    }</style>
   <style>
     /* ===== CONTROLLI SLIDER VERTICALE — Eleganti e coerenti ===== */
     .slider-controls {
       position: fixed;
-      left: 52px;
-      top: 445px;
-      /* sotto lo slider (320px altezza + margine) */
-      width: 180px;
+      left: 3.25rem;
+      top: 27.81rem;
+      /* sotto lo slider (20.0rem altezza + margine) */
+      width: 11.25rem;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 0.5rem;
       background: rgba(10, 10, 25, .55);
       border: 1px solid rgba(255, 215, 0, .18);
-      border-radius: 12px;
-      padding: 10px;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, .35);
+      border-radius: 0.75rem;
+      padding: 0.62rem;
+      box-shadow: 0 0.38rem 1.0rem rgba(0, 0, 0, .35);
       z-index: 930;
     }
 
     .slider-controls .ctrl-btn {
       background: rgba(20, 20, 40, .7);
       border: 1px solid rgba(255, 215, 0, .25);
-      border-radius: 8px;
+      border-radius: 0.5rem;
       color: #ffd86a;
       font-weight: 600;
       cursor: pointer;
-      padding: 6px;
+      padding: 0.38rem;
       transition: all .2s;
       font-family: 'Montserrat', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     }
 
     .slider-controls .ctrl-btn:hover {
       background: rgba(255, 215, 0, .15);
-      box-shadow: 0 0 8px rgba(255, 215, 0, .4);
+      box-shadow: 0 0 0.5rem rgba(255, 215, 0, .4);
     }
 
     .slider-controls .speed-label {
@@ -2092,7 +2069,7 @@ footer {
       font-size: .8rem;
       color: #cfe8ff;
       font-family: 'Montserrat', sans-serif;
-      gap: 4px;
+      gap: 0.25rem;
     }
 
     .slider-controls input[type=range] {
@@ -2100,26 +2077,24 @@ footer {
       accent-color: #ffd86a;
     }
 
-    @media (max-width: 980px) {
+    @media (max-width: 61.25rem) {
       .slider-controls {
         display: none;
       }
-    }
-  </style>
+    }</style>
   <style>
     /* Didascalie leggibili e immagini pulite nello slider */
     .slider-vertical .slide-vertical p {
       background: linear-gradient(to bottom, rgba(0, 0, 0, .35), rgba(0, 0, 0, .35));
-      padding: 4px 6px;
-      border-radius: 6px;
+      padding: 0.25rem 0.38rem;
+      border-radius: 0.38rem;
     }
 
     .slider-vertical .slide-vertical img {
       object-fit: contain;
       /* mantiene proporzioni senza crop */
       background: rgba(0, 0, 0, .35);
-    }
-  </style>
+    }</style>
   <!-- INIZIO CSS CONTROLLI SLIDER SAFARI  -->
   <!-- ===== Slider velocità – fix Safari & co. ===== -->
   <STYLE>
@@ -2127,70 +2102,70 @@ footer {
       -webkit-appearance: none;
       /* Safari/Chrome: toglie lo stile di default */
       appearance: none;
-      width: 160px;
-      height: 10px;
+      width: 10.0rem;
+      height: 0.62rem;
       /* altezza visibile del track */
       background: rgba(10, 12, 24, .85);
       /* sfondo track (fallback) */
       border: 1px solid rgba(212, 175, 55, .35);
-      border-radius: 9999px;
-      box-shadow: inset 0 0 8px rgba(212, 175, 55, .25), 0 0 10px rgba(0, 0, 0, .35);
+      border-radius: 624.94rem;
+      box-shadow: inset 0 0 0.5rem rgba(212, 175, 55, .25), 0 0 0.62rem rgba(0, 0, 0, .35);
       outline: none;
     }
 
     /* Track (WebKit: Safari/Chrome) */
     .slider-controls input[type="range"]::-webkit-slider-runnable-track {
-      height: 10px;
+      height: 0.62rem;
       background: linear-gradient(90deg,
           rgba(212, 175, 55, .85) 0%,
           rgba(212, 175, 55, .55) 60%,
           rgba(212, 175, 55, .25) 100%);
-      border-radius: 9999px;
-      box-shadow: inset 0 0 6px rgba(212, 175, 55, .35);
+      border-radius: 624.94rem;
+      box-shadow: inset 0 0 0.38rem rgba(212, 175, 55, .35);
     }
 
     /* Thumb (WebKit) */
     .slider-controls input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
-      width: 18px;
-      height: 18px;
-      margin-top: -4px;
+      width: 1.12rem;
+      height: 1.12rem;
+      margin-top: -0.25rem;
       /* centra il thumb sul track */
       background: #d4af37;
       border: 2px solid #0f1426;
       border-radius: 50%;
-      box-shadow: 0 0 12px rgba(212, 175, 55, .9);
+      box-shadow: 0 0 0.75rem rgba(212, 175, 55, .9);
       cursor: pointer;
     }
 
     /* Track (Firefox) */
     .slider-controls input[type="range"]::-moz-range-track {
-      height: 10px;
+      height: 0.62rem;
       background: linear-gradient(90deg,
           rgba(212, 175, 55, .85) 0%,
           rgba(212, 175, 55, .55) 60%,
           rgba(212, 175, 55, .25) 100%);
       border: 1px solid rgba(212, 175, 55, .35);
-      border-radius: 9999px;
-      box-shadow: inset 0 0 6px rgba(212, 175, 55, .35);
+      border-radius: 624.94rem;
+      box-shadow: inset 0 0 0.38rem rgba(212, 175, 55, .35);
     }
 
     /* Thumb (Firefox) */
     .slider-controls input[type="range"]::-moz-range-thumb {
-      width: 18px;
-      height: 18px;
+      width: 1.12rem;
+      height: 1.12rem;
       background: #d4af37;
       border: 2px solid #0f1426;
       border-radius: 50%;
-      box-shadow: 0 0 12px rgba(212, 175, 55, .9);
+      box-shadow: 0 0 0.75rem rgba(212, 175, 55, .9);
       cursor: pointer;
     }
 
     /* Stato focus/hover (accessibilità) */
     .slider-controls input[type="range"]:focus::-webkit-slider-thumb,
     .slider-controls input[type="range"]:hover::-webkit-slider-thumb {
-      box-shadow: 0 0 16px rgba(212, 175, 55, 1);
+      box-shadow: 0 0 1.0rem rgba(212, 175, 55, 1);
     }
 
     .slider-controls input[type="range"]:focus {
@@ -2204,8 +2179,8 @@ footer {
     .audio-player input[type="range"] {
       -webkit-appearance: none;
       appearance: none;
-      width: 120px;
-      height: 28px;
+      width: 7.5rem;
+      height: 1.75rem;
       background: transparent;
       margin: 0;
       border: 0;
@@ -2213,18 +2188,18 @@ footer {
 
     /* Track (WebKit: Safari/Chrome) */
     .audio-player input[type="range"]::-webkit-slider-runnable-track {
-      height: 6px;
+      height: 0.38rem;
       background: #199cff;
       border: none;
-      border-radius: 999px;
+      border-radius: 62.44rem;
     }
 
     /* Thumb (WebKit) */
     .audio-player input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
-      width: 16px;
-      height: 16px;
-      margin-top: -5px;
+      width: 1.0rem;
+      height: 1.0rem;
+      margin-top: -0.31rem;
       background: #fff;
       border: 2px solid #199cff;
       border-radius: 50%;
@@ -2233,15 +2208,15 @@ footer {
 
     /* Firefox */
     .audio-player input[type="range"]::-moz-range-track {
-      height: 6px;
+      height: 0.38rem;
       background: #199cff;
       border: none;
-      border-radius: 999px;
+      border-radius: 62.44rem;
     }
 
     .audio-player input[type="range"]::-moz-range-thumb {
-      width: 16px;
-      height: 16px;
+      width: 1.0rem;
+      height: 1.0rem;
       background: #fff;
       border: 2px solid #199cff;
       border-radius: 50%;
@@ -2249,16 +2224,15 @@ footer {
     }
 
     .audio-player input[type="range"]::-moz-range-progress {
-      height: 6px;
+      height: 0.38rem;
       background: #199cff;
-      border-radius: 999px 0 0 999px;
-    }
-  </style>
+      border-radius: 62.44rem 0 0 62.44rem;
+    }</style>
   <style id="speed-range-hard-fix-css">
     /* Wrapper del controllo velocità (solo per lo speed range) */
     .range-ui-speed {
       position: relative;
-      height: 28px;
+      height: 1.75rem;
       /* area comoda al dito */
     }
 
@@ -2268,12 +2242,12 @@ footer {
       left: 0;
       right: 0;
       top: 50%;
-      height: 8px;
+      height: 0.5rem;
       transform: translateY(-50%);
       background: #ffd86a;
       /* oro pieno */
       border: 1px solid rgba(255, 255, 255, .15);
-      border-radius: 999px;
+      border-radius: 62.44rem;
       pointer-events: none;
       z-index: 0;
     }
@@ -2294,9 +2268,9 @@ footer {
     /* Thumb (pallina) – nessuna ombra */
     .range-ui-speed>input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
-      width: 18px;
-      height: 18px;
-      margin-top: -5px;
+      width: 1.12rem;
+      height: 1.12rem;
+      margin-top: -0.31rem;
       border-radius: 50%;
       background: #fff;
       border: 2px solid #ffd86a;
@@ -2306,13 +2280,13 @@ footer {
     /* Disattiva il track nativo WebKit (evita “doppio binario”) */
     .range-ui-speed>input[type="range"]::-webkit-slider-runnable-track {
       background: transparent;
-      height: 8px;
+      height: 0.5rem;
     }
 
     /* Firefox, per coerenza visiva */
     .range-ui-speed>input[type="range"]::-moz-range-thumb {
-      width: 18px;
-      height: 18px;
+      width: 1.12rem;
+      height: 1.12rem;
       border-radius: 50%;
       background: #fff;
       border: 2px solid #ffd86a;
@@ -2320,11 +2294,10 @@ footer {
     }
 
     .range-ui-speed>input[type="range"]::-moz-range-track {
-      height: 8px;
+      height: 0.5rem;
       background: transparent;
       border: 0;
-    }
-  </style>
+    }</style>
   <script>
     // PATCH SAFARI: shim iniziale
              window.thunderOn = window.thunderOn ?? false;
@@ -2340,8 +2313,8 @@ footer {
     /* PATCH SAFARI: controlli Tuono (visibilità) */
     #thunder-controls {
       position: fixed;
-      left: 52px;
-      top: 420px;
+      left: 3.25rem;
+      top: 26.25rem;
       z-index: 9999;
       display: flex;
     }
@@ -2350,9 +2323,9 @@ footer {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-width: 44px;
-      padding: 6px 10px;
-      border-radius: 8px;
+      min-width: 2.75rem;
+      padding: 0.38rem 0.62rem;
+      border-radius: 0.5rem;
       border: 1px solid rgba(255, 215, 0, .25);
       background: rgba(20, 20, 40, .7);
       color: #ffd86a;
@@ -2360,15 +2333,37 @@ footer {
       cursor: pointer;
     }
 
-    @media (max-width:980px) {
+    @media (max-width:61.25rem) {
       #thunder-controls {
         display: flex !important;
-        left: 10px;
+        left: 0.62rem;
         top: auto;
-        bottom: 16px;
+        bottom: 1.0rem;
       }
-    }
-  </style>
+    }</style>
+
+<style>
+:root {
+  --menu-h: 4.5rem;       /* verrà sovrascritto via JS con l’altezza reale */
+  --topbar-gap: 0.5rem;    /* spazio tra menu e top-bar */
+}
+
+/* Menu: in cima, sopra la top-bar */
+
+  /* ma i link restano cliccabili */
+
+/* Top-bar: si posiziona sotto l’altezza reale del menu */
+
+
+
+/* Se usi il pannello risultati ricerca, allinealo sotto la top-bar */
+#search-results-panel {
+  top: calc(var(--menu-h) + var(--topbar-gap)) !important;
+  height: calc(100% - (var(--menu-h) + var(--topbar-gap))) !important;
+}</style>
+
+
+
   <script>
     // PATCH SAFARI: WebAudio v2 (audible on phone speakers)
              (function(){
@@ -2476,21 +2471,15 @@ footer {
       }
 
       33% {
-        transform: scale(1.03) translateY(-4px);
+        transform: scale(1.03) translateY(-0.25rem);
         border-radius: 55% 45% 47% 53%/47% 53% 47% 53%;
       }
 
       66% {
-        transform: scale(0.97) translateY(4px);
+        transform: scale(0.97) translateY(0.25rem);
         border-radius: 50% 50% 53% 47%/53% 47% 53% 47%;
       }
-
-      100% {
-        transform: scale(1) translateY(0);
-        border-radius: 45% 55% 50% 50%/55% 45% 55% 45%;
-      }
-    }
-  </style>
+    }</style>
   <style id="speed-label-css">
     /* Testo sopra alla barra di velocità con variabili regolabili */
     #slider-controls .speed-label-text {
@@ -2498,11 +2487,11 @@ footer {
       /* testo più piccolo/più grande */
       line-height: 1.2;
       position: relative;
-      top: var(--speed-label-offset, -3px);
+      top: var(--speed-label-offset, -0.19rem);
       /* su/giù */
-      left: var(--speed-label-x, 40px);
+      left: var(--speed-label-x, 2.5rem);
       /* sinistra/destra */
-      margin-bottom: var(--speed-label-gap, 6px);
+      margin-bottom: var(--speed-label-gap, 0.38rem);
       /* spazio dal cursore */
       color: var(--speed-label-color, #d4af37);
       /* colore testo (default dorato) */
@@ -2511,11 +2500,11 @@ footer {
     /* opzionale: default per il contenitore controlli */
     #slider-controls {
       --speed-label-size: 0.80rem;
-      --speed-label-offset: -3px;
+      --speed-label-offset: -0.19rem;
       /* valori negativi = più su; positivi = più giù */
-      --speed-label-x: 30px;
+      --speed-label-x: 1.88rem;
       /* negativo = verso sinistra; positivo = verso destra */
-      --speed-label-gap: 6px;
+      --speed-label-gap: 0.38rem;
       --speed-label-color: #d4af37;
       /* dorato coerente col sito */
     }
@@ -2523,17 +2512,16 @@ footer {
     /* Mantieni il label come blocco per avere il testo sopra lo slider */
     #slider-controls .speed-label {
       display: block;
-    }
-  </style>
+    }</style>
   <style id="search-suggest-style">
     #search-suggest-box {
       position: absolute;
       background: rgba(15, 15, 30, .98);
       border: 1px solid rgba(120, 120, 140, .5);
-      border-radius: 8px;
-      padding: 6px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, .35);
-      backdrop-filter: blur(6px);
+      border-radius: 0.5rem;
+      padding: 0.38rem;
+      box-shadow: 0 0.62rem 1.88rem rgba(0, 0, 0, .35);
+      backdrop-filter: blur(0.38rem);
       z-index: 9999;
       display: none;
     }
@@ -2543,26 +2531,25 @@ footer {
     }
 
     #search-suggest-box .section {
-      font-size: 12px;
+      font-size: 0.75rem;
       opacity: .75;
-      padding: 4px 6px;
-      margin-bottom: 4px;
+      padding: 0.25rem 0.38rem;
+      margin-bottom: 0.25rem;
       color: #c6d3ff;
     }
 
     #search-suggest-box .item {
       display: block;
-      padding: 6px 8px;
+      padding: 0.38rem 0.5rem;
       text-decoration: none;
       color: #dbe7ff;
-      border-radius: 6px;
+      border-radius: 0.38rem;
     }
 
     #search-suggest-box .item:hover {
       color: #fff;
       background: rgba(255, 255, 255, .05);
-    }
-  </style>
+    }</style>
   <script type="application/ld+json" id="seo-website">
     { "@context": "https://schema.org", "@type": "WebSite", "name": "Echi di Sofia", "url": "https://www.echidisofia.org/", "description": "Portale di filosofia antica, moderna e contemporanea", "inLanguage": "it" }
   </script>
@@ -2575,34 +2562,32 @@ footer {
       transform: translate(-50%, -50%);
       border-radius: 50%;
       object-fit: cover;
-      box-shadow: 0 0 18px rgba(212, 175, 55, .35);
+      box-shadow: 0 0 1.12rem rgba(212, 175, 55, .35);
       border: 2px solid rgba(212, 175, 55, .6);
       pointer-events: none;
       z-index: 40;
       will-change: transform;
-    }
-  </style>
+    }</style>
 
 <style id="planet-off">
   /* Disable all planet elements site-wide */
-  .planet{ display: none !important; }
-</style>
+  .planet{ display: none !important; }</style>
 
 <style data-mobile-drawer-cse="">
 /* Drawer mobile per #cse-suggest */
-@media (max-width: 980px){
+@media (max-width: 61.25rem){
   #cse-suggest{
     position: fixed !important;
     left: 0 !important;
     right: 0 !important;
     width: 100vw !important;
-    top: var(--topbar-height, 64px) !important;
-    max-height: min(60vh, 480px);
+    top: var(--topbar-height, 4.0rem) !important;
+    max-height: min(60vh, 30.0rem);
     overflow: auto;
-    border-radius: 0 0 16px 16px;
-    padding: 10px 12px;
+    border-radius: 0 0 1.0rem 1.0rem;
+    padding: 0.62rem 0.75rem;
     z-index: 11050; /* sopra i menu */
-    box-shadow: 0 12px 30px rgba(0,0,0,.45);
+    box-shadow: 0 0.75rem 1.88rem rgba(0,0,0,.45);
   }
   /* Evita scroll di sfondo quando la tendina è aperta su alcuni browser */
   body.drawer-open{
@@ -2615,7 +2600,7 @@ footer {
 #cse-suggest .item:focus-visible{
   outline: 2px solid #d4af37;
   outline-offset: 2px;
-  border-radius: 8px;
+  border-radius: 0.5rem;
 }
 
 /* Scroll armonizzato: ripristina scroll verticale sicuro */
@@ -2631,21 +2616,20 @@ html, body { overflow-y: auto !important; }
 }
 
 /* Piccolo alleggerimento su schermi molto piccoli */
-@media (max-width: 480px){
+@media (max-width: 30.0rem){
   :root{ --cosmo-opacity:.85; }
   #philoParticles{ opacity: var(--cosmo-opacity, 1); }
-}
-</style>
+}</style>
 
 
 <style data-cse-drawer-anim="">
 /* Animazione drawer mobile per #cse-suggest */
-@media (max-width: 980px){
+@media (max-width: 61.25rem){
   #cse-suggest{
     /* Mantieni il drawer sempre "in flusso" su mobile per permettere la transizione */
     display: block !important;
     opacity: 0;
-    transform: translateY(-8px);
+    transform: translateY(-0.5rem);
     visibility: hidden;
     pointer-events: none;
     will-change: transform, opacity;
@@ -2660,31 +2644,29 @@ html, body { overflow-y: auto !important; }
 }
 @media (prefers-reduced-motion: reduce){
   #cse-suggest{ transition: none !important; }
-}
-</style>
+}</style>
 
 
 <style data-cse-drawer-anim-enhance="">
-@media (max-width: 980px){
+@media (max-width: 61.25rem){
   /* Transizioni più morbide e shadow più soffice quando aperto */
   #cse-suggest{
     transition:
       opacity .26s cubic-bezier(.16,1,.3,1),
       transform .34s cubic-bezier(.16,1,.3,1),
       box-shadow .28s ease-out;
-    box-shadow: 0 8px 24px rgba(0,0,0,.35);
+    box-shadow: 0 0.5rem 1.5rem rgba(0,0,0,.35);
   }
   #cse-suggest.show{
     /* Ombra più diffusa e leggera aurea interna coerente col tema */
     box-shadow:
-      0 18px 48px rgba(0,0,0,.55),
+      0 1.12rem 3.0rem rgba(0,0,0,.55),
       0 0 0 1px rgba(212,175,55,.18) inset;
   }
 }
 @media (prefers-reduced-motion: reduce){
   #cse-suggest{ transition: none !important; }
-}
-</style>
+}</style>
 
 
 <style id="no-cosmos-clean">
@@ -2696,8 +2678,7 @@ html, body { overflow-y: auto !important; }
     display: none !important;
     visibility: hidden !important;
     pointer-events: none !important;
-  }
-</style>
+  }</style>
 
 
 <style id="nebula-oldstyle-css-centered">
@@ -2718,8 +2699,7 @@ html, body { overflow-y: auto !important; }
   @keyframes nebula-float {
     0%   { transform: translate(-50%, -50%) scale(1.05) rotate(0deg); }
     100% { transform: translate(-50%, -50%) scale(1.05) rotate(360deg); }
-  }
-</style>
+  }</style>
 
 
 <style id="stars-lightning-css">
@@ -2745,7 +2725,7 @@ html, body { overflow-y: auto !important; }
 .bolt {
   position: absolute;
   top: -10%;
-  width: 3px;
+  width: 0.19rem;
   height: 120%;
   opacity: 0;
   background: linear-gradient(to bottom,
@@ -2754,20 +2734,22 @@ html, body { overflow-y: auto !important; }
     rgba(255,255,255,0.7) 60%,
     rgba(255,255,255,0.0) 100%
   );
-  box-shadow: 0 0 12px rgba(255,255,255,0.85), 0 0 28px rgba(80,180,255,0.5);
+  box-shadow: 0 0 0.75rem rgba(255,255,255,0.85), 0 0 1.75rem rgba(80,180,255,0.5);
   transform: rotate(0.5deg);
   transition: opacity 120ms ease-out;
 }
 /* assicurati che contenuti restino sopra */
-header, main, footer, .container, .menu, .top-bar, .content {
-  position: relative;
-  z-index: 3;
-}
+header, main, footer, .container, .menu, 
 </style>
 
 </head>
 
 <body>
+
+<audio id="thunder-sound" preload="auto">
+  <source src="sounds/thunder.mp3" type="audio/mpeg">
+</audio>
+
 <div class="nebula-overlay"></div>
   <div class="slider-vertical">
     <div class="slider-inner">
@@ -2991,7 +2973,7 @@ header, main, footer, .container, .menu, .top-bar, .content {
             <option value="zh-CN">中文 (简体)</option>
             <option value="ar">العربية</option>
           </select>
-          <div aria-hidden="true" id="google_translate_element" style="position:absolute;left:-9999px;top:-9999px;height:0;width:0;overflow:hidden"></div>
+          <div aria-hidden="true" id="google_translate_element" style="position:absolute;left:-624.94rem;top:-624.94rem;height:0;width:0;overflow:hidden"></div>
         </div>
         <!-- BOX CERCA (UI tua, non Google) -->
         <div class="search-container" role="search">
@@ -3021,26 +3003,21 @@ header, main, footer, .container, .menu, .top-bar, .content {
       .gsc-search-button-v2 {
         background: #1f2937 !important;
         border: 1px solid #334155 !important;
-        border-radius: 8px !important;
+        border-radius: 0.5rem !important;
       }
 
       .gsc-webResult.gsc-result {
         background: rgba(255, 255, 255, 0.03) !important;
         border: 1px solid rgba(255, 255, 255, 0.08) !important;
-        border-radius: 10px !important;
-        padding: 8px !important;
-        margin-bottom: 8px !important;
+        border-radius: 0.62rem !important;
+        padding: 0.5rem !important;
+        margin-bottom: 0.5rem !important;
       }
 
       .gs-title,
       .gs-snippet {
         color: #eaeaea !important;
-      }
-
-      .cookie-modal.force-open {
-        display: flex !important;
-      }
-    </style>
+      }</style>
     <!-- 
       <div class="bar-right">
         <div id="google_translate_element" title="Traduci pagina"></div>
@@ -3520,13 +3497,12 @@ header, main, footer, .container, .menu, .top-bar, .content {
             /* grandezza regolabile */
             font-weight: 700;
             /* valori comuni: 300, 400, 500, 600, 700, 900 */
-            letter-spacing: 0.5px;
+            letter-spacing: 0.0.31rem;
             /* spaziatura tra lettere */
             color: #ffd86a;
             /* colore dorato, a tema */
-            text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
-          }
-        </style>
+            text-shadow: 0 0 0.5rem rgba(255, 255, 255, 0.2);
+          }</style>
         <!-- === Exploding text (JS) === -->
         <script>
           (function(){
@@ -4131,10 +4107,10 @@ header, main, footer, .container, .menu, .top-bar, .content {
       <style>
         #russell-box {
   position: fixed;
-  bottom: 7vh;        /* invece di 130px */
-  left: 2vw;           /* invece di 30px */
+  bottom: 7vh;        /* invece di 8.12rem */
+  left: 2vw;           /* invece di 1.88rem */
   z-index: 9999;
-  max-width: 14rem;    /* ~220px */
+  max-width: 14rem;    /* ~13.75rem */
   font-size: 1.05rem;  /* resta già relativo */
 }
 
@@ -4143,11 +4119,11 @@ header, main, footer, .container, .menu, .top-bar, .content {
   color: #ffffff;
   border: 0.125rem solid #00d9ff;   /* 2px */
   padding: 1rem 1.1rem;             /* già in rem */
-  border-radius: 0.9rem;            /* 15px */
+  border-radius: 0.9rem;            /* 0.94rem */
   cursor: pointer;
   text-align: left;
   line-height: 1.35;
-  box-shadow: 0 0 0.625rem rgba(0, 217, 255, 0.7); /* 10px */
+  box-shadow: 0 0 0.625rem rgba(0, 217, 255, 0.7); /* 0.62rem */
   width: 100%;
   transition: all 0.3s ease;
   font-family: 'Georgia', serif;
@@ -4156,36 +4132,30 @@ header, main, footer, .container, .menu, .top-bar, .content {
 #russell-btn:hover {
   background-color: #00d9ff;
   color: #0a0a3c;
-  box-shadow: 0 0 1.6rem rgba(0, 255, 255, 1); /* 25px */
+  box-shadow: 0 0 1.6rem rgba(0, 255, 255, 1); /* 1.56rem */
 }
 
 #russell-hint {
-  margin-top: 0.4rem;   /* 6px */
+  margin-top: 0.4rem;   /* 0.38rem */
   font-size: 0.8rem;
   color: #aadfff;
   text-align: left;
-  max-width: 20rem;     /* ~320px */
+  max-width: 20rem;     /* ~20.0rem */
   position: fixed;
-  bottom: 26vh;         /* invece di 280px */
-  left: 3vw;            /* invece di 50px */
+  bottom: 26vh;         /* invece di 17.5rem */
+  left: 3vw;            /* invece di 3.12rem */
   user-select: none;
   font-style: italic;
   font-family: 'Segoe UI', sans-serif;
   z-index: 9998;
 }
 
-@media (max-width: 980px) {
+@media (max-width: 61.25rem) {
   #russell-box,
   #russell-hint {
     display: none;
   }
-}
-
-.cookie-modal.force-open {
-  display: flex !important;
-}
-
-      </style>
+}</style>
       <script>
         window.addEventListener("load", () => {
             if (window.gsap) {
@@ -4227,23 +4197,23 @@ header, main, footer, .container, .menu, .top-bar, .content {
        footer {
     background: #06060d;
     color: #e9eef5;
-    margin-top: 20px; /* Ridotto da 45px */
+    margin-top: 1.25rem; /* Ridotto da 2.81rem */
     position: relative;
     z-index: 0;
-    padding: 16px 0; /* Ridotto il padding verticale */
+    padding: 1.0rem 0; /* Ridotto il padding verticale */
     min-height: auto; /* Assicura che non abbia un'altezza minima */
 }
 
 .footer-wrap {
-    max-width: 1200px;
+    max-width: 75.0rem;
     margin: 0 auto;
-    padding: 16px; /* Ridotto da 28px */
+    padding: 1.0rem; /* Ridotto da 1.75rem */
 }
 
 .footer-columns {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr;
-    gap: 16px; /* Ridotto da 22px */
+    gap: 1.0rem; /* Ridotto da 1.38rem */
     align-items: start;
     text-align: left;
 }
@@ -4253,7 +4223,7 @@ header, main, footer, .container, .menu, .top-bar, .content {
     margin: 0.1rem 0 0.4rem; /* Ridotto il margine */
     color: #ffd86a;
     font-family: 'Cinzel', serif;
-    letter-spacing: 0.3px;
+    letter-spacing: 0.0.19rem;
     font-size: 0.95rem; /* Leggermente più piccolo */
 }
 
@@ -4264,43 +4234,36 @@ header, main, footer, .container, .menu, .top-bar, .content {
     font-size: 0.9rem; /* Leggermente più piccolo */
 }
 
-.footer-columns ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
 .footer-columns li {
     margin: 0.15rem 0; /* Ridotto da 0.25rem */
     font-size: 0.9rem; /* Leggermente più piccolo */
 }
 
 .footer-legal {
-    margin-top: 12px; /* Ridotto da 16px */
+    margin-top: 0.75rem; /* Ridotto da 1.0rem */
     display: flex;
-    gap: 8px; /* Ridotto da 10px */
+    gap: 0.5rem; /* Ridotto da 0.62rem */
     align-items: center;
     flex-wrap: wrap;
     font-size: 0.85rem; /* Leggermente più piccolo */
 }
 
 /* Per mobile */
-@media (max-width: 980px) {
+@media (max-width: 61.25rem) {
     .footer-columns {
         grid-template-columns: 1fr;
-        gap: 12px; /* Ridotto da 14px */
+        gap: 0.75rem; /* Ridotto da 0.88rem */
     }
     
     footer {
-        padding: 12px 0;
-        margin-top: 15px;
+        padding: 0.75rem 0;
+        margin-top: 0.94rem;
     }
     
     .footer-wrap {
-        padding: 12px;
+        padding: 0.75rem;
     }
-}
-      </style>
+}</style>
       <!-- 🎬 INIZIO PLAYER (destro) -->
       <div class="video-container" id="video-right">
         <!-- DIZIONARIO FILOSOFICO (MINIMAL INLINE, FIXED HEIGHT + INPUT)-->
@@ -4308,16 +4271,16 @@ header, main, footer, .container, .menu, .top-bar, .content {
           .edx-dict {
             background: rgba(10, 10, 30, .9);
             border: 1px solid rgba(255, 215, 0, .35);
-            border-radius: 10px;
-            box-shadow: 0 6px 14px rgba(0, 0, 0, .28);
-            margin: 8px 0;
+            border-radius: 0.62rem;
+            box-shadow: 0 0.38rem 0.88rem rgba(0, 0, 0, .28);
+            margin: 0.5rem 0;
           }
 
           .edx-dict__head {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 4px 8px;
+            gap: 0.62rem;
+            padding: 0.25rem 0.5rem;
             cursor: pointer;
             user-select: none;
             min-height: 24Px;
@@ -4368,21 +4331,21 @@ header, main, footer, .container, .menu, .top-bar, .content {
           /* Controls compatti */
           .edx-dict__controls {
             display: flex;
-            gap: 6px;
-            padding: 6px 8px;
+            gap: 0.38rem;
+            padding: 0.38rem 0.5rem;
             align-items: center;
           }
 
           /* Input basso */
           .edx-dict .edx-dict__input {
             flex: 1;
-            min-width: 120px;
-            height: 24px !important;
-            line-height: 24px !important;
+            min-width: 7.5rem;
+            height: 1.5rem !important;
+            line-height: 1.5rem !important;
             padding: 0 .55rem !important;
             background: rgba(20, 20, 40, .78);
             border: 1px solid rgba(255, 215, 0, .28);
-            border-radius: 7px;
+            border-radius: 0.44rem;
             color: #e9eef5;
             font-size: .88rem;
             box-sizing: border-box;
@@ -4396,8 +4359,8 @@ header, main, footer, .container, .menu, .top-bar, .content {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            height: 24px !important;
-            /* prevale su qualsiasi 26px !important precedente */
+            height: 1.5rem !important;
+            /* prevale su qualsiasi 1.62rem !important precedente */
             padding: 0 .45rem;
             /* niente padding verticale */
             padding-block: 0 !important;
@@ -4407,24 +4370,23 @@ header, main, footer, .container, .menu, .top-bar, .content {
             border: 1px solid rgba(255, 215, 0, .28);
             background: rgba(255, 255, 255, .06);
             color: #e9eef5;
-            border-radius: 6px;
+            border-radius: 0.38rem;
             cursor: pointer;
           }
 
           /* Iframe compatto */
           .edx-dict .edx-dict__frame {
             width: 100%;
-            height: 220px;
+            height: 13.75rem;
             border: 0;
             background: rgba(0, 0, 0, .2);
           }
 
-          @media (max-width:980px) {
+          @media (max-width:61.25rem) {
             .edx-dict {
               display: none;
             }
-          }
-        </style>
+          }</style>
         <script>
           (function(){
               const root = document.getElementById('edx-dict');
@@ -4474,10 +4436,9 @@ header, main, footer, .container, .menu, .top-bar, .content {
 
           .edx-dict[open]+iframe {
             pointer-events: none;
-            margin-top: 12px;
+            margin-top: 0.75rem;
             filter: opacity(.85);
-          }
-        </style>
+          }</style>
         <details class="edx-dict" id="edx-dict">
           <summary class="edx-dict__head">
             <span class="edx-dict__title">Dizionario filosofico</span>
@@ -4561,12 +4522,12 @@ header, main, footer, .container, .menu, .top-bar, .content {
             })();
         </script>
          <!-- ===== Enciclopedia Filosofica Internet ===== -->
-<div class="edx-encyclo" style="margin:20px 0; text-align:center;">
+<div class="edx-encyclo" style="margin:1.25rem 0; text-align:center;">
   <a href="https://iep-utm-edu.translate.goog/a/?_x_tr_sl=auto&_x_tr_tl=it&_x_tr_hl=uk&_x_tr_pto=wapp" 
      target="_blank" rel="noopener noreferrer"
-     style="display:inline-block; padding:10px 12px; font-family:'Cinzel',serif; font-size:1.1rem;
+     style="display:inline-block; padding:0.62rem 0.75rem; font-family:'Cinzel',serif; font-size:1.1rem;
             color:#ffd700; background:rgba(20,20,40,.85); border:1px solid rgba(255,215,0,.35);
-            border-radius:8px; text-decoration:none; transition:background .3s;">
+            border-radius:0.5rem; text-decoration:none; transition:background .3s;">
     Enciclopedia filosofica 
   </a>
 </div>
@@ -4575,16 +4536,16 @@ header, main, footer, .container, .menu, .top-bar, .content {
       <style>
         .video-container {
           position: fixed;
-          bottom: 60px;
-          right: 80px;
-          width: 280px;
+          bottom: 3.75rem;
+          right: 5.0rem;
+          width: 17.5rem;
           z-index: 99;
-          padding: 8px;
-          border-radius: 12px;
+          padding: 0.5rem;
+          border-radius: 0.75rem;
           background-color: rgba(14, 14, 14, 0.4);
-          backdrop-filter: blur(8px);
-          -webkit-backdrop-filter: blur(8px);
-          box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+          backdrop-filter: blur(0.5rem);
+          -webkit-backdrop-filter: blur(0.5rem);
+          box-shadow: 0 0 0.62rem rgba(212, 175, 55, 0.3);
           transition: transform 0.3s ease;
         }
 
@@ -4594,25 +4555,25 @@ header, main, footer, .container, .menu, .top-bar, .content {
 
         .video-container iframe {
           width: 100%;
-          height: 180px;
+          height: 11.25rem;
           border: none;
-          border-radius: 8px;
+          border-radius: 0.5rem;
         }
 
         /* PLAYER sinistra (sotto lo slider) */
         .video-container-left {
           position: fixed;
-          left: 12px;
-          top: 460px;
+          left: 0.75rem;
+          top: 28.75rem;
           /* sotto lo slider: 120(top) + 320(height) + ~20 margine */
-          width: 200px;
+          width: 12.5rem;
           z-index: 99;
-          padding: 6px;
-          border-radius: 12px;
+          padding: 0.38rem;
+          border-radius: 0.75rem;
           background-color: rgba(14, 14, 14, 0.4);
-          backdrop-filter: blur(8px);
-          -webkit-backdrop-filter: blur(8px);
-          box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+          backdrop-filter: blur(0.5rem);
+          -webkit-backdrop-filter: blur(0.5rem);
+          box-shadow: 0 0 0.62rem rgba(212, 175, 55, 0.3);
           transition: transform 0.3s ease;
         }
 
@@ -4622,28 +4583,23 @@ header, main, footer, .container, .menu, .top-bar, .content {
 
         .video-container-left iframe {
           width: 100%;
-          height: 110px;
+          height: 6.88rem;
           border: none;
-          border-radius: 8px;
+          border-radius: 0.5rem;
         }
 
-        @media (max-width: 980px) {
+        @media (max-width: 61.25rem) {
           .video-container-left {
             display: none;
           }
 
           /* su mobile lo slider è nascosto, nascondo anche il player sinistro */
           .video-container {
-            right: 12px;
-            bottom: 12px;
+            right: 0.75rem;
+            bottom: 0.75rem;
             width: 70vw;
           }
-        }
-
-        .cookie-modal.force-open {
-          display: flex !important;
-        }
-      </style>
+        }</style>
       <!-- 🎬 FINE PLAYER (destro) -->
       <!-- INIZIO MINI PLAYER (sinistra) -->
       <div class="audio-title">🎹 Musica classica 🎺</div>
@@ -4660,22 +4616,22 @@ header, main, footer, .container, .menu, .top-bar, .content {
         /* Mini player */
         .audio-player {
           position: fixed;
-          bottom: 290px;
-          left: 45px;
-          width: 190px;
+          bottom: 18.12rem;
+          left: 2.81rem;
+          width: 11.88rem;
           background: rgba(10, 10, 30, 0.85);
           color: #aef;
           border: 1px solid #3cf;
-          border-radius: 12px;
-          padding: 10px 16px;
+          border-radius: 0.75rem;
+          padding: 0.62rem 1.0rem;
           font-family: 'Georgia', serif;
-          font-size: 14px;
+          font-size: 0.88rem;
           z-index: 1200;
           /* ↑ sopra blob/slider */
-          box-shadow: 0 0 12px #3cf;
+          box-shadow: 0 0 0.75rem #3cf;
           display: flex;
           align-items: center;
-          gap: 10px;
+          gap: 0.62rem;
           /* se non lo animi via JS, assicurati che sia visibile: */
           opacity: 1;
           transform: none;
@@ -4684,13 +4640,13 @@ header, main, footer, .container, .menu, .top-bar, .content {
         /* Titolo sopra il player */
         .audio-title {
           position: fixed;
-          left: 80px;
-          bottom: calc(287px + 50px);
-          /* ~36px sopra il player: regola se serve */
+          left: 5.0rem;
+          bottom: calc(17.94rem + 3.12rem);
+          /* ~2.25rem sopra il player: regola se serve */
           font-family: 'Georgia', serif;
-          font-size: 13px;
+          font-size: 0.81rem;
           color: #ffd700;
-          text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
+          text-shadow: 0 0 0.38rem rgba(0, 0, 0, 0.6);
           z-index: 1201;
           /* ↑ un gradino sopra al player */
           pointer-events: none;
@@ -4700,10 +4656,10 @@ header, main, footer, .container, .menu, .top-bar, .content {
         /* Compattezza bottoni */
         #audio-player,
         .audio-player {
-          --btn-size: 28px;
-          --gap: 6px;
-          --pad-y: 6px;
-          --pad-x: 10px;
+          --btn-size: 1.75rem;
+          --gap: 0.38rem;
+          --pad-y: 0.38rem;
+          --pad-x: 0.62rem;
           gap: var(--gap);
           padding: var(--pad-y) var(--pad-x);
         }
@@ -4727,22 +4683,21 @@ header, main, footer, .container, .menu, .top-bar, .content {
         .audio-player .controls {
           display: flex;
           align-items: center;
-          gap: 10px;
+          gap: 0.62rem;
         }
 
         .audio-player input[type="range"] {
-          width: 70px;
+          width: 4.38rem;
         }
 
         /* Mobile: nascondi il player */
-        @media (max-width: 980px) {
+        @media (max-width: 61.25rem) {
 
           #audio-player,
           .audio-title {
             display: none;
           }
-        }
-      </style>
+        }</style>
       <script>
         // Inizializzazione mini player
           window.addEventListener('load', () => {
@@ -5050,7 +5005,7 @@ header, main, footer, .container, .menu, .top-bar, .content {
             }
             var bolt = document.getElementById('bolt');
             if (!bolt){
-              bolt = createEl('div', { id:'bolt' }, 'position:fixed;left:50%;top:50%;width:3px;height:56vh;background:linear-gradient(#fff,rgba(255,255,255,0));box-shadow:0 0 16px rgba(255,255,255,.9),0 0 32px rgba(255,255,255,.6);opacity:0;pointer-events:none;z-index:6;transform-origin:top;');
+              bolt = createEl('div', { id:'bolt' }, 'position:fixed;left:50%;top:50%;width:0.19rem;height:56vh;background:linear-gradient(#fff,rgba(255,255,255,0));box-shadow:0 0 1.0rem rgba(255,255,255,.9),0 0 2.0rem rgba(255,255,255,.6);opacity:0;pointer-events:none;z-index:6;transform-origin:top;');
               document.body.appendChild(bolt);
             }
             function flash(){
@@ -5188,16 +5143,16 @@ header, main, footer, .container, .menu, .top-bar, .content {
           });
       </script>
       <div aria-hidden="true" id="cse-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);backdrop-filter: blur(2px);z-index:9998;"></div>
-      <div aria-labelledby="cse-title" aria-modal="true" id="cse-panel" role="dialog" style="display:none;position:fixed;top:6vh;right:4vw;width:88vw;max-width:980px;height:88vh;z-index:9999;background:rgba(10,10,26,0.9);border:1px solid rgba(120,140,220,0.3);border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.6);overflow:hidden;">
-        <div id="cse-header" style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;border-bottom:1px solid rgba(120,140,220,0.2);">
-          <h3 id="cse-title" style="margin:0;font-size:1rem;color:#eaf2ff;letter-spacing:.3px;">Risultati di ricerca</h3>
-          <div id="cse-controls" style="display:flex;align-items:center;gap:10px;">
-            <button id="cse-theme-toggle" style="padding:6px 10px;border-radius:10px;border:1px solid rgba(120,140,220,0.4);background:rgba(120,140,220,0.15);color:#e6f0f3;cursor:pointer;font-size:.9rem;" type="button">Tema: Scuro</button>
-            <button aria-label="Chiudi risultati" id="cse-close" style="padding:6px 10px;border-radius:10px;border:1px solid rgba(220,120,120,0.5);background:rgba(220,120,120,0.15);color:#ffdede;cursor:pointer;font-size:.9rem;" type="button">✕ Chiudi</button>
+      <div aria-labelledby="cse-title" aria-modal="true" id="cse-panel" role="dialog" style="display:none;position:fixed;top:6vh;right:4vw;width:88vw;max-width:61.25rem;height:88vh;z-index:9999;background:rgba(10,10,26,0.9);border:1px solid rgba(120,140,220,0.3);border-radius:1.0rem;box-shadow:0 1.25rem 3.75rem rgba(0,0,0,.6);overflow:hidden;">
+        <div id="cse-header" style="display:flex;align-items:center;justify-content:space-between;gap:0.62rem;padding:0.62rem 0.88rem;border-bottom:1px solid rgba(120,140,220,0.2);">
+          <h3 id="cse-title" style="margin:0;font-size:1rem;color:#eaf2ff;letter-spacing:.0.19rem;">Risultati di ricerca</h3>
+          <div id="cse-controls" style="display:flex;align-items:center;gap:0.62rem;">
+            <button id="cse-theme-toggle" style="padding:0.38rem 0.62rem;border-radius:0.62rem;border:1px solid rgba(120,140,220,0.4);background:rgba(120,140,220,0.15);color:#e6f0f3;cursor:pointer;font-size:.9rem;" type="button">Tema: Scuro</button>
+            <button aria-label="Chiudi risultati" id="cse-close" style="padding:0.38rem 0.62rem;border-radius:0.62rem;border:1px solid rgba(220,120,120,0.5);background:rgba(220,120,120,0.15);color:#ffdede;cursor:pointer;font-size:.9rem;" type="button">✕ Chiudi</button>
           </div>
         </div>
-        <div id="cse-content" style="position:absolute;inset:52px 0 0 0;overflow:auto;padding:10px 12px;">
-          <div id="cse-results" style="display:none;max-width:900px;margin:20px auto;">
+        <div id="cse-content" style="position:absolute;inset:3.25rem 0 0 0;overflow:auto;padding:0.62rem 0.75rem;">
+          <div id="cse-results" style="display:none;max-width:56.25rem;margin:1.25rem auto;">
             <div class="gcse-searchresults-only" data-gname="results" data-linktarget="_self" data-queryparametername="q"></div>
           </div>
         </div>
@@ -5241,8 +5196,8 @@ header, main, footer, .container, .menu, .top-bar, .content {
         .gsc-results .gsc-imageResult {
           background: var(--cse-card) !important;
           border: 1px solid color-mix(in oklab, var(--cse-txt), transparent 70%) !important;
-          border-radius: 10px !important;
-          padding: 10px !important;
+          border-radius: 0.62rem !important;
+          padding: 0.62rem !important;
         }
 
         .gsc-webResult.gsc-result:hover {
@@ -5291,13 +5246,7 @@ header, main, footer, .container, .menu, .top-bar, .content {
 
         .gsc-selected-option-container {
           color: var(--cse-txt) !important;
-        }
-
-        .cookie-modal.force-open {
-          display: flex !important;
-        } 
-
-      </style>
+        }</style>
       <script>
         (function(){
             var CSE_CX = '87b07564ab3cb462a'; // cambia se hai un altro ID
@@ -5428,7 +5377,7 @@ header, main, footer, .container, .menu, .top-bar, .content {
                 if (!host) {
                   host = document.createElement('div'); host.id='google_translate_element';
                   host.setAttribute('aria-hidden','true');
-                  host.style.cssText="position:absolute;left:-9999px;top:-9999px;height:0;width:0;overflow:hidden";
+                  host.style.cssText="position:absolute;left:-624.94rem;top:-624.94rem;height:0;width:0;overflow:hidden";
                   document.body.appendChild(host);
                 } else { host.innerHTML = ""; }
                 new google.translate.TranslateElement({
@@ -5824,7 +5773,7 @@ header, main, footer, .container, .menu, .top-bar, .content {
                   will-change: transform;
                   white-space: nowrap;
                   line-height: 1;
-                  text-shadow: 0 0 8px rgba(255,255,255,.45);
+                  text-shadow: 0 0 0.5rem rgba(255,255,255,.45);
                   opacity: .98;
                   /* abilito hover solo se serve: qui resta tutto pass-through */
                   pointer-events: none;
@@ -6031,29 +5980,29 @@ header, main, footer, .container, .menu, .top-bar, .content {
           left: 50%;
           top: 12vh;
           transform: translateX(-50%);
-          width: min(980px, 94vw);
+          width: min(61.25rem, 94vw);
           max-height: 76vh;
           overflow: auto;
           background: #0a1326;
           border: 1px solid rgba(255, 215, 0, .25);
-          border-radius: 12px;
-          padding: 12px 14px;
+          border-radius: 0.75rem;
+          padding: 0.75rem 0.88rem;
           color: #eaeaea
         }
 
         #cseCL-close {
           position: sticky;
           top: 0;
-          margin: -4px -4px 8px auto;
-          padding: 8px 10px;
-          border-radius: 10px;
+          margin: -0.25rem -0.25rem 0.5rem auto;
+          padding: 0.5rem 0.62rem;
+          border-radius: 0.62rem;
           cursor: pointer;
           background: rgba(255, 255, 255, .06);
           border: 1px solid rgba(255, 255, 255, .18)
         }
 
         #cseCL-title {
-          margin: 6px 0 8px;
+          margin: 0.38rem 0 0.5rem;
           font-family: Cinzel, serif;
           color: #ffd86a;
           font-size: 1.05rem
@@ -6068,20 +6017,14 @@ header, main, footer, .container, .menu, .top-bar, .content {
         .gsc-webResult.gsc-result {
           background: rgba(255, 255, 255, .04) !important;
           border: 1px solid rgba(255, 255, 255, .08) !important;
-          border-radius: 10px !important;
-          padding: 8px !important;
-        }
-
-        .gs-title,
-        .gs-snippet {
-          color: #eaeaea !important;
+          border-radius: 0.62rem !important;
+          padding: 0.5rem !important;
         }
 
         .gsc-result-info,
         .gsc-orderby-label {
           color: #cbd5e1 !important;
-        }
-      </style>
+        }</style>
       <div aria-hidden="true" aria-label="Risultati di ricerca (interni)" aria-modal="true" id="cseCL-panel" role="dialog">
         <div id="cseCL-backdrop"></div>
         <div id="cseCL-shell">
@@ -6111,17 +6054,7 @@ header, main, footer, .container, .menu, .top-bar, .content {
           
             function currentQuery(){
               var i = document.getElementById('site-search') ||
-                      document.querySelector('.top-bar input[type="search"], header input[type="search"], .search input[type="search"]') ||
-                      document.querySelector('.top-bar input[type="text"], header input[type="text"], .search input[type="text"]') ||
-                      document.querySelector('input[type="search"]') ||
-                      document.querySelector('input[type="text"]');
-              return i && i.value ? i.value.trim() : '';
-            }
-          
-            function clearDuplicateGcseInsidePanel(){
-              // remove any pre-rendered gcse nodes inside our shell to avoid 30 boxes
-              var nodes = resultsDiv.querySelectorAll('.gsc-control-cse, .gcse-search, .gcse-searchresults-only');
-              nodes.forEach(function(n){ n.remove(); });
+                      document.querySelector(');
               // also clear the container
               resultsDiv.innerHTML = '<div id="cseCL-root"></div>';
             }
@@ -6195,81 +6128,7 @@ header, main, footer, .container, .menu, .top-bar, .content {
           })();
       </script>
       <!-- === CSE CLEAN-LOCK PATCH (single-instance, forced internal) === -->
-      <style>
-        #cseCL-panel {
-          position: fixed;
-          inset: 0;
-          z-index: 20050;
-          display: none
-        }
-
-        #cseCL-panel[aria-hidden="false"] {
-          display: block
-        }
-
-        #cseCL-backdrop {
-          position: absolute;
-          inset: 0;
-          background: rgba(0, 0, 0, .55);
-          backdrop-filter: blur(2px)
-        }
-
-        #cseCL-shell {
-          position: absolute;
-          left: 50%;
-          top: 12vh;
-          transform: translateX(-50%);
-          width: min(980px, 94vw);
-          max-height: 76vh;
-          overflow: auto;
-          background: #0a1326;
-          border: 1px solid rgba(255, 215, 0, .25);
-          border-radius: 12px;
-          padding: 12px 14px;
-          color: #eaeaea
-        }
-
-        #cseCL-close {
-          position: sticky;
-          top: 0;
-          margin: -4px -4px 8px auto;
-          padding: 8px 10px;
-          border-radius: 10px;
-          cursor: pointer;
-          background: rgba(255, 255, 255, .06);
-          border: 1px solid rgba(255, 255, 255, .18)
-        }
-
-        #cseCL-title {
-          margin: 6px 0 8px;
-          font-family: Cinzel, serif;
-          color: #ffd86a;
-          font-size: 1.05rem
-        }
-
-        /* contrast fixes */
-        .gsc-control-cse,
-        .gsc-control-wrapper-cse {
-          background: transparent !important;
-        }
-
-        .gsc-webResult.gsc-result {
-          background: rgba(255, 255, 255, .04) !important;
-          border: 1px solid rgba(255, 255, 255, .08) !important;
-          border-radius: 10px !important;
-          padding: 8px !important;
-        }
-
-        .gs-title,
-        .gs-snippet {
-          color: #eaeaea !important;
-        }
-
-        .gsc-result-info,
-        .gsc-orderby-label {
-          color: #cbd5e1 !important;
-        }
-      </style>
+      <style></style>
       <div aria-hidden="true" aria-label="Risultati di ricerca (interni)" aria-modal="true" id="cseCL-panel" role="dialog">
         <div id="cseCL-backdrop"></div>
         <div id="cseCL-shell">
@@ -6299,17 +6158,7 @@ header, main, footer, .container, .menu, .top-bar, .content {
           
             function currentQuery(){
               var i = document.getElementById('site-search') ||
-                      document.querySelector('.top-bar input[type="search"], header input[type="search"], .search input[type="search"]') ||
-                      document.querySelector('.top-bar input[type="text"], header input[type="text"], .search input[type="text"]') ||
-                      document.querySelector('input[type="search"]') ||
-                      document.querySelector('input[type="text"]');
-              return i && i.value ? i.value.trim() : '';
-            }
-          
-            function clearDuplicateGcseInsidePanel(){
-              // remove any pre-rendered gcse nodes inside our shell to avoid 30 boxes
-              var nodes = resultsDiv.querySelectorAll('.gsc-control-cse, .gcse-search, .gcse-searchresults-only');
-              nodes.forEach(function(n){ n.remove(); });
+                      document.querySelector(');
               // also clear the container
               resultsDiv.innerHTML = '<div id="cseCL-root"></div>';
             }
@@ -6406,13 +6255,7 @@ header, main, footer, .container, .menu, .top-bar, .content {
             function triggerSearchFrom(el){
               try{
                 var input = el && (el.tagName ? el : null);
-                var container = input && input.closest && (input.closest('.search-container') || input.closest('.bar-right') || input.closest('.top-bar') || input.closest('form') || document);
-                var btn = container && container.querySelector && (container.querySelector('.search-icon') ||
-                          container.querySelector('[data-cse-search-btn]') ||
-                          container.querySelector('#cse-search-btn') ||
-                          container.querySelector('.cse-search-btn') ||
-                          container.querySelector('button[type="submit"]'));
-                if (btn && typeof btn.click === 'function'){ btn.click(); return true; }
+                var container = input && input.closest && (input.closest('.search-container') || input.closest('.bar-right') || input.closest('
           
                 var q = (input && input.value) ? input.value.trim() : '';
                 if (typeof submitFromInput === 'function'){ submitFromInput(); return true; }
@@ -6562,13 +6405,7 @@ header, main, footer, .container, .menu, .top-bar, .content {
             function triggerSearchFrom(el){
               try{
                 var input = el && (el.tagName ? el : null);
-                var container = input && input.closest && (input.closest('.search-container') || input.closest('.bar-right') || input.closest('.top-bar') || input.closest('form') || document);
-                var btn = container && container.querySelector && (container.querySelector('.search-icon') ||
-                          container.querySelector('[data-cse-search-btn]') ||
-                          container.querySelector('#cse-search-btn') ||
-                          container.querySelector('.cse-search-btn') ||
-                          container.querySelector('button[type="submit"]'));
-                if (btn && typeof btn.click === 'function'){ btn.click(); return true; }
+                var container = input && input.closest && (input.closest('.search-container') || input.closest('.bar-right') || input.closest('
           
                 var q = (input && input.value) ? input.value.trim() : '';
                 if (typeof submitFromInput === 'function'){ submitFromInput(); return true; }
@@ -6695,8 +6532,8 @@ header, main, footer, .container, .menu, .top-bar, .content {
             }
           })();
       </script>
-      <div id="cse-results-container" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:10000;padding:20px;box-sizing:border-box;">
-        <div style="max-width:800px;margin:0 auto;background:#0a0a1a;padding:20px;border-radius:8px;border:1px solid var(--gold);max-height:80vh;overflow:auto;">
+      <div id="cse-results-container" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:10000;padding:1.25rem;box-sizing:border-box;">
+        <div style="max-width:50.0rem;margin:0 auto;background:#0a0a1a;padding:1.25rem;border-radius:0.5rem;border:1px solid var(--gold);max-height:80vh;overflow:auto;">
           <button onclick="closeSearchResults()" style="float:right;background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;">×</button>
           <h2 style="color:var(--gold);margin-top:0;">Risultati della ricerca</h2>
           <div class="gcse-searchresults-only" id="cse-results"></div>
@@ -6783,9 +6620,9 @@ header, main, footer, .container, .menu, .top-bar, .content {
         .gsc-webResult.gsc-result {
           background-color: rgba(20, 20, 40, 0.8) !important;
           border: 1px solid var(--menu-border) !important;
-          margin-bottom: 10px !important;
-          padding: 15px !important;
-          border-radius: 6px !important;
+          margin-bottom: 0.62rem !important;
+          padding: 0.94rem !important;
+          border-radius: 0.38rem !important;
         }
 
         .gs-title,
@@ -6810,7 +6647,7 @@ header, main, footer, .container, .menu, .top-bar, .content {
         }
 
         .gsc-cursor-box {
-          margin-top: 20px;
+          margin-top: 1.25rem;
           text-align: center;
         }
 
@@ -6823,8 +6660,7 @@ header, main, footer, .container, .menu, .top-bar, .content {
         .gsc-cursor-current-page {
           background: var(--gold) !important;
           color: #000 !important;
-        }
-      </style>
+        }</style>
       <!-- Aggiungi questo CODICE PRIMA del tag 
       <!-- === CONSERVATIVE ENTER FIX + siteData (real excerpts) === -->
       <script>
@@ -6849,13 +6685,7 @@ header, main, footer, .container, .menu, .top-bar, .content {
             function triggerSearchFrom(el){
               try{
                 var input = el && (el.tagName ? el : null);
-                var container = input && input.closest && (input.closest('.search-container') || input.closest('.bar-right') || input.closest('.top-bar') || input.closest('form') || document);
-                var btn = container && container.querySelector && (container.querySelector('.search-icon') ||
-                          container.querySelector('[data-cse-search-btn]') ||
-                          container.querySelector('#cse-search-btn') ||
-                          container.querySelector('.cse-search-btn') ||
-                          container.querySelector('button[type="submit"]'));
-                if (btn && typeof btn.click === 'function'){ btn.click(); return true; }
+                var container = input && input.closest && (input.closest('.search-container') || input.closest('.bar-right') || input.closest('
           
                 var q = (input && input.value) ? input.value.trim() : '';
                 if (typeof submitFromInput === 'function'){ submitFromInput(); return true; }
@@ -6982,10 +6812,10 @@ header, main, footer, .container, .menu, .top-bar, .content {
             }
           })();
       </script>
-      <div id="search-results-panel" style="display:none;position:fixed;top:var(--header-offset);left:0;width:100%;height:calc(100% - var(--header-offset));background:rgba(0,0,0,0.9);z-index:10000;padding:20px;box-sizing:border-box;">
-        <div style="max-width:800px;margin:0 auto;background:#0a0a1a;padding:20px;border-radius:8px;border:1px solid #d4af37;max-height:80vh;overflow:auto;position:relative;">
-          <button onclick="closeSearchPanel()" style="position:absolute;top:10px;right:10px;background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;">×</button>
-          <h2 style="color:#d4af37;margin-top:0;">Risultati della ricerca</h2>
+      <div id="search-results-panel" style="display:none;position:fixed;top:var(--header-offset);left:0;width:100%;height:calc(100% - var(--header-offset));background:rgba(0,0,0,0.9);z-index:10000;padding:1.25rem;box-sizing:border-box;">
+        <div style="max-width:50.0rem;margin:0 auto;background:#0a0a1a;padding:0px;border-radius:0.5rem;border:1px solid #d4af37;max-height:80vh;overflow:auto;position:relative;">
+          <button onclick="closeSearchPanel()" style="position:absolute;top:1.88rem;right:0.62rem;background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;">×</button>
+          <h2 style="color:#d4af37;margin-top:1.88rem;">Risultati della ricerca</h2>
           <div id="internal-search-results"></div>
         </div>
       </div>
@@ -7054,15 +6884,15 @@ header, main, footer, .container, .menu, .top-bar, .content {
               return;
             }
             
-            let html = '<div style="display:grid;gap:15px;">';
+            let html = '<div style="display:grid;gap:0.94rem;">';
             results.forEach(result => {
               html += `
-                <div style="background:rgba(20,20,40,0.8);padding:15px;border-radius:6px;border-left:3px solid #d4af37;">
-                  <h3 style="margin-top:0;margin-bottom:10px;">
+                <div style="background:rgba(20,20,40,0.8);padding:0.94rem;border-radius:0.38rem;border-left:0.19rem solid #d4af37;">
+                  <h3 style="margin-top:0;margin-bottom:0.62rem;">
                     <a href="${result.url}" style="color:#9ad0ff;text-decoration:none;">${result.title}</a>
                   </h3>
                   <p style="color:#cfe8ff;margin:0;">${result.content.substring(0,150)}...</p>
-                  <a href="${result.url}" style="color:#00ccff;display:inline-block;margin-top:10px;">Leggi tutto →</a>
+                  <a href="${result.url}" style="color:#00ccff;display:inline-block;margin-top:0.62rem;">Leggi tutto →</a>
                 </div>
               `;
             });
@@ -7126,13 +6956,7 @@ header, main, footer, .container, .menu, .top-bar, .content {
             function triggerSearchFrom(el){
               try{
                 var input = el && (el.tagName ? el : null);
-                var container = input && input.closest && (input.closest('.search-container') || input.closest('.bar-right') || input.closest('.top-bar') || input.closest('form') || document);
-                var btn = container && container.querySelector && (container.querySelector('.search-icon') ||
-                          container.querySelector('[data-cse-search-btn]') ||
-                          container.querySelector('#cse-search-btn') ||
-                          container.querySelector('.cse-search-btn') ||
-                          container.querySelector('button[type="submit"]'));
-                if (btn && typeof btn.click === 'function'){ btn.click(); return true; }
+                var container = input && input.closest && (input.closest('.search-container') || input.closest('.bar-right') || input.closest('
           
                 var q = (input && input.value) ? input.value.trim() : '';
                 if (typeof submitFromInput === 'function'){ submitFromInput(); return true; }
@@ -7259,11 +7083,11 @@ header, main, footer, .container, .menu, .top-bar, .content {
             }
           })();
       </script>
-      <div id="search-results-panel" style="display:none;position:fixed;top:var(--header-offset);left:0;width:100%;height:calc(100% - var(--header-offset));background:rgba(0,0,0,0.9);z-index:10000;padding:20px;box-sizing:border-box;">
-        <div style="max-width:800px;margin:0 auto;background:#0a0a1a;padding:25px;border-radius:12px;border:1px solid #d4af37;max-height:80vh;overflow:auto;position:relative;box-shadow:0 0 20px rgba(0,0,0,0.5);">
-          <button onclick="closeSearchPanel()" onmouseout="this.style.transform='scale(1)'" onmouseover="this.style.transform='scale(1.2)'" style="position:absolute;top:15px;right:15px;background:none;border:none;color:#fff;font-size:1.8rem;cursor:pointer;transition:transform 0.2s;">×</button>
-          <h2 style="color:#d4af37;margin-top:0;font-family:'Cinzel',serif;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:10px;">Risultati della ricerca</h2>
-          <div id="internal-search-results" style="margin-top:20px;"></div>
+      <div id="search-results-panel" style="display:none;position:fixed;top:var(--header-offset);left:0;width:100%;height:calc(100% - var(--header-offset));background:rgba(0,0,0,0.9);z-index:10000;padding:7.5rem;box-sizing:border-box;">
+        <div style="max-width:50.0rem;margin:0 auto;background:#0a0a1a;padding:1.56rem;border-radius:0.75rem;border:1px solid #d4af37;max-height:80vh;overflow:auto;position:relative;box-shadow:0 0 1.25rem rgba(0,0,0,0.5);">
+          <button onclick="closeSearchPanel()" onmouseout="this.style.transform='scale(1)'" onmouseover="this.style.transform='scale(1.2)'" style="position:absolute;top:0.94rem;right:0.94rem;background:none;border:none;color:#fff;font-size:1.8rem;cursor:pointer;transition:transform 0.2s;">×</button>
+          <h2 style="color:#d4af37;margin-top:0;font-family:'Cinzel',serif;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:0.62rem;">Risultati della ricerca</h2>
+          <div id="internal-search-results" style="margin-top:0px;"></div>
         </div>
       </div>
       <script>
@@ -7381,7 +7205,7 @@ header, main, footer, .container, .menu, .top-bar, .content {
             
             if (results.length === 0) {
               resultsContainer.innerHTML = `
-                <div style="text-align:center;padding:40px 0;">
+                <div style="text-align:center;padding:2.5rem 0;">
                   <p style="color:#cfe8ff;font-size:1.1rem;">Nessun risultato trovato per "${query}"</p>
                   <p style="color:#9ad0ff;">Prova con termini diversi o più specifici</p>
                 </div>
@@ -7390,10 +7214,10 @@ header, main, footer, .container, .menu, .top-bar, .content {
             }
             
             let html = `
-              <div style="margin-bottom:15px;">
+              <div style="margin-bottom:0.94rem;">
                 <p style="color:#9ad0ff;margin:0;">Trovati ${results.length} risultati per "${query}"</p>
               </div>
-              <div style="display:grid;gap:20px;">
+              <div style="display:grid;gap:1.25rem;">
             `;
             
             results.forEach(result => {
@@ -7439,14 +7263,14 @@ header, main, footer, .container, .menu, .top-bar, .content {
               }
               
               html += `
-                <div style="background:rgba(20,20,40,0.8);padding:20px;border-radius:8px;border-left:3px solid #d4af37;transition:transform 0.2s, box-shadow 0.2s;" 
-                     onmouseover="this.style.transform='translateX(5px)';this.style.boxShadow='0 5px 15px rgba(0,0,0,0.3)'" 
+                <div style="background:rgba(20,20,40,0.8);padding:1.25rem;border-radius:0.5rem;border-left:0.19rem solid #d4af37;transition:transform 0.2s, box-shadow 0.2s;" 
+                     onmouseover="this.style.transform='translateX(0.31rem)';this.style.boxShadow='0 0.31rem 0.94rem rgba(0,0,0,0.3)'" 
                      onmouseout="this.style.transform='';this.style.boxShadow=''">
-                  <h3 style="margin-top:0;margin-bottom:12px;font-size:1.2rem;">
+                  <h3 style="margin-top:0;margin-bottom:0.75rem;font-size:1.2rem;">
                     <a href="${result.url}" style="color:#9ad0ff;text-decoration:none;">${highlightedTitle}</a>
                   </h3>
-                  <p style="color:#cfe8ff;margin:0 0 10px 0;line-height:1.5;">${snippet}</p>
-                  <a href="${result.url}" style="color:#00ccff;display:inline-flex;align-items:center;gap:5px;text-decoration:none;">
+                  <p style="color:#cfe8ff;margin:0 0 0.62rem 0;line-height:1.5;">${snippet}</p>
+                  <a href="${result.url}" style="color:#00ccff;display:inline-flex;align-items:center;gap:0.31rem;text-decoration:none;">
                     <span>Vai alla pagina</span>
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                       <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -7463,7 +7287,7 @@ header, main, footer, .container, .menu, .top-bar, .content {
           // Mostra un messaggio nel pannello
           function showMessage(msg) {
             document.getElementById('internal-search-results').innerHTML = `
-              <div style="text-align:center;padding:40px 0;color:#cfe8ff;">
+              <div style="text-align:center;padding:2.5rem 0;color:#cfe8ff;">
                 <p>${msg}</p>
               </div>
             `;
@@ -7552,13 +7376,7 @@ header, main, footer, .container, .menu, .top-bar, .content {
             function triggerSearchFrom(el){
               try{
                 var input = el && (el.tagName ? el : null);
-                var container = input && input.closest && (input.closest('.search-container') || input.closest('.bar-right') || input.closest('.top-bar') || input.closest('form') || document);
-                var btn = container && container.querySelector && (container.querySelector('.search-icon') ||
-                          container.querySelector('[data-cse-search-btn]') ||
-                          container.querySelector('#cse-search-btn') ||
-                          container.querySelector('.cse-search-btn') ||
-                          container.querySelector('button[type="submit"]'));
-                if (btn && typeof btn.click === 'function'){ btn.click(); return true; }
+                var container = input && input.closest && (input.closest('.search-container') || input.closest('.bar-right') || input.closest('
           
                 var q = (input && input.value) ? input.value.trim() : '';
                 if (typeof submitFromInput === 'function'){ submitFromInput(); return true; }
@@ -8146,10 +7964,7 @@ header, main, footer, .container, .menu, .top-bar, .content {
             if (document.documentElement.dataset.lazy !== 'on') return;
             var imgs = document.querySelectorAll('img:not([data-priority])');
             imgs.forEach(function(img){
-              if (img.closest('.top-bar')) return;
-              if (!img.hasAttribute('loading') || img.getAttribute('loading') === 'auto'){
-                img.setAttribute('loading','lazy');
-              }
+              if (img.closest('
             });
           });
       </script>
@@ -8881,14 +8696,7 @@ window.loadGoogleTranslate = function(){
 
   function setTopbarHeight(){
     var candidates = [
-      '.topbar','.top-bar','#topbar','#site-topbar','.header-top','.site-header','header'
-    ];
-    var h = 64;
-    for(var i=0;i<candidates.length;i++){
-      var el = document.querySelector(candidates[i]);
-      if(el){
-        var r = el.getBoundingClientRect();
-        if(r && r.height){ h = Math.max(h, Math.round(r.height)); break; }
+      '.topbar','
       }
     }
     document.documentElement.style.setProperty('--topbar-height', h + 'px');
@@ -9117,29 +8925,28 @@ footer {
   margin-top: auto;
   position: relative;
   z-index: 0;
-  padding: 12px 0;
+  padding: 0.75rem 0;
   width: 100%;
 }
 
 .footer-wrap {
-  max-width: 1200px;
+  max-width: 75.0rem;
   margin: 0 auto;
-  padding: 12px 16px;
+  padding: 0.75rem 1.0rem;
 }
 
 .footer-columns {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr;
-  gap: 12px;
+  gap: 0.75rem;
   align-items: start;
   text-align: left;
-}
-</style>
+}</style>
 <style>
 /* ===== COMETE GRANDI LENTE ===== */
 .comet-big {
   position: fixed;
-  top: -50px;
+  top: -3.12rem;
   left: 0;
   height: 2px;
   background: linear-gradient(90deg, rgba(255,255,255,0), white); /* testa bianca avanti */
@@ -9158,7 +8965,7 @@ footer {
 /* ===== COMETE PICCOLE VELOCI ===== */
 .comet-small {
   position: fixed;
-  top: -20px;
+  top: -1.25rem;
   left: 0;
   height: 1px;
   background: linear-gradient(90deg, white, rgba(255,255,255,0));
@@ -9170,15 +8977,13 @@ footer {
 }
 @keyframes cometSmallFall {
   from { transform: translate(0,0) rotate(25deg); opacity: 1; }
-  to   { transform: translate(100vw,100vh) rotate(25deg); opacity: 0; }
-}
-</style>
+}</style>
 
 <script>
 function spawnBigComet() {
   const comet = document.createElement("div");
   comet.classList.add("comet-big");
-  comet.style.width = (120 + Math.random() * 80) + "px"; // 120–200px
+  comet.style.width = (120 + Math.random() * 80) + "px"; // 120–12.5rem
   comet.style.left = Math.random() * window.innerWidth + "px";
   comet.style.animationDuration = (6 + Math.random() * 4) + "s"; // 6–10s
   document.body.appendChild(comet);
@@ -9188,7 +8993,7 @@ function spawnBigComet() {
 function spawnSmallComet() {
   const comet = document.createElement("div");
   comet.classList.add("comet-small");
-  comet.style.width = (30 + Math.random() * 30) + "px"; // 30–60px
+  comet.style.width = (30 + Math.random() * 30) + "px"; // 30–3.75rem
   comet.style.left = Math.random() * window.innerWidth + "px";
   comet.style.animationDuration = (2 + Math.random() * 2) + "s"; // 2–4s
   document.body.appendChild(comet);
@@ -9201,7 +9006,98 @@ setInterval(spawnBigComet, 8000);
 setInterval(spawnSmallComet, 4000);
 </script>
 
+<script>
+(function () {
+  function updateTopBar() {
+    var menu   = document.querySelector(');
+  }
 
+  // Se qualcosa nel menu cambia dimensione (transizioni, etc.)
+  document.addEventListener('transitionend', function(e){
+    if (e.target && e.target.closest && e.target.closest('
+  });
+
+  // Tick extra (utile per Safari)
+  setTimeout(updateTopBar, 50);
+})();
+</script>
+
+
+
+
+
+
+
+<script>
+function playThunder() {
+  const flash = document.createElement("div");
+  flash.className = "lightning active";
+  document.body.appendChild(flash);
+
+  // riproduci audio
+  const sound = document.getElementById("thunder-sound");
+  if (sound) {
+    sound.currentTime = 0;
+    sound.play().catch(()=>{});
+  }
+
+  setTimeout(() => flash.remove(), 600);
+}
+</script>
+<script>
+(function(){
+  // Usa l'audio già in pagina
+  const thunderSound = document.getElementById('thunder-sound');
+
+  // Sblocco audio su iOS/Safari: al primo tap/tasto esegue play/pause muto per “autorizzare” l'audio
+  function unlockAudioOnce(){
+    if (!thunderSound) return cleanupUnlock();
+    const prevMuted = thunderSound.muted;
+    thunderSound.muted = true;
+    thunderSound.play().then(()=>{
+      thunderSound.pause();
+      thunderSound.currentTime = 0;
+      thunderSound.muted = prevMuted;
+      cleanupUnlock();
+    }).catch(()=> cleanupUnlock());
+  }
+  function cleanupUnlock(){
+    window.removeEventListener('pointerdown', unlockAudioOnce);
+    window.removeEventListener('keydown', unlockAudioOnce);
+    window.removeEventListener('touchstart', unlockAudioOnce);
+  }
+  window.addEventListener('pointerdown', unlockAudioOnce, { once:true });
+  window.addEventListener('keydown', unlockAudioOnce, { once:true });
+  window.addEventListener('touchstart', unlockAudioOnce, { once:true, passive:true });
+
+  // Effetto visivo + audio
+  window.playThunder = function(){
+    // flash
+    const flash = document.createElement('div');
+    flash.className = 'lightning active';
+    document.body.appendChild(flash);
+    setTimeout(()=> flash.remove(), 600);
+
+    // suono
+    if (thunderSound){
+      try {
+        thunderSound.currentTime = 0;
+        thunderSound.volume = 0.9;   // regola a piacere
+        thunderSound.play().catch(()=>{ /* ignoriamo blocchi se non ancora sbloccato */ });
+      } catch(e){}
+    }
+  };
+
+  // Aggancio automatico ai possibili pulsanti "Tuono"
+  const selectors = ['#thunder-btn', '#tuono', '#btn-thunder', '[data-action="thunder"]'];
+  selectors.forEach(sel => {
+    document.querySelectorAll(sel).forEach(el => {
+      el.addEventListener('click', window.playThunder);
+      el.addEventListener('touchend', window.playThunder, { passive:true });
+    });
+  });
+})();
+</script>
 
 </body>
 </html>
