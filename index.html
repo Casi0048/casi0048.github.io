@@ -2653,7 +2653,6 @@
   </div>
   <span aria-hidden="true" class="const-symbol" data-repel-item=""></span>
   <canvas id="shooting-stars"></canvas>
-  <body>
   <!-- GALASSIA dietro -->
   <canvas id="nebula"></canvas>
   <!-- Stelle + Comete sopra la galassia -->
@@ -5672,7 +5671,7 @@
   <div id="cseCL-results"></div>
   </div>
   </div>
- <script>
+  <script>
     (function(){
         // Single loader (re-add ours)
         var s = document.createElement('script');
@@ -5844,7 +5843,7 @@
                 }
             }
         }, true);
-
+    
         // Function to clear duplicate GCSE elements
         function clearDuplicateGcseInsidePanel() {
             if (!panel) return;
@@ -5856,9 +5855,9 @@
                 }
             }
         }
-
+    
     })();
-</script>
+  </script>
   <!-- === CSE CLEAN-LOCK PATCH (single-instance, forced internal) === -->
   <style></style>
   <div aria-hidden="true" aria-label="Risultati di ricerca (interni)" aria-modal="true" id="cseCL-panel" role="dialog">
@@ -5914,7 +5913,7 @@
             return true;
           }catch(e){ console.error(e); return false; }
         }
-
+    
         // AGGIUNTA: Funzione per pulire il contenitore dei risultati
         function clearResultsContainer() {
           if (resultsDiv) {
@@ -5998,7 +5997,7 @@
             execInternal(currentQuery());
           }
         }, true);
-
+    
         // AGGIUNTA: Funzione per pulire duplicati (dichiarata per evitare errori)
         function clearDuplicateGcseInsidePanel() {
           // Implementazione per rimuovere eventuali elementi duplicati
@@ -6011,7 +6010,7 @@
         }
       
     })();
-</script>
+  </script>
   <!-- Aggiungi questo codice prima della chiusura 
     <!-- === CONSERVATIVE ENTER FIX + siteData (real excerpts) === -->
   <script>
@@ -6729,8 +6728,8 @@
         function triggerSearchFrom(el){
           try{
             var input = el && (el.tagName ? el : null);
-            var container = input && input.closest && (input.closest('.search-container') || input.closest('.bar-right') || input.closest('
-      
+            var container = input && input.closest && (input.closest('.search-container') || input.closest('.bar-right') || input.closest('form'));
+            
             var q = (input && input.value) ? input.value.trim() : '';
             if (typeof submitFromInput === 'function'){ submitFromInput(); return true; }
             if (typeof openGoogleFromInput === 'function'){ openGoogleFromInput(); return true; }
@@ -6742,7 +6741,9 @@
       
         function onEnter(e){
           if (e.key === 'Enter'){
-            e.preventDefault(); e.stopPropagation(); if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+            e.preventDefault(); 
+            e.stopPropagation(); 
+            if (e.stopImmediatePropagation) e.stopImmediatePropagation();
             triggerSearchFrom(e.target);
           }
         }
@@ -6756,22 +6757,52 @@
             }
           });
         }
-        bindEnterHandlers();
+        
+        // Inizializza gli handler
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', bindEnterHandlers);
+        } else {
+          bindEnterHandlers();
+        }
       
         document.addEventListener('submit', function(e){
           try{
             var target = e.target;
             if (target && target.querySelector && target.querySelector('#site-search, input[type="search"]')){
-              e.preventDefault(); e.stopPropagation(); if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+              e.preventDefault(); 
+              e.stopPropagation(); 
+              if (e.stopImmediatePropagation) e.stopImmediatePropagation();
               var inp = target.querySelector('#site-search, input[type="search"]');
               triggerSearchFrom(inp || document.getElementById('site-search'));
             }
-          }catch(_ ){}
+          }catch(error){
+            console.error('Error in submit handler:', error);
+          }
         }, true);
       
-        var mo = new MutationObserver(function(){ bindEnterHandlers(); });
-        mo.observe(document.documentElement, { childList: true, subtree: true });
-      })();
+        // MutationObserver per gestire elementi dinamici
+        var mo = new MutationObserver(function(mutations) {
+          bindEnterHandlers();
+        });
+        
+        mo.observe(document.documentElement, { 
+          childList: true, 
+          subtree: true 
+        });
+        
+        // Pulizia degli event listener quando necessario
+        window.addEventListener('beforeunload', function() {
+          mo.disconnect();
+          var nodes = Array.from(document.querySelectorAll('#site-search, input[type="search"]'));
+          nodes.forEach(function(inp) {
+            if (inp.__enterFixBound) {
+              inp.removeEventListener('keydown', onEnter, true);
+              inp.__enterFixBound = false;
+            }
+          });
+        });
+        
+    })();
   </script>
   <!-- === SEARCH: stable clear icon (no duplicates) === -->
   <script>
@@ -7722,11 +7753,37 @@
   <script id="lazy-images-setup">
     document.addEventListener('DOMContentLoaded', function(){
         if (document.documentElement.dataset.lazy !== 'on') return;
-        var imgs = document.querySelectorAll('img:not([data-priority])');
-        imgs.forEach(function(img){
-          if (img.closest('
-        });
-      });
+        
+        // Supporto per Intersection Observer (più performante)
+        if ('IntersectionObserver' in window) {
+            var lazyImages = document.querySelectorAll('img[data-src]:not([data-priority])');
+            
+            var imageObserver = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        var img = entry.target;
+                        img.src = img.dataset.src;
+                        if (img.dataset.srcset) img.srcset = img.dataset.srcset;
+                        img.removeAttribute('data-src');
+                        img.removeAttribute('data-srcset');
+                        imageObserver.unobserve(img);
+                    }
+                });
+            });
+            
+            lazyImages.forEach(function(img) {
+                if (img.closest('.no-lazy, [data-no-lazy]')) return;
+                imageObserver.observe(img);
+            });
+        } else {
+            // Fallback per browser più vecchi
+            var imgs = document.querySelectorAll('img:not([data-priority])');
+            imgs.forEach(function(img){
+                if (img.closest('.no-lazy, [data-no-lazy]')) return;
+                img.loading = 'lazy';
+            });
+        }
+    });
   </script>
   <script id="search-suggestions">
     (function(){
@@ -8451,7 +8508,21 @@
     
       function setTopbarHeight(){
         var candidates = [
-          '.topbar','
+          '.topbar',
+          '.top-bar',
+          'header',
+          '[role="banner"]',
+          '.navbar'
+        ];
+        
+        var h = 0;
+        for (var i = 0; i < candidates.length; i++) {
+          var element = document.querySelector(candidates[i]);
+          if (element) {
+            var rect = element.getBoundingClientRect();
+            if (rect.height > h) {
+              h = rect.height;
+            }
           }
         }
         document.documentElement.style.setProperty('--topbar-height', h + 'px');
@@ -8465,12 +8536,19 @@
       function attachSuggestObservers(){
         var box = document.getElementById('cse-suggest');
         if(!box) return;
+        
         // MutationObserver per aggiungere/rimuovere classe drawer-open quando la tendina si apre/chiude
-        var obs = new MutationObserver(function(){
+        var obs = new MutationObserver(function(mutations){
           var isOpen = box.classList.contains('show') && box.innerHTML.trim().length > 0;
           toggleDrawerOpen(isOpen);
         });
-        obs.observe(box, { attributes:true, childList:true, subtree:false });
+        
+        obs.observe(box, { 
+          attributes: true, 
+          attributeFilter: ['class'],
+          childList: true, 
+          subtree: false 
+        });
       }
     
       // Opzione "soft" automatica se schermo stretto
@@ -8478,16 +8556,36 @@
         var prefersReduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         if (prefersReduce || window.innerWidth < 480){
           document.body.classList.add('cosmo-soft');
+        } else {
+          document.body.classList.remove('cosmo-soft');
         }
       }
     
-      window.addEventListener('resize', setTopbarHeight, {passive:true});
-      window.addEventListener('orientationchange', setTopbarHeight, {passive:true});
+      // Gestione del resize con debounce per migliorare le performance
+      var resizeTimeout;
+      function handleResize() {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(function() {
+          setTopbarHeight();
+          maybeEnableCosmoSoft();
+        }, 100);
+      }
+    
+      window.addEventListener('resize', handleResize, {passive: true});
+      window.addEventListener('orientationchange', handleResize, {passive: true});
+      
       document.addEventListener('DOMContentLoaded', function(){
         setTopbarHeight();
         attachSuggestObservers();
         maybeEnableCosmoSoft();
       });
+      
+      // Esegui anche quando la pagina è completamente caricata
+      window.addEventListener('load', function() {
+        setTopbarHeight();
+        maybeEnableCosmoSoft();
+      });
+      
     })();
   </script>
   <script data-a11y-perf-conservative="">
@@ -8748,16 +8846,57 @@
   <script>
     (function () {
       function updateTopBar() {
-        var menu   = document.querySelector(');
+        // CORRETTO: Aggiunto selettore valido per il menu
+        var menu = document.querySelector('.top-bar-menu, nav, [role="navigation"]');
+        
+        if (menu) {
+          // Aggiungi qui la logica per aggiornare la top bar
+          console.log('Menu trovato:', menu);
+          
+          // Esempio di operazioni che potresti voler fare:
+          // 1. Calcolare l'altezza e aggiornare il padding del body
+          // 2. Aggiornare posizioni di elementi fissi
+          // 3. Gestire stati responsive
+        }
       }
     
       // Se qualcosa nel menu cambia dimensione (transizioni, etc.)
       document.addEventListener('transitionend', function(e){
-        if (e.target && e.target.closest && e.target.closest('
+        // CORRETTO: Aggiunto selettore valido per verificare se l'elemento è nel menu
+        if (e.target && e.target.closest && e.target.closest('.top-bar-menu, nav, [role="navigation"]')) {
+          updateTopBar();
+        }
       });
+    
+      // Eventi aggiuntivi che potrebbero richiedere un aggiornamento
+      document.addEventListener('resize', updateTopBar);
+      document.addEventListener('DOMContentLoaded', updateTopBar);
+      
+      // MutationObserver per rilevare cambiamenti nel DOM
+      if (typeof MutationObserver !== 'undefined') {
+        var observer = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (mutation.type === 'childList' || mutation.type === 'attributes') {
+              updateTopBar();
+            }
+          });
+        });
+        
+        // Osserva il documento per cambiamenti
+        observer.observe(document.body, {
+          childList: true,
+          subtree: true,
+          attributes: true,
+          attributeFilter: ['class', 'style']
+        });
+      }
     
       // Tick extra (utile per Safari)
       setTimeout(updateTopBar, 50);
+      
+      // Aggiornamento anche dopo il completo caricamento della pagina
+      window.addEventListener('load', updateTopBar);
+      
     })();
   </script>
   <script>
