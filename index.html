@@ -2735,8 +2735,7 @@
         <input type="search" id="site-search" placeholder="Cerca nel sito..." aria-label="Cerca" />
         <i class="fa-solid fa-magnifying-glass search-icon" aria-hidden="true"></i>
       </div>
-      <button id="btn-thunder" class="ctrl-btn" title="Riproduci tuono">⚡ Tuono</button>
-      <button id="btn-explode" class="ctrl-btn" title="Esplodi testo">💥 Esplodi</button>
+     
     </div>
     </div>
     -->
@@ -7616,34 +7615,7 @@
         }
       })();
   </script>
-  <script>
-    (function(){
-        if (typeof window.thunderOn === 'undefined') window.thunderOn = false;
-        if (typeof window.updateLabel !== 'function') {
-          window.updateLabel = function(){
-            var btn = document.getElementById('btn-thunder');
-            if (!btn) return;
-            btn.classList.toggle('active', !!window.thunderOn);
-            btn.setAttribute('aria-pressed', window.thunderOn ? 'true' : 'false');
-            btn.textContent = window.thunderOn ? '⚡ Tuono: ON' : '⚡ Tuono';
-          };
-        }
-        var audio = document.getElementById('thunder-sound');
-        if (audio){
-          try { audio.preload = 'auto'; audio.setAttribute('playsinline',''); audio.crossOrigin = audio.crossOrigin || 'anonymous'; } catch(e){}
-          audio.addEventListener('error', function(){
-            console.warn('Thunder audio non disponibile (403/CORS). Disattivo tuono.');
-            window.thunderOn = false; window.updateLabel && window.updateLabel();
-          });
-          window.playThunderIfOn = window.playThunderIfOn || function(){
-            if (window.thunderOn && audio) {
-              try { audio.currentTime = 0; audio.play().catch(function(){}); } catch(e){}
-            }
-          };
-        }
-        try { window.updateLabel(); } catch(e){}
-      })();
-  </script>
+  
   <script>
     (function(){
         // Trova il controllo velocità: usa l’ID che hai già (#speed-range)
