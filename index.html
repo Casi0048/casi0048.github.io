@@ -2466,8 +2466,6 @@
     </style>
   </head>
   <body>
-    
-  
   <div class="slider-vertical">
   <div class="slider-inner">
   <div class="slide-vertical">
@@ -2663,11 +2661,11 @@
   <div aria-hidden="true" class="bolt" id="bolt"></div>
   <!-- Top bar -->
   <div class="top-bar">
-  <a aria-label="Home" class="brand" href="#">
-  <svg aria-hidden="true" role="img" viewbox="0 0 64 64">
-  <circle cx="32" cy="32" fill="none" r="30" stroke="#ffd700" stroke-width="2"></circle>
-  <path d="M18 40 Q32 12 46 40" fill="none" stroke="#ffd700" stroke-width="2"></path>
-  <circle cx="32" cy="28" fill="#ffd700" r="3"></circle>
+  <a class="brand" href="/">
+  <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+  <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+  <line x1="12" y1="22.08" x2="12" y2="12"></line>
   </svg>
   <span>Echi di Sofia</span>
   </a>
@@ -3210,76 +3208,6 @@
   text-shadow: 0 0 0.5rem rgba(255, 255, 255, 0.2);
   }</style>
   <!-- === Exploding text (JS) === -->
-  <script>
-    (function(){
-        // Carica GSAP solo se manca
-        function ensureGSAP(cb){
-          if (window.gsap) return cb();
-          var s = document.createElement('script');
-          s.src = "https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js";
-          s.onload = cb;
-          document.head.appendChild(s);
-        }
-      
-        function setupExploding(){
-          const exploding = document.getElementById("exploding");
-          if (!exploding) return;
-      
-          // prepara lo split in span una sola volta
-          if (!exploding.__prepared){
-            const text = exploding.textContent;
-            exploding.textContent = "";
-            const frag = document.createDocumentFragment();
-            for (const ch of text){
-              const span = document.createElement("span");
-              span.textContent = ch;
-              frag.appendChild(span);
-            }
-            exploding.appendChild(frag);
-            exploding.__prepared = true;
-          }
-      
-          const letters = Array.from(exploding.querySelectorAll("span"));
-      
-          function explodeAndReturn(){
-            // evita re-entrance mentre l'animazione è in corso
-            if (explodeAndReturn.__busy) return;
-            explodeAndReturn.__busy = true;
-      
-            gsap.to(letters, {
-              duration: 0.8,
-              x: () => (Math.random() - 0.5) * 400,
-              y: () => (Math.random() - 0.5) * 300,
-              rotation: () => (Math.random() - 0.5) * 720,
-              opacity: 0,
-              ease: "power3.out",
-              stagger: 0.02,
-              onComplete: () => {
-                gsap.to(letters, {
-                  duration: 1.2,
-                  x: 0,
-                  y: 0,
-                  rotation: 0,
-                  opacity: 1,
-                  ease: "elastic.out(1, 0.5)",
-                  stagger: 0.02,
-                  onComplete: () => { explodeAndReturn.__busy = false; }
-                });
-              }
-            });
-          }
-      
-          exploding.addEventListener("click", explodeAndReturn);
-        }
-      
-        // init
-        if (document.readyState === "loading"){
-          document.addEventListener("DOMContentLoaded", () => ensureGSAP(setupExploding));
-        } else {
-          ensureGSAP(setupExploding);
-        }
-      })();
-  </script>
   <!--INIZIO AGGIUNTA JS EXPLODING TEXT-->
   <script>
     (function(){
@@ -7614,7 +7542,6 @@
         }
       })();
   </script>
-  
   <script>
     (function(){
         // Trova il controllo velocità: usa l’ID che hai già (#speed-range)
@@ -8963,6 +8890,8 @@
         }
       };
     });
+    
+    
   </script>
   </body>
   </html>
