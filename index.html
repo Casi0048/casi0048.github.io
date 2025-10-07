@@ -1065,6 +1065,83 @@
       .related-item a:hover{ text-decoration:underline; }
       .related-item .meta{ font-size:.86rem; opacity:.9; margin-top:.15rem; }
     </style>
+    <style id="search-panel-tune">
+  :root{
+    --search-panel-w: 780px;  /* Larghezza finestra risultati */
+    --search-panel-maxh: 72vh;/* Altezza massima con scroll interno */
+  }
+
+  /* Pannello */
+  #search-panel, #searchPanel, .search-panel, .results-panel{
+    position: fixed;
+    left: 50%; top: clamp(72px, 8vh, 120px);
+    transform: translateX(-50%);
+    width: min(94vw, var(--search-panel-w));
+    max-height: var(--search-panel-maxh);
+    border-radius: 12px;
+    overflow: hidden; /* scorre solo il body interno */
+    z-index: 2147483605;
+  }
+
+  /* Header del pannello: titolo + chiudi */
+  .search-header, #search-header, .results-header{
+    display: flex; align-items: center; justify-content: space-between;
+    padding: .65rem .9rem;
+    border-bottom: 1px solid rgba(255,215,0,.22);
+  }
+  .search-title, .results-title{
+    margin:0; font-weight: 700; font-size: 1.05rem;
+  }
+  .search-close, #search-close, [data-role="search-close"]{
+    margin: 0; padding: .35rem .55rem; border-radius: .5rem; line-height:1;
+    cursor: pointer; border: 1px solid rgba(255,215,0,.25);
+    background: rgba(20,20,40,.78); color:#ffd86a; font-weight:700;
+  }
+
+  /* Corpo scorrevole */
+  #search-results, #searchResults, .search-results, .results-scroll{
+    max-height: calc(var(--search-panel-maxh) - 3.2rem); /* togli header */
+    overflow: auto;
+    padding: .6rem .8rem .8rem;
+    display: grid; gap: .55rem;
+  }
+
+  /* Singolo risultato (flessibile: li, div, ecc.) */
+  #search-results > *, .search-results > *{
+    padding: .55rem .65rem;
+    border: 1px solid rgba(255,215,0,.16);
+    border-radius: 10px;
+    background: rgba(10,10,30,.78);
+  }
+
+  /* Titolo risultato */
+  #search-results h4, .search-results h4, .result-title{
+    margin: 0 0 .2rem; font-size: 1rem; font-weight: 700; color:#ffeb9a;
+  }
+
+  /* Tag/meta (es. Idealismo) come “chip” */
+  .result-meta, .result-tag, .tag{
+    display:inline-block; margin: 0 0 .25rem; padding:.1rem .45rem;
+    font-size:.8rem; border-radius:999px; color:#0b1022;
+    background: linear-gradient(90deg,#ffd86a,#ffeb9a);
+  }
+
+  /* Descrizione + sorgente */
+  .result-desc{ margin:.1rem 0 .15rem; font-size:.9rem; color:#cfe2ff; line-height:1.25; }
+  .result-source{ font-size:.8rem; opacity:.85; }
+
+  /* Evidenziazione (se usi <mark> o aggiungi classe) */
+  mark, .hl{ background: #ffe08a; color:#141414; padding:0 .15rem; border-radius:.2rem; }
+
+  /* Mobile piena larghezza e un po’ più alto */
+  @media (max-width: 900px){
+    :root{ --search-panel-w: 100vw; --search-panel-maxh: 82vh; }
+    #search-panel, #searchPanel, .search-panel, .results-panel{
+      left:50%; transform:translateX(-50%); width:100vw; border-radius:10px;
+    }
+  }
+</style>
+
   </head>
   <body>
     <!-- UI PATCH BLOCKS -->
