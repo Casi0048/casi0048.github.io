@@ -767,8 +767,8 @@
       .articles-blob h3{margin:0 0 .5rem;font-family:'Cinzel',serif;color:#ffd86a}.articles-blob ul{list-style:none;margin:0;padding:0}.articles-blob li{margin:.25rem 0}.articles-blob a{color:#cfe8ff;text-decoration:none;font-weight:700}.articles-blob a:hover{color:#fff;text-decoration:underline}
       .right-embed{position:fixed;right:1.25rem;top:40rem;width:20rem;z-index:2147483600;background:rgba(10,10,30,.8);border:1px solid rgba(255,215,0,.25);border-radius:.75rem;padding:.5rem}
       .right-embed iframe{width:100%;height:264px;display:block;border:0}
-      #russell-box{position:fixed;bottom:5vh;left:2rem;z-index:2147483602;background:rgba(10,10,30,.8);border:1px solid rgba(255,215,0,.25);border-radius:.62rem;padding:.62rem .75rem;max-width:24rem;box-shadow:0 .5rem 1.12rem rgba(0,0,0,.35)}
-      #russell-btn{all:unset;cursor:pointer;display:block;color:#ffd86a}#russell-hint{position:fixed;bottom:15vh;left:3.5rem;z-index:2147483602;color:#cfe8ff;opacity:.85;font-style:italic}
+      #russell-box{position:fixed;bottom:8vh;left:2rem;z-index:2147483602;background:rgba(10,10,30,.8);border:1px solid rgba(255,215,0,.25);border-radius:.62rem;padding:.62rem .75rem;max-width:24rem;box-shadow:0 .5rem 1.12rem rgba(0,0,0,.35)}
+      #russell-btn{all:unset;cursor:pointer;display:block;color:#ffd86a}#russell-hint{position:fixed;bottom:19vh;left:3.5rem;z-index:2147483602;color:#cfe8ff;opacity:.85;font-style:italic}
       #lightning,#bolt{position:fixed;inset:0;pointer-events:none;z-index:5;opacity:0}
       #lightning{background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.9),rgba(255,255,255,.2) 40%,transparent 65%);transition:opacity .18s ease-out}
       #bolt{width:160px;height:400px;left:50%;top:50%;background:linear-gradient(to bottom,rgba(255,255,255,1),rgba(255,255,255,0));clip-path:polygon(48% 0,52% 0,60% 25%,45% 25%,55% 55%,40% 55%,48% 100%,42% 100%,35% 60%,50% 60%,38% 28%,58% 28%);filter:drop-shadow(0 0 12px rgba(255,255,255,.8));transition:opacity .28s ease-out,transform .09s ease-out}
@@ -1342,8 +1342,84 @@
     #site-search{ padding-right:3.8rem; }
   }
 </style>
+<style id="cookie-consent-css">
+  :root{
+    --cc-bg: rgba(10,10,30,.96);
+    --cc-border: rgba(255,215,0,.28);
+    --cc-gold: var(--gold, #d4af37);
+    --cc-cyan: var(--cyan, #00ccff);
+  }
 
-  </head>
+  /* Banner compatto “fluttuante” (bottom center) */
+  .cc-banner{
+    position: fixed; left: 50%; bottom: 1.25rem; transform: translateX(-50%);
+    width: min(92vw, 740px);
+    background: var(--cc-bg);
+    border: 1px solid var(--cc-border);
+    border-radius: 12px;
+    box-shadow: 0 1.2rem 2.4rem rgba(0,0,0,.45);
+    padding: .95rem 1rem;
+    display: none;
+    z-index: 2147483607; /* sopra tutto */
+    backdrop-filter: blur(.5rem);
+  }
+  .cc-banner.open{ display: grid; gap: .75rem; grid-template-columns: 1fr auto; align-items: start; }
+  .cc-banner .cc-title{ font-family:'Cinzel',serif; color: var(--cc-gold); margin: 0 0 .25rem; font-size: 1.05rem; }
+  .cc-banner .cc-text{ color:#dfe8ff; font-size:.92rem; line-height:1.35; opacity:.95; margin:0; }
+  .cc-actions{ display: flex; gap: .5rem; flex-wrap: wrap; align-items:center; justify-content:flex-end; }
+  .cc-btn{
+    border:1px solid var(--cc-border); border-radius:.55rem; padding:.48rem .75rem;
+    background: rgba(20,20,40,.78); color:#ffd86a; font-weight:700; cursor:pointer;
+  }
+  .cc-btn.solid{ background: linear-gradient(180deg,#ffd86a,#e3c45a); color:#0b1022; border-color: #ffd86a; }
+  .cc-link{ color: var(--cc-cyan); text-decoration: none; font-weight: 600; }
+
+  /* MODALE “Personalizza” */
+  .cc-modal{
+    position: fixed; inset: 0; display: none; place-items: center;
+    background: rgba(0,0,0,.55); z-index: 2147483608;
+  }
+  .cc-modal.open{ display: grid; }
+  .cc-card{
+    width: min(94vw, 720px); max-height: 80vh; overflow:auto;
+    background: var(--cc-bg);
+    border:1px solid var(--cc-border); border-radius:14px; padding:1rem 1rem 1.1rem;
+    box-shadow: 0 1.3rem 2.6rem rgba(0,0,0,.5);
+  }
+  .cc-card h3{ margin:.1rem 0 .2rem; color:var(--cc-gold); font-family:'Cinzel',serif; }
+  .cc-row{ display:grid; grid-template-columns: 1fr auto; gap:.5rem; align-items:center; padding:.55rem .5rem; border-bottom:1px solid rgba(255,215,0,.13); }
+  .cc-row:last-child{ border-bottom:0; }
+  .cc-desc{ font-size:.92rem; color:#cfe2ff; opacity:.95; margin:.15rem 0 0; }
+  .cc-switch{ display:flex; align-items:center; gap:.5rem; }
+  .cc-switch input{ width: 46px; height: 24px; appearance: none; background: #1e2746; border-radius: 999px; position: relative; outline: none; cursor: pointer; border:1px solid rgba(255,215,0,.22); }
+  .cc-switch input:checked{ background:#2a7dff; }
+  .cc-switch input::after{
+    content:""; position:absolute; left:3px; top:3px; width:18px; height:18px; border-radius:50%; background:#fff; transition:.2s;
+  }
+  .cc-switch input:checked::after{ transform: translateX(22px); }
+  .cc-badge{ font-size:.75rem; color:#0b1022; background: var(--cc-gold); border-radius:999px; padding:.08rem .5rem; font-weight:800; }
+  .cc-actions-row{ margin-top:.8rem; display:flex; gap:.6rem; justify-content:flex-end; flex-wrap:wrap; }
+  .cc-btn.outline{ background: rgba(20,20,40,.78); color:#ffd86a; }
+
+  /* FAB (biscottino) — lo muovo se “tocca” il box di Russell */
+  #cookie-fab{
+    position: fixed; left: 1.25rem; bottom: 1.25rem;
+    width: 48px; height: 48px; border-radius: 999px; border:1px solid var(--cc-border);
+    background: rgba(20,20,40,.78);
+    display: grid; place-items: center; cursor: pointer;
+    box-shadow: 0 .8rem 1.6rem rgba(0,0,0,.45);
+    z-index: 2147483606;
+    color:#ffde9a; font-size:1.25rem;
+  }
+  #cookie-fab:hover{ box-shadow: 0 0 .85rem rgba(255,215,0,.45); }
+
+  @media (max-width: 900px){
+    .cc-banner{ left: .75rem; right:.75rem; transform:none; width:auto; }
+  }
+</style>
+
+
+</head>
   <body>
     <!-- UI PATCH BLOCKS -->
     <div class="slider-vertical" aria-label="Galleria autori">
@@ -1589,7 +1665,7 @@
       <iframe src="https://www.youtube.com/embed/G_REgkOuQfw" title="Schopenhauer e Nietzsche (Hans-Georg Gadamer) - 3x4" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
     <div id="russell-box"><button id="russell-btn">🎵 "La maggior parte degli uomini preferirebbe morire piuttosto che pensare,  infatti è quello che fanno."<br><strong>– Bertrand Russell</strong></button></div>
-    <div id="russell-hint">Clicca per ascoltare la chitarra 🎸</div>
+  <div id="russell-hint">Clicca per ascoltare la chitarra 🎸</div>
     <audio id="russell-audio" preload="auto" src="https://casi0048.github.io/suoni/gitarra.mp3"></audio>
     <audio id="thunder-sound" preload="auto">
       <source src="https://casi0048.github.io/suoni/thunder-sound.mp3" type="audio/mpeg">
@@ -2847,7 +2923,172 @@ document.addEventListener('DOMContentLoaded', ()=>{
   sync();
 });
 </script>
+<!-- Cookie Banner -->
+<div id="cookie-banner" class="cc-banner" role="dialog" aria-live="polite" aria-label="Impostazioni cookie">
+  <div>
+    <h4 class="cc-title">🍪 Utilizziamo i cookie</h4>
+    <p class="cc-text">
+      Usiamo cookie necessari e, previo consenso, cookie per analisi e miglioramento.
+      Puoi modificare le scelte in qualsiasi momento. Leggi la <a class="cc-link" href="https://casi0048.github.io/pagine/privacy-policy.html" target="_blank" rel="noopener">Privacy & Cookie Policy</a>.
+    </p>
+  </div>
+  <div class="cc-actions">
+    <button type="button" class="cc-btn" id="cc-decline">Rifiuta</button>
+    <button type="button" class="cc-btn" id="cc-customize">Personalizza</button>
+    <button type="button" class="cc-btn solid" id="cc-accept">Accetta tutto</button>
+  </div>
+</div>
 
+<!-- Modale preferenze -->
+<div id="cookie-modal" class="cc-modal" aria-hidden="true" aria-label="Preferenze cookie">
+  <div class="cc-card" role="document">
+    <h3>Preferenze cookie</h3>
+    <p class="cc-text">Seleziona le categorie non necessarie che desideri attivare.</p>
+    <div class="cc-row">
+      <div>
+        <div><span class="cc-badge">Necessari</span> Sempre attivi</div>
+        <p class="cc-desc">Richiesti per il corretto funzionamento del sito.</p>
+      </div>
+      <div class="cc-switch"><input type="checkbox" checked disabled aria-label="Cookie necessari"></div>
+    </div>
+    <div class="cc-row">
+      <div>
+        <div>Preferenze</div>
+        <p class="cc-desc">Memorizzano scelte del sito (es. lingua).</p>
+      </div>
+      <div class="cc-switch"><input id="cc-pref" type="checkbox" aria-label="Cookie preferenze"></div>
+    </div>
+    <div class="cc-row">
+      <div>
+        <div>Statistiche</div>
+        <p class="cc-desc">Aiutano a capire come usi il sito (in forma aggregata).</p>
+      </div>
+      <div class="cc-switch"><input id="cc-analytics" type="checkbox" aria-label="Cookie statistiche"></div>
+    </div>
+    <div class="cc-row">
+      <div>
+        <div>Marketing</div>
+        <p class="cc-desc">Contenuti/embeds esterni che potrebbero impostare cookie.</p>
+      </div>
+      <div class="cc-switch"><input id="cc-marketing" type="checkbox" aria-label="Cookie marketing"></div>
+    </div>
+    <div class="cc-actions-row">
+      <button type="button" class="cc-btn outline" id="cc-cancel">Annulla</button>
+      <button type="button" class="cc-btn" id="cc-reject-all">Rifiuta tutto</button>
+      <button type="button" class="cc-btn solid" id="cc-save">Salva preferenze</button>
+    </div>
+  </div>
+</div>
 
-  </body>
+<!-- Biscottino (riapri preferenze) -->
+<button id="cookie-fab" aria-label="Preferenze cookie" title="Preferenze cookie">🍪</button>
+<script id="cookie-consent-js">
+(function(){
+  const LS_KEY = 'cookieConsent.v1';
+  const $ = (s,c=document)=>c.querySelector(s);
+
+  const banner = $('#cookie-banner');
+  const modal  = $('#cookie-modal');
+  const fab    = $('#cookie-fab');
+
+  const pref   = $('#cc-pref');
+  const anal   = $('#cc-analytics');
+  const mark   = $('#cc-marketing');
+
+  const btnAccept  = $('#cc-accept');
+  const btnDecline = $('#cc-decline');
+  const btnCustom  = $('#cc-customize');
+  const btnSave    = $('#cc-save');
+  const btnCancel  = $('#cc-cancel');
+  const btnRejectAll = $('#cc-reject-all');
+
+  function getStored(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY)) || null; }catch(e){ return null; }
+  }
+  function store(consent){
+    localStorage.setItem(LS_KEY, JSON.stringify({ ts: Date.now(), consent }));
+  }
+
+  // Iniettabile: qui caricherai librerie solo se consentito
+  function apply(consent){
+    // Esempio: se analytics true, carica GA (placeholder)
+    if (consent.analytics){
+      // loadAnalytics(); // <- qui il tuo script reale
+    }
+    // Se marketing false, puoi nascondere/“offuscare” embed terzi
+    // …
+  }
+
+  function openBanner(){ banner.classList.add('open'); }
+  function closeBanner(){ banner.classList.remove('open'); }
+  function openModal(){ modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); }
+  function closeModal(){ modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); }
+
+  // Prime impostazioni dall’archivio
+  const stored = getStored();
+  if (!stored){ openBanner(); }  // mostra il banner solo se manca consenso
+  else { apply(stored.consent); }
+
+  // Pulsanti banner
+  btnAccept.addEventListener('click', ()=>{
+    const consent = { preferences:true, analytics:true, marketing:true };
+    store(consent); apply(consent); closeBanner();
+  });
+  btnDecline.addEventListener('click', ()=>{
+    const consent = { preferences:false, analytics:false, marketing:false };
+    store(consent); apply(consent); closeBanner();
+  });
+  btnCustom.addEventListener('click', ()=>{
+    // precompila gli switch dalla memoria
+    const s = getStored();
+    pref.checked = !!(s && s.consent.preferences);
+    anal.checked = !!(s && s.consent.analytics);
+    mark.checked = !!(s && s.consent.marketing);
+    openModal();
+  });
+
+  // Pulsanti modale
+  btnSave.addEventListener('click', ()=>{
+    const consent = { preferences:pref.checked, analytics:anal.checked, marketing:mark.checked };
+    store(consent); apply(consent); closeModal(); closeBanner();
+  });
+  btnCancel.addEventListener('click', ()=> closeModal());
+  btnRejectAll.addEventListener('click', ()=>{
+    pref.checked = anal.checked = mark.checked = false;
+  });
+
+  // Biscottino: riapre la modale in ogni momento
+  fab.addEventListener('click', ()=>{
+    const s = getStored();
+    pref.checked = !!(s && s.consent.preferences);
+    anal.checked = !!(s && s.consent.analytics);
+    mark.checked = !!(s && s.consent.marketing);
+    openModal();
+  });
+
+  // Evita sovrapposizione con il box di Russell: se collide, sposta a destra
+  function avoidOverlap(){
+    const rb = document.getElementById('russell-box'); /* presente nel tuo file */ 
+    if(!rb) return;
+    const r1 = fab.getBoundingClientRect();
+    const r2 = rb.getBoundingClientRect();
+    const overlap = !(r1.right < r2.left || r1.left > r2.right || r1.bottom < r2.top || r1.top > r2.bottom);
+    if(overlap){
+      fab.style.left = 'auto';
+      fab.style.right = '1.25rem';
+    }else{
+      fab.style.right = 'auto';
+      fab.style.left  = '1.25rem';
+    }
+  }
+  avoidOverlap();
+  window.addEventListener('resize', avoidOverlap);
+  window.addEventListener('scroll', avoidOverlap);
+
+  // ESC chiude la modale
+  document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeModal(); });
+})();
+</script>
+
+ </body>
 </html>
