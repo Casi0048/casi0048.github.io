@@ -1,26 +1,44 @@
-// sw.js (versione pulita e compatibile)
-const CACHE = 'echi-v3';              // <— cambia versione quando aggiorni il sito
-const ASSETS = ['./'];                 // metti qui i file che vuoi in cache (per ora solo la home)
+// sw.js — cache smart
+const CACHE = 'echi-v4';     // <— incrementa a ogni release
+const ASSETS = [
+  './',                      // index
+  './styles/main.css',       // metti i tuoi file reali (se li usi)
+  './styles/animations.css',
+  './js/app.js',
+  './img/logo.svg'
+];
 
-self.addEventListener('install', function(e){
-  console.log('[SW] install');
-  e.waitUntil(caches.open(CACHE).then(function(c){ return c.addAll(ASSETS); }));
+self.addEventListener('install', e=>{
+  e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)));
   self.skipWaiting();
 });
 
-self.addEventListener('activate', function(e){
-  console.log('[SW] activate');
+self.addEventListener('activate', e=>{
   e.waitUntil(
-    caches.keys().then(function(keys){
-      return Promise.all(keys.filter(function(k){ return k !== CACHE; })
-                             .map(function(k){ return caches.delete(k); }));
-    })
+    caches.keys().then(keys =>
+      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
+    )
   );
   self.clients.claim();
 });
 
-self.addEventListener('fetch', function(e){
+self.addEventListener('fetch', e=>{
+  const url = new URL(e.request.url);
+
+  // Esempio: network-first per risorsa “dinamica”
+  if (url.pathname.endsWith('search-index.json')) {
+    e.respondWith(
+      fetch(e.request).then(r=>{
+        const copy = r.clone();
+        caches.open(CACHE).then(c=>c.put(e.request, copy));
+        return r;
+      }).catch(()=> caches.match(e.request))
+    );
+    return;
+  }
+
+  // Default: cache-first
   e.respondWith(
-    caches.match(e.request).then(function(r){ return r || fetch(e.request); })
+    caches.match(e.request).then(r => r || fetch(e.request))
   );
 });
