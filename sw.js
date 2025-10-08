@@ -1618,8 +1618,9 @@ nav.menu-desktop .mega-menu{ z-index: 2147483606 !important; pointer-events: aut
   .menu-btn, .ctrl-btn { min-width: 44px; min-height: 44px; }
   .timeline-content { padding: 15px; margin: 10px 5px; } /* opzionale, migliora leggibilità */
 }
-</style><script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script><script id="gt-init">
+</style><script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script><link crossorigin="True" href="https://translate.googleapis.com" rel="preconnect"/><link crossorigin="True" href="https://translate.google.com" rel="preconnect"/><script id="gt-init">
 window._gtReady = false;
+window._gtLoading = false;
 window.googleTranslateElementInit = function(){
   try{
     new google.translate.TranslateElement({
@@ -1630,9 +1631,23 @@ window.googleTranslateElementInit = function(){
     window._gtReady = true;
   }catch(e){ console.warn('GT init error', e); }
 };
+function loadGT(){
+  if (window._gtReady || window._gtLoading) return;
+  window._gtLoading = true;
+  var s = document.createElement('script');
+  s.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+  s.async = true;
+  s.onerror = function(){
+    window._gtLoading = false;
+    document.documentElement.setAttribute('data-gt-error','load-failed');
+    console.warn('Google Translate script blocked or failed to load.');
+  };
+  document.head.appendChild(s);
+}
+document.addEventListener('DOMContentLoaded', function(){ loadGT(); });
 </script><style id="gt-style">
-/* Keep Google Translate container in DOM but invisible (so the widget builds) */
-#google_translate_element { position:fixed; bottom:0; right:0; width:1px; height:1px; opacity:0; pointer-events:none; z-index:0; }
+/* Make failures visible to devs (optional) */
+html[data-gt-error="load-failed"] #customTranslate{ outline: 2px dashed #e57373; }
 </style></head>
 <body>
 <!-- UI PATCH BLOCKS -->
@@ -3474,62 +3489,58 @@ document.addEventListener("DOMContentLoaded", function(){
   window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
 }</script><script id="gt-wire-custom-select">
 (function(){
-  function setHtmlLang(code){
-    try{ document.documentElement.setAttribute('lang', code || 'it'); }catch(_){}
+  function setHtmlLang(code){ try{ document.documentElement.setAttribute('lang', code||'it'); }catch(_){ } }
+  function clearCookie(){
+    var past = 'Thu, 01 Jan 1970 00:00:00 GMT';
+    document.cookie = 'googtrans=; expires=' + past + '; path=/;';
+    document.cookie = 'googtrans=; expires=' + past + '; path=/; domain=' + location.hostname + ';';
+  }
+  function trySet(lang){
+    var sel = document.querySelector('#google_translate_element select');
+    if(!sel) return false;
+    var target = lang.toLowerCase();
+    for(var i=0;i<sel.options.length;i++){
+      var v = (sel.options[i].value || '').toLowerCase();
+      if(v===target || v.endsWith('-'+target) || v.indexOf(target)===0){
+        sel.selectedIndex = i;
+        sel.dispatchEvent(new Event('change'));
+        setHtmlLang(lang);
+        return true;
+      }
+    }
+    return false;
   }
   function applyLanguage(lang){
-    if(!lang || lang==='it'){
-      // clear cookie and reload
-      var past = 'Thu, 01 Jan 1970 00:00:00 GMT';
-      document.cookie = 'googtrans=; expires=' + past + '; path=/;';
-      document.cookie = 'googtrans=; expires=' + past + '; path=/; domain=' + location.hostname + ';';
-      setHtmlLang('it');
-      setTimeout(function(){ location.reload(); }, 50);
-      return;
-    }
-    function trySet(){
-      var sel = document.querySelector('#google_translate_element select');
-      if(!sel){ return false; }
-      var target = lang.toLowerCase();
-      for(var i=0;i<sel.options.length;i++){
-        var v = (sel.options[i].value || '').toLowerCase();
-        if(v===target || v.endsWith('-'+target) || v.indexOf(target)===0){
-          sel.selectedIndex = i;
-          sel.dispatchEvent(new Event('change'));
-          setHtmlLang(lang);
-          return true;
-        }
-      }
-      return false;
-    }
+    if(!lang || lang==='it'){ clearCookie(); setHtmlLang('it'); setTimeout(function(){ location.reload(); }, 50); return; }
+    // Ensure GT loaded, then set
+    loadGT();
     var tries = 0;
-    (function waitForGT(){
-      if(window._gtReady && trySet()){ return; }
-      if(tries++ < 50){ setTimeout(waitForGT, 160); }
+    (function wait(){
+      if(window._gtReady && trySet(lang)) return;
+      if(tries++ < 60) setTimeout(wait, 150);
+      else console.warn('GT not ready: giving up.');
     })();
   }
 
-  // Bind select
+  // Bind custom select
   document.addEventListener('change', function(e){
     if(e.target && e.target.id==='customTranslate'){
       applyLanguage(e.target.value);
     }
   }, {passive:true});
 
-  // On load, reflect cookie value into select and html[lang]
+  // Reflect cookie into select + html[lang]
   document.addEventListener('DOMContentLoaded', function(){
     var select = document.getElementById('customTranslate');
     if(!select) return;
-    var c = (document.cookie || '').split(';').map(s=>s.trim()).find(s=>s.startsWith('googtrans='));
-    if(!c){ select.value = 'it'; setHtmlLang('it'); return; }
+    var c = (document.cookie||'').split(';').map(s=>s.trim()).find(s=>s.startsWith('googtrans='));
+    if(!c){ select.value='it'; setHtmlLang('it'); return; }
     try{
-      var v = decodeURIComponent(c.split('=')[1]||''); // e.g. "/it/en"
-      var parts = v.split('/'); var lang = parts[2] || 'it';
+      var v = decodeURIComponent(c.split('=')[1]||'');
+      var lang = (v.split('/')[2]||'it');
       if(select.querySelector('option[value="'+lang+'"]')) select.value = lang;
       setHtmlLang(lang);
-    }catch(_){
-      select.value = 'it'; setHtmlLang('it');
-    }
+    }catch(_){ select.value='it'; setHtmlLang('it'); }
   });
 })();
 </script></body>
