@@ -1618,9 +1618,9 @@ nav.menu-desktop .mega-menu{ z-index: 2147483606 !important; pointer-events: aut
   .menu-btn, .ctrl-btn { min-width: 44px; min-height: 44px; }
   .timeline-content { padding: 15px; margin: 10px 5px; } /* opzionale, migliora leggibilità */
 }
-</style><script id="gt-init">
+</style><script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script><script id="gt-init">
 window._gtReady = false;
-function googleTranslateElementInit() {
+window.googleTranslateElementInit = function(){
   try{
     new google.translate.TranslateElement({
       pageLanguage: 'it',
@@ -1629,8 +1629,11 @@ function googleTranslateElementInit() {
     }, 'google_translate_element');
     window._gtReady = true;
   }catch(e){ console.warn('GT init error', e); }
-}
-</script><script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script></head>
+};
+</script><style id="gt-style">
+/* Keep Google Translate container in DOM but invisible (so the widget builds) */
+#google_translate_element { position:fixed; bottom:0; right:0; width:1px; height:1px; opacity:0; pointer-events:none; z-index:0; }
+</style></head>
 <body>
 <!-- UI PATCH BLOCKS -->
 <div aria-label="Galleria autori" class="slider-vertical">
@@ -1906,7 +1909,7 @@ function googleTranslateElementInit() {
 <option value="es">Español</option>
 <option value="pl">Polski</option>
 </select>
-<div aria-hidden="true" id="google_translate_element" style="position:absolute;left:-9999px;top:-9999px;height:0;width:0;overflow:hidden"></div>
+<div aria-hidden="true" id="google_translate_element" style="position:fixed; bottom:0; right:0; width:1px; height:1px; opacity:0; pointer-events:none; z-index:0;"></div>
 </div>
 <div class="search-container" role="search">
 <input aria-label="Cerca" id="site-search" placeholder="Cerca nel sito..." type="search"/>
@@ -3471,13 +3474,16 @@ document.addEventListener("DOMContentLoaded", function(){
   window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
 }</script><script id="gt-wire-custom-select">
 (function(){
+  function setHtmlLang(code){
+    try{ document.documentElement.setAttribute('lang', code || 'it'); }catch(_){}
+  }
   function applyLanguage(lang){
-    if(lang === 'it'){
-      // Clear cookies to restore original language and reload
+    if(!lang || lang==='it'){
+      // clear cookie and reload
       var past = 'Thu, 01 Jan 1970 00:00:00 GMT';
       document.cookie = 'googtrans=; expires=' + past + '; path=/;';
       document.cookie = 'googtrans=; expires=' + past + '; path=/; domain=' + location.hostname + ';';
-      // Some browsers need a tiny timeout to ensure cookie clears before reload
+      setHtmlLang('it');
       setTimeout(function(){ location.reload(); }, 50);
       return;
     }
@@ -3485,47 +3491,45 @@ document.addEventListener("DOMContentLoaded", function(){
       var sel = document.querySelector('#google_translate_element select');
       if(!sel){ return false; }
       var target = lang.toLowerCase();
-      var found = false;
       for(var i=0;i<sel.options.length;i++){
         var v = (sel.options[i].value || '').toLowerCase();
-        if(v === target || v.endsWith('-' + target) || v.indexOf(target) === 0){
+        if(v===target || v.endsWith('-'+target) || v.indexOf(target)===0){
           sel.selectedIndex = i;
           sel.dispatchEvent(new Event('change'));
-          found = true;
-          break;
+          setHtmlLang(lang);
+          return true;
         }
       }
-      return found;
+      return false;
     }
-    // If widget not ready yet, retry a few times
     var tries = 0;
     (function waitForGT(){
       if(window._gtReady && trySet()){ return; }
-      if(tries++ < 40){ setTimeout(waitForGT, 150); }
+      if(tries++ < 50){ setTimeout(waitForGT, 160); }
     })();
   }
 
+  // Bind select
   document.addEventListener('change', function(e){
-    var t = e.target;
-    if(t && t.id === 'customTranslate'){
-      applyLanguage(t.value);
+    if(e.target && e.target.id==='customTranslate'){
+      applyLanguage(e.target.value);
     }
   }, {passive:true});
 
-  // Restore select to current cookie (if present) so it reflects the active language on load
+  // On load, reflect cookie value into select and html[lang]
   document.addEventListener('DOMContentLoaded', function(){
+    var select = document.getElementById('customTranslate');
+    if(!select) return;
+    var c = (document.cookie || '').split(';').map(s=>s.trim()).find(s=>s.startsWith('googtrans='));
+    if(!c){ select.value = 'it'; setHtmlLang('it'); return; }
     try{
-      var c = document.cookie.split(';').map(s=>s.trim()).find(s=>s.startsWith('googtrans='));
-      var select = document.getElementById('customTranslate');
-      if(!select) return;
-      if(!c){ select.value = 'it'; return; }
-      var val = decodeURIComponent(c.split('=')[1]||''); // e.g., "/it/en"
-      var parts = val.split('/');
-      var lang = parts[2] || 'it';
-      if(select.querySelector('option[value="'+lang+'"]')){
-        select.value = lang;
-      }
-    }catch(_){}
+      var v = decodeURIComponent(c.split('=')[1]||''); // e.g. "/it/en"
+      var parts = v.split('/'); var lang = parts[2] || 'it';
+      if(select.querySelector('option[value="'+lang+'"]')) select.value = lang;
+      setHtmlLang(lang);
+    }catch(_){
+      select.value = 'it'; setHtmlLang('it');
+    }
   });
 })();
 </script></body>
