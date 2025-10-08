@@ -398,7 +398,7 @@
       50%, 100% { opacity: 0; }
       }
       .exploding-text {
-      margin: 2rem auto;
+      margin: .35rem auto;
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.25rem;
       font-style: italic;
@@ -1617,10 +1617,7 @@ nav.menu-desktop .mega-menu{ z-index: 2147483606 !important; pointer-events: aut
   nav.menu-desktop li.dropdown:hover ~ .right-box,
   nav.menu-desktop li.dropdown:focus-within ~ .right-box{ pointer-events: none !important; }
 }
-</style>
-
-</head>
-
+</style></head>
 <body>
 <!-- UI PATCH BLOCKS -->
 <div aria-label="Galleria autori" class="slider-vertical">
@@ -3456,100 +3453,7 @@ document.addEventListener("DOMContentLoaded", function(){
     setInterval(next, PERIOD);
   });
 })();
-</script><script id="ui-backstop-final-2025-10-08">
-(function(){
-  function ready(fn){ if(document.readyState!=='loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
-  ready(function(){
-    // Clear buttons
-    function ensureClear(input){
-      if(!input) return;
-      var parent = input.parentElement || document.body;
-      if (getComputedStyle(parent).position === 'static') parent.style.position = 'relative';
-      var btn = parent.querySelector('.clear-search');
-      if(!btn){
-        btn = document.createElement('button');
-        btn.type='button'; btn.className='clear-search'; btn.setAttribute('aria-label','Cancella');
-        btn.style.position='absolute'; btn.style.right='.55rem'; btn.style.top='50%'; btn.style.transform='translateY(-50%)';
-        btn.style.width='22px'; btn.style.height='22px'; btn.style.border='0'; btn.style.borderRadius='50%';
-        btn.style.display='none'; btn.style.alignItems='center'; btn.style.justifyContent='center';
-        btn.style.background='rgba(255,255,255,.12)'; btn.style.boxShadow='inset 0 0 0 1px rgba(255,215,0,.25)';
-        btn.style.color='#ffd86a'; btn.style.fontWeight='700'; btn.style.cursor='pointer'; btn.style.zIndex='3004';
-        btn.textContent='✕';
-        parent.appendChild(btn);
-      }
-      function sync(){ btn.style.display = input.value ? 'flex' : 'none'; }
-      input.addEventListener('input', sync); input.addEventListener('change', sync); input.addEventListener('search', sync);
-      input.addEventListener('keydown', function(e){ if(e.key==='Escape'){ input.value=''; input.dispatchEvent(new Event('input',{bubbles:true})); sync(); }});
-      btn.addEventListener('click', function(){ input.value=''; input.dispatchEvent(new Event('input',{bubbles:true})); input.focus(); sync(); });
-      sync();
-    }
-    ensureClear(document.getElementById('site-search'));
-    ensureClear(document.getElementById('dict-q'));
+</script>
 
-    // Lens focus
-    document.querySelectorAll('.search-container .search-icon').forEach(function(lens){
-      lens.style.pointerEvents='auto';
-      lens.addEventListener('click', function(){
-        var box = lens.closest('.search-container'); var input = box && box.querySelector('input[type="search"], input[type="text"]');
-        if(input){ input.focus(); try{ input.setSelectionRange(0, input.value.length);}catch(e){} input.dispatchEvent(new Event('input',{bubbles:true})); }
-      }, {passive:true});
-    });
-
-    // Thunder hard toggle
-    var btn = document.getElementById('btn-thunder');
-    var a   = document.getElementById('thunder-sound');
-    if(btn && a){
-      function label(on){
-        var lab = btn.querySelector('.label-onoff'); if(!lab){ lab=document.createElement('span'); lab.className='label-onoff'; lab.style.marginLeft='.5rem'; btn.appendChild(lab); }
-        lab.textContent = on ? 'Tuono: ON' : 'Tuono: OFF';
-        btn.setAttribute('aria-pressed', on?'true':'false');
-        btn.classList.toggle('playing', !!on);
-      }
-      label(false);
-      btn.addEventListener('click', function(e){
-        e.preventDefault();
-        if(!a.paused && a.currentTime>0 && !a.ended){
-          a.pause(); a.currentTime=0; label(false);
-        }else{
-          try{ a.muted=false; a.volume=1.0; a.playbackRate=1.0; a.currentTime=0; a.play().catch(function(){}); label(true);}catch(_){}
-        }
-      }, true); // capture
-      a.addEventListener('ended', function(){ label(false); });
-    }
-
-    // Explode
-    var el = document.getElementById('exploding');
-    var be = document.getElementById('btn-explode') || document.getElementById('explode-btn');
-    function makeChars(target){
-      if(!target || target.__charsBuilt) return;
-      var text = target.textContent; target.textContent=''; target.__charsBuilt = true;
-      for (var i=0;i<text.length;i++){ var s=document.createElement('span'); s.className='char'; s.textContent=text[i];
-        s.style.display='inline-block'; s.style.transition='transform 900ms cubic-bezier(.2,1,.2,1), opacity 900ms'; target.appendChild(s);
-      }
-    }
-    function boom(target){
-      if(!target) return; makeChars(target);
-      var chars = target.querySelectorAll('.char');
-      for (var i=0;i<chars.length;i++){
-        var dx=(Math.random()*220-110).toFixed(1)+'px', dy=(Math.random()*160-80).toFixed(1)+'px', rot=(Math.random()*120-60).toFixed(1)+'deg';
-        chars[i].style.opacity='0'; chars[i].style.transform='translate('+dx+','+dy+') rotate('+rot+') scale(.85)';
-      }
-      var ex = document.getElementById('explosionSound'); if(ex){ try{ ex.currentTime=0; ex.volume=1.0; ex.muted=false; ex.play().catch(function(){});}catch(_){ } }
-      setTimeout(function(){ for (var i=0;i<chars.length;i++){ chars[i].style.opacity=''; chars[i].style.transform=''; } }, 1100);
-    }
-    if(el){ el.style.cursor='pointer'; el.addEventListener('click', function(e){ e.preventDefault(); boom(el); }, true); }
-    if(be){ be.addEventListener('click', function(e){ e.preventDefault(); boom(el||document.getElementById('exploding')); }, true); }
-
-    // Media unlock once
-    function unlockOnce(){
-      [document.getElementById('thunder-sound'), document.getElementById('explosionSound')].forEach(function(a){
-        if(!a) return; try{ a.muted=false; a.volume=1.0; a.play().then(function(){ a.pause(); a.currentTime=0; }).catch(function(){});}catch(_){}
-      });
-      window.removeEventListener('pointerdown', unlockOnce, true);
-      window.removeEventListener('keydown', unlockOnce, true);
-    }
-    window.addEventListener('pointerdown', unlockOnce, true);
-    window.addEventListener('keydown', unlockOnce, true);
-  });
-})();</script></body>
+</body>
 </html>
