@@ -143,52 +143,91 @@
       font-size: 0.95rem;
       cursor: pointer;
       }
-      .search-container {
-      position: relative;
-      display: flex;
-      align-items: center;
-      }
-      .search-container input {
-      width: 16.25rem;
-      height: 2.5rem;
-      line-height: 2.5rem;
-      padding: 0 3.6rem 0 3rem;
-      background: rgba(20, 20, 40, .78);
-      border: 1px solid var(--menu-border);
-      border-radius: 0.38rem;
-      color: var(--text-light);
-      font-weight: 300;
-      font-size: .95rem;
-      outline: none;
-      transition: .25s;
-      box-sizing: border-box;
-      }
-      .search-container input:focus {
-      border-color: rgba(255, 215, 0, .5);
-      box-shadow: 0 0 0.75rem rgba(255, 215, 0, .18);
-      }
-      .search-icon {
-      position: absolute;
-      left: .6rem;
-      font-size: .95rem;
-      color: rgba(255, 215, 0, .85);
-      }
-      .ctrl-btn {
-      border: 1px solid var(--menu-border);
-      background: rgba(20, 20, 40, .75);
-      color: var(--text-light);
-      padding: .45rem .6rem;
-      border-radius: 0.38rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: .2s;
-      font-family: 'Montserrat', sans-serif;
-      }
-      .ctrl-btn:hover {
-      color: #fff;
-      box-shadow: 0 0 0.62rem rgba(255, 215, 0, .25);
-      }
-      /* Menu principale */
+     /* === SEARCH: lente a sinistra, X a destra (solo CSS) === */
+.search-container{
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  overflow: visible;
+  z-index: 3001;
+}
+
+/* Input con spazio per lente (sx) e X (dx) */
+.search-container input[type="search"],
+.search-container input[type="text"]{
+  width: 16.25rem;
+  height: 2.5rem;
+  padding-left: 2.4rem;   /* spazio lente a sinistra */
+  padding-right: 2.6rem;  /* spazio X a destra */
+  background: rgba(20,20,40,.78);
+  border: 1px solid var(--menu-border);
+  border-radius: 0.38rem;
+  color: var(--text-light);
+  font: 300 .95rem/2.5rem 'Montserrat', sans-serif;
+  outline: none;
+  transition: border-color .25s, box-shadow .25s;
+  box-sizing: border-box;
+}
+.search-container input:focus{
+  border-color: rgba(255,215,0,.5);
+  box-shadow: 0 0 .75rem rgba(255,215,0,.18);
+}
+
+/* Lente: incollata al bordo sinistro allineata verticalmente */
+.search-container .search-icon{
+  position: absolute;
+  left: -15.70rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.05rem;
+  line-height: 1;
+  color: rgba(255,215,0,.90);
+  opacity: .95;
+  pointer-events: none;    /* decorativa: non blocca i clic sull'input */
+  z-index: 3003;
+}
+/* Fallback se la <i> è vuota (niente FA) */
+.search-container .search-icon:empty::before{
+  content: "🔎";
+  display: inline-block;
+  transform: translateY(1px);
+}
+
+/* X nativa di Safari: resa visibile e “oro” */
+.search-container input[type="search"]::-webkit-search-cancel-button{
+  -webkit-appearance: none;
+  height: 18px; width: 18px; opacity: 1;
+  background-color: var(--gold, #d4af37);
+  border-radius: 50%;
+  -webkit-mask: url('data:image/svg+xml;utf8,\
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">\
+  <path d="M6 6L18 18M6 18L18 6" stroke="white" stroke-width="3" stroke-linecap="round"/>\
+</svg>') no-repeat center / 100% 100%;
+}
+
+/* (Se nel markup c’è anche un bottone .clear-search) – stesso allineamento della X nativa */
+.search-container .clear-search{
+  position: absolute;
+  right: 1.95rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px; height: 22px;
+  display: none;                 /* mostralo con la tua logica o tienilo sempre visibile */
+  align-items: center; justify-content: center;
+  border: 0; border-radius: 50%;
+  background: rgba(255,255,255,.12);
+  box-shadow: inset 0 0 0 1px rgba(255,215,0,.25);
+  color: var(--gold, #d4af37);
+  font-weight: 700; cursor: pointer;
+  z-index: 3004;
+}
+
+/* Se vuoi farlo apparire senza JS quando c’è testo (richiede l’HTML: input prima, poi .clear-search) */
+.search-container input:not(:placeholder-shown) ~ .clear-search,
+.search-container input:focus ~ .clear-search{
+  display: flex;
+}
+
       .menu-container {
       position: fixed;
       top: 4.5rem;
@@ -302,7 +341,7 @@
       }
       .welcome-section {
       text-align: center;
-      padding: .5rem 0;
+      padding: 2rem 0;
       }
       .welcome-title {
       font-family: "Cinzel", cursive;
@@ -314,7 +353,7 @@
       background-clip: text;
       filter: drop-shadow(0 0 1.12rem rgba(0, 220, 255, 0.75)) drop-shadow(0 0 1.88rem rgba(0, 180, 255, 0.65));
       animation: titlePulse 6s infinite;
-      margin-bottom: .1rem;
+      margin-bottom: 1rem;
       }
       @keyframes titlePulse {
       0%, 100% { transform: scale(1); }
@@ -326,7 +365,7 @@
       margin-bottom: 2rem;
       }
       .typing-wrap {
-      margin: 1.5rem 0;
+      margin: 2rem 0;
       display: flex;
       justify-content: center;
       min-height: 3.2em;
@@ -359,7 +398,7 @@
       50%, 100% { opacity: 0; }
       }
       .exploding-text {
-      margin: .1rem auto;
+      margin: 2rem auto;
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.25rem;
       font-style: italic;
@@ -497,16 +536,16 @@
       .floating-quotes {
       position: fixed;
       bottom: 20px;
-      right: 2px;
-      z-index: 1;
-      max-width: 30px;
+      right: 20px;
+      z-index: 100;
+      max-width: 300px;
       }
       .quote-bubble {
       background: rgba(10, 10, 30, 0.9);
       border: 1px solid var(--menu-border);
       border-radius: 15px;
       padding: 15px;
-      margin-bottom: 25px;
+      margin-bottom: 10px;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
       transform: translateX(100%);
       opacity: 0;
@@ -765,9 +804,9 @@
       .ctrl-btn{display:inline-flex;align-items:center;justify-content:center;min-height:2rem;padding:.38rem .62rem;font-weight:600;cursor:pointer;border-radius:.5rem;border:1px solid rgba(255,215,0,.25);background:rgba(20,20,40,.7);color:#ffd86a}
       .audio-player{position:fixed;left:3.25rem;top:40.38rem;z-index:2147483601;display:flex;align-items:center;gap:.62rem;padding:.5rem .62rem;background:rgba(10,10,30,.8);border:1px solid rgba(255,215,0,.25);border-radius:.62rem;opacity:1;transform:none}
       .audio-title{font-weight:600}.audio-player .controls{display:flex;align-items:center;gap:.62rem}.audio-player input[type=range]{width:7.5rem}
-      .articles-blob{position:fixed;right:3.25rem;top:9.5rem;width:20rem;z-index:2147483600;background:radial-gradient(120% 150% at 100% 0%,rgba(50,120,255,.16),rgba(10,10,30,.82));border:1px solid rgba(255,255,255,.08);border-radius:1rem;padding:.88rem 1rem;box-shadow:0 .94rem 1.88rem rgba(0,0,0,.35)}
+      .articles-blob{position:fixed;right:1.25rem;top:9.5rem;width:20rem;z-index:2147483600;background:radial-gradient(120% 150% at 100% 0%,rgba(50,120,255,.16),rgba(10,10,30,.82));border:1px solid rgba(255,255,255,.08);border-radius:1rem;padding:.88rem 1rem;box-shadow:0 .94rem 1.88rem rgba(0,0,0,.35)}
       .articles-blob h3{margin:0 0 .5rem;font-family:'Cinzel',serif;color:#ffd86a}.articles-blob ul{list-style:none;margin:0;padding:0}.articles-blob li{margin:.25rem 0}.articles-blob a{color:#cfe8ff;text-decoration:none;font-weight:700}.articles-blob a:hover{color:#fff;text-decoration:underline}
-      .right-embed{position:fixed;right:3.25rem;top:40rem;width:20rem;z-index:2147483600;background:rgba(10,10,30,.8);border:1px solid rgba(255,215,0,.25);border-radius:.75rem;padding:.5rem}
+      .right-embed{position:fixed;right:1.25rem;top:40rem;width:20rem;z-index:2147483600;background:rgba(10,10,30,.8);border:1px solid rgba(255,215,0,.25);border-radius:.75rem;padding:.5rem}
       .right-embed iframe{width:100%;height:264px;display:block;border:0}
       #russell-box{position:fixed;bottom:8vh;left:2rem;z-index:2147483602;background:rgba(10,10,30,.8);border:1px solid rgba(255,215,0,.25);border-radius:.62rem;padding:.62rem .75rem;max-width:24rem;box-shadow:0 .5rem 1.12rem rgba(0,0,0,.35)}
       #russell-btn{all:unset;cursor:pointer;display:block;color:#ffd86a}#russell-hint{position:fixed;bottom:19vh;left:3.5rem;z-index:2;color:#cfe8ff;opacity:.85;font-style:italic}
@@ -787,7 +826,7 @@
 <style id="search-panel-css">
       .search-container{position:relative;display:inline-flex;align-items:center;gap:.4rem}
       .search-container .search-icon{cursor:pointer}
-      #search-panel{position:fixed;inset:10% 12% auto 12%;min-height:16rem;max-height:70vh;background:rgba(10,10,30,.96);
+      #search-panel{position:fixed;inset:12% 12% auto 12%;min-height:16rem;max-height:70vh;background:rgba(10,10,30,.96);
       border:1px solid rgba(255,215,0,.28);border-radius:.75rem;box-shadow:0 1rem 2rem rgba(0,0,0,.45);padding:.75rem;z-index:2147483605;display:none}
       #search-panel.open{display:block}
       #search-panel .sp-head{display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem}
@@ -799,7 +838,7 @@
     </style>
 <style id="right-links-css">
       .right-box{
-      position:fixed; right:3.25rem; width:20rem; z-index:2147483600;
+      position:fixed; right:1.25rem; width:20rem; z-index:2147483600;
       background: rgba(10,10,30,.86); border:1px solid rgba(255,215,0,.25);
       border-radius:.75rem; padding:.62rem .75rem; box-shadow:0 .9rem 1.8rem rgba(0,0,0,.34)
       }
@@ -1451,7 +1490,7 @@
 </style>
 <style id="floating-quotes-v2-css">
 /* === Floating Quotes v2 (robust) === */
-.floating-quotes{ position:fixed; bottom:300px; right:20px; z-index:2000; max-width: 60px; pointer-events:auto; }
+.floating-quotes{ position:fixed; bottom:20px; right:20px; z-index:2000; max-width: 360px; pointer-events:auto; }
 .floating-quotes .quote-bubble{
   opacity: 0;
   transform: translateX(18px);
@@ -1469,9 +1508,6 @@
 @media (max-width: 480px){
   .floating-quotes{ right:12px; bottom:12px; max-width: 280px; }
 }
-</style><style id="floating-quotes-force-show">
-/* Force show floating quotes even if hidden by older media rules */
-.floating-quotes{ display:block !important; visibility:visible !important; opacity:1 !important; z-index:2147483606 !important; }
 </style><style id="quote-slide-css">
 /* === Quote slide to center (restore) === */
 #quote-runner{
@@ -1545,64 +1581,46 @@
 .timeline-container .timeline-item.left  { left: 0 !important; }
 .timeline-container .timeline-item.right { left: 50% !important; }
 @media (max-width: 980px){ .timeline-container .timeline-item{ width: 100%; left: 0 !important; } }
-</style><style id="floating-quotes-clickthrough-final">
-/* === FINAL: make floating-quotes fully click-through and not topmost === */
-.floating-quotes{
-  pointer-events: none !important;
-  z-index: 999 !important;       /* sotto i layer interattivi */
-  max-width: 360px !important;
-  max-height: 70vh !important;
+</style><style id="ultimate-clickthrough-zfix-2025-10-08">
+/* === Ultimate: quotes must not block clicks; floating list hidden === */
+#quote-runner, #quote-runner *{ pointer-events:none !important; }
+#quote-runner{ z-index: 2200 !important; }
+.floating-quotes{ display:none !important; pointer-events:none !important; z-index:1100 !important; }
+</style><style id="search-lens-pointer-2025-10-08">
+/* Ensure search lens is clickable above decorative layers */
+.search-container .search-icon{ pointer-events:auto !important; cursor:pointer; position:relative; z-index:3003; }
+.search-container{ position: relative !important; }
+</style><style id="quote-runner-css-solid-2025-10-08">
+#quote-runner{ position:fixed; left:50%; bottom:260px; transform:translateX(-50%); z-index:3000; pointer-events:none; max-width:min(86vw,680px); }
+#quote-runner .quote-bubble{ position:relative; opacity:0; margin:0; backdrop-filter: blur(5px); will-change: transform, opacity; }
+#quote-runner .quote-bubble .quote-text{ font-size:1.05rem; line-height:1.4; }
+#quote-runner .quote-bubble .quote-author{ margin-top:.25rem; }
+#quote-runner .slide-in{ animation:quoteSlideInOut 9s cubic-bezier(.2,1,.2,1) forwards; }
+@keyframes quoteSlideInOut{
+  0%{ transform:translateX(55vw); opacity:0; }
+  18%{ opacity:1; }
+  40%{ transform:translateX(0); opacity:1; }
+  70%{ transform:translateX(0); opacity:1; }
+  100%{ transform:translateX(-55vw); opacity:0; }
 }
-.floating-quotes *{
-  pointer-events: none !important;
+@media(max-width:600px){
+  #quote-runner{ bottom:160px; }
+  #quote-runner .quote-bubble .quote-text{ font-size:1rem; }
 }
-</style><style id="nav-zfix-2025-10-08">
-/* === NAV/SUBMENU Z-LAYER NORMALIZATION (2025-10-08) === */
-header, .site-header, .topbar, .top-bar, header .menu-desktop, header nav, .navbar, nav {
-  position: relative !important;
-  z-index: 5000 !important;
+</style><style id="zfix-submenu-overlays-2025-10-08">
+/* === Z-INDEX FIX: keep submenu above right-side boxes (articles/dictionary/encyclopedia) === */
+.menu-container{ z-index: 2147483604 !important; } /* above .articles-blob/.right-embed (3600) */
+nav.menu-desktop, nav.menu-desktop ul, nav.menu-desktop li{ position: relative; z-index: 2147483605 !important; }
+nav.menu-desktop .mega-menu{ z-index: 2147483606 !important; pointer-events: auto !important; }
+/* Ensure right boxes don't steal hover on desktop when menu is open */
+@media (min-width: 981px){
+  nav.menu-desktop li.dropdown:hover ~ .right-box,
+  nav.menu-desktop li.dropdown:focus-within ~ .right-box{ pointer-events: none !important; }
 }
-/* Submenu / mega menu always above content */
-nav .mega-menu, .mega-menu, nav .sub-menu, .sub-menu, nav ul ul, .menu > li > ul {
-  z-index: 6000 !important;
-}
-/* Keep decorative layers below nav */
-#quote-runner{ z-index: 1200 !important; pointer-events: none !important; }
-.audio-player{ z-index: 1100 !important; }
-.articles-blob{ z-index: 1000 !important; }
+</style>
 
-/* Safety: ensure dropdowns escape clipping if some ancestor has overflow hidden */
-header, .site-header, .topbar, .top-bar, .navbar{ overflow: visible !important; }
-</style><style id="submenu-raise-over-dictionary-encyclopedia-2025-10-08">
-/* === Ensure submenus are above Dictionary/Encyclopedia blocks === */
-nav, header, .navbar, .main-nav{ position: relative !important; z-index: 7000 !important; }
-nav .mega-menu, .mega-menu, nav .sub-menu, .sub-menu, nav ul ul, .menu > li > ul{ position: absolute !important; z-index: 8000 !important; }
+</head>
 
-/* Lower z-index for dictionary/encyclopedia blocks */
-[class*="dizion"], [id*="dizion"], [class*="encicl"], [id*="encicl"], [class*="dictionary"], [id*="dictionary"], [class*="encycl"], [id*="encycl"] {
-  z-index: 1200 !important;
-}
-/* Safety: avoid transforms/filters creating stacking contexts over menus */
-[class*="dizion"], [id*="dizion"], [class*="encicl"], [id*="encicl"], [class*="dictionary"], [id*="dictionary"], [class*="encycl"], [id*="encycl"] {
-  transform: none !important;
-  filter: none !important;
-  perspective: none !important;
-  will-change: auto !important;
-}
-</style><style id="submenu-raise-generic-2025-10-08">
-/* === Raise submenu over content (generic) === */
-nav, header, .navbar, .main-nav{ position: relative !important; z-index: 7000 !important; }
-nav .mega-menu, .mega-menu, nav .sub-menu, .sub-menu, nav ul ul, .menu > li > ul{ position: absolute !important; z-index: 8000 !important; }
-/* Lower likely dictionary/encyclopedia sections */
-[class*="dizion"], [id*="dizion"], [class*="encicl"], [id*="encicl"], [class*="encycl"], [id*="encycl"], [class*="dict"], [id*="dict"]{
-  z-index: 1200 !important;
-}
-</style><style id="iep-linkbox-zfix-2025-10-08">
-/* === Enciclopedia (IEP) box layering fix === */
-#iep-linkbox.right-box{
-  z-index: 1300 !important; /* sotto ai sub-menu (8000) e sopra ai contenuti base */
-}
-</style></head>
 <body>
 <!-- UI PATCH BLOCKS -->
 <div aria-label="Galleria autori" class="slider-vertical">
@@ -2350,12 +2368,7 @@ nav .mega-menu, .mega-menu, nav .sub-menu, .sub-menu, nav ul ul, .menu > li > ul
 </section>
 </main>
 <!-- Citazioni filosofiche fluttuanti -->
-<div class="floating-quotes">
-<div class="quote-bubble">
-<div class="quote-text">"Conosci te stesso"</div>
-<div class="quote-author">- Socrate</div>
-</div>
-<div class="quote-bubble"><div class="quote-text">“So di non sapere”</div><div class="quote-author">— Socrate</div></div><div class="quote-bubble"><div class="quote-text">“Una vita senza ricerca non è degna di essere vissuta”</div><div class="quote-author">— Socrate</div></div><div class="quote-bubble"><div class="quote-text">“La filosofia comincia con la meraviglia”</div><div class="quote-author">— Platone</div></div><div class="quote-bubble"><div class="quote-text">“La bellezza è lo splendore del vero”</div><div class="quote-author">— Platone</div></div><div class="quote-bubble"><div class="quote-text">“Siamo ciò che facciamo ripetutamente. L'eccellenza non è un atto ma un'abitudine”</div><div class="quote-author">— Aristotele</div></div><div class="quote-bubble"><div class="quote-text">“La felicità dipende da noi stessi”</div><div class="quote-author">— Aristotele</div></div><div class="quote-bubble"><div class="quote-text">“Nulla è nell'intelletto che prima non sia passato dai sensi”</div><div class="quote-author">— Aristotele</div></div><div class="quote-bubble"><div class="quote-text">“Tutto scorre”</div><div class="quote-author">— Eraclito</div></div><div class="quote-bubble"><div class="quote-text">“Il carattere è destino”</div><div class="quote-author">— Eraclito</div></div><div class="quote-bubble"><div class="quote-text">“L'uomo è misura di tutte le cose”</div><div class="quote-author">— Protagora</div></div><div class="quote-bubble"><div class="quote-text">“Vivere secondo natura”</div><div class="quote-author">— Zenone di Cizio</div></div><div class="quote-bubble"><div class="quote-text">“Non sono le cose che ci turbano, ma le opinioni che abbiamo su di esse”</div><div class="quote-author">— Epitteto</div></div><div class="quote-bubble"><div class="quote-text">“Non è la morte che dobbiamo temere, ma il non cominciare mai a vivere”</div><div class="quote-author">— Marco Aurelio</div></div><div class="quote-bubble"><div class="quote-text">“La vita è opinione”</div><div class="quote-author">— Marco Aurelio</div></div><div class="quote-bubble"><div class="quote-text">“La felicità consiste nel desiderare ciò che si ha”</div><div class="quote-author">— Seneca</div></div><div class="quote-bubble"><div class="quote-text">“Non esiste vento favorevole per il marinaio che non sa dove andare”</div><div class="quote-author">— Seneca</div></div><div class="quote-bubble"><div class="quote-text">“Il destino guida chi lo segue e trascina chi si oppone”</div><div class="quote-author">— Seneca</div></div><div class="quote-bubble"><div class="quote-text">“Vivi nascosto”</div><div class="quote-author">— Epicuro</div></div><div class="quote-bubble"><div class="quote-text">“Ama e fa' ciò che vuoi”</div><div class="quote-author">— Sant'Agostino</div></div><div class="quote-bubble"><div class="quote-text">“La fede cerca l'intelligenza”</div><div class="quote-author">— Anselmo d'Aosta</div></div><div class="quote-bubble"><div class="quote-text">“Contemplata aliis tradere”</div><div class="quote-author">— Tommaso d'Aquino</div></div><div class="quote-bubble"><div class="quote-text">“Non moltiplicare gli enti senza necessità”</div><div class="quote-author">— Guglielmo di Ockham</div></div><div class="quote-bubble"><div class="quote-text">“È meglio essere temuti che amati, se non si può essere entrambi”</div><div class="quote-author">— Niccolò Machiavelli</div></div><div class="quote-bubble"><div class="quote-text">“Cogito, ergo sum”</div><div class="quote-author">— Cartesio</div></div><div class="quote-bubble"><div class="quote-text">“Il cuore ha le sue ragioni che la ragione non conosce”</div><div class="quote-author">— Blaise Pascal</div></div><div class="quote-bubble"><div class="quote-text">“La mente è una tabula rasa”</div><div class="quote-author">— John Locke</div></div><div class="quote-bubble"><div class="quote-text">“Esse est percipi”</div><div class="quote-author">— George Berkeley</div></div><div class="quote-bubble"><div class="quote-text">“La bellezza delle cose esiste nella mente di chi le contempla”</div><div class="quote-author">— David Hume</div></div><div class="quote-bubble"><div class="quote-text">“Due cose riempiono l’animo: il cielo stellato sopra di me e la legge morale dentro di me”</div><div class="quote-author">— Immanuel Kant</div></div><div class="quote-bubble"><div class="quote-text">“Agisci in modo da trattare l’umanità sempre come fine e mai semplicemente come mezzo”</div><div class="quote-author">— Immanuel Kant</div></div><div class="quote-bubble"><div class="quote-text">“Quel che è reale è razionale”</div><div class="quote-author">— G.W.F. Hegel</div></div><div class="quote-bubble"><div class="quote-text">“La vita oscilla tra la noia e il dolore”</div><div class="quote-author">— Arthur Schopenhauer</div></div><div class="quote-bubble"><div class="quote-text">“La vita dev’essere compresa all’indietro, ma va vissuta in avanti”</div><div class="quote-author">— Søren Kierkegaard</div></div><div class="quote-bubble"><div class="quote-text">“Chi ha un perché per vivere può sopportare quasi ogni come”</div><div class="quote-author">— Friedrich Nietzsche</div></div><div class="quote-bubble"><div class="quote-text">“Diventa ciò che sei”</div><div class="quote-author">— Friedrich Nietzsche</div></div><div class="quote-bubble"><div class="quote-text">“Non esistono fatti, solo interpretazioni”</div><div class="quote-author">— Friedrich Nietzsche</div></div><div class="quote-bubble"><div class="quote-text">“La libertà di ciascuno finisce dove comincia quella dell’altro”</div><div class="quote-author">— John Stuart Mill</div></div><div class="quote-bubble"><div class="quote-text">“La massima felicità del maggior numero”</div><div class="quote-author">— Jeremy Bentham</div></div><div class="quote-bubble"><div class="quote-text">“La verità è ciò che conviene credere”</div><div class="quote-author">— William James</div></div><div class="quote-bubble"><div class="quote-text">“La realtà è ciò su cui si può convenire”</div><div class="quote-author">— Charles S. Peirce</div></div><div class="quote-bubble"><div class="quote-text">“L’educazione è la vita stessa”</div><div class="quote-author">— John Dewey</div></div><div class="quote-bubble"><div class="quote-text">“Di ciò di cui non si può parlare si deve tacere”</div><div class="quote-author">— Ludwig Wittgenstein</div></div><div class="quote-bubble"><div class="quote-text">“Il significato è l’uso”</div><div class="quote-author">— Ludwig Wittgenstein</div></div><div class="quote-bubble"><div class="quote-text">“Il mondo è tutto ciò che accade”</div><div class="quote-author">— Ludwig Wittgenstein</div></div><div class="quote-bubble"><div class="quote-text">“Il linguaggio è la casa dell’essere”</div><div class="quote-author">— Martin Heidegger</div></div><div class="quote-bubble"><div class="quote-text">“La banalità del male”</div><div class="quote-author">— Hannah Arendt</div></div><div class="quote-bubble"><div class="quote-text">“L’esistenza precede l’essenza”</div><div class="quote-author">— Jean‑Paul Sartre</div></div><div class="quote-bubble"><div class="quote-text">“Bisogna immaginare Sisifo felice”</div><div class="quote-author">— Albert Camus</div></div><div class="quote-bubble"><div class="quote-text">“La scienza procede per congetture e confutazioni”</div><div class="quote-author">— Karl Popper</div></div><div class="quote-bubble"><div class="quote-text">“I paradigmi non sono commensurabili”</div><div class="quote-author">— Thomas S. Kuhn</div></div><div class="quote-bubble"><div class="quote-text">“Il potere si esercita più che si possiede”</div><div class="quote-author">— Michel Foucault</div></div><div class="quote-bubble"><div class="quote-text">“Non esiste nulla fuori dal testo”</div><div class="quote-author">— Jacques Derrida</div></div><div class="quote-bubble"><div class="quote-text">“La conversazione della cultura”</div><div class="quote-author">— Richard Rorty</div></div><div class="quote-bubble"><div class="quote-text">“La giustizia come equità”</div><div class="quote-author">— John Rawls</div></div><div class="quote-bubble"><div class="quote-text">“Minimo Stato, massima libertà”</div><div class="quote-author">— Robert Nozick</div></div><div class="quote-bubble"><div class="quote-text">“La vita è relazione”</div><div class="quote-author">— Martin Buber</div></div><div class="quote-bubble"><div class="quote-text">“Il volto dell’Altro è epifania”</div><div class="quote-author">— Emmanuel Levinas</div></div><div class="quote-bubble"><div class="quote-text">“La speranza è un rischio da correre”</div><div class="quote-author">— Georges Bernanos</div></div><div class="quote-bubble"><div class="quote-text">“Sii il cambiamento che vuoi vedere nel mondo”</div><div class="quote-author">— Mahatma Gandhi</div></div><div class="quote-bubble"><div class="quote-text">“Il tempo è la sostanza di cui sono fatto”</div><div class="quote-author">— Jorge Luis Borges</div></div><div class="quote-bubble"><div class="quote-text">“Che effetto fa essere pipistrello?”</div><div class="quote-author">— Thomas Nagel</div></div><div class="quote-bubble"><div class="quote-text">“La mente è ciò che fa la mente”</div><div class="quote-author">— Daniel Dennett</div></div><div class="quote-bubble"><div class="quote-text">“Ogni linguaggio è traduzione”</div><div class="quote-author">— Walter Benjamin</div></div><div class="quote-bubble"><div class="quote-text">“Comprendere è cambiare”</div><div class="quote-author">— Anonimo</div></div><div class="quote-bubble"><div class="quote-text">“La chiarezza è cortesia”</div><div class="quote-author">— Anonimo</div></div><div class="quote-bubble"><div class="quote-text">“Non possiamo non comunicare”</div><div class="quote-author">— Paul Watzlawick</div></div></div>
+<div class="floating-quotes"><div class="quote-bubble"><div class="quote-text">“Conosci te stesso”</div><div class="quote-author">— Socrate</div></div><div class="quote-bubble"><div class="quote-text">“So di non sapere”</div><div class="quote-author">— Socrate</div></div><div class="quote-bubble"><div class="quote-text">“Una vita senza ricerca non è degna di essere vissuta”</div><div class="quote-author">— Socrate</div></div><div class="quote-bubble"><div class="quote-text">“La filosofia comincia con la meraviglia”</div><div class="quote-author">— Platone</div></div><div class="quote-bubble"><div class="quote-text">“La bellezza è lo splendore del vero”</div><div class="quote-author">— Platone</div></div><div class="quote-bubble"><div class="quote-text">“Siamo ciò che facciamo ripetutamente. L'eccellenza non è un atto ma un'abitudine”</div><div class="quote-author">— Aristotele</div></div><div class="quote-bubble"><div class="quote-text">“La felicità dipende da noi stessi”</div><div class="quote-author">— Aristotele</div></div><div class="quote-bubble"><div class="quote-text">“Nulla è nell'intelletto che prima non sia passato dai sensi”</div><div class="quote-author">— Aristotele</div></div><div class="quote-bubble"><div class="quote-text">“Tutto scorre”</div><div class="quote-author">— Eraclito</div></div><div class="quote-bubble"><div class="quote-text">“Il carattere è destino”</div><div class="quote-author">— Eraclito</div></div><div class="quote-bubble"><div class="quote-text">“L'uomo è misura di tutte le cose”</div><div class="quote-author">— Protagora</div></div><div class="quote-bubble"><div class="quote-text">“Vivere secondo natura”</div><div class="quote-author">— Zenone di Cizio</div></div><div class="quote-bubble"><div class="quote-text">“Non sono le cose che ci turbano, ma le opinioni che abbiamo su di esse”</div><div class="quote-author">— Epitteto</div></div><div class="quote-bubble"><div class="quote-text">“Non è la morte che dobbiamo temere, ma il non cominciare mai a vivere”</div><div class="quote-author">— Marco Aurelio</div></div><div class="quote-bubble"><div class="quote-text">“La vita è opinione”</div><div class="quote-author">— Marco Aurelio</div></div><div class="quote-bubble"><div class="quote-text">“La felicità consiste nel desiderare ciò che si ha”</div><div class="quote-author">— Seneca</div></div><div class="quote-bubble"><div class="quote-text">“Non esiste vento favorevole per il marinaio che non sa dove andare”</div><div class="quote-author">— Seneca</div></div><div class="quote-bubble"><div class="quote-text">“Il destino guida chi lo segue e trascina chi si oppone”</div><div class="quote-author">— Seneca</div></div><div class="quote-bubble"><div class="quote-text">“Vivi nascosto”</div><div class="quote-author">— Epicuro</div></div><div class="quote-bubble"><div class="quote-text">“Ama e fa' ciò che vuoi”</div><div class="quote-author">— Sant'Agostino</div></div><div class="quote-bubble"><div class="quote-text">“La fede cerca l'intelligenza”</div><div class="quote-author">— Anselmo d'Aosta</div></div><div class="quote-bubble"><div class="quote-text">“Contemplata aliis tradere”</div><div class="quote-author">— Tommaso d'Aquino</div></div><div class="quote-bubble"><div class="quote-text">“Non moltiplicare gli enti senza necessità”</div><div class="quote-author">— Guglielmo di Ockham</div></div><div class="quote-bubble"><div class="quote-text">“È meglio essere temuti che amati, se non si può essere entrambi”</div><div class="quote-author">— Niccolò Machiavelli</div></div><div class="quote-bubble"><div class="quote-text">“Cogito, ergo sum”</div><div class="quote-author">— Cartesio</div></div><div class="quote-bubble"><div class="quote-text">“Il cuore ha le sue ragioni che la ragione non conosce”</div><div class="quote-author">— Blaise Pascal</div></div><div class="quote-bubble"><div class="quote-text">“La mente è una tabula rasa”</div><div class="quote-author">— John Locke</div></div><div class="quote-bubble"><div class="quote-text">“Esse est percipi”</div><div class="quote-author">— George Berkeley</div></div><div class="quote-bubble"><div class="quote-text">“La bellezza delle cose esiste nella mente di chi le contempla”</div><div class="quote-author">— David Hume</div></div><div class="quote-bubble"><div class="quote-text">“Due cose riempiono l’animo: il cielo stellato sopra di me e la legge morale dentro di me”</div><div class="quote-author">— Immanuel Kant</div></div><div class="quote-bubble"><div class="quote-text">“Agisci in modo da trattare l’umanità sempre come fine e mai semplicemente come mezzo”</div><div class="quote-author">— Immanuel Kant</div></div><div class="quote-bubble"><div class="quote-text">“Quel che è reale è razionale”</div><div class="quote-author">— G.W.F. Hegel</div></div><div class="quote-bubble"><div class="quote-text">“La vita oscilla tra la noia e il dolore”</div><div class="quote-author">— Arthur Schopenhauer</div></div><div class="quote-bubble"><div class="quote-text">“La vita dev’essere compresa all’indietro, ma va vissuta in avanti”</div><div class="quote-author">— Søren Kierkegaard</div></div><div class="quote-bubble"><div class="quote-text">“Chi ha un perché per vivere può sopportare quasi ogni come”</div><div class="quote-author">— Friedrich Nietzsche</div></div><div class="quote-bubble"><div class="quote-text">“Diventa ciò che sei”</div><div class="quote-author">— Friedrich Nietzsche</div></div><div class="quote-bubble"><div class="quote-text">“Non esistono fatti, solo interpretazioni”</div><div class="quote-author">— Friedrich Nietzsche</div></div><div class="quote-bubble"><div class="quote-text">“Di ciò di cui non si può parlare si deve tacere”</div><div class="quote-author">— Ludwig Wittgenstein</div></div><div class="quote-bubble"><div class="quote-text">“Il significato è l’uso”</div><div class="quote-author">— Ludwig Wittgenstein</div></div><div class="quote-bubble"><div class="quote-text">“Il linguaggio è la casa dell’essere”</div><div class="quote-author">— Martin Heidegger</div></div><div class="quote-bubble"><div class="quote-text">“L’esistenza precede l’essenza”</div><div class="quote-author">— Jean‑Paul Sartre</div></div><div class="quote-bubble"><div class="quote-text">“Bisogna immaginare Sisifo felice”</div><div class="quote-author">— Albert Camus</div></div></div>
 <!-- Footer -->
 <footer>
 <div class="footer-wrap">
@@ -3268,34 +3281,40 @@ document.addEventListener('DOMContentLoaded', ()=>{
 })();
 </script>
 <script>
-/* === Floating Quotes Controller (single mode) === */
+/* === Floating Quotes Controller v2 === */
 (function(){
-  function ready(fn){ if(document.readyState!=="loading") fn(); else document.addEventListener("DOMContentLoaded", fn); }
-  ready(function(){
-    var container = document.querySelector(".floating-quotes");
-    if (!container) return;
-    var all = Array.prototype.slice.call(container.querySelectorAll(".quote-bubble"));
-    if (!all.length) return;
-
-    var idx = 0;
-    var CADENCE = 9000; // 9s: enter -> hold -> exit
-
-    // Ensure only one .show at any time
-    function step(){
-      all.forEach(function(q){ q.classList.remove("show"); });
-      all[idx].classList.add("show");
-      idx = (idx + 1) % all.length;
+  var timer = null, idx = 0, paused = false;
+  function qs(a){ return document.querySelector(a); }
+  function qsa(a){ return Array.prototype.slice.call(document.querySelectorAll(a)); }
+  function step(bubbles){
+    if(!bubbles.length) return;
+    // Remove show from all
+    bubbles.forEach(function(b){ b.classList.remove("show"); });
+    // Add to current
+    bubbles[idx].classList.add("show");
+    idx = (idx + 1) % bubbles.length;
+  }
+  function start(){
+    var bubbles = qsa(".floating-quotes .quote-bubble");
+    if(!bubbles.length) return;
+    // Sanitize initial: ensure only one .show
+    var any = bubbles.some(function(b){ return b.classList.contains("show"); });
+    if(!any){ idx = 0; }
+    else { idx = (bubbles.findIndex(function(b){ return b.classList.contains("show"); }) + 1) % bubbles.length; }
+    step(bubbles);
+    clearInterval(timer);
+    timer = setInterval(function(){ if(!paused) step(bubbles); }, 8000);
+    // Pause on hover
+    var box = qs(".floating-quotes");
+    if(box){
+      box.addEventListener("mouseenter", function(){ paused = true; });
+      box.addEventListener("mouseleave", function(){ paused = false; });
     }
-
-    // Initial
-    step();
-    // Reveal container if FOUC guard present
-    container.classList.add('fq-ready');
-    // Loop
-    setInterval(step, CADENCE);
-  });
-})();
-</script><script>
+  }
+  // Re-init safe on DOM ready and after 1s (in case of late inserts)
+  if(document.readyState!=="loading") start(); else document.addEventListener("DOMContentLoaded", start);
+  setTimeout(start, 1000);
+})();</script><script>
 /* === Typing Controller v3 === */
 (function(){
   function ready(fn){ if(document.readyState!=="loading") fn(); else document.addEventListener("DOMContentLoaded", fn); }
@@ -3398,5 +3417,139 @@ document.addEventListener("DOMContentLoaded", function(){
   window.addEventListener('scroll', scrollFallback, {passive:true});
   window.addEventListener('resize', scrollFallback);
 });
-</script></body>
+</script><script id="quote-runner-js-solid-2025-10-08">
+(function(){
+  function ready(fn){ if(document.readyState!=='loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
+  function qsa(sel, root){ return Array.prototype.slice.call((root||document).querySelectorAll(sel)); }
+  ready(function(){
+    var runner = document.getElementById('quote-runner');
+    if(!runner) return;
+    var PERIOD = 9000;
+    function readSource(){
+      var list = qsa('.floating-quotes .quote-bubble');
+      return list.map(function(q){
+        var qt = q.querySelector('.quote-text'), qa = q.querySelector('.quote-author');
+        return {t: (qt?qt.textContent.trim():''), a: (qa?qa.textContent.trim():'')};
+      });
+    }
+    var data = readSource();
+    if (!data.length){
+      data = [
+        {t:'“Conosci te stesso”', a:'— Socrate'},
+        {t:'“La filosofia comincia con la meraviglia”', a:'— Platone'},
+        {t:'“Cogito, ergo sum”', a:'— Cartesio'}
+      ];
+    }
+    var idx = Math.floor(Math.random()*data.length);
+    function render(item){
+      runner.innerHTML='';
+      var b=document.createElement('div'); b.className='quote-bubble slide-in';
+      var qt=document.createElement('div'); qt.className='quote-text'; qt.textContent=item.t;
+      var qa=document.createElement('div'); qa.className='quote-author'; qa.textContent=item.a;
+      b.appendChild(qt); b.appendChild(qa); runner.appendChild(b);
+    }
+    function next(){
+      render(data[idx]);
+      idx = (idx+1) % data.length;
+    }
+    next();
+    setInterval(next, PERIOD);
+  });
+})();
+</script><script id="ui-backstop-final-2025-10-08">
+(function(){
+  function ready(fn){ if(document.readyState!=='loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
+  ready(function(){
+    // Clear buttons
+    function ensureClear(input){
+      if(!input) return;
+      var parent = input.parentElement || document.body;
+      if (getComputedStyle(parent).position === 'static') parent.style.position = 'relative';
+      var btn = parent.querySelector('.clear-search');
+      if(!btn){
+        btn = document.createElement('button');
+        btn.type='button'; btn.className='clear-search'; btn.setAttribute('aria-label','Cancella');
+        btn.style.position='absolute'; btn.style.right='.55rem'; btn.style.top='50%'; btn.style.transform='translateY(-50%)';
+        btn.style.width='22px'; btn.style.height='22px'; btn.style.border='0'; btn.style.borderRadius='50%';
+        btn.style.display='none'; btn.style.alignItems='center'; btn.style.justifyContent='center';
+        btn.style.background='rgba(255,255,255,.12)'; btn.style.boxShadow='inset 0 0 0 1px rgba(255,215,0,.25)';
+        btn.style.color='#ffd86a'; btn.style.fontWeight='700'; btn.style.cursor='pointer'; btn.style.zIndex='3004';
+        btn.textContent='✕';
+        parent.appendChild(btn);
+      }
+      function sync(){ btn.style.display = input.value ? 'flex' : 'none'; }
+      input.addEventListener('input', sync); input.addEventListener('change', sync); input.addEventListener('search', sync);
+      input.addEventListener('keydown', function(e){ if(e.key==='Escape'){ input.value=''; input.dispatchEvent(new Event('input',{bubbles:true})); sync(); }});
+      btn.addEventListener('click', function(){ input.value=''; input.dispatchEvent(new Event('input',{bubbles:true})); input.focus(); sync(); });
+      sync();
+    }
+    ensureClear(document.getElementById('site-search'));
+    ensureClear(document.getElementById('dict-q'));
+
+    // Lens focus
+    document.querySelectorAll('.search-container .search-icon').forEach(function(lens){
+      lens.style.pointerEvents='auto';
+      lens.addEventListener('click', function(){
+        var box = lens.closest('.search-container'); var input = box && box.querySelector('input[type="search"], input[type="text"]');
+        if(input){ input.focus(); try{ input.setSelectionRange(0, input.value.length);}catch(e){} input.dispatchEvent(new Event('input',{bubbles:true})); }
+      }, {passive:true});
+    });
+
+    // Thunder hard toggle
+    var btn = document.getElementById('btn-thunder');
+    var a   = document.getElementById('thunder-sound');
+    if(btn && a){
+      function label(on){
+        var lab = btn.querySelector('.label-onoff'); if(!lab){ lab=document.createElement('span'); lab.className='label-onoff'; lab.style.marginLeft='.5rem'; btn.appendChild(lab); }
+        lab.textContent = on ? 'Tuono: ON' : 'Tuono: OFF';
+        btn.setAttribute('aria-pressed', on?'true':'false');
+        btn.classList.toggle('playing', !!on);
+      }
+      label(false);
+      btn.addEventListener('click', function(e){
+        e.preventDefault();
+        if(!a.paused && a.currentTime>0 && !a.ended){
+          a.pause(); a.currentTime=0; label(false);
+        }else{
+          try{ a.muted=false; a.volume=1.0; a.playbackRate=1.0; a.currentTime=0; a.play().catch(function(){}); label(true);}catch(_){}
+        }
+      }, true); // capture
+      a.addEventListener('ended', function(){ label(false); });
+    }
+
+    // Explode
+    var el = document.getElementById('exploding');
+    var be = document.getElementById('btn-explode') || document.getElementById('explode-btn');
+    function makeChars(target){
+      if(!target || target.__charsBuilt) return;
+      var text = target.textContent; target.textContent=''; target.__charsBuilt = true;
+      for (var i=0;i<text.length;i++){ var s=document.createElement('span'); s.className='char'; s.textContent=text[i];
+        s.style.display='inline-block'; s.style.transition='transform 900ms cubic-bezier(.2,1,.2,1), opacity 900ms'; target.appendChild(s);
+      }
+    }
+    function boom(target){
+      if(!target) return; makeChars(target);
+      var chars = target.querySelectorAll('.char');
+      for (var i=0;i<chars.length;i++){
+        var dx=(Math.random()*220-110).toFixed(1)+'px', dy=(Math.random()*160-80).toFixed(1)+'px', rot=(Math.random()*120-60).toFixed(1)+'deg';
+        chars[i].style.opacity='0'; chars[i].style.transform='translate('+dx+','+dy+') rotate('+rot+') scale(.85)';
+      }
+      var ex = document.getElementById('explosionSound'); if(ex){ try{ ex.currentTime=0; ex.volume=1.0; ex.muted=false; ex.play().catch(function(){});}catch(_){ } }
+      setTimeout(function(){ for (var i=0;i<chars.length;i++){ chars[i].style.opacity=''; chars[i].style.transform=''; } }, 1100);
+    }
+    if(el){ el.style.cursor='pointer'; el.addEventListener('click', function(e){ e.preventDefault(); boom(el); }, true); }
+    if(be){ be.addEventListener('click', function(e){ e.preventDefault(); boom(el||document.getElementById('exploding')); }, true); }
+
+    // Media unlock once
+    function unlockOnce(){
+      [document.getElementById('thunder-sound'), document.getElementById('explosionSound')].forEach(function(a){
+        if(!a) return; try{ a.muted=false; a.volume=1.0; a.play().then(function(){ a.pause(); a.currentTime=0; }).catch(function(){});}catch(_){}
+      });
+      window.removeEventListener('pointerdown', unlockOnce, true);
+      window.removeEventListener('keydown', unlockOnce, true);
+    }
+    window.addEventListener('pointerdown', unlockOnce, true);
+    window.addEventListener('keydown', unlockOnce, true);
+  });
+})();</script></body>
 </html>
