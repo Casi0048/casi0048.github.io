@@ -1618,7 +1618,7 @@ nav.menu-desktop .mega-menu{ z-index: 2147483606 !important; pointer-events: aut
   .menu-btn, .ctrl-btn { min-width: 44px; min-height: 44px; }
   .timeline-content { padding: 15px; margin: 10px 5px; } /* opzionale, migliora leggibilità */
 }
-</style><style id="translate-alert-css">.translate-alert{display:none;margin-left:.5rem;font-size:.9rem;padding:.2rem .5rem;border-radius:.35rem;background:rgba(255,193,7,.16);box-shadow:inset 0 0 0 1px rgba(255,193,7,.35);color:#ffc107;} html[data-gt-error="load-failed"] .translate-alert{display:inline-block;}</style></head>
+</style><style id="translate-fallback-css">.translate-fallback{display:none;margin-left:.5rem;padding:.2rem .5rem;border-radius:.35rem;background:rgba(52,152,219,.14);box-shadow:inset 0 0 0 1px rgba(52,152,219,.4);color:#8bd0ff;font-size:.9rem;cursor:pointer;} html[data-gt-error="load-failed"] .translate-fallback{display:inline-block;}</style></head>
 <body>
 <!-- UI PATCH BLOCKS -->
 <div aria-label="Galleria autori" class="slider-vertical">
@@ -1895,7 +1895,7 @@ nav.menu-desktop .mega-menu{ z-index: 2147483606 !important; pointer-events: aut
 <option value="pl">Polski</option>
 </select>
 <div aria-hidden="true" id="google_translate_element" style="position:absolute;left:-9999px;top:-9999px;height:0;width:0;overflow:hidden"></div>
-<div aria-live="polite" class="translate-alert">Traduttore bloccato (ad-block?). Prova a sbloccare translate.google.com.</div></div>
+<button class="translate-fallback" title="Apri in Google Translate" type="button">Traduci in nuova scheda</button></div>
 <div class="search-container" role="search">
 <input aria-label="Cerca" id="site-search" placeholder="Cerca nel sito..." type="search"/>
 <i aria-hidden="true" class="fa-solid fa-magnifying-glass search-icon"></i>
@@ -3457,5 +3457,46 @@ document.addEventListener("DOMContentLoaded", function(){
 </script>
 <script>if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
-}</script><script id="gt-error-watch">(function(){function g(){try{return window.google&&google.translate&&document.querySelector('#google_translate_element select')}catch(_){}return!1}function m(){try{document.documentElement.setAttribute('data-gt-error','load-failed')}catch(_){}}var t=0;function c(){if(g())return; if(t++>40){m();return;} setTimeout(c,200);} if(document.readyState!=='loading')c(); else document.addEventListener('DOMContentLoaded', c);})();</script></body>
+}</script><script id="translate-fallback-js">(function(){
+  function currentLang(){
+    var s = document.getElementById('customTranslate');
+    return (s && s.value) ? s.value : 'it';
+  }
+  function buildUrl(tl){
+    var sl = 'it', u = location.href;
+    return 'https://translate.google.com/translate?sl='
+           + encodeURIComponent(sl)
+           + '&tl=' + encodeURIComponent(tl)
+           + '&u=' + encodeURIComponent(u);
+  }
+  function updateButtonVisibility(){
+    var btn = document.querySelector('.translate-fallback');
+    if(!btn) return;
+    var blocked = document.documentElement.getAttribute('data-gt-error') === 'load-failed';
+    var lang = currentLang();
+    // Show only if blocked AND a target language different from Italian is selected
+    btn.style.display = (blocked && lang !== 'it') ? 'inline-block' : 'none';
+  }
+  // Click handler
+  document.addEventListener('click', function(e){
+    if(e.target && e.target.classList.contains('translate-fallback')){
+      var tl = currentLang();
+      if (tl && tl !== 'it') {
+        window.open(buildUrl(tl), '_blank', 'noopener');
+      }
+    }
+  }, {passive:true});
+  // Reflect changes
+  document.addEventListener('change', function(e){
+    if(e.target && e.target.id === 'customTranslate'){ updateButtonVisibility(); }
+  }, {passive:true});
+  // Watch for blocker flag to appear
+  try{
+    var mo = new MutationObserver(updateButtonVisibility);
+    mo.observe(document.documentElement, { attributes:true, attributeFilter:['data-gt-error'] });
+  }catch(_){}
+  // Init
+  if (document.readyState !== 'loading') updateButtonVisibility();
+  else document.addEventListener('DOMContentLoaded', updateButtonVisibility);
+})();</script></body>
 </html>
