@@ -1688,7 +1688,50 @@ window.googleTranslateElementInit = function(){
     document.documentElement.removeAttribute('data-gt-error');
   }catch(e){ console.warn('GT init error', e); }
 };
-</script><script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script></head>
+</script><script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script><style id="motto-style-2">
+/* Elegant motto styling with typographic separators */
+.motto { letter-spacing:.015em; }
+.motto .m-text { font-size:1.06em; }
+.motto .m-icon { font-size:1.08em; }
+.motto .m-sep { opacity:.6; padding:0 .4ch; }
+@media (max-width:600px){
+  .motto { font-size:.96rem; }
+}
+</style><style id="letters-explode-css-2025-10-09">
+/* === Letter explosion (motto) === */
+.motto .m-text { display:inline-block; position:relative; }
+.motto .m-text .char {
+  display:inline-block;
+  white-space:pre;
+  transform-origin:center;
+  will-change: transform, opacity, filter;
+}
+/* outbound */
+.motto.letters-explode .m-text .char {
+  animation: letterExplode var(--dur,900ms) cubic-bezier(.2,1,.2,1) forwards;
+}
+/* inbound */
+.motto.letters-gather .m-text .char {
+  animation: letterGather var(--gdur,680ms) cubic-bezier(.2,1,.2,1) forwards;
+}
+
+@keyframes letterExplode {
+  0% { transform:translate3d(0,0,0) rotate(0deg) scale(1); opacity:1; filter:blur(0); }
+  100% { 
+    transform: translate3d(var(--dx,0),var(--dy,0),0) rotate(var(--rot,0deg)) scale(var(--sc,.96));
+    opacity: var(--op,0);
+    filter: blur(var(--blur,.8px));
+  }
+}
+@keyframes letterGather {
+  0% {
+    transform: translate3d(var(--dx,0),var(--dy,0),0) rotate(var(--rot,0deg)) scale(var(--sc,.96));
+    opacity: var(--op,0);
+    filter: blur(var(--blur,.8px));
+  }
+  100% { transform:translate3d(0,0,0) rotate(0deg) scale(1); opacity:1; filter:blur(0); }
+}
+</style></head>
 <body>
 <!-- UI PATCH BLOCKS -->
 <div aria-label="Galleria autori" class="slider-vertical">
@@ -2382,9 +2425,7 @@ window.googleTranslateElementInit = function(){
 <button class="ctrl-btn" id="btn-explode" onclick="(function(){var x=document.getElementById('exploding');if(!x)return;var r=x.getBoundingClientRect();x.dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true,clientX:r.left+r.width/2,clientY:r.top+r.height/2}));})();" type="button">
   💥 Esplodi
 </button>
-<div class="exploding-text" id="exploding" title="Clicca per esplodere">
-          ⏳ Sustine et abstine🧘
-        </div>
+<div aria-label="Sustine et abstine" class="motto exploding-text" id="exploding" title="Clicca per esplodere"><span aria-hidden="true" class="m-icon">⏳</span><span aria-hidden="true" class="m-sep">•</span><span class="m-text"><i>Sustine et abstine</i></span><span aria-hidden="true" class="m-sep">•</span><span aria-hidden="true" class="m-icon">🧘</span></div>
 </section>
 <!-- Timeline filosofica interattiva - INTEGRATA -->
 <section class="timeline-container">
@@ -3790,5 +3831,98 @@ document.addEventListener('DOMContentLoaded', function() {
     }catch(_){ translateSelect.value='it'; }
   }
 });
+</script><script id="letters-explode-js-2025-10-09">
+(function(){
+  var host = document.getElementById('exploding');
+  if(!host) return;
+  var textWrap = host.querySelector('.m-text');
+  if(!textWrap) return;
+
+  var busy = false;
+  function splitOnce(){
+    if(textWrap.__split) return;
+    var nodes = Array.from(textWrap.childNodes);
+    textWrap.innerHTML = '';
+    nodes.forEach(function(n){
+      if(n.nodeType === 3){ // text
+        var s = n.nodeValue;
+        for(var i=0;i<s.length;i++){
+          var span = document.createElement('span');
+          span.className = 'char';
+          span.textContent = s[i];
+          textWrap.appendChild(span);
+        }
+      }else{
+        // keep markup (e.g., <i>) but split its text as well
+        if(n.nodeType === 1){
+          var t = n.textContent;
+          for(var j=0;j<t.length;j++){
+            var sp = document.createElement('span');
+            sp.className = 'char';
+            sp.textContent = t[j];
+            textWrap.appendChild(sp);
+          }
+        }
+      }
+    });
+    textWrap.__split = true;
+  }
+
+  function rand(min,max){ return Math.random()*(max-min)+min; }
+
+  function scatterVectors(){
+    // compute explosion vectors from center of the m-text block
+    var rect = textWrap.getBoundingClientRect();
+    var cx = rect.left + rect.width/2;
+    var cy = rect.top  + rect.height/2;
+    var chars = textWrap.querySelectorAll('.char');
+    chars.forEach(function(el, i){
+      var bb = el.getBoundingClientRect();
+      var vx = (bb.left + bb.width/2) - cx;
+      var vy = (bb.top  + bb.height/2) - cy;
+      var d  = Math.max(6, Math.hypot(vx, vy));
+      var mult = rand(120, 260);
+      var dx = (vx/d)*mult + rand(-40, 40);
+      var dy = (vy/d)*mult + rand(-40, 40);
+      el.style.setProperty('--dx', dx.toFixed(1)+'px');
+      el.style.setProperty('--dy', dy.toFixed(1)+'px');
+      el.style.setProperty('--rot', rand(-45,45).toFixed(1)+'deg');
+      el.style.setProperty('--sc', rand(.9, 1.08).toFixed(2));
+      el.style.setProperty('--blur', rand(.2, 1.2).toFixed(2)+'px');
+      el.style.setProperty('--op', 0);
+      el.style.setProperty('--dur', Math.round(rand(620, 980))+'ms');
+      el.style.setProperty('--gdur', Math.round(rand(540, 760))+'ms');
+      el.style.animationDelay = (i*3)+'ms';
+    });
+  }
+
+  function lettersExplodeAndGather(){
+    if(busy) return;
+    busy = true;
+    splitOnce();
+    scatterVectors();
+    host.classList.add('letters-explode');
+    // return after a bit
+    setTimeout(function(){
+      host.classList.remove('letters-explode');
+      host.classList.add('letters-gather');
+      // clear gather and unlock
+      setTimeout(function(){
+        host.classList.remove('letters-gather');
+        busy = false;
+      }, 860);
+    }, 980);
+  }
+
+  // Wire alongside your existing explosion
+  // Prefer capturing phase so it runs even if other handlers stopPropagation
+  host.addEventListener('click', function(){ lettersExplodeAndGather(); }, true);
+
+  // Optional external trigger support
+  var btn = document.getElementById('btn-explode') || document.getElementById('explode-btn');
+  if(btn){
+    btn.addEventListener('click', function(ev){ ev.preventDefault(); lettersExplodeAndGather(); }, {passive:true});
+  }
+})();
 </script></body>
 </html>
