@@ -1960,7 +1960,7 @@ nav.menu-desktop .mega-menu{ z-index: 2147483606 !important; pointer-events: aut
 <i aria-hidden="true" class="fa-solid fa-magnifying-glass search-icon"></i>
 </div>
 <button class="ctrl-btn" id="btn-thunder" title="Riproduci tuono">⚡ Tuono</button>
-<button class="ctrl-btn" id="btn-explode" onclick="(function(){var x=document.getElementById('exploding');if(!x)return;var r=x.getBoundingClientRect();x.dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true,clientX:r.left+r.width/2,clientY:r.top+r.height/2}));})();" title="Esplodi testo" type="button">💥 Esplodi</button>
+<button class="ctrl-btn" id="btn-explode" title="Esplodi testo">💥 Esplodi</button>
 </div>
 </div>
 <!-- Menu principale -->
@@ -2373,7 +2373,7 @@ nav.menu-desktop .mega-menu{ z-index: 2147483606 !important; pointer-events: aut
   💥 Esplodi
 </button>
 <div class="exploding-text" id="exploding" title="Clicca per esplodere">
-           ⏳ <b>Sustine et abstine</b> 🧘
+          ⏳ Sustine et abstine🧘
         </div>
 
 </section>
@@ -2710,7 +2710,7 @@ nav.menu-desktop .mega-menu{ z-index: 2147483606 !important; pointer-events: aut
         // Trova un elemento che contiene quel testo (h1,h2,h3,p,span…)
         const sel = 'h1,h2,h3,p,span,.hero-title,.headline';
         const target = [..document.querySelectorAll(sel)]
-          .find(el => el.textContent && el.textContent.includes('Sustine et astine'));
+          .find(el => el.textContent && el.textContent.includes('Sustine et abstine'));
       
         if (target) {
           // contrassegna come bersaglio
@@ -2807,7 +2807,7 @@ nav.menu-desktop .mega-menu{ z-index: 2147483606 !important; pointer-events: aut
       
         /* 5) “Esplodi” il testo: marca l’elemento bersaglio se presente */
         const target = [..document.querySelectorAll('h1,h2,h3,p,span,.hero-title,.headline')]
-          .find(el => el.textContent && el.textContent.includes('Sustine et abstina'));
+          .find(el => el.textContent && el.textContent.includes('Sustine et abstine'));
         if(target) target.classList.add('exploding-text');
       
         function explodeFallback(el){
@@ -3427,9 +3427,98 @@ document.addEventListener('DOMContentLoaded', ()=>{
     setInterval(showNext, 9000);
   });
 })();
+</script><script>
+/* === Timeline scroll reveal (IO) v2 === */
+document.addEventListener("DOMContentLoaded", function(){
+  var items = Array.prototype.slice.call(document.querySelectorAll(".timeline-item"));
+  if (!items.length) return;
+  items.forEach(function(el, i){
+    el.classList.remove("left","right","visible");
+    el.classList.add(i % 2 === 0 ? "left" : "right");
+  });
+  function computeDelay(el){
+    var rect = el.getBoundingClientRect();
+    var y = Math.max(0, Math.min(1, (rect.top / Math.max(1, window.innerHeight))));
+    var w = Math.max(320, window.innerWidth || 0);
+    var scale = (w >= 1200) ? 1.6 : (w >= 1024 ? 1.4 : (w >= 601 ? 1.1 : 0.8));
+    var base = Math.round(y * 250 * scale);
+    var jitter = Math.round((Math.random()*120));
+    return base + jitter;
+  }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if (entry.isIntersecting) {
+        var d = computeDelay(entry.target);
+        entry.target.style.setProperty("--delay", d + "ms");
+        entry.target.classList.add("visible");
+        io.unobserve(entry.target);
+      }
+    });
+  }, { root: null, rootMargin: "0px 0px -8% 0px", threshold: 0.18 });
+  items.forEach(function(el){ io.observe(el); });
+  // Sync iniziale + fallback
+  function initialSync(){
+    var vh = Math.max(1, window.innerHeight || 1);
+    items.forEach(function(el){
+      if (!el.classList.contains('visible')){
+        var r = el.getBoundingClientRect();
+        if (r.top < vh*0.88 && r.bottom > vh*0.12){ el.classList.add('visible'); }
+      }
+    });
+  }
+  function scrollFallback(){
+    var vh = Math.max(1, window.innerHeight || 1);
+    items.forEach(function(el){
+      if (!el.classList.contains('visible')){
+        var r = el.getBoundingClientRect();
+        if (r.top < vh*0.82 && r.bottom > 0){ el.classList.add('visible'); }
+      }
+    });
+  }
+  requestAnimationFrame(initialSync);
+  window.addEventListener('scroll', scrollFallback, {passive:true});
+  window.addEventListener('resize', scrollFallback);
+});
+</script><script id="quote-runner-js-solid-2025-10-08">
+(function(){
+  function ready(fn){ if(document.readyState!=='loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
+  function qsa(sel, root){ return Array.prototype.slice.call((root||document).querySelectorAll(sel)); }
+  ready(function(){
+    var runner = document.getElementById('quote-runner');
+    if(!runner) return;
+    var PERIOD = 9000;
+    function readSource(){
+      var list = qsa('.floating-quotes .quote-bubble');
+      return list.map(function(q){
+        var qt = q.querySelector('.quote-text'), qa = q.querySelector('.quote-author');
+        return {t: (qt?qt.textContent.trim():''), a: (qa?qa.textContent.trim():'')};
+      });
+    }
+    var data = readSource();
+    if (!data.length){
+      data = [
+        {t:'“Conosci te stesso”', a:'— Socrate'},
+        {t:'“La filosofia comincia con la meraviglia”', a:'— Platone'},
+        {t:'“Cogito, ergo sum”', a:'— Cartesio'}
+      ];
+    }
+    var idx = Math.floor(Math.random()*data.length);
+    function render(item){
+      runner.innerHTML='';
+      var b=document.createElement('div'); b.className='quote-bubble slide-in';
+      var qt=document.createElement('div'); qt.className='quote-text'; qt.textContent=item.t;
+      var qa=document.createElement('div'); qa.className='quote-author'; qa.textContent=item.a;
+      b.appendChild(qt); b.appendChild(qa); runner.appendChild(b);
+    }
+    function next(){
+      render(data[idx]);
+      idx = (idx+1) % data.length;
+    }
+    next();
+    setInterval(next, PERIOD);
+  });
+})();
 </script>
-
-
 <script>if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
 }</script><script id="boomfx-js-2025-10-09">(function(){
@@ -3571,5 +3660,60 @@ document.addEventListener('DOMContentLoaded', ()=>{
   exploding.addEventListener('click', onClick, true);
   var btn = document.getElementById('btn-explode') || document.getElementById('explode-btn');
   if(btn){ btn.addEventListener('click', function(ev){ ev.preventDefault(); onClick(ev); }, true); }
-})();</script></body>
+})();</script><script id="explode-ultra-robust">
+/* Ultra-robust binder for "Esplodi" button — supports #btn-explode and #explode-btn */
+(function(){
+  function q(id){ return document.getElementById(id); }
+  var btn = q('explode-btn') || q('btn-explode');
+  var exploding = document.querySelector('.exploding-text') || q('exploding');
+
+  if(!btn){
+    // try to create one near exploding text if missing
+    if(exploding && !q('btn-explode')){
+      var b = document.createElement('button');
+      b.id = 'btn-explode'; b.className = 'ctrl-btn'; b.type = 'button';
+      b.textContent = '💥 Esplodi';
+      exploding.insertAdjacentElement('afterend', b);
+      btn = b;
+    }
+  }
+
+  if(!btn) return;
+
+  // Ensure it's visible if some CSS hides it
+  btn.style.display = 'inline-flex';
+
+  // Unlock audio once (mobile/Safari)
+  (function unlockOnce(){
+    var boom = q('explosionSound'), thunder = q('thunder-sound');
+    var fired = false;
+    function go(){
+      if(fired) return; fired = true;
+      [boom, thunder].forEach(function(a){
+        if(!a) return;
+        try{ a.muted=false; a.play().then(function(){ a.pause(); a.currentTime=0; }).catch(function(){}); }catch(_){}
+      });
+      window.removeEventListener('pointerdown', go, {capture:true});
+      window.removeEventListener('keydown', go, {capture:true});
+    }
+    window.addEventListener('pointerdown', go, {once:true, passive:true, capture:true});
+    window.addEventListener('keydown', go, {once:true, capture:true});
+  })();
+
+  // Use delegation-proof dispatch: simulate a centered click on #exploding
+  function trigger(){
+    exploding = document.querySelector('.exploding-text') || q('exploding');
+    if(!exploding) return;
+    var r = exploding.getBoundingClientRect();
+    var cx = r.left + r.width/2, cy = r.top + r.height/2;
+    exploding.dispatchEvent(new MouseEvent('click', {bubbles:true, cancelable:true, clientX:cx, clientY:cy}));
+  }
+
+  // Remove previous duplicate listeners (if code was injected more than once)
+  btn.replaceWith(btn.cloneNode(true));
+  btn = q('explode-btn') || q('btn-explode');
+
+  btn.addEventListener('click', function(ev){ ev.preventDefault(); trigger(); }, {passive:true});
+})();
+</script></body>
 </html>
