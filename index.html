@@ -1618,7 +1618,66 @@ nav.menu-desktop .mega-menu{ z-index: 2147483606 !important; pointer-events: aut
   .menu-btn, .ctrl-btn { min-width: 44px; min-height: 44px; }
   .timeline-content { padding: 15px; margin: 10px 5px; } /* opzionale, migliora leggibilità */
 }
-</style><style id="translate-fallback-css">.translate-fallback{display:none;margin-left:.5rem;padding:.2rem .5rem;border-radius:.35rem;background:rgba(52,152,219,.14);box-shadow:inset 0 0 0 1px rgba(52,152,219,.4);color:#8bd0ff;font-size:.9rem;cursor:pointer;} html[data-gt-error="load-failed"] .translate-fallback{display:inline-block;}</style></head>
+</style><style id="boomfx-css-2025-10-09">/* === Explode FX (spectacular) === */
+.exploding-stage{ perspective: 900px; }
+.exploding-text{ position: relative; display:inline-block; will-change: transform, filter; }
+.exploding-text .char{
+  display:inline-block; transform-origin: center;
+  transition: transform 900ms cubic-bezier(.2,1,.2,1), opacity 900ms, filter 900ms, text-shadow 900ms;
+  will-change: transform, opacity, filter, text-shadow;
+}
+.exploding-text.boom-active .char{
+  transform: translate3d(var(--dx,0), var(--dy,0), var(--dz,0))
+             rotateX(var(--rx,0)) rotateY(var(--ry,0)) rotateZ(var(--rz,0)) scale(.9);
+  opacity: 0;
+  filter: blur(var(--blur,.6px));
+  text-shadow:
+    0 0 8px rgba(255,215,0,.65),
+    0 0 18px rgba(255,140,0,.45),
+    0 0 28px rgba(255, 90, 0,.25);
+  transition-duration: var(--td, 900ms);
+}
+.exploding-text.boom-primed{ filter: drop-shadow(0 0 12px rgba(255,215,0,.45)); }
+.boom-shockwave{
+  position: fixed; left: var(--x); top: var(--y);
+  width: 2px; height: 2px; border-radius: 50%;
+  transform: translate(-50%,-50%) scale(1);
+  background: radial-gradient(closest-side, rgba(255,255,255,.95), rgba(255,210,80,.55) 40%, rgba(255,140,0,0) 70%);
+  mix-blend-mode: screen; pointer-events: none; z-index: 2147483602;
+  animation: boomShock 900ms ease-out forwards;
+}
+@keyframes boomShock{ to{ transform: translate(-50%,-50%) scale(120); opacity: 0; } }
+.boom-flash{
+  position: fixed; inset: 0;
+  background: radial-gradient(circle at var(--x) var(--y), rgba(255,255,255,.85), rgba(255,255,255,0) 45%);
+  opacity: 0; mix-blend-mode: screen; pointer-events: none; z-index:2147483601;
+  animation: boomFlash 480ms ease-out forwards;
+}
+@keyframes boomFlash{ 0%{ opacity: 0; } 12%{ opacity: 1; } 100%{ opacity: 0; } }
+.boom-spark{
+  position: fixed; left: var(--x); top: var(--y);
+  width: var(--w,6px); height: var(--h,6px);
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffd700 0%, #ff8c00 70%, #ff4500 100%);
+  box-shadow: 0 0 10px rgba(255,165,0,.65);
+  transform: translate3d(0,0,0) rotate(0deg);
+  filter: blur(var(--b0,.2px));
+  pointer-events: none; z-index:2147483602;
+  animation: sparkMove var(--dur,1100ms) cubic-bezier(.2,1,.2,1) forwards, sparkFade var(--fade,1100ms) ease-out forwards;
+}
+@keyframes sparkMove{
+  to{ transform: translate3d(var(--dx,0), var(--dy,0), 0) rotate(var(--rot,0deg)); filter: blur(var(--b1,1px)); }
+}
+@keyframes sparkFade{ 0%{ opacity: 1; } 85%{ opacity: 1; } 100%{ opacity: 0; } }
+.boom-shake{ animation: boomShake 520ms cubic-bezier(.36,.07,.19,.97); }
+@keyframes boomShake{
+  0%{ transform: translate3d(0,0,0) rotate(0); }
+  20%{ transform: translate3d(-2px,2px,0) rotate(-0.3deg); }
+  40%{ transform: translate3d(3px,-3px,0) rotate(0.4deg); }
+  60%{ transform: translate3d(-2px,1px,0) rotate(-0.2deg); }
+  80%{ transform: translate3d(2px,0,0) rotate(0.2deg); }
+  100%{ transform: translate3d(0,0,0) rotate(0); }
+}</style></head>
 <body>
 <!-- UI PATCH BLOCKS -->
 <div aria-label="Galleria autori" class="slider-vertical">
@@ -1895,13 +1954,13 @@ nav.menu-desktop .mega-menu{ z-index: 2147483606 !important; pointer-events: aut
 <option value="pl">Polski</option>
 </select>
 <div aria-hidden="true" id="google_translate_element" style="position:absolute;left:-9999px;top:-9999px;height:0;width:0;overflow:hidden"></div>
-<button class="translate-fallback" title="Apri in Google Translate" type="button">Traduci in nuova scheda</button></div>
+</div>
 <div class="search-container" role="search">
 <input aria-label="Cerca" id="site-search" placeholder="Cerca nel sito..." type="search"/>
 <i aria-hidden="true" class="fa-solid fa-magnifying-glass search-icon"></i>
 </div>
 <button class="ctrl-btn" id="btn-thunder" title="Riproduci tuono">⚡ Tuono</button>
-<button class="ctrl-btn" id="btn-explode" title="Esplodi testo">💥 Esplodi</button>
+<button class="ctrl-btn" id="btn-explode" onclick="(function(){var x=document.getElementById('exploding');if(!x)return;var r=x.getBoundingClientRect();x.dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true,clientX:r.left+r.width/2,clientY:r.top+r.height/2}));})();" title="Esplodi testo" type="button">💥 Esplodi</button>
 </div>
 </div>
 <!-- Menu principale -->
@@ -2309,9 +2368,14 @@ nav.menu-desktop .mega-menu{ z-index: 2147483606 !important; pointer-events: aut
 <div class="typing-wrap">
 <div class="typing-effect"></div>
 </div>
+<button id="btn-explode" class="ctrl-btn" type="button"
+  onclick="(function(){var x=document.getElementById('exploding');if(!x)return;var r=x.getBoundingClientRect();x.dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true,clientX:r.left+r.width/2,clientY:r.top+r.height/2}));})();">
+  💥 Esplodi
+</button>
 <div class="exploding-text" id="exploding" title="Clicca per esplodere">
-         ⏳ <b>Sustine et abstine</b> 🧘
+           ⏳ <b>Sustine et abstine</b> 🧘
         </div>
+
 </section>
 <!-- Timeline filosofica interattiva - INTEGRATA -->
 <section class="timeline-container">
@@ -2645,7 +2709,7 @@ nav.menu-desktop .mega-menu{ z-index: 2147483606 !important; pointer-events: aut
       (function(){
         // Trova un elemento che contiene quel testo (h1,h2,h3,p,span…)
         const sel = 'h1,h2,h3,p,span,.hero-title,.headline';
-        const target = [...document.querySelectorAll(sel)]
+        const target = [..document.querySelectorAll(sel)]
           .find(el => el.textContent && el.textContent.includes('Pensare, dunque è ancora possibile'));
       
         if (target) {
@@ -2742,7 +2806,7 @@ nav.menu-desktop .mega-menu{ z-index: 2147483606 !important; pointer-events: aut
         });
       
         /* 5) “Esplodi” il testo: marca l’elemento bersaglio se presente */
-        const target = [...document.querySelectorAll('h1,h2,h3,p,span,.hero-title,.headline')]
+        const target = [..document.querySelectorAll('h1,h2,h3,p,span,.hero-title,.headline')]
           .find(el => el.textContent && el.textContent.includes('Pensare, dunque è ancora possibile'));
         if(target) target.classList.add('exploding-text');
       
@@ -3363,140 +3427,149 @@ document.addEventListener('DOMContentLoaded', ()=>{
     setInterval(showNext, 9000);
   });
 })();
-</script><script>
-/* === Timeline scroll reveal (IO) v2 === */
-document.addEventListener("DOMContentLoaded", function(){
-  var items = Array.prototype.slice.call(document.querySelectorAll(".timeline-item"));
-  if (!items.length) return;
-  items.forEach(function(el, i){
-    el.classList.remove("left","right","visible");
-    el.classList.add(i % 2 === 0 ? "left" : "right");
-  });
-  function computeDelay(el){
-    var rect = el.getBoundingClientRect();
-    var y = Math.max(0, Math.min(1, (rect.top / Math.max(1, window.innerHeight))));
-    var w = Math.max(320, window.innerWidth || 0);
-    var scale = (w >= 1200) ? 1.6 : (w >= 1024 ? 1.4 : (w >= 601 ? 1.1 : 0.8));
-    var base = Math.round(y * 250 * scale);
-    var jitter = Math.round((Math.random()*120));
-    return base + jitter;
-  }
-  var io = new IntersectionObserver(function(entries){
-    entries.forEach(function(entry){
-      if (entry.isIntersecting) {
-        var d = computeDelay(entry.target);
-        entry.target.style.setProperty("--delay", d + "ms");
-        entry.target.classList.add("visible");
-        io.unobserve(entry.target);
-      }
-    });
-  }, { root: null, rootMargin: "0px 0px -8% 0px", threshold: 0.18 });
-  items.forEach(function(el){ io.observe(el); });
-  // Sync iniziale + fallback
-  function initialSync(){
-    var vh = Math.max(1, window.innerHeight || 1);
-    items.forEach(function(el){
-      if (!el.classList.contains('visible')){
-        var r = el.getBoundingClientRect();
-        if (r.top < vh*0.88 && r.bottom > vh*0.12){ el.classList.add('visible'); }
-      }
-    });
-  }
-  function scrollFallback(){
-    var vh = Math.max(1, window.innerHeight || 1);
-    items.forEach(function(el){
-      if (!el.classList.contains('visible')){
-        var r = el.getBoundingClientRect();
-        if (r.top < vh*0.82 && r.bottom > 0){ el.classList.add('visible'); }
-      }
-    });
-  }
-  requestAnimationFrame(initialSync);
-  window.addEventListener('scroll', scrollFallback, {passive:true});
-  window.addEventListener('resize', scrollFallback);
-});
-</script><script id="quote-runner-js-solid-2025-10-08">
-(function(){
-  function ready(fn){ if(document.readyState!=='loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
-  function qsa(sel, root){ return Array.prototype.slice.call((root||document).querySelectorAll(sel)); }
-  ready(function(){
-    var runner = document.getElementById('quote-runner');
-    if(!runner) return;
-    var PERIOD = 9000;
-    function readSource(){
-      var list = qsa('.floating-quotes .quote-bubble');
-      return list.map(function(q){
-        var qt = q.querySelector('.quote-text'), qa = q.querySelector('.quote-author');
-        return {t: (qt?qt.textContent.trim():''), a: (qa?qa.textContent.trim():'')};
-      });
-    }
-    var data = readSource();
-    if (!data.length){
-      data = [
-        {t:'“Conosci te stesso”', a:'— Socrate'},
-        {t:'“La filosofia comincia con la meraviglia”', a:'— Platone'},
-        {t:'“Cogito, ergo sum”', a:'— Cartesio'}
-      ];
-    }
-    var idx = Math.floor(Math.random()*data.length);
-    function render(item){
-      runner.innerHTML='';
-      var b=document.createElement('div'); b.className='quote-bubble slide-in';
-      var qt=document.createElement('div'); qt.className='quote-text'; qt.textContent=item.t;
-      var qa=document.createElement('div'); qa.className='quote-author'; qa.textContent=item.a;
-      b.appendChild(qt); b.appendChild(qa); runner.appendChild(b);
-    }
-    function next(){
-      render(data[idx]);
-      idx = (idx+1) % data.length;
-    }
-    next();
-    setInterval(next, PERIOD);
-  });
-})();
 </script>
+
+
 <script>if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
-}</script><script id="translate-fallback-js">(function(){
-  function currentLang(){
-    var s = document.getElementById('customTranslate');
-    return (s && s.value) ? s.value : 'it';
+}</script><script id="boomfx-js-2025-10-09">(function(){
+  function byId(id){ return document.getElementById(id); }
+  var exploding = byId('exploding');
+  if(!exploding) return;
+  if(!exploding.__wrapped){
+    var wrap = document.createElement('span');
+    wrap.className = 'exploding-stage';
+    exploding.parentNode.insertBefore(wrap, exploding);
+    wrap.appendChild(exploding);
+    exploding.__wrapped = true;
   }
-  function buildUrl(tl){
-    var sl = 'it', u = location.href;
-    return 'https://translate.google.com/translate?sl='
-           + encodeURIComponent(sl)
-           + '&tl=' + encodeURIComponent(tl)
-           + '&u=' + encodeURIComponent(u);
-  }
-  function updateButtonVisibility(){
-    var btn = document.querySelector('.translate-fallback');
-    if(!btn) return;
-    var blocked = document.documentElement.getAttribute('data-gt-error') === 'load-failed';
-    var lang = currentLang();
-    // Show only if blocked AND a target language different from Italian is selected
-    btn.style.display = (blocked && lang !== 'it') ? 'inline-block' : 'none';
-  }
-  // Click handler
-  document.addEventListener('click', function(e){
-    if(e.target && e.target.classList.contains('translate-fallback')){
-      var tl = currentLang();
-      if (tl && tl !== 'it') {
-        window.open(buildUrl(tl), '_blank', 'noopener');
+  function buildChars(target){
+    if(target.__charsBuilt) return;
+    var nodes = Array.from(target.childNodes);
+    target.innerHTML = '';
+    nodes.forEach(function(n){
+      if(n.nodeType === 3){ // text
+        var txt = n.nodeValue;
+        for(var i=0;i<txt.length;i++){
+          var span = document.createElement('span');
+          span.className = 'char';
+          span.textContent = txt[i];
+          target.appendChild(span);
+        }
+      }else{
+        target.appendChild(n); // keep tags like <b> etc.
       }
+    });
+    target.__charsBuilt = true;
+  }
+  function rand(min,max){ return Math.random()*(max-min)+min; }
+  function spawnShockFlash(x,y){
+    var root = document.body;
+    var ring = document.createElement('div');
+    ring.className = 'boom-shockwave';
+    ring.style.setProperty('--x', x+'px');
+    ring.style.setProperty('--y', y+'px');
+    var flash = document.createElement('div');
+    flash.className = 'boom-flash';
+    flash.style.setProperty('--x', x+'px');
+    flash.style.setProperty('--y', y+'px');
+    root.appendChild(ring); root.appendChild(flash);
+    setTimeout(function(){ ring.remove(); flash.remove(); }, 1200);
+  }
+  function spawnSparks(x,y){
+    var root = document.body;
+    var isMobile = (window.matchMedia && window.matchMedia('(max-width: 768px)').matches);
+    var N = isMobile ? 50 : 110;
+    for (var i=0;i<N;i++){
+      var s = document.createElement('div');
+      s.className = 'boom-spark';
+      s.style.setProperty('--x', x+'px'); s.style.setProperty('--y', y+'px');
+      var ang = Math.random()*Math.PI*2;
+      var spd = rand(120, isMobile? 360 : 520);
+      var dx = Math.cos(ang)*spd;
+      var dy = Math.sin(ang)*spd + rand(40,120);
+      var rot = rand(-540,540);
+      var dur = rand(900,1400);
+      var fade = dur + rand(0,200);
+      var b0 = rand(0,.6), b1 = rand(.6,2.2);
+      var size = rand(3,7);
+      s.style.setProperty('--dx', dx.toFixed(1)+'px');
+      s.style.setProperty('--dy', dy.toFixed(1)+'px');
+      s.style.setProperty('--rot', rot.toFixed(1)+'deg');
+      s.style.setProperty('--dur', Math.round(dur)+'ms');
+      s.style.setProperty('--fade', Math.round(fade)+'ms');
+      s.style.setProperty('--b0', b0.toFixed(2)+'px');
+      s.style.setProperty('--b1', b1.toFixed(2)+'px');
+      s.style.setProperty('--w', size.toFixed(1)+'px');
+      s.style.setProperty('--h', size.toFixed(1)+'px');
+      root.appendChild(s);
+      setTimeout((function(el){ return function(){ el.remove(); }; })(s), fade+80);
     }
-  }, {passive:true});
-  // Reflect changes
-  document.addEventListener('change', function(e){
-    if(e.target && e.target.id === 'customTranslate'){ updateButtonVisibility(); }
-  }, {passive:true});
-  // Watch for blocker flag to appear
-  try{
-    var mo = new MutationObserver(updateButtonVisibility);
-    mo.observe(document.documentElement, { attributes:true, attributeFilter:['data-gt-error'] });
-  }catch(_){}
-  // Init
-  if (document.readyState !== 'loading') updateButtonVisibility();
-  else document.addEventListener('DOMContentLoaded', updateButtonVisibility);
+  }
+  function explodeAt(target, x, y){
+    buildChars(target);
+    document.body.classList.add('boom-shake');
+    setTimeout(function(){ document.body.classList.remove('boom-shake'); }, 560);
+    target.classList.add('boom-primed');
+    setTimeout(function(){
+      target.classList.remove('boom-primed');
+      target.classList.add('boom-active');
+      var rect = target.getBoundingClientRect();
+      var cx = rect.left + rect.width/2, cy = rect.top + rect.height/2;
+      var chars = target.querySelectorAll('.char');
+      for (var i=0;i<chars.length;i++){
+        var el = chars[i];
+        var bb = el.getBoundingClientRect();
+        var vx = (bb.left + bb.width/2) - cx;
+        var vy = (bb.top + bb.height/2) - cy;
+        var dist = Math.max(1, Math.sqrt(vx*vx + vy*vy));
+        var mult = rand(120, 300);
+        var dx = (vx/dist) * mult + rand(-60,60);
+        var dy = (vy/dist) * mult + rand(-60,60);
+        var dz = rand(-140,140);
+        el.style.setProperty('--dx', dx.toFixed(1)+'px');
+        el.style.setProperty('--dy', dy.toFixed(1)+'px');
+        el.style.setProperty('--dz', dz.toFixed(1)+'px');
+        el.style.setProperty('--rx', rand(-40,40).toFixed(1)+'deg');
+        el.style.setProperty('--ry', rand(-60,60).toFixed(1)+'deg');
+        el.style.setProperty('--rz', rand(-120,120).toFixed(1)+'deg');
+        el.style.setProperty('--blur', rand(.2,1.4).toFixed(2)+'px');
+        el.style.setProperty('--td', Math.round(rand(820,1150))+'ms');
+      }
+      spawnShockFlash(x,y);
+      spawnSparks(x,y);
+      var boom = document.getElementById('explosionSound');
+      try{ if(boom){ boom.currentTime=0; boom.volume=1.0; boom.muted=false; boom.play().catch(function(){}); } }catch(_){}
+      setTimeout(function(){
+        target.classList.remove('boom-active');
+        var chars2 = target.querySelectorAll('.char');
+        for (var j=0;j<chars2.length;j++){
+          (function(el,k){
+            setTimeout(function(){
+              el.style.setProperty('--dx','0px');
+              el.style.setProperty('--dy','0px');
+              el.style.setProperty('--dz','0px');
+              el.style.setProperty('--rx','0deg');
+              el.style.setProperty('--ry','0deg');
+              el.style.setProperty('--rz','0deg');
+              el.style.setProperty('--blur','0px');
+              el.style.setProperty('--td', Math.round(rand(400,700))+'ms');
+              el.style.opacity='1'; el.style.transform='translate3d(0,0,0)';
+            }, k*8);
+          })(chars2[j], j);
+        }
+      }, 1200);
+    }, 120);
+  }
+  function onClick(e){
+    var x = (e && 'clientX' in e) ? e.clientX : (window.innerWidth/2);
+    var y = (e && 'clientY' in e) ? e.clientY : (window.innerHeight/2);
+    explodeAt(exploding, x, y);
+    setTimeout(function(){ explodeAt(exploding, x, y); }, 260); // boom–boom
+  }
+  exploding.style.cursor='pointer';
+  exploding.addEventListener('click', onClick, true);
+  var btn = document.getElementById('btn-explode') || document.getElementById('explode-btn');
+  if(btn){ btn.addEventListener('click', function(ev){ ev.preventDefault(); onClick(ev); }, true); }
 })();</script></body>
 </html>
