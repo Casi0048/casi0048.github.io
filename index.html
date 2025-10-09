@@ -2769,7 +2769,6 @@ nav.menu-desktop .mega-menu{ z-index: 2147483606 !important; pointer-events: aut
         /* 2) Trova i pulsanti “buoni” in top-bar (accettiamo entrambe le varianti di id) */
         const btnThunder = document.getElementById('btn-thunder');
         const btnExplode = document.getElementById('explode-btn') || document.getElementById('btn-explode');
-        const sel = 'h1,h2,h3,p,span,hero-title,headline';
       
         if(!btnThunder || !btnExplode){
           console.warn('[effects-one] Pulsanti non trovati. Assicurati che in top-bar esistano #btn-thunder e #explode-btn (o #btn-explode).');
@@ -2807,6 +2806,7 @@ nav.menu-desktop .mega-menu{ z-index: 2147483606 !important; pointer-events: aut
         });
       
         /* 5) “Esplodi” il testo: marca l’elemento bersaglio se presente */
+const sel = 'h1,h2,h3,p,span,hero-title,headline';
         const target = Array.from(document.querySelectorAll(sel))
   .find(el => el.textContent && el.textContent.includes('Sustine et abstine'));
 
@@ -3484,14 +3484,16 @@ document.addEventListener("DOMContentLoaded", function(){
 </script><script id="quote-runner-js-solid-2025-10-08">
 (function(){
   function ready(fn){ if(document.readyState!=='loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
-  function qsa(sel, root){
-    return Array.prototype.slice.call((root || document).querySelectorAll(sel));
-  }
+ function qsa(sel, root){
+  return Array.prototype.slice.call((root || document).querySelectorAll(sel));
+}
+
+  return Array.prototype.slice.call((root || document).querySelectorAll(sel));
+}call((root||document).querySelectorAll(sel)); }
   ready(function(){
     var runner = document.getElementById('quote-runner');
     if(!runner) return;
     var PERIOD = 9000;
-
     function readSource(){
       var list = qsa('.floating-quotes .quote-bubble');
       return list.map(function(q){
@@ -3499,7 +3501,6 @@ document.addEventListener("DOMContentLoaded", function(){
         return {t: (qt?qt.textContent.trim():''), a: (qa?qa.textContent.trim():'')};
       });
     }
-
     var data = readSource();
     if (!data.length){
       data = [
