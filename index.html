@@ -2099,6 +2099,73 @@ window.googleTranslateElementInit = function(){
   transform: translateX(0) rotate(0deg) scale(1) !important;
 }
 </style>
+<style id="timeline-movimento-estremo-override">
+/* USA !important PER SOVRASCRIVERE TUTTO */
+.timeline-container .timeline-item {
+  opacity: 0 !important;
+  transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+  will-change: transform, opacity !important;
+  transform-style: preserve-3d !important;
+}
+
+/* MOVIMENTO ORIZZONTALE ESTREMO - 500px */
+.timeline-container .timeline-item.left {
+  transform: 
+    translateX(-500px) 
+    translateY(80px) 
+    rotateY(35deg) 
+    scale(0.7)
+    skewX(-10deg) !important;
+  filter: blur(8px) !important;
+}
+
+.timeline-container .timeline-item.right {
+  transform: 
+    translateX(500px) 
+    translateY(80px) 
+    rotateY(-35deg) 
+    scale(0.7)
+    skewX(10deg) !important;
+  filter: blur(8px) !important;
+}
+
+/* STATO VISIBILE */
+.timeline-container .timeline-item.visible {
+  opacity: 1 !important;
+  transform: 
+    translateX(0) 
+    translateY(0) 
+    rotateY(0deg) 
+    scale(1)
+    skewX(0deg) !important;
+  filter: blur(0px) !important;
+}
+
+/* Effetti rimbalzo */
+.timeline-container .timeline-item.visible.left {
+  animation: bounceInLeftExtreme 0.8s ease-out 1s both !important;
+}
+
+.timeline-container .timeline-item.visible.right {
+  animation: bounceInRightExtreme 0.8s ease-out 1s both !important;
+}
+
+@keyframes bounceInLeftExtreme {
+  0% { transform: translateX(0) translateY(0) rotateY(0deg) scale(1) !important; }
+  25% { transform: translateX(-30px) translateY(0) rotateY(-8deg) scale(1.03) !important; }
+  50% { transform: translateX(20px) translateY(0) rotateY(4deg) scale(1.01) !important; }
+  75% { transform: translateX(-10px) translateY(0) rotateY(-2deg) scale(1) !important; }
+  100% { transform: translateX(0) translateY(0) rotateY(0deg) scale(1) !important; }
+}
+
+@keyframes bounceInRightExtreme {
+  0% { transform: translateX(0) translateY(0) rotateY(0deg) scale(1) !important; }
+  25% { transform: translateX(30px) translateY(0) rotateY(8deg) scale(1.03) !important; }
+  50% { transform: translateX(-20px) translateY(0) rotateY(-4deg) scale(1.01) !important; }
+  75% { transform: translateX(10px) translateY(0) rotateY(2deg) scale(1) !important; }
+  100% { transform: translateX(0) translateY(0) rotateY(0deg) scale(1) !important; }
+}
+</style>
 </head>
 <body>
 <!-- UI PATCH BLOCKS -->
@@ -4576,6 +4643,71 @@ setTimeout(() => {
     timelineScrollFallback();
   }
 }, 2000);
+</script>
+<script id="timeline-bidirezionale-override">
+// Attendi che la pagina sia completamente caricata
+window.addEventListener('load', function() {
+  setTimeout(function() {
+    const timelineItems = document.querySelectorAll('.timeline-item');
+    
+    if (!timelineItems.length) return;
+    
+    console.log('Attivando timeline bidirezionale override...');
+    
+    // Reset delle classi di animazione precedenti
+    timelineItems.forEach(item => {
+      item.classList.remove('animated', 'in-view');
+      // Mantieni 'visible' se già presente, altrimenti aggiungi la nostra logica
+      if (!item.classList.contains('visible')) {
+        if (item.classList.contains('left')) {
+          item.style.transform = 'translateX(-500px) translateY(80px) rotateY(35deg) scale(0.7) skewX(-10deg)';
+          item.style.filter = 'blur(8px)';
+        } else if (item.classList.contains('right')) {
+          item.style.transform = 'translateX(500px) translateY(80px) rotateY(-35deg) scale(0.7) skewX(10deg)';
+          item.style.filter = 'blur(8px)';
+        }
+        item.style.opacity = '0';
+      }
+    });
+    
+    // Observer che sovrascrive il comportamento
+    const overrideObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const item = entry.target;
+        
+        if (entry.isIntersecting) {
+          // Forza la nostra animazione
+          if (!item.classList.contains('visible')) {
+            item.classList.add('visible');
+            console.log('Animazione attivata per:', item.querySelector('h3')?.textContent || 'item');
+          }
+        } else {
+          // Reset completo quando esce
+          item.classList.remove('visible');
+          setTimeout(() => {
+            if (!item.classList.contains('visible')) {
+              if (item.classList.contains('left')) {
+                item.style.transform = 'translateX(-500px) translateY(80px) rotateY(35deg) scale(0.7) skewX(-10deg)';
+                item.style.filter = 'blur(8px)';
+              } else if (item.classList.contains('right')) {
+                item.style.transform = 'translateX(500px) translateY(80px) rotateY(-35deg) scale(0.7) skewX(10deg)';
+                item.style.filter = 'blur(8px)';
+              }
+              item.style.opacity = '0';
+            }
+          }, 50);
+        }
+      });
+    }, {
+      threshold: [0, 0.1, 0.2],
+      rootMargin: '-20% 0px -20% 0px'
+    });
+    
+    // Applica a tutti gli items
+    timelineItems.forEach(item => overrideObserver.observe(item));
+    
+  }, 1000); // Delay per assicurarsi che gli altri script siano caricati
+});
 </script>
 </body>
 </html>
