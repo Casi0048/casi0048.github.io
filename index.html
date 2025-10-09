@@ -1677,7 +1677,18 @@ nav.menu-desktop .mega-menu{ z-index: 2147483606 !important; pointer-events: aut
   60%{ transform: translate3d(-2px,1px,0) rotate(-0.2deg); }
   80%{ transform: translate3d(2px,0,0) rotate(0.2deg); }
   100%{ transform: translate3d(0,0,0) rotate(0); }
-}</style></head>
+}</style><script id="gt-init">
+window.googleTranslateElementInit = function(){
+  try{
+    new google.translate.TranslateElement({
+      pageLanguage: 'it',
+      includedLanguages: 'en,fr,de,es,pl',
+      autoDisplay: false
+    }, 'google_translate_element');
+    document.documentElement.removeAttribute('data-gt-error');
+  }catch(e){ console.warn('GT init error', e); }
+};
+</script><script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script></head>
 <body>
 <!-- UI PATCH BLOCKS -->
 <div aria-label="Galleria autori" class="slider-vertical">
@@ -1953,7 +1964,7 @@ nav.menu-desktop .mega-menu{ z-index: 2147483606 !important; pointer-events: aut
 <option value="es">Español</option>
 <option value="pl">Polski</option>
 </select>
-<div aria-hidden="true" id="google_translate_element" style="position:absolute;left:-9999px;top:-9999px;height:0;width:0;overflow:hidden"></div>
+<div aria-hidden="true" id="google_translate_element" style="position:fixed;bottom:0;right:0;width:1px;height:1px;opacity:0;pointer-events:none;overflow:hidden"></div>
 </div>
 <div class="search-container" role="search">
 <input aria-label="Cerca" id="site-search" placeholder="Cerca nel sito..." type="search"/>
@@ -2368,14 +2379,12 @@ nav.menu-desktop .mega-menu{ z-index: 2147483606 !important; pointer-events: aut
 <div class="typing-wrap">
 <div class="typing-effect"></div>
 </div>
-<button id="btn-explode" class="ctrl-btn" type="button"
-  onclick="(function(){var x=document.getElementById('exploding');if(!x)return;var r=x.getBoundingClientRect();x.dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true,clientX:r.left+r.width/2,clientY:r.top+r.height/2}));})();">
+<button class="ctrl-btn" id="btn-explode" onclick="(function(){var x=document.getElementById('exploding');if(!x)return;var r=x.getBoundingClientRect();x.dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true,clientX:r.left+r.width/2,clientY:r.top+r.height/2}));})();" type="button">
   💥 Esplodi
 </button>
 <div class="exploding-text" id="exploding" title="Clicca per esplodere">
           ⏳ Sustine et abstine🧘
         </div>
-
 </section>
 <!-- Timeline filosofica interattiva - INTEGRATA -->
 <section class="timeline-container">
@@ -2806,7 +2815,6 @@ nav.menu-desktop .mega-menu{ z-index: 2147483606 !important; pointer-events: aut
         });
       
         /* 5) “Esplodi” il testo: marca l’elemento bersaglio se presente */
-const sel = 'h1,h2,h3,p,span,hero-title,headline';
         const target = Array.from(document.querySelectorAll(sel))
   .find(el => el.textContent && el.textContent.includes('Sustine et abstine'));
 
@@ -3722,5 +3730,65 @@ document.addEventListener("DOMContentLoaded", function(){
 
   btn.addEventListener('click', function(ev){ ev.preventDefault(); trigger(); }, {passive:true});
 })();
+</script><script id="gt-wire">
+document.addEventListener('DOMContentLoaded', function() {
+  var translateSelect = document.getElementById('customTranslate');
+  function clearCookie(){
+    var past='Thu, 01 Jan 1970 00:00:00 GMT';
+    document.cookie='googtrans=; expires='+past+'; path=/;';
+    document.cookie='googtrans=; expires='+past+'; path=/; domain='+location.hostname+';';
+  }
+  function openWebTranslate(lang){
+    var u = location.href; var sl='it';
+    var url='https://translate.google.com/translate?hl='+encodeURIComponent(lang)+'&sl='+encodeURIComponent(sl)+'&tl='+encodeURIComponent(lang)+'&u='+encodeURIComponent(u);
+    window.open(url, '_blank', 'noopener');
+  }
+  function setCombo(lang){
+    var combo = document.querySelector('.goog-te-combo');
+    if(combo){
+      combo.value = lang; combo.dispatchEvent(new Event('change')); return true;
+    }
+    var frame = document.querySelector('.goog-te-menu-frame');
+    if(frame && frame.contentDocument){
+      var select = frame.contentDocument.querySelector('.goog-te-combo');
+      if(select){ select.value = lang; select.dispatchEvent(new Event('change')); return true; }
+    }
+    return false;
+  }
+  function loadGT(){
+    if(!(window.google && google.translate)){
+      var s=document.createElement('script');
+      s.src='https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+      s.async=true;
+      s.onerror=function(){ document.documentElement.setAttribute('data-gt-error','load-failed'); };
+      document.head.appendChild(s);
+    }
+  }
+  function translatePage(lang){
+    if(!lang) return;
+    if(lang==='it'){ clearCookie(); setTimeout(function(){ location.reload(); }, 50); return; }
+    loadGT();
+    var tries=0;
+    (function wait(){
+      if(window.google && google.translate){
+        try{ if(!document.querySelector('.goog-te-combo')) { window.googleTranslateElementInit(); } }catch(_){}
+        if(setCombo(lang)) return;
+      }
+      if(tries++ < 60){ setTimeout(wait, 150); }
+      else { document.documentElement.setAttribute('data-gt-error','load-failed'); openWebTranslate(lang); }
+    })();
+  }
+  if(translateSelect){
+    translateSelect.addEventListener('change', function(){ translatePage(this.value); }, {passive:true});
+    try{
+      var c=(document.cookie||'').split(';').map(function(s){return s.trim();}).find(function(s){return s.indexOf('googtrans=')===0;});
+      if(!c){ translateSelect.value='it'; }
+      else{
+        var val=decodeURIComponent(c.split('=')[1]||''); var parts=val.split('/'); var l=parts[2]||'it';
+        if(translateSelect.querySelector('option[value="'+l+'"]')) translateSelect.value=l;
+      }
+    }catch(_){ translateSelect.value='it'; }
+  }
+});
 </script></body>
 </html>
