@@ -5156,43 +5156,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 })();
 </script>
-   // Round to nearest 0.05 for neat labels like x1.0, x1.25, x1.5
-    var r = Math.round(x*20)/20; // steps of 0.05
-    return "x" + r.toFixed(2).replace(/\.00$/,".0"); // keep one decimal when it's .00
-  }
-  function computeDisplayFactor(v, min, max){
-    min = +min || 1; max = +max || 12; v = +v || 8;
-    var t = (v - min) / (max - min); // 0..1
-    var f = 0.5 + t * (1.5 - 0.5);  
-
- // 0.5x .. 1.5x
-    return clamp(f, 0.5, 1.5);
-  }
-  function mount(){
-    var sp = document.getElementById('slider-speed');
-    if(!sp) return;
-    // ensure readout span exists
-    var ro = document.getElementById('speed-readout');
-    if(!ro){
-      ro = document.createElement('span');
-      ro.id = 'speed-readout';
-      // insert right after the slider (inside its label wrapper if present)
-      (sp.parentNode || document.body).insertBefore(ro, sp.nextSibling);
-    }
-    function update(){
-      var f = computeDisplayFactor(sp.value, sp.min, sp.max);
-      ro.textContent = formatFactor(f);
-    }
-    sp.addEventListener('input', update);
-    sp.addEventListener('change', update);
-    update(); // initial
-  }
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', mount);
-  }else{
-    mount();
-  }
-})();
-</script>
+  
 </body>
 </html>
