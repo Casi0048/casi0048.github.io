@@ -2403,6 +2403,62 @@ html, body{
   box-shadow: 0 0 6px rgba(255,215,0,.4);
 }
 </style>
+
+<style id="speed-readout-css">
+#slider-speed{ vertical-align: middle; }
+#speed-readout{
+  display: inline-block;
+  min-width: 3.5ch;
+  margin-left: .6rem;
+  padding: .15rem .4rem;
+  border-radius: .5rem;
+  font-variant-numeric: tabular-nums;
+  font-size: .9rem;
+  line-height: 1.1;
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(212,175,55,.55);
+  box-shadow: 0 0 6px rgba(255,215,0,.25);
+}
+</style>
+
+
+
+<style id="russell-conservative-anim">
+/* Conservative micro‑interaction for Russell box — stronger & robust */
+#russell-box{
+  transition: box-shadow 220ms ease, transform 220ms ease, background-color 220ms ease, filter 220ms ease;
+  will-change: box-shadow, transform, filter;
+}
+/* Click/keyboard ping state */
+#russell-box.ping{
+   box-shadow: 0 0 0 2px rgba(255,215,0,.40), 0 0 28px rgba(255,215,0,.55);
+  transform: translateY(-2px) scale(1.015);
+  background-color: rgba(20,20,40,.88);
+   filter: brightness(2.10) saturate(2.08);
+  z-index: 2147483600; /* bring above misc overlays while pinging */
+}
+/* Button visual sync */
+#russell-btn{
+  transition: color 160ms ease, text-shadow 160ms ease, opacity 160ms ease;
+}
+#russell-btn.ping{
+  color: #ffe08a;
+  text-shadow: 0 0 10px rgba(255,215,0,.45);
+  opacity: 1;
+}
+
+/* Fallback: immediate feedback on press even without JS */
+#russell-box:active{
+  box-shadow: 0 0 0 2px rgba(255,215,0,.35), 0 0 22px rgba(255,215,0,.55);
+  filter: brightness(1.04);
+}
+
+/* Respect reduced motion: keep glow, skip lift */
+@media (prefers-reduced-motion: reduce){
+  #russell-box{ transition: box-shadow 220ms ease, background-color 220ms ease, filter 220ms ease; }
+  #russell-box.ping{ transform: none; }
+}
+</style>
 </head>
 <body>
 <!-- UI PATCH BLOCKS -->
@@ -5042,6 +5098,100 @@ document.addEventListener('DOMContentLoaded', function() {
     bind(document.querySelector('#audio-player #volume'));
     bind(document.querySelector('#slider-speed'));
   });
+})();
+</script>
+
+<script id="speed-readout-js">
+(function(){
+  function clamp(n,min,max){ return Math.max(min, Math.min(max, n)); }
+  function formatFactor(x){
+ 
+<script id="russell-conservative-anim-js">
+(function(){
+  function pingOnce(){
+    var box = document.getElementById('russell-box');
+    var btn = document.getElementById('russell-btn');
+    if(!box) return;
+    box.classList.add('ping');
+    if(btn) btn.classList.add('ping');
+    clearTimeout(pingOnce._t);
+    pingOnce._t = setTimeout(function(){
+      box.classList.remove('ping');
+      if(btn) btn.classList.remove('ping');
+    }, 520);
+  }
+  function isInside(el, id){
+    while(el){ if(el.id === id) return true; el = el.parentElement; }
+    return false;
+  }
+  function init(){
+    var box = document.getElementById('russell-box');
+    var btn = document.getElementById('russell-btn');
+    if(!box) return;
+
+    // Click on the button OR anywhere inside the box
+    box.addEventListener('click', function(e){
+      // avoid false positives from unrelated overlays
+      if(isInside(e.target, 'russell-box') || isInside(e.target, 'russell-btn')){
+        pingOnce();
+      }
+    });
+
+    // Keyboard on button
+    if(btn){
+      if(!btn.hasAttribute('role')) btn.setAttribute('role','button');
+      if(!btn.hasAttribute('tabindex')) btn.setAttribute('tabindex','0');
+      if(!btn.hasAttribute('aria-label')) btn.setAttribute('aria-label','Apri Russell');
+      btn.addEventListener('keydown', function(e){
+        if(e.key === 'Enter' || e.key === ' ' || e.keyCode === 13 || e.keyCode === 32){
+          e.preventDefault(); pingOnce();
+        }
+      });
+    }
+  }
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', init);
+  }else{
+    init();
+  }
+})();
+</script>
+   // Round to nearest 0.05 for neat labels like x1.0, x1.25, x1.5
+    var r = Math.round(x*20)/20; // steps of 0.05
+    return "x" + r.toFixed(2).replace(/\.00$/,".0"); // keep one decimal when it's .00
+  }
+  function computeDisplayFactor(v, min, max){
+    min = +min || 1; max = +max || 12; v = +v || 8;
+    var t = (v - min) / (max - min); // 0..1
+    var f = 0.5 + t * (1.5 - 0.5);  
+
+ // 0.5x .. 1.5x
+    return clamp(f, 0.5, 1.5);
+  }
+  function mount(){
+    var sp = document.getElementById('slider-speed');
+    if(!sp) return;
+    // ensure readout span exists
+    var ro = document.getElementById('speed-readout');
+    if(!ro){
+      ro = document.createElement('span');
+      ro.id = 'speed-readout';
+      // insert right after the slider (inside its label wrapper if present)
+      (sp.parentNode || document.body).insertBefore(ro, sp.nextSibling);
+    }
+    function update(){
+      var f = computeDisplayFactor(sp.value, sp.min, sp.max);
+      ro.textContent = formatFactor(f);
+    }
+    sp.addEventListener('input', update);
+    sp.addEventListener('change', update);
+    update(); // initial
+  }
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', mount);
+  }else{
+    mount();
+  }
 })();
 </script>
 </body>
