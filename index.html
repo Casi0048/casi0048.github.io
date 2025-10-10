@@ -176,7 +176,7 @@
 /* Lente: incollata al bordo sinistro allineata verticalmente */
 .search-container .search-icon{
   position: absolute;
-  left: -15.70rem;
+  left:  right:2.2rem;  
   top: 50%;
   transform: translateY(-50%);
   font-size: 1.05rem;
@@ -365,7 +365,7 @@
       margin-bottom: 2rem;
       }
       .typing-wrap {
-      margin: -1.25rem 0;
+      margin: -.25rem 0;
       display: flex;
       justify-content: center;
       min-height: 3.2em;
@@ -1497,7 +1497,7 @@ footer {
   }
 
   /* se la tua lente è troppo vicina, spostala appena */
-  .search-container .search-icon{ right: .55rem; } /* opzionale */
+  .search-container .search-icon{ right: 2.55rem!important; } /* opzionale */
 </style>
 <script>
   document.addEventListener('DOMContentLoaded', ()=>{
@@ -2198,6 +2198,55 @@ window.googleTranslateElementInit = function(){
 @keyframes twinkle {
   0%, 100% { opacity: 0.3; }
   50% { opacity: 1; }
+}
+</style>
+<style>
+/* 1) Ricerca: evita l'overflow della lente */
+.search-container .search-icon{
+  left: auto !important;     /* annulla il -15.70rem precedente */
+  right: 2.2rem !important;  /* tieni solo il posizionamento a destra */
+}
+.search-container .search-icon { width: auto; } /* difensivo */
+
+/* 2) Timeline: rendi box-sizing e non superare 100% */
+.timeline-container .timeline-item{
+  box-sizing: border-box !important;
+  width: 50% !important;          /* niente calc... */
+  padding-left: 0 !important;
+  padding-right: 0 !important;    /* padding lo mettiamo sulla card interna */
+}
+.timeline-container .timeline-item.left  { left: 0 !important; }
+.timeline-container .timeline-item.right { left: 2% !important; }
+
+/* Sposta i padding sulla card interna, non sull’item “colonna” */
+.timeline-container .timeline-content{
+  padding: 1.5rem 1.8rem !important; /* come già previsto */
+  max-width: 100% !important;
+}
+
+/* 3) Non far riaprire lo scroll orizzontale globale */
+html, body{
+  overflow-x: hidden !important;
+}
+
+/* (Opzionale) Se vuoi tenere la “linea” e i connettori visibili senza clip */
+.timeline-container, .timeline-container .timeline{
+  overflow: visible;               /* ok */
+}
+</style>
+
+<style id="lens-left-fix">
+/* --- Lens left & vertically centered (scoped, minimal) --- */
+.search-container{ position: relative !important; }
+#site-search{ padding-left: 2.6rem !important; }  /* space for the lens on the left */
+.search-container .search-icon{
+  position: absolute !important;
+  left: 0.9rem !important;
+  right: auto !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  pointer-events: none;  /* decorative: doesn't block typing/clicks */
+  line-height: 1;
 }
 </style>
 </head>
