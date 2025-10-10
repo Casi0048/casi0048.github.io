@@ -2176,6 +2176,30 @@ window.googleTranslateElementInit = function(){
   100% { transform: translateX(0) translateY(0) rotateY(0deg) scale(1) !important; }
 }
 </style>
+<style>
+/* Stelle visibili */
+.stars-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.star {
+  position: absolute;
+  background-color: white;
+  border-radius: 50%;
+  animation: twinkle 5s infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+</style>
 </head>
 <body>
 <!-- UI PATCH BLOCKS -->
@@ -2431,6 +2455,7 @@ window.googleTranslateElementInit = function(){
 <div aria-hidden="true" id="bolt"></div>
 <!-- Sfondo con particelle cosmiche -->
 <div id="cosmic-bg"></div>
+<div class="stars-container" id="stars"></div>
 <!-- Top Bar -->
 <div class="top-bar">
 <a class="brand" href="/">
@@ -4763,6 +4788,35 @@ window.addEventListener('load', function() {
   }, 1000); // Delay per assicurarsi che gli altri script siano caricati
 });
 </script>
-
+<script>
+// Stelle visibili
+document.addEventListener('DOMContentLoaded', function() {
+  const starsContainer = document.getElementById('stars');
+  const starCount = 400;
+  
+  for (let i = 0; i < starCount; i++) {
+    const star = document.createElement('div');
+    star.classList.add('star');
+    
+    // Dimensioni casuali
+    const size = Math.random() * 3;
+    star.style.width = `${size}px`;
+    star.style.height = `${size}px`;
+    
+    // Posizione casuale
+    star.style.left = `${Math.random() * 100}%`;
+    star.style.top = `${Math.random() * 100}%`;
+    
+    // Luminosità variabile
+    star.style.opacity = Math.random() * 0.8 + 0.2;
+    
+    // Durata animazione variabile
+    star.style.animationDuration = `${3 + Math.random() * 7}s`;
+    star.style.animationDelay = `${Math.random() * 5}s`;
+    
+    starsContainer.appendChild(star);
+  }
+});
+</script>
 </body>
 </html>
