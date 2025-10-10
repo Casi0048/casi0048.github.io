@@ -534,12 +534,13 @@
 }
       /* Citazioni filosofiche fluttuanti */
       .floating-quotes {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 70;
-      max-width: 300px;
-      }
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 20; /* Cambia da 70 a 80 (inferiore a 90) */
+    max-width: 300px;
+}
+
       .quote-bubble {
       background: rgba(10, 10, 30, 0.9);
       border: 1px solid var(--menu-border);
@@ -815,7 +816,7 @@ footer {
       .right-embed{position:fixed;right:1.25rem;top:40rem;width:20rem;z-index:2147483600;background:rgba(10,10,30,.8);border:1px solid rgba(255,215,0,.25);border-radius:.75rem;padding:.5rem}
       .right-embed iframe{width:100%;height:264px;display:block;border:0}
       #russell-box{position:fixed;bottom:8vh;left:2rem;z-index:0;background:rgba(10,10,30,.8);border:1px solid rgba(255,215,0,.25);border-radius:.62rem;padding:.62rem .75rem;max-width:24rem;box-shadow:0 .5rem 1.12rem rgba(0,0,0,.35)}
-      #russell-btn{all:unset;cursor:pointer;display:block;color:#ffd86a}#russell-hint{position:fixed;bottom:19vh;left:3.5rem;z-index:2;color:#cfe8ff;opacity:.85;font-style:italic}
+      #russell-btn{all:unset;cursor:pointer;display:block;color:#ffd86a}#russell-hint{position:fixed;bottom:19vh;left:3.5rem;z-index:92;color:#cfe8ff;opacity:.85;font-style:italic}
       #lightning,#bolt{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:0}
       #lightning{background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.9),rgba(255,255,255,.2) 40%,transparent 65%);transition:opacity .18s ease-out}
       #bolt{width:160px;height:400px;left:50%;top:50%;background:linear-gradient(to bottom,rgba(255,255,255,1),rgba(255,255,255,0));clip-path:polygon(48% 0,52% 0,60% 25%,45% 25%,55% 55%,40% 55%,48% 100%,42% 100%,35% 60%,50% 60%,38% 28%,58% 28%);filter:drop-shadow(0 0 12px rgba(255,255,255,.8));transition:opacity .28s ease-out,transform .09s ease-out}
@@ -869,6 +870,8 @@ footer {
       @media (max-width: 980px){
       #dict-compact, #iep-linkbox { position: static; width:100%; margin: .75rem 0; }
       }
+      /* Assicurati che l'enciclopedia abbia un z-index più alto */
+
     </style>
 <style id="effects-dedupe-fix">
       /* Se il gruppo resta come fallback fisso (niente header trovato) → stringilo più a destra */
@@ -1755,6 +1758,7 @@ footer {
     }
   }
 </style>
+
 <style id="floating-quotes-v2-css">
 /* === Floating Quotes v2 (robust) === */
 .floating-quotes{ position:fixed; bottom:20px; right:20px; z-index:70; max-width: 360px; pointer-events:auto; }
@@ -2974,7 +2978,7 @@ window.googleTranslateElementInit = function(){
       });
       (function(){const inner=document.getElementById('sliderInner');if(!inner)return;let pos=0,speed=.35,dir=1,running=true;function step(){if(!running){requestAnimationFrame(step);return}pos+=dir*speed;inner.style.transform=`translateY(${-pos}px)`;const total=inner.scrollHeight-inner.clientHeight;if(pos>=total)pos=0;if(pos<0)pos=total;requestAnimationFrame(step)}requestAnimationFrame(step);const t=document.getElementById('slider-toggle'),i=document.getElementById('slider-invert'),sp=document.getElementById('slider-speed');t?.addEventListener('click',()=>running=!running);i?.addEventListener('click',()=>dir*=-1);sp?.addEventListener('input',()=>{const v=parseInt(sp.value,10)||8;speed=.1+(v-1)*.08})})();
       window.addEventListener('load',()=>{const a=document.getElementById('myAudio'),btn=document.getElementById('playPause'),tm=document.getElementById('time'),v=document.getElementById('volume');if(!a||!btn)return;function f(s){if(!isFinite(s))return'0:00';const m=Math.floor(s/60),c=Math.floor(s%60);return m+':'+(c<10?'0'+c:c)}function u(){tm.textContent=`${f(a.currentTime)} / ${f(a.duration)}`}v.value=.8;a.volume=parseFloat(v.value);btn.addEventListener('click',()=>{if(a.paused){a.play().catch(()=>{});btn.textContent='⏸️'}else{a.pause();btn.textContent='▶️'}});v.addEventListener('input',()=>a.volume=parseFloat(v.value));a.addEventListener('timeupdate',u);a.addEventListener('loadedmetadata',u);a.addEventListener('ended',()=>{btn.textContent='▶️'})});
-      (function(){const b=document.getElementById('russell-btn'),h=document.getElementById('russell-hint'),a=document.getElementById('russell-audio');if(!b||!a)return;let u=false;function lk(){if(u)return;u=true;a.muted=false;a.play().then(()=>{a.pause();a.currentTime=0}).catch(()=>{});window.removeEventListener('pointerdown',lk,{capture:true});window.removeEventListener('keydown',lk,{capture:true})}window.addEventListener('pointerdown',lk,{once:true,capture:true,passive:true});window.addEventListener('keydown',lk,{once:true,capture:true});b.addEventListener('click',()=>{try{a.currentTime=0;a.play().catch(()=>{})}catch(_){ }if(h)h.style.display='none'})})();
+      (function(){const b=document.getElementById('russell-btn'),h=document.getElementById('russell-hint'),a=document.getElementById('russell-audio');if(!b||!a)return;let u=false;function lk(){if(u)return;u=true;a.muted=false;a.play().then(()=>{a.pause();a.currentTime=0}).catch(()=>{});window.removeEventListener('pointerdown',lk,{capture:true});window.removeEventListener('keydown',lk,{capture:true})}window.addEventListener('pointerdown',lk,{once:true,capture:true,passive:true});window.addEventListener('keydown',lk,{once:true,capture:true});b.addEventListener('click',()=>{try{a.currentTime=0;a.play().catch(()=>{})}catch(_){ }})})();
       (function(){const btn=document.getElementById('btn-thunder'),th=document.getElementById('thunder-sound'),ex=document.getElementById('explosionSound'),ov=document.getElementById('lightning'),bo=document.getElementById('bolt');if(!btn||!th||!ov||!bo)return;let unlocked=false;async function unlockOnce(){if(unlocked)return;unlocked=true;for(const s of [th,ex]){try{s.muted=false;await s.play();s.pause();s.currentTime=0}catch(_){}}}window.addEventListener('pointerdown',unlockOnce,{once:true,passive:true,capture:true});window.addEventListener('keydown',unlockOnce,{once:true,capture:true});let on=false;function up(){btn.classList.toggle('active',on);btn.setAttribute('aria-pressed',on?'true':'false');btn.textContent=on?'⚡ Tuono: ON':'⚡ Tuono'}btn.addEventListener('click',e=>{e.preventDefault();on=!on;if(on){try{th.currentTime=0;th.play().catch(()=>{})}catch(_){}}else{try{th.pause();th.currentTime=0}catch(_){}}up()});up();function flash(){const x=15+Math.random()*70,y=10+Math.random()*65,ang=-25+Math.random()*50,sy=.8+Math.random()*1.2;ov.style.transition='none';ov.offsetHeight;ov.style.background=`radial-gradient(circle at ${x}% ${y}%, rgba(255,255,255,.95), rgba(255,255,255,.22) 40%, transparent 65%)`;ov.style.opacity='1';ov.style.transition='opacity 80ms ease-out';setTimeout(()=>ov.style.opacity='0',140);bo.style.left=x+'%';bo.style.top=y+'%';bo.style.transform=`translate(-50%,-50%) rotate(${ang}deg) scaleY(${sy})`;bo.style.transition='transform 90ms ease-out, opacity 280ms ease-out';bo.style.opacity='1';setTimeout(()=>bo.style.opacity='0',180);if(on){try{th.currentTime=0;th.play().catch(()=>{})}catch(_){}}}(function schedule(){setTimeout(()=>{flash();schedule()},30000+Math.random()*10000)})();document.getElementById('explode-btn')?.addEventListener('click',()=>{try{ex.muted=false;ex.volume=1.0;ex.currentTime=0;ex.play().catch(()=>{})}catch(_){}})})();
     </script>
 <script id="timeline-restore-js">
