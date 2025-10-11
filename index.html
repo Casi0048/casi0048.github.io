@@ -2042,7 +2042,736 @@ body.dom-ready #quote-runner {
 
 /* Ensure overflow is visible so wider cards aren't clipped */
 .timeline-container{ overflow: visible !important; }
-</style></head>
+</style>
+<style>
+        :root {
+            --bg: #0a0a1a;
+            --gold: #d4af37;
+            --cyan: #00ccff;
+            --accent-purple: #b967ff;
+            --text-light: #e9eef5;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--bg);
+            color: var(--text-light);
+            overflow-x: hidden;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .timeline-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .timeline-title {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            text-align: center;
+            margin-bottom: 4rem;
+            font-size: 3rem;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+        }
+        
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+        
+        /* Linea centrale */
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            transform: translateX(-50%);
+            background: linear-gradient(180deg, 
+                var(--accent-purple) 0%,
+                var(--cyan) 30%,
+                var(--gold) 70%,
+                var(--accent-purple) 100%);
+            box-shadow: 0 0 20px rgba(185, 103, 255, 0.6);
+            z-index: 1;
+        }
+        
+        .timeline-item {
+            position: relative;
+            width: 45%;
+            margin: 4rem 0;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        /* Posizionamento alternato */
+        .timeline-item.left {
+            left: 0;
+            margin-right: auto;
+            padding-right: 60px;
+            text-align: right;
+            transform: translateX(-100px) translateY(50px);
+        }
+        
+        .timeline-item.right {
+            left: 55%;
+            margin-left: auto;
+            padding-left: 60px;
+            text-align: left;
+            transform: translateX(100px) translateY(50px);
+        }
+        
+        /* Animazione quando visibile */
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateX(0) translateY(0);
+        }
+        
+        /* Card styling */
+        .timeline-content {
+            background: linear-gradient(145deg, 
+                rgba(10, 10, 30, 0.9) 0%,
+                rgba(20, 20, 50, 0.8) 50%,
+                rgba(10, 10, 30, 0.9) 100%);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 
+                0 15px 35px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 215, 0, 0.2);
+            transition: all 0.4s ease;
+        }
+        
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.6),
+                0 0 0 1px rgba(255, 215, 0, 0.4);
+        }
+        
+        .timeline-content h3 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            font-family: 'Cinzel', serif;
+        }
+        
+        .period {
+            color: var(--cyan);
+            font-style: italic;
+            margin-bottom: 1rem;
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            background: rgba(0, 204, 255, 0.1);
+            border-radius: 20px;
+            border: 1px solid rgba(0, 204, 255, 0.3);
+        }
+        
+        .timeline-content p {
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        
+        /* Punto sulla timeline */
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 2rem;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, 
+                #ffffff 0%, 
+                var(--gold) 30%,
+                var(--cyan) 70%,
+                var(--accent-purple) 100%);
+            box-shadow: 
+                0 0 0 6px rgba(255, 215, 0, 0.3),
+                0 0 0 12px rgba(0, 204, 255, 0.2),
+                0 0 20px 8px rgba(255, 215, 0, 0.5);
+            z-index: 2;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.6s ease 0.3s;
+        }
+        
+        .timeline-item.left::before {
+            right: -10px;
+        }
+        
+        .timeline-item.right::before {
+            left: -10px;
+        }
+        
+        .timeline-item.visible::before {
+            opacity: 1;
+            transform: scale(1);
+            animation: pulse 2s ease-in-out infinite 1s;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { 
+                box-shadow: 
+                    0 0 0 6px rgba(255, 215, 0, 0.3),
+                    0 0 0 12px rgba(0, 204, 255, 0.2),
+                    0 0 20px 8px rgba(255, 215, 0, 0.5);
+            }
+            50% { 
+                box-shadow: 
+                    0 0 0 8px rgba(255, 215, 0, 0.5),
+                    0 0 0 16px rgba(0, 204, 255, 0.3),
+                    0 0 30px 12px rgba(255, 215, 0, 0.7);
+            }
+        }
+        
+        /* Connettori */
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            top: 2rem;
+            height: 2px;
+            width: 50px;
+            background: linear-gradient(90deg, 
+                var(--gold),
+                var(--cyan),
+                var(--accent-purple));
+            opacity: 0;
+            transform: scaleX(0);
+            transition: all 0.6s ease 0.5s;
+            z-index: 1;
+        }
+        
+        .timeline-item.left::after {
+            right: -50px;
+            transform-origin: right center;
+        }
+        
+        .timeline-item.right::after {
+            left: -50px;
+            transform-origin: left center;
+        }
+        
+        .timeline-item.visible::after {
+            opacity: 1;
+            transform: scaleX(1);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 30px;
+            }
+            
+            .timeline-item {
+                width: auto;
+                margin: 3rem 0;
+            }
+            
+            .timeline-item.left,
+            .timeline-item.right {
+                left: 0;
+                padding-left: 70px;
+                padding-right: 20px;
+                text-align: left;
+                transform: translateX(-50px) translateY(50px);
+            }
+            
+            .timeline-item.visible {
+                transform: translateX(0) translateY(0);
+            }
+            
+            .timeline-item.left::before,
+            .timeline-item.right::before {
+                left: 20px;
+                right: auto;
+            }
+            
+            .timeline-item.left::after,
+            .timeline-item.right::after {
+                left: 40px;
+                right: auto;
+                transform-origin: left center;
+            }
+        }
+    </style>
+    <style>
+/* === TIMELINE SPETTACOLARE ULTIMATE - CARDS A DOPPIA LARGHEZZA === */
+.timeline-container {
+  --accent-gold: #ffd86a;
+  --accent-cyan: #00ccff;
+  --accent-purple: #b967ff;
+  perspective: 1200px;
+  margin: 6rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.timeline-title {
+  font-family: 'Cinzel', serif;
+  color: var(--accent-gold);
+  text-align: center;
+  margin-bottom: 4rem;
+  font-size: 3.5rem;
+  text-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+  position: relative;
+}
+
+.timeline-title::after {
+  content: '';
+  display: block;
+  width: 200px;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+  margin: 1rem auto;
+  border-radius: 2px;
+  animation: titleGlow 3s ease-in-out infinite;
+}
+
+@keyframes titleGlow {
+  0%, 100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.4); }
+  50% { box-shadow: 0 0 40px rgba(255, 215, 0, 0.8); }
+}
+
+.timeline {
+  position: relative;
+  max-width: 1400px; /* Aumentata per accomodare cards più larghe */
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+/* Linea temporale cosmica */
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, 
+    var(--accent-purple) 0%,
+    var(--accent-cyan) 30%,
+    var(--accent-gold) 70%,
+    var(--accent-purple) 100%);
+  box-shadow: 
+    0 0 30px rgba(185, 103, 255, 0.6),
+    0 0 60px rgba(0, 204, 255, 0.3);
+  filter: blur(0.5px);
+  z-index: 1;
+}
+
+/* Effetto particelle sulla linea */
+.timeline::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, 
+    transparent 0%,
+    rgba(255, 255, 255, 0.8) 10%,
+    rgba(255, 255, 255, 0.4) 20%,
+    transparent 30%,
+    transparent 70%,
+    rgba(255, 255, 255, 0.4) 80%,
+    rgba(255, 255, 255, 0.8) 90%,
+    transparent 100%);
+  background-size: 100% 200%;
+  animation: particleFlow 4s linear infinite;
+  z-index: 2;
+}
+
+@keyframes particleFlow {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 200%; }
+}
+
+.timeline-item {
+  position: relative;
+  width: calc(90% - 60px); /* RADDOPPIATA: da 50% a 90% */
+  margin: 4rem 0;
+  opacity: 0;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+}
+
+.timeline-item.left {
+  margin-right: auto;
+  padding-right: 80px;
+  text-align: right;
+  transform: 
+    translateX(-400px) 
+    rotateY(25deg) 
+    scale(0.7)
+    skew(-8deg, -5deg);
+  filter: blur(12px) brightness(0.8);
+}
+
+.timeline-item.right {
+  margin-left: auto;
+  padding-left: 80px;
+  text-align: left;
+  transform: 
+    translateX(400px) 
+    rotateY(-25deg) 
+    scale(0.7)
+    skew(8deg, 5deg);
+  filter: blur(12px) brightness(0.8);
+}
+
+/* Card spettacolare con effetto vetro cosmico */
+.timeline-content {
+  position: relative;
+  background: linear-gradient(145deg, 
+    rgba(10, 10, 30, 0.9) 0%,
+    rgba(20, 20, 50, 0.8) 50%,
+    rgba(10, 10, 30, 0.9) 100%);
+  border: 1px solid transparent;
+  border-radius: 20px;
+  padding: 2rem 2.5rem;
+  backdrop-filter: blur(20px);
+  transform: translateZ(50px);
+  box-shadow: 
+    0 25px 50px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 215, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Effetto bordo luminoso animato */
+.timeline-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 20px;
+  padding: 2px;
+  background: linear-gradient(45deg, 
+    var(--accent-purple), 
+    var(--accent-cyan), 
+    var(--accent-gold), 
+    var(--accent-purple));
+  background-size: 300% 300%;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  animation: borderGlow 3s ease infinite;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.timeline-item.visible .timeline-content::before {
+  opacity: 1;
+}
+
+@keyframes borderGlow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Punto temporale con effetto pulsante */
+.tl-dot {
+  position: absolute;
+  top: 2rem;
+  left: 50%;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  background: radial-gradient(circle at 35% 35%, 
+    #ffffff 0%, 
+    var(--accent-gold) 30%,
+    var(--accent-cyan) 70%,
+    var(--accent-purple) 100%);
+  box-shadow: 
+    0 0 0 8px rgba(255, 215, 0, 0.4),
+    0 0 0 16px rgba(0, 204, 255, 0.3),
+    0 0 0 24px rgba(185, 103, 255, 0.2),
+    0 0 30px 12px rgba(255, 215, 0, 0.6);
+  z-index: 10;
+  transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Connettori energetici */
+.tl-connector {
+  position: absolute;
+  top: 2rem;
+  height: 3px;
+  width: calc(50% - 72px);
+  background: linear-gradient(90deg, 
+    transparent,
+    var(--accent-gold),
+    var(--accent-cyan),
+    var(--accent-purple),
+    transparent);
+  transform-origin: var(--origin);
+  transform: scaleX(0);
+  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8));
+  opacity: 0;
+  z-index: 5;
+}
+
+.timeline-item.left .tl-connector {
+  left: auto;
+  right: calc(50% + 36px);
+  background: linear-gradient(270deg, 
+    transparent,
+    var(--accent-gold),
+    var(--accent-cyan),
+    var(--accent-purple),
+    transparent);
+}
+
+/* ANIMAZIONI DI ENTRATA SPETTACOLARI */
+.timeline-item.visible {
+  opacity: 1;
+  filter: blur(0) brightness(1);
+  animation-duration: 1.2s;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.timeline-item.visible.left {
+  animation-name: cosmicSlideInLeft;
+}
+
+.timeline-item.visible.right {
+  animation-name: cosmicSlideInRight;
+}
+
+@keyframes cosmicSlideInLeft {
+  0% {
+    transform: translateX(-400px) rotateY(25deg) scale(0.7) skew(-8deg, -5deg);
+    opacity: 0;
+    filter: blur(12px) brightness(0.8);
+  }
+  20% {
+    transform: translateX(-200px) rotateY(15deg) scale(0.8) skew(-4deg, -2deg);
+    opacity: 0.5;
+    filter: blur(6px) brightness(0.9);
+  }
+  50% {
+    transform: translateX(50px) rotateY(-10deg) scale(1.1) skew(2deg, 1deg);
+    opacity: 1;
+    filter: blur(0) brightness(1.1);
+  }
+  70% {
+    transform: translateX(-20px) rotateY(5deg) scale(1.02) skew(-1deg, -0.5deg);
+    opacity: 1;
+    filter: blur(0) brightness(1);
+  }
+  100% {
+    transform: translateX(0) rotateY(0deg) scale(1) skew(0deg, 0deg);
+    opacity: 1;
+    filter: blur(0) brightness(1);
+  }
+}
+
+@keyframes cosmicSlideInRight {
+  0% {
+    transform: translateX(400px) rotateY(-25deg) scale(0.7) skew(8deg, 5deg);
+    opacity: 0;
+    filter: blur(12px) brightness(0.8);
+  }
+  20% {
+    transform: translateX(200px) rotateY(-15deg) scale(0.8) skew(4deg, 2deg);
+    opacity: 0.5;
+    filter: blur(6px) brightness(0.9);
+  }
+  50% {
+    transform: translateX(-50px) rotateY(10deg) scale(1.1) skew(-2deg, -1deg);
+    opacity: 1;
+    filter: blur(0) brightness(1.1);
+  }
+  70% {
+    transform: translateX(20px) rotateY(-5deg) scale(1.02) skew(1deg, 0.5deg);
+    opacity: 1;
+    filter: blur(0) brightness(1);
+  }
+  100% {
+    transform: translateX(0) rotateY(0deg) scale(1) skew(0deg, 0deg);
+    opacity: 1;
+    filter: blur(0) brightness(1);
+  }
+}
+
+/* Animazioni coordinate per punti e connettori */
+.timeline-item.visible .tl-dot {
+  animation: 
+    dotPop 0.6s cubic-bezier(0.2, 0.9, 0.2, 1) forwards 0.3s,
+    dotPulse 2s ease-in-out infinite 1s;
+}
+
+.timeline-item.visible .tl-connector {
+  animation: connectorDraw 0.8s cubic-bezier(0.2, 0.9, 0.2, 1) forwards 0.5s;
+}
+
+@keyframes dotPop {
+  0% { transform: translate(-50%, -50%) scale(0); }
+  60% { transform: translate(-50%, -50%) scale(1.4); }
+  80% { transform: translate(-50%, -50%) scale(0.9); }
+  100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes dotPulse {
+  0%, 100% { 
+    box-shadow: 
+      0 0 0 8px rgba(255, 215, 0, 0.4),
+      0 0 0 16px rgba(0, 204, 255, 0.3),
+      0 0 0 24px rgba(185, 103, 255, 0.2),
+      0 0 30px 12px rgba(255, 215, 0, 0.6);
+  }
+  50% { 
+    box-shadow: 
+      0 0 0 12px rgba(255, 215, 0, 0.6),
+      0 0 0 24px rgba(0, 204, 255, 0.4),
+      0 0 0 36px rgba(185, 103, 255, 0.3),
+      0 0 50px 20px rgba(255, 215, 0, 0.8);
+  }
+}
+
+@keyframes connectorDraw {
+  from { 
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  to { 
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+/* Effetti hover spettacolari */
+.timeline-content:hover {
+  transform: translateZ(80px) scale(1.05) rotateX(5deg);
+  box-shadow: 
+    0 35px 70px rgba(0, 0, 0, 0.6),
+    0 0 0 2px rgba(255, 215, 0, 0.5),
+    inset 0 2px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.3);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Styling del contenuto */
+.timeline-content h3 {
+  color: var(--accent-gold);
+  margin-bottom: 1rem;
+  font-size: 1.8rem;
+  font-family: 'Cinzel', serif;
+  text-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+  position: relative;
+}
+
+.period {
+  color: var(--accent-cyan);
+  font-style: italic;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  display: inline-block;
+  padding: 0.5rem 1.2rem;
+  background: rgba(0, 204, 255, 0.15);
+  border-radius: 15px;
+  border: 1px solid rgba(0, 204, 255, 0.3);
+  box-shadow: 0 0 20px rgba(0, 204, 255, 0.2);
+}
+
+.timeline-content p {
+  line-height: 1.7;
+  margin-bottom: 1rem;
+  color: #e9eef5;
+  font-size: 1.05rem;
+}
+
+.timeline-content strong {
+  color: #ffeb9a;
+  text-shadow: 0 0 10px rgba(255, 235, 154, 0.3);
+}
+
+/* Responsive per mobile */
+@media (max-width: 900px) {
+  .timeline::before,
+  .timeline::after {
+    left: 30px;
+  }
+  
+  .timeline-item {
+    width: auto;
+    margin: 3rem 0;
+  }
+  
+  .timeline-item.left,
+  .timeline-item.right {
+    padding-left: 70px;
+    padding-right: 20px;
+    text-align: left;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  
+  .timeline-item.visible.left,
+  .timeline-item.visible.right {
+    animation: mobileSlideIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  }
+  
+  .tl-connector {
+    left: 38px;
+    right: auto;
+    width: calc(100% - 70px);
+  }
+  
+  .timeline-title {
+    font-size: 2.5rem;
+  }
+}
+
+@keyframes mobileSlideIn {
+  0% {
+    transform: translateX(-100px) scale(0.9);
+    opacity: 0;
+    filter: blur(8px);
+  }
+  100% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+/* Riduzione motion per accessibilità */
+@media (prefers-reduced-motion: reduce) {
+  .timeline-item,
+  .timeline-content,
+  .tl-dot,
+  .tl-connector {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+  
+  .timeline::after {
+    animation: none;
+  }
+}
+</style>
+</head>
 <body>
 <!-- UI PATCH BLOCKS -->
 <div aria-label="Galleria autori" class="slider-vertical">
@@ -4154,635 +4883,17 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 })();
 </script>
-<style>
-/* === TIMELINE SPETTACOLARE ULTIMATE - CARDS A LATO CON LARGHEZZA RADDOPPIATA === */
-.timeline-container {
-  --accent-gold: #ffd86a;
-  --accent-cyan: #00ccff;
-  --accent-purple: #b967ff;
-  perspective: 1200px;
-  margin: 6rem 0;
-  position: relative;
-  overflow: hidden;
-}
 
-.timeline-title {
-  font-family: 'Cinzel', serif;
-  color: var(--accent-gold);
-  text-align: center;
-  margin-bottom: 4rem;
-  font-size: 3.5rem;
-  text-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
-  position: relative;
-}
 
-.timeline-title::after {
-  content: '';
-  display: block;
-  width: 200px;
-  height: 4px;
-  background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
-  margin: 1rem auto;
-  border-radius: 2px;
-  animation: titleGlow 3s ease-in-out infinite;
-}
 
-@keyframes titleGlow {
-  0%, 100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.4); }
-  50% { box-shadow: 0 0 40px rgba(255, 215, 0, 0.8); }
-}
-
-.timeline {
-  position: relative;
-  max-width: 1600px; /* Aumentata per accomodare cards più larghe */
-  margin: 0 auto;
-  padding: 2rem 0;
-}
-
-/* Linea temporale cosmica */
-.timeline::before {
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  transform: translateX(-50%);
-  background: linear-gradient(180deg, 
-    var(--accent-purple) 0%,
-    var(--accent-cyan) 30%,
-    var(--accent-gold) 70%,
-    var(--accent-purple) 100%);
-  box-shadow: 
-    0 0 30px rgba(185, 103, 255, 0.6),
-    0 0 60px rgba(0, 204, 255, 0.3);
-  filter: blur(0.5px);
-  z-index: 1;
-}
-
-/* Effetto particelle sulla linea */
-.timeline::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: 0;
-  bottom: 0;
-  width: 8px;
-  transform: translateX(-50%);
-  background: linear-gradient(180deg, 
-    transparent 0%,
-    rgba(255, 255, 255, 0.8) 10%,
-    rgba(255, 255, 255, 0.4) 20%,
-    transparent 30%,
-    transparent 70%,
-    rgba(255, 255, 255, 0.4) 80%,
-    rgba(255, 255, 255, 0.8) 90%,
-    transparent 100%);
-  background-size: 100% 200%;
-  animation: particleFlow 4s linear infinite;
-  z-index: 2;
-}
-
-@keyframes particleFlow {
-  0% { background-position: 0 0; }
-  100% { background-position: 0 200%; }
-}
-
-.timeline-item {
-  position: relative;
-  width: calc(65% - 60px); /* Larghezza aumentata ma non sovrapposta */
-  margin: 4rem 0;
-  opacity: 0;
-  transform-style: preserve-3d;
-  will-change: transform, opacity;
-}
-
-.timeline-item.left {
-  margin-right: auto;
-  padding-right: 80px;
-  text-align: right;
-  transform: 
-    translateX(-200px) 
-    rotateY(15deg) 
-    scale(0.7)
-    skew(-4deg, -2deg);
-  filter: blur(12px) brightness(0.8);
-}
-
-.timeline-item.right {
-  margin-
-  padding-
-  text-align: left;
-  transform: 
-    translateX(200px) 
-    rotateY(-15deg) 
-    scale(0.7)
-    skew(4deg, 2deg);
-  filter: blur(12px) brightness(0.8);
-}
-
-/* Card spettacolare con effetto vetro cosmico */
-.timeline-content {
-  position: relative;
-  background: linear-gradient(145deg, 
-    rgba(10, 10, 30, 0.9) 0%,
-    rgba(20, 20, 50, 0.8) 50%,
-    rgba(10, 10, 30, 0.9) 100%);
-  border: 1px solid transparent;
-  border-radius: 20px;
-  padding: 2rem 2.5rem;
-  backdrop-filter: blur(20px);
-  transform: translateZ(50px);
-  box-shadow: 
-    0 25px 50px rgba(0, 0, 0, 0.5),
-    0 0 0 1px rgba(255, 215, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
-  overflow: hidden;
-  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-/* Effetto bordo luminoso animato */
-.timeline-content::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 20px;
-  padding: 2px;
-  background: linear-gradient(45deg, 
-    var(--accent-purple), 
-    var(--accent-cyan), 
-    var(--accent-gold), 
-    var(--accent-purple));
-  background-size: 300% 300%;
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask-composite: exclude;
-  animation: borderGlow 3s ease infinite;
-  opacity: 0;
-  transition: opacity 0.6s ease;
-}
-
-.timeline-item.visible .timeline-content::before {
-  opacity: 1;
-}
-
-@keyframes borderGlow {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-
-/* Punto temporale con effetto pulsante */
-.tl-dot {
-  position: absolute;
-  top: 2rem;
-  left: 50%;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  background: radial-gradient(circle at 35% 35%, 
-    #ffffff 0%, 
-    var(--accent-gold) 30%,
-    var(--accent-cyan) 70%,
-    var(--accent-purple) 100%);
-  box-shadow: 
-    0 0 0 8px rgba(255, 215, 0, 0.4),
-    0 0 0 16px rgba(0, 204, 255, 0.3),
-    0 0 0 24px rgba(185, 103, 255, 0.2),
-    0 0 30px 12px rgba(255, 215, 0, 0.6);
-  z-index: 10;
-  transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-/* Connettori energetici - AGGIUSTATI per larghezza aumentata */
-.tl-connector {
-  position: absolute;
-  top: 2rem;
-  height: 3px;
-  width: calc(35% - 72px); /* Aggiustato per la nuova larghezza */
-  background: linear-gradient(90deg, 
-    transparent,
-    var(--accent-gold),
-    var(--accent-cyan),
-    var(--accent-purple),
-    transparent);
-  transform-origin: var(--origin);
-  transform: scaleX(0);
-  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8));
-  opacity: 0;
-  z-index: 5;
-}
-
-.timeline-item.left .tl-connector {
-  left: auto;
-  right: calc(65% + 36px); /* Aggiustato per la nuova larghezza */
-  background: linear-gradient(270deg, 
-    transparent,
-    var(--accent-gold),
-    var(--accent-cyan),
-    var(--accent-purple),
-    transparent);
-}
-
-.timeline-item.right .tl-connector {
-  left: calc(65% + 36px); /* Aggiustato per la nuova larghezza */
-  right: auto;
-}
-
-/* ANIMAZIONI DI ENTRATA SPETTACOLARI - AGGIUSTATE */
-.timeline-item.visible {
-  opacity: 1;
-  filter: blur(0) brightness(1);
-  animation-duration: 1.2s;
-  animation-fill-mode: both;
-  animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.timeline-item.visible.left {
-  animation-name: cosmicSlideInLeftWide;
-}
-
-.timeline-item.visible.right {
-  animation-name: cosmicSlideInRightWide;
-}
-
-@keyframes cosmicSlideInLeftWide {
-  0% {
-    transform: translateX(-300px) rotateY(15deg) scale(0.7) skew(-4deg, -2deg);
-    opacity: 0;
-    filter: blur(12px) brightness(0.8);
-  }
-  20% {
-    transform: translateX(-150px) rotateY(10deg) scale(0.8) skew(-2deg, -1deg);
-    opacity: 0.5;
-    filter: blur(6px) brightness(0.9);
-  }
-  50% {
-    transform: translateX(30px) rotateY(-5deg) scale(1.1) skew(1deg, 0.5deg);
-    opacity: 1;
-    filter: blur(0) brightness(1.1);
-  }
-  70% {
-    transform: translateX(-10px) rotateY(2deg) scale(1.02) skew(-0.5deg, -0.2deg);
-    opacity: 1;
-    filter: blur(0) brightness(1);
-  }
-  100% {
-    transform: translateX(0) rotateY(0deg) scale(1) skew(0deg, 0deg);
-    opacity: 1;
-    filter: blur(0) brightness(1);
-  }
-}
-
-@keyframes cosmicSlideInRightWide {
-  0% {
-    transform: translateX(300px) rotateY(-15deg) scale(0.7) skew(4deg, 2deg);
-    opacity: 0;
-    filter: blur(12px) brightness(0.8);
-  }
-  20% {
-    transform: translateX(150px) rotateY(-10deg) scale(0.8) skew(2deg, 1deg);
-    opacity: 0.5;
-    filter: blur(6px) brightness(0.9);
-  }
-  50% {
-    transform: translateX(-30px) rotateY(5deg) scale(1.1) skew(-1deg, -0.5deg);
-    opacity: 1;
-    filter: blur(0) brightness(1.1);
-  }
-  70% {
-    transform: translateX(10px) rotateY(-2deg) scale(1.02) skew(0.5deg, 0.2deg);
-    opacity: 1;
-    filter: blur(0) brightness(1);
-  }
-  100% {
-    transform: translateX(0) rotateY(0deg) scale(1) skew(0deg, 0deg);
-    opacity: 1;
-    filter: blur(0) brightness(1);
-  }
-}
-
-/* Animazioni coordinate per punti e connettori */
-.timeline-item.visible .tl-dot {
-  animation: 
-    dotPop 0.6s cubic-bezier(0.2, 0.9, 0.2, 1) forwards 0.3s,
-    dotPulse 2s ease-in-out infinite 1s;
-}
-
-.timeline-item.visible .tl-connector {
-  animation: connectorDraw 0.8s cubic-bezier(0.2, 0.9, 0.2, 1) forwards 0.5s;
-}
-
-@keyframes dotPop {
-  0% { transform: translate(-50%, -50%) scale(0); }
-  60% { transform: translate(-50%, -50%) scale(1.4); }
-  80% { transform: translate(-50%, -50%) scale(0.9); }
-  100% { transform: translate(-50%, -50%) scale(1); }
-}
-
-@keyframes dotPulse {
-  0%, 100% { 
-    box-shadow: 
-      0 0 0 8px rgba(255, 215, 0, 0.4),
-      0 0 0 16px rgba(0, 204, 255, 0.3),
-      0 0 0 24px rgba(185, 103, 255, 0.2),
-      0 0 30px 12px rgba(255, 215, 0, 0.6);
-  }
-  50% { 
-    box-shadow: 
-      0 0 0 12px rgba(255, 215, 0, 0.6),
-      0 0 0 24px rgba(0, 204, 255, 0.4),
-      0 0 0 36px rgba(185, 103, 255, 0.3),
-      0 0 50px 20px rgba(255, 215, 0, 0.8);
-  }
-}
-
-@keyframes connectorDraw {
-  from { 
-    transform: scaleX(0);
-    opacity: 0;
-  }
-  to { 
-    transform: scaleX(1);
-    opacity: 1;
-  }
-}
-
-/* Effetti hover spettacolari */
-.timeline-content:hover {
-  transform: translateZ(80px) scale(1.05) rotateX(5deg);
-  box-shadow: 
-    0 35px 70px rgba(0, 0, 0, 0.6),
-    0 0 0 2px rgba(255, 215, 0, 0.5),
-    inset 0 2px 0 rgba(255, 255, 255, 0.2),
-    inset 0 -2px 0 rgba(0, 0, 0, 0.3);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-/* Styling del contenuto */
-.timeline-content h3 {
-  color: var(--accent-gold);
-  margin-bottom: 1rem;
-  font-size: 1.8rem;
-  font-family: 'Cinzel', serif;
-  text-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
-  position: relative;
-}
-
-.period {
-  color: var(--accent-cyan);
-  font-style: italic;
-  font-size: 1.1rem;
-  margin-bottom: 1.5rem;
-  display: inline-block;
-  padding: 0.5rem 1.2rem;
-  background: rgba(0, 204, 255, 0.15);
-  border-radius: 15px;
-  border: 1px solid rgba(0, 204, 255, 0.3);
-  box-shadow: 0 0 20px rgba(0, 204, 255, 0.2);
-}
-
-.timeline-content p {
-  line-height: 1.7;
-  margin-bottom: 1rem;
-  color: #e9eef5;
-  font-size: 1.05rem;
-}
-
-.timeline-content strong {
-  color: #ffeb9a;
-  text-shadow: 0 0 10px rgba(255, 235, 154, 0.3);
-}
-
-/* Responsive per mobile */
-@media (max-width: 900px) {
-  .timeline::before,
-  .timeline::after {
-    left: 30px;
-  }
-  
-  .timeline-item {
-    width: auto;
-    margin: 3rem 0;
-  }
-  
-  .timeline-item.left,
-  .timeline-item.right {
-    padding-
-    padding-right: 20px;
-    text-align: left;
-    margin-
-    margin-right: 0;
-  }
-  
-  .timeline-item.visible.left,
-  .timeline-item.visible.right {
-    animation: mobileSlideIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-  }
-  
-  .tl-connector {
-    left: 38px;
-    right: auto;
-    width: calc(100% - 70px);
-  }
-  
-  .timeline-title {
-    font-size: 2.5rem;
-  }
-}
-
-@keyframes mobileSlideIn {
-  0% {
-    transform: translateX(-100px) scale(0.9);
-    opacity: 0;
-    filter: blur(8px);
-  }
-  100% {
-    transform: translateX(0) scale(1);
-    opacity: 1;
-    filter: blur(0);
-  }
-}
-
-/* Riduzione motion per accessibilità */
-@media (prefers-reduced-motion: reduce) {
-  .timeline-item,
-  .timeline-content,
-  .tl-dot,
-  .tl-connector {
-    transition: none !important;
-    animation: none !important;
-    transform: none !important;
-    opacity: 1 !important;
-    filter: none !important;
-  }
-  
-  .timeline::after {
-    animation: none;
-  }
-}
-</style>
-<script>
-// JavaScript per l'animazione timeline spettacolare
-document.addEventListener('DOMContentLoaded', function() {
-  const timelineItems = document.querySelectorAll('.timeline-item');
-  
-  if (!timelineItems.length) return;
-  
-  // Aggiungi elementi strutturali (punti e connettori)
-  timelineItems.forEach((item, index) => {
-    // Aggiungi classe left/right
-    if (!item.classList.contains('left') && !item.classList.contains('right')) {
-      item.classList.add(index % 2 === 0 ? 'left' : 'right');
-    }
-    
-    // Crea punto temporale
-    if (!item.querySelector('.tl-dot')) {
-      const dot = document.createElement('span');
-      dot.className = 'tl-dot';
-      item.appendChild(dot);
-    }
-    
-    // Crea connettore
-    if (!item.querySelector('.tl-connector')) {
-      const connector = document.createElement('span');
-      connector.className = 'tl-connector';
-      connector.style.setProperty('--origin', 
-        item.classList.contains('left') ? 'right center' : 'left center');
-      item.appendChild(connector);
-    }
-  });
-  
-  // Intersection Observer per animazioni
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const item = entry.target;
-        const index = Array.from(timelineItems).indexOf(item);
-        
-        // Delay progressivo per effetto cascata
-        const delay = Math.min(index * 200, 1000);
-        
-        setTimeout(() => {
-          item.classList.add('visible');
-        }, delay);
-        
-        observer.unobserve(item);
-      }
-    });
-  }, {
-    threshold: 0.2,
-    rootMargin: '0px 0px -10% 0px'
-  });
-  
-  // Osserva tutti gli items
-  timelineItems.forEach(item => {
-    observer.observe(item);
-  });
-  
-  // Fallback: mostra tutto dopo 3 secondi
-  setTimeout(() => {
-    timelineItems.forEach(item => {
-      if (!item.classList.contains('visible')) {
-        item.classList.add('visible');
-      }
-    });
-  }, 3000);
-});
 </script>
-<script id="timeline-js-corretta">
-// JavaScript corretto per la timeline
-document.addEventListener('DOMContentLoaded', function() {
-    // Nascondi tutto fino al caricamento completo
-    
-    
-    const timelineItems = document.querySelectorAll('.timeline-item');
-    
-    // Aggiungi classi left/right
-    timelineItems.forEach((item, index) => {
-        if (!item.classList.contains('left') && !item.classList.contains('right')) {
-            item.classList.add(index % 2 === 0 ? 'left' : 'right');
-        }
-    });
-    
-    // Intersection Observer
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const item = entry.target;
-                const index = Array.from(timelineItems).indexOf(item);
-                
-                const delay = Math.min(index * 200, 1000);
-                
-                setTimeout(() => {
-                    item.classList.add('visible');
-                }, delay);
-                
-                observer.unobserve(item);
-            }
-        });
-    }, {
-        threshold: 0.2,
-        rootMargin: '0px 0px -10% 0px'
-    });
-    
-    timelineItems.forEach(item => {
-        observer.observe(item);
-    });
-    
-    // Mostra tutto quando la pagina è completamente caricata
-    (function(){
-  var __ran = false;
-  function __init(){
-    if(__ran) return; __ran = true;
-    document.body.style.visibility = 'visible';
-        document.body.classList.add('dom-ready');
-        
-        // Fallback per elementi non visibili
-        setTimeout(() => {
-            timelineItems.forEach(item => {
-                if (!item.classList.contains('visible')) {
-                    item.classList.add('visible');
-                }
-            });
-        }, 800);
-  }
-  document.addEventListener('DOMContentLoaded', __init, { once: true });
-  window.addEventListener('load', __init, { once: true }); // fallback
-})(););
-});
-</script><script id="speed-readout-js">
+<script id="speed-readout-js">
 (function(){
     function clamp(n,min,max){ return Math.max(min, Math.min(max, n)); }
     // Il resto del codice JavaScript...
 })();
 </script>
-<style id="shrink-dots-strong">
-/* === FINAL DOT SHRINK (strong) === */
-:root{ --dot-size: 10px; } /* much smaller (~40% of original 24px) */
 
-.timeline .timeline-item .tl-dot,
-.timeline > .timeline-item .tl-dot{
-  width: var(--dot-size) !important;
-  height: var(--dot-size) !important;
-  top: 1.4rem !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  z-index: 2 !important;
-  /* Compact glow to match the smaller size */
-  box-shadow:
-    0 0 0 3px rgba(255, 215, 0, 0.35),
-    0 0 0 6px rgba(0, 204, 255, 0.25),
-    0 0 0 9px rgba(185, 103, 255, 0.20),
-    0 0 14px 6px rgba(255, 215, 0, 0.55) !important;
-}
-
-/* Keep cards clearly above */
-.timeline .timeline-item .timeline-content{ position: relative; z-index: 3 !important; }
-</style>
 <script id="sfx-unlock-silent">
 (function(){
   var boom = document.getElementById('explosionSound');
@@ -4806,7 +4917,8 @@ document.addEventListener('DOMContentLoaded', function() {
   window.addEventListener('pointerdown', unlockSilent, { once:true, passive:true, capture:true });
   window.addEventListener('click', unlockSilent, { once:true, passive:true, capture:true });
 })();
-</script><script id="sfx-soft-play">
+</script>
+<script id="sfx-soft-play">
 function softPlay(el, targetVol, ms){
   targetVol = (typeof targetVol === 'number') ? targetVol : 1.0;
   ms = (typeof ms === 'number') ? ms : 140;
@@ -4825,5 +4937,134 @@ function softPlay(el, targetVol, ms){
     }).catch(function(){});
   }catch(_){}
 }
-</script></body>
+</script>
+<script id="timeline-bidirectional-scroll">
+document.addEventListener('DOMContentLoaded', function() {
+  const timelineItems = document.querySelectorAll('.timeline-item');
+  
+  if (!timelineItems.length) return;
+  
+  // Intersection Observer per entrambe le direzioni
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const item = entry.target;
+      
+      if (entry.isIntersecting) {
+        // Item entra nella viewport - anima in
+        item.classList.add('visible');
+        
+        // Rimuovi la classe dopo l'animazione per permettere il replay
+        setTimeout(() => {
+          if (entry.isIntersecting) {
+            item.style.opacity = '1';
+            item.style.transform = 'none';
+          }
+        }, 800);
+      } else {
+        // Item esce dalla viewport - resetta per nuova animazione
+        item.classList.remove('visible');
+        
+        // Piccolo delay per evitare flickering
+        setTimeout(() => {
+          if (!entry.isIntersecting) {
+            item.style.opacity = '0';
+            if (item.classList.contains('left')) {
+              item.style.transform = 'translateX(-80px) translateY(40px)';
+            } else if (item.classList.contains('right')) {
+              item.style.transform = 'translateX(80px) translateY(40px)';
+            } else {
+              item.style.transform = 'translateY(40px)';
+            }
+          }
+        }, 50);
+      }
+    });
+  }, {
+    threshold: 0.15, // Trigger quando il 15% dell'elemento è visibile
+    rootMargin: '-50px 0px -50px 0px' // Area di trigger ridotta
+  });
+
+  // Osserva tutti gli item
+  timelineItems.forEach(item => {
+    observer.observe(item);
+  });
+
+  // Forza un check iniziale
+  setTimeout(() => {
+    timelineItems.forEach(item => {
+      const rect = item.getBoundingClientRect();
+      const isVisible = (
+        rect.top >= 0 &&
+        rect.left >= 0 &&
+        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+      );
+      
+      if (isVisible) {
+        item.classList.add('visible');
+      }
+    });
+  }, 100);
+
+  // Gestione del resize per ripristinare le animazioni
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      timelineItems.forEach(item => {
+        const rect = item.getBoundingClientRect();
+        const isVisible = (
+          rect.top >= 0 &&
+          rect.bottom <= (window.innerHeight || document.documentElement.clientHeight)
+        );
+        
+        if (!isVisible) {
+          item.classList.remove('visible');
+        }
+      });
+    }, 250);
+  });
+});
+
+// Versione alternativa più aggressiva per animazioni continue
+function setupTimelineAnimations() {
+  const items = document.querySelectorAll('.timeline-item');
+  let ticking = false;
+  
+  function updateAnimations() {
+    const windowHeight = window.innerHeight;
+    const triggerPoint = windowHeight * 0.8;
+    
+    items.forEach(item => {
+      const rect = item.getBoundingClientRect();
+      const isInView = rect.top < triggerPoint && rect.bottom > 0;
+      
+      if (isInView && !item.classList.contains('visible')) {
+        item.classList.add('visible');
+      } else if (!isInView && item.classList.contains('visible')) {
+        item.classList.remove('visible');
+      }
+    });
+    
+    ticking = false;
+  }
+  
+  function onScroll() {
+    if (!ticking) {
+      requestAnimationFrame(updateAnimations);
+      ticking = true;
+    }
+  }
+  
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  
+  // Check iniziale
+  updateAnimations();
+}
+
+// Avvia le animazioni
+document.addEventListener('DOMContentLoaded', setupTimelineAnimations);
+</script>
+</body>
 </html>
