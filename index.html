@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <html lang="it">
-<head>
+<head><script id="fast-dom-ready">document.addEventListener('DOMContentLoaded',function(){document.body.classList.add('dom-ready');});</script>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Echi di Sofia - Portale di Filosofia Moderna</title>
@@ -1689,12 +1689,12 @@ body {
 #quote-runner {
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.5s ease, visibility 0.5s ease;
+    transition: opacity .25s ease, visibility .25s ease;
 }
 
-body.loaded .timeline-container,
-body.loaded .floating-quotes,
-body.loaded #quote-runner {
+body.dom-ready .timeline-container,
+body.dom-ready .floating-quotes,
+body.dom-ready #quote-runner {
     opacity: 1;
     visibility: visible;
 }
@@ -2052,6 +2052,23 @@ body.loaded #quote-runner {
 
 /* Ensure overflow is visible so wider cards aren't clipped */
 .timeline-container{ overflow: visible !important; }
+</style><style id="safari-perf-hints">
+/* Performance hints */
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)){
+  .timeline-content{ 
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+}
+@supports not (backdrop-filter: blur(1px)){
+  .timeline-content{
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(15,15,35,0.9);
+  }
+}
+/* Fewer compositing hints */
+.timeline-content{ will-change: auto; }
 </style></head>
 <body>
 <!-- UI PATCH BLOCKS -->
@@ -4680,14 +4697,14 @@ document.addEventListener('DOMContentLoaded', function() {
         item.classList.add('visible');
       }
     });
-  }, 3000);
+  }, 800);
 });
 </script>
 <script id="timeline-js-corretta">
 // JavaScript corretto per la timeline
 document.addEventListener('DOMContentLoaded', function() {
     // Nascondi tutto fino al caricamento completo
-    document.body.style.visibility = 'hidden';
+    
     
     const timelineItems = document.querySelectorAll('.timeline-item');
     
@@ -4726,7 +4743,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Mostra tutto quando la pagina è completamente caricata
     window.addEventListener('load', function() {
         document.body.style.visibility = 'visible';
-        document.body.classList.add('loaded');
+        document.body.classList.add('dom-ready');
         
         // Fallback per elementi non visibili
         setTimeout(() => {
@@ -4735,7 +4752,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     item.classList.add('visible');
                 }
             });
-        }, 2000);
+        }, 800);
     });
 });
 </script><script id="speed-readout-js">
