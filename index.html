@@ -2248,7 +2248,7 @@ body.dom-ready #quote-runner {
 <div class="audio-title">🎧 Musica per lo studio</div>
 <br/>
 <div class="controls"><button id="playPause">▶️</button><span aria-live="polite" id="time">0:00 / 0:00</span><input id="volume" max="1" min="0" step="0.01" type="range" value="0.8"/></div>
-<audio id="myAudio" muted="True" playsinline="True" preload="metadata" src="https://casi0048.github.io/suoni/Strauss.mp3"></audio>
+<audio id="myAudio" preload="auto" src="https://casi0048.github.io/suoni/Strauss.mp3"></audio>
 </div>
 <aside aria-label="Ultimi articoli" class="articles-blob">
 <h3>📰 Ultimi articoli</h3>
@@ -2298,11 +2298,11 @@ body.dom-ready #quote-runner {
 </div>
 <div id="russell-box"><button id="russell-btn">🎵 "La maggior parte degli uomini preferirebbe morire piuttosto che pensare,  infatti è quello che fanno."<br/><strong>– Bertrand Russell</strong></button></div>
 <div id="russell-hint">Clicca box sotto per ascoltare la chitarra 🎸</div>
-<audio id="russell-audio" muted="True" playsinline="True" preload="metadata" src="https://casi0048.github.io/suoni/gitarra.mp3"></audio>
-<audio id="thunder-sound" muted="True" playsinline="True" preload="metadata">
+<audio id="russell-audio" preload="auto" src="https://casi0048.github.io/suoni/gitarra.mp3"></audio>
+<audio id="thunder-sound" preload="auto">
 <source src="https://casi0048.github.io/suoni/thunder-sound.mp3" type="audio/mpeg"/>
 </audio>
-<audio id="explosionSound" muted="True" playsinline="True" preload="metadata" src="https://casi0048.github.io/suoni/explosion-1.mp3"></audio>
+<audio id="explosionSound" preload="auto" src="https://casi0048.github.io/suoni/explosion-1.mp3"></audio>
 <div aria-hidden="true" id="lightning"></div>
 <div aria-hidden="true" id="bolt"></div>
 <!-- Sfondo con particelle cosmiche -->
@@ -2866,10 +2866,8 @@ body.dom-ready #quote-runner {
       });
       (function(){const inner=document.getElementById('sliderInner');if(!inner)return;let pos=0,speed=.35,dir=1,running=true;function step(){if(!running){requestAnimationFrame(step);return}pos+=dir*speed;inner.style.transform=`translateY(${-pos}px)`;const total=inner.scrollHeight-inner.clientHeight;if(pos>=total)pos=0;if(pos<0)pos=total;requestAnimationFrame(step)}requestAnimationFrame(step);const t=document.getElementById('slider-toggle'),i=document.getElementById('slider-invert'),sp=document.getElementById('slider-speed');t?.addEventListener('click',()=>running=!running);i?.addEventListener('click',()=>dir*=-1);sp?.addEventListener('input',()=>{const v=parseInt(sp.value,10)||8;speed=.1+(v-1)*.08})})();
       window.addEventListener('load',()=>{const a=document.getElementById('myAudio'),btn=document.getElementById('playPause'),tm=document.getElementById('time'),v=document.getElementById('volume');if(!a||!btn)return;function f(s){if(!isFinite(s))return'0:00';const m=Math.floor(s/60),c=Math.floor(s%60);return m+':'+(c<10?'0'+c:c)}function u(){tm.textContent=`${f(a.currentTime)} / ${f(a.duration)}`}v.value=.8;a.volume=parseFloat(v.value);btn.addEventListener('click',()=>{if(a.paused){a.play().catch(()=>{});btn.textContent='⏸️'}else{a.pause();btn.textContent='▶️'}});v.addEventListener('input',()=>a.volume=parseFloat(v.value));a.addEventListener('timeupdate',u);a.addEventListener('loadedmetadata',u);a.addEventListener('ended',()=>{btn.textContent='▶️'})});
-      (function(){const b=document.getElementById('russell-btn'),h=document.getElementById('russell-hint'),a=document.getElementById('russell-audio');if(!b||!a)return;let u=false;function lk(){if(u)return;u=true;a.muted=false;a.play().then(()=>{a.pause();a.currentTime=0}).catch(()=>{});window.removeEventListener('pointerdown',lk,{capture:true});window.removeEventListener('keydown',lk,{capture:true})}window.addEventListener('pointerdown',lk,{once:true,capture:true,passive:true});// removed keydown unlock to avoid accidental audio on keypress;
-b.addEventListener('click',()=>{try{a.currentTime=0;a.play().catch(()=>{})}catch(_){ }})})();
-      (function(){const btn=document.getElementById('btn-thunder'),th=document.getElementById('thunder-sound'),ex=document.getElementById('explosionSound'),ov=document.getElementById('lightning'),bo=document.getElementById('bolt');if(!btn||!th||!ov||!bo)return;let unlocked=false;async function unlockOnce(){if(unlocked)return;unlocked=true;for(const s of [th,ex]){try{s.muted=false;await s.play();s.pause();s.currentTime=0}catch(_){}}}window.addEventListener('pointerdown',unlockOnce,{once:true,passive:true,capture:true});// removed keydown unlock to avoid accidental audio on keypress;
-let on=false;function up(){btn.classList.toggle('active',on);btn.setAttribute('aria-pressed',on?'true':'false');btn.textContent=on?'⚡ Tuono: ON':'⚡ Tuono'}btn.addEventListener('click',e=>{e.preventDefault();on=!on;if(on){try{th.currentTime=0;th.play().catch(()=>{})}catch(_){}}else{try{th.pause();th.currentTime=0}catch(_){}}up()});up();function flash(){const x=15+Math.random()*70,y=10+Math.random()*65,ang=-25+Math.random()*50,sy=.8+Math.random()*1.2;ov.style.transition='none';ov.offsetHeight;ov.style.background=`radial-gradient(circle at ${x}% ${y}%, rgba(255,255,255,.95), rgba(255,255,255,.22) 40%, transparent 65%)`;ov.style.opacity='1';ov.style.transition='opacity 80ms ease-out';setTimeout(()=>ov.style.opacity='0',140);bo.style.left=x+'%';bo.style.top=y+'%';bo.style.transform=`translate(-50%,-50%) rotate(${ang}deg) scaleY(${sy})`;bo.style.transition='transform 90ms ease-out, opacity 280ms ease-out';bo.style.opacity='1';setTimeout(()=>bo.style.opacity='0',180);if(on){try{th.currentTime=0;th.play().catch(()=>{})}catch(_){}}}(function schedule(){setTimeout(()=>{flash();schedule()},30000+Math.random()*10000)})();document.getElementById('explode-btn')?.addEventListener('click',()=>{try{ex.muted=false;ex.volume=1.0;ex.currentTime=0;ex.play().catch(()=>{})}catch(_){}})})();
+      (function(){const b=document.getElementById('russell-btn'),h=document.getElementById('russell-hint'),a=document.getElementById('russell-audio');if(!b||!a)return;let u=false;function lk(){if(u)return;u=true;a.muted=false;a.play().then(()=>{a.pause();a.currentTime=0}).catch(()=>{});window.removeEventListener('pointerdown',lk,{capture:true});window.removeEventListener('keydown',lk,{capture:true})}window.addEventListener('pointerdown',lk,{once:true,capture:true,passive:true});window.addEventListener('keydown',lk,{once:true,capture:true});b.addEventListener('click',()=>{try{a.currentTime=0;a.play().catch(()=>{})}catch(_){ }})})();
+      (function(){const btn=document.getElementById('btn-thunder'),th=document.getElementById('thunder-sound'),ex=document.getElementById('explosionSound'),ov=document.getElementById('lightning'),bo=document.getElementById('bolt');if(!btn||!th||!ov||!bo)return;let unlocked=false;async function unlockOnce(){if(unlocked)return;unlocked=true;for(const s of [th,ex]){try{s.muted=false;await s.play();s.pause();s.currentTime=0}catch(_){}}}window.addEventListener('pointerdown',unlockOnce,{once:true,passive:true,capture:true});window.addEventListener('keydown',unlockOnce,{once:true,capture:true});let on=false;function up(){btn.classList.toggle('active',on);btn.setAttribute('aria-pressed',on?'true':'false');btn.textContent=on?'⚡ Tuono: ON':'⚡ Tuono'}btn.addEventListener('click',e=>{e.preventDefault();on=!on;if(on){try{th.currentTime=0;th.play().catch(()=>{})}catch(_){}}else{try{th.pause();th.currentTime=0}catch(_){}}up()});up();function flash(){const x=15+Math.random()*70,y=10+Math.random()*65,ang=-25+Math.random()*50,sy=.8+Math.random()*1.2;ov.style.transition='none';ov.offsetHeight;ov.style.background=`radial-gradient(circle at ${x}% ${y}%, rgba(255,255,255,.95), rgba(255,255,255,.22) 40%, transparent 65%)`;ov.style.opacity='1';ov.style.transition='opacity 80ms ease-out';setTimeout(()=>ov.style.opacity='0',140);bo.style.left=x+'%';bo.style.top=y+'%';bo.style.transform=`translate(-50%,-50%) rotate(${ang}deg) scaleY(${sy})`;bo.style.transition='transform 90ms ease-out, opacity 280ms ease-out';bo.style.opacity='1';setTimeout(()=>bo.style.opacity='0',180);if(on){try{th.currentTime=0;th.play().catch(()=>{})}catch(_){}}}(function schedule(){setTimeout(()=>{flash();schedule()},30000+Math.random()*10000)})();document.getElementById('explode-btn')?.addEventListener('click',()=>{try{ex.muted=false;ex.volume=1.0;ex.currentTime=0;ex.play().catch(()=>{})}catch(_){}})})();
     </script>
 <script id="search-init-smart">
       (function(){
@@ -3867,8 +3865,7 @@ document.addEventListener("DOMContentLoaded", function(){
       window.removeEventListener('keydown', go, {capture:true});
     }
     window.addEventListener('pointerdown', go, {once:true, passive:true, capture:true});
-    // removed keydown unlock to avoid accidental audio on keypress;
-
+    window.addEventListener('keydown', go, {once:true, capture:true});
   })();
 
   // Use delegation-proof dispatch: simulate a centered click on #exploding
@@ -4774,17 +4771,5 @@ document.addEventListener('DOMContentLoaded', function() {
 
 /* Keep cards clearly above */
 .timeline .timeline-item .timeline-content{ position: relative; z-index: 3 !important; }
-</style><script id="audio-unmute-on-explicit">
-document.addEventListener('DOMContentLoaded', ()=>{
-  function unmuteAll(){
-    document.querySelectorAll('audio').forEach(a=>{ try{ a.muted = false; }catch(_){ } });
-  }
-  // Common explicit controls (customize as needed)
-  const ids = ['thunder-toggle','explode-btn','play-music','russell-play','effects-ctrl'];
-  ids.forEach(id=>{
-    const el = document.getElementById(id);
-    if(el){ el.addEventListener('click', unmuteAll, { once:true }); }
-  });
-});
-</script></body>
+</style></body>
 </html>
