@@ -1367,7 +1367,7 @@ window.googleTranslateElementInit = function(){
     document.documentElement.removeAttribute('data-gt-error');
   }catch(e){ console.warn('GT init error', e); }
 };
-</script><script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script><style id="motto-style-2">
+</script><script defer="True" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script><style id="motto-style-2">
 /* Elegant motto styling with typographic separators */
 .motto { letter-spacing:.015em; }
 .motto .m-text { font-size:1.06em; }
@@ -1689,7 +1689,7 @@ body {
 #quote-runner {
     opacity: 0;
     visibility: hidden;
-    transition: opacity .25s ease, visibility .25s ease;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
 }
 
 body.dom-ready .timeline-container,
@@ -2052,23 +2052,6 @@ body.dom-ready #quote-runner {
 
 /* Ensure overflow is visible so wider cards aren't clipped */
 .timeline-container{ overflow: visible !important; }
-</style><style id="safari-perf-hints">
-/* Performance hints */
-@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)){
-  .timeline-content{ 
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-  }
-}
-@supports not (backdrop-filter: blur(1px)){
-  .timeline-content{
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    background: rgba(15,15,35,0.9);
-  }
-}
-/* Fewer compositing hints */
-.timeline-content{ will-change: auto; }
 </style></head>
 <body>
 <!-- UI PATCH BLOCKS -->
@@ -4697,7 +4680,7 @@ document.addEventListener('DOMContentLoaded', function() {
         item.classList.add('visible');
       }
     });
-  }, 800);
+  }, 3000);
 });
 </script>
 <script id="timeline-js-corretta">
@@ -4741,8 +4724,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Mostra tutto quando la pagina è completamente caricata
-    window.addEventListener('load', function() {
-        document.body.style.visibility = 'visible';
+    (function(){
+  var __ran = false;
+  function __init(){
+    if(__ran) return; __ran = true;
+    document.body.style.visibility = 'visible';
         document.body.classList.add('dom-ready');
         
         // Fallback per elementi non visibili
@@ -4753,7 +4739,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         }, 800);
-    });
+  }
+  document.addEventListener('DOMContentLoaded', __init, { once: true });
+  window.addEventListener('load', __init, { once: true }); // fallback
+})(););
 });
 </script><script id="speed-readout-js">
 (function(){
