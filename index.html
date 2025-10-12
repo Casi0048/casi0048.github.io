@@ -5311,5 +5311,32 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+      <script>
+  // Aggiungi questo script per fixare il rumore graffiante
+document.addEventListener('DOMContentLoaded', function() {
+  // Imposta volume basso di default per tutti gli audio
+  document.querySelectorAll('audio').forEach(audio => {
+    audio.volume = 0.5;  // Volume moderato di default
+  });
+  
+  // Unifica gli unlock audio
+  function gentleUnlock() {
+    document.querySelectorAll('audio').forEach(audio => {
+      audio.volume = 0.1;
+      audio.play().then(() => {
+        audio.pause();
+        audio.currentTime = 0;
+      }).catch(() => {});
+    });
+    // Rimuovi gli listener dopo il primo unlock
+    ['pointerdown', 'keydown'].forEach(evt => {
+      window.removeEventListener(evt, gentleUnlock, {capture:true});
+    });
+  }
+  
+  window.addEventListener('pointerdown', gentleUnlock, {once:true, capture:true});
+  window.addEventListener('keydown', gentleUnlock, {once:true, capture:true});
+});
+</script>
 </body>
 </html>
