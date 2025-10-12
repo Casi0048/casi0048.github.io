@@ -1504,7 +1504,6 @@ window.googleTranslateElementInit = function(){
   50% { opacity: 1; }
 }
 </style>
-
 <style id="lens-left-fix">
 /* --- Lens left & vertically centered (scoped, minimal) --- */
 .search-container{ position: relative !important; }
@@ -1868,12 +1867,7 @@ body.dom-ready #quote-runner {
     text-align: right;
 }
 
-.timeline-item.right {
-    
-    margin-
-    padding-
-    text-align: left;
-}
+
 
 /* Punto temporale - PERFETTAMENTE CENTRATO SULLA LINEA */
 .timeline-item::before {
@@ -1920,7 +1914,7 @@ body.dom-ready #quote-runner {
 .timeline-item.left::after {
     left: calc(100% - 60px);
     right: auto;
-    background: linear-gradient(90deg, 
+    background: linear-gradient(270deg, 
         var(--accent-gold),
         var(--accent-cyan),
         var(--accent-purple));
@@ -1929,10 +1923,14 @@ body.dom-ready #quote-runner {
 .timeline-item.right::after {
     left: auto;
     right: calc(100% - 60px);
-    background: linear-gradient(270deg, 
+    background: linear-gradient(90deg, 
         var(--accent-gold),
         var(--accent-cyan),
         var(--accent-purple));
+}
+
+.timeline-item.visible::after {
+    animation: connectorDraw 0.8s cubic-bezier(0.2, 0.9, 0.2, 1) forwards 0.5s;
 }
 
 /* Card spettacolare */
@@ -2016,42 +2014,8 @@ body.dom-ready #quote-runner {
         opacity: 1;
     }
 }
-</style><style id="timeline-restore-visibility">
-/* RIPRISTINO VISIBILITÀ TIMELINE */
-.timeline-container { opacity: 1 !important; visibility: visible !important; display: block !important; }
-.timeline-item { display: block !important; opacity: 1 !important; }
-</style><style id="fix-cards-dx">
-/* === FIX: alternanza colonne e overflow === */
-.timeline-container{ overflow: visible !important; }
-.timeline{ position: relative; width: 100%; }
-
-/* Usa margini invece di left-shift per la colonna destra */
-.timeline-item{ width: 50% !important; position: relative; }
-.timeline-item.left{ margin-left: 0 !important; padding-right: 60px; text-align: right; }
-.timeline-item.right{
-  margin-
-          /* annulla eventuale 
-  text-align: left;
-}
-
-/* Assicura che le card stiano sopra la linea */
-.timeline-content{ position: relative; z-index: 3; }
-
-/* Connettori dal centro verso le card */
-.timeline-item.left .tl-connector{ 
-  left: calc(50% + 12px) !important; right: auto !important;
-}
-.timeline-item.right .tl-connector{ 
-  right: calc(50% + 12px) !important; left: auto !important;
-}
-
-/* Mobile: una sola colonna */
-@media (max-width: 900px){
-  .timeline-item{ width: 100% !important; margin-left: 0 !important; text-align: left; }
-  .timeline-item.left{ padding-right: 20px; padding-left: 70px; }
-  .timeline-item.right{ padding- }
-}
-</style><style id="hard-overrides-right-left">
+</style>
+<style id="hard-overrides-right-left">
 /* === HARD OVERRIDES: Alternanza sinistra/destra === */
 .timeline{ position: relative; width: 100%; }
 .timeline > .timeline-item{ width:50% !important; display:block !important; position:relative; float:none !important; }
@@ -2069,13 +2033,22 @@ body.dom-ready #quote-runner {
 /* Evita overflow che potrebbe nascondere le card destre */
 .timeline-container{ overflow: visible !important; }
 
+
 /* Mobile: una colonna */
 @media (max-width: 900px){
   .timeline > .timeline-item{ width:100% !important; margin-left:0 !important; text-align:left; }
   .timeline > .timeline-item.left{ padding-right:20px; padding-left:70px; }
   .timeline > .timeline-item.right{ padding-left:70px; }
 }
-</style><style id="center-dot-and-widen-cards">
+@media (max-width: 768px) {
+  .timeline-item.left::after,
+  .timeline-item.right::after {
+    width: 30px; /* Connettori più corti su mobile */
+    left: 40px; /* Allineamento con la linea mobile */
+  }
+}
+</style>
+<style id="center-dot-and-widen-cards">
 /* === Center rainbow dot over each card & widen cards by ~3cm === */
 :root{ --card-widen: 114px; } /* ~3cm at 96dpi */
 
@@ -2114,11 +2087,9 @@ body.dom-ready #quote-runner {
 </style>
 <style>
         :root {
-            --bg: #0a0a1a;
-            --gold: #d4af37;
-            --cyan: #00ccff;
+            --accent-gold: #ffd86a;
+            --accent-cyan: #00ccff;
             --accent-purple: #b967ff;
-            --text-light: #e9eef5;
         }
         
         * {
@@ -2128,12 +2099,11 @@ body.dom-ready #quote-runner {
         }
         
         body {
-            font-family: 'Montserrat', sans-serif;
-            background: var(--bg);
-            color: var(--text-light);
-            overflow-x: hidden;
-            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+            background: #0a0a1a;
+            color: #e9eef5;
             padding: 2rem;
+            min-height: 100vh;
         }
         
         .timeline-container {
@@ -2143,8 +2113,7 @@ body.dom-ready #quote-runner {
         }
         
         .timeline-title {
-            font-family: 'Cinzel', serif;
-            color: var(--gold);
+            color: var(--accent-gold);
             text-align: center;
             margin-bottom: 4rem;
             font-size: 3rem;
@@ -2167,8 +2136,8 @@ body.dom-ready #quote-runner {
             transform: translateX(-50%);
             background: linear-gradient(180deg, 
                 var(--accent-purple) 0%,
-                var(--cyan) 30%,
-                var(--gold) 70%,
+                var(--accent-cyan) 30%,
+                var(--accent-gold) 70%,
                 var(--accent-purple) 100%);
             box-shadow: 0 0 20px rgba(185, 103, 255, 0.6);
             z-index: 1;
@@ -2180,7 +2149,7 @@ body.dom-ready #quote-runner {
             margin: 4rem 0;
             opacity: 0;
             transform: translateY(50px);
-            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.8s ease;
         }
         
         /* Posizionamento alternato */
@@ -2189,7 +2158,6 @@ body.dom-ready #quote-runner {
             margin-right: auto;
             padding-right: 60px;
             text-align: right;
-            transform: translateX(-100px) translateY(50px);
         }
         
         .timeline-item.right {
@@ -2197,13 +2165,12 @@ body.dom-ready #quote-runner {
             margin-left: auto;
             padding-left: 60px;
             text-align: left;
-            transform: translateX(100px) translateY(50px);
         }
         
         /* Animazione quando visibile */
         .timeline-item.visible {
             opacity: 1;
-            transform: translateX(0) translateY(0);
+            transform: translateY(0);
         }
         
         /* Card styling */
@@ -2230,14 +2197,13 @@ body.dom-ready #quote-runner {
         }
         
         .timeline-content h3 {
-            color: var(--gold);
+            color: var(--accent-gold);
             margin-bottom: 1rem;
             font-size: 1.5rem;
-            font-family: 'Cinzel', serif;
         }
         
         .period {
-            color: var(--cyan);
+            color: var(--accent-cyan);
             font-style: italic;
             margin-bottom: 1rem;
             display: inline-block;
@@ -2245,11 +2211,6 @@ body.dom-ready #quote-runner {
             background: rgba(0, 204, 255, 0.1);
             border-radius: 20px;
             border: 1px solid rgba(0, 204, 255, 0.3);
-        }
-        
-        .timeline-content p {
-            line-height: 1.6;
-            margin-bottom: 1rem;
         }
         
         /* Punto sulla timeline */
@@ -2262,8 +2223,8 @@ body.dom-ready #quote-runner {
             border-radius: 50%;
             background: radial-gradient(circle at 35% 35%, 
                 #ffffff 0%, 
-                var(--gold) 30%,
-                var(--cyan) 70%,
+                var(--accent-gold) 30%,
+                var(--accent-cyan) 70%,
                 var(--accent-purple) 100%);
             box-shadow: 
                 0 0 0 6px rgba(255, 215, 0, 0.3),
@@ -2304,7 +2265,7 @@ body.dom-ready #quote-runner {
             }
         }
         
-        /* Connettori */
+        /* CONNETTORI - CORREZIONE PRINCIPALE */
         .timeline-item::after {
             content: '';
             position: absolute;
@@ -2312,23 +2273,34 @@ body.dom-ready #quote-runner {
             height: 2px;
             width: 50px;
             background: linear-gradient(90deg, 
-                var(--gold),
-                var(--cyan),
+                var(--gold, #d4af37),
+                var(--accent-cyan),
                 var(--accent-purple));
             opacity: 0;
             transform: scaleX(0);
             transition: all 0.6s ease 0.5s;
             z-index: 1;
+            filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6));
         }
         
+        /* Connettore per cards SINISTRA - CORRETTO */
         .timeline-item.left::after {
             right: -50px;
             transform-origin: right center;
+            background: linear-gradient(270deg, 
+                var(--accent-gold),
+                var(--accent-cyan),
+                var(--accent-purple));
         }
         
+        /* Connettore per cards DESTRA */
         .timeline-item.right::after {
             left: -50px;
             transform-origin: left center;
+            background: linear-gradient(90deg, 
+                var(--accent-gold),
+                var(--accent-cyan),
+                var(--accent-purple));
         }
         
         .timeline-item.visible::after {
@@ -2353,7 +2325,6 @@ body.dom-ready #quote-runner {
                 padding-left: 70px;
                 padding-right: 20px;
                 text-align: left;
-                transform: translateX(-50px) translateY(50px);
             }
             
             .timeline-item.visible {
@@ -2371,10 +2342,14 @@ body.dom-ready #quote-runner {
                 left: 40px;
                 right: auto;
                 transform-origin: left center;
+                background: linear-gradient(90deg, 
+                    var(--accent-gold),
+                    var(--accent-cyan),
+                    var(--accent-purple));
             }
         }
     </style>
-    <style>
+<style>
 /* === TIMELINE SPETTACOLARE ULTIMATE - CARDS A DOPPIA LARGHEZZA === */
 .timeline-container {
   --accent-gold: #ffd86a;
@@ -2555,27 +2530,7 @@ body.dom-ready #quote-runner {
 }
 
 /* Punto temporale con effetto pulsante */
-.tl-dot {
-  position: absolute;
-  top: 2rem;
-  left: 50%;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  background: radial-gradient(circle at 35% 35%, 
-    #ffffff 0%, 
-    var(--accent-gold) 30%,
-    var(--accent-cyan) 70%,
-    var(--accent-purple) 100%);
-  box-shadow: 
-    0 0 0 8px rgba(255, 215, 0, 0.4),
-    0 0 0 16px rgba(0, 204, 255, 0.3),
-    0 0 0 24px rgba(185, 103, 255, 0.2),
-    0 0 30px 12px rgba(255, 215, 0, 0.6);
-  z-index: 10;
-  transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
+
 
 /* Connettori energetici */
 .tl-connector {
@@ -2840,6 +2795,190 @@ body.dom-ready #quote-runner {
   }
 }
 </style>
+<style id="timeline-dots-fix">
+/* === TIMELINE DOTS RE-ALIGN (LEFT items on the center line) === */
+.timeline{ position: relative; }
+.timeline .timeline-item.left{ position: relative; }
+
+/* Place the dot on the RIGHT BORDER of the left item, so it sits on the main timeline */
+.timeline .timeline-item.left::before{
+  content: "";
+  position: absolute;
+  top: 2rem;
+  left: 100%;                 /* right border of the left item */
+  transform: translate(-50%, -50%); /* center the 12px dot over the border */
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%,
+      #ffffff 0%,
+      #ffd86a 35%,
+      #00ccff 70%,
+      #b967ff 100%);
+  box-shadow:
+      0 0 0 6px rgba(255, 215, 0, 0.35),
+      0 0 0 12px rgba(0, 204, 255, 0.25),
+      0 0 0 18px rgba(185, 103, 255, 0.18),
+      0 0 26px 10px rgba(255, 215, 0, 0.55);
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* Connector from the card towards the timeline (ending at 100%) */
+.timeline .timeline-item.left::after{
+  left: calc(100% - 60px) !important;  /* start 60px inside the card */
+  right: auto !important;
+  width: 60px;
+  transform-origin: right center;
+}
+
+/* Mobile rail alignment (if your timeline rail moves to 45px on mobile) */
+@media (max-width: 900px){
+  .timeline .timeline-item.left::before{
+    left: 45px;               /* rail position */
+    transform: translate(-50%, -50%);
+  }
+  .timeline .timeline-item.left::after{
+    left: 51px !important;    /* rail + 6px (half dot width) */
+    right: auto !important;
+  }
+}
+</style><style id="timeline-right-rail-bridge">
+/* === TIMELINE RIGHT: dentino to the RIGHT of the rail === */
+.timeline .timeline-item.right{ position: relative; }
+/* Dot stays centered on the rail at the card's left edge */
+.timeline .timeline-item.right::before{
+  left: 0;
+  transform: translate(-50%, -50%);
+}
+/* Connector segment entirely inside the card, starting just RIGHT of the rail
+   6px = half of 12px dot, so it begins under the dot's right edge */
+.timeline .timeline-item.right::after{
+  left: 6px !important;     /* start just to the right of the rail */
+  right: auto !important;
+  width: 54px !important;   /* 60px padding - 6px already covered by dot */
+  transform-origin: left center !important;
+}
+/* Optional mobile rail alignment (uncomment and tune if your rail shifts to 45px)
+@media (max-width: 900px){
+  .timeline .timeline-item.right::before{ left: 45px; transform: translate(-50%, -50%); }
+  .timeline .timeline-item.right::after{ left: calc(45px + 6px) !important; width: 54px !important; }
+}
+*/
+</style>
+&lt;!-- ===== TIMELINE SUGGESTION BLOCKS (START) ===== --&gt;
+<style id="timeline-suggest-mobile">/* TIMELINE (SUGGERIMENTO MOBILE) */
+/* - Scopo: migliorare la responsività senza toccare il layout desktop. */
+/* - Rail mobile a 45px; puntini centrati sulla rail; connettori che partono dalla rail. */
+/* - Sicuro da rimuovere: sì (ID: timeline-suggest-mobile). */
+
+:root{ --tl-dot-size: 12px; --tl-dot-r: 6px; } /* mezzo puntino */
+
+@media (max-width: 900px){
+  /* Sposta la rail (e gli effetti) a 45px se la tua linea centrale su mobile è lì */
+  .timeline::before, .timeline::after{ left:45px !important; transform: translateX(0) !important; }
+
+  /* Cards a tutta larghezza, testo a sinistra */
+  .timeline .timeline-item{ width:100%; margin-left:0 !important; text-align:left; }
+  .timeline .timeline-item.left, .timeline .timeline-item.right{ padding-left:70px; padding-right:20px; left:0; }
+
+  /* Puntini centrati sulla rail mobile */
+  .timeline .timeline-item::before{
+    left:45px; transform: translate(-50%, -50%);
+  }
+
+  /* Connettori: partono dalla rail + mezzo puntino */
+  .timeline .timeline-item.left::after,
+  .timeline .timeline-item.right::after{
+    left: calc(45px + var(--tl-dot-r)) !important;
+    right:auto !important;
+    transform-origin: left center;
+  }
+}
+</style><style id="timeline-suggest-perf">/* TIMELINE (HINT PERFORMANCE) */
+/* - Scopo: applica 'will-change' solo quando gli elementi sono visibili per migliorare performance. */
+/* - Non altera il layout; sicuro rimuovere se non necessario. */
+
+.timeline .timeline-item.visible,
+.timeline .timeline-item.visible::before,
+.timeline .timeline-item.visible::after{
+  will-change: transform, opacity;
+}
+</style><script id="timeline-suggest-aria">// TIMELINE (ACCESSIBILITÀ)
+// - Scopo: aggiunge role='region' e aria-label alla sezione della timeline, se mancanti.
+// - Non modifica stili/animazioni; migliora la fruibilità con tecnologie assistive.
+
+document.addEventListener('DOMContentLoaded', function(){
+  var sec = document.querySelector('section.timeline-container');
+  if (sec){
+    if (!sec.hasAttribute('role')) sec.setAttribute('role','region');
+    if (!sec.hasAttribute('aria-label')) sec.setAttribute('aria-label','Linea del tempo filosofica');
+  }
+});
+</script><script id="timeline-suggest-nojs-flag">// FALLBACK NO-JS (FLAG)
+// - Scopo: aggiunge '.no-js' all'elemento <html> prima del DOMContentLoaded.
+// - Serve a mostrare la timeline se JS è disattivato (vedi CSS relativo).
+(function(){ document.documentElement.classList.add('no-js'); })();</script><style id="timeline-suggest-nojs-css">/* FALLBACK NO-JS (CSS) */
+/* - Scopo: se JS resta disattivato, mostra tutti gli elementi senza animazioni. */
+/* - Disattivabile rimuovendo questo blocco o la classe '.no-js' su <html>. */
+
+.no-js .timeline .timeline-item{
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+</style><script id="timeline-suggest-nojs-remove">// FALLBACK NO-JS (REMOVE FLAG)
+// - Scopo: rimuove la classe '.no-js' al DOMContentLoaded (JS attivo).
+// - Assicura che, con JS attivo, la timeline torni ad animarsi normalmente.
+
+document.addEventListener('DOMContentLoaded', function(){
+  document.documentElement.classList.remove('no-js');
+});
+</script><script defer="defer" id="timeline-suggest-io">// TIMELINE (MICRO-STAGGER NON INVASIVO)
+// - Scopo: sfalsa leggermente i tempi d'ingresso delle card per migliorare la lettura visiva.
+// - Usa IntersectionObserver. Ritardo = index*70ms (+120ms per card a destra), max 600ms.
+// - Per disattivare: rimuovere questo script o impostare delayMs=0.
+// - Rispetto accessibilità: si può aggiungere controllo di prefers-reduced-motion.
+
+document.addEventListener('DOMContentLoaded', function(){
+  var items = Array.prototype.slice.call(document.querySelectorAll('.timeline .timeline-item'));
+  if (!items.length) return;
+
+  var seen = new WeakSet();
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting && !seen.has(e.target)){
+        var idx = items.indexOf(e.target);
+        var sideRight = e.target.classList.contains('right') ? 120 : 0;  // piccolo offset lato destro
+        var delayMs = Math.min(idx*70 + sideRight, 600);
+        e.target.style.transitionDelay = (delayMs/1000)+'s';
+        e.target.classList.add('visible');
+        seen.add(e.target);
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -10% 0px' });
+
+  items.forEach(function(el){ io.observe(el); });
+
+  // Primo pass: se già in viewport
+  requestAnimationFrame(function(){
+    items.forEach(function(el){
+      var r = el.getBoundingClientRect();
+      if (r.top < (innerHeight*0.9) && r.bottom > 0){
+        var idx = items.indexOf(el);
+        var sideRight = el.classList.contains('right') ? 120 : 0;
+        var delayMs = Math.min(idx*70 + sideRight, 600);
+        el.style.transitionDelay = (delayMs/1000)+'s';
+        el.classList.add('visible');
+        seen.add(el);
+        io.unobserve(el);
+      }
+    });
+  });
+});
+</script>
+&lt;!-- ===== TIMELINE SUGGESTION BLOCKS (END) ===== --&gt;
 </head>
 <body>
 <!-- UI PATCH BLOCKS -->
@@ -4981,17 +5120,12 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 })();
 </script>
-
-
-
-</script>
 <script id="speed-readout-js">
 (function(){
     function clamp(n,min,max){ return Math.max(min, Math.min(max, n)); }
     // Il resto del codice JavaScript...
 })();
 </script>
-
 <script id="sfx-unlock-silent">
 (function(){
   var boom = document.getElementById('explosionSound');
