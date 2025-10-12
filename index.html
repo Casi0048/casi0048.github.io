@@ -5312,30 +5312,136 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
       <script>
-  // Aggiungi questo script per fixare il rumore graffiante
+// SOLUZIONE SPECIFICA PER SAFARI
 document.addEventListener('DOMContentLoaded', function() {
-  // Imposta volume basso di default per tutti gli audio
-  document.querySelectorAll('audio').forEach(audio => {
-    audio.volume = 0.8;  // Volume moderato di default
-  });
+  console.log('🔊 Inizializzazione audio Safari');
   
-  // Unifica gli unlock audio
-  function gentleUnlock() {
-    document.querySelectorAll('audio').forEach(audio => {
-      audio.volume = 0.6;
-      audio.play().then(() => {
+  // 1. PRELOAD AGGRESSIVO per Safari
+  const audioElements = document.querySelectorAll('audio');
+  audioElements.forEach(audio => {
+    audio.volume = 0.7;  // Volume moderato
+    audio.preload = 'auto';
+    audio.muted = false; // Importante per Safari
+    
+    // Forza il caricamento in Safari
+    audio.load();
+    
+    // Aggiungi gestori di errore
+    audio.addEventListener('error', function(e) {
+      console.warn('Audio error:', audio.src, e);
+    });
+  });
+
+  // 2. UNICO GESTORE per sblocco audio (Safari richiede interazione utente)
+  let audioUnlocked = false;
+  
+  function unlockAudioSafari() {
+    if (audioUnlocked) return;
+    
+    console.log('🔓 Sblocco audio Safari');
+    audioUnlocked = true;
+    
+    // Strategia specifica per Safari
+    const promises = [];
+    audioElements.forEach(audio => {
+      // Reset per Safari
+      audio.currentTime = 0;
+      audio.volume = 0.3; // Basso volume iniziale
+      
+      // Play/pause rapido per sbloccare
+      const promise = audio.play().then(() => {
+        console.log('✅ Audio sbloccato:', audio.id || audio.src);
+        // Ferma immediatamente
         audio.pause();
         audio.currentTime = 0;
-      }).catch(() => {});
+      }).catch(err => {
+        console.warn('❌ Audio non sbloccato:', audio.id || audio.src, err);
+      });
+      
+      promises.push(promise);
     });
-    // Rimuovi gli listener dopo il primo unlock
-    ['pointerdown', 'keydown'].forEach(evt => {
-      window.removeEventListener(evt, gentleUnlock, {capture:true});
+    
+    // Rimuovi tutti gli event listeners dopo il primo sblocco
+    removeAllUnlockListeners();
+  }
+
+  // 3. MULTIPLI EVENTI per Safari (molto sensibile)
+  function addSafariUnlockListeners() {
+    const events = [
+      'click', 'touchstart', 'touchend', 'pointerdown', 
+      'keydown', 'mousedown', 'scroll'
+    ];
+    
+    events.forEach(eventType => {
+      document.addEventListener(eventType, unlockAudioSafari, { 
+        once: true, 
+        passive: true,
+        capture: true 
+      });
     });
   }
   
-  window.addEventListener('pointerdown', gentleUnlock, {once:true, capture:true});
-  window.addEventListener('keydown', gentleUnlock, {once:true, capture:true});
+  function removeAllUnlockListeners() {
+    const events = [
+      'click', 'touchstart', 'touchend', 'pointerdown', 
+      'keydown', 'mousedown', 'scroll'
+    ];
+    
+    events.forEach(eventType => {
+      document.removeEventListener(eventType, unlockAudioSafari, { 
+        capture: true 
+      });
+    });
+  }
+
+  // 4. INIZIALIZZAZIONE con timeout per Safari
+  setTimeout(() => {
+    addSafariUnlockListeners();
+    
+    // Backup: forza sblocco dopo 3 secondi se nessuna interazione
+    setTimeout(() => {
+      if (!audioUnlocked) {
+        console.log('🕒 Backup unlock per Safari');
+        unlockAudioSafari();
+      }
+    }, 3000);
+  }, 100);
+
+  // 5. GESTIONE PLAYBACK SICURO per Safari
+  window.safePlayAudio = function(audioId, volume = 0.8) {
+    const audio = document.getElementById(audioId);
+    if (!audio || !audioUnlocked) {
+      console.warn('Audio non pronto:', audioId);
+      return Promise.reject('Audio not ready');
+    }
+    
+    return new Promise((resolve) => {
+      audio.volume = 0.3; // Volume basso iniziale
+      audio.currentTime = 0;
+      
+      const playPromise = audio.play();
+      
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          // Fade-in del volume per Safari
+          let currentVol = 0.3;
+          const fadeInterval = setInterval(() => {
+            currentVol += 0.1;
+            if (currentVol >= volume) {
+              audio.volume = volume;
+              clearInterval(fadeInterval);
+              resolve();
+            } else {
+              audio.volume = currentVol;
+            }
+          }, 50);
+        }).catch(err => {
+          console.warn('Playback failed:', err);
+          resolve();
+        });
+      }
+    });
+  };
 });
 </script>
 </body>
