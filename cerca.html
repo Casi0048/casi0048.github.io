@@ -3,116 +3,164 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ricerca — Echi di Sofia</title>
-  <meta name="robots" content="noindex,follow">
+  <title>Cerca — Echi di Sofia</title>
+  <link rel="icon" type="image/png" href="favicon_io/favicon-32x32.png">
+  <link rel="stylesheet" href="stile.css">
   <style>
-    :root { --bg:#0a0a1a; --txt:#eaf2ff; --sub:#cfd8ff; --card:#141628; --url:#96ffa6; --accent:rgba(120,140,220,0.45); }
-    body { margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background: var(--bg); color: var(--txt); }
-    header { position:sticky; top:0; background: color-mix(in oklab, var(--bg), white 4%); border-bottom: 1px solid color-mix(in oklab, var(--txt), transparent 80%); padding: 14px 16px; z-index: 10; }
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 12px; }
-    .topbar { display:flex; align-items:center; gap: 10px; }
-    h1 { font-size: 1.1rem; margin: 0 10px 0 0; letter-spacing: .3px; color: var(--sub); }
-    form.search { display:flex; align-items:center; gap:8px; flex:1; }
-    form.search input[type="search"] { flex:1; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--accent); background: color-mix(in oklab, var(--card), transparent 10%); color: var(--txt); }
-    form.search button { padding: 10px 14px; border-radius: 12px; border: 1px solid var(--accent); background: color-mix(in oklab, var(--card), transparent 0%); color: var(--txt); cursor: pointer; }
-    .actions { display:flex; align-items:center; gap:8px; }
-    .actions button { padding: 8px 12px; border-radius: 10px; border: 1px solid var(--accent); background: color-mix(in oklab, var(--card), transparent 0%); color: var(--txt); cursor: pointer; }
-    main { padding: 14px 0 40px; }
-    #results-wrap { background: color-mix(in oklab, var(--card), transparent 20%); border: 1px solid color-mix(in oklab, var(--txt), transparent 75%); border-radius: 14px; padding: 10px 12px; }
-    /* CSE high-contrast styles (inline mode) */
-    .gsc-control-cse, .gsc-control-cse .gsc-table-result, .gsc-results-wrapper-visible { background: transparent !important; }
-    .gsc-result, .gsc-webResult.gsc-result, .gsc-results .gsc-imageResult { background: var(--card) !important; border: 1px solid color-mix(in oklab, var(--txt), transparent 70%) !important; border-radius: 12px !important; padding: 12px !important; }
-    .gsc-webResult.gsc-result:hover { outline: 2px solid color-mix(in oklab, var(--txt), transparent 70%); }
-    .gsc-result .gs-title, .gsc-result .gs-title * { color: var(--txt) !important; text-decoration: none !important; }
-    .gsc-result .gs-snippet { color: var(--sub) !important; }
-    .gsc-url-top, .gsc-url-bottom, .gsc-url-top * { color: var(--url) !important; }
-    .gsc-cursor-page { color: var(--txt) !important; border-color: color-mix(in oklab, var(--txt), transparent 70%) !important; }
-    .gsc-results .gsc-cursor-box .gsc-cursor-page.gsc-cursor-current-page { background: color-mix(in oklab, var(--txt), transparent 85%) !important; color: var(--bg) !important; }
-    .gcsc-find-more-on-google, .gcsc-find-more-on-google-root { background: transparent !important; }
-    input.gsc-input, .gsc-input-box, .gsc-input-box-hover, .gsc-input-box-focus { background: color-mix(in oklab, var(--card), transparent 5%) !important; color: var(--txt) !important; border-color: var(--accent) !important; }
-    .gsc-selected-option-container { color: var(--txt) !important; }
-
-    /* Light theme toggle */
-    body.light { --bg:#f7f9ff; --txt:#0b0e19; --sub:#2b3550; --card:#ffffff; --url:#0e6b2c; --accent:rgba(8, 37, 143, 0.35); }
-    body.light h1 { color: #0b0e19; }
-    body.light #results-wrap { background: #ffffff; border-color: rgba(8,37,143,.25); }
+    :root{ --bg:#0a0a1a; --text:#e9eef5; --gold:#ffd86a; --cyan:#9ad0ff; --panel:rgba(10,10,30,.9); }
+    body{ background:var(--bg); color:var(--text); font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif; }
+    .wrap{ width:min(1100px,94vw); margin:0 auto; padding:1rem 0 2rem; }
+    header{ position:sticky; top:0; z-index:10; background:rgba(10,10,30,.96); border-bottom:1px solid rgba(255,215,0,.2); backdrop-filter: blur(6px); }
+    .top{ display:flex; align-items:center; gap:.75rem; padding:.8rem 1rem; }
+    .brand{ display:flex; align-items:center; gap:.5rem; color:var(--gold); font-weight:800; text-decoration:none; }
+    .brand img{ width:32px; height:32px; filter: drop-shadow(0 0 .5rem rgba(255,215,0,.35)); }
+    .brand span{ background:linear-gradient(90deg,#ffd700,#fff7b0,#ffd700); -webkit-background-clip:text; background-clip:text; color:transparent; letter-spacing:.04em; }
+    .spacer{ flex:1 }
+    .home{ color:var(--cyan); text-decoration:none; font-weight:700; }
+    .home:hover{ color:#fff; text-decoration:underline; }
+    .searchbar{ display:flex; align-items:center; gap:.5rem; padding:1rem 1rem .8rem; }
+    .searchbar input{
+      width:100%; padding:.85rem 1rem; border-radius:12px; border:1px solid rgba(255,255,255,.12);
+      background:var(--panel); color:var(--text); font-size:1rem; outline:none;
+      box-shadow: 0 .8rem 1.4rem rgba(0,0,0,.3) inset;
+    }
+    .hint{ opacity:.8; font-size:.9rem; padding:0 1rem .5rem; }
+    .results{ display:grid; gap:.8rem; margin-top:1rem; }
+    .card{
+      background:var(--panel); border:1px solid rgba(255,215,0,.18); border-radius:14px;
+      padding:1rem; box-shadow:0 .8rem 2rem rgba(0,0,0,.35);
+    }
+    .card a.title{ color:var(--gold); font-weight:800; text-decoration:none; font-size:1.08rem; }
+    .card a.title:hover{ color:#fff; text-decoration:underline; }
+    .url{ font-size:.85rem; color:#9bb7ff; opacity:.9; margin:.2rem 0 .4rem; word-break:break-all; }
+    .desc{ color:#cfe2ff; opacity:.95; line-height:1.35; }
+    mark{ background:linear-gradient(90deg, rgba(255,216,106,.35), rgba(154,208,255,.35)); border-radius:.25rem; padding:.05rem .15rem; }
+    footer{ margin-top:2rem; padding:1rem; text-align:center; color:#9ec3ff; border-top:1px solid rgba(255,255,255,.06); }
   </style>
 </head>
 <body>
   <header>
-    <div class="container">
-      <div class="topbar">
-        <h1>Ricerca</h1>
-        <form class="search" role="search" method="get" action="">
-          <input type="search" name="q" id="search-input" placeholder="Cerca su Echi di Sofia…" autocomplete="on">
-          <button type="submit">Cerca</button>
-        </form>
-        <div class="actions">
-          <button type="button" id="toggle-theme" title="Cambia tema">Tema: Scuro</button>
-          <a id="home-link" href="/" style="text-decoration:none;"><button type="button">Home</button></a>
-        </div>
-      </div>
+    <div class="top wrap">
+      <a class="brand" href="index.html">
+        <img src="logo-filosofia.svg" alt="Echi di Sofia">
+        <span>Echi di Sofia</span>
+      </a>
+      <div class="spacer"></div>
+      <a class="home" href="index.html">Incipit</a>
     </div>
+    <div class="searchbar wrap">
+      <input id="q" type="search" placeholder="Cerca autori, scuole, concetti… (es. Epitteto, Presocratici, Mito)"
+             autocomplete="off" spellcheck="false" aria-label="Cerca nel sito">
+    </div>
+    <div class="hint wrap">Suggerimento: puoi cercare anche per <em>titolo</em> o parole contenute nella <em>descrizione</em>.</div>
   </header>
 
-  <main class="container">
-    <div id="results-wrap">
-      <div id="cse-results">
-        <div class="gcse-searchresults-only" data-gname="results" data-linkTarget="_self" data-queryParameterName="q"></div>
-      </div>
-    </div>
+  <main class="wrap">
+    <div id="results" class="results" role="list"></div>
   </main>
 
-  <!-- Google CSE loader: usa il tuo cx -->
-  <script>
-    // Inserisci qui il tuo ID CSE se diverso
-    var CSE_CX = "87b07564ab3cb462a";
-    // Supporto per sostituire via query string: ?cx=IDPERSONALE
-    (function(){
-      var p = new URLSearchParams(location.search);
-      if (p.has("cx")) CSE_CX = p.get("cx");
-    })();
-  </script>
-  <script>
-    (function(w,d,t,cb){
-      var s = d.createElement(t);
-      s.src = "https://cse.google.com/cse.js?cx=" + encodeURIComponent(CSE_CX);
-      s.async = true; s.defer = true;
-      d.head.appendChild(s);
-      w.__gcse = { callback: function(){ try { cb(); } catch(e){} } };
-    })(window, document, "script", function(){
-      // Render inline results in our container
-      try {
-        google.search.cse.element.render({ div: "cse-results", tag: "searchresults-only", gname: "results" });
-      } catch(e){}
-      // If a query is present in URL, execute it and fill the input
-      var params = new URLSearchParams(location.search);
-      var q = params.get("q") || "";
-      var input = document.getElementById("search-input");
-      if (input) input.value = q;
-      if (q) {
-        var el = google.search.cse.element.getElement("results");
-        if (!el) {
-          google.search.cse.element.render({ div: "cse-results", tag: "searchresults-only", gname: "results" });
-          el = google.search.cse.element.getElement("results");
-        }
-        if (el) el.execute(q);
-      }
-    });
-  </script>
+  <footer>© 2025 Echi di Sofia</footer>
 
-  <script>
-    // Theme toggle
-    (function(){
-      var btn = document.getElementById("toggle-theme");
-      var light = false;
-      function sync(){
-        document.body.classList.toggle("light", light);
-        btn.textContent = light ? "Tema: Chiaro" : "Tema: Scuro";
+<script>
+(function(){
+  const RESULTS_LIMIT = 50;
+
+  const SOURCES = (window.SEARCH_INDEX_URLS && window.SEARCH_INDEX_URLS.length)
+    ? window.SEARCH_INDEX_URLS
+    : [
+        './search-index.json',
+        '/search-index.json',
+        'https://casi0048.github.io/search-index.json'
+      ];
+
+  async function loadIndex(){
+    for (const url of SOURCES){
+      try{
+        const res = await fetch(url, { cache: 'no-store' });
+        if(!res.ok) continue;
+        const data = await res.json();
+        return Array.isArray(data) ? data : (data.items || data.entries || []);
+      }catch(e){ /* try next */ }
+    }
+    return [];
+  }
+
+  function normalize(item){
+    const title = item.title || item.name || item.slug || 'Senza titolo';
+    const url   = (item.url || item.link || '').toString();
+    const desc  = item.desc || item.description || item.excerpt || item.summary || '';
+    return { title, url, desc };
+  }
+
+  function norm(s){ return (s || '').toString().normalize('NFD').replace(/\p{Diacritic}/gu,'').toLowerCase(); }
+
+  function highlight(text, query){
+    if(!text) return '';
+    try{
+      const q = norm(query).split(/\s+/).filter(Boolean);
+      if(!q.length) return text;
+      let out = text;
+      for(const term of q){
+        if(term.length < 2) continue;
+        const re = new RegExp('('+term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');
+        out = out.replace(re, '<mark>$1</mark>');
       }
-      if (btn) btn.addEventListener("click", function(){ light = !light; sync(); });
-      sync();
-    })();
-  </script>
+      return out;
+    }catch(_){ return text; }
+  }
+
+  function resultCard(item, query){
+    const href = item.url.startsWith('http')
+      ? item.url
+      : (item.url.startsWith('/') ? item.url : './' + item.url.replace(/^\.\//,''));
+    const desc = item.desc && item.desc.trim() ? item.desc : '';
+    return `<article class="card" role="listitem">
+      <a class="title" href="${href}">${highlight(item.title, query)}</a>
+      <div class="url">${href}</div>
+      ${desc ? `<div class="desc">${highlight(desc, query)}</div>` : ''}
+    </article>`;
+  }
+
+  function search(items, query){
+    const q = norm(query);
+    if(!q) return [];
+    return items.filter(it => {
+      const t = norm(it.title);
+      const d = norm(it.desc);
+      const u = norm(it.url);
+      return t.includes(q) || d.includes(q) || u.includes(q);
+    }).slice(0, RESULTS_LIMIT);
+  }
+
+  let INDEX = [];
+  const $q = document.getElementById('q');
+  const $res = document.getElementById('results');
+
+  function render(list, query){
+    if(!list.length){
+      $res.innerHTML = `<p style="opacity:.8">Nessun risultato per <strong>${query}</strong>.</p>`;
+      return;
+    }
+    $res.innerHTML = list.map(it => resultCard(it, query)).join('');
+  }
+
+  function debounce(fn, ms){
+    let t; return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
+  }
+
+  const onInput = debounce(() => {
+    const q = $q.value.trim();
+    if(q.length === 0){ $res.innerHTML = ''; return; }
+    const list = search(INDEX, q);
+    render(list, q);
+  }, 120);
+
+  $q.addEventListener('input', onInput);
+  $q.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ onInput(); } });
+
+  loadIndex().then(arr => { INDEX = arr.map(normalize); $q.focus(); });
+})();
+</script>
+
 </body>
 </html>
