@@ -24,16 +24,17 @@
     .hero h1{ font-size: clamp(1.9rem, 4vw, 3rem); background:linear-gradient(90deg,#00f6ff,#00b7ff,#00a0ff,#00f6ff);
       -webkit-background-clip:text; background-clip:text; color:transparent; filter: drop-shadow(0 0 1rem rgba(0,200,255,.55)); margin:0 0 .35rem; }
     .hero p{ color:#cfe8ff; opacity:.95; max-width:68ch; margin:0 auto; }
-    .sections{ padding:1.2rem 1rem 0; } .grid{ display:grid; gap:1rem; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); }
+    .cta{ padding:1.2rem 1rem 0; display:flex; gap:.6rem; flex-wrap:wrap; justify-content:center; }
+    .btn{ display:inline-flex; align-items:center; gap:.4rem; padding:.55rem .85rem; border-radius:.6rem; border:1px solid var(--border); background:rgba(20,20,40,.78); font-weight:700; color:#ffdf8a; }
+    .btn.secondary{ color:#9ad0ff; border-color: rgba(0,204,255,.35); }
+    .grid{ display:grid; gap:1rem; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); margin:1.2rem 0 1.6rem; }
     .card{ background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:1rem; display:flex; flex-direction:column; gap:.55rem; box-shadow:0 1.2rem 2.2rem rgba(0,0,0,.25); }
     .tag{ display:inline-block; font-size:.78rem; padding:.12rem .5rem; border-radius:999px; color:#0b1022; background:linear-gradient(90deg,#ffd86a,#ffeb9a); font-weight:800; }
     .card h3{ color:#ffeb9a; margin:.2rem 0 0; } .card p{ color:#cfe2ff; opacity:.95; line-height:1.35; }
     .more{ margin-top:auto; } .more a{ font-weight:800; }
-    .cta{ padding:1.2rem 1rem 2rem; display:flex; gap:.6rem; flex-wrap:wrap; justify-content:center; }
-    .btn{ display:inline-flex; align-items:center; gap:.4rem; padding:.55rem .85rem; border-radius:.6rem; border:1px solid var(--border); background:rgba(20,20,40,.78); font-weight:700; color:#ffdf8a; }
-    .btn.secondary{ color:#9ad0ff; border-color: rgba(0,204,255,.35); }
+    #lista-articoli{ scroll-margin-top: 120px; } @media (max-width: 768px){ #lista-articoli{ scroll-margin-top: 140px; } }
     footer{ margin-top:auto; padding:1rem; text-align:center; color:#9ec3ff; border-top:1px solid rgba(255,255,255,.06); }
-    /* overlay */
+    /* overlay ricerca */
     .search-overlay{ position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,.55); backdrop-filter: blur(6px); display: none; }
     .search-overlay.is-open{ display:block; } .search-panel{ position: absolute; left: 50%; top: 8%; transform: translateX(-50%); width: min(900px, 92vw);
       background: rgba(10,10,30,.96); border: 1px solid rgba(255,215,0,.22); border-radius: 14px; box-shadow: 0 1.4rem 2.4rem rgba(0,0,0,.45); color: #e9eef5; }
@@ -67,18 +68,15 @@
   <section class="hero wrap">
     <h1>Tra pensiero e stelle</h1>
     <p>Un percorso tra scuole, autori e temi della filosofia — dalla classicità al contemporaneo.</p>
+    <div class="cta">
+      <a class="btn" href="#lista-articoli">📖 Vai alla griglia</a>
+      <a class="btn secondary" href="/articoli/">Apri sezione Articoli</a>
+    </div>
   </section>
 
-  <main class="wrap sections">
-    <div class="grid" id="sezioni">
-      <article class="card"><span class="tag">Presocratici</span><h3>Talete: l'arché come acqua</h3><p>Dalle spiegazioni mitiche alla ricerca di un principio naturale.</p><div class="more"><a href="/talete.html">Leggi →</a></div></article>
-      <article class="card"><span class="tag">Classici</span><h3>Il Mito della Caverna</h3><p>Platone e la dialettica tra apparenza e verità.</p><div class="more"><a href="/articoli/platone_mito_caverna.html">Leggi →</a></div></article>
-      <article class="card"><span class="tag">Scienza & Filosofia</span><h3>Circolo di Vienna</h3><p>Il programma del neopositivismo logico e l'unità della scienza.</p><div class="more"><a href="/articoli/circolo_di_vienna.html">Leggi →</a></div></article>
-      <article class="card"><span class="tag">Classici</span><h3>Ipazia di Alessandria</h3><p>Tra scienza, filosofia e martirio.</p><div class="more"><a href="/articoli/ipazia.html">Leggi →</a></div></article>
-    </div>
-    <div class="cta">
-      <a class="btn" href="/articoli/#lista-articoli">📖 Vai alla griglia</a>
-      <a class="btn secondary" href="/articoli/">Apri sezione Articoli</a>
+  <main class="wrap">
+    <div class="grid" id="lista-articoli">
+      <!-- La griglia completa verrà generata qui da search-index.json -->
     </div>
   </main>
 
@@ -97,30 +95,91 @@
     </div>
   </div>
 
-  <script>window.SEARCH_INDEX_URLS=['/search-index.json','/assets/search-index.json'];</script>
+  <!-- Config sorgenti indice -->
+  <script>
+    window.SEARCH_INDEX_URLS = ['/search-index.json','/assets/search-index.json'];
+  </script>
+
+  <!-- Script: genera la griglia completa da search-index.json + overlay ricerca + fallback scroll -->
   <script>
   (function(){
+    // ---- overlay ricerca ----
     const SOURCES=(window.SEARCH_INDEX_URLS&&window.SEARCH_INDEX_URLS.length)?window.SEARCH_INDEX_URLS:['/search-index.json','/assets/search-index.json'];
     const $open=document.getElementById('open-search'),$overlay=document.getElementById('search-overlay'),$close=document.getElementById('close-search'),$input=document.getElementById('site-search'),$list=document.getElementById('search-results');
-    if(!$overlay||!$input||!$list) return;
     function lockScroll(on){ document.documentElement.style.overflow=on?'hidden':''; }
-    function openPanel(e){ if(e) e.preventDefault(); $overlay.classList.add('is-open'); $overlay.setAttribute('aria-hidden','false'); lockScroll(true); setTimeout(()=> $input.focus(), 50); }
-    function closePanel(e){ if(e) e.preventDefault(); $overlay.classList.remove('is-open'); $overlay.setAttribute('aria-hidden','true'); lockScroll(false); $input.value=''; $list.innerHTML=''; }
-    if($open)  $open.addEventListener('click', openPanel);
-    $close.addEventListener('click', closePanel);
-    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closePanel(); });
-    $overlay.addEventListener('click', (e)=>{ if(e.target=== $overlay) closePanel(); });
+    function openPanel(e){ if(e) e.preventDefault(); $overlay.classList.add('is-open'); $overlay.setAttribute('aria-hidden','false'); lockScroll(true); setTimeout(()=> $input&&$input.focus(), 50); }
+    function closePanel(e){ if(e) e.preventDefault(); $overlay.classList.remove('is-open'); $overlay.setAttribute('aria-hidden','true'); lockScroll(false); if($input){ $input.value=''; $list.innerHTML=''; } }
+    if($open) $open.addEventListener('click', openPanel);
+    if($close) $close.addEventListener('click', closePanel);
+    document.addEventListener('keydown',(e)=>{ if(e.key==='Escape') closePanel(); });
+    if($overlay) $overlay.addEventListener('click',(e)=>{ if(e.target===$overlay) closePanel(); });
+
     function norm(s){ return (s||'').toString().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase(); }
-    function highlight(text,query){ if(!text) return ''; try{ const tokens=norm(query).split(/\s+/).filter(Boolean); if(!tokens.length) return text; let out=text; for(const t of tokens){ if(t.length<2) continue; const re=new RegExp('('+t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'); out=out.replace(re,'<mark>$1</mark>'); } return out; }catch(_){ return text; } }
+    function highlight(text,query){
+      if(!text) return '';
+      try{
+        const tokens=norm(query).split(/\s+/).filter(Boolean);
+        if(!tokens.length) return text;
+        let out=text;
+        for(const t of tokens){
+          if(t.length<2) continue;
+          const re=new RegExp('('+t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');
+          out=out.replace(re,'<mark>$1</mark>');
+        }
+        return out;
+      }catch(_){ return text; }
+    }
     function resolveUrl(u){ if(!u) return '#'; if(u.startsWith('http')) return u; if(u.startsWith('/')) return u; return '/'+u.replace(/^\.\//,''); }
-    function card(item,query){ const href=resolveUrl(item.url); const desc=item.desc&&item.desc.trim()?item.desc:''; return `<article class="search-card" role="listitem"><a class="title" href="${href}">${highlight(item.title,query)}</a><div class="url">${href}</div>${desc?`<div class="desc">${highlight(desc,query)}</div>`:''}</article>`; }
-    function search(items,query){ const q=norm(query); if(!q) return []; return items.filter(it=>{ const t=norm(it.title),d=norm(it.desc),u=norm(it.url); return t.includes(q)||d.includes(q)||u.includes(q); }).slice(0,60); }
-    function render(list,query){ if(!list.length){ $list.innerHTML=`<p style="opacity:.8">Nessun risultato per <strong>${query}</strong>.</p>`; return; } $list.innerHTML=list.map(it=>card(it,query)).join(''); }
+    function search(items,query){
+      const q=norm(query); if(!q) return [];
+      return items.filter(it=>{ const t=norm(it.title||''); const d=norm(it.desc||it.description||''); const u=norm(it.url||''); return t.includes(q)||d.includes(q)||u.includes(q); }).slice(0,60);
+    }
+    function card(item,query){
+      const href=resolveUrl(item.url||''); const title=item.title||'Senza titolo'; const desc=item.desc||item.description||'';
+      return `<article class="card"><h3>${query?highlight(title,query):title}</h3>${desc?`<p>${query?highlight(desc,query):desc}</p>`:''}<div class="more"><a href="${href}">Leggi →</a></div></article>`;
+    }
+    function renderSearch(list,query){
+      if(!list.length){ $list.innerHTML=`<p style="opacity:.8">Nessun risultato per <strong>${query}</strong>.</p>`; return; }
+      $list.innerHTML=list.map(it=>card(it,query)).join('');
+    }
     function debounce(fn,ms){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a),ms); }; }
-    let INDEX=[]; async function loadIndex(){ for(const u of SOURCES){ try{ const r=await fetch(u,{cache:'no-store'}); if(!r.ok) continue; const data=await r.json(); return Array.isArray(data)?data:(data.items||data.entries||[]); }catch(_){} } return []; }
-    const onInput=debounce(()=>{ const q=$input.value.trim(); if(!q){ $list.innerHTML=''; return; } const results=search(INDEX,q); render(results,q); },120);
-    $input.addEventListener('input',onInput); $input.addEventListener('keydown',e=>{ if(e.key==='Enter') onInput(); });
-    loadIndex().then(arr=>{ INDEX=arr.map(it=>({ title:it.title||it.name||it.slug||'Senza titolo', url:(it.url||it.link||'').toString(), desc:it.desc||it.description||it.excerpt||it.summary||'' })); });
+
+    let INDEX=[];
+    async function loadIndex(){
+      for(const u of SOURCES){
+        try{ const r=await fetch(u,{cache:'no-store'}); if(!r.ok) continue; const data=await r.json(); return Array.isArray(data)?data:(data.items||data.entries||[]); }
+        catch(_){}
+      }
+      return [];
+    }
+
+    // ---- GENERA GRIGLIA COMPLETA IN HOME ----
+    const $grid = document.getElementById('lista-articoli');
+    loadIndex().then(arr=>{
+      INDEX = arr.map(it=>({ title: it.title||it.name||it.slug||'Senza titolo', url: (it.url||it.link||'').toString(), desc: it.desc||it.description||it.excerpt||it.summary||'' }));
+      if($grid){
+        const html = INDEX.map(it => card(it, '')).join('');
+        $grid.innerHTML = html || '<p style="opacity:.8">Nessun articolo trovato.</p>';
+      }
+    });
+
+    // ---- Ricerca overlay ----
+    if($input){
+      const onInput=debounce(()=>{ const q=$input.value.trim(); if(!q){ $list.innerHTML=''; return; } const results=search(INDEX,q); renderSearch(results,q); },120);
+      $input.addEventListener('input',onInput);
+      $input.addEventListener('keydown',e=>{ if(e.key==='Enter') onInput(); });
+    }
+
+    // ---- Fallback per “Vai alla griglia” (se smooth non parte) ----
+    document.addEventListener('click', function(e){
+      const a = e.target.closest('a[href="#lista-articoli"]');
+      if(!a) return;
+      const target = document.getElementById('lista-articoli');
+      if(!target) return;
+      e.preventDefault();
+      try{ target.scrollIntoView({ behavior:'smooth', block:'start' }); }
+      catch(_){ location.hash = '#lista-articoli'; }
+    });
   })();
   </script>
 </body>
