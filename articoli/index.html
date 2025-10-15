@@ -3652,8 +3652,49 @@ html {
   }
 }
 </style>
+
+<style id="anchor-scroll-css">
+  html { scroll-behavior: smooth; }
+  #lista-articoli { scroll-margin-top: 110px; }
+  @media (max-width: 768px){
+    #lista-articoli { scroll-margin-top: 130px; }
+  }
+</style>
+
+
+<style id="cta-visibility-css">
+  .cta-buttons{ display:flex; gap:.6rem; flex-wrap:wrap; justify-content:center; margin:1rem 0 0; transition: opacity .25s ease, transform .25s ease; }
+  .cta-buttons.is-hidden{ opacity:0; transform: translateY(-6px); pointer-events:none; }
+  .cta-btn{ display:inline-flex; align-items:center; gap:.4rem; padding:.55rem .85rem; border-radius:.6rem; border:1px solid rgba(255,215,0,.22); background: rgba(20,20,40,.78); font-weight:700; }
+  .cta-btn.primary{ color:#ffdf8a; }
+  .cta-btn.secondary{ color:#9ad0ff; border-color: rgba(0,204,255,.35); }
+</style>
+
+
+<style id="back-to-top-css">
+  #to-top{
+    position: fixed; right: 1.1rem; bottom: 1.1rem; z-index: 2147483604;
+    width: 46px; height: 46px; border-radius: 999px;
+    display: grid; place-items: center;
+    background: rgba(20,20,40,.85);
+    border: 1px solid rgba(255,215,0,.28);
+    color: #ffdf8a; font-weight: 900; font-size: 1.15rem;
+    box-shadow: 0 .9rem 1.8rem rgba(0,0,0,.34);
+    text-decoration: none;
+    opacity: 0; transform: translateY(8px);
+    transition: opacity .25s ease, transform .25s ease, box-shadow .2s ease;
+  }
+  #to-top:hover{ box-shadow: 0 0 .85rem rgba(255,215,0,.45); }
+  #to-top.show{ opacity: 1; transform: translateY(0); }
+  @media (max-width: 680px){
+    #to-top{ right: .8rem; bottom: .8rem; width: 42px; height: 42px; font-size: 1.05rem; }
+  }
+</style>
+
 </head>
 <body>
+<div id="top-anchor" aria-hidden="true"></div>
+
 <!-- UI PATCH BLOCKS -->
 <div aria-label="Galleria autori" class="slider-vertical">
 <div class="slider-inner" id="sliderInner">
@@ -3853,7 +3894,7 @@ html {
 <aside aria-label="Ultimi articoli" class="articles-blob">
 <h3>📰 Ultimi articoli</h3>
 <ul>
-<li><a href="../articoli/circolo_di_vienna.html">Circolo di Vienna</a></li>
+<li><a href="#lista-articoli">Circolo di Vienna</a></li>
 <li><a href="../articoli/ipazia.html">Ipazia di Alessandria</a></li>
 <li><a href="../articoli/platone_mito_caverna.html">Il Mito della Caverna di Platone</a></li>
 <li><a href="../articoli/parmenide1.html">Parmenide di Elea</a></li>
@@ -4482,13 +4523,9 @@ html {
   <div class="cta-card">
     <h3>🎯 Ti è piaciuto questo viaggio nella filosofia?</h3>
     <p>Approfondisci con i nostri articoli specializzati e risorse esclusive</p>
-    <div class="cta-buttons">
-  <a href="https://casi0048.github.io/articoli/" class="cta-btn primary">
-    📖 Esplora Articoli Completi
-  </a>
-  <a href="#" class="cta-btn secondary" onclick="showNewsletterModal(); return false;">
-    📧 Ricevi Contenuti Esclusivi
-  </a>
+    <div class="cta-buttons" id="cta-top">
+  <a href="#lista-articoli" class="cta-btn primary">📖 Vai alla griglia</a>
+  <a href="../cerca.html" class="cta-btn secondary">🔎 Cerca nel sito</a>
 </div>
     <p class="cta-note"><small>Unisciti a 2.300+ appassionati di filosofia</small></p>
   </div>
@@ -6215,5 +6252,76 @@ document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') closeNewsletterModal();
 });
 </script>
+
+<script id="anchor-flash-js">
+document.addEventListener('click', function(e){
+  const a = e.target.closest('a[href="#lista-articoli"]');
+  if(!a) return;
+  const grid = document.getElementById('lista-articoli');
+  if(!grid) return;
+  setTimeout(function(){
+    grid.classList.add('flash');
+    setTimeout(function(){ grid.classList.remove('flash'); }, 1500);
+  }, 450);
+});
+</script>
+<style id="anchor-flash-css">
+#lista-articoli.flash { animation: glowAnchor 1.4s ease; }
+@keyframes glowAnchor {
+  0% { box-shadow: 0 0 0 rgba(255,215,0,0); }
+  30% { box-shadow: 0 0 0.9rem rgba(255,215,0,.35); }
+  100% { box-shadow: 0 0 0 rgba(255,215,0,0); }
+}
+</style>
+
+
+<script id="cta-visibility-js">
+(function(){
+  const cta = document.getElementById('cta-top');
+  const grid = document.getElementById('lista-articoli');
+  if(!cta || !grid) return;
+
+  // Start visible near the top
+  function setHidden(hidden){
+    cta.classList.toggle('is-hidden', hidden);
+  }
+
+  // Hide when grid enters the viewport; show when out
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(entry => {
+      // if grid is on screen (even partially), hide the top CTA
+      setHidden(entry.isIntersecting);
+    });
+  }, { root: null, threshold: 0.1 });
+
+  io.observe(grid);
+
+  // Also guard with a scroll threshold (for very small screens)
+  window.addEventListener('scroll', ()=>{
+    if(window.scrollY < 120) { setHidden(false); }
+  }, { passive: true });
+})();
+</script>
+
+
+<a id="to-top" href="#top-anchor" aria-label="Torna su" title="Torna su">↑</a>
+
+
+<script id="back-to-top-js">
+(function(){
+  var btn = document.getElementById('to-top');
+  if(!btn) return;
+  var showAt = 320; // px di scroll per mostrare il bottone
+
+  function onScroll(){
+    if(window.scrollY > showAt){ btn.classList.add('show'); }
+    else { btn.classList.remove('show'); }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  // inizializza stato
+  onScroll();
+})();
+</script>
+
 </body>
 </html>
