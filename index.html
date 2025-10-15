@@ -3651,6 +3651,11 @@ html {
     animation: none;
   }
 }
+#lista-articoli { scroll-margin-top: 120px; }
+@media (max-width: 768px){
+  #lista-articoli { scroll-margin-top: 140px; }
+}
+
 </style>
 </head>
 <body>
@@ -4486,9 +4491,10 @@ html {
 
     <div class="cta-buttons">
       <!-- porta alla griglia completa nella HOME -->
-      <a href="/#lista-articoli" class="cta-btn primary" aria-label="Vai alla griglia completa degli articoli">
-        📖 Esplora Articoli Completi
-      </a>
+     <a href="#lista-articoli" class="cta-btn primary" aria-label="Vai alla griglia completa degli articoli">
+  📖 Esplora Articoli Completi
+</a>
+
 
       <a href="#" class="cta-btn secondary" onclick="showNewsletterModal(); return false;" aria-label="Iscriviti per ricevere contenuti esclusivi">
         📧 Ricevi Contenuti Esclusivi
@@ -4496,6 +4502,16 @@ html {
     </div>
 
     <p class="cta-note"><small>Unisciti a 2.300+ appassionati di filosofia</small></p>
+  </div>
+</section>
+
+<!-- ANCORAGGIO GRIGLIA: il pulsante #lista-articoli atterra qui -->
+<section class="wrap" id="lista-articoli" style="padding:1.2rem 1rem 0;">
+  <!-- Se hai già una griglia/carte più giù: lascia pure vuoto, serve solo l'ancora -->
+  <!-- In alternativa, puoi mettere qui le card articoli o farle generare via JS -->
+  <div class="grid">
+    <!-- facoltativo: placeholder visivo -->
+    <!-- <article class="card"><h3>Articoli</h3><p>Scorri per esplorare la sezione.</p></article> -->
   </div>
 </section>
 
@@ -6221,5 +6237,17 @@ document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') closeNewsletterModal();
 });
 </script>
+<script>
+document.addEventListener('click', function(e){
+  const link = e.target.closest('a[href="#lista-articoli"]');
+  if(!link) return;
+  const target = document.getElementById('lista-articoli');
+  if(!target) return;
+  e.preventDefault();
+  try{ target.scrollIntoView({ behavior:'smooth', block:'start' }); }
+  catch(_){ location.hash = '#lista-articoli'; }
+});
+</script>
+
 </body>
 </html>
