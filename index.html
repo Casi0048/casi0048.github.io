@@ -3,11 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Verifica — Ricerca | Echi di Sofia</title>
-  <meta name="description" content="Pagina di verifica con ricerca interna per Echi di Sofia">
+  <title>Echi di Sofia — Incipit</title>
+  <meta name="description" content="Echi di Sofia — Portale di filosofia: scuole, autori e temi.">
   <link rel="icon" type="image/png" href="favicon_io/favicon-32x32.png">
 
-  <!-- Stili base (look & feel Echi di Sofia) -->
   <style>
     :root{
       --bg:#0a0a1a; --text:#e9eef5; --gold:#ffd86a; --cyan:#9ad0ff;
@@ -22,6 +21,7 @@
     }
     a{ color:var(--cyan); text-decoration:none; }
     a:hover{ color:#fff; text-decoration:underline; }
+    .wrap{ width:min(1200px,94vw); margin:0 auto; }
 
     /* Topbar */
     header.topbar{
@@ -30,61 +30,101 @@
       border-bottom:1px solid var(--border);
       backdrop-filter: blur(8px);
     }
-    .wrap{ width:min(1100px, 94vw); margin:0 auto; }
     .row{ display:flex; align-items:center; gap:.75rem; padding:.8rem 1rem; }
-    .brand{ display:flex; align-items:center; gap:.5rem; color:var(--gold); font-weight:800; }
-    .brand img{ width:32px; height:32px; filter:drop-shadow(0 0 .5rem rgba(255,215,0,.35)); }
+    .brand{ display:flex; align-items:center; gap:.6rem; color:var(--gold); font-weight:800; }
+    .brand img{ width:34px; height:34px; filter:drop-shadow(0 0 .5rem rgba(255,215,0,.35)); }
     .brand span{
       background:linear-gradient(90deg,#ffd700,#fff7b0,#ffd700);
       -webkit-background-clip:text; background-clip:text; color:transparent; letter-spacing:.04em;
     }
     .spacer{ flex:1; }
-    .nav a{ font-weight:700; color:var(--cyan); }
+    .nav{ display:flex; gap:.5rem; flex-wrap:wrap; }
+    .nav a{ font-weight:700; color:var(--cyan); border:1px solid rgba(0,204,255,.35); padding:.45rem .7rem; border-radius:.6rem; }
     .nav a:hover{ color:#fff; }
 
-    /* Search area */
-    .search-area{ padding:1rem 1rem .2rem; }
-    .searchbar{
-      position:relative; display:flex; align-items:center; gap:.5rem;
-      background:var(--panel); border:1px solid rgba(255,255,255,.12);
-      border-radius:14px; padding:.6rem .75rem;
-      box-shadow: 0 .8rem 1.6rem rgba(0,0,0,.35) inset;
+    /* Hero */
+    .hero{ padding:2.2rem 1rem 1.4rem; text-align:center; border-bottom:1px solid rgba(255,255,255,.06); }
+    .hero h1{
+      font-size: clamp(1.9rem, 4vw, 3rem);
+      background:linear-gradient(90deg,#00f6ff,#00b7ff,#00a0ff,#00f6ff);
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+      filter: drop-shadow(0 0 1rem rgba(0,200,255,.55));
+      margin:0 0 .35rem;
     }
-    .searchbar input{
-      flex:1; background:transparent; border:0; outline:0; color:var(--text); font-size:1rem;
-      padding:.35rem .5rem;
-    }
-    .searchbar .icon{ opacity:.7; }
+    .hero p{ color:#cfe8ff; opacity:.95; max-width:68ch; margin:0 auto; }
 
-    .hint{ opacity:.8; font-size:.92rem; padding:.5rem .2rem 0; }
-
-    main{ flex:1; }
-    .results{ display:grid; gap:.9rem; padding:1rem; }
+    /* Quick links / sections */
+    .sections{ padding:1.2rem 1rem 0; }
+    .grid{ display:grid; gap:1rem; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); }
     .card{
       background:var(--panel); border:1px solid var(--border); border-radius:14px;
-      padding:1rem; box-shadow: 0 .8rem 2rem rgba(0,0,0,.35);
+      padding:1rem; display:flex; flex-direction:column; gap:.55rem;
+      box-shadow:0 1.2rem 2.2rem rgba(0,0,0,.25);
     }
-    .card a.title{ color:var(--gold); font-weight:800; text-decoration:none; font-size:1.08rem; }
-    .card a.title:hover{ color:#fff; text-decoration:underline; }
-    .url{ font-size:.85rem; color:#9bb7ff; opacity:.9; margin:.2rem 0 .4rem; word-break:break-all; }
-    .desc{ color:#cfe2ff; opacity:.95; line-height:1.35; }
+    .tag{ display:inline-block; font-size:.78rem; padding:.12rem .5rem; border-radius:999px;
+      color:#0b1022; background:linear-gradient(90deg,#ffd86a,#ffeb9a); font-weight:800; }
+    .card h3{ color:#ffeb9a; margin:.2rem 0 0; }
+    .card p{ color:#cfe2ff; opacity:.95; line-height:1.35; }
+    .more{ margin-top:auto; }
+    .more a{ font-weight:800; }
 
     /* CTA */
-    .cta{ display:flex; gap:.6rem; flex-wrap:wrap; justify-content:center; padding:0 1rem 1rem; }
+    .cta{ padding:1.2rem 1rem 2rem; display:flex; gap:.6rem; flex-wrap:wrap; justify-content:center; }
     .btn{ display:inline-flex; align-items:center; gap:.4rem; padding:.55rem .85rem; border-radius:.6rem;
       border:1px solid var(--border); background:rgba(20,20,40,.78); font-weight:700; color:#ffdf8a; }
     .btn.secondary{ color:#9ad0ff; border-color: rgba(0,204,255,.35); }
 
-    mark{
-      background:linear-gradient(90deg, rgba(255,216,106,.35), rgba(154,208,255,.35));
-      border-radius:.25rem; padding:.05rem .15rem;
+    /* Footer */
+    footer{ margin-top:auto; padding:1rem; text-align:center; color:#9ec3ff; border-top:1px solid rgba(255,255,255,.06); }
+
+    /* Search overlay */
+    .search-overlay{
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(0,0,0,.55); backdrop-filter: blur(6px);
+      display: none;
     }
-    footer{ margin-top:auto; padding:1rem; text-align:center; color:#9ec3ff;
-      border-top:1px solid rgba(255,255,255,.06); }
+    .search-overlay.is-open{ display:block; }
+    .search-panel{
+      position: absolute; left: 50%; top: 8%;
+      transform: translateX(-50%);
+      width: min(900px, 92vw);
+      background: rgba(10,10,30,.96);
+      border: 1px solid rgba(255,215,0,.22);
+      border-radius: 14px;
+      box-shadow: 0 1.4rem 2.4rem rgba(0,0,0,.45);
+      color: #e9eef5;
+    }
+    .search-header{
+      display:flex; align-items:center; gap:.6rem; padding:.9rem 1rem;
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .search-header input{
+      flex:1; background: rgba(20,20,40,.85); color:#e9eef5;
+      border:1px solid rgba(255,255,255,.14); border-radius: 10px;
+      padding:.7rem .9rem; font-size:1rem; outline:none;
+    }
+    .search-close{
+      appearance:none; border:1px solid rgba(255,255,0,.18);
+      background: rgba(20,20,40,.85); color:#ffdf8a; font-weight:800;
+      border-radius:10px; padding:.55rem .75rem; cursor:pointer;
+    }
+    .search-hint{ padding:.4rem 1rem .7rem; opacity:.85; font-size:.92rem; }
+    .search-results{ padding: .8rem 1rem 1rem; display:grid; gap:.75rem; max-height: 60vh; overflow:auto; }
+    .search-card{
+      background: rgba(15,15,35,.92);
+      border:1px solid rgba(255,215,0,.16);
+      border-radius: 12px; padding: .9rem;
+    }
+    .search-card .title{ color:#ffdf8a; font-weight:800; text-decoration:none; font-size:1.05rem; }
+    .search-card .title:hover{ color:#fff; text-decoration:underline; }
+    .search-card .url{ font-size:.85rem; color:#9bb7ff; opacity:.9; margin:.25rem 0 .35rem; word-break: break-all; }
+    .search-card .desc{ color:#cfe2ff; opacity:.95; line-height:1.35; }
+    mark{ background:linear-gradient(90deg, rgba(255,216,106,.35), rgba(154,208,255,.35)); border-radius:.25rem; padding:.05rem .15rem; }
   </style>
 </head>
 <body>
 
+  <!-- TOPBAR -->
   <header class="topbar">
     <div class="wrap row">
       <a class="brand" href="index.html">
@@ -93,33 +133,77 @@
       </a>
       <div class="spacer"></div>
       <nav class="nav">
-        <a href="index.html">Incipit</a>
+        <a id="open-search" href="#" title="Cerca">🔎 Cerca</a>
+        <a href="articoli/">Articoli</a>
+        <a href="cerca.html">Cerca (pagina)</a>
+        <a href="benvenuto.html">Incipit</a>
       </nav>
-    </div>
-    <div class="wrap search-area">
-      <div class="searchbar">
-        <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <input id="site-search" type="search" placeholder="Cerca nel sito… (es. Platone, Ipazia, Talete)"
-               autocomplete="off" spellcheck="false" aria-label="Cerca nel sito">
-      </div>
-      <div class="hint">Suggerimento: puoi cercare per <em>titolo</em> o parole nella <em>descrizione</em>.</div>
     </div>
   </header>
 
-  <main class="wrap">
+  <!-- HERO -->
+  <section class="hero wrap">
+    <h1>Tra pensiero e stelle</h1>
+    <p>Un percorso tra scuole, autori e temi della filosofia — dalla classicità al contemporaneo.</p>
+  </section>
+
+  <!-- SEZIONI VELOCI -->
+  <main class="wrap sections">
+    <div class="grid" id="sezioni">
+      <article class="card">
+        <span class="tag">Presocratici</span>
+        <h3>Talete: l'arché come acqua</h3>
+        <p>Dalle spiegazioni mitiche alla ricerca di un principio naturale.</p>
+        <div class="more"><a href="talete.html">Leggi →</a></div>
+      </article>
+
+      <article class="card">
+        <span class="tag">Classici</span>
+        <h3>Il Mito della Caverna</h3>
+        <p>Platone e la dialettica tra apparenza e verità.</p>
+        <div class="more"><a href="articoli/platone_mito_caverna.html">Leggi →</a></div>
+      </article>
+
+      <article class="card">
+        <span class="tag">Scienza & Filosofia</span>
+        <h3>Circolo di Vienna</h3>
+        <p>Il programma del neopositivismo logico e l'unità della scienza.</p>
+        <div class="more"><a href="articoli/circolo_di_vienna.html">Leggi →</a></div>
+      </article>
+
+      <article class="card">
+        <span class="tag">Classici</span>
+        <h3>Ipazia di Alessandria</h3>
+        <p>Tra scienza, filosofia e martirio.</p>
+        <div class="more"><a href="articoli/ipazia.html">Leggi →</a></div>
+      </article>
+    </div>
+
     <div class="cta">
       <a class="btn" href="/articoli/#lista-articoli">📖 Vai alla griglia</a>
       <a class="btn secondary" href="articoli/">Apri sezione Articoli</a>
     </div>
-    <section id="results" class="results" role="list" aria-live="polite"></section>
   </main>
 
+  <!-- FOOTER -->
   <footer>© 2025 Echi di Sofia</footer>
 
-  <!-- Config: indice ricerche (root) -->
-  <script id="search-config">
+  <!-- SEARCH OVERLAY -->
+  <div class="search-overlay" id="search-overlay" aria-hidden="true">
+    <div class="search-panel" role="dialog" aria-modal="true" aria-labelledby="search-title">
+      <div class="search-header">
+        <strong id="search-title">Cerca</strong>
+        <input id="site-search" type="search" placeholder="Cerca nel sito… (es. Platone, Ipazia, Talete)"
+               autocomplete="off" spellcheck="false">
+        <button class="search-close" id="close-search" type="button" aria-label="Chiudi">✕</button>
+      </div>
+      <div class="search-hint">Suggerimento: puoi cercare per <em>titolo</em> o parole nella <em>descrizione</em>. Premi <kbd>Esc</kbd> per chiudere.</div>
+      <div id="search-results" class="search-results" role="list" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <!-- Config sorgenti indice (root) -->
+  <script>
     window.SEARCH_INDEX_URLS = [
       '/search-index.json',
       'search-index.json',
@@ -127,25 +211,31 @@
     ];
   </script>
 
-  <!-- Ricerca semplice su JSON [{title,url,desc}] -->
+  <!-- Ricerca overlay -->
   <script>
   (function(){
-    const RESULTS_LIMIT = 60;
-    const $q = document.getElementById('site-search');
-    const $res = document.getElementById('results');
-
     const SOURCES = (window.SEARCH_INDEX_URLS && window.SEARCH_INDEX_URLS.length)
       ? window.SEARCH_INDEX_URLS
       : ['search-index.json','/search-index.json','/assets/search-index.json'];
 
-    function norm(s){
-      return (s || '')
-        .toString()
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g,'')  // rimuove i diacritici (compatibile)
-        .toLowerCase();
-    }
+    const $open  = document.getElementById('open-search');
+    const $overlay = document.getElementById('search-overlay');
+    const $close = document.getElementById('close-search');
+    const $input = document.getElementById('site-search');
+    const $list  = document.getElementById('search-results');
 
+    if(!$overlay || !$input || !$list) return;
+
+    function lockScroll(on){ document.documentElement.style.overflow = on ? 'hidden' : ''; }
+    function openPanel(e){ if(e) e.preventDefault(); $overlay.classList.add('is-open'); $overlay.setAttribute('aria-hidden','false'); lockScroll(true); setTimeout(()=> $input.focus(), 50); }
+    function closePanel(e){ if(e) e.preventDefault(); $overlay.classList.remove('is-open'); $overlay.setAttribute('aria-hidden','true'); lockScroll(false); $input.value=''; $list.innerHTML=''; }
+
+    if($open)  $open.addEventListener('click', openPanel);
+    $close.addEventListener('click', closePanel);
+    document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closePanel(); });
+    $overlay.addEventListener('click', (e)=>{ if(e.target === $overlay) closePanel(); });
+
+    function norm(s){ return (s||'').toString().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase(); }
     function highlight(text, query){
       if(!text) return '';
       try{
@@ -161,20 +251,18 @@
       }catch(_){ return text; }
     }
 
-    function normalize(item){
-      const title = item.title || item.name || item.slug || 'Senza titolo';
-      const url   = (item.url || item.link || '').toString();
-      const desc  = item.desc || item.description || item.excerpt || item.summary || '';
-      return { title, url, desc };
+    function resolveUrl(u){
+      if(!u) return '#';
+      if(u.startsWith('http')) return u;
+      if(u.startsWith('/')) return u;
+      return './' + u.replace(/^\.\//,'');
     }
 
-    function card(it, query){
-      const href = it.url.startsWith('http')
-        ? it.url
-        : (it.url.startsWith('/') ? it.url : './' + it.url.replace(/^\.\//,''));
-      const desc = it.desc && it.desc.trim() ? it.desc : '';
-      return \`<article class="card" role="listitem">
-        <a class="title" href="\${href}">\${highlight(it.title, query)}</a>
+    function card(item, query){
+      const href = resolveUrl(item.url);
+      const desc = item.desc && item.desc.trim() ? item.desc : '';
+      return \`<article class="search-card" role="listitem">
+        <a class="title" href="\${href}">\${highlight(item.title, query)}</a>
         <div class="url">\${href}</div>
         \${desc ? \`<div class="desc">\${highlight(desc, query)}</div>\` : ''}
       </article>\`;
@@ -183,32 +271,23 @@
     function search(items, query){
       const q = norm(query);
       if(!q) return [];
-      return items.filter(it => {
+      return items.filter(it=>{
         const t = norm(it.title);
         const d = norm(it.desc);
         const u = norm(it.url);
         return t.includes(q) || d.includes(q) || u.includes(q);
-      }).slice(0, RESULTS_LIMIT);
+      }).slice(0, 60);
     }
 
     function render(list, query){
       if(!list.length){
-        $res.innerHTML = \`<p style="opacity:.8;padding:0 1rem">Nessun risultato per <strong>\${query}</strong>.</p>\`;
+        $list.innerHTML = \`<p style="opacity:.8">Nessun risultato per <strong>\${query}</strong>.</p>\`;
         return;
       }
-      $res.innerHTML = list.map(it => card(it, query)).join('');
+      $list.innerHTML = list.map(it => card(it, query)).join('');
     }
 
-    function debounce(fn, ms){
-      let t; return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
-    }
-
-    const onInput = debounce(() => {
-      const q = $q.value.trim();
-      if(q.length === 0){ $res.innerHTML = ''; return; }
-      const list = search(INDEX, q);
-      render(list, q);
-    }, 120);
+    function debounce(fn, ms){ let t; return (...a)=>{ clearTimeout(t); t = setTimeout(()=>fn(...a), ms); }; }
 
     let INDEX = [];
     async function loadIndex(){
@@ -223,10 +302,21 @@
       return [];
     }
 
-    // Init
-    $q.addEventListener('input', onInput);
-    $q.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ onInput(); } });
-    loadIndex().then(arr => { INDEX = arr.map(normalize); $q.focus(); });
+    const onInput = debounce(()=>{
+      const q = $input.value.trim();
+      if(!q){ $list.innerHTML = ''; return; }
+      const results = search(INDEX, q);
+      render(results, q);
+    }, 120);
+
+    $input.addEventListener('input', onInput);
+    $input.addEventListener('keydown', e=>{ if(e.key==='Enter') onInput(); });
+
+    loadIndex().then(arr => { INDEX = arr.map(it => ({
+      title: it.title || it.name || it.slug || 'Senza titolo',
+      url:   (it.url || it.link || '').toString(),
+      desc:  it.desc || it.description || it.excerpt || it.summary || ''
+    })); });
   })();
   </script>
 </body>
