@@ -61,21 +61,9 @@
       <a class="nav btn" href="/cerca.html" style="border:1px solid rgba(0,204,255,.35); padding:.55rem .85rem; border-radius:.6rem; color:#9ad0ff; background:rgba(20,20,40,.78); font-weight:700;">🔎 Cerca nel sito</a>
     </div>
 
-    <div class="grid" id="lista-articoli">
-      <!-- Esempi fissi in testa (restano anche con auto-list) -->
-      <article class="card">
-        <span class="tag">Classici</span><h3>Il Mito della Caverna</h3>
-        <p>Platone e la dialettica tra apparenza e verità.</p><div class="more"><a href="/articoli/platone_mito_caverna.html">Leggi →</a></div>
-      </article>
-      <article class="card">
-        <span class="tag">Scienza & Filosofia</span><h3>Circolo di Vienna</h3>
-        <p>Il programma del neopositivismo logico e l'unità della scienza.</p><div class="more"><a href="/articoli/circolo_di_vienna.html">Leggi →</a></div>
-      </article>
-      <article class="card">
-        <span class="tag">Classici</span><h3>Ipazia di Alessandria</h3>
-        <p>Tra scienza, filosofia e martirio.</p><div class="more"><a href="/articoli/ipazia.html">Leggi →</a></div>
-      </article>
-    </div>
+   <div class="grid" id="lista-articoli"></div>
+<p id="conteggio-articoli" style="opacity:.8; text-align:center; margin:.6rem 0 1rem;"></p>
+
   </main>
 
   <footer>© 2025 Echi di Sofia</footer>
@@ -117,5 +105,59 @@
     loadIndex().then(arr=>{ INDEX=arr.map(it=>({ title:it.title||it.name||it.slug||'Senza titolo', url:(it.url||it.link||'').toString(), desc:it.desc||it.description||it.excerpt||it.summary||'' })); });
   })();
   </script>
+  <script>
+(function(){
+  const GRID = document.getElementById('lista-articoli');
+  const COUNTER = document.getElementById('conteggio-articoli');
+  if(!GRID) return;
+
+  const SOURCES = ['/search-index.json','/assets/search-index.json'];
+
+  function href(u){
+    if(!u) return '#';
+    if(u.startsWith('http')) return u;
+    if(u.startsWith('/')) return u;
+    return '/' + u.replace(/^\.\//,'');
+  }
+
+  function card(item){
+    const title = item.title || 'Senza titolo';
+    const desc  = item.desc || item.description || '';
+    const link  = href(item.url || '');
+    return `
+      <article class="card">
+        <h3 style="color:#ffeb9a; margin:.2rem 0 0;">${title}</h3>
+        ${desc ? `<p style="color:#cfe2ff; opacity:.95; line-height:1.35;">${desc}</p>` : ``}
+        <div class="more"><a href="${link}" style="font-weight:800;">Leggi →</a></div>
+      </article>
+    `;
+  }
+
+  (async () => {
+    let data = [];
+    for (const u of SOURCES) {
+      try {
+        const r = await fetch(u, { cache: 'no-store' });
+        if (!r.ok) continue;
+        const j = await r.json();
+        data = Array.isArray(j) ? j : (j.items || j.entries || []);
+        break;
+      } catch (_) {}
+    }
+
+    if (!data.length) {
+      GRID.innerHTML = '<p style="opacity:.8">Nessun articolo trovato.</p>';
+      return;
+    }
+
+    // (opzionale) ordina per titolo; se vuoi mantenere l’ordine del JSON, commenta la riga sotto
+    // data.sort((a,b) => (a.title||'').localeCompare(b.title||''));
+
+    GRID.innerHTML = data.map(card).join('');
+    if (COUNTER) COUNTER.textContent = `Articoli pubblicati: ${data.length}`;
+  })();
+})();
+</script>
+
 </body>
 </html>
