@@ -14,7 +14,7 @@
   </script>
 
   <style>
-    :root{ --bg:#0a0a1a; --text:#e9eef5; --gold:#ffd86a; --cyan:#9ad0ff; --panel:rgba(10,10,30,.94); --border:rgba(255,215,0,.22); }
+    :root{ --bg:#0a0a1a; --text:#e9eef5; --gold:#ffd86a; --cyan:#9ad0ff; --panel:rgba(10,10,30,.94); --border:rgba(255,215,0,.22); --muted:#9bb7ff; }
     *{ box-sizing:border-box; } html{ scroll-behavior:smooth; }
     body{ margin:0; background:var(--bg); color:var(--text); font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif; min-height:100dvh; display:flex; flex-direction:column; }
     a{ color:var(--cyan); text-decoration:none; } a:hover{ color:#fff; text-decoration:underline; }
@@ -50,18 +50,39 @@
     .btn.primary{ color:#ffdf8a; border:1px solid var(--border); }
     .btn.secondary{ color:#9ad0ff; border:1px solid rgba(0,204,255,.35); }
 
-    /* Griglia articoli */
     main{ padding:1rem; }
+
+    /* Barra filtri */
+    .filterbar{
+      display:flex; align-items:center; gap:.6rem; flex-wrap:wrap;
+      padding:.75rem 1rem; margin:.4rem 0 1rem;
+      background:rgba(10,10,30,.9); border:1px solid rgba(255,255,255,.08); border-radius:12px;
+    }
+    .filterbar label{ font-weight:700; color:#ffeb9a; margin-right:.25rem; }
+    .filterbar .meta{ color:var(--muted); opacity:.92; margin-left:auto; font-size:.95rem; }
+    .filter-select{
+      background:rgba(20,20,40,.85); color:#e9eef5; border:1px solid rgba(255,255,255,.14);
+      border-radius:10px; padding:.45rem .6rem; font-size:.95rem; outline:none;
+    }
+    .chips{ display:flex; gap:.4rem; flex-wrap:wrap; }
+    .chip{
+      border:1px solid rgba(0,204,255,.28); color:#9ad0ff; background:rgba(20,20,40,.78);
+      padding:.38rem .6rem; border-radius:999px; font-weight:700; font-size:.9rem; cursor:pointer;
+    }
+    .chip.active{ border-color: rgba(0,204,255,.65); color:#fff; background:rgba(0,204,255,.12); }
+
+    /* Griglia articoli */
     #lista-articoli{ scroll-margin-top: 120px; }
     @media (max-width: 768px){ #lista-articoli{ scroll-margin-top: 140px; } }
     .grid{ display:grid; gap:1rem; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); }
     .card{ background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:1rem; display:flex; flex-direction:column; gap:.55rem; box-shadow:0 1.2rem 2.2rem rgba(0,0,0,.25); }
     .card h3{ color:#ffeb9a; margin:.2rem 0 0; } .card p{ color:#cfe2ff; opacity:.95; line-height:1.35; }
+    .badge{ display:inline-block; font-size:.78rem; padding:.12rem .5rem; border-radius:999px; color:#0b1022; background:linear-gradient(90deg,#ffd86a,#ffeb9a); font-weight:800; }
     .more{ margin-top:auto; } .more a{ font-weight:800; }
 
     footer{ margin-top:auto; padding:1rem; text-align:center; color:#9ec3ff; border-top:1px solid rgba(255,255,255,.06); }
 
-    /* Overlay di ricerca (nascosto finché chiuso) */
+    /* Overlay di ricerca */
     .search-overlay{ position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,.55); backdrop-filter: blur(6px); display: none; }
     .search-overlay.is-open{ display:block; }
     .search-panel{
@@ -80,7 +101,6 @@
     .search-card .url{ font-size:.85rem; color:#9bb7ff; opacity:.9; margin:.25rem 0 .35rem; word-break: break-all; }
     .search-card .desc{ color:#cfe2ff; opacity:.95; line-height:1.35; }
 
-    /* Input compact con lente a sinistra e X nativa a destra (solo nell'overlay) */
     .search-container{ position:relative; display:inline-flex; align-items:center; gap:.4rem; z-index:3001; width:100%; }
     #site-search{ padding-left: 2.6rem; padding-right: 2.6rem; width:100%; }
     .search-container .search-icon{
@@ -122,6 +142,20 @@
     </div>
   </section>
 
+  <!-- FILTRI -->
+  <section class="wrap">
+    <div class="filterbar" role="region" aria-label="Filtra per categoria">
+      <label for="filter-select">Categoria:</label>
+      <select id="filter-select" class="filter-select" aria-label="Seleziona categoria">
+        <option value="">Tutte</option>
+      </select>
+      <div class="chips" id="filter-chips" aria-label="Categorie">
+        <!-- chip generati via JS -->
+      </div>
+      <div class="meta" id="filter-meta">0 risultati</div>
+    </div>
+  </section>
+
   <!-- GRIGLIA COMPLETA -->
   <main class="wrap">
     <h2 style="margin:.8rem 0 1rem; color:#ffeb9a;">Tutti gli articoli</h2>
@@ -148,40 +182,147 @@
     </div>
   </div>
 
-  <!-- SCRIPT: griglia completa + overlay ricerca -->
+  <!-- SCRIPT: griglia + filtro categorie + overlay ricerca -->
   <script>
   (function(){
     const SOURCES = (window.SEARCH_INDEX_URLS && window.SEARCH_INDEX_URLS.length)
       ? window.SEARCH_INDEX_URLS
       : ['/search-index.json','/assets/search-index.json'];
 
-    /* ---------- POPOLA LA GRIGLIA ---------- */
-    const GRID = document.getElementById('lista-articoli');
+    const GRID  = document.getElementById('lista-articoli');
+    const META  = document.getElementById('filter-meta');
+    const SELECT= document.getElementById('filter-select');
+    const CHIPS = document.getElementById('filter-chips');
+
+    let DATA = [];        // tutti gli articoli
+    let TAGS = [];        // elenco categorie
+    let CURRENT = '';     // filtro attivo
 
     function href(u){ if(!u) return '#'; if(u.startsWith('http')) return u; if(u.startsWith('/')) return u; return '/' + u.replace(/^\.\//,''); }
+    function getTag(it){
+      return (it.tag || it.category || it.categoria || it.section || it.type || '').toString().trim();
+    }
+
     function card(it){
       const link = href((it.url||it.link||'').toString());
       const title = it.title || it.name || it.slug || 'Senza titolo';
       const desc  = it.desc || it.description || it.excerpt || it.summary || '';
+      const tag   = getTag(it);
       return `<article class="card">
+                ${tag ? `<span class="badge">${tag}</span>` : ``}
                 <h3>${title}</h3>
                 ${desc ? `<p>${desc}</p>` : ``}
                 <div class="more"><a href="${link}">Leggi →</a></div>
               </article>`;
     }
 
+    function render(list){
+      if(!GRID) return;
+      GRID.innerHTML = list.length ? list.map(card).join('') : '<p style="opacity:.8">Nessun articolo trovato.</p>';
+      META.textContent = `${list.length} risultato${list.length===1?'':'i'}`;
+    }
+
+    function uniqueTags(items){
+      const map = new Map();
+      for(const it of items){
+        const t = getTag(it);
+        if(!t) continue;
+        map.set(t, (map.get(t)||0)+1);
+      }
+      return Array.from(map.entries()) // [tag, count]
+                  .sort((a,b)=> a[0].localeCompare(b[0]));
+    }
+
+    function buildFilters(){
+      // Select
+      SELECT.innerHTML = `<option value="">Tutte</option>` + 
+        TAGS.map(([t,c])=> `<option value="${encodeURIComponent(t)}"${t===CURRENT?' selected':''}>${t} (${c})</option>`).join('');
+
+      // Chips
+      CHIPS.innerHTML = [
+        `<button class="chip${!CURRENT?' active':''}" data-cat="">Tutte (${DATA.length})</button>`,
+        ...TAGS.map(([t,c])=> `<button class="chip${CURRENT===t?' active':''}" data-cat="${encodeURIComponent(t)}">${t} (${c})</button>`)
+      ].join('');
+
+      // Click chips
+      CHIPS.querySelectorAll('.chip').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          const val = decodeURIComponent(btn.getAttribute('data-cat')||'');
+          setFilter(val, {push:true});
+        });
+      });
+    }
+
+    function filtered(){
+      if(!CURRENT) return DATA;
+      const key = CURRENT.toLowerCase();
+      return DATA.filter(it => getTag(it).toLowerCase() === key);
+    }
+
+    function setFilter(val, {push=false}={}){
+      CURRENT = val || '';
+      // Aggiorna UI select/chips
+      if(SELECT){
+        const enc = encodeURIComponent(CURRENT);
+        Array.from(SELECT.options).forEach(o => { o.selected = (o.value === enc) || (!enc && !o.value); });
+      }
+      CHIPS.querySelectorAll('.chip').forEach(btn=>{
+        const enc = btn.getAttribute('data-cat')||'';
+        btn.classList.toggle('active', enc === encodeURIComponent(CURRENT));
+      });
+      // Aggiorna URL (?cat=…) e àncora
+      const url = new URL(window.location.href);
+      if(CURRENT) url.searchParams.set('cat', CURRENT); else url.searchParams.delete('cat');
+      if(push) history.pushState({cat:CURRENT}, '', url.toString());
+      // Render
+      render( filtered() );
+      // Porta alla griglia
+      const target = document.getElementById('lista-articoli');
+      if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+
+    // Select change
+    if(SELECT){
+      SELECT.addEventListener('change', (e)=>{
+        const val = decodeURIComponent(e.target.value||'');
+        setFilter(val, {push:true});
+      });
+    }
+
+    // Carica indice e avvia
     (async () => {
-      let data = [];
+      let arr = [];
       for(const u of SOURCES){
         try{
           const r = await fetch(u, { cache: 'no-store' });
           if(!r.ok) continue;
           const j = await r.json();
-          data = Array.isArray(j) ? j : (j.items || j.entries || []);
+          arr = Array.isArray(j) ? j : (j.items || j.entries || []);
           break;
         }catch(_){}
       }
-      GRID.innerHTML = data.length ? data.map(card).join('') : '<p style="opacity:.8">Nessun articolo trovato.</p>';
+      DATA = arr.map(it => ({
+        title: it.title || it.name || it.slug || 'Senza titolo',
+        url: (it.url || it.link || '').toString(),
+        desc: it.desc || it.description || it.excerpt || it.summary || '',
+        tag:  (it.tag || it.category || it.categoria || it.section || it.type || '').toString().trim()
+      }));
+
+      // Tags unici (con conteggi)
+      TAGS = uniqueTags(DATA);
+
+      // Costruisci UI filtri
+      buildFilters();
+
+      // Filtro da URL (?cat=...)
+      const url = new URL(window.location.href);
+      const fromURL = url.searchParams.get('cat');
+      if(fromURL){
+        CURRENT = fromURL;
+      }
+
+      // Render iniziale
+      render( filtered() );
     })();
 
     /* ---------- OVERLAY DI RICERCA ---------- */
@@ -205,7 +346,7 @@
     document.addEventListener('keydown',(e)=>{ if(e.key==='Escape') closePanel(); });
     if($overlay) $overlay.addEventListener('click',(e)=>{ if(e.target===$overlay) closePanel(); });
 
-    /* ricerca */
+    // ricerca (usa lo stesso indice DATA già caricato)
     function norm(s){ return (s||'').toString().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase(); }
     function highlight(text, query){
       if(!text) return '';
@@ -225,52 +366,52 @@
     function search(items, query){
       const q=norm(query); if(!q) return [];
       return items.filter(it=>{
-        const t=norm(it.title||''), d=norm(it.desc||it.description||''), u=norm(it.url||'');
+        const t=norm(it.title||''), d=norm(it.desc||''), u=norm(it.url||'');
         return t.includes(q)||d.includes(q)||u.includes(q);
       }).slice(0,60);
     }
     function cardSearch(it,query){
-      const href=resolveUrl(it.url||''); const title=it.title||'Senza titolo'; const desc=it.desc||it.description||'';
+      const href=resolveUrl(it.url||''); const title=it.title||'Senza titolo'; const desc=it.desc||'';
       return `<article class="search-card" role="listitem">
                 <a class="title" href="${href}">${query?highlight(title,query):title}</a>
                 <div class="url">${href}</div>
                 ${desc?`<div class="desc">${query?highlight(desc,query):desc}</div>`:''}
               </article>`;
     }
-    function render(list,query){
+    function renderSearch(list,query){
       if(!$list) return;
       if(!list.length){ $list.innerHTML=`<p style="opacity:.8">Nessun risultato per <strong>${query}</strong>.</p>`; return; }
       $list.innerHTML=list.map(it=>cardSearch(it,query)).join('');
     }
     function debounce(fn,ms){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a),ms); }; }
 
-    let INDEX=[];
-    (async function loadIndex(){
-      for(const u of SOURCES){
-        try{
-          const r=await fetch(u,{cache:'no-store'});
-          if(!r.ok) continue;
-          const data=await r.json();
-          INDEX=(Array.isArray(data)?data:(data.items||data.entries||[])).map(it=>({
-            title: it.title||it.name||it.slug||'Senza titolo',
-            url: (it.url||it.link||'').toString(),
-            desc: it.desc||it.description||it.excerpt||it.summary||''
-          }));
-          return;
-        }catch(_){}
-      }
-      INDEX=[];
-    })();
-
     if($input){
       const onInput = debounce(()=>{
         const q = $input.value.trim();
         if(!q){ $list.innerHTML=''; return; }
-        render(search(INDEX,q), q);
+        renderSearch(search(DATA, q), q);
       },120);
       $input.addEventListener('input', onInput);
       $input.addEventListener('keydown', (e)=>{ if(e.key==='Enter') onInput(); });
     }
+
+    // Gestione back/forward del browser (sincronizza filtro)
+    window.addEventListener('popstate', ()=>{
+      const url = new URL(window.location.href);
+      const newCat = url.searchParams.get('cat') || '';
+      if(newCat !== CURRENT){
+        CURRENT = newCat;
+        // aggiorna select + chips e render
+        const enc = encodeURIComponent(CURRENT);
+        if(SELECT){
+          Array.from(SELECT.options).forEach(o => { o.selected = (o.value === enc) || (!enc && !o.value); });
+        }
+        CHIPS.querySelectorAll('.chip').forEach(btn=>{
+          btn.classList.toggle('active', btn.getAttribute('data-cat')===enc);
+        });
+        render( filtered() );
+      }
+    });
   })();
   </script>
 </body>
