@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="it">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cerca — Echi di Sofia</title>
 <link rel="icon" type="image/png" href="/favicon_io/favicon-32x32.png">
 <style>
@@ -13,7 +15,10 @@ header{ position:sticky; top:0; z-index:10; background:rgba(10,10,30,.96); borde
 .brand span{ background:linear-gradient(90deg,#ffd700,#fff7b0,#ffd700); -webkit-background-clip:text; background-clip:text; color:transparent; letter-spacing:.04em; }
 .spacer{ flex:1 } .home{ color:var(--cyan); text-decoration:none; font-weight:700; } .home:hover{ color:#fff; text-decoration:underline; }
 .searchbar{ display:flex; align-items:center; gap:.5rem; padding:1rem 1rem .8rem; }
+
+/* input base */
 .searchbar input{ width:100%; padding:.85rem 1rem; border-radius:12px; border:1px solid rgba(255,255,255,.12); background:var(--panel); color:var(--text); font-size:1rem; outline:none; box-shadow: 0 .8rem 1.4rem rgba(0,0,0,.3) inset; }
+
 .hint{ opacity:.8; font-size:.9rem; }
 .results{ display:grid; gap:.8rem; margin-top:1rem; }
 .card{ background:var(--panel); border:1px solid rgba(255,215,0,.18); border-radius:14px; padding:1rem; box-shadow:0 .8rem 2rem rgba(0,0,0,.35); }
@@ -21,44 +26,146 @@ header{ position:sticky; top:0; z-index:10; background:rgba(10,10,30,.96); borde
 .url{ font-size:.85rem; color:#9bb7ff; opacity:.9; margin:.2rem 0 .4rem; word-break:break-all; } .desc{ color:#cfe2ff; opacity:.95; line-height:1.35; }
 mark{ background:linear-gradient(90deg, rgba(255,216,106,.35), rgba(154,208,255,.35)); border-radius:.25rem; padding:.05rem .15rem; }
 footer{ margin-top:2rem; padding:1rem; text-align:center; color:#9ec3ff; border-top:1px solid rgba(255,255,255,.06); }
-  /* spazio per la X a destra */
-#site-search {
-  padding-right: 2.6rem;
+
+/* ===== Cerchietto dorato dietro la X nativa ===== */
+.input-wrap{ position: relative; width: 100%; }
+
+/* più spazio a destra per X + cerchietto */
+#q{ padding-right: 3rem; position: relative; z-index:1; }
+
+/* cerchietto oro (decorativo) allineato alla X */
+.input-wrap::after{
+  content: "";
+  position: absolute;
+  right: .55rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 999px;
+  background: radial-gradient(circle at 30% 30%, #fff6cc 0%, #ffe79a 35%, #ffd86a 70%, #caa542 100%);
+  box-shadow: 0 0 .45rem rgba(255, 216, 106, .65), inset 0 .06rem .12rem rgba(0,0,0,.25);
+  pointer-events: none; /* i click passano alla X nativa */
+  z-index: 2;
 }
 
-/* usa la X nativa ma “dorata” con un filtro (Chrome/Edge/Safari) */
-#site-search::-webkit-search-cancel-button{
-  -webkit-appearance: searchfield-cancel-button; /* resta cliccabile */
-  filter: sepia(1) saturate(6) hue-rotate(345deg) brightness(1.1) contrast(1.05);
-  opacity: 1; /* visibile su sfondo scuro */
+/* X nativa visibile e chiara sopra al cerchietto (Chrome/Edge/Safari) */
+#q::-webkit-search-cancel-button{
+  -webkit-appearance: searchfield-cancel-button;
+  filter: brightness(0) invert(1) contrast(1.1);
+  opacity: 1;
 }
-
-</style></head>
+</style>
+</head>
 <body>
-<header><div class="top wrap"><a class="brand" href="/index.html"><img src="/logo-filosofia.svg" alt="Echi di Sofia"><span>Echi di Sofia</span></a><div class="spacer"></div><a class="home" href="/index.html">Torna a 🏠Incipit</a></div>
-<div class="searchbar wrap"><input id="q" type="search" placeholder="Cerca autori, scuole, concetti… (es. Epitteto, Presocratici, Mito)" autocomplete="off" spellcheck="false" aria-label="Cerca nel sito"></div>
-<div class="hint wrap">Suggerimento: puoi cercare anche per <em>titolo</em> o parole contenute nella <em>descrizione</em>.</div></header>
-<main class="wrap"><div id="results" class="results" role="list"></div></main><footer>© 2025 Echi di Sofia</footer>
+<header>
+  <div class="top wrap">
+    <a class="brand" href="/index.html"><img src="/logo-filosofia.svg" alt="Echi di Sofia"><span>Echi di Sofia</span></a>
+    <div class="spacer"></div>
+    <a class="home" href="/index.html">🏠 Torna all'Incipit</a>
+  </div>
+
+  <!-- INPUT con wrapper per il cerchietto -->
+  <div class="searchbar wrap">
+    <div class="input-wrap">
+      <input id="q" type="search" placeholder="Cerca autori, scuole, concetti… (es. Epitteto, Presocratici, Mito)" autocomplete="off" spellcheck="false" aria-label="Cerca nel sito">
+    </div>
+  </div>
+
+  <div class="hint wrap">Suggerimento: puoi cercare anche per <em>titolo</em> o parole contenute nella <em>descrizione</em>.</div>
+</header>
+
+<main class="wrap">
+  <div id="results" class="results" role="list"></div>
+</main>
+
+<footer>© 2025 Echi di Sofia</footer>
+
 <script>
 (function(){
-  const SOURCES=['/search-index.json','/assets/search-index.json'];
-  const RESULTS_LIMIT=60; const $q=document.getElementById('q'); const $res=document.getElementById('results');
+  // usa la config globale con cache-buster (se presente), altrimenti fallback
+  const SOURCES = (window.SEARCH_INDEX_URLS && window.SEARCH_INDEX_URLS.length)
+    ? window.SEARCH_INDEX_URLS
+    : ['/search-index.json','/assets/search-index.json'];
+
+  const RESULTS_LIMIT=60;
+  const $q=document.getElementById('q');
+  const $res=document.getElementById('results');
+
   function norm(s){ return (s||'').toString().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase(); }
-  function highlight(text,query){ if(!text) return ''; try{ const toks=norm(query).split(/\s+/).filter(Boolean); if(!toks.length) return text; let out=text; for(const t of toks){ if(t.length<2) continue; const re=new RegExp('('+t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'); out=out.replace(re,'<mark>$1</mark>'); } return out; }catch(_){ return text; } }
-  function normalize(item){ const title=item.title||item.name||item.slug||'Senza titolo'; const url=(item.url||item.link||'').toString(); const desc=item.desc||item.description||item.excerpt||item.summary||''; return {title,url,desc}; }
+  function highlight(text,query){
+    if(!text) return '';
+    try{
+      const toks=norm(query).split(/\s+/).filter(Boolean);
+      if(!toks.length) return text;
+      let out=text;
+      for(const t of toks){
+        if(t.length<2) continue;
+        const re=new RegExp('('+t.replace(/[.*+?^${}()|[\\]\\\\]/g,'\\$&')+')','gi');
+        out=out.replace(re,'<mark>$1</mark>');
+      }
+      return out;
+    }catch(_){ return text; }
+  }
+  function normalize(item){
+    const title=item.title||item.name||item.slug||'Senza titolo';
+    const url=(item.url||item.link||'').toString();
+    const desc=item.desc||item.description||item.excerpt||item.summary||'';
+    return {title,url,desc};
+  }
   function href(u){ if(!u) return '#'; if(u.startsWith('http')) return u; if(u.startsWith('/')) return u; return '/'+u.replace(/^\.\//,''); }
-  function card(it,query){ const link=href(it.url); const desc=it.desc&&it.desc.trim()?it.desc:''; return `<article class="card" role="listitem"><a class="title" href="${link}">${highlight(it.title,query)}</a><div class="url">${link}</div>${desc?`<div class="desc">${highlight(desc,query)}</div>`:''}</article>`; }
-  function search(items,query){ const q=norm(query); if(!q) return []; return items.filter(it=>{ const t=norm(it.title),d=norm(it.desc),u=norm(it.url); return t.includes(q)||d.includes(q)||u.includes(q); }).slice(0,RESULTS_LIMIT); }
-  function render(list,query){ if(!list.length){ $res.innerHTML=`<p style="opacity:.8">Nessun risultato per <strong>${query}</strong>.</p>`; return; } $res.innerHTML=list.map(it=>card(it,query)).join(''); }
+  function card(it,query){
+    const link=href(it.url);
+    const desc=it.desc&&it.desc.trim()?it.desc:'';
+    return `<article class="card" role="listitem">
+      <a class="title" href="${link}">${highlight(it.title,query)}</a>
+      <div class="url">${link}</div>
+      ${desc?`<div class="desc">${highlight(desc,query)}</div>`:''}
+    </article>`;
+  }
+  function search(items,query){
+    const q=norm(query); if(!q) return [];
+    return items.filter(it=>{
+      const t=norm(it.title), d=norm(it.desc), u=norm(it.url);
+      return t.includes(q)||d.includes(q)||u.includes(q);
+    }).slice(0,RESULTS_LIMIT);
+  }
+  function render(list,query){
+    if(!list.length){ $res.innerHTML=`<p style="opacity:.8">Nessun risultato per <strong>${query}</strong>.</p>`; return; }
+    $res.innerHTML=list.map(it=>card(it,query)).join('');
+  }
   function debounce(fn,ms){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a),ms); }; }
-  let INDEX=[]; async function loadIndex(){ for(const u of SOURCES){ try{ const r=await fetch(u,{cache:'no-store'}); if(!r.ok) continue; const data=await r.json(); return Array.isArray(data)?data:(data.items||data.entries||[]); }catch(_){ } } return []; }
-  const onInput=debounce(()=>{ const q=$q.value.trim(); if(!q){ $res.innerHTML=''; return; } const list=search(INDEX,q); render(list,q); },120);
-  $q.addEventListener('input',onInput); $q.addEventListener('keydown',(e)=>{ if(e.key==='Enter') onInput(); });
+
+  let INDEX=[];
+  async function loadIndex(){
+    for(const u of SOURCES){
+      try{
+        const r=await fetch(u,{cache:'no-store'});
+        if(!r.ok) continue;
+        const data=await r.json();
+        return Array.isArray(data)?data:(data.items||data.entries||[]);
+      }catch(_){}
+    }
+    return [];
+  }
+
+  const onInput=debounce(()=>{
+    const q=$q.value.trim();
+    if(!q){ $res.innerHTML=''; return; }
+    const list=search(INDEX,q);
+    render(list,q);
+  },120);
+
+  $q.addEventListener('input',onInput);
+  $q.addEventListener('keydown',(e)=>{ if(e.key==='Enter') onInput(); });
+
   loadIndex().then(arr=>{ INDEX=arr.map(normalize); $q.focus(); });
 })();
 </script>
- <script>
+
+<!-- Config unica per l'indice (cache-buster). Assicurati che coincida con le altre pagine -->
+<script>
   window.SEARCH_INDEX_URLS = ['/search-index.json?v=20251016','/assets/search-index.json?v=20251016'];
 </script>
-
-</body></html>
+</body>
+</html>
