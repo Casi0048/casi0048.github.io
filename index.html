@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <!-- DOM ready helper -->
   <script id="fast-dom-ready">document.addEventListener('DOMContentLoaded',()=>document.body.classList.add('dom-ready'));</script>
-
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -12,163 +10,86 @@
   <meta name="robots" content="index,follow,max-image-preview:large">
   <meta name="theme-color" content="#0a0a1a">
 
-  <!-- Canonical (dominio personalizzato) -->
   <link rel="canonical" href="https://www.echidisofia.org/">
 
-  <!-- Open Graph -->
+  <!-- Open Graph / Twitter -->
   <meta property="og:title" content="Echi di Sofia — Filosofia antica, moderna e contemporanea">
   <meta property="og:description" content="Esplora autori, correnti e timeline interattive.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://www.echidisofia.org/">
   <meta property="og:image" content="https://www.echidisofia.org/immagini/logo-filosofia.jpg">
-  <meta property="og:site_name" content="Echi di Sofia">
-
-  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Echi di Sofia — Filosofia antica, moderna e contemporanea">
   <meta name="twitter:description" content="Esplora autori, correnti e timeline interattive.">
   <meta name="twitter:image" content="https://www.echidisofia.org/immagini/logo-filosofia.jpg">
 
-  <!-- Favicon -->
   <link rel="icon" type="image/png" href="/favicon_io/favicon-32x32.png">
 
-  <!-- Fonts & Icons -->
+  <!-- Font & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
 
-  <!-- Config ricerca: cache buster (alza il numero quando aggiorni il JSON) -->
-  <script id="search-config">
-    window.SEARCH_INDEX_URLS = [
-      '/search-index.json?v=3',
-      '/assets/search-index.json?v=3'
-    ];
-  </script>
+  <!-- Config ricerca con cache-buster (aumenta v=3 quando aggiorni il JSON) -->
+  <script>window.SEARCH_INDEX_URLS=['/search-index.json?v=3','/assets/search-index.json?v=3'];</script>
 
-  <!-- Stili base + overlay ricerca (puliti e senza conflitti) -->
   <style>
-    :root{
-      --bg:#0a0a1a; --text:#e9eef5; --gold:#ffd86a; --cyan:#9ad0ff;
-      --panel:rgba(10,10,30,.94); --border:rgba(255,215,0,.22);
-    }
-    *{ box-sizing:border-box; }
-    html{ scroll-behavior:smooth; }
-    body{
-      margin:0; background:var(--bg); color:var(--text);
-      font-family: "Montserrat", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      min-height:100dvh; display:flex; flex-direction:column;
-    }
-    a{ color:var(--cyan); text-decoration:none; }
-    a:hover{ color:#fff; text-decoration:underline; }
+    :root{ --bg:#0a0a1a; --text:#e9eef5; --gold:#ffd86a; --cyan:#9ad0ff; --panel:rgba(10,10,30,.94); --border:rgba(255,215,0,.22); }
+    *{ box-sizing:border-box; } html{ scroll-behavior:smooth; }
+    body{ margin:0; background:var(--bg); color:var(--text); font-family:"Montserrat",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; min-height:100dvh; display:flex; flex-direction:column; }
+    a{ color:var(--cyan); text-decoration:none; } a:hover{ color:#fff; text-decoration:underline; }
     .wrap{ width:min(1200px,94vw); margin:0 auto; }
 
     /* Topbar */
-    header.topbar{
-      position:sticky; top:0; z-index:50;
-      background:rgba(10,10,30,.96);
-      border-bottom:1px solid var(--border);
-      backdrop-filter: blur(8px);
-    }
+    header.topbar{ position:sticky; top:0; z-index:50; background:rgba(10,10,30,.96); border-bottom:1px solid var(--border); backdrop-filter: blur(8px); }
     .row{ display:flex; align-items:center; gap:.75rem; padding:.8rem 1rem; }
     .brand{ display:flex; align-items:center; gap:.6rem; color:var(--gold); font-weight:800; }
     .brand img{ width:34px; height:34px; filter:drop-shadow(0 0 .5rem rgba(255,215,0,.35)); }
-    .brand span{
-      background:linear-gradient(90deg,#ffd700,#fff7b0,#ffd700);
-      -webkit-background-clip:text; background-clip:text; color:transparent; letter-spacing:.04em;
-    }
-    .spacer{ flex:1; }
-    .nav{ display:flex; gap:.5rem; flex-wrap:wrap; }
+    .brand span{ background:linear-gradient(90deg,#ffd700,#fff7b0,#ffd700); -webkit-background-clip:text; background-clip:text; color:transparent; letter-spacing:.04em; }
+    .spacer{ flex:1; } .nav{ display:flex; gap:.5rem; flex-wrap:wrap; }
     .nav a{ font-weight:700; color:var(--cyan); border:1px solid rgba(0,204,255,.35); padding:.45rem .7rem; border-radius:.6rem; }
     .nav a:hover{ color:#fff; }
 
-    /* Hero */
+    /* Hero + CTA */
     .hero{ padding:2.2rem 1rem 1.4rem; text-align:center; border-bottom:1px solid rgba(255,255,255,.06); }
-    .hero h1{
-      font-family:"Cinzel", serif;
-      font-size: clamp(1.9rem, 4vw, 3rem);
-      background:linear-gradient(90deg,#00f6ff,#00b7ff,#00a0ff,#00f6ff);
-      -webkit-background-clip:text; background-clip:text; color:transparent;
-      filter: drop-shadow(0 0 1rem rgba(0,200,255,.55)); margin:0 0 .35rem;
-    }
+    .hero h1{ font-family:"Cinzel",serif; font-size:clamp(1.9rem,4vw,3rem); background:linear-gradient(90deg,#00f6ff,#00b7ff,#00a0ff,#00f6ff);
+      -webkit-background-clip:text; background-clip:text; color:transparent; filter: drop-shadow(0 0 1rem rgba(0,200,255,.55)); margin:0 0 .35rem; }
     .hero p{ color:#cfe8ff; opacity:.95; max-width:68ch; margin:0 auto; }
-
-    /* Sezioni vetrina */
-    .sections{ padding:1.2rem 1rem 0; }
-    .grid{ display:grid; gap:1rem; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); }
-    .card{
-      background:var(--panel); border:1px solid var(--border);
-      border-radius:14px; padding:1rem; display:flex; flex-direction:column; gap:.55rem;
-      box-shadow:0 1.2rem 2.2rem rgba(0,0,0,.25);
-    }
-    .tag{ display:inline-block; font-size:.78rem; padding:.12rem .5rem; border-radius:999px; color:#0b1022; background:linear-gradient(90deg,#ffd86a,#ffeb9a); font-weight:800; }
-    .card h3{ color:#ffeb9a; margin:.2rem 0 0; }
-    .card p{ color:#cfe2ff; opacity:.95; line-height:1.35; }
-    .more{ margin-top:auto; } .more a{ font-weight:800; }
-
-    /* CTA */
     .cta{ padding:1.2rem 1rem 0; display:flex; gap:.6rem; flex-wrap:wrap; justify-content:center; }
     .btn{ display:inline-flex; align-items:center; gap:.4rem; padding:.55rem .85rem; border-radius:.6rem; border:1px solid var(--border); background:rgba(20,20,40,.78); font-weight:700; color:#ffdf8a; }
     .btn.secondary{ color:#9ad0ff; border-color: rgba(0,204,255,.35); }
 
+    /* Griglia articoli (home) */
+    #lista-articoli{ scroll-margin-top: 120px; }
+    @media (max-width: 768px){ #lista-articoli{ scroll-margin-top: 140px; } }
+    .sections{ padding:1.2rem 1rem 0; }
+    .grid{ display:grid; gap:1rem; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); }
+    .card{ background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:1rem; display:flex; flex-direction:column; gap:.55rem; box-shadow:0 1.2rem 2.2rem rgba(0,0,0,.25); }
+    .tag{ display:inline-block; font-size:.78rem; padding:.12rem .5rem; border-radius:999px; color:#0b1022; background:linear-gradient(90deg,#ffd86a,#ffeb9a); font-weight:800; }
+    .card h3{ color:#ffeb9a; margin:.2rem 0 0; } .card p{ color:#cfe2ff; opacity:.95; line-height:1.35; }
+    .more{ margin-top:auto; } .more a{ font-weight:800; }
+
     /* Footer */
     footer{ margin-top:auto; padding:1rem; text-align:center; color:#9ec3ff; border-top:1px solid rgba(255,255,255,.06); }
 
-    /* Overlay di ricerca */
+    /* Overlay ricerca */
     .search-overlay{ position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,.55); backdrop-filter: blur(6px); display: none; }
-    .search-overlay.is-open{ display:block; }
-    .search-panel{
-      position: absolute; left: 50%; top: 8%; transform: translateX(-50%);
-      width: min(900px, 92vw);
-      background: rgba(10,10,30,.96); border: 1px solid rgba(255,215,0,.22); border-radius: 14px;
-      box-shadow: 0 1.4rem 2.4rem rgba(0,0,0,.45); color: #e9eef5;
-    }
+    .search-overlay.is-open{ display:block; } .search-panel{ position: absolute; left: 50%; top: 8%; transform: translateX(-50%); width: min(900px, 92vw);
+      background: rgba(10,10,30,.96); border: 1px solid rgba(255,215,0,.22); border-radius: 14px; box-shadow: 0 1.4rem 2.4rem rgba(0,0,0,.45); color: #e9eef5; }
     .search-header{ display:flex; align-items:center; gap:.6rem; padding:.9rem 1rem; border-bottom:1px solid rgba(255,255,255,.08); }
-    .search-header input{
-      flex:1; background: rgba(20,20,40,.85); color:#e9eef5;
-      border:1px solid rgba(255,255,255,.14); border-radius: 10px; padding:.7rem .9rem; font-size:1rem; outline:none;
-    }
+    .search-header input{ flex:1; background: rgba(20,20,40,.85); color:#e9eef5; border:1px solid rgba(255,255,255,.14); border-radius: 10px; padding:.7rem .9rem; font-size:1rem; outline:none; }
     .search-close{ appearance:none; border:1px solid rgba(255,255,0,.18); background: rgba(20,20,40,.85); color:#ffdf8a; font-weight:800; border-radius:10px; padding:.55rem .75rem; cursor:pointer; }
-    .search-hint{ padding:.4rem 1rem .7rem; opacity:.85; font-size:.92rem; }
-    .search-results{ padding: .8rem 1rem 1rem; display:grid; gap:.75rem; max-height: 60vh; overflow:auto; }
+    .search-hint{ padding:.4rem 1rem .7rem; opacity:.85; font-size:.92rem; } .search-results{ padding: .8rem 1rem 1rem; display:grid; gap:.75rem; max-height: 60vh; overflow:auto; }
     .search-card{ background: rgba(15,15,35,.92); border:1px solid rgba(255,215,0,.16); border-radius: 12px; padding: .9rem; }
     .search-card .title{ color:#ffdf8a; font-weight:800; text-decoration:none; font-size:1.05rem; } .search-card .title:hover{ color:#fff; text-decoration:underline; }
     .search-card .url{ font-size:.85rem; color:#9bb7ff; opacity:.9; margin:.25rem 0 .35rem; word-break: break-all; } .search-card .desc{ color:#cfe2ff; opacity:.95; line-height:1.35; }
-
-    /* Box ricerca compatto (se vuoi metterlo anche nella topbar in futuro) */
-    .search-container{ position:relative; display:inline-flex; align-items:center; gap:.4rem; z-index:3001; }
-    .search-container input[type="search"]{
-      width: 16.25rem; height: 2.5rem;
-      padding-left: 2.4rem; padding-right: 2.6rem;
-      background: rgba(20,20,40,.78);
-      border: 1px solid rgba(255,215,0,.22);
-      border-radius: .38rem; color:#e9eef5;
-      font: 300 .95rem/2.5rem 'Montserrat', sans-serif;
-      outline: none; transition: border-color .25s, box-shadow .25s;
-    }
-    .search-container input[type="search"]:focus{
-      border-color: rgba(255,215,0,.5);
-      box-shadow: 0 0 .75rem rgba(255,215,0,.18);
-    }
-    .search-container .search-icon{
-      position:absolute; left:.65rem; top:50%; transform:translateY(-50%);
-      font-size:1.05rem; color:#d4af37; opacity:.95; pointer-events:none;
-    }
-    .search-container .search-icon:empty::before{ content:"🔎"; display:inline-block; transform:translateY(1px); }
-    /* X nativa visibile */
-    #site-search::-webkit-search-cancel-button{
-      -webkit-appearance: searchfield-cancel-button;
-      filter: sepia(1) saturate(5.5) hue-rotate(345deg) brightness(1.05) contrast(1.05);
-      opacity: 1;
-    }
   </style>
 </head>
 <body>
   <header class="topbar">
     <div class="wrap row">
-      <a class="brand" href="/index.html">
-        <img src="/logo-filosofia.svg" alt="Echi di Sofia"><span>Echi di Sofia</span>
-      </a>
+      <a class="brand" href="/index.html"><img src="/logo-filosofia.svg" alt="Echi di Sofia"><span>Echi di Sofia</span></a>
       <div class="spacer"></div>
       <nav class="nav">
         <a id="open-search" href="#" title="Cerca">🔎 Cerca</a>
@@ -183,51 +104,17 @@
     <h1>Tra pensiero e stelle</h1>
     <p>Un percorso tra scuole, autori e temi della filosofia — dalla classicità al contemporaneo.</p>
     <div class="cta">
-      <a class="btn" href="/articoli/#lista-articoli">📖 Vai alla griglia</a>
+      <a class="btn" href="#lista-articoli">📖 Esplora Articoli Completi</a>
       <a class="btn secondary" href="/articoli/">Apri sezione Articoli</a>
     </div>
   </section>
 
+  <!-- GRIGLIA COMPLETA (auto dal JSON) -->
   <main class="wrap sections">
-    <div class="grid">
-      <article class="card">
-        <span class="tag">Presocratici</span>
-        <h3>Talete: l'arché come acqua</h3>
-        <p>Dalle spiegazioni mitiche alla ricerca di un principio naturale.</p>
-        <div class="more"><a href="/talete.html">Leggi →</a></div>
-      </article>
-      <article class="card">
-        <span class="tag">Classici</span>
-        <h3>Il Mito della Caverna</h3>
-        <p>Platone e la dialettica tra apparenza e verità.</p>
-        <div class="more"><a href="/articoli/platone_mito_caverna.html">Leggi →</a></div>
-      </article>
-      <article class="card">
-        <span class="tag">Scienza & Filosofia</span>
-        <h3>Circolo di Vienna</h3>
-        <p>Il programma del neopositivismo logico e l'unità della scienza.</p>
-        <div class="more"><a href="/articoli/circolo_di_vienna.html">Leggi →</a></div>
-      </article>
-      <article class="card">
-        <span class="tag">Classici</span>
-        <h3>Ipazia di Alessandria</h3>
-        <p>Tra scienza, filosofia e martirio.</p>
-        <div class="more"><a href="/articoli/ipazia.html">Leggi →</a></div>
-      </article>
+    <h2 style="margin:.2rem 0 1rem; color:#ffeb9a;">Tutti gli articoli</h2>
+    <div class="grid" id="lista-articoli">
+      <p style="opacity:.8">Caricamento articoli…</p>
     </div>
-
-    <!-- CTA: approfondisci -->
-    <section class="cta-timeline" style="margin:1.2rem 0 1.6rem;">
-      <div class="cta-card" style="background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:1rem; text-align:center;">
-        <h3>🎯 Ti è piaciuto questo viaggio nella filosofia?</h3>
-        <p>Approfondisci con i nostri articoli specializzati e risorse esclusive</p>
-        <div class="cta" style="justify-content:center;">
-          <a href="/articoli/#lista-articoli" class="btn" aria-label="Vai alla griglia completa degli articoli">📖 Esplora Articoli Completi</a>
-          <a href="#" class="btn secondary" onclick="showNewsletterModal && showNewsletterModal(); return false;" aria-label="Iscriviti per ricevere contenuti esclusivi">📧 Ricevi Contenuti Esclusivi</a>
-        </div>
-        <p class="cta-note"><small>Unisciti a 2.300+ appassionati di filosofia</small></p>
-      </div>
-    </section>
   </main>
 
   <footer>© 2025 Echi di Sofia</footer>
@@ -235,8 +122,7 @@
   <!-- SEARCH OVERLAY -->
   <div class="search-overlay" id="search-overlay" aria-hidden="true">
     <div class="search-panel" role="dialog" aria-modal="true" aria-labelledby="search-title">
-      <div class="search-header">
-        <strong id="search-title">Cerca</strong>
+      <div class="search-header"><strong id="search-title">Cerca</strong>
         <input id="site-search" type="search" placeholder="Cerca nel sito… (es. Platone, Ipazia, Talete)" autocomplete="off" spellcheck="false">
         <button class="search-close" id="close-search" type="button" aria-label="Chiudi">✕</button>
       </div>
@@ -245,12 +131,41 @@
     </div>
   </div>
 
-  <!-- Script ricerca + overlay -->
+  <!-- Script: carica TUTTI gli articoli dal JSON + overlay ricerca -->
   <script>
   (function(){
     const SOURCES=(window.SEARCH_INDEX_URLS&&window.SEARCH_INDEX_URLS.length)?window.SEARCH_INDEX_URLS:['/search-index.json?v=3','/assets/search-index.json?v=3'];
 
-    // overlay
+    // ---- genera griglia completa in home ----
+    const GRID = document.getElementById('lista-articoli');
+
+    function href(u){ if(!u) return '#'; if(u.startsWith('http')) return u; if(u.startsWith('/')) return u; return '/' + u.replace(/^\.\//,''); }
+    function card(it){
+      const link = href((it.url||it.link||'').toString());
+      const title = it.title || it.name || it.slug || 'Senza titolo';
+      const desc  = it.desc || it.description || it.excerpt || it.summary || '';
+      return `<article class="card">
+                <h3>${title}</h3>
+                ${desc?`<p>${desc}</p>`:''}
+                <div class="more"><a href="${link}">Leggi →</a></div>
+              </article>`;
+    }
+
+    (async ()=>{
+      let data=[];
+      for(const u of SOURCES){
+        try{
+          const r=await fetch(u,{cache:'no-store'});
+          if(!r.ok) continue;
+          const j=await r.json();
+          data = Array.isArray(j)? j : (j.items||j.entries||[]);
+          break;
+        }catch(_){}
+      }
+      GRID.innerHTML = data.length ? data.map(card).join('') : '<p style="opacity:.8">Nessun articolo trovato.</p>';
+    })();
+
+    // ---- overlay ricerca ----
     const $open=document.getElementById('open-search'),
           $overlay=document.getElementById('search-overlay'),
           $close=document.getElementById('close-search'),
@@ -258,90 +173,29 @@
           $list=document.getElementById('search-results');
 
     function lockScroll(on){ document.documentElement.style.overflow=on?'hidden':''; }
-    function openPanel(e){ if(e) e.preventDefault(); if(!$overlay) return;
-      $overlay.classList.add('is-open'); $overlay.setAttribute('aria-hidden','false');
-      lockScroll(true); setTimeout(()=> $input && $input.focus(), 50);
-    }
-    function closePanel(e){ if(e) e.preventDefault(); if(!$overlay) return;
-      $overlay.classList.remove('is-open'); $overlay.setAttribute('aria-hidden','true');
-      lockScroll(false); if($input){ $input.value=''; $list.innerHTML=''; }
-    }
+    function openPanel(e){ if(e) e.preventDefault(); $overlay.classList.add('is-open'); $overlay.setAttribute('aria-hidden','false'); lockScroll(true); setTimeout(()=> $input&&$input.focus(), 50); }
+    function closePanel(e){ if(e) e.preventDefault(); $overlay.classList.remove('is-open'); $overlay.setAttribute('aria-hidden','true'); lockScroll(false); if($input){ $input.value=''; $list.innerHTML=''; } }
     if($open)  $open.addEventListener('click', openPanel);
     if($close) $close.addEventListener('click', closePanel);
-    document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closePanel(); });
-    if($overlay) $overlay.addEventListener('click', (e)=>{ if(e.target === $overlay) closePanel(); });
+    document.addEventListener('keydown',(e)=>{ if(e.key==='Escape') closePanel(); });
+    $overlay.addEventListener('click',(e)=>{ if(e.target===$overlay) closePanel(); });
 
-    // utils ricerca
     function norm(s){ return (s||'').toString().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase(); }
-    function highlight(text, query){
-      if(!text) return '';
-      try{
-        const tokens = norm(query).split(/\s+/).filter(Boolean);
-        if(!tokens.length) return text;
-        let out = text;
-        for(const t of tokens){
-          if(t.length<2) continue;
-          const re = new RegExp('(' + t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')','gi');
-          out = out.replace(re, '<mark>$1</mark>');
-        }
-        return out;
-      }catch(_){ return text; }
-    }
+    function highlight(text,query){ if(!text) return ''; try{ const tokens=norm(query).split(/\s+/).filter(Boolean); if(!tokens.length) return text; let out=text; for(const t of tokens){ if(t.length<2) continue; const re=new RegExp('('+t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'); out=out.replace(re,'<mark>$1</mark>'); } return out; }catch(_){ return text; } }
     function resolveUrl(u){ if(!u) return '#'; if(u.startsWith('http')) return u; if(u.startsWith('/')) return u; return '/' + u.replace(/^\.\//,''); }
-    function search(items, query){
-      const q = norm(query); if(!q) return [];
-      return items.filter(it=>{
-        const t = norm(it.title||''), d = norm(it.desc||it.description||''), u = norm(it.url||'');
-        return t.includes(q) || d.includes(q) || u.includes(q);
-      }).slice(0,60);
-    }
-    function card(item, query){
-      const href = resolveUrl(item.url||''), title = item.title || 'Senza titolo', desc = item.desc || item.description || '';
-      return `<article class="search-card" role="listitem">
-                <a class="title" href="${href}">${query?highlight(title,query):title}</a>
-                <div class="url">${href}</div>
-                ${desc ? `<div class="desc">${query?highlight(desc,query):desc}</div>` : ``}
-              </article>`;
-    }
-    function render(list, query){
-      if(!$list) return;
-      if(!list.length){ $list.innerHTML = `<p style="opacity:.8">Nessun risultato per <strong>${query}</strong>.</p>`; return; }
-      $list.innerHTML = list.map(it => card(it, query)).join('');
-    }
-    function debounce(fn, ms){ let t; return (...a)=>{ clearTimeout(t); t = setTimeout(()=>fn(...a), ms); }; }
+    function search(items,query){ const q=norm(query); if(!q) return []; return items.filter(it=>{ const t=norm(it.title||''), d=norm(it.desc||it.description||''), u=norm(it.url||''); return t.includes(q)||d.includes(q)||u.includes(q); }).slice(0,60); }
+    function cardSearch(it,query){ const href=resolveUrl(it.url||''); const title=it.title||'Senza titolo'; const desc=it.desc||it.description||''; return `<article class="search-card" role="listitem"><a class="title" href="${href}">${query?highlight(title,query):title}</a><div class="url">${href}</div>${desc?`<div class="desc">${query?highlight(desc,query):desc}</div>`:''}</article>`; }
+    function render(list,query){ if(!list.length){ $list.innerHTML=`<p style="opacity:.8">Nessun risultato per <strong>${query}</strong>.</p>`; return; } $list.innerHTML=list.map(it=>cardSearch(it,query)).join(''); }
+    function debounce(fn,ms){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a),ms); }; }
 
-    // carica indice
-    let INDEX = [];
-    async function loadIndex(){
-      for(const u of SOURCES){
-        try{
-          const r = await fetch(u, { cache: 'no-store' });
-          if(!r.ok) continue;
-          const data = await r.json();
-          return Array.isArray(data) ? data : (data.items || data.entries || []);
-        }catch(_){}
-      }
-      return [];
-    }
+    let INDEX=[];
+    (async function loadIndex(){ for(const u of SOURCES){ try{ const r=await fetch(u,{cache:'no-store'}); if(!r.ok) continue; const data=await r.json(); INDEX = (Array.isArray(data)?data:(data.items||data.entries||[])).map(it=>({ title:it.title||it.name||it.slug||'Senza titolo', url:(it.url||it.link||'').toString(), desc:it.desc||it.description||it.excerpt||it.summary||'' })); return; }catch(_){}} INDEX=[]; })();
 
     if($input){
-      const onInput = debounce(()=>{
-        const q = $input.value.trim();
-        if(!q){ $list.innerHTML = ''; return; }
-        const results = search(INDEX, q);
-        render(results, q);
-      }, 120);
-      $input.addEventListener('input', onInput);
-      $input.addEventListener('keydown', (e)=>{ if(e.key==='Enter') onInput(); });
+      const onInput=debounce(()=>{ const q=$input.value.trim(); if(!q){ $list.innerHTML=''; return; } render(search(INDEX,q),q); },120);
+      $input.addEventListener('input',onInput);
+      $input.addEventListener('keydown',e=>{ if(e.key==='Enter') onInput(); });
     }
-
-    loadIndex().then(arr => {
-      INDEX = arr.map(it => ({
-        title: it.title || it.name || it.slug || 'Senza titolo',
-        url: (it.url || it.link || '').toString(),
-        desc: it.desc || it.description || it.excerpt || it.summary || ''
-      }));
-    });
   })();
   </script>
 </body>
