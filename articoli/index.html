@@ -8,7 +8,7 @@
   <link rel="canonical" href="https://www.echidisofia.org/articoli/">
   <link rel="icon" type="image/png" href="/favicon_io/favicon-32x32.png">
 
-  <!-- Config unica per indice (cache-buster) -->
+  <!-- Config unica per l'indice (cache-buster) -->
   <script>
     window.SEARCH_INDEX_URLS = ['/search-index.json?v=2','/assets/search-index.json?v=2'];
   </script>
@@ -20,7 +20,7 @@
     a{ color:var(--cyan); text-decoration:none; } a:hover{ color:#fff; text-decoration:underline; }
     .wrap{ width:min(1200px,94vw); margin:0 auto; }
 
-    /* Topbar semplice */
+    /* Topbar */
     header.topbar{ position:sticky; top:0; z-index:50; background:rgba(10,10,30,.96); border-bottom:1px solid var(--border); backdrop-filter: blur(8px); }
     .row{ display:flex; align-items:center; gap:.75rem; padding:.8rem 1rem; }
     .brand{ display:flex; align-items:center; gap:.6rem; color:var(--gold); font-weight:800; }
@@ -30,13 +30,21 @@
     .nav{ display:flex; gap:.5rem; flex-wrap:wrap; }
     .nav a{ font-weight:700; color:var(--cyan); border:1px solid rgba(0,204,255,.35); padding:.45rem .7rem; border-radius:.6rem; }
     .nav a:hover{ color:#fff; }
+    /* Evidenzia voce attiva */
+    .nav a.active,
+    .nav a[aria-current="page"]{
+      background: rgba(0,204,255,.12);
+      color:#fff;
+      border-color: rgba(0,204,255,.6);
+      text-decoration:none;
+    }
 
     /* Hero */
     .hero{ padding:1.6rem 1rem .8rem; border-bottom:1px solid rgba(255,255,255,.06); text-align:center; }
     .hero h1{ margin:.2rem 0 .2rem; font-size:clamp(1.6rem,3.4vw,2.4rem); color:#ffeb9a; }
     .hero p{ margin:0 auto; max-width:68ch; color:#cfe8ff; opacity:.95; }
 
-    /* CTA sotto hero */
+    /* CTA */
     .cta{ padding:1rem 1rem 0; display:flex; gap:.6rem; flex-wrap:wrap; justify-content:center; }
     .btn{ display:inline-flex; align-items:center; gap:.4rem; padding:.55rem .85rem; border-radius:.6rem; background:rgba(20,20,40,.78); font-weight:700; }
     .btn.primary{ color:#ffdf8a; border:1px solid var(--border); }
@@ -53,7 +61,7 @@
 
     footer{ margin-top:auto; padding:1rem; text-align:center; color:#9ec3ff; border-top:1px solid rgba(255,255,255,.06); }
 
-    /* === Overlay di ricerca (CSS necessario per nasconderlo finché chiuso) === */
+    /* Overlay di ricerca (nascosto finché chiuso) */
     .search-overlay{ position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,.55); backdrop-filter: blur(6px); display: none; }
     .search-overlay.is-open{ display:block; }
     .search-panel{
@@ -67,12 +75,14 @@
     .search-hint{ padding:.4rem 1rem .7rem; opacity:.85; font-size:.92rem; }
     .search-results{ padding: .8rem 1rem 1rem; display:grid; gap:.75rem; max-height: 60vh; overflow:auto; }
     .search-card{ background: rgba(15,15,35,.92); border:1px solid rgba(255,215,0,.16); border-radius: 12px; padding: .9rem; }
-    .search-card .title{ color:#ffdf8a; font-weight:800; text-decoration:none; font-size:1.05rem; } .search-card .title:hover{ color:#fff; text-decoration:underline; }
-    .search-card .url{ font-size:.85rem; color:#9bb7ff; opacity:.9; margin:.25rem 0 .35rem; word-break: break-all; } .search-card .desc{ color:#cfe2ff; opacity:.95; line-height:1.35; }
+    .search-card .title{ color:#ffdf8a; font-weight:800; text-decoration:none; font-size:1.05rem; }
+    .search-card .title:hover{ color:#fff; text-decoration:underline; }
+    .search-card .url{ font-size:.85rem; color:#9bb7ff; opacity:.9; margin:.25rem 0 .35rem; word-break: break-all; }
+    .search-card .desc{ color:#cfe2ff; opacity:.95; line-height:1.35; }
 
-    /* Input box con lente a sinistra e X nativa a destra */
-    .search-container{ position:relative; display:inline-flex; align-items:center; gap:.4rem; z-index:3001; }
-    #site-search{ padding-left: 2.6rem; padding-right: 2.6rem; }
+    /* Input compact con lente a sinistra e X nativa a destra (solo nell'overlay) */
+    .search-container{ position:relative; display:inline-flex; align-items:center; gap:.4rem; z-index:3001; width:100%; }
+    #site-search{ padding-left: 2.6rem; padding-right: 2.6rem; width:100%; }
     .search-container .search-icon{
       position:absolute; left:.65rem; top:50%; transform:translateY(-50%);
       font-size:1.05rem; line-height:1; color:#d4af37; opacity:.95; pointer-events:none; z-index:3003;
@@ -95,7 +105,7 @@
       <div class="spacer"></div>
       <nav class="nav">
         <a id="open-search" href="#" title="Cerca">🔎 Cerca</a>
-        <a href="/articoli/">Articoli</a>
+        <a href="/articoli/" class="active" aria-current="page">Articoli</a>
         <a href="/cerca.html">Cerca (pagina)</a>
         <a href="/index.html">Incipit</a>
       </nav>
@@ -122,12 +132,12 @@
 
   <footer>© 2025 Echi di Sofia</footer>
 
-  <!-- OVERLAY DI RICERCA (unico, con CSS sopra) -->
+  <!-- OVERLAY DI RICERCA (unico) -->
   <div class="search-overlay" id="search-overlay" aria-hidden="true">
     <div class="search-panel" role="dialog" aria-modal="true" aria-labelledby="search-title">
       <div class="search-header">
         <strong id="search-title">Cerca</strong>
-        <div class="search-container" style="flex:1;">
+        <div class="search-container">
           <span class="search-icon" aria-hidden="true"></span>
           <input id="site-search" type="search" placeholder="Cerca… (es. Platone, Ipazia, Talete)" autocomplete="off" spellcheck="false">
         </div>
