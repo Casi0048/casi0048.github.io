@@ -3,40 +3,90 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Articoli — Echi di Sofia</title>
-  <meta name="description" content="Sezione articoli di Echi di Sofia: approfondimenti e scuole di pensiero.">
+  <title>Articoli e Approfondimenti — Echi di Sofia</title>
+  <meta name="description" content="Tutti gli articoli e gli approfondimenti pubblicati su Echi di Sofia.">
+  <link rel="canonical" href="https://www.echidisofia.org/articoli/">
   <link rel="icon" type="image/png" href="/favicon_io/favicon-32x32.png">
+
+  <!-- Config unica per indice (cache-buster) -->
+  <script>
+    window.SEARCH_INDEX_URLS = ['/search-index.json?v=2','/assets/search-index.json?v=2'];
+  </script>
+
   <style>
     :root{ --bg:#0a0a1a; --text:#e9eef5; --gold:#ffd86a; --cyan:#9ad0ff; --panel:rgba(10,10,30,.94); --border:rgba(255,215,0,.22); }
     *{ box-sizing:border-box; } html{ scroll-behavior:smooth; }
-    body{ margin:0; background:var(--bg); color:var(--text); font-family: system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif; min-height:100dvh; display:flex; flex-direction:column; }
+    body{ margin:0; background:var(--bg); color:var(--text); font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif; min-height:100dvh; display:flex; flex-direction:column; }
     a{ color:var(--cyan); text-decoration:none; } a:hover{ color:#fff; text-decoration:underline; }
     .wrap{ width:min(1200px,94vw); margin:0 auto; }
+
+    /* Topbar semplice */
     header.topbar{ position:sticky; top:0; z-index:50; background:rgba(10,10,30,.96); border-bottom:1px solid var(--border); backdrop-filter: blur(8px); }
     .row{ display:flex; align-items:center; gap:.75rem; padding:.8rem 1rem; }
     .brand{ display:flex; align-items:center; gap:.6rem; color:var(--gold); font-weight:800; }
-    .brand img{ width:34px; height:34px; filter:drop-shadow(0 0 .5rem rgba(255,215,0,.35)); }
+    .brand img{ width:32px; height:32px; filter:drop-shadow(0 0 .4rem rgba(255,215,0,.35)); }
     .brand span{ background:linear-gradient(90deg,#ffd700,#fff7b0,#ffd700); -webkit-background-clip:text; background-clip:text; color:transparent; letter-spacing:.04em; }
-    .spacer{ flex:1; } .nav{ display:flex; gap:.5rem; flex-wrap:wrap; }
+    .spacer{ flex:1; }
+    .nav{ display:flex; gap:.5rem; flex-wrap:wrap; }
     .nav a{ font-weight:700; color:var(--cyan); border:1px solid rgba(0,204,255,.35); padding:.45rem .7rem; border-radius:.6rem; }
     .nav a:hover{ color:#fff; }
-    .hero{ padding:2.2rem 1rem 1rem; text-align:center; border-bottom:1px solid rgba(255,255,255,.06); }
-    .hero h1{ font-size:clamp(1.8rem,3.5vw,2.6rem); background:linear-gradient(90deg,#00f6ff,#00b7ff,#00a0ff,#00f6ff);
-      -webkit-background-clip:text; background-clip:text; color:transparent; filter: drop-shadow(0 0 1rem rgba(0,200,255,.55)); margin:0 0 .35rem; }
-    .hero p{ color:#cfe8ff; opacity:.95; }
-    .grid{ display:grid; gap:1rem; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); margin:1.2rem 0 1.6rem; }
-    .card{ background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:1rem; display:flex; flex-direction:column; gap:.55rem; box-shadow:0 1.2rem 2.2rem rgba(0,0,0,.25); }
-    .tag{ display:inline-block; font-size:.78rem; padding:.12rem .5rem; border-radius:999px; color:#0b1022; background:linear-gradient(90deg,#ffd86a,#ffeb9a); font-weight:800; }
-    .card h3{ color:#ffeb9a; margin:.2rem 0 0; } .card p{ color:#cfe2ff; opacity:.95; line-height:1.35; }
-    .more{ margin-top:auto; } .more a{ font-weight:800; }
-    .cta{ display:flex; gap:.6rem; flex-wrap:wrap; justify-content:center; margin-bottom:1.4rem; }
-    footer{ margin-top:auto; padding:1rem; text-align:center; color:#9ec3ff; border-top:1px solid rgba(255,255,255,.06); }
-    /* anchor helpers */
+
+    /* Hero */
+    .hero{ padding:1.6rem 1rem .8rem; border-bottom:1px solid rgba(255,255,255,.06); text-align:center; }
+    .hero h1{ margin:.2rem 0 .2rem; font-size:clamp(1.6rem,3.4vw,2.4rem); color:#ffeb9a; }
+    .hero p{ margin:0 auto; max-width:68ch; color:#cfe8ff; opacity:.95; }
+
+    /* CTA sotto hero */
+    .cta{ padding:1rem 1rem 0; display:flex; gap:.6rem; flex-wrap:wrap; justify-content:center; }
+    .btn{ display:inline-flex; align-items:center; gap:.4rem; padding:.55rem .85rem; border-radius:.6rem; background:rgba(20,20,40,.78); font-weight:700; }
+    .btn.primary{ color:#ffdf8a; border:1px solid var(--border); }
+    .btn.secondary{ color:#9ad0ff; border:1px solid rgba(0,204,255,.35); }
+
+    /* Griglia articoli */
+    main{ padding:1rem; }
     #lista-articoli{ scroll-margin-top: 120px; }
     @media (max-width: 768px){ #lista-articoli{ scroll-margin-top: 140px; } }
+    .grid{ display:grid; gap:1rem; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); }
+    .card{ background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:1rem; display:flex; flex-direction:column; gap:.55rem; box-shadow:0 1.2rem 2.2rem rgba(0,0,0,.25); }
+    .card h3{ color:#ffeb9a; margin:.2rem 0 0; } .card p{ color:#cfe2ff; opacity:.95; line-height:1.35; }
+    .more{ margin-top:auto; } .more a{ font-weight:800; }
+
+    footer{ margin-top:auto; padding:1rem; text-align:center; color:#9ec3ff; border-top:1px solid rgba(255,255,255,.06); }
+
+    /* === Overlay di ricerca (CSS necessario per nasconderlo finché chiuso) === */
+    .search-overlay{ position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,.55); backdrop-filter: blur(6px); display: none; }
+    .search-overlay.is-open{ display:block; }
+    .search-panel{
+      position: absolute; left: 50%; top: 8%; transform: translateX(-50%);
+      width: min(900px, 92vw); background: rgba(10,10,30,.96);
+      border: 1px solid rgba(255,215,0,.22); border-radius: 14px; box-shadow: 0 1.4rem 2.4rem rgba(0,0,0,.45); color: #e9eef5;
+    }
+    .search-header{ display:flex; align-items:center; gap:.6rem; padding:.9rem 1rem; border-bottom:1px solid rgba(255,255,255,.08); }
+    .search-header input{ flex:1; background: rgba(20,20,40,.85); color:#e9eef5; border:1px solid rgba(255,255,255,.14); border-radius: 10px; padding:.7rem .9rem; font-size:1rem; outline:none; }
+    .search-close{ appearance:none; border:1px solid rgba(255,255,0,.18); background: rgba(20,20,40,.85); color:#ffdf8a; font-weight:800; border-radius:10px; padding:.55rem .75rem; cursor:pointer; }
+    .search-hint{ padding:.4rem 1rem .7rem; opacity:.85; font-size:.92rem; }
+    .search-results{ padding: .8rem 1rem 1rem; display:grid; gap:.75rem; max-height: 60vh; overflow:auto; }
+    .search-card{ background: rgba(15,15,35,.92); border:1px solid rgba(255,215,0,.16); border-radius: 12px; padding: .9rem; }
+    .search-card .title{ color:#ffdf8a; font-weight:800; text-decoration:none; font-size:1.05rem; } .search-card .title:hover{ color:#fff; text-decoration:underline; }
+    .search-card .url{ font-size:.85rem; color:#9bb7ff; opacity:.9; margin:.25rem 0 .35rem; word-break: break-all; } .search-card .desc{ color:#cfe2ff; opacity:.95; line-height:1.35; }
+
+    /* Input box con lente a sinistra e X nativa a destra */
+    .search-container{ position:relative; display:inline-flex; align-items:center; gap:.4rem; z-index:3001; }
+    #site-search{ padding-left: 2.6rem; padding-right: 2.6rem; }
+    .search-container .search-icon{
+      position:absolute; left:.65rem; top:50%; transform:translateY(-50%);
+      font-size:1.05rem; line-height:1; color:#d4af37; opacity:.95; pointer-events:none; z-index:3003;
+    }
+    .search-container .search-icon:empty::before{ content:"🔎"; display:inline-block; transform:translateY(1px); }
+    #site-search::-webkit-search-cancel-button{
+      -webkit-appearance: searchfield-cancel-button;
+      filter: sepia(1) saturate(5.5) hue-rotate(345deg) brightness(1.05) contrast(1.05);
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
+  <!-- TOP BAR -->
   <header class="topbar">
     <div class="wrap row">
       <a class="brand" href="/index.html">
@@ -45,44 +95,42 @@
       <div class="spacer"></div>
       <nav class="nav">
         <a id="open-search" href="#" title="Cerca">🔎 Cerca</a>
+        <a href="/articoli/">Articoli</a>
+        <a href="/cerca.html">Cerca (pagina)</a>
         <a href="/index.html">Incipit</a>
       </nav>
     </div>
   </header>
 
-  <section class="hero">
+  <!-- HERO -->
+  <section class="hero wrap">
     <h1>Articoli e Approfondimenti</h1>
-    <p>Una selezione di pagine e saggi per esplorare scuole, autori e temi della filosofia.</p>
+    <p>La raccolta completa dei contenuti pubblicati su Echi di Sofia.</p>
+    <div class="cta">
+      <a class="btn primary" href="/" aria-label="Torna alla home (Incipit)">🏠 Torna all’Incipit</a>
+      <a class="btn secondary" href="/cerca.html">🔎 Cerca nel sito</a>
+    </div>
   </section>
 
- <main class="wrap">
-  <div class="cta">
-    <!-- prima era: href="#lista-articoli" -->
-    <a class="nav btn" href="/" aria-label="Torna alla home (Incipit)"
-       style="border:1px solid var(--border); padding:.55rem .85rem; border-radius:.6rem; color:#ffdf8a; background:rgba(20,20,40,.78); font-weight:700;">
-      🏠 Torna all’Incipit
-    </a>
-
-    <a class="nav btn" href="/cerca.html"
-       style="border:1px solid rgba(0,204,255,.35); padding:.55rem .85rem; border-radius:.6rem; color:#9ad0ff; background:rgba(20,20,40,.78); font-weight:700;">
-      🔎 Cerca nel sito
-    </a>
-  </div>
-
-
-   <div class="grid" id="lista-articoli"></div>
-<p id="conteggio-articoli" style="opacity:.8; text-align:center; margin:.6rem 0 1rem;"></p>
-
+  <!-- GRIGLIA COMPLETA -->
+  <main class="wrap">
+    <h2 style="margin:.8rem 0 1rem; color:#ffeb9a;">Tutti gli articoli</h2>
+    <div class="grid" id="lista-articoli">
+      <p style="opacity:.8">Caricamento articoli…</p>
+    </div>
   </main>
 
   <footer>© 2025 Echi di Sofia</footer>
 
-  <!-- Search overlay (stesso della home) -->
+  <!-- OVERLAY DI RICERCA (unico, con CSS sopra) -->
   <div class="search-overlay" id="search-overlay" aria-hidden="true">
     <div class="search-panel" role="dialog" aria-modal="true" aria-labelledby="search-title">
       <div class="search-header">
         <strong id="search-title">Cerca</strong>
-        <input id="site-search" type="search" placeholder="Cerca nel sito… (es. Platone, Ipazia, Talete)" autocomplete="off" spellcheck="false">
+        <div class="search-container" style="flex:1;">
+          <span class="search-icon" aria-hidden="true"></span>
+          <input id="site-search" type="search" placeholder="Cerca… (es. Platone, Ipazia, Talete)" autocomplete="off" spellcheck="false">
+        </div>
         <button class="search-close" id="close-search" type="button" aria-label="Chiudi">✕</button>
       </div>
       <div class="search-hint">Suggerimento: puoi cercare per <em>titolo</em> o parole nella <em>descrizione</em>. Premi <kbd>Esc</kbd> per chiudere.</div>
@@ -90,86 +138,130 @@
     </div>
   </div>
 
-  <script>window.SEARCH_INDEX_URLS=['/search-index.json','/assets/search-index.json'];</script>
+  <!-- SCRIPT: griglia completa + overlay ricerca -->
   <script>
   (function(){
-    const SOURCES=(window.SEARCH_INDEX_URLS&&window.SEARCH_INDEX_URLS.length)?window.SEARCH_INDEX_URLS:['/search-index.json','/assets/search-index.json'];
-    const $open=document.getElementById('open-search'),$overlay=document.getElementById('search-overlay'),$close=document.getElementById('close-search'),$input=document.getElementById('site-search'),$list=document.getElementById('search-results');
-    if(!$overlay||!$input||!$list) return;
+    const SOURCES = (window.SEARCH_INDEX_URLS && window.SEARCH_INDEX_URLS.length)
+      ? window.SEARCH_INDEX_URLS
+      : ['/search-index.json','/assets/search-index.json'];
+
+    /* ---------- POPOLA LA GRIGLIA ---------- */
+    const GRID = document.getElementById('lista-articoli');
+
+    function href(u){ if(!u) return '#'; if(u.startsWith('http')) return u; if(u.startsWith('/')) return u; return '/' + u.replace(/^\.\//,''); }
+    function card(it){
+      const link = href((it.url||it.link||'').toString());
+      const title = it.title || it.name || it.slug || 'Senza titolo';
+      const desc  = it.desc || it.description || it.excerpt || it.summary || '';
+      return `<article class="card">
+                <h3>${title}</h3>
+                ${desc ? `<p>${desc}</p>` : ``}
+                <div class="more"><a href="${link}">Leggi →</a></div>
+              </article>`;
+    }
+
+    (async () => {
+      let data = [];
+      for(const u of SOURCES){
+        try{
+          const r = await fetch(u, { cache: 'no-store' });
+          if(!r.ok) continue;
+          const j = await r.json();
+          data = Array.isArray(j) ? j : (j.items || j.entries || []);
+          break;
+        }catch(_){}
+      }
+      GRID.innerHTML = data.length ? data.map(card).join('') : '<p style="opacity:.8">Nessun articolo trovato.</p>';
+    })();
+
+    /* ---------- OVERLAY DI RICERCA ---------- */
+    const $open=document.getElementById('open-search'),
+          $overlay=document.getElementById('search-overlay'),
+          $close=document.getElementById('close-search'),
+          $input=document.getElementById('site-search'),
+          $list=document.getElementById('search-results');
+
     function lockScroll(on){ document.documentElement.style.overflow=on?'hidden':''; }
-    function openPanel(e){ if(e) e.preventDefault(); $overlay.classList.add('is-open'); $overlay.setAttribute('aria-hidden','false'); lockScroll(true); setTimeout(()=> $input.focus(), 50); }
-    function closePanel(e){ if(e) e.preventDefault(); $overlay.classList.remove('is-open'); $overlay.setAttribute('aria-hidden','true'); lockScroll(false); $input.value=''; $list.innerHTML=''; }
-    if($open) $open.addEventListener('click', openPanel); $close.addEventListener('click', closePanel);
-    document.addEventListener('keydown',(e)=>{ if(e.key==='Escape') closePanel(); }); $overlay.addEventListener('click',(e)=>{ if(e.target===$overlay) closePanel(); });
+    function openPanel(e){ if(e) e.preventDefault(); if(!$overlay) return;
+      $overlay.classList.add('is-open'); $overlay.setAttribute('aria-hidden','false');
+      lockScroll(true); setTimeout(()=> $input && $input.focus(), 50);
+    }
+    function closePanel(e){ if(e) e.preventDefault(); if(!$overlay) return;
+      $overlay.classList.remove('is-open'); $overlay.setAttribute('aria-hidden','true');
+      lockScroll(false); if($input){ $input.value=''; $list.innerHTML=''; }
+    }
+    if($open)  $open.addEventListener('click', openPanel);
+    if($close) $close.addEventListener('click', closePanel);
+    document.addEventListener('keydown',(e)=>{ if(e.key==='Escape') closePanel(); });
+    if($overlay) $overlay.addEventListener('click',(e)=>{ if(e.target===$overlay) closePanel(); });
+
+    /* ricerca */
     function norm(s){ return (s||'').toString().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase(); }
-    function highlight(text,query){ if(!text) return ''; try{ const tokens=norm(query).split(/\s+/).filter(Boolean); if(!tokens.length) return text; let out=text; for(const t of tokens){ if(t.length<2) continue; const re=new RegExp('('+t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'); out=out.replace(re,'<mark>$1</mark>'); } return out; }catch(_){ return text; } }
-    function resolveUrl(u){ if(!u) return '#'; if(u.startsWith('http')) return u; if(u.startsWith('/')) return u; return '/'+u.replace(/^\.\//,''); }
-    function card(item,query){ const href=resolveUrl(item.url); const desc=item.desc&&item.desc.trim()?item.desc:''; return `<article class="search-card" role="listitem"><a class="title" href="${href}">${highlight(item.title,query)}</a><div class="url">${href}</div>${desc?`<div class="desc">${highlight(desc,query)}</div>`:''}</article>`; }
-    function search(items,query){ const q=norm(query); if(!q) return []; return items.filter(it=>{ const t=norm(it.title),d=norm(it.desc),u=norm(it.url); return t.includes(q)||d.includes(q)||u.includes(q); }).slice(0,60); }
-    function render(list,query){ if(!list.length){ $list.innerHTML=`<p style="opacity:.8">Nessun risultato per <strong>${query}</strong>.</p>`; return; } $list.innerHTML=list.map(it=>card(it,query)).join(''); }
+    function highlight(text, query){
+      if(!text) return '';
+      try{
+        const tokens = norm(query).split(/\s+/).filter(Boolean);
+        if(!tokens.length) return text;
+        let out=text;
+        for(const t of tokens){
+          if(t.length<2) continue;
+          const re=new RegExp('('+t.replace(/[.*+?^${}()|[\\]\\\\]/g,'\\$&')+')','gi');
+          out=out.replace(re,'<mark>$1</mark>');
+        }
+        return out;
+      }catch(_){ return text; }
+    }
+    function resolveUrl(u){ if(!u) return '#'; if(u.startsWith('http')) return u; if(u.startsWith('/')) return u; return '/' + u.replace(/^\.\//,''); }
+    function search(items, query){
+      const q=norm(query); if(!q) return [];
+      return items.filter(it=>{
+        const t=norm(it.title||''), d=norm(it.desc||it.description||''), u=norm(it.url||'');
+        return t.includes(q)||d.includes(q)||u.includes(q);
+      }).slice(0,60);
+    }
+    function cardSearch(it,query){
+      const href=resolveUrl(it.url||''); const title=it.title||'Senza titolo'; const desc=it.desc||it.description||'';
+      return `<article class="search-card" role="listitem">
+                <a class="title" href="${href}">${query?highlight(title,query):title}</a>
+                <div class="url">${href}</div>
+                ${desc?`<div class="desc">${query?highlight(desc,query):desc}</div>`:''}
+              </article>`;
+    }
+    function render(list,query){
+      if(!$list) return;
+      if(!list.length){ $list.innerHTML=`<p style="opacity:.8">Nessun risultato per <strong>${query}</strong>.</p>`; return; }
+      $list.innerHTML=list.map(it=>cardSearch(it,query)).join('');
+    }
     function debounce(fn,ms){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a),ms); }; }
-    let INDEX=[]; async function loadIndex(){ for(const u of SOURCES){ try{ const r=await fetch(u,{cache:'no-store'}); if(!r.ok) continue; const data=await r.json(); return Array.isArray(data)?data:(data.items||data.entries||[]); }catch(_){} } return []; }
-    const onInput=debounce(()=>{ const q=$input.value.trim(); if(!q){ $list.innerHTML=''; return; } const results=search(INDEX,q); render(results,q); },120);
-    $input.addEventListener('input',onInput); $input.addEventListener('keydown',e=>{ if(e.key==='Enter') onInput(); });
-    loadIndex().then(arr=>{ INDEX=arr.map(it=>({ title:it.title||it.name||it.slug||'Senza titolo', url:(it.url||it.link||'').toString(), desc:it.desc||it.description||it.excerpt||it.summary||'' })); });
+
+    let INDEX=[];
+    (async function loadIndex(){
+      for(const u of SOURCES){
+        try{
+          const r=await fetch(u,{cache:'no-store'});
+          if(!r.ok) continue;
+          const data=await r.json();
+          INDEX=(Array.isArray(data)?data:(data.items||data.entries||[])).map(it=>({
+            title: it.title||it.name||it.slug||'Senza titolo',
+            url: (it.url||it.link||'').toString(),
+            desc: it.desc||it.description||it.excerpt||it.summary||''
+          }));
+          return;
+        }catch(_){}
+      }
+      INDEX=[];
+    })();
+
+    if($input){
+      const onInput = debounce(()=>{
+        const q = $input.value.trim();
+        if(!q){ $list.innerHTML=''; return; }
+        render(search(INDEX,q), q);
+      },120);
+      $input.addEventListener('input', onInput);
+      $input.addEventListener('keydown', (e)=>{ if(e.key==='Enter') onInput(); });
+    }
   })();
   </script>
-  <script>
-(function(){
-  const GRID = document.getElementById('lista-articoli');
-  const COUNTER = document.getElementById('conteggio-articoli');
-  if(!GRID) return;
-
-  const SOURCES = ['/search-index.json','/assets/search-index.json'];
-
-  function href(u){
-    if(!u) return '#';
-    if(u.startsWith('http')) return u;
-    if(u.startsWith('/')) return u;
-    return '/' + u.replace(/^\.\//,'');
-  }
-
-  function card(item){
-    const title = item.title || 'Senza titolo';
-    const desc  = item.desc || item.description || '';
-    const link  = href(item.url || '');
-    return `
-      <article class="card">
-        <h3 style="color:#ffeb9a; margin:.2rem 0 0;">${title}</h3>
-        ${desc ? `<p style="color:#cfe2ff; opacity:.95; line-height:1.35;">${desc}</p>` : ``}
-        <div class="more"><a href="${link}" style="font-weight:800;">Leggi →</a></div>
-      </article>
-    `;
-  }
-
-  (async () => {
-    let data = [];
-    for (const u of SOURCES) {
-      try {
-        const r = await fetch(u, { cache: 'no-store' });
-        if (!r.ok) continue;
-        const j = await r.json();
-        data = Array.isArray(j) ? j : (j.items || j.entries || []);
-        break;
-      } catch (_) {}
-    }
-
-    if (!data.length) {
-      GRID.innerHTML = '<p style="opacity:.8">Nessun articolo trovato.</p>';
-      return;
-    }
-
-    // (opzionale) ordina per titolo; se vuoi mantenere l’ordine del JSON, commenta la riga sotto
-    // data.sort((a,b) => (a.title||'').localeCompare(b.title||''));
-
-    GRID.innerHTML = data.map(card).join('');
-    if (COUNTER) COUNTER.textContent = `Articoli pubblicati: ${data.length}`;
-  })();
-})();
-</script>
-<script>
-  window.SEARCH_INDEX_URLS = ['/search-index.json?v=2','/assets/search-index.json?v=2'];
-</script>
-
 </body>
 </html>
