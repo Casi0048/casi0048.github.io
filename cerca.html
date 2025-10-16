@@ -27,13 +27,13 @@ header{ position:sticky; top:0; z-index:10; background:rgba(10,10,30,.96); borde
 mark{ background:linear-gradient(90deg, rgba(255,216,106,.35), rgba(154,208,255,.35)); border-radius:.25rem; padding:.05rem .15rem; }
 footer{ margin-top:2rem; padding:1rem; text-align:center; color:#9ec3ff; border-top:1px solid rgba(255,255,255,.06); }
 
-/* ===== Cerchietto dorato dietro la X nativa ===== */
+/* ===== Cerchietto dorato dietro la X nativa (visibile solo con testo) ===== */
 .input-wrap{ position: relative; width: 100%; }
 
 /* più spazio a destra per X + cerchietto */
 #q{ padding-right: 3rem; position: relative; z-index:1; }
 
-/* cerchietto oro (decorativo) allineato alla X */
+/* cerchietto: di base nascosto */
 .input-wrap::after{
   content: "";
   position: absolute;
@@ -47,7 +47,10 @@ footer{ margin-top:2rem; padding:1rem; text-align:center; color:#9ec3ff; border-
   box-shadow: 0 0 .45rem rgba(255, 216, 106, .65), inset 0 .06rem .12rem rgba(0,0,0,.25);
   pointer-events: none; /* i click passano alla X nativa */
   z-index: 2;
+  display: none;        /* nascosto se input vuoto */
 }
+/* mostra il cerchietto solo se c'è testo */
+.input-wrap.has-value::after{ display: block; }
 
 /* X nativa visibile e chiara sopra al cerchietto (Chrome/Edge/Safari) */
 #q::-webkit-search-cancel-button{
@@ -67,7 +70,7 @@ footer{ margin-top:2rem; padding:1rem; text-align:center; color:#9ec3ff; border-
 
   <!-- INPUT con wrapper per il cerchietto -->
   <div class="searchbar wrap">
-    <div class="input-wrap">
+    <div class="input-wrap" id="input-wrap">
       <input id="q" type="search" placeholder="Cerca autori, scuole, concetti… (es. Epitteto, Presocratici, Mito)" autocomplete="off" spellcheck="false" aria-label="Cerca nel sito">
     </div>
   </div>
@@ -90,7 +93,12 @@ footer{ margin-top:2rem; padding:1rem; text-align:center; color:#9ec3ff; border-
 
   const RESULTS_LIMIT=60;
   const $q=document.getElementById('q');
+  const $wrap=document.getElementById('input-wrap');
   const $res=document.getElementById('results');
+
+  function toggleCircle(){
+    $wrap.classList.toggle('has-value', $q.value.trim().length>0);
+  }
 
   function norm(s){ return (s||'').toString().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase(); }
   function highlight(text,query){
@@ -150,6 +158,7 @@ footer{ margin-top:2rem; padding:1rem; text-align:center; color:#9ec3ff; border-
   }
 
   const onInput=debounce(()=>{
+    toggleCircle();
     const q=$q.value.trim();
     if(!q){ $res.innerHTML=''; return; }
     const list=search(INDEX,q);
@@ -158,8 +167,14 @@ footer{ margin-top:2rem; padding:1rem; text-align:center; color:#9ec3ff; border-
 
   $q.addEventListener('input',onInput);
   $q.addEventListener('keydown',(e)=>{ if(e.key==='Enter') onInput(); });
+  $q.addEventListener('focus',toggleCircle);
+  $q.addEventListener('blur',toggleCircle);
 
-  loadIndex().then(arr=>{ INDEX=arr.map(normalize); $q.focus(); });
+  loadIndex().then(arr=>{
+    INDEX=arr.map(normalize);
+    toggleCircle();       // stato iniziale (vuoto = cerchietto nascosto)
+    $q.focus();
+  });
 })();
 </script>
 
