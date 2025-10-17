@@ -3169,8 +3169,65 @@ html {
   box-shadow: 0 1rem 2rem rgba(0,0,0,.45);
   backdrop-filter: blur(.5rem);
 }
+</style><style id="search-panel-anim">
+/* === Search Panel Animations (CSS-only) === */
+#search-panel, #searchPanel, .search-panel, .results-panel{
+  transform: translateX(-50%) translateY(-6px) scale(.985);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform .35s cubic-bezier(.2, .9, .2, 1),
+    opacity   .32s ease;
+  will-change: transform, opacity;
+}
+#search-panel.open, #searchPanel.open, .search-panel.open, .results-panel.open{
+  opacity: 1;
+  transform: translateX(-50%) translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+/* Backdrop per click-out */
+#search-backdrop{
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.45);
+  backdrop-filter: blur(2px);
+  opacity: 0; pointer-events: none;
+  transition: opacity .28s ease;
+  z-index: 2147483604;
+}
+#search-backdrop.open{ opacity: 1; pointer-events: auto; }
+
+@media (prefers-reduced-motion: reduce){
+  #search-panel, #searchPanel, .search-panel, .results-panel { transition: none !important; }
+  #search-backdrop{ transition: none !important; }
+}
+</style><style id="search-results-stagger">
+/* === Staggered results & highlight pulse === */
+#search-results > *, .search-results > *, #searchResults > *{
+  opacity: 0;
+  transform: translateY(8px);
+  will-change: transform, opacity;
+  animation: spItemIn .48s cubic-bezier(.2,1,.2,1) both;
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
+@keyframes spItemIn{
+  to{ opacity:1; transform: translateY(0); }
+}
+#search-results mark, .search-results mark, #searchResults mark{
+  animation: hlPulse 1.4s ease-out .2s 1 both;
+}
+@keyframes hlPulse{
+  0% { box-shadow: 0 0 0 rgba(255,215,0,0); }
+  35%{ box-shadow: 0 0 .8rem rgba(255,215,0,.35); }
+  100%{ box-shadow: 0 0 0 rgba(255,215,0,0); }
+}
+@media (prefers-reduced-motion: reduce){
+  #search-results > *, .search-results > *, #searchResults > *{
+    animation: none !important; opacity: 1; transform: none;
+  }
+}
 </style></head>
-<body>
+<body><div hidden="True" id="search-backdrop"></div><div class="search-panel" id="search-panel"><div class="search-header"><h3 class="search-title">Risultati</h3><button aria-label="Chiudi pannello" class="search-close" id="search-close" type="button">Chiudi</button></div><div class="search-results results-scroll" id="search-results"><div class="sp-item" data-placeholder="true"><h4 class="result-title">Suggerimento</h4><p class="result-desc">Digita nel campo di ricerca in alto per vedere i risultati qui.</p></div></div></div>
 <!-- UI PATCH BLOCKS -->
 <div aria-label="Galleria autori" class="slider-vertical">
 <div class="slider-inner" id="sliderInner">
@@ -5765,5 +5822,107 @@ document.addEventListener('DOMContentLoaded', function() {
   optimizeAnimations();
 });
 </script>
-</body>
+<script>
+// === Search panel animation helper ===
+(function(){
+  function qs(sel){ return document.querySelector(sel); }
+  function qsa(sel){ return Array.from(document.querySelectorAll(sel)); }
+
+  window.animateSearchResults = function(){
+    const panel  = qs('#search-panel, #searchPanel, .search-panel, .results-panel');
+    const scroll = qs('#search-results, #searchResults, .search-results, .results-scroll');
+    const items  = scroll ? qsa(':scope > *').map((el, i) => { el.style.setProperty('--i', i); return el; }) : [];
+    const backdrop = document.getElementById('search-backdrop');
+
+    if (panel && !panel.classList.contains('open')) panel.classList.add('open');
+    if (backdrop){
+      backdrop.hidden = false;
+      backdrop.classList.add('open');
+      backdrop.onclick = () => {
+        panel && panel.classList.remove('open');
+        backdrop.classList.remove('open');
+        setTimeout(() => { backdrop.hidden = true; }, 200);
+      };
+    }
+  };
+
+  // Facoltativo: chiusura via ESC
+  document.addEventListener('keydown', (e)=>{
+    if (e.key === 'Escape'){
+      const panel = qs('#search-panel.open, #searchPanel.open, .search-panel.open, .results-panel.open');
+      const backdrop = document.getElementById('search-backdrop');
+      if (panel){
+        panel.classList.remove('open');
+        if (backdrop){ backdrop.classList.remove('open'); setTimeout(()=>backdrop.hidden = true, 200); }
+      }
+    }
+  });
+})();
+</script><script>
+    (function(){
+      const panel = document.querySelector('#search-panel');
+      const btnClose = document.getElementById('search-close');
+      const backdrop = document.getElementById('search-backdrop');
+      if(btnClose){
+        btnClose.addEventListener('click', function(){
+          panel && panel.classList.remove('open');
+          if(backdrop){ backdrop.classList.remove('open'); setTimeout(()=>backdrop.hidden=true, 200); }
+        });
+      }
+      // expose a helper to set results (optional)
+      window.setSearchResults = function(html){
+        const tgt = document.querySelector('#search-results, #searchResults, .search-results, .results-scroll');
+        if(!tgt) return;
+        tgt.innerHTML = html;
+        window.animateSearchResults && window.animateSearchResults();
+      };
+    })();
+    </script><script id="search-auto-open">
+// === Auto-open search panel when real results are injected ===
+(function(){
+  const panel    = document.querySelector('#search-panel, #searchPanel, .search-panel, .results-panel');
+  const box      = document.querySelector('#search-results, #searchResults, .search-results, .results-scroll');
+  const backdrop = document.getElementById('search-backdrop');
+  if (!panel || !box) return;
+
+  // Only count nodes that look like real results (not placeholders)
+  function hasRealItems() {
+    // Match common result item patterns, exclude placeholders
+    const sel = '.sp-item:not([data-placeholder]), .search-result, .result, li.result-item, .result-title a';
+    return box.querySelector(sel) !== null;
+  }
+
+  function forceClose(){
+    panel.classList.remove('open');
+    if (backdrop){ backdrop.classList.remove('open'); backdrop.hidden = true; }
+  }
+  function openPanel(){
+    if (!panel.classList.contains('open')) panel.classList.add('open');
+    if (backdrop){
+      backdrop.hidden = false;
+      backdrop.classList.add('open');
+      backdrop.onclick = () => forceClose();
+    }
+    if (typeof window.animateSearchResults === 'function'){
+      window.animateSearchResults();
+    } else {
+      Array.from(box.children).forEach((el,i)=> el.style.setProperty('--i', i));
+    }
+  }
+
+  // Observe child changes
+  const mo = new MutationObserver(()=>{
+    if (hasRealItems()) openPanel();
+    else forceClose();
+  });
+  mo.observe(box, { childList: true, subtree: true });
+
+  // Ensure closed on load unless there are real items
+  if (!hasRealItems()) forceClose();
+  else openPanel();
+
+  // ESC to close
+  document.addEventListener('keydown', (e)=>{ if (e.key === 'Escape') forceClose(); });
+})();
+</script></body>
 </html>
