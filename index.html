@@ -3226,7 +3226,140 @@ html {
     animation: none !important; opacity: 1; transform: none;
   }
 }
-</style></head>
+</style>
+<style>
+/* === PULSANTE TORNA SU - VERSIONE FLUTTUANTE === */
+.back-to-top.floating {
+    position: fixed;
+    bottom: 20px; /* Posizionato sopra il CTA fluttuante */
+    left: 155px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), #ffeb3b);
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    color: #0a0a1a;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999; /* Leggermente sotto il CTA (10000) */
+    box-shadow: 
+        0 4px 15px rgba(255, 215, 0, 0.4),
+        0 0 0 2px rgba(10, 10, 30, 0.1); /* Bordo esterno per contrasto */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+    animation: float-gentle 3s ease-in-out infinite;
+}
+
+/* Animazione fluttuante delicata */
+@keyframes float-gentle {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+.back-to-top.floating:hover {
+    transform: translateY(-3px) scale(1.1);
+    box-shadow: 
+        0 8px 25px rgba(255, 215, 0, 0.6),
+        0 0 0 2px rgba(255, 215, 0, 0.2);
+    background: linear-gradient(135deg, #ffeb3b, var(--gold));
+    animation: none; /* Ferma l'animazione durante l'hover */
+}
+
+.back-to-top.floating:active {
+    transform: translateY(-1px) scale(1.05);
+}
+
+/* Versione con effetto "bolla luminosa" */
+.back-to-top.floating.glow {
+    background: radial-gradient(circle at 30% 30%, #ffeb3b, var(--gold));
+    box-shadow: 
+        0 4px 20px rgba(255, 215, 0, 0.5),
+        0 0 30px rgba(255, 215, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+/* Versione trasparente/semitrasparente */
+.back-to-top.floating.glass {
+    background: rgba(212, 175, 55, 0.15);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 215, 0, 0.4);
+    color: var(--gold);
+    box-shadow: 
+        0 4px 20px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.back-to-top.floating.glass:hover {
+    background: rgba(212, 175, 55, 0.25);
+    color: #0a0a1a;
+}
+
+/* Regolazioni per diverse altezze del CTA */
+.back-to-top.floating.above-small-cta {
+    bottom: 90px; /* Per CTA più piccoli */
+}
+
+.back-to-top.floating.above-large-cta {
+    bottom: 120px; /* Per CTA più grandi */
+}
+
+.back-to-top.floating.above-xl-cta {
+    bottom: 150px; /* Per CTA molto grandi */
+}
+
+/* Versione compatta per mobile */
+@media (max-width: 768px) {
+    .back-to-top.floating {
+        bottom: 80px; /* Più vicino al bordo su mobile */
+        left: 20px;
+        width: 45px;
+        height: 45px;
+        font-size: 1.3rem;
+    }
+    
+    .back-to-top.floating.above-small-cta {
+        bottom: 70px;
+    }
+    
+    .back-to-top.floating.above-large-cta {
+        bottom: 100px;
+    }
+    
+    /* Riduci animazione su mobile per performance */
+    .back-to-top.floating {
+        animation: float-gentle-mobile 4s ease-in-out infinite;
+    }
+    
+    @keyframes float-gentle-mobile {
+        0%, 100% {
+            transform: translateY(0px);
+        }
+        50% {
+            transform: translateY(-3px);
+        }
+    }
+}
+
+/* Supporto per preferenze di movimento ridotto */
+@media (prefers-reduced-motion: reduce) {
+    .back-to-top.floating {
+        animation: none;
+        transition: none;
+    }
+    
+    .back-to-top.floating:hover {
+        transform: none;
+    }
+}
+</style>
+</head>
 <body><div hidden="True" id="search-backdrop"></div><div class="search-panel" id="search-panel"><div class="search-header"><h3 class="search-title">Risultati</h3><button aria-label="Chiudi pannello" class="search-close" id="search-close" type="button">Chiudi</button></div><div class="search-results results-scroll" id="search-results"><div class="sp-item" data-placeholder="true"><h4 class="result-title">Suggerimento</h4><p class="result-desc">Digita nel campo di ricerca in alto per vedere i risultati qui.</p></div></div></div>
 <!-- UI PATCH BLOCKS -->
 <div aria-label="Galleria autori" class="slider-vertical">
@@ -5924,5 +6057,50 @@ document.addEventListener('DOMContentLoaded', function() {
   // ESC to close
   document.addEventListener('keydown', (e)=>{ if (e.key === 'Escape') forceClose(); });
 })();
-</script></body>
+</script>
+<!-- Pulsante Torna Su -->
+<!-- Con effetto glow -->
+<button class="back-to-top floating glow" id="backToTop" aria-label="Torna all'inizio">
+    ↑
+</button>
+<script>
+  // === PULSANTE TORNA SU ===
+(function(){
+    const backToTop = document.getElementById('backToTop');
+    if (!backToTop) return;
+    
+    // Mostra/nascondi il pulsante durante lo scroll
+    function toggleBackToTop() {
+        if (window.scrollY > 300) {
+            backToTop.style.display = 'flex';
+        } else {
+            backToTop.style.display = 'none';
+        }
+    }
+    
+    // Scroll fluido verso l'alto
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+    
+    // Event listeners
+    window.addEventListener('scroll', toggleBackToTop);
+    backToTop.addEventListener('click', scrollToTop);
+    
+    // Anche con tasto Enter per accessibilità
+    backToTop.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            scrollToTop();
+        }
+    });
+    
+    // Inizializza
+    toggleBackToTop();
+})();
+</script>
+</body>
 </html>
