@@ -3359,6 +3359,136 @@ html {
     }
 }
 </style>
+<style>
+/* === SFONDO STELLARE COMPLETO - VERSIONE DEFINITIVA === */
+.stars-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+}
+
+/* STELLE NORMALI */
+.star {
+    position: absolute;
+    background-color: #ffffff;
+    border-radius: 50%;
+    animation: twinkle var(--duration) ease-in-out infinite;
+    animation-delay: var(--delay);
+}
+
+.star.small { width: 1px; height: 1px; opacity: 0.3; --duration: 4s; }
+.star.medium { width: 2px; height: 2px; opacity: 0.6; --duration: 6s; }
+.star.large { width: 3px; height: 3px; opacity: 0.8; --duration: 8s; }
+.star.xlarge { width: 4px; height: 4px; opacity: 1; --duration: 10s; }
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* STELLE CADENTI - VERSIONE UNICA E COMPLETA */
+.shooting-star {
+    position: absolute;
+    width: 120px;
+    height: 2px;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        #ffffff 20%, 
+        #00ccff 50%, 
+        transparent 100%);
+    border-radius: 50%;
+    filter: blur(0.5px);
+    box-shadow: 0 0 10px #00ccff, 0 0 20px #ffffff;
+    opacity: 0;
+    z-index: 10;
+}
+
+/* VARIANTI DI VELOCITÀ */
+.shooting-star.fast {
+    animation-duration: 5s;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        #ffd700 20%, 
+        #ffffff 50%, 
+        transparent 100%);
+    box-shadow: 0 0 15px #ffd700, 0 0 25px #ffffff;
+}
+
+.shooting-star.slow {
+    animation-duration: 12s;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        #b967ff 20%, 
+        #ffffff 50%, 
+        transparent 100%);
+    box-shadow: 0 0 12px #b967ff, 0 0 22px #ffffff;
+}
+
+/* DIREZIONI */
+.shooting-star.diagonal {
+    animation: shoot-diagonal 8s ease-out infinite;
+}
+
+.shooting-star.horizontal {
+    animation: shoot-horizontal 7s ease-out infinite;
+}
+
+.shooting-star.vertical {
+    animation: shoot-vertical 9s ease-out infinite;
+}
+
+.shooting-star.reverse {
+    animation: shoot-reverse 8s ease-out infinite;
+}
+
+/* ANIMAZIONI PER OGNI DIREZIONE */
+@keyframes shoot-diagonal {
+    0% { transform: translateX(-150px) translateY(-150px) rotate(45deg); opacity: 0; }
+    10% { opacity: 1; }
+    30% { opacity: 1; }
+    100% { transform: translateX(calc(100vw + 150px)) translateY(calc(100vh + 150px)) rotate(45deg); opacity: 0; }
+}
+
+@keyframes shoot-horizontal {
+    0% { transform: translateX(-150px) rotate(0deg); opacity: 0; }
+    15% { opacity: 1; }
+    40% { opacity: 1; }
+    100% { transform: translateX(calc(100vw + 150px)) rotate(0deg); opacity: 0; }
+}
+
+@keyframes shoot-vertical {
+    0% { transform: translateY(-150px) rotate(90deg); opacity: 0; }
+    15% { opacity: 1; }
+    35% { opacity: 1; }
+    100% { transform: translateY(calc(100vh + 150px)) rotate(90deg); opacity: 0; }
+}
+
+@keyframes shoot-reverse {
+    0% { transform: translateX(calc(100vw + 150px)) translateY(-150px) rotate(-45deg); opacity: 0; }
+    10% { opacity: 1; }
+    30% { opacity: 1; }
+    100% { transform: translateX(-150px) translateY(calc(100vh + 150px)) rotate(-45deg); opacity: 0; }
+}
+
+/* STELLE COLORATE */
+.star.color-blue { background-color: #00ccff; box-shadow: 0 0 8px #00ccff; }
+.star.color-gold { background-color: #ffd700; box-shadow: 0 0 8px #ffd700; }
+.star.color-purple { background-color: #b967ff; box-shadow: 0 0 8px #b967ff; }
+
+/* SUPPORTO TEMA CHIARO */
+[data-theme="light"] .star { opacity: 0.1; background-color: #1a202c; }
+[data-theme="light"] .shooting-star { opacity: 0.3; }
+
+/* ACCESSIBILITÀ */
+@media (prefers-reduced-motion: reduce) {
+    .star, .shooting-star { animation: none !important; opacity: 0.5; }
+}
+</style>
 </head>
 <body><div hidden="True" id="search-backdrop"></div><div class="search-panel" id="search-panel"><div class="search-header"><h3 class="search-title">Risultati</h3><button aria-label="Chiudi pannello" class="search-close" id="search-close" type="button">Chiudi</button></div><div class="search-results results-scroll" id="search-results"><div class="sp-item" data-placeholder="true"><h4 class="result-title">Suggerimento</h4><p class="result-desc">Digita nel campo di ricerca in alto per vedere i risultati qui.</p></div></div></div>
 <!-- UI PATCH BLOCKS -->
@@ -3614,7 +3744,7 @@ html {
 <div aria-hidden="true" id="bolt"></div>
 <!-- Sfondo con particelle cosmiche -->
 <div id="cosmic-bg"></div>
-<div class="stars-container" id="stars"></div>
+<div class="stars-container" id="starsContainer"></div>
 <!-- Top Bar -->
 <div class="top-bar">
 <a class="brand" href="/">
@@ -4112,7 +4242,7 @@ html {
 <main>
 <section class="welcome-section">
 <h1 class="welcome-title">Benvenuto in<br/>Echi di Sofia</h1>
-<p class="welcome-subtitle">Un viaggio tra storia e pensiero</p>
+<p class="welcome-subtitle">Un viaggio tra storia, stelle e pensiero</p>
 <div class="typing-wrap">
 <div class="typing-effect"></div>
 </div>
@@ -4210,6 +4340,7 @@ html {
 <!-- <article class="card"><h3>Articoli</h3><p>Scorri per esplorare la sezione.</p></article> -->
 </div>
 </section>
+
 </main>
 <!-- Citazioni filosofiche fluttuanti -->
 <div class="floating-quotes"><div class="quote-bubble"><div class="quote-text">“Conosci te stesso”</div><div class="quote-author">— Socrate</div></div><div class="quote-bubble"><div class="quote-text">“So di non sapere”</div><div class="quote-author">— Socrate</div></div><div class="quote-bubble"><div class="quote-text">“Una vita senza ricerca non è degna di essere vissuta”</div><div class="quote-author">— Socrate</div></div><div class="quote-bubble"><div class="quote-text">“La filosofia comincia con la meraviglia”</div><div class="quote-author">— Platone</div></div><div class="quote-bubble"><div class="quote-text">“La bellezza è lo splendore del vero”</div><div class="quote-author">— Platone</div></div><div class="quote-bubble"><div class="quote-text">“Siamo ciò che facciamo ripetutamente. L'eccellenza non è un atto ma un'abitudine”</div><div class="quote-author">— Aristotele</div></div><div class="quote-bubble"><div class="quote-text">“La felicità dipende da noi stessi”</div><div class="quote-author">— Aristotele</div></div><div class="quote-bubble"><div class="quote-text">“Nulla è nell'intelletto che prima non sia passato dai sensi”</div><div class="quote-author">— Aristotele</div></div><div class="quote-bubble"><div class="quote-text">“Tutto scorre”</div><div class="quote-author">— Eraclito</div></div><div class="quote-bubble"><div class="quote-text">“Il carattere è destino”</div><div class="quote-author">— Eraclito</div></div><div class="quote-bubble"><div class="quote-text">“L'uomo è misura di tutte le cose”</div><div class="quote-author">— Protagora</div></div><div class="quote-bubble"><div class="quote-text">“Vivere secondo natura”</div><div class="quote-author">— Zenone di Cizio</div></div><div class="quote-bubble"><div class="quote-text">“Non sono le cose che ci turbano, ma le opinioni che abbiamo su di esse”</div><div class="quote-author">— Epitteto</div></div><div class="quote-bubble"><div class="quote-text">“Non è la morte che dobbiamo temere, ma il non cominciare mai a vivere”</div><div class="quote-author">— Marco Aurelio</div></div><div class="quote-bubble"><div class="quote-text">“La vita è opinione”</div><div class="quote-author">— Marco Aurelio</div></div><div class="quote-bubble"><div class="quote-text">“La felicità consiste nel desiderare ciò che si ha”</div><div class="quote-author">— Seneca</div></div><div class="quote-bubble"><div class="quote-text">“Non esiste vento favorevole per il marinaio che non sa dove andare”</div><div class="quote-author">— Seneca</div></div><div class="quote-bubble"><div class="quote-text">“Il destino guida chi lo segue e trascina chi si oppone”</div><div class="quote-author">— Seneca</div></div><div class="quote-bubble"><div class="quote-text">“Vivi nascosto”</div><div class="quote-author">— Epicuro</div></div><div class="quote-bubble"><div class="quote-text">“Ama e fa' ciò che vuoi”</div><div class="quote-author">— Sant'Agostino</div></div><div class="quote-bubble"><div class="quote-text">“La fede cerca l'intelligenza”</div><div class="quote-author">— Anselmo d'Aosta</div></div><div class="quote-bubble"><div class="quote-text">“Contemplata aliis tradere”</div><div class="quote-author">— Tommaso d'Aquino</div></div><div class="quote-bubble"><div class="quote-text">“Non moltiplicare gli enti senza necessità”</div><div class="quote-author">— Guglielmo di Ockham</div></div><div class="quote-bubble"><div class="quote-text">“È meglio essere temuti che amati, se non si può essere entrambi”</div><div class="quote-author">— Niccolò Machiavelli</div></div><div class="quote-bubble"><div class="quote-text">“Cogito, ergo sum”</div><div class="quote-author">— Cartesio</div></div><div class="quote-bubble"><div class="quote-text">“Il cuore ha le sue ragioni che la ragione non conosce”</div><div class="quote-author">— Blaise Pascal</div></div><div class="quote-bubble"><div class="quote-text">“La mente è una tabula rasa”</div><div class="quote-author">— John Locke</div></div><div class="quote-bubble"><div class="quote-text">“Esse est percipi”</div><div class="quote-author">— George Berkeley</div></div><div class="quote-bubble"><div class="quote-text">“La bellezza delle cose esiste nella mente di chi le contempla”</div><div class="quote-author">— David Hume</div></div><div class="quote-bubble"><div class="quote-text">“Due cose riempiono l’animo: il cielo stellato sopra di me e la legge morale dentro di me”</div><div class="quote-author">— Immanuel Kant</div></div><div class="quote-bubble"><div class="quote-text">“Agisci in modo da trattare l’umanità sempre come fine e mai semplicemente come mezzo”</div><div class="quote-author">— Immanuel Kant</div></div><div class="quote-bubble"><div class="quote-text">“Quel che è reale è razionale”</div><div class="quote-author">— G.W.F. Hegel</div></div><div class="quote-bubble"><div class="quote-text">“La vita oscilla tra la noia e il dolore”</div><div class="quote-author">— Arthur Schopenhauer</div></div><div class="quote-bubble"><div class="quote-text">“La vita dev’essere compresa all’indietro, ma va vissuta in avanti”</div><div class="quote-author">— Søren Kierkegaard</div></div><div class="quote-bubble"><div class="quote-text">“Chi ha un perché per vivere può sopportare quasi ogni come”</div><div class="quote-author">— Friedrich Nietzsche</div></div><div class="quote-bubble"><div class="quote-text">“Diventa ciò che sei”</div><div class="quote-author">— Friedrich Nietzsche</div></div><div class="quote-bubble"><div class="quote-text">“Non esistono fatti, solo interpretazioni”</div><div class="quote-author">— Friedrich Nietzsche</div></div><div class="quote-bubble"><div class="quote-text">“Di ciò di cui non si può parlare si deve tacere”</div><div class="quote-author">— Ludwig Wittgenstein</div></div><div class="quote-bubble"><div class="quote-text">“Il significato è l’uso”</div><div class="quote-author">— Ludwig Wittgenstein</div></div><div class="quote-bubble"><div class="quote-text">“Il linguaggio è la casa dell’essere”</div><div class="quote-author">— Martin Heidegger</div></div><div class="quote-bubble"><div class="quote-text">“L’esistenza precede l’essenza”</div><div class="quote-author">— Jean‑Paul Sartre</div></div><div class="quote-bubble"><div class="quote-text">“Bisogna immaginare Sisifo felice”</div><div class="quote-author">— Albert Camus</div></div></div>
@@ -4285,7 +4416,7 @@ html {
       (function(){const inner=document.getElementById('sliderInner');if(!inner)return;let pos=0,speed=.35,dir=1,running=true;function step(){if(!running){requestAnimationFrame(step);return}pos+=dir*speed;inner.style.transform=`translateY(${-pos}px)`;const total=inner.scrollHeight-inner.clientHeight;if(pos>=total)pos=0;if(pos<0)pos=total;requestAnimationFrame(step)}requestAnimationFrame(step);const t=document.getElementById('slider-toggle'),i=document.getElementById('slider-invert'),sp=document.getElementById('slider-speed');t?.addEventListener('click',()=>running=!running);i?.addEventListener('click',()=>dir*=-1);sp?.addEventListener('input',()=>{const v=parseInt(sp.value,10)||8;speed=.1+(v-1)*.08})})();
       window.addEventListener('load',()=>{const a=document.getElementById('myAudio'),btn=document.getElementById('playPause'),tm=document.getElementById('time'),v=document.getElementById('volume');if(!a||!btn)return;function f(s){if(!isFinite(s))return'0:00';const m=Math.floor(s/60),c=Math.floor(s%60);return m+':'+(c<10?'0'+c:c)}function u(){tm.textContent=`${f(a.currentTime)} / ${f(a.duration)}`}v.value=.8;a.volume=parseFloat(v.value);btn.addEventListener('click',()=>{if(a.paused){a.play().catch(()=>{});btn.textContent='⏸️'}else{a.pause();btn.textContent='▶️'}});v.addEventListener('input',()=>a.volume=parseFloat(v.value));a.addEventListener('timeupdate',u);a.addEventListener('loadedmetadata',u);a.addEventListener('ended',()=>{btn.textContent='▶️'})});
       (function(){const b=document.getElementById('russell-btn'),h=document.getElementById('russell-hint'),a=document.getElementById('russell-audio');if(!b||!a)return;let u=false;function lk(){if(u)return;u=true;a.muted=false;a.play().then(()=>{a.pause();a.currentTime=0}).catch(()=>{});window.removeEventListener('pointerdown',lk,{capture:true});window.removeEventListener('keydown',lk,{capture:true})}window.addEventListener('pointerdown',lk,{once:true,capture:true,passive:true});window.addEventListener('keydown',lk,{once:true,capture:true});b.addEventListener('click',()=>{try{a.currentTime=0;a.play().catch(()=>{})}catch(_){ }})})();
-      (function(){const btn=document.getElementById('btn-thunder'),th=document.getElementById('thunder-sound'),ex=document.getElementById('explosionSound'),ov=document.getElementById('lightning'),bo=document.getElementById('bolt');if(!btn||!th||!ov||!bo)return;let unlocked=false;async function unlockOnce(){if(unlocked)return;unlocked=true;for(const s of [th,ex]){try{s.muted=false;await s.play();s.pause();s.currentTime=0}catch(_){}}}window.addEventListener('pointerdown',unlockOnce,{once:true,passive:true,capture:true});window.addEventListener('keydown',unlockOnce,{once:true,capture:true});let on=false;function up(){btn.classList.toggle('active',on);btn.setAttribute('aria-pressed',on?'true':'false');btn.textContent=on?'⚡ Tuono: ON':'⚡ Tuono'}btn.addEventListener('click',e=>{e.preventDefault();on=!on;if(on){try{th.currentTime=0;softPlay(th, 1.0, 140).catch(()=>{})}catch(_){}}else{try{th.pause();th.currentTime=0}catch(_){}}up()});up();function flash(){const x=15+Math.random()*70,y=10+Math.random()*65,ang=-25+Math.random()*50,sy=.8+Math.random()*1.2;ov.style.transition='none';ov.offsetHeight;ov.style.background=`radial-gradient(circle at ${x}% ${y}%, rgba(255,255,255,.95), rgba(255,255,255,.22) 40%, transparent 65%)`;ov.style.opacity='1';ov.style.transition='opacity 80ms ease-out';setTimeout(()=>ov.style.opacity='0',140);bo.style.left=x+'%';bo.style.top=y+'%';bo.style.transform=`translate(-50%,-50%) rotate(${ang}deg) scaleY(${sy})`;bo.style.transition='transform 90ms ease-out, opacity 280ms ease-out';bo.style.opacity='1';setTimeout(()=>bo.style.opacity='0',180);if(on){try{th.currentTime=0;softPlay(th, 1.0, 140).catch(()=>{})}catch(_){}}}(function schedule(){setTimeout(()=>{flash();schedule()},30000+Math.random()*10000)})();document.getElementById('explode-btn')?.addEventListener('click',()=>{try{ex.muted=false;ex.volume=1.0;ex.currentTime=0;softPlay(ex, 1.0, 140).catch(()=>{})}catch(_){}})})();
+      (function(){const btn=document.getElementById('btn-thunder'),th=document.getElementById('thunder-sound'),ex=document.getElementById('explosionSound'),ov=document.getElementById('lightning'),bo=document.getElementById('bolt');if(!btn||!th||!ov||!bo)return;let unlocked=false;async function unlockOnce(){if(unlocked)return;unlocked=true;for(const s of [th,ex]){try{s.muted=false;await s.play();s.pause();s.currentTime=0}catch(_){}}}window.addEventListener('pointerdown',unlockOnce,{once:true,passive:true,capture:true});window.addEventListener('keydown',unlockOnce,{once:true,capture:true});let on=false;function up(){btn.classList.toggle('active',on);btn.setAttribute('aria-pressed',on?'true':'false');btn.textContent=on?'⚡ Tuono: ON':'⚡ Tuono'}btn.addEventListener('click',e=>{e.preventDefault();on=!on;if(on){try{th.currentTime=0;softPlay(th, 1.0, 140).catch(()=>{})}catch(_){}}else{try{th.pause();th.currentTime=0}catch(_){}}up()});up();function flash(){const x=15+Math.random()*70,y=10+Math.random()*65,ang=-25+Math.random()*50,sy=.8+Math.random()*1.2;ov.style.transition='none';ov.offsetHeight;ov.style.background=`radial-gradient(circle at ${x}% ${y}%, rgba(255,255,255,.95), rgba(255,255,255,.22) 40%, transparent 65%)`;ov.style.opacity='1';ov.style.transition='opacity 80ms ease-out';setTimeout(()=>ov.style.opacity='0',140);bo.style.left=x+'%';bo.style.top=y+'%';bo.style.transform=`translate(-50%,-50%) rotate(${ang}deg) scaleY(${sy})`;bo.style.transition='transform 90ms ease-out, opacity 280ms ease-out';bo.style.opacity='1';setTimeout(()=>bo.style.opacity='0',180);if(on){try{th.currentTime=0;softPlay(th, 1.0, 140).catch(()=>{})}catch(_){}}}(function schedule(){setTimeout(()=>{flash();schedule()},10000+Math.random()*5000)})();document.getElementById('explode-btn')?.addEventListener('click',()=>{try{ex.muted=false;ex.volume=1.0;ex.currentTime=0;softPlay(ex, 1.0, 140).catch(()=>{})}catch(_){}})})();
     </script>
 <script id="search-init-smart">
       (function(){
@@ -6100,6 +6231,111 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Inizializza
     toggleBackToTop();
+})();
+</script>
+<script>
+// === GENERATORE DI STELLE - VERSIONE CORRETTA ===
+(function() {
+    const container = document.getElementById('starsContainer');
+    if (!container) return;
+    
+    // Crea stelle normali
+    const starCount = Math.min(150, Math.floor((window.innerWidth * window.innerHeight) / 6000));
+    for (let i = 0; i < starCount; i++) createStar();
+    
+    // Crea stelle cadenti immediatamente
+    createMultipleShootingStars();
+    
+    // Programma la creazione continua
+    setInterval(createMultipleShootingStars, 4000);
+    
+    function createStar() {
+        const star = document.createElement('div');
+        star.className = 'star';
+        
+        const sizes = ['small', 'medium', 'large', 'xlarge'];
+        const size = sizes[Math.floor(Math.random() * sizes.length)];
+        star.classList.add(size);
+        
+        if (Math.random() < 0.15) {
+            const colors = ['color-blue', 'color-gold', 'color-purple'];
+            star.classList.add(colors[Math.floor(Math.random() * colors.length)]);
+        }
+        
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.setProperty('--duration', (4 + Math.random() * 8) + 's');
+        star.style.setProperty('--delay', (Math.random() * 15) + 's');
+        
+        container.appendChild(star);
+    }
+    
+    function createShootingStar() {
+        const shooter = document.createElement('div');
+        shooter.className = 'shooting-star';
+        
+        // SELEZIONA DIREZIONE CASUALE
+        const directions = ['diagonal', 'horizontal', 'vertical', 'reverse'];
+        const direction = directions[Math.floor(Math.random() * directions.length)];
+        shooter.classList.add(direction);
+        
+        // VARIETÀ DI VELOCITÀ
+        if (Math.random() < 0.3) shooter.classList.add('fast');
+        if (Math.random() < 0.2) shooter.classList.add('slow');
+        
+        // POSIZIONE IN BASE ALLA DIREZIONE
+        if (direction === 'diagonal') {
+            shooter.style.left = '-150px';
+            shooter.style.top = Math.random() * 300 + 'px';
+        } else if (direction === 'horizontal') {
+            shooter.style.left = '-150px';
+            shooter.style.top = (Math.random() * window.innerHeight) + 'px';
+        } else if (direction === 'vertical') {
+            shooter.style.left = (Math.random() * window.innerWidth) + 'px';
+            shooter.style.top = '-150px';
+        } else if (direction === 'reverse') {
+            shooter.style.left = (window.innerWidth + 150) + 'px';
+            shooter.style.top = Math.random() * 300 + 'px';
+        }
+        
+        // RITARDO E DURATA
+        shooter.style.animationDelay = (Math.random() * 3) + 's';
+        
+        container.appendChild(shooter);
+        
+        // RIMUOVI DOPO L'ANIMAZIONE
+        const duration = shooter.classList.contains('fast') ? 8000 : 
+                        shooter.classList.contains('slow') ? 15000 : 12000;
+        
+        setTimeout(() => {
+            if (shooter.parentNode) {
+                shooter.parentNode.removeChild(shooter);
+            }
+        }, duration);
+    }
+    
+    function createMultipleShootingStars() {
+        // Crea 1-2 stelle cadenti contemporaneamente
+        const count = 1 + Math.floor(Math.random() * 2);
+        for (let i = 0; i < count; i++) {
+            setTimeout(() => createShootingStar(), i * 1000);
+        }
+    }
+    
+    // RESIZE HANDLER
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            container.innerHTML = '';
+            const newStarCount = Math.min(150, Math.floor((window.innerWidth * window.innerHeight) / 6000));
+            for (let i = 0; i < newStarCount; i++) createStar();
+            createMultipleShootingStars();
+        }, 250);
+    });
+    
+    // AVVIA SUBITO
+    setTimeout(createMultipleShootingStars, 500);
 })();
 </script>
 </body>
