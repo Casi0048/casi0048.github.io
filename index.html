@@ -3494,84 +3494,191 @@ html {
     .star, .shooting-star { animation: none !important; opacity: 0.5; }
 }
 </style>
-<style id="stars-shooting-css">
-/* === Stelle cadenti: definizione e allineamento con JS === */
-.shooting-star{
-  position:absolute;
-  width:120px;
-  height:2px;
-  background: linear-gradient(90deg, transparent 0%, #ffffff 20%, #00ccff 50%, transparent 100%);
-  border-radius: 50%;
-  filter: blur(0.5px);
-  box-shadow: 0 0 10px #00ccff, 0 0 20px #ffffff;
-  opacity: 0;
-  z-index: 10;
-  animation-iteration-count: 1 !important; /* non ripetere l'animazione */
+<style id="comet-orientation">
+:root{
+  --comet-len: 100px;        /* lunghezza coda di default */
+  --comet-core: #ffffff;     /* nucleo (testa) */
+  --comet-glow: #00ccff;     /* alone (testa) */
+}
+/* Larghezza barra cometa controllata da variabile */
+.shooting-star{ width: var(--comet-len, 100px); height: 2px; }
+
+/* Orienta il picco luminoso verso la direzione di marcia (testa) */
+.shooting-star.horizontal{
+  background: linear-gradient(90deg,
+    rgba(255,255,255,0) 0%,
+    var(--comet-core) 82%,
+    var(--comet-glow) 96%,
+    rgba(255,255,255,0) 100%);
+}
+.shooting-star.reverse{
+  background: linear-gradient(270deg,
+    rgba(255,255,255,0) 0%,
+    var(--comet-core) 82%,
+    var(--comet-glow) 96%,
+    rgba(255,255,255,0) 100%);
+}
+.shooting-star.vertical{
+  background: linear-gradient( 90deg,
+    rgba(255,255,255,0) 0%,
+    var(--comet-core) 82%,
+    var(--comet-glow) 96%,
+    rgba(255,255,255,0) 100%);
+}
+.shooting-star.diagonal{
+  background: linear-gradient(135deg,
+    rgba(255,255,255,0) 0%,
+    var(--comet-core) 82%,
+    var(--comet-glow) 96%,
+    rgba(255,255,255,0) 100%);
 }
 
-/* Varianti velocità (solo durata) */
-.shooting-star.fast { animation-duration: 8s; }
-.shooting-star.slow { animation-duration: 15s; }
-
-/* Direzioni */
-.shooting-star.diagonal   { animation-name: shoot-diagonal;  animation-duration: 12s; animation-timing-function: ease-out; }
-.shooting-star.horizontal { animation-name: shoot-horizontal; animation-duration: 11s; animation-timing-function: ease-out; }
-.shooting-star.vertical   { animation-name: shoot-vertical;   animation-duration: 13s; animation-timing-function: ease-out; }
-.shooting-star.reverse    { animation-name: shoot-reverse;    animation-duration: 12s; animation-timing-function: ease-out; }
-
-@keyframes shoot-diagonal {
-  0%   { transform: translateX(-150px) translateY(-150px) rotate(45deg); opacity: 0; }
-  10%  { opacity: 1; }
-  90%  { opacity: 1; }
-  100% { transform: translateX(calc(100vw + 150px)) translateY(calc(100vh + 150px)) rotate(45deg); opacity: 0; }
-}
-@keyframes shoot-horizontal {
-  0%   { transform: translateX(-150px) rotate(0deg); opacity: 0; }
-  15%  { opacity: 1; }
-  85%  { opacity: 1; }
-  100% { transform: translateX(calc(100vw + 150px)) rotate(0deg); opacity: 0; }
-}
-@keyframes shoot-vertical {
-  0%   { transform: translateY(-150px) rotate(90deg); opacity: 0; }
-  15%  { opacity: 1; }
-  85%  { opacity: 1; }
-  100% { transform: translateY(calc(100vh + 150px)) rotate(90deg); opacity: 0; }
-}
-@keyframes shoot-reverse {
-  0%   { transform: translateX(calc(100vw + 150px)) translateY(-150px) rotate(-45deg); opacity: 0; }
-  10%  { opacity: 1; }
-  90%  { opacity: 1; }
-  100% { transform: translateX(-150px) translateY(calc(100vh + 150px)) rotate(-45deg); opacity: 0; }
-}
-
-/* Colori extra per stelle fisse */
-.star.color-blue   { background-color:#00ccff; box-shadow:0 0 8px #00ccff; }
-.star.color-gold   { background-color:#ffd700; box-shadow:0 0 8px #ffd700; }
-.star.color-purple { background-color:#b967ff; box-shadow:0 0 8px #b967ff; }
-.star.color-green  { background-color:#00ff88; box-shadow:0 0 8px #00ff88; }
-.star.color-pink   { background-color:#ff66cc; box-shadow:0 0 8px #ff66cc; }
-.star.color-orange { background-color:#ffaa00; box-shadow:0 0 8px #ffaa00; }
-
-@media (prefers-reduced-motion: reduce){
-  .shooting-star{ animation: none !important; opacity: .5; }
-}
+/* Opzionale: differenzia lunghezza per velocità */
+.shooting-star.fast { --comet-len: 80px; }
+.shooting-star.slow { --comet-len: 120px; }
 </style>
-<style id="stars-magico-tuning">
-/* Più glow e brillantezza */
-.star{
-  box-shadow: 0 0 8px rgba(255,255,255,.85), 0 0 14px rgba(160,200,255,.35);
+<style id="comet-orientation-colors">
+:root{
+  --comet-core: #ffffff;
+  --comet-glow: #00ccff;     /* default glow */
+  --comet-glow-fast: #ffd700; /* oro per fast */
+  --comet-glow-slow: #b967ff; /* viola per slow */
 }
-/* Alcune stelle con alone più forte */
-.star.glow{
-  filter: saturate(1.2);
-  box-shadow:
-    0 0 10px rgba(255,255,255,.95),
-    0 0 22px rgba(200,160,255,.6),
-    0 0 36px rgba(255,215,0,.35);
+
+/* FAST (oro) – testa orientata nella direzione di marcia */
+.shooting-star.fast.horizontal{
+  background: linear-gradient(90deg,
+    rgba(255,255,255,0) 0%,
+    var(--comet-core) 82%,
+    var(--comet-glow-fast) 96%,
+    rgba(255,255,255,0) 100%);
 }
-/* Leggera variazione di scala durante il twinkle per più "magia" */
-@media (prefers-reduced-motion: no-preference){
-  .star{ transform-origin: 50% 50%; }
+.shooting-star.fast.reverse{
+  background: linear-gradient(270deg,
+    rgba(255,255,255,0) 0%,
+    var(--comet-core) 82%,
+    var(--comet-glow-fast) 96%,
+    rgba(255,255,255,0) 100%);
+}
+.shooting-star.fast.vertical{
+  background: linear-gradient( 90deg,
+    rgba(255,255,255,0) 0%,
+    var(--comet-core) 82%,
+    var(--comet-glow-fast) 96%,
+    rgba(255,255,255,0) 100%);
+}
+.shooting-star.fast.diagonal{
+  background: linear-gradient(135deg,
+    rgba(255,255,255,0) 0%,
+    var(--comet-core) 82%,
+    var(--comet-glow-fast) 96%,
+    rgba(255,255,255,0) 100%);
+}
+
+/* SLOW (viola) – testa orientata nella direzione di marcia */
+.shooting-star.slow.horizontal{
+  background: linear-gradient(90deg,
+    rgba(255,255,255,0) 0%,
+    var(--comet-core) 82%,
+    var(--comet-glow-slow) 96%,
+    rgba(255,255,255,0) 100%);
+}
+.shooting-star.slow.reverse{
+  background: linear-gradient(270deg,
+    rgba(255,255,255,0) 0%,
+    var(--comet-core) 82%,
+    var(--comet-glow-slow) 96%,
+    rgba(255,255,255,0) 100%);
+}
+.shooting-star.slow.vertical{
+  background: linear-gradient( 90deg,
+    rgba(255,255,255,0) 0%,
+    var(--comet-core) 82%,
+    var(--comet-glow-slow) 96%,
+    rgba(255,255,255,0) 100%);
+}
+.shooting-star.slow.diagonal{
+  background: linear-gradient(135deg,
+    rgba(255,255,255,0) 0%,
+    var(--comet-core) 82%,
+    var(--comet-glow-slow) 96%,
+    rgba(255,255,255,0) 100%);
+}
+
+/* opzionale: leggero glow extra per fast/slow */
+.shooting-star.fast{ box-shadow: 0 0 15px var(--comet-glow-fast), 0 0 25px #ffffff; }
+.shooting-star.slow{ box-shadow: 0 0 12px var(--comet-glow-slow), 0 0 22px #ffffff; }
+</style>
+<style id="comet-orientation-extra-variants">
+:root{
+  --comet-glow-romantica: #ff66cc; /* rosa */
+  --comet-glow-fuoco:     #ff7a00; /* arancio fuoco */
+}
+
+/* ROMANTICA (rosa) */
+.shooting-star.romantica.horizontal{
+  background: linear-gradient(90deg,
+    rgba(255,255,255,0) 0%,
+    var(--comet-core, #ffffff) 82%,
+    var(--comet-glow-romantica) 96%,
+    rgba(255,255,255,0) 100%);
+}
+.shooting-star.romantica.reverse{
+  background: linear-gradient(270deg,
+    rgba(255,255,255,0) 0%,
+    var(--comet-core, #ffffff) 82%,
+    var(--comet-glow-romantica) 96%,
+    rgba(255,255,255,0) 100%);
+}
+.shooting-star.romantica.vertical{
+  background: linear-gradient( 90deg,
+    rgba(255,255,255,0) 0%,
+    var(--comet-core, #ffffff) 82%,
+    var(--comet-glow-romantica) 96%,
+    rgba(255,255,255,0) 100%);
+}
+.shooting-star.romantica.diagonal{
+  background: linear-gradient(135deg,
+    rgba(255,255,255,0) 0%,
+    var(--comet-core, #ffffff) 82%,
+    var(--comet-glow-romantica) 96%,
+    rgba(255,255,255,0) 100%);
+}
+.shooting-star.romantica{
+  box-shadow: 0 0 14px var(--comet-glow-romantica), 0 0 24px #ffffff;
+}
+
+/* FUOCO (arancio/rosso) */
+.shooting-star.fuoco.horizontal{
+  background: linear-gradient(90deg,
+    rgba(255,255,255,0) 0%,
+    var(--comet-core, #ffffff) 82%,
+    var(--comet-glow-fuoco) 96%,
+    rgba(255,255,255,0) 100%);
+}
+.shooting-star.fuoco.reverse{
+  background: linear-gradient(270deg,
+    rgba(255,255,255,0) 0%,
+    var(--comet-core, #ffffff) 82%,
+    var(--comet-glow-fuoco) 96%,
+    rgba(255,255,255,0) 100%);
+}
+.shooting-star.fuoco.vertical{
+  background: linear-gradient( 90deg,
+    rgba(255,255,255,0) 0%,
+    var(--comet-core, #ffffff) 82%,
+    var(--comet-glow-fuoco) 96%,
+    rgba(255,255,255,0) 100%);
+}
+.shooting-star.fuoco.diagonal{
+  background: linear-gradient(135deg,
+    rgba(255,255,255,0) 0%,
+    var(--comet-core, #ffffff) 82%,
+    var(--comet-glow-fuoco) 96%,
+    rgba(255,255,255,0) 100%);
+}
+.shooting-star.fuoco{
+  box-shadow: 0 0 16px var(--comet-glow-fuoco), 0 0 26px #ffffff;
 }
 </style>
 </head>
@@ -6423,113 +6530,5 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(createMultipleShootingStars, 500);
 })();
 </script>
-<script id="stars-generator">
-(function () {
-  const container = document.getElementById('starsContainer') || document.querySelector('.stars-container');
-  if (!container) return;
-
-  const DPR = Math.max(1, Math.min(2.5, window.devicePixelRatio || 1));
-  const MAX_STARS = 1600;
-  const STAR_DENSITY = 1 / 2200;
-  const SHOOT_EVERY_MS = 3000;
-  const SHOOT_MIN = 2, SHOOT_MAX = 3;
-
-  let shootTimer = null;
-  const liveTimers = new Set();
-
-  const pick = (arr) => arr[(Math.random() * arr.length) | 0];
-  const area = () => window.innerWidth * window.innerHeight;
-
-  function setTracked(fn, ms){
-    const id = setTimeout(() => { liveTimers.delete(id); fn(); }, ms);
-    liveTimers.add(id); return id;
-  }
-  function clearTracked(){ for (const id of liveTimers) clearTimeout(id); liveTimers.clear(); }
-
-  function createStars(){
-    const frag = document.createDocumentFragment();
-    const count = Math.min(MAX_STARS, Math.max(200, Math.floor(area() * STAR_DENSITY * DPR)));
-    for (let i = 0; i < count; i++){
-      const el = document.createElement('div');
-      el.className = 'star';
-      el.classList.add(pick(['small','medium','large','xlarge']));
-      if (Math.random() < 0.90) el.classList.add(pick(['color-gold','color-purple','color-blue','color-pink','color-orange']));
-      el.style.left = (Math.random() * 100) + '%';
-      el.style.top  = (Math.random() * 100) + '%';
-      el.style.setProperty('--duration', (4 + Math.random() * 8) + 's');
-      el.style.setProperty('--delay', (Math.random() * 15) + 's');
-      if (Math.random() < 0.12) el.classList.add('glow');
-      frag.appendChild(el);
-    }
-    container.appendChild(frag);
-  }
-
-  function createShootingStar(){
-    const el = document.createElement('div');
-    el.className = 'shooting-star';
-    const dir = pick(['diagonal','horizontal','vertical','reverse']);
-    el.classList.add(dir);
-    if (Math.random() < 0.30) el.classList.add('fast');
-    if (Math.random() < 0.20) el.classList.add('slow');
-
-    switch(dir){
-      case 'diagonal':
-        el.style.left = '-150px';
-        el.style.top  = (Math.random() * Math.min(300, window.innerHeight * 0.6)) + 'px';
-        break;
-      case 'horizontal':
-        el.style.left = '-150px';
-        el.style.top  = (Math.random() * window.innerHeight) + 'px';
-        break;
-      case 'vertical':
-        el.style.left = (Math.random() * window.innerWidth) + 'px';
-        el.style.top  = '-150px';
-        break;
-      case 'reverse':
-        el.style.left = (window.innerWidth + 150) + 'px';
-        el.style.top  = (Math.random() * Math.min(300, window.innerHeight * 0.6)) + 'px';
-        break;
-    }
-
-    el.style.animationDelay = (Math.random() * 3) + 's';
-    el.style.animationIterationCount = '1';
-
-    container.appendChild(el);
-
-    const done = () => { el.removeEventListener('animationend', done); el.remove(); };
-    el.addEventListener('animationend', done);
-
-    const cs = getComputedStyle(el);
-    const durStr = (cs.animationDuration || '8s').split(',')[0].trim();
-    const dur = durStr.endsWith('ms') ? parseFloat(durStr) : parseFloat(durStr) * 1000;
-    setTracked(() => { if (el.isConnected) el.remove(); }, (dur || 8000) + 300);
-  }
-
-  function burst(){
-    const n = SHOOT_MIN + (Math.random() * (SHOOT_MAX - SHOOT_MIN + 1) | 0);
-    for (let i = 0; i < n; i++) setTracked(createShootingStar, i * 900);
-  }
-  function startShoot(){ if (!shootTimer){ burst(); shootTimer = setInterval(burst, SHOOT_EVERY_MS); } }
-  function stopShoot(){ clearInterval(shootTimer); shootTimer = null; }
-
-  createStars();
-  startShoot();
-
-  let rid;
-  window.addEventListener('resize', () => {
-    clearTimeout(rid);
-    rid = setTimeout(() => {
-      stopShoot(); clearTracked();
-      container.querySelectorAll('.star').forEach(n => n.remove());
-      createStars();
-      startShoot();
-    }, 200);
-  });
-
-  const rm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
-  if (rm && rm.matches){ stopShoot(); clearTracked(); }
-  document.addEventListener('visibilitychange', () => { if (document.hidden){ stopShoot(); clearTracked(); } else { startShoot(); } });
-  window.addEventListener('pagehide', () => { stopShoot(); clearTracked(); });
-})();
-</script></body>
+</body>
 </html>
