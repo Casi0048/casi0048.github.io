@@ -773,18 +773,7 @@ footer {
       transform: translateY(0) !important;
       }
       /* Pannello ricerca: chiudi */
-      #search-panel .search-close {
-      position: absolute;
-      top: 6px;
-      right: 8px;
-      background: transparent;
-      border: 1px solid rgba(255, 215, 0, .35);
-      color: #e9eef5;
-      border-radius: 6px;
-      padding: 2px 8px;
-      cursor: pointer;
-      font-size: .85rem;
-      }
+      /* duplicate of [#search-panel .search-close] removed for #search-panel .search-close */
       #search-panel .search-close:hover {
       background: rgba(255,255,255,0.06);
       }
@@ -1004,14 +993,6 @@ footer {
       });
     }
   });
-</script>
-<script id="search-config">
-  // prova prima l’URL del tuo dominio, poi i fallback relativi
-  window.SEARCH_INDEX_URLS = [
-    'https://www.echidisofia.org/search-index.json?v=20251007',
-    'search-index.json?v=20251016',
-    '/assets/search-index.json?v=20251016'
-  ];
 </script>
 <style id="search-clear-btn">
   /* Assicura il contesto */
@@ -2430,7 +2411,9 @@ window.googleTranslateElementInit = function(){
   will-change: transform, opacity;
 }
 </style>
-<script id="timeline-suggest-aria">// TIMELINE (ACCESSIBILITÀ)
+<script id="timeline-suggest-bundle">
+/* ---- BEGIN timeline-suggest-aria ---- */
+// TIMELINE (ACCESSIBILITÀ)
 // - Scopo: aggiunge role='region' e aria-label alla sezione della timeline, se mancanti.
 // - Non modifica stili/animazioni; migliora la fruibilità con tecnologie assistive.
 
@@ -2441,26 +2424,29 @@ document.addEventListener('DOMContentLoaded', function(){
     if (!sec.hasAttribute('aria-label')) sec.setAttribute('aria-label','Linea del tempo filosofica');
   }
 });
-</script><script id="timeline-suggest-nojs-flag">// FALLBACK NO-JS (FLAG)
+
+/* ---- END timeline-suggest-aria ---- */
+
+/* ---- BEGIN timeline-suggest-nojs-flag ---- */
+// FALLBACK NO-JS (FLAG)
 // - Scopo: aggiunge '.no-js' all'elemento <html> prima del DOMContentLoaded.
 // - Serve a mostrare la timeline se JS è disattivato (vedi CSS relativo).
-(function(){ document.documentElement.classList.add('no-js'); })();</script><style id="timeline-suggest-nojs-css">/* FALLBACK NO-JS (CSS) */
-/* - Scopo: se JS resta disattivato, mostra tutti gli elementi senza animazioni. */
-/* - Disattivabile rimuovendo questo blocco o la classe '.no-js' su <html>. */
+(function(){ document.documentElement.classList.add('no-js'); })();
+/* ---- END timeline-suggest-nojs-flag ---- */
 
-.no-js .timeline .timeline-item{
-  opacity: 1 !important;
-  transform: none !important;
-  transition: none !important;
-}
-</style><script id="timeline-suggest-nojs-remove">// FALLBACK NO-JS (REMOVE FLAG)
+/* ---- BEGIN timeline-suggest-nojs-remove ---- */
+// FALLBACK NO-JS (REMOVE FLAG)
 // - Scopo: rimuove la classe '.no-js' al DOMContentLoaded (JS attivo).
 // - Assicura che, con JS attivo, la timeline torni ad animarsi normalmente.
 
 document.addEventListener('DOMContentLoaded', function(){
   document.documentElement.classList.remove('no-js');
 });
-</script><script defer="defer" id="timeline-suggest-io">// TIMELINE (MICRO-STAGGER NON INVASIVO)
+
+/* ---- END timeline-suggest-nojs-remove ---- */
+
+/* ---- BEGIN timeline-suggest-io ---- */
+// TIMELINE (MICRO-STAGGER NON INVASIVO)
 // - Scopo: sfalsa leggermente i tempi d'ingresso delle card per migliorare la lettura visiva.
 // - Usa IntersectionObserver. Ritardo = index*70ms (+120ms per card a destra), max 600ms.
 // - Per disattivare: rimuovere questo script o impostare delayMs=0.
@@ -2503,7 +2489,18 @@ document.addEventListener('DOMContentLoaded', function(){
     });
   });
 });
-</script>
+
+/* ---- END timeline-suggest-io ---- */
+</script><style id="timeline-suggest-nojs-css">/* FALLBACK NO-JS (CSS) */
+/* - Scopo: se JS resta disattivato, mostra tutti gli elementi senza animazioni. */
+/* - Disattivabile rimuovendo questo blocco o la classe '.no-js' su <html>. */
+
+.no-js .timeline .timeline-item{
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+</style>
 <style>
 /* === THEME TOGGLE STYLES === */
 .theme-btn {
@@ -3394,8 +3391,8 @@ html {
 /* STELLE CADENTI - VERSIONE UNICA E COMPLETA */
 .shooting-star {
     position: absolute;
-    width: 120px;
-    height: 2px;
+    width: 20px;
+    height: 1px;
     background: linear-gradient(90deg, 
         transparent 0%, 
         #ffffff 20%, 
@@ -3494,192 +3491,17 @@ html {
     .star, .shooting-star { animation: none !important; opacity: 0.5; }
 }
 </style>
-<style id="comet-orientation">
-:root{
-  --comet-len: 100px;        /* lunghezza coda di default */
-  --comet-core: #ffffff;     /* nucleo (testa) */
-  --comet-glow: #00ccff;     /* alone (testa) */
-}
-/* Larghezza barra cometa controllata da variabile */
-.shooting-star{ width: var(--comet-len, 100px); height: 2px; }
-
-/* Orienta il picco luminoso verso la direzione di marcia (testa) */
-.shooting-star.horizontal{
-  background: linear-gradient(90deg,
-    rgba(255,255,255,0) 0%,
-    var(--comet-core) 82%,
-    var(--comet-glow) 96%,
-    rgba(255,255,255,0) 100%);
-}
-.shooting-star.reverse{
-  background: linear-gradient(270deg,
-    rgba(255,255,255,0) 0%,
-    var(--comet-core) 82%,
-    var(--comet-glow) 96%,
-    rgba(255,255,255,0) 100%);
-}
-.shooting-star.vertical{
-  background: linear-gradient( 90deg,
-    rgba(255,255,255,0) 0%,
-    var(--comet-core) 82%,
-    var(--comet-glow) 96%,
-    rgba(255,255,255,0) 100%);
-}
-.shooting-star.diagonal{
-  background: linear-gradient(135deg,
-    rgba(255,255,255,0) 0%,
-    var(--comet-core) 82%,
-    var(--comet-glow) 96%,
-    rgba(255,255,255,0) 100%);
-}
-
-/* Opzionale: differenzia lunghezza per velocità */
-.shooting-star.fast { --comet-len: 80px; }
-.shooting-star.slow { --comet-len: 120px; }
-</style>
-<style id="comet-orientation-colors">
-:root{
-  --comet-core: #ffffff;
-  --comet-glow: #00ccff;     /* default glow */
-  --comet-glow-fast: #ffd700; /* oro per fast */
-  --comet-glow-slow: #b967ff; /* viola per slow */
-}
-
-/* FAST (oro) – testa orientata nella direzione di marcia */
-.shooting-star.fast.horizontal{
-  background: linear-gradient(90deg,
-    rgba(255,255,255,0) 0%,
-    var(--comet-core) 82%,
-    var(--comet-glow-fast) 96%,
-    rgba(255,255,255,0) 100%);
-}
-.shooting-star.fast.reverse{
-  background: linear-gradient(270deg,
-    rgba(255,255,255,0) 0%,
-    var(--comet-core) 82%,
-    var(--comet-glow-fast) 96%,
-    rgba(255,255,255,0) 100%);
-}
-.shooting-star.fast.vertical{
-  background: linear-gradient( 90deg,
-    rgba(255,255,255,0) 0%,
-    var(--comet-core) 82%,
-    var(--comet-glow-fast) 96%,
-    rgba(255,255,255,0) 100%);
-}
-.shooting-star.fast.diagonal{
-  background: linear-gradient(135deg,
-    rgba(255,255,255,0) 0%,
-    var(--comet-core) 82%,
-    var(--comet-glow-fast) 96%,
-    rgba(255,255,255,0) 100%);
-}
-
-/* SLOW (viola) – testa orientata nella direzione di marcia */
-.shooting-star.slow.horizontal{
-  background: linear-gradient(90deg,
-    rgba(255,255,255,0) 0%,
-    var(--comet-core) 82%,
-    var(--comet-glow-slow) 96%,
-    rgba(255,255,255,0) 100%);
-}
-.shooting-star.slow.reverse{
-  background: linear-gradient(270deg,
-    rgba(255,255,255,0) 0%,
-    var(--comet-core) 82%,
-    var(--comet-glow-slow) 96%,
-    rgba(255,255,255,0) 100%);
-}
-.shooting-star.slow.vertical{
-  background: linear-gradient( 90deg,
-    rgba(255,255,255,0) 0%,
-    var(--comet-core) 82%,
-    var(--comet-glow-slow) 96%,
-    rgba(255,255,255,0) 100%);
-}
-.shooting-star.slow.diagonal{
-  background: linear-gradient(135deg,
-    rgba(255,255,255,0) 0%,
-    var(--comet-core) 82%,
-    var(--comet-glow-slow) 96%,
-    rgba(255,255,255,0) 100%);
-}
-
-/* opzionale: leggero glow extra per fast/slow */
-.shooting-star.fast{ box-shadow: 0 0 15px var(--comet-glow-fast), 0 0 25px #ffffff; }
-.shooting-star.slow{ box-shadow: 0 0 12px var(--comet-glow-slow), 0 0 22px #ffffff; }
-</style>
-<style id="comet-orientation-extra-variants">
-:root{
-  --comet-glow-romantica: #ff66cc; /* rosa */
-  --comet-glow-fuoco:     #ff7a00; /* arancio fuoco */
-}
-
-/* ROMANTICA (rosa) */
-.shooting-star.romantica.horizontal{
-  background: linear-gradient(90deg,
-    rgba(255,255,255,0) 0%,
-    var(--comet-core, #ffffff) 82%,
-    var(--comet-glow-romantica) 96%,
-    rgba(255,255,255,0) 100%);
-}
-.shooting-star.romantica.reverse{
-  background: linear-gradient(270deg,
-    rgba(255,255,255,0) 0%,
-    var(--comet-core, #ffffff) 82%,
-    var(--comet-glow-romantica) 96%,
-    rgba(255,255,255,0) 100%);
-}
-.shooting-star.romantica.vertical{
-  background: linear-gradient( 90deg,
-    rgba(255,255,255,0) 0%,
-    var(--comet-core, #ffffff) 82%,
-    var(--comet-glow-romantica) 96%,
-    rgba(255,255,255,0) 100%);
-}
-.shooting-star.romantica.diagonal{
-  background: linear-gradient(135deg,
-    rgba(255,255,255,0) 0%,
-    var(--comet-core, #ffffff) 82%,
-    var(--comet-glow-romantica) 96%,
-    rgba(255,255,255,0) 100%);
-}
-.shooting-star.romantica{
-  box-shadow: 0 0 14px var(--comet-glow-romantica), 0 0 24px #ffffff;
-}
-
-/* FUOCO (arancio/rosso) */
-.shooting-star.fuoco.horizontal{
-  background: linear-gradient(90deg,
-    rgba(255,255,255,0) 0%,
-    var(--comet-core, #ffffff) 82%,
-    var(--comet-glow-fuoco) 96%,
-    rgba(255,255,255,0) 100%);
-}
-.shooting-star.fuoco.reverse{
-  background: linear-gradient(270deg,
-    rgba(255,255,255,0) 0%,
-    var(--comet-core, #ffffff) 82%,
-    var(--comet-glow-fuoco) 96%,
-    rgba(255,255,255,0) 100%);
-}
-.shooting-star.fuoco.vertical{
-  background: linear-gradient( 90deg,
-    rgba(255,255,255,0) 0%,
-    var(--comet-core, #ffffff) 82%,
-    var(--comet-glow-fuoco) 96%,
-    rgba(255,255,255,0) 100%);
-}
-.shooting-star.fuoco.diagonal{
-  background: linear-gradient(135deg,
-    rgba(255,255,255,0) 0%,
-    var(--comet-core, #ffffff) 82%,
-    var(--comet-glow-fuoco) 96%,
-    rgba(255,255,255,0) 100%);
-}
-.shooting-star.fuoco{
-  box-shadow: 0 0 16px var(--comet-glow-fuoco), 0 0 26px #ffffff;
-}
+<style>
+    /* Stili per le cometine variopinte */
+    .tiny-comets-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 9;
+    }
 </style>
 </head>
 <body><div hidden="True" id="search-backdrop"></div><div class="search-panel" id="search-panel"><div class="search-header"><h3 class="search-title">Risultati</h3><button aria-label="Chiudi pannello" class="search-close" id="search-close" type="button">Chiudi</button></div><div class="search-results results-scroll" id="search-results"><div class="sp-item" data-placeholder="true"><h4 class="result-title">Suggerimento</h4><p class="result-desc">Digita nel campo di ricerca in alto per vedere i risultati qui.</p></div></div></div>
@@ -4432,6 +4254,8 @@ html {
 </div>
 <!-- Contenuto principale -->
 <main>
+<!-- Canvas per le piccole cometine variopinte -->
+<canvas class="tiny-comets-canvas" id="tiny-comets"></canvas>
 <section class="welcome-section">
 <h1 class="welcome-title">Benvenuto in<br/>Echi di Sofia</h1>
 <p class="welcome-subtitle">Un viaggio tra storia, stelle e pensiero</p>
@@ -4597,6 +4421,185 @@ html {
 </div>
 </div>
 <script>
+  // === PERFORMANCE & ERROR HANDLING - UNIFICATO ===
+
+document.addEventListener('DOMContentLoaded', function() {
+  
+  // 1. PRELOAD RISORSE CRITICHE
+  const criticalResources = [
+    'https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700',
+    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css'
+  ];
+  
+  criticalResources.forEach(resource => {
+    const link = document.createElement('link');
+    if (resource.includes('fonts.googleapis.com')) {
+      link.rel = 'preconnect';
+      link.href = 'https://fonts.googleapis.com';
+      document.head.appendChild(link);
+      
+      const link2 = document.createElement('link');
+      link2.rel = 'preconnect';
+      link2.href = 'https://fonts.gstatic.com';
+      link2.crossOrigin = true;
+      document.head.appendChild(link2);
+    }
+    
+    const preload = document.createElement('link');
+    preload.rel = 'preload';
+    preload.href = resource;
+    preload.as = resource.includes('font') ? 'font' : 'style';
+    preload.crossOrigin = 'anonymous';
+    document.head.appendChild(preload);
+  });
+
+  // 2. LAZY LOADING IMMAGINI TIMELINE
+  const lazyImages = document.querySelectorAll('.timeline-content img[data-src]');
+  
+  if ('IntersectionObserver' in window) {
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          safeEffect(() => {
+            img.src = img.dataset.src;
+            img.removeAttribute('data-src');
+            img.classList.add('fade-in');
+          }, () => {
+            // Fallback: carica immediatamente
+            img.src = img.dataset.src;
+          });
+          observer.unobserve(img);
+        }
+      });
+    }, { 
+      rootMargin: '50px 0px',
+      threshold: 0.1
+    });
+
+    lazyImages.forEach(img => imageObserver.observe(img));
+  } else {
+    // Fallback per browser senza IntersectionObserver
+    lazyImages.forEach(img => {
+      img.src = img.dataset.src;
+      img.removeAttribute('data-src');
+    });
+  }
+
+  // 3. GESTIONE ERRORI ROBUSTA
+  function safeEffect(callback, fallback = null) {
+    try {
+      if (typeof callback === 'function') {
+        callback();
+      }
+    } catch (error) {
+      console.warn('Effect failed:', error.message);
+      if (fallback && typeof fallback === 'function') {
+        try {
+          fallback();
+        } catch (fallbackError) {
+          console.error('Fallback also failed:', fallbackError);
+        }
+      }
+    }
+  }
+
+  // 4. INIZIALIZZAZIONE SICURA EFFETTI STELLARI
+  safeEffect(
+    () => {
+      // Qui va il tuo initStars() esistente
+      if (typeof initStars === 'function') {
+        initStars();
+      } else {
+        // Se initStars non esiste, fallback base
+        createBasicStars();
+      }
+    },
+    () => {
+      console.log('Stars effect disabled due to performance issues');
+      const starsContainer = document.getElementById('starsContainer');
+      if (starsContainer) {
+        starsContainer.style.display = 'none';
+      }
+    }
+  );
+
+  // 5. FALLBACK STELLE SEMPLIFICATO
+  function createBasicStars() {
+    const container = document.getElementById('starsContainer');
+    if (!container) return;
+    
+    // Versione semplificata per performance
+    for (let i = 0; i < 50; i++) {
+      const star = document.createElement('div');
+      star.className = 'star small';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.animationDelay = Math.random() * 5 + 's';
+      container.appendChild(star);
+    }
+  }
+
+  // 6. MONITORAGGIO PERFORMANCE
+  if ('performance' in window) {
+    window.addEventListener('load', () => {
+      const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
+      console.log(`Page loaded in ${loadTime}ms`);
+      
+      if (loadTime > 3000) {
+        console.warn('Page load time exceeds 3 seconds - consider optimization');
+      }
+    });
+  }
+
+  // 7. GESTIONE ERRORI GLOBALE
+  window.addEventListener('error', (event) => {
+    console.error('Global error caught:', event.error);
+    // Non bloccare l'esperienza utente per errori minori
+  });
+
+});
+
+// 8. GESTIONE OFFLINE
+window.addEventListener('online', () => {
+  console.log('Connection restored');
+  document.body.classList.remove('offline');
+});
+
+window.addEventListener('offline', () => {
+  console.log('Connection lost');
+  document.body.classList.add('offline');
+});
+
+// CSS aggiuntivo per stati speciali
+const performanceCSS = `
+  .fade-in {
+    animation: fadeIn 0.5s ease-in;
+  }
+  
+  .offline {
+    opacity: 0.8;
+    filter: grayscale(0.3);
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    .fade-in {
+      animation: none;
+    }
+  }
+`;
+
+// Inietta CSS performance
+const style = document.createElement('style');
+style.textContent = performanceCSS;
+document.head.appendChild(style);
+</script>
+<script>
       document.addEventListener('DOMContentLoaded', ()=>{
         const effects = document.getElementById('effects-ctrl');
         if(effects){
@@ -4608,146 +4611,6 @@ html {
       window.addEventListener('load',()=>{const a=document.getElementById('myAudio'),btn=document.getElementById('playPause'),tm=document.getElementById('time'),v=document.getElementById('volume');if(!a||!btn)return;function f(s){if(!isFinite(s))return'0:00';const m=Math.floor(s/60),c=Math.floor(s%60);return m+':'+(c<10?'0'+c:c)}function u(){tm.textContent=`${f(a.currentTime)} / ${f(a.duration)}`}v.value=.8;a.volume=parseFloat(v.value);btn.addEventListener('click',()=>{if(a.paused){a.play().catch(()=>{});btn.textContent='⏸️'}else{a.pause();btn.textContent='▶️'}});v.addEventListener('input',()=>a.volume=parseFloat(v.value));a.addEventListener('timeupdate',u);a.addEventListener('loadedmetadata',u);a.addEventListener('ended',()=>{btn.textContent='▶️'})});
       (function(){const b=document.getElementById('russell-btn'),h=document.getElementById('russell-hint'),a=document.getElementById('russell-audio');if(!b||!a)return;let u=false;function lk(){if(u)return;u=true;a.muted=false;a.play().then(()=>{a.pause();a.currentTime=0}).catch(()=>{});window.removeEventListener('pointerdown',lk,{capture:true});window.removeEventListener('keydown',lk,{capture:true})}window.addEventListener('pointerdown',lk,{once:true,capture:true,passive:true});window.addEventListener('keydown',lk,{once:true,capture:true});b.addEventListener('click',()=>{try{a.currentTime=0;a.play().catch(()=>{})}catch(_){ }})})();
       (function(){const btn=document.getElementById('btn-thunder'),th=document.getElementById('thunder-sound'),ex=document.getElementById('explosionSound'),ov=document.getElementById('lightning'),bo=document.getElementById('bolt');if(!btn||!th||!ov||!bo)return;let unlocked=false;async function unlockOnce(){if(unlocked)return;unlocked=true;for(const s of [th,ex]){try{s.muted=false;await s.play();s.pause();s.currentTime=0}catch(_){}}}window.addEventListener('pointerdown',unlockOnce,{once:true,passive:true,capture:true});window.addEventListener('keydown',unlockOnce,{once:true,capture:true});let on=false;function up(){btn.classList.toggle('active',on);btn.setAttribute('aria-pressed',on?'true':'false');btn.textContent=on?'⚡ Tuono: ON':'⚡ Tuono'}btn.addEventListener('click',e=>{e.preventDefault();on=!on;if(on){try{th.currentTime=0;softPlay(th, 1.0, 140).catch(()=>{})}catch(_){}}else{try{th.pause();th.currentTime=0}catch(_){}}up()});up();function flash(){const x=15+Math.random()*70,y=10+Math.random()*65,ang=-25+Math.random()*50,sy=.8+Math.random()*1.2;ov.style.transition='none';ov.offsetHeight;ov.style.background=`radial-gradient(circle at ${x}% ${y}%, rgba(255,255,255,.95), rgba(255,255,255,.22) 40%, transparent 65%)`;ov.style.opacity='1';ov.style.transition='opacity 80ms ease-out';setTimeout(()=>ov.style.opacity='0',140);bo.style.left=x+'%';bo.style.top=y+'%';bo.style.transform=`translate(-50%,-50%) rotate(${ang}deg) scaleY(${sy})`;bo.style.transition='transform 90ms ease-out, opacity 280ms ease-out';bo.style.opacity='1';setTimeout(()=>bo.style.opacity='0',180);if(on){try{th.currentTime=0;softPlay(th, 1.0, 140).catch(()=>{})}catch(_){}}}(function schedule(){setTimeout(()=>{flash();schedule()},10000+Math.random()*5000)})();document.getElementById('explode-btn')?.addEventListener('click',()=>{try{ex.muted=false;ex.volume=1.0;ex.currentTime=0;softPlay(ex, 1.0, 140).catch(()=>{})}catch(_){}})})();
-    </script>
-<script id="search-init-smart">
-      (function(){
-        // Disattiva eventuale vecchio init (se presente)
-        document.querySelectorAll('#search-init-robust').forEach(n => n.remove());
-      
-        const LIMIT = 20; // quante righe mostrare
-        const input = document.getElementById('site-search');
-        if (!input) return;
-      
-        // Pannello risultati: usa il tuo se c'è, altrimenti lo crea
-        function ensurePanel(){
-          let panel = document.querySelector('#search-panel, #searchPanel, .search-panel, .results-panel');
-          if (!panel) {
-            panel = document.createElement('div');
-            panel.id = 'search-panel';
-            panel.innerHTML = `
-              <div class="search-header">
-                <h4 class="search-title">Risultati della ricerca</h4>
-                <button class="search-close" type="button" aria-label="Chiudi">Chiudi ✖</button>
-              </div>
-              <div id="search-results" class="search-results"></div>
-            `;
-            document.body.appendChild(panel);
-          }
-          // chiudi/ESC
-          const closeBtn = panel.querySelector('.search-close, #search-close, [data-role="search-close"]');
-          const close = ()=> panel.style.display='none';
-          closeBtn && closeBtn.addEventListener('click', close);
-          window.addEventListener('keydown', e=>{ if(e.key==='Escape') close(); });
-          return panel;
-        }
-        const panel = ensurePanel();
-        const resultsWrap = panel.querySelector('#search-results, .search-results, #searchResults');
-      
-        // ---------- caricamento indice ----------
-        let INDEX = [];
-        function haveIndex(){ return Array.isArray(INDEX) && INDEX.length; }
-      
-        function norm(s){
-          const NORM_MAP = {'ł':'l','Ł':'l','ß':'ss','ø':'o','æ':'ae','œ':'oe'};
-          return (s||'').toString().toLowerCase()
-            .replace(/[łŁßøæœ]/g, m=>NORM_MAP[m]||m)
-            .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
-            .replace(/\s+/g,' ').trim();
-        }
-        function escapeHTML(s){ return (s||'').replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
-        function hi(hay, q){ // evidenzia la query (semplice)
-          if(!q) return escapeHTML(hay||'');
-          const a = escapeHTML(hay||''); const n = norm(hay); const nq = norm(q);
-          if(!nq) return a;
-          // trova pos (prima occorrenza)
-          const pos = n.indexOf(nq);
-          if(pos<0) return a;
-          // ricostruisci evidenziando il range (approssimando con lunghezze uguali: ok per ASCII)
-          const pre  = escapeHTML((hay||'').slice(0,pos));
-          const mid  = escapeHTML((hay||'').slice(pos, pos+nq.length));
-          const post = escapeHTML((hay||'').slice(pos+nq.length));
-          return `${pre}<mark>${mid}</mark>${post}`;
-        }
-      
-        function score(query, item){
-          const q = norm(query); if(!q) return 0;
-          const t = norm(item.title), d = norm(item.desc), u = norm(item.url);
-          // parziali: includes su titolo/desc/url
-          let s = 0;
-          if (t.includes(q)) s += 40;
-          if (d.includes(q)) s += 20;
-          if (u.includes(q)) s += 10;
-          // piccoli bonus per token (migliora ordinamento)
-          for (const tok of q.split(' ').filter(Boolean)){
-            if (t.startsWith(tok+' ')||t.endsWith(' '+tok)||t.includes(' '+tok+' ')) s+=12;
-            if (d.includes(tok)) s+=6;
-          }
-          return s;
-        }
-      
-        async function loadIndex(){
-          if (Array.isArray(window.SEARCH_INDEX) && window.SEARCH_INDEX.length){
-            INDEX = window.SEARCH_INDEX;
-            return;
-          }
-          const candidates = (window.SEARCH_INDEX_URLS && window.SEARCH_INDEX_URLS.length)
-            ? window.SEARCH_INDEX_URLS
-            : ['search-index.json','/search-index.json','/assets/search-index.json'];
-          for (const url of candidates){
-            try{
-              const r = await fetch(url, {cache:'no-store'});
-              if (r.ok) { INDEX = await r.json(); return; }
-            }catch(e){}
-          }
-        }
-      
-        function render(results, q){
-          resultsWrap.innerHTML = '';
-          if (!results.length){
-            resultsWrap.innerHTML = `<div class="result"><em>Nessun risultato</em></div>`;
-            return;
-          }
-          for (const it of results.slice(0, LIMIT)){
-            const title = hi(it.title, q);
-            const desc  = hi(it.desc||'', q);
-            const url   = escapeHTML(it.url||'#');
-            const row = document.createElement('div');
-            row.className = 'result';
-            row.innerHTML = `
-              <h4 class="result-title"><a href="${url}">${title}</a></h4>
-              ${desc ? `<div class="result-desc">${desc}</div>` : ``}
-              <div class="result-source">${escapeHTML((new URL(url, location.href)).hostname || '')}</div>
-            `;
-            resultsWrap.appendChild(row);
-          }
-        }
-      
-        function search(q){
-          if(!haveIndex() || !q.trim()){
-            panel.style.display = 'none';
-            resultsWrap.innerHTML = '';
-            return;
-          }
-          const ranked = INDEX
-            .map(it => ({ it, s: score(q, it) }))
-            .filter(x => x.s > 0)
-            .sort((a,b)=> b.s - a.s)
-            .map(x => x.it);
-          panel.style.display = 'block';
-          render(ranked, q);
-        }
-      
-        // bind input (debounce leggero)
-        let t = 0;
-        input.addEventListener('input', ()=>{
-          clearTimeout(t);
-          const q = input.value;
-          t = setTimeout(()=> search(q), 90);
-        });
-      
-        // bootstrap: carica indice e se c'è testo in input, cerca subito
-        loadIndex().then(()=>{ if (input.value.trim()) search(input.value); });
-      })();
     </script>
 <script id="dict-compact-js">
 (function(){
@@ -4903,100 +4766,6 @@ html {
           // opzionale: distanza tra la riga dei controlli slider e il player
           parent.style.rowGap = parent.style.rowGap || '.5rem';
         }
-      })();
-    </script>
-<script id="search-related-augment">
-      (function(){
-        const input       = document.getElementById('site-search');
-        const resultsWrap = document.querySelector('#search-results, .search-results, #searchResults');
-        const INDEX       = Array.isArray(window.SEARCH_INDEX) ? window.SEARCH_INDEX : null;
-        if(!input || !resultsWrap || !INDEX) return;
-      
-        // normalizza (accent-fold: it/pl ecc.)
-        const NORM_MAP = {'ł':'l','Ł':'l','ß':'ss','ø':'o','æ':'ae','œ':'oe'};
-        function norm(s){
-          return (s||'').toString().toLowerCase()
-            .replace(/[łŁßøæœ]/g, m=>NORM_MAP[m]||m)
-            .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
-            .replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim();
-        }
-      
-        // scoring semplice: titolo >> descrizione > url + bonus per token match
-        function score(query, item){
-          const q = norm(query); if(!q) return 0;
-          const t = norm(item.title), d = norm(item.desc), u = norm(item.url);
-          let s=0;
-          if(t===q) s+=100;
-          if(t.includes(q)) s+=40;
-          if(d.includes(q)) s+=20;
-          if(u.includes(q)) s+=10;
-          const toks = q.split(' ').filter(Boolean);
-          for(const tok of toks){
-            if(t.startsWith(tok+' ')||t.endsWith(' '+tok)||t.includes(' '+tok+' ')) s+=12;
-            if(d.includes(tok)) s+=6;
-            if(u.includes(tok)) s+=3;
-          }
-          return s;
-        }
-      
-        function grabShownUrls(){
-          const set = new Set();
-          resultsWrap.querySelectorAll('a[href]').forEach(a=> set.add(a.getAttribute('href')));
-          return set;
-        }
-      
-        function topRelated(query, exclude, limit=6){
-          return INDEX.map(it=>({it, s:score(query,it)}))
-            .filter(x=>x.s>0 && !exclude.has(x.it.url))
-            .sort((a,b)=>b.s-a.s)
-            .slice(0, limit)
-            .map(x=>x.it);
-        }
-      
-        function ensureBox(){
-          let box = document.getElementById('related-results');
-          if(!box){
-            box = document.createElement('div');
-            box.id = 'related-results';
-            box.className = 'related-results';
-            box.innerHTML = '<h4 class="related-header">Risultati correlati (ricerca ampliata)</h4><ul class="related-list"></ul>';
-            resultsWrap.appendChild(box);
-          }
-          return box;
-        }
-      
-        function renderRelated(list){
-          const box = ensureBox();
-          const ul  = box.querySelector('.related-list');
-          ul.innerHTML = '';
-          list.forEach(it=>{
-            const li = document.createElement('li');
-            li.className = 'related-item';
-            li.innerHTML = `<a href="${it.url}"><strong>${it.title}</strong></a>` +
-                           (it.desc ? `<div class="meta">${it.desc}</div>` : '');
-            ul.appendChild(li);
-          });
-          box.style.display = list.length ? 'block' : 'none';
-        }
-      
-        function updateRelated(){
-          const q = input.value || '';
-          if(!q.trim()){ renderRelated([]); return; }
-          const shown = grabShownUrls();
-          // Se il pannello mostra *pochissimi* risultati (es. 0–1), proponi correlati
-          const visibleItems = resultsWrap.querySelectorAll(':scope > *'); // fallback generico
-          if(visibleItems.length <= 1){
-            renderRelated(topRelated(q, shown, 6));
-          }else{
-            renderRelated([]);
-          }
-        }
-      
-        // osserva cambi al pannello + input
-        const mo = new MutationObserver(()=> updateRelated());
-        mo.observe(resultsWrap, {childList:true, subtree:true});
-        input.addEventListener('input', ()=> setTimeout(updateRelated, 80));
-        document.addEventListener('DOMContentLoaded', updateRelated);
       })();
     </script>
 <script id="search-clear-js">
@@ -5811,7 +5580,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Stelle visibili
 document.addEventListener('DOMContentLoaded', function() {
   const starsContainer = document.getElementById('stars');
-  const starCount = 400;
+  const starCount = 800;
   
   for (let i = 0; i < starCount; i++) {
     const star = document.createElement('div');
@@ -5932,12 +5701,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }else{
     init();
   }
-})();
-</script>
-<script id="speed-readout-js">
-(function(){
-    function clamp(n,min,max){ return Math.max(min, Math.min(max, n)); }
-    // Il resto del codice JavaScript...
 })();
 </script>
 <script id="sfx-unlock-silent">
@@ -6262,9 +6025,6 @@ document.addEventListener('click', function(e){
 });
 </script>
 <script>
-  window.SEARCH_INDEX_URLS = ['/search-index.json?v=2','/assets/search-index.json?v=2'];
-</script>
-<script>
   // Aggiungi questo script per ottimizzare le animazioni
 document.addEventListener('DOMContentLoaded', function() {
   // Usa requestAnimationFrame per animazioni fluide
@@ -6276,109 +6036,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   optimizeAnimations();
 });
-</script>
-<script>
-// === Search panel animation helper ===
-(function(){
-  function qs(sel){ return document.querySelector(sel); }
-  function qsa(sel){ return Array.from(document.querySelectorAll(sel)); }
-
-  window.animateSearchResults = function(){
-    const panel  = qs('#search-panel, #searchPanel, .search-panel, .results-panel');
-    const scroll = qs('#search-results, #searchResults, .search-results, .results-scroll');
-    const items  = scroll ? qsa(':scope > *').map((el, i) => { el.style.setProperty('--i', i); return el; }) : [];
-    const backdrop = document.getElementById('search-backdrop');
-
-    if (panel && !panel.classList.contains('open')) panel.classList.add('open');
-    if (backdrop){
-      backdrop.hidden = false;
-      backdrop.classList.add('open');
-      backdrop.onclick = () => {
-        panel && panel.classList.remove('open');
-        backdrop.classList.remove('open');
-        setTimeout(() => { backdrop.hidden = true; }, 200);
-      };
-    }
-  };
-
-  // Facoltativo: chiusura via ESC
-  document.addEventListener('keydown', (e)=>{
-    if (e.key === 'Escape'){
-      const panel = qs('#search-panel.open, #searchPanel.open, .search-panel.open, .results-panel.open');
-      const backdrop = document.getElementById('search-backdrop');
-      if (panel){
-        panel.classList.remove('open');
-        if (backdrop){ backdrop.classList.remove('open'); setTimeout(()=>backdrop.hidden = true, 200); }
-      }
-    }
-  });
-})();
-</script><script>
-    (function(){
-      const panel = document.querySelector('#search-panel');
-      const btnClose = document.getElementById('search-close');
-      const backdrop = document.getElementById('search-backdrop');
-      if(btnClose){
-        btnClose.addEventListener('click', function(){
-          panel && panel.classList.remove('open');
-          if(backdrop){ backdrop.classList.remove('open'); setTimeout(()=>backdrop.hidden=true, 200); }
-        });
-      }
-      // expose a helper to set results (optional)
-      window.setSearchResults = function(html){
-        const tgt = document.querySelector('#search-results, #searchResults, .search-results, .results-scroll');
-        if(!tgt) return;
-        tgt.innerHTML = html;
-        window.animateSearchResults && window.animateSearchResults();
-      };
-    })();
-    </script><script id="search-auto-open">
-// === Auto-open search panel when real results are injected ===
-(function(){
-  const panel    = document.querySelector('#search-panel, #searchPanel, .search-panel, .results-panel');
-  const box      = document.querySelector('#search-results, #searchResults, .search-results, .results-scroll');
-  const backdrop = document.getElementById('search-backdrop');
-  if (!panel || !box) return;
-
-  // Only count nodes that look like real results (not placeholders)
-  function hasRealItems() {
-    // Match common result item patterns, exclude placeholders
-    const sel = '.sp-item:not([data-placeholder]), .search-result, .result, li.result-item, .result-title a';
-    return box.querySelector(sel) !== null;
-  }
-
-  function forceClose(){
-    panel.classList.remove('open');
-    if (backdrop){ backdrop.classList.remove('open'); backdrop.hidden = true; }
-  }
-  function openPanel(){
-    if (!panel.classList.contains('open')) panel.classList.add('open');
-    if (backdrop){
-      backdrop.hidden = false;
-      backdrop.classList.add('open');
-      backdrop.onclick = () => forceClose();
-    }
-    if (typeof window.animateSearchResults === 'function'){
-      window.animateSearchResults();
-    } else {
-      Array.from(box.children).forEach((el,i)=> el.style.setProperty('--i', i));
-    }
-  }
-
-  // Observe child changes
-  const mo = new MutationObserver(()=>{
-    if (hasRealItems()) openPanel();
-    else forceClose();
-  });
-  mo.observe(box, { childList: true, subtree: true });
-
-  // Ensure closed on load unless there are real items
-  if (!hasRealItems()) forceClose();
-  else openPanel();
-
-  // ESC to close
-  document.addEventListener('keydown', (e)=>{ if (e.key === 'Escape') forceClose(); });
-})();
 </script>
 <!-- Pulsante Torna Su -->
 <!-- Con effetto glow -->
@@ -6431,7 +6088,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!container) return;
     
     // Crea stelle normali - QUESTA RIGA MANCAVA!
-    const starCount = Math.min(900, Math.floor((window.innerWidth * window.innerHeight) / 3000));
+    const starCount = Math.min(900, Math.floor((window.innerWidth * window.innerHeight) / 2000));
     for (let i = 0; i < starCount; i++) createStar();
     
     // Crea stelle cadenti immediatamente
@@ -6530,5 +6187,545 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(createMultipleShootingStars, 500);
 })();
 </script>
-</body>
+<script>
+    (function() {
+        const canvas = document.getElementById("tiny-comets");
+        const ctx = canvas.getContext("2d");
+        
+        let w, h;
+        const comets = [];
+        const colors = [
+            '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7',
+            '#DDA0DD', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E9',
+            '#F8C471', '#82E0AA', '#F1948A', '#85C1E9', '#D7BDE2'
+        ];
+        
+        function resizeCanvas() {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+        }
+        
+        class TinyComet {
+            constructor() {
+                this.reset();
+                // Direzione casuale (0-360 gradi)
+                this.angle = Math.random() * Math.PI * 2;
+                this.speed = Math.random() * 2 + 0.5;
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+                this.size = Math.random() * 3 + 1;
+                this.trailLength = Math.floor(Math.random() * 8) + 4;
+                this.trail = [];
+            }
+            
+            reset() {
+                // Posizione iniziale casuale su tutti i bordi
+                const side = Math.floor(Math.random() * 4);
+                switch(side) {
+                    case 0: // Alto
+                        this.x = Math.random() * w;
+                        this.y = -10;
+                        break;
+                    case 1: // Destra
+                        this.x = w + 10;
+                        this.y = Math.random() * h;
+                        break;
+                    case 2: // Basso
+                        this.x = Math.random() * w;
+                        this.y = h + 10;
+                        break;
+                    case 3: // Sinistra
+                        this.x = -10;
+                        this.y = Math.random() * h;
+                        break;
+                }
+                
+                this.angle = Math.random() * Math.PI * 2;
+                this.speed = Math.random() * 2 + 0.5;
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+                this.size = Math.random() * 3 + 1;
+                this.trailLength = Math.floor(Math.random() * 8) + 4;
+                this.trail = [];
+                this.life = 0;
+                this.maxLife = 200 + Math.random() * 300;
+            }
+            
+            update() {
+                this.life++;
+                
+                // Movimento basato sull'angolo
+                this.x += Math.cos(this.angle) * this.speed;
+                this.y += Math.sin(this.angle) * this.speed;
+                
+                // Aggiungi punto alla scia
+                this.trail.push({x: this.x, y: this.y});
+                if (this.trail.length > this.trailLength) {
+                    this.trail.shift();
+                }
+                
+                // Reset se esce dallo schermo o vita terminata
+                if (this.x < -50 || this.x > w + 50 || 
+                    this.y < -50 || this.y > h + 50 ||
+                    this.life > this.maxLife) {
+                    this.reset();
+                }
+            }
+            
+            draw() {
+                // Disegna la scia
+                for (let i = 0; i < this.trail.length; i++) {
+                    const point = this.trail[i];
+                    const alpha = i / this.trail.length * 0.7;
+                    const size = this.size * (i / this.trail.length);
+                    
+                    ctx.beginPath();
+                    ctx.arc(point.x, point.y, size, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color.replace(')', `, ${alpha})`).replace('rgb', 'rgba');
+                    ctx.fill();
+                }
+                
+                // Disegna la testa della cometa
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                
+                // Aggiungi un piccolo bagliore
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size * 1.5, 0, Math.PI * 2);
+                const gradient = ctx.createRadialGradient(
+                    this.x, this.y, 0,
+                    this.x, this.y, this.size * 1.5
+                );
+                gradient.addColorStop(0, this.color.replace(')', ', 0.8)').replace('rgb', 'rgba'));
+                gradient.addColorStop(1, this.color.replace(')', ', 0)').replace('rgb', 'rgba'));
+                ctx.fillStyle = gradient;
+                ctx.fill();
+            }
+        }
+        
+        function init() {
+            resizeCanvas();
+            
+            // Crea 50 cometine
+            for (let i = 0; i < 30; i++) {
+                comets.push(new TinyComet());
+                // Distribuisci l'inizio nel tempo
+                comets[i].life = Math.random() * 100;
+            }
+            
+            animate();
+        }
+        
+        function animate() {
+            ctx.clearRect(0, 0, w, h);
+            
+            // Sfumo leggero per effetto scia persistente
+            ctx.fillStyle = 'rgba(10, 10, 26, 0.1)';
+            ctx.fillRect(0, 0, w, h);
+            
+            comets.forEach(comet => {
+                comet.update();
+                comet.draw();
+            });
+            
+            requestAnimationFrame(animate);
+        }
+        
+        window.addEventListener('resize', resizeCanvas);
+        
+        // Avvia quando la pagina è caricata
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    })();
+</script>
+<script id="search-bundle">(function(){
+  if (window.__searchInit) return;
+  window.__searchInit = true;
+  function run(){
+    try {
+
+      /* ---- BEGIN search-config ---- */
+
+        // prova prima l’URL del tuo dominio, poi i fallback relativi
+        window.SEARCH_INDEX_URLS = [
+          'https://www.echidisofia.org/search-index.json?v=20251007',
+          'search-index.json?v=20251016',
+          '/assets/search-index.json?v=20251016'
+        ];
+
+      /* ---- END search-config ---- */
+
+      /* ---- BEGIN search-init-smart ---- */
+
+            (function(){
+              // Disattiva eventuale vecchio init (se presente)
+              document.querySelectorAll('#search-init-robust').forEach(n => n.remove());
+      
+              const LIMIT = 20; // quante righe mostrare
+              const input = document.getElementById('site-search');
+              if (!input) return;
+      
+              // Pannello risultati: usa il tuo se c'è, altrimenti lo crea
+              function ensurePanel(){
+                let panel = document.querySelector('#search-panel, #searchPanel, .search-panel, .results-panel');
+                if (!panel) {
+                  panel = document.createElement('div');
+                  panel.id = 'search-panel';
+                  panel.innerHTML = `
+                    <div class="search-header">
+                      <h4 class="search-title">Risultati della ricerca</h4>
+                      <button class="search-close" type="button" aria-label="Chiudi">Chiudi ✖</button>
+                    </div>
+                    <div id="search-results" class="search-results"></div>
+                  `;
+                  document.body.appendChild(panel);
+                }
+                // chiudi/ESC
+                const closeBtn = panel.querySelector('.search-close, #search-close, [data-role="search-close"]');
+                const close = ()=> panel.style.display='none';
+                closeBtn && closeBtn.addEventListener('click', close);
+                window.addEventListener('keydown', e=>{ if(e.key==='Escape') close(); });
+                return panel;
+              }
+              const panel = ensurePanel();
+              const resultsWrap = panel.querySelector('#search-results, .search-results, #searchResults');
+      
+              // ---------- caricamento indice ----------
+              let INDEX = [];
+              function haveIndex(){ return Array.isArray(INDEX) && INDEX.length; }
+      
+              function norm(s){
+                const NORM_MAP = {'ł':'l','Ł':'l','ß':'ss','ø':'o','æ':'ae','œ':'oe'};
+                return (s||'').toString().toLowerCase()
+                  .replace(/[łŁßøæœ]/g, m=>NORM_MAP[m]||m)
+                  .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+                  .replace(/\s+/g,' ').trim();
+              }
+              function escapeHTML(s){ return (s||'').replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
+              function hi(hay, q){ // evidenzia la query (semplice)
+                if(!q) return escapeHTML(hay||'');
+                const a = escapeHTML(hay||''); const n = norm(hay); const nq = norm(q);
+                if(!nq) return a;
+                // trova pos (prima occorrenza)
+                const pos = n.indexOf(nq);
+                if(pos<0) return a;
+                // ricostruisci evidenziando il range (approssimando con lunghezze uguali: ok per ASCII)
+                const pre  = escapeHTML((hay||'').slice(0,pos));
+                const mid  = escapeHTML((hay||'').slice(pos, pos+nq.length));
+                const post = escapeHTML((hay||'').slice(pos+nq.length));
+                return `${pre}<mark>${mid}</mark>${post}`;
+              }
+      
+              function score(query, item){
+                const q = norm(query); if(!q) return 0;
+                const t = norm(item.title), d = norm(item.desc), u = norm(item.url);
+                // parziali: includes su titolo/desc/url
+                let s = 0;
+                if (t.includes(q)) s += 40;
+                if (d.includes(q)) s += 20;
+                if (u.includes(q)) s += 10;
+                // piccoli bonus per token (migliora ordinamento)
+                for (const tok of q.split(' ').filter(Boolean)){
+                  if (t.startsWith(tok+' ')||t.endsWith(' '+tok)||t.includes(' '+tok+' ')) s+=12;
+                  if (d.includes(tok)) s+=6;
+                }
+                return s;
+              }
+      
+              async function loadIndex(){
+                if (Array.isArray(window.SEARCH_INDEX) && window.SEARCH_INDEX.length){
+                  INDEX = window.SEARCH_INDEX;
+                  return;
+                }
+                const candidates = (window.SEARCH_INDEX_URLS && window.SEARCH_INDEX_URLS.length)
+                  ? window.SEARCH_INDEX_URLS
+                  : ['search-index.json','/search-index.json','/assets/search-index.json'];
+                for (const url of candidates){
+                  try{
+                    const r = await fetch(url, {cache:'no-store'});
+                    if (r.ok) { INDEX = await r.json(); return; }
+                  }catch(e){}
+                }
+              }
+      
+              function render(results, q){
+                resultsWrap.innerHTML = '';
+                if (!results.length){
+                  resultsWrap.innerHTML = `<div class="result"><em>Nessun risultato</em></div>`;
+                  return;
+                }
+                for (const it of results.slice(0, LIMIT)){
+                  const title = hi(it.title, q);
+                  const desc  = hi(it.desc||'', q);
+                  const url   = escapeHTML(it.url||'#');
+                  const row = document.createElement('div');
+                  row.className = 'result';
+                  row.innerHTML = `
+                    <h4 class="result-title"><a href="${url}">${title}</a></h4>
+                    ${desc ? `<div class="result-desc">${desc}</div>` : ``}
+                    <div class="result-source">${escapeHTML((new URL(url, location.href)).hostname || '')}</div>
+                  `;
+                  resultsWrap.appendChild(row);
+                }
+              }
+      
+              function search(q){
+                if(!haveIndex() || !q.trim()){
+                  panel.style.display = 'none';
+                  resultsWrap.innerHTML = '';
+                  return;
+                }
+                const ranked = INDEX
+                  .map(it => ({ it, s: score(q, it) }))
+                  .filter(x => x.s > 0)
+                  .sort((a,b)=> b.s - a.s)
+                  .map(x => x.it);
+                panel.style.display = 'block';
+                render(ranked, q);
+              }
+      
+              // bind input (debounce leggero)
+              let t = 0;
+              input.addEventListener('input', ()=>{
+                clearTimeout(t);
+                const q = input.value;
+                t = setTimeout(()=> search(q), 90);
+              });
+      
+              // bootstrap: carica indice e se c'è testo in input, cerca subito
+              loadIndex().then(()=>{ if (input.value.trim()) search(input.value); });
+            })();
+    
+      /* ---- END search-init-smart ---- */
+
+      /* ---- BEGIN search-related-augment ---- */
+
+            (function(){
+              const input       = document.getElementById('site-search');
+              const resultsWrap = document.querySelector('#search-results, .search-results, #searchResults');
+              const INDEX       = Array.isArray(window.SEARCH_INDEX) ? window.SEARCH_INDEX : null;
+              if(!input || !resultsWrap || !INDEX) return;
+      
+              // normalizza (accent-fold: it/pl ecc.)
+              const NORM_MAP = {'ł':'l','Ł':'l','ß':'ss','ø':'o','æ':'ae','œ':'oe'};
+              function norm(s){
+                return (s||'').toString().toLowerCase()
+                  .replace(/[łŁßøæœ]/g, m=>NORM_MAP[m]||m)
+                  .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+                  .replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim();
+              }
+      
+              // scoring semplice: titolo >> descrizione > url + bonus per token match
+              function score(query, item){
+                const q = norm(query); if(!q) return 0;
+                const t = norm(item.title), d = norm(item.desc), u = norm(item.url);
+                let s=0;
+                if(t===q) s+=100;
+                if(t.includes(q)) s+=40;
+                if(d.includes(q)) s+=20;
+                if(u.includes(q)) s+=10;
+                const toks = q.split(' ').filter(Boolean);
+                for(const tok of toks){
+                  if(t.startsWith(tok+' ')||t.endsWith(' '+tok)||t.includes(' '+tok+' ')) s+=12;
+                  if(d.includes(tok)) s+=6;
+                  if(u.includes(tok)) s+=3;
+                }
+                return s;
+              }
+      
+              function grabShownUrls(){
+                const set = new Set();
+                resultsWrap.querySelectorAll('a[href]').forEach(a=> set.add(a.getAttribute('href')));
+                return set;
+              }
+      
+              function topRelated(query, exclude, limit=6){
+                return INDEX.map(it=>({it, s:score(query,it)}))
+                  .filter(x=>x.s>0 && !exclude.has(x.it.url))
+                  .sort((a,b)=>b.s-a.s)
+                  .slice(0, limit)
+                  .map(x=>x.it);
+              }
+      
+              function ensureBox(){
+                let box = document.getElementById('related-results');
+                if(!box){
+                  box = document.createElement('div');
+                  box.id = 'related-results';
+                  box.className = 'related-results';
+                  box.innerHTML = '<h4 class="related-header">Risultati correlati (ricerca ampliata)</h4><ul class="related-list"></ul>';
+                  resultsWrap.appendChild(box);
+                }
+                return box;
+              }
+      
+              function renderRelated(list){
+                const box = ensureBox();
+                const ul  = box.querySelector('.related-list');
+                ul.innerHTML = '';
+                list.forEach(it=>{
+                  const li = document.createElement('li');
+                  li.className = 'related-item';
+                  li.innerHTML = `<a href="${it.url}"><strong>${it.title}</strong></a>` +
+                                 (it.desc ? `<div class="meta">${it.desc}</div>` : '');
+                  ul.appendChild(li);
+                });
+                box.style.display = list.length ? 'block' : 'none';
+              }
+      
+              function updateRelated(){
+                const q = input.value || '';
+                if(!q.trim()){ renderRelated([]); return; }
+                const shown = grabShownUrls();
+                // Se il pannello mostra *pochissimi* risultati (es. 0–1), proponi correlati
+                const visibleItems = resultsWrap.querySelectorAll(':scope > *'); // fallback generico
+                if(visibleItems.length <= 1){
+                  renderRelated(topRelated(q, shown, 6));
+                }else{
+                  renderRelated([]);
+                }
+              }
+      
+              // osserva cambi al pannello + input
+              const mo = new MutationObserver(()=> updateRelated());
+              mo.observe(resultsWrap, {childList:true, subtree:true});
+              input.addEventListener('input', ()=> setTimeout(updateRelated, 80));
+              document.addEventListener('DOMContentLoaded', updateRelated);
+            })();
+    
+      /* ---- END search-related-augment ---- */
+
+      /* ---- BEGIN script_at_41 ---- */
+
+        /* duplicate SEARCH_INDEX_URLS removed */
+
+      /* ---- END script_at_41 ---- */
+
+      /* ---- BEGIN script_at_43 ---- */
+
+      // === Search panel animation helper ===
+      (function(){
+        function qs(sel){ return document.querySelector(sel); }
+        function qsa(sel){ return Array.from(document.querySelectorAll(sel)); }
+
+        window.animateSearchResults = function(){
+          const panel  = qs('#search-panel, #searchPanel, .search-panel, .results-panel');
+          const scroll = qs('#search-results, #searchResults, .search-results, .results-scroll');
+          const items  = scroll ? qsa(':scope > *').map((el, i) => { el.style.setProperty('--i', i); return el; }) : [];
+          const backdrop = document.getElementById('search-backdrop');
+
+          if (panel && !panel.classList.contains('open')) panel.classList.add('open');
+          if (backdrop){
+            backdrop.hidden = false;
+            backdrop.classList.add('open');
+            backdrop.onclick = () => {
+              panel && panel.classList.remove('open');
+              backdrop.classList.remove('open');
+              setTimeout(() => { backdrop.hidden = true; }, 200);
+            };
+          }
+        };
+
+        // Facoltativo: chiusura via ESC
+        document.addEventListener('keydown', (e)=>{
+          if (e.key === 'Escape'){
+            const panel = qs('#search-panel.open, #searchPanel.open, .search-panel.open, .results-panel.open');
+            const backdrop = document.getElementById('search-backdrop');
+            if (panel){
+              panel.classList.remove('open');
+              if (backdrop){ backdrop.classList.remove('open'); setTimeout(()=>backdrop.hidden = true, 200); }
+            }
+          }
+        });
+      })();
+
+      /* ---- END script_at_43 ---- */
+
+      /* ---- BEGIN script_at_44 ---- */
+
+          (function(){
+            const panel = document.querySelector('#search-panel');
+            const btnClose = document.getElementById('search-close');
+            const backdrop = document.getElementById('search-backdrop');
+            if(btnClose){
+              btnClose.addEventListener('click', function(){
+                panel && panel.classList.remove('open');
+                if(backdrop){ backdrop.classList.remove('open'); setTimeout(()=>backdrop.hidden=true, 200); }
+              });
+            }
+            // expose a helper to set results (optional)
+            window.setSearchResults = function(html){
+              const tgt = document.querySelector('#search-results, #searchResults, .search-results, .results-scroll');
+              if(!tgt) return;
+              tgt.innerHTML = html;
+              window.animateSearchResults && window.animateSearchResults();
+            };
+          })();
+    
+      /* ---- END script_at_44 ---- */
+
+      /* ---- BEGIN search-auto-open ---- */
+
+      // === Auto-open search panel when real results are injected ===
+      (function(){
+        const panel    = document.querySelector('#search-panel, #searchPanel, .search-panel, .results-panel');
+        const box      = document.querySelector('#search-results, #searchResults, .search-results, .results-scroll');
+        const backdrop = document.getElementById('search-backdrop');
+        if (!panel || !box) return;
+
+        // Only count nodes that look like real results (not placeholders)
+        function hasRealItems() {
+          // Match common result item patterns, exclude placeholders
+          const sel = '.sp-item:not([data-placeholder]), .search-result, .result, li.result-item, .result-title a';
+          return box.querySelector(sel) !== null;
+        }
+
+        function forceClose(){
+          panel.classList.remove('open');
+          if (backdrop){ backdrop.classList.remove('open'); backdrop.hidden = true; }
+        }
+        function openPanel(){
+          if (!panel.classList.contains('open')) panel.classList.add('open');
+          if (backdrop){
+            backdrop.hidden = false;
+            backdrop.classList.add('open');
+            backdrop.onclick = () => forceClose();
+          }
+          if (typeof window.animateSearchResults === 'function'){
+            window.animateSearchResults();
+          } else {
+            Array.from(box.children).forEach((el,i)=> el.style.setProperty('--i', i));
+          }
+        }
+
+        // Observe child changes
+        const mo = new MutationObserver(()=>{
+          if (hasRealItems()) openPanel();
+          else forceClose();
+        });
+        mo.observe(box, { childList: true, subtree: true });
+
+        // Ensure closed on load unless there are real items
+        if (!hasRealItems()) forceClose();
+        else openPanel();
+
+        // ESC to close
+        document.addEventListener('keydown', (e)=>{ if (e.key === 'Escape') forceClose(); });
+      })();
+
+      /* ---- END search-auto-open ---- */
+
+    } catch (err) {
+      console.error("[search-bundle] init error:", err);
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', run, { once: true });
+  } else {
+    run();
+  }
+})();</script></body>
 </html>
