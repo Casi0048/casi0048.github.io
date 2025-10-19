@@ -773,7 +773,18 @@ footer {
       transform: translateY(0) !important;
       }
       /* Pannello ricerca: chiudi */
-      /* duplicate of [#search-panel .search-close] removed for #search-panel .search-close */
+      #search-panel .search-close {
+      position: absolute;
+      top: 6px;
+      right: 8px;
+      background: transparent;
+      border: 1px solid rgba(255, 215, 0, .35);
+      color: #e9eef5;
+      border-radius: 6px;
+      padding: 2px 8px;
+      cursor: pointer;
+      font-size: .85rem;
+      }
       #search-panel .search-close:hover {
       background: rgba(255,255,255,0.06);
       }
@@ -993,6 +1004,14 @@ footer {
       });
     }
   });
+</script>
+<script id="search-config">
+  // prova prima l’URL del tuo dominio, poi i fallback relativi
+  window.SEARCH_INDEX_URLS = [
+    'https://www.echidisofia.org/search-index.json?v=20251007',
+    'search-index.json?v=20251016',
+    '/assets/search-index.json?v=20251016'
+  ];
 </script>
 <style id="search-clear-btn">
   /* Assicura il contesto */
@@ -2411,9 +2430,7 @@ window.googleTranslateElementInit = function(){
   will-change: transform, opacity;
 }
 </style>
-<script id="timeline-suggest-bundle">
-/* ---- BEGIN timeline-suggest-aria ---- */
-// TIMELINE (ACCESSIBILITÀ)
+<script id="timeline-suggest-aria">// TIMELINE (ACCESSIBILITÀ)
 // - Scopo: aggiunge role='region' e aria-label alla sezione della timeline, se mancanti.
 // - Non modifica stili/animazioni; migliora la fruibilità con tecnologie assistive.
 
@@ -2424,29 +2441,26 @@ document.addEventListener('DOMContentLoaded', function(){
     if (!sec.hasAttribute('aria-label')) sec.setAttribute('aria-label','Linea del tempo filosofica');
   }
 });
-
-/* ---- END timeline-suggest-aria ---- */
-
-/* ---- BEGIN timeline-suggest-nojs-flag ---- */
-// FALLBACK NO-JS (FLAG)
+</script><script id="timeline-suggest-nojs-flag">// FALLBACK NO-JS (FLAG)
 // - Scopo: aggiunge '.no-js' all'elemento <html> prima del DOMContentLoaded.
 // - Serve a mostrare la timeline se JS è disattivato (vedi CSS relativo).
-(function(){ document.documentElement.classList.add('no-js'); })();
-/* ---- END timeline-suggest-nojs-flag ---- */
+(function(){ document.documentElement.classList.add('no-js'); })();</script><style id="timeline-suggest-nojs-css">/* FALLBACK NO-JS (CSS) */
+/* - Scopo: se JS resta disattivato, mostra tutti gli elementi senza animazioni. */
+/* - Disattivabile rimuovendo questo blocco o la classe '.no-js' su <html>. */
 
-/* ---- BEGIN timeline-suggest-nojs-remove ---- */
-// FALLBACK NO-JS (REMOVE FLAG)
+.no-js .timeline .timeline-item{
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+</style><script id="timeline-suggest-nojs-remove">// FALLBACK NO-JS (REMOVE FLAG)
 // - Scopo: rimuove la classe '.no-js' al DOMContentLoaded (JS attivo).
 // - Assicura che, con JS attivo, la timeline torni ad animarsi normalmente.
 
 document.addEventListener('DOMContentLoaded', function(){
   document.documentElement.classList.remove('no-js');
 });
-
-/* ---- END timeline-suggest-nojs-remove ---- */
-
-/* ---- BEGIN timeline-suggest-io ---- */
-// TIMELINE (MICRO-STAGGER NON INVASIVO)
+</script><script defer="defer" id="timeline-suggest-io">// TIMELINE (MICRO-STAGGER NON INVASIVO)
 // - Scopo: sfalsa leggermente i tempi d'ingresso delle card per migliorare la lettura visiva.
 // - Usa IntersectionObserver. Ritardo = index*70ms (+120ms per card a destra), max 600ms.
 // - Per disattivare: rimuovere questo script o impostare delayMs=0.
@@ -2489,18 +2503,7 @@ document.addEventListener('DOMContentLoaded', function(){
     });
   });
 });
-
-/* ---- END timeline-suggest-io ---- */
-</script><style id="timeline-suggest-nojs-css">/* FALLBACK NO-JS (CSS) */
-/* - Scopo: se JS resta disattivato, mostra tutti gli elementi senza animazioni. */
-/* - Disattivabile rimuovendo questo blocco o la classe '.no-js' su <html>. */
-
-.no-js .timeline .timeline-item{
-  opacity: 1 !important;
-  transform: none !important;
-  transition: none !important;
-}
-</style>
+</script>
 <style>
 /* === THEME TOGGLE STYLES === */
 .theme-btn {
@@ -4612,6 +4615,146 @@ document.head.appendChild(style);
       (function(){const b=document.getElementById('russell-btn'),h=document.getElementById('russell-hint'),a=document.getElementById('russell-audio');if(!b||!a)return;let u=false;function lk(){if(u)return;u=true;a.muted=false;a.play().then(()=>{a.pause();a.currentTime=0}).catch(()=>{});window.removeEventListener('pointerdown',lk,{capture:true});window.removeEventListener('keydown',lk,{capture:true})}window.addEventListener('pointerdown',lk,{once:true,capture:true,passive:true});window.addEventListener('keydown',lk,{once:true,capture:true});b.addEventListener('click',()=>{try{a.currentTime=0;a.play().catch(()=>{})}catch(_){ }})})();
       (function(){const btn=document.getElementById('btn-thunder'),th=document.getElementById('thunder-sound'),ex=document.getElementById('explosionSound'),ov=document.getElementById('lightning'),bo=document.getElementById('bolt');if(!btn||!th||!ov||!bo)return;let unlocked=false;async function unlockOnce(){if(unlocked)return;unlocked=true;for(const s of [th,ex]){try{s.muted=false;await s.play();s.pause();s.currentTime=0}catch(_){}}}window.addEventListener('pointerdown',unlockOnce,{once:true,passive:true,capture:true});window.addEventListener('keydown',unlockOnce,{once:true,capture:true});let on=false;function up(){btn.classList.toggle('active',on);btn.setAttribute('aria-pressed',on?'true':'false');btn.textContent=on?'⚡ Tuono: ON':'⚡ Tuono'}btn.addEventListener('click',e=>{e.preventDefault();on=!on;if(on){try{th.currentTime=0;softPlay(th, 1.0, 140).catch(()=>{})}catch(_){}}else{try{th.pause();th.currentTime=0}catch(_){}}up()});up();function flash(){const x=15+Math.random()*70,y=10+Math.random()*65,ang=-25+Math.random()*50,sy=.8+Math.random()*1.2;ov.style.transition='none';ov.offsetHeight;ov.style.background=`radial-gradient(circle at ${x}% ${y}%, rgba(255,255,255,.95), rgba(255,255,255,.22) 40%, transparent 65%)`;ov.style.opacity='1';ov.style.transition='opacity 80ms ease-out';setTimeout(()=>ov.style.opacity='0',140);bo.style.left=x+'%';bo.style.top=y+'%';bo.style.transform=`translate(-50%,-50%) rotate(${ang}deg) scaleY(${sy})`;bo.style.transition='transform 90ms ease-out, opacity 280ms ease-out';bo.style.opacity='1';setTimeout(()=>bo.style.opacity='0',180);if(on){try{th.currentTime=0;softPlay(th, 1.0, 140).catch(()=>{})}catch(_){}}}(function schedule(){setTimeout(()=>{flash();schedule()},10000+Math.random()*5000)})();document.getElementById('explode-btn')?.addEventListener('click',()=>{try{ex.muted=false;ex.volume=1.0;ex.currentTime=0;softPlay(ex, 1.0, 140).catch(()=>{})}catch(_){}})})();
     </script>
+<script id="search-init-smart">
+      (function(){
+        // Disattiva eventuale vecchio init (se presente)
+        document.querySelectorAll('#search-init-robust').forEach(n => n.remove());
+      
+        const LIMIT = 20; // quante righe mostrare
+        const input = document.getElementById('site-search');
+        if (!input) return;
+      
+        // Pannello risultati: usa il tuo se c'è, altrimenti lo crea
+        function ensurePanel(){
+          let panel = document.querySelector('#search-panel, #searchPanel, .search-panel, .results-panel');
+          if (!panel) {
+            panel = document.createElement('div');
+            panel.id = 'search-panel';
+            panel.innerHTML = `
+              <div class="search-header">
+                <h4 class="search-title">Risultati della ricerca</h4>
+                <button class="search-close" type="button" aria-label="Chiudi">Chiudi ✖</button>
+              </div>
+              <div id="search-results" class="search-results"></div>
+            `;
+            document.body.appendChild(panel);
+          }
+          // chiudi/ESC
+          const closeBtn = panel.querySelector('.search-close, #search-close, [data-role="search-close"]');
+          const close = ()=> panel.style.display='none';
+          closeBtn && closeBtn.addEventListener('click', close);
+          window.addEventListener('keydown', e=>{ if(e.key==='Escape') close(); });
+          return panel;
+        }
+        const panel = ensurePanel();
+        const resultsWrap = panel.querySelector('#search-results, .search-results, #searchResults');
+      
+        // ---------- caricamento indice ----------
+        let INDEX = [];
+        function haveIndex(){ return Array.isArray(INDEX) && INDEX.length; }
+      
+        function norm(s){
+          const NORM_MAP = {'ł':'l','Ł':'l','ß':'ss','ø':'o','æ':'ae','œ':'oe'};
+          return (s||'').toString().toLowerCase()
+            .replace(/[łŁßøæœ]/g, m=>NORM_MAP[m]||m)
+            .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+            .replace(/\s+/g,' ').trim();
+        }
+        function escapeHTML(s){ return (s||'').replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
+        function hi(hay, q){ // evidenzia la query (semplice)
+          if(!q) return escapeHTML(hay||'');
+          const a = escapeHTML(hay||''); const n = norm(hay); const nq = norm(q);
+          if(!nq) return a;
+          // trova pos (prima occorrenza)
+          const pos = n.indexOf(nq);
+          if(pos<0) return a;
+          // ricostruisci evidenziando il range (approssimando con lunghezze uguali: ok per ASCII)
+          const pre  = escapeHTML((hay||'').slice(0,pos));
+          const mid  = escapeHTML((hay||'').slice(pos, pos+nq.length));
+          const post = escapeHTML((hay||'').slice(pos+nq.length));
+          return `${pre}<mark>${mid}</mark>${post}`;
+        }
+      
+        function score(query, item){
+          const q = norm(query); if(!q) return 0;
+          const t = norm(item.title), d = norm(item.desc), u = norm(item.url);
+          // parziali: includes su titolo/desc/url
+          let s = 0;
+          if (t.includes(q)) s += 40;
+          if (d.includes(q)) s += 20;
+          if (u.includes(q)) s += 10;
+          // piccoli bonus per token (migliora ordinamento)
+          for (const tok of q.split(' ').filter(Boolean)){
+            if (t.startsWith(tok+' ')||t.endsWith(' '+tok)||t.includes(' '+tok+' ')) s+=12;
+            if (d.includes(tok)) s+=6;
+          }
+          return s;
+        }
+      
+        async function loadIndex(){
+          if (Array.isArray(window.SEARCH_INDEX) && window.SEARCH_INDEX.length){
+            INDEX = window.SEARCH_INDEX;
+            return;
+          }
+          const candidates = (window.SEARCH_INDEX_URLS && window.SEARCH_INDEX_URLS.length)
+            ? window.SEARCH_INDEX_URLS
+            : ['search-index.json','/search-index.json','/assets/search-index.json'];
+          for (const url of candidates){
+            try{
+              const r = await fetch(url, {cache:'no-store'});
+              if (r.ok) { INDEX = await r.json(); return; }
+            }catch(e){}
+          }
+        }
+      
+        function render(results, q){
+          resultsWrap.innerHTML = '';
+          if (!results.length){
+            resultsWrap.innerHTML = `<div class="result"><em>Nessun risultato</em></div>`;
+            return;
+          }
+          for (const it of results.slice(0, LIMIT)){
+            const title = hi(it.title, q);
+            const desc  = hi(it.desc||'', q);
+            const url   = escapeHTML(it.url||'#');
+            const row = document.createElement('div');
+            row.className = 'result';
+            row.innerHTML = `
+              <h4 class="result-title"><a href="${url}">${title}</a></h4>
+              ${desc ? `<div class="result-desc">${desc}</div>` : ``}
+              <div class="result-source">${escapeHTML((new URL(url, location.href)).hostname || '')}</div>
+            `;
+            resultsWrap.appendChild(row);
+          }
+        }
+      
+        function search(q){
+          if(!haveIndex() || !q.trim()){
+            panel.style.display = 'none';
+            resultsWrap.innerHTML = '';
+            return;
+          }
+          const ranked = INDEX
+            .map(it => ({ it, s: score(q, it) }))
+            .filter(x => x.s > 0)
+            .sort((a,b)=> b.s - a.s)
+            .map(x => x.it);
+          panel.style.display = 'block';
+          render(ranked, q);
+        }
+      
+        // bind input (debounce leggero)
+        let t = 0;
+        input.addEventListener('input', ()=>{
+          clearTimeout(t);
+          const q = input.value;
+          t = setTimeout(()=> search(q), 90);
+        });
+      
+        // bootstrap: carica indice e se c'è testo in input, cerca subito
+        loadIndex().then(()=>{ if (input.value.trim()) search(input.value); });
+      })();
+    </script>
 <script id="dict-compact-js">
 (function(){
   const form = document.getElementById('dict-form');
@@ -4766,6 +4909,100 @@ document.head.appendChild(style);
           // opzionale: distanza tra la riga dei controlli slider e il player
           parent.style.rowGap = parent.style.rowGap || '.5rem';
         }
+      })();
+    </script>
+<script id="search-related-augment">
+      (function(){
+        const input       = document.getElementById('site-search');
+        const resultsWrap = document.querySelector('#search-results, .search-results, #searchResults');
+        const INDEX       = Array.isArray(window.SEARCH_INDEX) ? window.SEARCH_INDEX : null;
+        if(!input || !resultsWrap || !INDEX) return;
+      
+        // normalizza (accent-fold: it/pl ecc.)
+        const NORM_MAP = {'ł':'l','Ł':'l','ß':'ss','ø':'o','æ':'ae','œ':'oe'};
+        function norm(s){
+          return (s||'').toString().toLowerCase()
+            .replace(/[łŁßøæœ]/g, m=>NORM_MAP[m]||m)
+            .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+            .replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim();
+        }
+      
+        // scoring semplice: titolo >> descrizione > url + bonus per token match
+        function score(query, item){
+          const q = norm(query); if(!q) return 0;
+          const t = norm(item.title), d = norm(item.desc), u = norm(item.url);
+          let s=0;
+          if(t===q) s+=100;
+          if(t.includes(q)) s+=40;
+          if(d.includes(q)) s+=20;
+          if(u.includes(q)) s+=10;
+          const toks = q.split(' ').filter(Boolean);
+          for(const tok of toks){
+            if(t.startsWith(tok+' ')||t.endsWith(' '+tok)||t.includes(' '+tok+' ')) s+=12;
+            if(d.includes(tok)) s+=6;
+            if(u.includes(tok)) s+=3;
+          }
+          return s;
+        }
+      
+        function grabShownUrls(){
+          const set = new Set();
+          resultsWrap.querySelectorAll('a[href]').forEach(a=> set.add(a.getAttribute('href')));
+          return set;
+        }
+      
+        function topRelated(query, exclude, limit=6){
+          return INDEX.map(it=>({it, s:score(query,it)}))
+            .filter(x=>x.s>0 && !exclude.has(x.it.url))
+            .sort((a,b)=>b.s-a.s)
+            .slice(0, limit)
+            .map(x=>x.it);
+        }
+      
+        function ensureBox(){
+          let box = document.getElementById('related-results');
+          if(!box){
+            box = document.createElement('div');
+            box.id = 'related-results';
+            box.className = 'related-results';
+            box.innerHTML = '<h4 class="related-header">Risultati correlati (ricerca ampliata)</h4><ul class="related-list"></ul>';
+            resultsWrap.appendChild(box);
+          }
+          return box;
+        }
+      
+        function renderRelated(list){
+          const box = ensureBox();
+          const ul  = box.querySelector('.related-list');
+          ul.innerHTML = '';
+          list.forEach(it=>{
+            const li = document.createElement('li');
+            li.className = 'related-item';
+            li.innerHTML = `<a href="${it.url}"><strong>${it.title}</strong></a>` +
+                           (it.desc ? `<div class="meta">${it.desc}</div>` : '');
+            ul.appendChild(li);
+          });
+          box.style.display = list.length ? 'block' : 'none';
+        }
+      
+        function updateRelated(){
+          const q = input.value || '';
+          if(!q.trim()){ renderRelated([]); return; }
+          const shown = grabShownUrls();
+          // Se il pannello mostra *pochissimi* risultati (es. 0–1), proponi correlati
+          const visibleItems = resultsWrap.querySelectorAll(':scope > *'); // fallback generico
+          if(visibleItems.length <= 1){
+            renderRelated(topRelated(q, shown, 6));
+          }else{
+            renderRelated([]);
+          }
+        }
+      
+        // osserva cambi al pannello + input
+        const mo = new MutationObserver(()=> updateRelated());
+        mo.observe(resultsWrap, {childList:true, subtree:true});
+        input.addEventListener('input', ()=> setTimeout(updateRelated, 80));
+        document.addEventListener('DOMContentLoaded', updateRelated);
       })();
     </script>
 <script id="search-clear-js">
@@ -5703,6 +5940,12 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 })();
 </script>
+<script id="speed-readout-js">
+(function(){
+    function clamp(n,min,max){ return Math.max(min, Math.min(max, n)); }
+    // Il resto del codice JavaScript...
+})();
+</script>
 <script id="sfx-unlock-silent">
 (function(){
   var boom = document.getElementById('explosionSound');
@@ -6025,6 +6268,9 @@ document.addEventListener('click', function(e){
 });
 </script>
 <script>
+  window.SEARCH_INDEX_URLS = ['/search-index.json?v=2','/assets/search-index.json?v=2'];
+</script>
+<script>
   // Aggiungi questo script per ottimizzare le animazioni
 document.addEventListener('DOMContentLoaded', function() {
   // Usa requestAnimationFrame per animazioni fluide
@@ -6036,6 +6282,109 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   optimizeAnimations();
 });
+</script>
+<script>
+// === Search panel animation helper ===
+(function(){
+  function qs(sel){ return document.querySelector(sel); }
+  function qsa(sel){ return Array.from(document.querySelectorAll(sel)); }
+
+  window.animateSearchResults = function(){
+    const panel  = qs('#search-panel, #searchPanel, .search-panel, .results-panel');
+    const scroll = qs('#search-results, #searchResults, .search-results, .results-scroll');
+    const items  = scroll ? qsa(':scope > *').map((el, i) => { el.style.setProperty('--i', i); return el; }) : [];
+    const backdrop = document.getElementById('search-backdrop');
+
+    if (panel && !panel.classList.contains('open')) panel.classList.add('open');
+    if (backdrop){
+      backdrop.hidden = false;
+      backdrop.classList.add('open');
+      backdrop.onclick = () => {
+        panel && panel.classList.remove('open');
+        backdrop.classList.remove('open');
+        setTimeout(() => { backdrop.hidden = true; }, 200);
+      };
+    }
+  };
+
+  // Facoltativo: chiusura via ESC
+  document.addEventListener('keydown', (e)=>{
+    if (e.key === 'Escape'){
+      const panel = qs('#search-panel.open, #searchPanel.open, .search-panel.open, .results-panel.open');
+      const backdrop = document.getElementById('search-backdrop');
+      if (panel){
+        panel.classList.remove('open');
+        if (backdrop){ backdrop.classList.remove('open'); setTimeout(()=>backdrop.hidden = true, 200); }
+      }
+    }
+  });
+})();
+</script><script>
+    (function(){
+      const panel = document.querySelector('#search-panel');
+      const btnClose = document.getElementById('search-close');
+      const backdrop = document.getElementById('search-backdrop');
+      if(btnClose){
+        btnClose.addEventListener('click', function(){
+          panel && panel.classList.remove('open');
+          if(backdrop){ backdrop.classList.remove('open'); setTimeout(()=>backdrop.hidden=true, 200); }
+        });
+      }
+      // expose a helper to set results (optional)
+      window.setSearchResults = function(html){
+        const tgt = document.querySelector('#search-results, #searchResults, .search-results, .results-scroll');
+        if(!tgt) return;
+        tgt.innerHTML = html;
+        window.animateSearchResults && window.animateSearchResults();
+      };
+    })();
+    </script><script id="search-auto-open">
+// === Auto-open search panel when real results are injected ===
+(function(){
+  const panel    = document.querySelector('#search-panel, #searchPanel, .search-panel, .results-panel');
+  const box      = document.querySelector('#search-results, #searchResults, .search-results, .results-scroll');
+  const backdrop = document.getElementById('search-backdrop');
+  if (!panel || !box) return;
+
+  // Only count nodes that look like real results (not placeholders)
+  function hasRealItems() {
+    // Match common result item patterns, exclude placeholders
+    const sel = '.sp-item:not([data-placeholder]), .search-result, .result, li.result-item, .result-title a';
+    return box.querySelector(sel) !== null;
+  }
+
+  function forceClose(){
+    panel.classList.remove('open');
+    if (backdrop){ backdrop.classList.remove('open'); backdrop.hidden = true; }
+  }
+  function openPanel(){
+    if (!panel.classList.contains('open')) panel.classList.add('open');
+    if (backdrop){
+      backdrop.hidden = false;
+      backdrop.classList.add('open');
+      backdrop.onclick = () => forceClose();
+    }
+    if (typeof window.animateSearchResults === 'function'){
+      window.animateSearchResults();
+    } else {
+      Array.from(box.children).forEach((el,i)=> el.style.setProperty('--i', i));
+    }
+  }
+
+  // Observe child changes
+  const mo = new MutationObserver(()=>{
+    if (hasRealItems()) openPanel();
+    else forceClose();
+  });
+  mo.observe(box, { childList: true, subtree: true });
+
+  // Ensure closed on load unless there are real items
+  if (!hasRealItems()) forceClose();
+  else openPanel();
+
+  // ESC to close
+  document.addEventListener('keydown', (e)=>{ if (e.key === 'Escape') forceClose(); });
+})();
 </script>
 <!-- Pulsante Torna Su -->
 <!-- Con effetto glow -->
@@ -6341,391 +6690,5 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     })();
 </script>
-<script id="search-bundle">(function(){
-  if (window.__searchInit) return;
-  window.__searchInit = true;
-  function run(){
-    try {
-
-      /* ---- BEGIN search-config ---- */
-
-        // prova prima l’URL del tuo dominio, poi i fallback relativi
-        window.SEARCH_INDEX_URLS = [
-          'https://www.echidisofia.org/search-index.json?v=20251007',
-          'search-index.json?v=20251016',
-          '/assets/search-index.json?v=20251016'
-        ];
-
-      /* ---- END search-config ---- */
-
-      /* ---- BEGIN search-init-smart ---- */
-
-            (function(){
-              // Disattiva eventuale vecchio init (se presente)
-              document.querySelectorAll('#search-init-robust').forEach(n => n.remove());
-      
-              const LIMIT = 20; // quante righe mostrare
-              const input = document.getElementById('site-search');
-              if (!input) return;
-      
-              // Pannello risultati: usa il tuo se c'è, altrimenti lo crea
-              function ensurePanel(){
-                let panel = document.querySelector('#search-panel, #searchPanel, .search-panel, .results-panel');
-                if (!panel) {
-                  panel = document.createElement('div');
-                  panel.id = 'search-panel';
-                  panel.innerHTML = `
-                    <div class="search-header">
-                      <h4 class="search-title">Risultati della ricerca</h4>
-                      <button class="search-close" type="button" aria-label="Chiudi">Chiudi ✖</button>
-                    </div>
-                    <div id="search-results" class="search-results"></div>
-                  `;
-                  document.body.appendChild(panel);
-                }
-                // chiudi/ESC
-                const closeBtn = panel.querySelector('.search-close, #search-close, [data-role="search-close"]');
-                const close = ()=> panel.style.display='none';
-                closeBtn && closeBtn.addEventListener('click', close);
-                window.addEventListener('keydown', e=>{ if(e.key==='Escape') close(); });
-                return panel;
-              }
-              const panel = ensurePanel();
-              const resultsWrap = panel.querySelector('#search-results, .search-results, #searchResults');
-      
-              // ---------- caricamento indice ----------
-              let INDEX = [];
-              function haveIndex(){ return Array.isArray(INDEX) && INDEX.length; }
-      
-              function norm(s){
-                const NORM_MAP = {'ł':'l','Ł':'l','ß':'ss','ø':'o','æ':'ae','œ':'oe'};
-                return (s||'').toString().toLowerCase()
-                  .replace(/[łŁßøæœ]/g, m=>NORM_MAP[m]||m)
-                  .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
-                  .replace(/\s+/g,' ').trim();
-              }
-              function escapeHTML(s){ return (s||'').replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
-              function hi(hay, q){ // evidenzia la query (semplice)
-                if(!q) return escapeHTML(hay||'');
-                const a = escapeHTML(hay||''); const n = norm(hay); const nq = norm(q);
-                if(!nq) return a;
-                // trova pos (prima occorrenza)
-                const pos = n.indexOf(nq);
-                if(pos<0) return a;
-                // ricostruisci evidenziando il range (approssimando con lunghezze uguali: ok per ASCII)
-                const pre  = escapeHTML((hay||'').slice(0,pos));
-                const mid  = escapeHTML((hay||'').slice(pos, pos+nq.length));
-                const post = escapeHTML((hay||'').slice(pos+nq.length));
-                return `${pre}<mark>${mid}</mark>${post}`;
-              }
-      
-              function score(query, item){
-                const q = norm(query); if(!q) return 0;
-                const t = norm(item.title), d = norm(item.desc), u = norm(item.url);
-                // parziali: includes su titolo/desc/url
-                let s = 0;
-                if (t.includes(q)) s += 40;
-                if (d.includes(q)) s += 20;
-                if (u.includes(q)) s += 10;
-                // piccoli bonus per token (migliora ordinamento)
-                for (const tok of q.split(' ').filter(Boolean)){
-                  if (t.startsWith(tok+' ')||t.endsWith(' '+tok)||t.includes(' '+tok+' ')) s+=12;
-                  if (d.includes(tok)) s+=6;
-                }
-                return s;
-              }
-      
-              async function loadIndex(){
-                if (Array.isArray(window.SEARCH_INDEX) && window.SEARCH_INDEX.length){
-                  INDEX = window.SEARCH_INDEX;
-                  return;
-                }
-                const candidates = (window.SEARCH_INDEX_URLS && window.SEARCH_INDEX_URLS.length)
-                  ? window.SEARCH_INDEX_URLS
-                  : ['search-index.json','/search-index.json','/assets/search-index.json'];
-                for (const url of candidates){
-                  try{
-                    const r = await fetch(url, {cache:'no-store'});
-                    if (r.ok) { INDEX = await r.json(); return; }
-                  }catch(e){}
-                }
-              }
-      
-              function render(results, q){
-                resultsWrap.innerHTML = '';
-                if (!results.length){
-                  resultsWrap.innerHTML = `<div class="result"><em>Nessun risultato</em></div>`;
-                  return;
-                }
-                for (const it of results.slice(0, LIMIT)){
-                  const title = hi(it.title, q);
-                  const desc  = hi(it.desc||'', q);
-                  const url   = escapeHTML(it.url||'#');
-                  const row = document.createElement('div');
-                  row.className = 'result';
-                  row.innerHTML = `
-                    <h4 class="result-title"><a href="${url}">${title}</a></h4>
-                    ${desc ? `<div class="result-desc">${desc}</div>` : ``}
-                    <div class="result-source">${escapeHTML((new URL(url, location.href)).hostname || '')}</div>
-                  `;
-                  resultsWrap.appendChild(row);
-                }
-              }
-      
-              function search(q){
-                if(!haveIndex() || !q.trim()){
-                  panel.style.display = 'none';
-                  resultsWrap.innerHTML = '';
-                  return;
-                }
-                const ranked = INDEX
-                  .map(it => ({ it, s: score(q, it) }))
-                  .filter(x => x.s > 0)
-                  .sort((a,b)=> b.s - a.s)
-                  .map(x => x.it);
-                panel.style.display = 'block';
-                render(ranked, q);
-              }
-      
-              // bind input (debounce leggero)
-              let t = 0;
-              input.addEventListener('input', ()=>{
-                clearTimeout(t);
-                const q = input.value;
-                t = setTimeout(()=> search(q), 90);
-              });
-      
-              // bootstrap: carica indice e se c'è testo in input, cerca subito
-              loadIndex().then(()=>{ if (input.value.trim()) search(input.value); });
-            })();
-    
-      /* ---- END search-init-smart ---- */
-
-      /* ---- BEGIN search-related-augment ---- */
-
-            (function(){
-              const input       = document.getElementById('site-search');
-              const resultsWrap = document.querySelector('#search-results, .search-results, #searchResults');
-              const INDEX       = Array.isArray(window.SEARCH_INDEX) ? window.SEARCH_INDEX : null;
-              if(!input || !resultsWrap || !INDEX) return;
-      
-              // normalizza (accent-fold: it/pl ecc.)
-              const NORM_MAP = {'ł':'l','Ł':'l','ß':'ss','ø':'o','æ':'ae','œ':'oe'};
-              function norm(s){
-                return (s||'').toString().toLowerCase()
-                  .replace(/[łŁßøæœ]/g, m=>NORM_MAP[m]||m)
-                  .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
-                  .replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim();
-              }
-      
-              // scoring semplice: titolo >> descrizione > url + bonus per token match
-              function score(query, item){
-                const q = norm(query); if(!q) return 0;
-                const t = norm(item.title), d = norm(item.desc), u = norm(item.url);
-                let s=0;
-                if(t===q) s+=100;
-                if(t.includes(q)) s+=40;
-                if(d.includes(q)) s+=20;
-                if(u.includes(q)) s+=10;
-                const toks = q.split(' ').filter(Boolean);
-                for(const tok of toks){
-                  if(t.startsWith(tok+' ')||t.endsWith(' '+tok)||t.includes(' '+tok+' ')) s+=12;
-                  if(d.includes(tok)) s+=6;
-                  if(u.includes(tok)) s+=3;
-                }
-                return s;
-              }
-      
-              function grabShownUrls(){
-                const set = new Set();
-                resultsWrap.querySelectorAll('a[href]').forEach(a=> set.add(a.getAttribute('href')));
-                return set;
-              }
-      
-              function topRelated(query, exclude, limit=6){
-                return INDEX.map(it=>({it, s:score(query,it)}))
-                  .filter(x=>x.s>0 && !exclude.has(x.it.url))
-                  .sort((a,b)=>b.s-a.s)
-                  .slice(0, limit)
-                  .map(x=>x.it);
-              }
-      
-              function ensureBox(){
-                let box = document.getElementById('related-results');
-                if(!box){
-                  box = document.createElement('div');
-                  box.id = 'related-results';
-                  box.className = 'related-results';
-                  box.innerHTML = '<h4 class="related-header">Risultati correlati (ricerca ampliata)</h4><ul class="related-list"></ul>';
-                  resultsWrap.appendChild(box);
-                }
-                return box;
-              }
-      
-              function renderRelated(list){
-                const box = ensureBox();
-                const ul  = box.querySelector('.related-list');
-                ul.innerHTML = '';
-                list.forEach(it=>{
-                  const li = document.createElement('li');
-                  li.className = 'related-item';
-                  li.innerHTML = `<a href="${it.url}"><strong>${it.title}</strong></a>` +
-                                 (it.desc ? `<div class="meta">${it.desc}</div>` : '');
-                  ul.appendChild(li);
-                });
-                box.style.display = list.length ? 'block' : 'none';
-              }
-      
-              function updateRelated(){
-                const q = input.value || '';
-                if(!q.trim()){ renderRelated([]); return; }
-                const shown = grabShownUrls();
-                // Se il pannello mostra *pochissimi* risultati (es. 0–1), proponi correlati
-                const visibleItems = resultsWrap.querySelectorAll(':scope > *'); // fallback generico
-                if(visibleItems.length <= 1){
-                  renderRelated(topRelated(q, shown, 6));
-                }else{
-                  renderRelated([]);
-                }
-              }
-      
-              // osserva cambi al pannello + input
-              const mo = new MutationObserver(()=> updateRelated());
-              mo.observe(resultsWrap, {childList:true, subtree:true});
-              input.addEventListener('input', ()=> setTimeout(updateRelated, 80));
-              document.addEventListener('DOMContentLoaded', updateRelated);
-            })();
-    
-      /* ---- END search-related-augment ---- */
-
-      /* ---- BEGIN script_at_41 ---- */
-
-        /* duplicate SEARCH_INDEX_URLS removed */
-
-      /* ---- END script_at_41 ---- */
-
-      /* ---- BEGIN script_at_43 ---- */
-
-      // === Search panel animation helper ===
-      (function(){
-        function qs(sel){ return document.querySelector(sel); }
-        function qsa(sel){ return Array.from(document.querySelectorAll(sel)); }
-
-        window.animateSearchResults = function(){
-          const panel  = qs('#search-panel, #searchPanel, .search-panel, .results-panel');
-          const scroll = qs('#search-results, #searchResults, .search-results, .results-scroll');
-          const items  = scroll ? qsa(':scope > *').map((el, i) => { el.style.setProperty('--i', i); return el; }) : [];
-          const backdrop = document.getElementById('search-backdrop');
-
-          if (panel && !panel.classList.contains('open')) panel.classList.add('open');
-          if (backdrop){
-            backdrop.hidden = false;
-            backdrop.classList.add('open');
-            backdrop.onclick = () => {
-              panel && panel.classList.remove('open');
-              backdrop.classList.remove('open');
-              setTimeout(() => { backdrop.hidden = true; }, 200);
-            };
-          }
-        };
-
-        // Facoltativo: chiusura via ESC
-        document.addEventListener('keydown', (e)=>{
-          if (e.key === 'Escape'){
-            const panel = qs('#search-panel.open, #searchPanel.open, .search-panel.open, .results-panel.open');
-            const backdrop = document.getElementById('search-backdrop');
-            if (panel){
-              panel.classList.remove('open');
-              if (backdrop){ backdrop.classList.remove('open'); setTimeout(()=>backdrop.hidden = true, 200); }
-            }
-          }
-        });
-      })();
-
-      /* ---- END script_at_43 ---- */
-
-      /* ---- BEGIN script_at_44 ---- */
-
-          (function(){
-            const panel = document.querySelector('#search-panel');
-            const btnClose = document.getElementById('search-close');
-            const backdrop = document.getElementById('search-backdrop');
-            if(btnClose){
-              btnClose.addEventListener('click', function(){
-                panel && panel.classList.remove('open');
-                if(backdrop){ backdrop.classList.remove('open'); setTimeout(()=>backdrop.hidden=true, 200); }
-              });
-            }
-            // expose a helper to set results (optional)
-            window.setSearchResults = function(html){
-              const tgt = document.querySelector('#search-results, #searchResults, .search-results, .results-scroll');
-              if(!tgt) return;
-              tgt.innerHTML = html;
-              window.animateSearchResults && window.animateSearchResults();
-            };
-          })();
-    
-      /* ---- END script_at_44 ---- */
-
-      /* ---- BEGIN search-auto-open ---- */
-
-      // === Auto-open search panel when real results are injected ===
-      (function(){
-        const panel    = document.querySelector('#search-panel, #searchPanel, .search-panel, .results-panel');
-        const box      = document.querySelector('#search-results, #searchResults, .search-results, .results-scroll');
-        const backdrop = document.getElementById('search-backdrop');
-        if (!panel || !box) return;
-
-        // Only count nodes that look like real results (not placeholders)
-        function hasRealItems() {
-          // Match common result item patterns, exclude placeholders
-          const sel = '.sp-item:not([data-placeholder]), .search-result, .result, li.result-item, .result-title a';
-          return box.querySelector(sel) !== null;
-        }
-
-        function forceClose(){
-          panel.classList.remove('open');
-          if (backdrop){ backdrop.classList.remove('open'); backdrop.hidden = true; }
-        }
-        function openPanel(){
-          if (!panel.classList.contains('open')) panel.classList.add('open');
-          if (backdrop){
-            backdrop.hidden = false;
-            backdrop.classList.add('open');
-            backdrop.onclick = () => forceClose();
-          }
-          if (typeof window.animateSearchResults === 'function'){
-            window.animateSearchResults();
-          } else {
-            Array.from(box.children).forEach((el,i)=> el.style.setProperty('--i', i));
-          }
-        }
-
-        // Observe child changes
-        const mo = new MutationObserver(()=>{
-          if (hasRealItems()) openPanel();
-          else forceClose();
-        });
-        mo.observe(box, { childList: true, subtree: true });
-
-        // Ensure closed on load unless there are real items
-        if (!hasRealItems()) forceClose();
-        else openPanel();
-
-        // ESC to close
-        document.addEventListener('keydown', (e)=>{ if (e.key === 'Escape') forceClose(); });
-      })();
-
-      /* ---- END search-auto-open ---- */
-
-    } catch (err) {
-      console.error("[search-bundle] init error:", err);
-    }
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', run, { once: true });
-  } else {
-    run();
-  }
-})();</script></body>
+</body>
 </html>
