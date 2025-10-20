@@ -3706,6 +3706,40 @@ exploding-text {
 }
 </style>
 
+
+<style id="screen-quake-css">
+:root{
+  --quake-intensity: 12px;
+  --quake-rot: 1.8deg;
+}
+@media (prefers-reduced-motion: reduce){
+  html.shake-hard{ animation: none !important; }
+  body.shake-no-scroll{ overflow: auto !important; }
+}
+@keyframes screenQuake{
+  0%   { transform: translate(0,0) rotate(0); }
+  5%   { transform: translate(calc(var(--quake-intensity) * .9), calc(var(--quake-intensity) * -.6)) rotate(calc(var(--quake-rot) * .6)); }
+  10%  { transform: translate(calc(var(--quake-intensity) * -.7), calc(var(--quake-intensity) * .8)) rotate(calc(var(--quake-rot) * -.5)); }
+  15%  { transform: translate(calc(var(--quake-intensity) * .6), calc(var(--quake-intensity) * .5)) rotate(calc(var(--quake-rot) * .4)); }
+  20%  { transform: translate(calc(var(--quake-intensity) * -.5), calc(var(--quake-intensity) * -.6)) rotate(calc(var(--quake-rot) * -.35)); }
+  30%  { transform: translate(calc(var(--quake-intensity) * .4), calc(var(--quake-intensity) * .4)) rotate(calc(var(--quake-rot) * .28)); }
+  40%  { transform: translate(calc(var(--quake-intensity) * -.3), calc(var(--quake-intensity) * -.3)) rotate(calc(var(--quake-rot) * -.22)); }
+  50%  { transform: translate(calc(var(--quake-intensity) * .25), calc(var(--quake-intensity) * .2)) rotate(calc(var(--quake-rot) * .18)); }
+  60%  { transform: translate(calc(var(--quake-intensity) * -.18), calc(var(--quake-intensity) * .15)) rotate(calc(var(--quake-rot) * -.12)); }
+  70%  { transform: translate(calc(var(--quake-intensity) * .12), calc(var(--quake-intensity) * -.1)) rotate(calc(var(--quake-rot) * .08)); }
+  80%  { transform: translate(calc(var(--quake-intensity) * -.08), calc(var(--quake-intensity) * .06)) rotate(calc(var(--quake-rot) * -.05)); }
+  90%  { transform: translate(calc(var(--quake-intensity) * .04), calc(var(--quake-intensity) * -.03)) rotate(calc(var(--quake-rot) * .03)); }
+  100% { transform: translate(0,0) rotate(0); }
+}
+html.shake-hard{
+  animation: screenQuake 0.68s cubic-bezier(.11,.62,.17,.98) both;
+  will-change: transform;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+body.shake-no-scroll{ overflow: hidden !important; }
+</style>
+
 </head>
 
 <body><div hidden="True" id="search-backdrop"></div><div class="search-panel" id="search-panel"><div class="search-header"><h3 class="search-title">Risultati</h3><button aria-label="Chiudi pannello" class="search-close" id="search-close" type="button">Chiudi</button></div><div class="search-results results-scroll" id="search-results"><div class="sp-item" data-placeholder="true"><h4 class="result-title">Suggerimento</h4><p class="result-desc">Digita nel campo di ricerca in alto per vedere i risultati qui.</p></div></div></div>
@@ -7153,6 +7187,41 @@ function softPlay(audio, volume, delay) {
 
   // Esporta API globale minimale:
   window.EchiExplode = explode;
+})();
+</script>
+
+
+<script id="screen-quake-augment">
+(function(){
+  function addShake(){
+    try { if (matchMedia('(prefers-reduced-motion: reduce)').matches) return; } catch(e){}
+    var root = document.documentElement;
+    var body = document.body;
+    root.classList.remove('shake-hard'); body.classList.remove('shake-no-scroll');
+    void root.offsetWidth; // restart CSS animation
+    root.classList.add('shake-hard');
+    body.classList.add('shake-no-scroll');
+    setTimeout(function(){
+      root.classList.remove('shake-hard');
+      body.classList.remove('shake-no-scroll');
+    }, 720);
+  }
+  if (window.EchiExplode){
+    var _old = window.EchiExplode;
+    window.EchiExplode = function(){
+      try{ _old.apply(this, arguments); }catch(e){}
+      addShake();
+    };
+  } else {
+    window.EchiExplode = addShake;
+  }
+  document.addEventListener('DOMContentLoaded', function(){
+    var btn = document.getElementById('btn-explode');
+    if(btn && !btn.dataset.shakeWired){
+      btn.addEventListener('click', addShake);
+      btn.dataset.shakeWired = "1";
+    }
+  });
 })();
 </script>
 
