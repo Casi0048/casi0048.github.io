@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-
+<meta charset="utf-8">
 <html lang="it">
 <head>
 <script id="fast-dom-ready">document.addEventListener('DOMContentLoaded',function(){document.body.classList.add('dom-ready');});</script>
@@ -499,7 +499,7 @@ main {
 }
 
 .exploding-text {
-  margin: .5rem auto;
+  margin: 0.5rem auto;
   font-family: 'Cormorant Garamond', serif;
   font-size: 1.25rem;
   font-style: italic;
@@ -1218,66 +1218,9 @@ nav.menu-desktop .mega-menu{ z-index: 2147483606 !important; pointer-events: aut
   .menu-btn, .ctrl-btn { min-width: 44px; min-height: 44px; }
   .timeline-content { padding: 15px; margin: 10px 5px; } /* opzionale, migliora leggibilità */
 }
-</style><style id="boomfx-css-2025-10-09">/* === Explode FX (spectacular) === */
-.exploding-stage{ perspective: 900px; }
-.exploding-text{ position: relative; display:inline-block; will-change: transform, filter; }
-.exploding-text .char{
-  display:inline-block; transform-origin: center;
-  transition: transform 900ms cubic-bezier(.2,1,.2,1), opacity 900ms, filter 900ms, text-shadow 900ms;
-  will-change: transform, opacity, filter, text-shadow;
-}
-.exploding-text.boom-active .char{
-  transform: translate3d(var(--dx,0), var(--dy,0), var(--dz,0))
-             rotateX(var(--rx,0)) rotateY(var(--ry,0)) rotateZ(var(--rz,0)) scale(.9);
-  opacity: 0;
-  filter: blur(var(--blur,.6px));
-  text-shadow:
-    0 0 8px rgba(255,215,0,.65),
-    0 0 18px rgba(255,140,0,.45),
-    0 0 28px rgba(255, 90, 0,.25);
-  transition-duration: var(--td, 900ms);
-}
-.exploding-text.boom-primed{ filter: drop-shadow(0 0 12px rgba(255,215,0,.45)); }
-.boom-shockwave{
-  position: fixed; left: var(--x); top: var(--y);
-  width: 2px; height: 2px; border-radius: 50%;
-  transform: translate(-50%,-50%) scale(1);
-  background: radial-gradient(closest-side, rgba(255,255,255,.95), rgba(255,210,80,.55) 40%, rgba(255,140,0,0) 70%);
-  mix-blend-mode: screen; pointer-events: none; z-index: 2147483602;
-  animation: boomShock 900ms ease-out forwards;
-}
-@keyframes boomShock{ to{ transform: translate(-50%,-50%) scale(120); opacity: 0; } }
-.boom-flash{
-  position: fixed; inset: 0;
-  background: radial-gradient(circle at var(--x) var(--y), rgba(255,255,255,.85), rgba(255,255,255,0) 45%);
-  opacity: 0; mix-blend-mode: screen; pointer-events: none; z-index:2147483601;
-  animation: boomFlash 480ms ease-out forwards;
-}
-@keyframes boomFlash{ 0%{ opacity: 0; } 12%{ opacity: 1; } 100%{ opacity: 0; } }
-.boom-spark{
-  position: fixed; left: var(--x); top: var(--y);
-  width: var(--w,6px); height: var(--h,6px);
-  border-radius: 50%;
-  background: radial-gradient(circle, #ffd700 0%, #ff8c00 70%, #ff4500 100%);
-  box-shadow: 0 0 10px rgba(255,165,0,.65);
-  transform: translate3d(0,0,0) rotate(0deg);
-  filter: blur(var(--b0,.2px));
-  pointer-events: none; z-index:2147483602;
-  animation: sparkMove var(--dur,1100ms) cubic-bezier(.2,1,.2,1) forwards, sparkFade var(--fade,1100ms) ease-out forwards;
-}
-@keyframes sparkMove{
-  to{ transform: translate3d(var(--dx,0), var(--dy,0), 0) rotate(var(--rot,0deg)); filter: blur(var(--b1,1px)); }
-}
-@keyframes sparkFade{ 0%{ opacity: 1; } 85%{ opacity: 1; } 100%{ opacity: 0; } }
-.boom-shake{ animation: boomShake 520ms cubic-bezier(.36,.07,.19,.97); }
-@keyframes boomShake{
-  0%{ transform: translate3d(0,0,0) rotate(0); }
-  20%{ transform: translate3d(-2px,2px,0) rotate(-0.3deg); }
-  40%{ transform: translate3d(3px,-3px,0) rotate(0.4deg); }
-  60%{ transform: translate3d(-2px,1px,0) rotate(-0.2deg); }
-  80%{ transform: translate3d(2px,0,0) rotate(0.2deg); }
-  100%{ transform: translate3d(0,0,0) rotate(0); }
-}</style><script id="gt-init">
+</style>
+
+<script id="gt-init">
 window.googleTranslateElementInit = function(){
   try{
     new google.translate.TranslateElement({
@@ -1298,41 +1241,7 @@ window.googleTranslateElementInit = function(){
   .motto { font-size:.96rem; }
 }
 </style>
-<style id="letters-explode-css-2025-10-09">
-/* === Letter explosion (motto) === */
-.motto .m-text { display:inline-block; position:relative; }
-.motto .m-text .char {
-  display:inline-block;
-  white-space:pre;
-  transform-origin:center;
-  will-change: transform, opacity, filter;
-}
-/* outbound */
-.motto.letters-explode .m-text .char {
-  animation: letterExplode var(--dur,900ms) cubic-bezier(.2,1,.2,1) forwards;
-}
-/* inbound */
-.motto.letters-gather .m-text .char {
-  animation: letterGather var(--gdur,680ms) cubic-bezier(.2,1,.2,1) forwards;
-}
 
-@keyframes letterExplode {
-  0% { transform:translate3d(0,0,0) rotate(0deg) scale(1); opacity:1; filter:blur(0); }
-  100% { 
-    transform: translate3d(var(--dx,0),var(--dy,0),0) rotate(var(--rot,0deg)) scale(var(--sc,.96));
-    opacity: var(--op,0);
-    filter: blur(var(--blur,.8px));
-  }
-}
-@keyframes letterGather {
-  0% {
-    transform: translate3d(var(--dx,0),var(--dy,0),0) rotate(var(--rot,0deg)) scale(var(--sc,.96));
-    opacity: var(--op,0);
-    filter: blur(var(--blur,.8px));
-  }
-  100% { transform:translate3d(0,0,0) rotate(0deg) scale(1); opacity:1; filter:blur(0); }
-}
-</style>
 <style>
 /* Stelle visibili */
 .stars-container {
@@ -3506,7 +3415,229 @@ html {
         z-index: 9;
     }
 </style>
+<style id="ultimate-explosion-effect">
+/* === ESPLOSIONE ULTIMATE - VERSIONE SPETTACOLARE === */
+.exploding-text {
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+    padding: .5rem .5rem;
+    font-weight: 700;
+    border-radius: 15px;
+    background: linear-gradient(145deg, 
+        rgba(255, 215, 0, 0.1), 
+        rgba(0, 204, 255, 0.05),
+        rgba(185, 103, 255, 0.08));
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.exploding-text:hover {
+    background: linear-gradient(145deg, 
+        rgba(255, 215, 0, 0.2), 
+        rgba(0, 204, 255, 0.1),
+        rgba(185, 103, 255, 0.15));
+    border-color: rgba(255, 215, 0, 0.6);
+    transform: scale(1.05);
+    box-shadow: 
+        0 0 30px rgba(255, 215, 0, 0.4),
+        0 0 60px rgba(0, 204, 255, 0.2);
+}
+
+.exploding-text .m-text { 
+    display: inline-block;
+    position: relative;
+}
+
+.exploding-text.boom-active .m-text {
+    /* effetti di esplosione applicati al testo intero */
+    transform: scale(1.5);
+    opacity: 0;
+    transition: all 0.5s ease;
+}
+/* STATO ESPLOSIONE - VOLO ESTREMO */
+.exploding-text.boom-active .char {
+    --dx: calc((var(--index) - 7) * 120px + (Math.random() * 80 - 40));
+    --dy: calc((Math.random() * 200 - 250) * 1px);
+    --dz: calc(Math.random() * 200 - 100px);
+    --rx: calc(Math.random() * 720 - 360deg);
+    --ry: calc(Math.random() * 720 - 360deg);
+    --rz: calc(Math.random() * 720 - 360deg);
+    --scale: calc(0.3 + Math.random() * 0.7);
+    --blur: calc(2px + Math.random() * 4px);
+    --glow: calc(10px + Math.random() * 20px);
+    
+    transform: 
+        translate3d(var(--dx), var(--dy), var(--dz))
+        rotateX(var(--rx)) 
+        rotateY(var(--ry)) 
+        rotateZ(var(--rz)) 
+        scale(var(--scale));
+    opacity: 0;
+    filter: blur(var(--blur)) 
+            drop-shadow(0 0 var(--glow) rgba(255, 215, 0, 0.8));
+}
+
+/* RICOMPOSIZIONE SPETTACOLARE */
+.exploding-text.boom-recomposing .char {
+    animation: spectacularRecompose 1.8s cubic-bezier(0.2, 1.2, 0.1, 1) both;
+    animation-delay: calc(var(--index) * 0.08s);
+}
+
+@keyframes spectacularRecompose {
+    0% {
+        transform: 
+            translate3d(var(--dx, 0), var(--dy, -100px), var(--dz, 0))
+            rotateX(var(--rx, 180deg)) 
+            rotateY(var(--ry, 180deg)) 
+            rotateZ(var(--rz, 180deg)) 
+            scale(0.1);
+        opacity: 0;
+        filter: blur(8px) 
+                drop-shadow(0 0 30px rgba(255, 215, 0, 0.8));
+    }
+    
+    20% {
+        opacity: 1;
+        filter: blur(4px) 
+                drop-shadow(0 0 40px rgba(0, 204, 255, 0.9));
+        transform: 
+            translate3d(calc(var(--dx, 0) * 0.3), 
+                       calc(var(--dy, -100px) * 0.2), 
+                       calc(var(--dz, 0) * 0.3))
+            rotateX(calc(var(--rx, 180deg) * 0.2)) 
+            rotateY(calc(var(--ry, 180deg) * 0.2)) 
+            rotateZ(calc(var(--rz, 180deg) * 0.2)) 
+            scale(1.3);
+    }
+    
+    40% {
+        transform: 
+            translate3d(calc(var(--dx, 0) * 0.1), 
+                       calc(var(--dy, -100px) * 0.05), 
+                       calc(var(--dz, 0) * 0.1))
+            rotateX(calc(var(--rx, 180deg) * 0.05)) 
+            rotateY(calc(var(--ry, 180deg) * 0.05)) 
+            rotateZ(calc(var(--rz, 180deg) * 0.05)) 
+            scale(1.1);
+        filter: blur(2px) 
+                drop-shadow(0 0 25px rgba(185, 103, 255, 0.8));
+    }
+    
+    60% {
+        transform: 
+            translate3d(0, 0, 0)
+            rotateX(0) 
+            rotateY(0) 
+            rotateZ(0) 
+            scale(1.05);
+        filter: blur(1px) 
+                drop-shadow(0 0 15px rgba(255, 215, 0, 0.6));
+    }
+    
+    80% {
+        transform: scale(0.98);
+        filter: blur(0) 
+                drop-shadow(0 0 8px rgba(0, 204, 255, 0.4));
+    }
+    
+    100% {
+        transform: scale(1);
+        opacity: 1;
+        filter: blur(0) 
+                drop-shadow(0 0 0 transparent);
+    }
+}
+
+/* EFFETTI SPECIALI AGGIUNTIVI */
+.explosion-shockwave {
+    position: fixed;
+    left: var(--x);
+    top: var(--y);
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: radial-gradient(circle, 
+        rgba(255, 255, 255, 1) 0%,
+        rgba(255, 215, 0, 0.8) 20%,
+        rgba(0, 204, 255, 0.6) 40%,
+        rgba(185, 103, 255, 0.4) 60%,
+        transparent 80%);
+    mix-blend-mode: screen;
+    pointer-events: none;
+    z-index: 2147483602;
+    animation: megaShockwave 1.5s cubic-bezier(0.2, 0.8, 0.1, 1) forwards;
+}
+
+@keyframes megaShockwave {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(150);
+        opacity: 0;
+    }
+}
+
+.explosion-particles {
+    position: fixed;
+    left: var(--x);
+    top: var(--y);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: radial-gradient(circle, 
+        #ffffff, 
+        var(--particle-color, #ffd700));
+    pointer-events: none;
+    z-index: 2147483603;
+    animation: particleFly 2s ease-out forwards;
+}
+
+@keyframes particleFly {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: 
+            translate(var(--p-dx, 200px), var(--p-dy, -200px)) 
+            scale(0);
+        opacity: 0;
+    }
+}
+
+/* SUPPORTO MOBILE MIGLIORATO */
+@media (max-width: 768px) {
+    .exploding-text {
+        padding: 0.8rem 1.5rem;
+        font-size: 1.1rem;
+    }
+    
+    .exploding-text.boom-active .char {
+        --dx: calc((var(--index) - 7) * 60px + (Math.random() * 40 - 20));
+        --dy: calc((Math.random() * 150 - 180) * 1px);
+    }
+}
+
+exploding-text {
+    border: 1px solid rgba(255, 215, 0, 0.6) !important;
+    box-shadow: 
+        0 0 0 4px rgba(0, 204, 255, 0.3),
+        inset 0 0 0 1px rgba(255, 215, 0, 0.4) !important;
+    padding: 0.8rem 2rem !important;
+    border-radius: 15px !important;
+}
+
+</style>
+
+
+
 </head>
+
 <body><div hidden="True" id="search-backdrop"></div><div class="search-panel" id="search-panel"><div class="search-header"><h3 class="search-title">Risultati</h3><button aria-label="Chiudi pannello" class="search-close" id="search-close" type="button">Chiudi</button></div><div class="search-results results-scroll" id="search-results"><div class="sp-item" data-placeholder="true"><h4 class="result-title">Suggerimento</h4><p class="result-desc">Digita nel campo di ricerca in alto per vedere i risultati qui.</p></div></div></div>
 <!-- UI PATCH BLOCKS -->
 <div aria-label="Galleria autori" class="slider-vertical">
@@ -3851,7 +3982,7 @@ html {
     🌙
   </button>
 <button class="ctrl-btn" id="btn-thunder" title="Riproduci tuono">⚡ Tuono</button>
-<button class="ctrl-btn" id="btn-explode" title="Esplodi testo">💥 Esplodi</button>
+
 </div>
 </div>
 <!-- Menu principale -->
@@ -4257,6 +4388,7 @@ html {
 </div>
 <!-- Contenuto principale -->
 <main>
+
 <!-- Canvas per le piccole cometine variopinte -->
 <canvas class="tiny-comets-canvas" id="tiny-comets"></canvas>
 <section class="welcome-section">
@@ -4268,7 +4400,32 @@ html {
 <button class="ctrl-btn" id="btn-explode" onclick="(function(){var x=document.getElementById('exploding');if(!x)return;var r=x.getBoundingClientRect();x.dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true,clientX:r.left+r.width/2,clientY:r.top+r.height/2}));})();" type="button">
   🧨 Esplodi🌋
 </button>
-<div aria-label="Sustine et abstine" class="motto exploding-text" id="exploding" title="Clicca per esplodere"><span aria-hidden="true" class="m-icon">⏳</span><span aria-hidden="true" class="m-sep">•</span><span class="m-text"><i>Sustine et abstine</i></span><span aria-hidden="true" class="m-sep">•</span><span aria-hidden="true" class="m-icon">🧘</span></div>
+<div aria-label="Sustine et abstine" class="motto exploding-text" id="exploding" title="Clicca per esplodere">
+    <span aria-hidden="true" class="m-icon">⏳</span>
+    <span aria-hidden="true" class="m-sep">•</span>
+    <span class="m-text">
+        <span class="char">S</span>
+        <span class="char">u</span>
+        <span class="char">s</span>
+        <span class="char">t</span>
+        <span class="char">i</span>
+        <span class="char">n</span>
+        <span class="char">e</span>
+        <span class="char">&nbsp;</span>
+        <span class="char">e</span>
+        <span class="char">t</span>
+        <span class="char">&nbsp;</span>
+        <span class="char">a</span>
+        <span class="char">b</span>
+        <span class="char">s</span>
+        <span class="char">t</span>
+        <span class="char">i</span>
+        <span class="char">n</span>
+        <span class="char">e</span>
+        <span aria-hidden="true" class="m-icon">•</span>
+    <span aria-hidden="true" class="m-sep">⏳</span>
+    </span>
+  </div>
 </section>
 <!-- Timeline filosofica interattiva - INTEGRATA -->
 <!-- Timeline filosofica interattiva - COMPLETA -->
@@ -4786,60 +4943,8 @@ document.head.appendChild(style);
   });
 })();
 </script>
-&lt;
-<script id="explode-target-hook">
-      (function(){
-        // Trova un elemento che contiene quel testo (h1,h2,h3,p,span…)
-        const sel = 'h1,h2,h3,p,span,.hero-title,.headline';
-       const target = Array.from(document.querySelectorAll(sel))
-  .find(el => el.textContent && el.textContent.includes('Sustine et abstine'));
 
-        if (target) {
-          // contrassegna come bersaglio
-          target.classList.add('exploding-text');
-        }
-      
-        // Piccola funzione “esplodi” di scorta (se quella globale non è accessibile)
-        function explodeFallback(el){
-          if(!el || el.__exploded) return;
-          el.__exploded = true;
-          const txt = el.textContent;
-          el.textContent = '';
-          const frag = document.createDocumentFragment();
-          for (const ch of txt){ const s = document.createElement('span'); s.textContent = ch; frag.appendChild(s); }
-          el.appendChild(frag);
-          const spans = el.querySelectorAll('span');
-          spans.forEach(s => {
-            s.style.display = 'inline-block';
-            s.style.willChange = 'transform,opacity';
-            const dx=(Math.random()*2-1)*80, dy=(Math.random()*2-1)*60, rz=(Math.random()*2-1)*40, t=200+Math.random()*400;
-            s.animate(
-              [{transform:'translate(0,0) rotate(0deg)',opacity:1},
-               {transform:`translate(${dx}px,${dy}px) rotate(${rz}deg)`,opacity:0}],
-              {duration:450+t, easing:'cubic-bezier(.2,.6,.3,1)'}
-            );
-          });
-          // ripristina
-          setTimeout(()=>{ el.__exploded=false; el.textContent = txt; }, 800);
-      
-          // suono (se presente)
-          const boom = document.getElementById('explosionSound');
-          try { if(boom){ boom.muted=false; boom.volume=1.0; boom.currentTime=0; softPlay(boom, 1.0, 140).catch(()=>{}); } } catch(_) {}
-        }
-      
-        // Collega il pulsante “Esplodi” al bersaglio
-        const btn = document.getElementById('explode-btn');
-        if (btn) {
-          btn.addEventListener('click', () => {
-            const el = document.querySelector('.exploding-text') || target;
-            if (!el) return;
-            // usa la funzione globale se esiste, altrimenti fallback
-            if (window.explodeTarget) { window.explodeTarget(el); }
-            else { explodeFallback(el); }
-          });
-        }
-      })();
-    </script>
+
 <script id="thunder-toggle-fix">
       (function(){
         const btn = document.getElementById('btn-thunder');
@@ -5604,62 +5709,9 @@ document.addEventListener("DOMContentLoaded", function(){
   exploding.addEventListener('click', onClick, true);
   var btn = document.getElementById('btn-explode') || document.getElementById('explode-btn');
   if(btn){ btn.addEventListener('click', function(ev){ ev.preventDefault(); onClick(ev); }, true); }
-})();</script><script id="explode-ultra-robust">
-/* Ultra-robust binder for "Esplodi" button — supports #btn-explode and #explode-btn */
-(function(){
-  function q(id){ return document.getElementById(id); }
-  var btn = q('explode-btn') || q('btn-explode');
-  var exploding = document.querySelector('.exploding-text') || q('exploding');
+})();</script>
 
-  if(!btn){
-    // try to create one near exploding text if missing
-    if(exploding && !q('btn-explode')){
-      var b = document.createElement('button');
-      b.id = 'btn-explode'; b.className = 'ctrl-btn'; b.type = 'button';
-      b.textContent = '💥 Esplodi';
-      exploding.insertAdjacentElement('afterend', b);
-      btn = b;
-    }
-  }
-
-  if(!btn) return;
-
-  // Ensure it's visible if some CSS hides it
-  btn.style.display = 'inline-flex';
-
-  // Unlock audio once (mobile/Safari)
-  (function unlockOnce(){
-    var boom = q('explosionSound'), thunder = q('thunder-sound');
-    var fired = false;
-    function go(){
-      if(fired) return; fired = true;
-      [boom, thunder].forEach(function(a){
-        if(!a) return;
-        try{ a.muted=false; a.play().then(function(){ a.pause(); a.currentTime=0; }).catch(function(){}); }catch(_){}
-      });
-      window.removeEventListener('pointerdown', go, {capture:true});
-      window.removeEventListener('keydown', go, {capture:true});
-    }
-    window.addEventListener('pointerdown', go, {once:true, passive:true, capture:true});
-    window.addEventListener('keydown', go, {once:true, capture:true});
-  })();
-
-  // Use delegation-proof dispatch: simulate a centered click on #exploding
-  function trigger(){
-    exploding = document.querySelector('.exploding-text') || q('exploding');
-    if(!exploding) return;
-    var r = exploding.getBoundingClientRect();
-    var cx = r.left + r.width/2, cy = r.top + r.height/2;
-    exploding.dispatchEvent(new MouseEvent('click', {bubbles:true, cancelable:true, clientX:cx, clientY:cy}));
-  }
-
-  // Remove previous duplicate listeners (if code was injected more than once)
-  btn.replaceWith(btn.cloneNode(true));
-  btn = q('explode-btn') || q('btn-explode');
-
-  btn.addEventListener('click', function(ev){ ev.preventDefault(); trigger(); }, {passive:true});
-})();
-</script><script id="gt-wire">
+<script id="gt-wire">
 document.addEventListener('DOMContentLoaded', function() {
   var translateSelect = document.getElementById('customTranslate');
   function clearCookie(){
@@ -5719,100 +5771,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }catch(_){ translateSelect.value='it'; }
   }
 });
-</script><script id="letters-explode-js-2025-10-09">
-(function(){
-  var host = document.getElementById('exploding');
-  if(!host) return;
-  var textWrap = host.querySelector('.m-text');
-  if(!textWrap) return;
-
-  var busy = false;
-  function splitOnce(){
-    if(textWrap.__split) return;
-    var nodes = Array.from(textWrap.childNodes);
-    textWrap.innerHTML = '';
-    nodes.forEach(function(n){
-      if(n.nodeType === 3){ // text
-        var s = n.nodeValue;
-        for(var i=0;i<s.length;i++){
-          var span = document.createElement('span');
-          span.className = 'char';
-          span.textContent = s[i];
-          textWrap.appendChild(span);
-        }
-      }else{
-        // keep markup (e.g., <i>) but split its text as well
-        if(n.nodeType === 1){
-          var t = n.textContent;
-          for(var j=0;j<t.length;j++){
-            var sp = document.createElement('span');
-            sp.className = 'char';
-            sp.textContent = t[j];
-            textWrap.appendChild(sp);
-          }
-        }
-      }
-    });
-    textWrap.__split = true;
-  }
-
-  function rand(min,max){ return Math.random()*(max-min)+min; }
-
-  function scatterVectors(){
-    // compute explosion vectors from center of the m-text block
-    var rect = textWrap.getBoundingClientRect();
-    var cx = rect.left + rect.width/2;
-    var cy = rect.top  + rect.height/2;
-    var chars = textWrap.querySelectorAll('.char');
-    chars.forEach(function(el, i){
-      var bb = el.getBoundingClientRect();
-      var vx = (bb.left + bb.width/2) - cx;
-      var vy = (bb.top  + bb.height/2) - cy;
-      var d  = Math.max(6, Math.hypot(vx, vy));
-      var mult = rand(120, 260);
-      var dx = (vx/d)*mult + rand(-40, 40);
-      var dy = (vy/d)*mult + rand(-40, 40);
-      el.style.setProperty('--dx', dx.toFixed(1)+'px');
-      el.style.setProperty('--dy', dy.toFixed(1)+'px');
-      el.style.setProperty('--rot', rand(-45,45).toFixed(1)+'deg');
-      el.style.setProperty('--sc', rand(.9, 1.08).toFixed(2));
-      el.style.setProperty('--blur', rand(.2, 1.2).toFixed(2)+'px');
-      el.style.setProperty('--op', 0);
-      el.style.setProperty('--dur', Math.round(rand(620, 980))+'ms');
-      el.style.setProperty('--gdur', Math.round(rand(540, 760))+'ms');
-      el.style.animationDelay = (i*3)+'ms';
-    });
-  }
-
-  function lettersExplodeAndGather(){
-    if(busy) return;
-    busy = true;
-    splitOnce();
-    scatterVectors();
-    host.classList.add('letters-explode');
-    // return after a bit
-    setTimeout(function(){
-      host.classList.remove('letters-explode');
-      host.classList.add('letters-gather');
-      // clear gather and unlock
-      setTimeout(function(){
-        host.classList.remove('letters-gather');
-        busy = false;
-      }, 860);
-    }, 980);
-  }
-
-  // Wire alongside your existing explosion
-  // Prefer capturing phase so it runs even if other handlers stopPropagation
-  host.addEventListener('click', function(){ lettersExplodeAndGather(); }, true);
-
-  // Optional external trigger support
-  var btn = document.getElementById('btn-explode') || document.getElementById('explode-btn');
-  if(btn){
-    btn.addEventListener('click', function(ev){ ev.preventDefault(); lettersExplodeAndGather(); }, {passive:true});
-  }
-})();
 </script>
+
 <script>
 // Stelle visibili
 document.addEventListener('DOMContentLoaded', function() {
@@ -6690,5 +6650,321 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     })();
 </script>
+<script id="ultimate-explosion-script">
+// === SCRIPT ESPLOSIONE ULTIMATE ===
+document.addEventListener('DOMContentLoaded', function() {
+    const motto = document.querySelector('.motto.exploding-text');
+    if (!motto) return;
+    
+    // Aggiungi classe ultimate
+    motto.classList.add('ultimate');
+    
+    // Prepara le lettere per l'esplosione
+    function prepareExplosion() {
+        const text = motto.querySelector('.m-text');
+        if (!text) return;
+        
+        const originalText = text.textContent;
+        text.innerHTML = '';
+        
+        // Crea span per ogni carattere
+        for (let i = 0; i < originalText.length; i++) {
+            const charSpan = document.createElement('span');
+            charSpan.className = 'char';
+            charSpan.textContent = originalText[i];
+            charSpan.style.setProperty('--index', i);
+            charSpan.style.animationDelay = `${i * 0.05}s`;
+            text.appendChild(charSpan);
+        }
+    }
+    
+    // Effetto esplosione completo
+    function triggerUltimateExplosion(event) {
+        if (motto.classList.contains('boom-active')) {
+            // Se già esploso, ricomponi
+            recomposeText();
+        } else {
+            // Altrimenti, esplodi
+            explodeText(event);
+        }
+    }
+    
+    function explodeText(event) {
+        const rect = motto.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        
+        // Effetto pre-esplosione
+        motto.classList.add('boom-primed');
+        
+        setTimeout(() => {
+            motto.classList.remove('boom-primed');
+            motto.classList.add('boom-active');
+            
+            // Crea onda d'urto
+            createShockwave(centerX, centerY);
+            
+            // Crea particelle esplosive
+            createExplosionParticles(centerX, centerY);
+            
+            // Effetto sonoro (se disponibile)
+            playExplosionSound();
+            
+        }, 800);
+    }
+    
+    function recomposeText() {
+        motto.classList.remove('boom-active');
+        motto.classList.add('boom-recomposing');
+        
+        setTimeout(() => {
+            motto.classList.remove('boom-recomposing');
+        }, 2000);
+    }
+    
+    function createShockwave(x, y) {
+        const shockwave = document.createElement('div');
+        shockwave.className = 'explosion-shockwave';
+        shockwave.style.setProperty('--x', `${x}px`);
+        shockwave.style.setProperty('--y', `${y}px`);
+        document.body.appendChild(shockwave);
+        
+        setTimeout(() => {
+            shockwave.remove();
+        }, 1500);
+    }
+    
+    function createExplosionParticles(x, y) {
+        const colors = ['#ffd700', '#00ccff', '#b967ff', '#ff4444', '#00ff88'];
+        const particleCount = 30;
+        
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'explosion-particles';
+            particle.style.setProperty('--x', `${x}px`);
+            particle.style.setProperty('--y', `${y}px`);
+            particle.style.setProperty('--particle-color', colors[i % colors.length]);
+            particle.style.setProperty('--p-dx', `${(Math.random() - 0.5) * 400}px`);
+            particle.style.setProperty('--p-dy', `${(Math.random() - 0.5) * 400}px`);
+            particle.style.animationDelay = `${Math.random() * 0.5}s`;
+            
+            document.body.appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 2000);
+        }
+    }
+    
+    function playExplosionSound() {
+        // Usa il suono esistente o creane uno nuovo
+        const explosionSound = document.getElementById('explosionSound');
+        if (explosionSound) {
+            try {
+                explosionSound.currentTime = 0;
+                explosionSound.volume = 0.7;
+                explosionSound.play().catch(() => {});
+            } catch (e) {}
+        }
+    }
+    
+    // Inizializza
+    prepareExplosion();
+    
+    // Event listeners
+    motto.addEventListener('click', triggerUltimateExplosion);
+    
+    // Aggiungi anche l'event listener per il pulsante Esplodi esistente
+    const explodeBtn = document.getElementById('btn-explode');
+    if (explodeBtn) {
+        explodeBtn.addEventListener('click', function() {
+            triggerUltimateExplosion({});
+        });
+    }
+});
+
+// Helper per numeri random
+Math.random = function() {
+    return window.crypto ? window.crypto.getRandomValues(new Uint32Array(1))[0] / 4294967296 : Math.random();
+};
+</script>
+<script id="ultimate-explosion-fix">
+/* === SISTEMA DI ESPLOSIONE COMPLETO (con animazione lettere) === */
+document.addEventListener('DOMContentLoaded', function() {
+  // 1) Target robusto
+  let explodingText = document.getElementById('exploding');
+  if (!explodingText) {
+    explodingText = Array.from(document.querySelectorAll('h1,h2,h3,p,span,.hero-title,.headline,.motto'))
+      .find(el => el.textContent && el.textContent.includes('Sustine et abstine'));
+  }
+  const explodeBtn = document.querySelector('#btn-explode');
+  const explosionSound = document.getElementById('explosionSound');
+  if (!explodingText) return;
+
+  // 2) Igiene testo (evita i “��”)
+  const clean = s => (s||'')
+    .normalize('NFC')
+    .replace(/[\uFEFF\u200B-\u200D\u2060]/g, '')  // BOM/zero-width
+    .replace(/\uFFFD/g, '');                      // replacement char
+
+  // 3) Split in span.char (una sola volta)
+  function prepareExplosion() {
+    if (explodingText.__split) return;
+    const text = clean(explodingText.textContent);
+    explodingText.__originalText = text;
+    explodingText.classList.add('exploding-text');
+    explodingText.innerHTML = '';
+    for (let i = 0; i < text.length; i++) {
+      const s = document.createElement('span');
+      s.className = 'char';
+      s.textContent = text[i];
+      s.style.display = 'inline-block';
+      s.style.willChange = 'transform,opacity,filter';
+      s.style.setProperty('--index', i);
+      explodingText.appendChild(s);
+    }
+    explodingText.__split = true;
+  }
+
+  // 4) Effetto shockwave (riusa i tuoi elementi)
+  function createShockwave(element) {
+    const rect = element.getBoundingClientRect();
+    const shockwave = document.createElement('div');
+    shockwave.className = 'explosion-shockwave';
+    shockwave.style.setProperty('--x', rect.left + rect.width / 2 + 'px');
+    shockwave.style.setProperty('--y', rect.top + rect.height / 2 + 'px');
+    document.body.appendChild(shockwave);
+    setTimeout(() => shockwave.remove(), 1500);
+  }
+
+  // 5) Particelle (riusa le tue classi)
+  function createParticles(element) {
+    const rect = element.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    for (let i = 0; i < 15; i++) {
+      const p = document.createElement('div');
+      p.className = 'explosion-particles';
+      p.style.setProperty('--x', cx + 'px');
+      p.style.setProperty('--y', cy + 'px');
+      p.style.setProperty('--p-dx', (Math.random() * 400 - 200) + 'px');
+      p.style.setProperty('--p-dy', (Math.random() * 300 - 250) + 'px');
+      p.style.setProperty('--particle-color',
+        ['#ffd700', '#00ccff', '#b967ff', '#ff6666'][Math.floor(Math.random() * 4)]
+      );
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 2000);
+    }
+  }
+
+  // 6) ANIMAZIONE LETTERE (uscita → rientro)
+  function explodeTarget(element) {
+    if (!element || element.__exploding) return;
+    element.__exploding = true;
+
+    // audio
+    if (explosionSound) {
+      try {
+        explosionSound.currentTime = 0;
+        explosionSound.volume = 0.7;
+        const pr = explosionSound.play();
+        if (pr && pr.catch) pr.catch(()=>{});
+      } catch(_) {}
+    }
+
+    // contorno visibile e classi decorative (se usi CSS su .boom-*)
+    element.classList.remove('boom-recomposing');
+    element.classList.add('boom-active');
+    // “lock” del bordo contro override esterni
+    element.style.border = '2px solid rgba(255,215,0,.30)';
+
+    // effetti extra
+    createShockwave(element);
+    createParticles(element);
+
+    const INTENSITY = 1.35;
+    const DURATION  = 780;    // ms base
+    const RETURN_DELAY = 280; // ms prima del rientro
+    const STAGGER  = 14;      // ms per lettera
+
+    const spans = Array.from(element.querySelectorAll('.char'));
+    // se per qualche motivo non è split: fallo ora e riprendi i spans
+    if (!spans.length) { prepareExplosion(); return explodeTarget(element); }
+
+    let finished = 0;
+    spans.forEach((s, i) => {
+      const dx = (Math.random()*180 - 90) * INTENSITY;
+      const dy = (Math.random()*140 - 70) * INTENSITY + (i%5===0 ? (12+Math.random()*14) : 0);
+      const rz = (Math.random()*320 - 160);
+      const delay = i * STAGGER * (0.7 + Math.random()*0.65);
+      const dur = DURATION * (0.85 + Math.random()*0.4);
+
+      // uscita
+      const out = s.animate([
+        { transform:'translate(0,0) rotate(0deg)',                     opacity:1, filter:'blur(0px)' },
+        { transform:`translate(${dx*0.6}px,${dy*0.6}px) rotate(${rz*0.6}deg)`, opacity:1, filter:'blur(0.4px)' },
+        { transform:`translate(${dx}px,${dy}px) rotate(${rz}deg)`,      opacity:0, filter:'blur(1px)' }
+      ], { duration: dur, delay, easing:'cubic-bezier(.12,.74,0,.98)', fill:'forwards' });
+
+      out.addEventListener?.('finish', ()=>{
+        // rientro
+        s.animate([
+          { transform:`translate(${dx}px,${dy}px) rotate(${rz}deg)`, opacity:0, filter:'blur(1px)' },
+          { transform:'translate(0,0) rotate(0deg)',                 opacity:1, filter:'blur(0px)' }
+        ], { duration: dur*0.9, delay: RETURN_DELAY + Math.random()*150, easing:'cubic-bezier(.2,1.08,.2,1)', fill:'forwards' })
+        .addEventListener?.('finish', ()=>{
+          finished++;
+          if (finished === spans.length) {
+            element.classList.remove('boom-active');
+            element.classList.add('boom-recomposing');
+            setTimeout(()=>{
+              element.classList.remove('boom-recomposing');
+              element.__exploding = false;
+            }, 300); // piccola coda
+          }
+        });
+      });
+    });
+  }
+
+  // 7) Prepare e bind eventi
+  prepareExplosion();
+
+  // globale (se serve altrove)
+  window.explodeTarget = explodeTarget;
+
+  if (explodeBtn) {
+    explodeBtn.addEventListener('click', function(e){
+      e.preventDefault();
+      explodeTarget(explodingText);
+    });
+  }
+  explodingText.addEventListener('click', function(){
+    explodeTarget(this);
+  });
+
+  console.log('Sistema di esplosione caricato - Pronto per esplodere!');
+});
+
+// helper audio opzionale
+function softPlay(audio, volume, delay) {
+  if (!audio) return Promise.reject('Audio element not found');
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      try {
+        audio.volume = volume || 1.0;
+        audio.muted = false;
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.then(resolve).catch(resolve);
+        } else {
+          resolve();
+        }
+      } catch (e) { resolve(); }
+    }, delay || 0);
+  });
+}
+</script>
+
 </body>
 </html>
