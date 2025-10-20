@@ -540,14 +540,14 @@ main {
       }     
       /* Footer */
 footer {
-    position: relative; z-index: 120;margin-top: 120px; /* Spazio aggiuntivo */
+    margin-top: 120px; /* Spazio aggiuntivo */
     position: relative;
     z-index: 10;
     background: #06060d;
     /* resto del CSS */
 }
     footer {
-      position: relative; z-index: 120;background: #06060d;
+      background: #06060d;
       color: #e9eef5;
       margin-top: auto;
       padding: 1.5rem 0;
@@ -783,7 +783,7 @@ footer {
       .audio-title{font-weight:600}.audio-player .controls{display:flex;align-items:center;gap:.62rem}.audio-player input[type=range]{width:7.5rem}
       .articles-blob{position:fixed;right:1.25rem;top:9.5rem;width:20rem;z-index:90;background:radial-gradient(120% 150% at 100% 0%,rgba(50,120,255,.16),rgba(10,10,30,.82));border:1px solid rgba(255,255,255,.08);border-radius:1rem;padding:.88rem 1rem;box-shadow:0 .94rem 1.88rem rgba(0,0,0,.35)}
       .articles-blob h3{margin:0 0 .5rem;font-family:'Cinzel',serif;color:#ffd86a}.articles-blob ul{list-style:none;margin:0;padding:0}.articles-blob li{margin:.25rem 0}.articles-blob a{color:#cfe8ff;text-decoration:none;font-weight:700}.articles-blob a:hover{color:#fff;text-decoration:underline}
-      .right-embed{position:fixed;right:1.25rem;top:40rem;width:20rem;z-index: 90;background:rgba(10,10,30,.8);border:1px solid rgba(255,215,0,.25);border-radius:.75rem;padding:.5rem}
+      .right-embed{position:fixed;right:1.25rem;top:40rem;width:20rem;z-index:25;background:rgba(10,10,30,.8);border:1px solid rgba(255,215,0,.25);border-radius:.75rem;padding:.5rem}
       .right-embed iframe{width:100%;height:264px;display:block;border:0}
       #russell-box{position:fixed;bottom:8vh;left:2rem;z-index:10;background:rgba(10,10,30,.8);border:1px solid rgba(255,215,0,.25);border-radius:.62rem;padding:.62rem .75rem;max-width:24rem;box-shadow:0 .5rem 1.12rem rgba(0,0,0,.35)}
       #russell-btn{all:unset;cursor:pointer;display:block;color:#ffd86a}#russell-hint{position:fixed;bottom:19vh;left:3.5rem;z-index:92;color:#cfe8ff;opacity:.85;font-style:italic}
@@ -796,7 +796,7 @@ footer {
     </style>
 <style id="right-links-css">
       .right-box{
-      position:fixed; right:1.25rem; width:20rem; z-index: 90;
+      position:fixed; right:1.25rem; width:20rem; z-index:25;
       background: rgba(10,10,30,.86); border:1px solid rgba(255,215,0,.25);
       border-radius:.75rem; padding:.62rem .75rem; box-shadow:0 .9rem 1.8rem rgba(0,0,0,.34)
       }
@@ -1212,56 +1212,14 @@ window.googleTranslateElementInit = function(){
     document.documentElement.removeAttribute('data-gt-error');
   }catch(e){ console.warn('GT init error', e); }
 };
-</script><script defer="True" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-<style id="motto-style-2">
+</script><script defer="True" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script><style id="motto-style-2">
 /* Elegant motto styling with typographic separators */
-.motto { 
-    letter-spacing: 0.195em;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4ch;
-}
-
-.motto .m-text { 
-    font-size: 1.06em;
-    font-weight: 600;
-}
-
-.motto .m-icon { 
-    font-size: 1.08em;
-    opacity: 0.9;
-}
-
-.motto .m-sep { 
-    opacity: 0.6;
-    padding: 0 0.4ch;
-}
-
-/* Mobile optimization */
-@media (max-width: 600px) {
-    .motto { 
-        font-size: 0.96rem;
-        letter-spacing: 0.2em;
-        gap: 0.3ch;
-    }
-    
-    .motto .m-sep {
-        padding: 0 0.3ch;
-    }
-}
-
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-    .motto .m-sep {
-        opacity: 0.8;
-    }
-}
-
-/* Reduced motion support */
-@media (prefers-reduced-motion: reduce) {
-    .motto {
-        transition: none;
-    }
+.motto { letter-spacing:.295em; }
+.motto .m-text { font-size:1.06em; }
+.motto .m-icon { font-size:1.08em; }
+.motto .m-sep { opacity:.6; padding:0 .4ch; }
+@media (max-width:600px){
+  .motto { font-size:.96rem; }
 }
 </style>
 
@@ -1476,7 +1434,7 @@ window.googleTranslateElementInit = function(){
   transform: translateY(-2px) scale(1.015);
   background-color: rgba(20,20,40,.88);
    filter: brightness(2.10) saturate(2.08);
-  z-index: 110; /* bring above misc overlays while pinging */
+  z-index: 2147483600; /* bring above misc overlays while pinging */
 }
 /* Button visual sync */
 #russell-btn{
@@ -2621,7 +2579,7 @@ document.addEventListener('DOMContentLoaded', function(){
 }
 
 [data-theme="light"] footer {
-  position: relative; z-index: 120;background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+  background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
   color: #0f1419;
   border-top: 3px solid rgba(59, 130, 246, 0.4);
 }
@@ -3695,10 +3653,59 @@ exploding-text {
 }
 
 </style>
+<style id="explosion-theater-css">
+/* === EXPLOSION THEATER (conservative, layered) === */
 
+/* Stabilizza il box motto per evitare "respiro" al caricamento */
+.motto{
+  display:inline-block;
+  white-space:nowrap;
+  contain:inline-size;
+  line-height:1;
+  --motto-ch: 36; /* aggiorna se cambi testo */
+  min-width: calc(var(--motto-ch) * 1ch);
+}
+.motto .m-text{
+  display:inline-block;
+  white-space:nowrap;
+  font-size-adjust: 0.52;
+}
+.motto .m-icon, .motto .m-sep, .motto .char{
+  line-height:1;
+  vertical-align:baseline;
+}
 
+/* Layer di effetti */
+.fx-layer{position:fixed;inset:0;pointer-events:none;z-index:1300}
+.fx-flash{
+  background:radial-gradient(circle at center,#fff,rgba(255,255,255,.3) 40%,transparent 60%);
+  mix-blend-mode:screen;opacity:0;transition:opacity .25s ease;
+  width:100%;height:100%;
+}
+.fx-shock{
+  position:absolute;left:50%;top:50%;width:10vmin;height:10vmin;border-radius:50%;
+  border:2px solid rgba(255,255,255,.9);opacity:0;transform:translate(-50%,-50%) scale(.25);
+  filter:drop-shadow(0 0 12px rgba(255,255,255,.85));mix-blend-mode:screen
+}
+.fx-smoke{
+  position:absolute;left:50%;top:50%;width:60vmin;height:60vmin;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(180,200,255,.18),rgba(0,0,0,0));
+  transform:translate(-50%,-50%) scale(.4);opacity:0;filter:blur(2px)
+}
+.fx-embers{position:absolute;inset:0;}
 
-<style id="russell-hide-css">#russell-box.rb-hidden{opacity:0;pointer-events:none;transform:translateY(12px);transition:opacity .22s ease, transform .22s ease}</style>
+/* Preglow leggero durante il buildup */
+#exploding.preglow .m-text{
+  text-shadow:0 0 18px rgba(0,220,255,.75),0 0 32px rgba(0,180,255,.55);
+}
+
+/* Accessibilità: riduci gli effetti se richiesto dall'utente */
+@media (prefers-reduced-motion: reduce){
+  .fx-layer{display:none !important;}
+  .char{transition:none !important;}
+}
+</style>
+
 </head>
 
 <body><div hidden="True" id="search-backdrop"></div><div class="search-panel" id="search-panel"><div class="search-header"><h3 class="search-title">Risultati</h3><button aria-label="Chiudi pannello" class="search-close" id="search-close" type="button">Chiudi</button></div><div class="search-results results-scroll" id="search-results"><div class="sp-item" data-placeholder="true"><h4 class="result-title">Suggerimento</h4><p class="result-desc">Digita nel campo di ricerca in alto per vedere i risultati qui.</p></div></div></div>
@@ -7009,6 +7016,144 @@ function softPlay(audio, volume, delay) {
     }, delay || 0);
   });
 }
+</script>
+
+
+<script id="explosion-theater-js">
+(function(){
+  const motto = document.getElementById('exploding');
+  if(!motto) return;
+  let textEl = motto.querySelector('.m-text') || motto;
+  if(!textEl.querySelector('.char')){
+    const txt = textEl.textContent;
+    textEl.textContent = '';
+    for(const ch of [...txt]){
+      const s = document.createElement('span');
+      s.className = 'char';
+      s.textContent = ch === ' ' ? ' ' : ch;
+      textEl.appendChild(s);
+    }
+  }
+
+  if(!document.querySelector('.fx-layer')){
+    const layer = document.createElement('div');
+    layer.className = 'fx-layer';
+    layer.innerHTML = '<div class="fx-flash"></div><div class="fx-shock"></div><div class="fx-smoke"></div><canvas class="fx-embers"></canvas>';
+    document.body.appendChild(layer);
+  }
+  const layer = document.querySelector('.fx-layer');
+  const flash = layer.querySelector('.fx-flash');
+  const shock = layer.querySelector('.fx-shock');
+  const smoke = layer.querySelector('.fx-smoke');
+  const canvas = layer.querySelector('.fx-embers');
+  const ctx = canvas.getContext('2d');
+  function resize(){ canvas.width = innerWidth; canvas.height = innerHeight; }
+  resize(); addEventListener('resize', resize);
+
+  const prefersReduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let animating = false;
+
+  function centerOf(el){
+    const r = el.getBoundingClientRect();
+    return { x: r.left + r.width/2, y: r.top + r.height/2 };
+  }
+
+  let sparks = [];
+  function seedSparks(x,y,count){
+    for(let i=0;i<count;i++){
+      const a = Math.random()*Math.PI*2;
+      const sp = 2 + Math.random()*6;
+      sparks.push({ x,y, vx: Math.cos(a)*sp, vy: Math.sin(a)*sp - (Math.random()*2), life: 40+Math.random()*50, age: 0, r: 1+Math.random()*2 });
+    }
+  }
+  function tick(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    for(let i=sparks.length-1;i>=0;i--){
+      const s=sparks[i];
+      s.age++;
+      s.vy += 0.06; s.vx *= 0.99; s.vy *= 0.995;
+      s.x += s.vx; s.y += s.vy;
+      const t = 1 - (s.age/s.life);
+      if(t<=0){ sparks.splice(i,1); continue; }
+      ctx.globalAlpha = Math.max(0,t);
+      const g = ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r*3);
+      g.addColorStop(0,'rgba(255,240,180,1)');
+      g.addColorStop(1,'rgba(255,120,0,0)');
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fill();
+    }
+    if(animating) requestAnimationFrame(tick);
+  }
+
+  function shake(intensity, duration){
+    const start = performance.now();
+    (function step(now){
+      const t = (now-start)/duration;
+      if(t>=1){ document.body.style.transform=''; return; }
+      const n = 1 - t;
+      const dx = (Math.random()*2-1)*intensity*n;
+      const dy = (Math.random()*2-1)*intensity*n;
+      document.body.style.transform = 'translate('+dx+'px,'+dy+'px)';
+      requestAnimationFrame(step);
+    })(start);
+  }
+
+  function explode(){
+    if(prefersReduce || animating) return;
+    animating = true;
+
+    const chars = [...textEl.querySelectorAll('.char')];
+    motto.classList.add('preglow');
+    flash.style.opacity = 1;
+    setTimeout(()=> flash.style.opacity = 0, 120);
+
+    shock.style.opacity = 1; shock.style.transform = 'translate(-50%,-50%) scale(.25)';
+    smoke.style.opacity = .25; smoke.style.transform = 'translate(-50%,-50%) scale(.4)';
+    const start = performance.now(), DUR=680;
+    (function loop(now){
+      const t = Math.min(1,(now-start)/DUR);
+      const ease = t<.5 ? 2*t*t : -1+(4-2*t)*t;
+      shock.style.transform = 'translate(-50%,-50%) scale('+(.25 + ease*2.0)+')';
+      shock.style.opacity = String(1 - t);
+      smoke.style.transform = 'translate(-50%,-50%) scale('+(.4 + ease*1.4)+')';
+      smoke.style.opacity = String(.25 * (1 - t));
+      if(t<1) requestAnimationFrame(loop);
+    })(start);
+
+    const {x:cx,y:cy}=centerOf(textEl);
+    chars.forEach((ch)=>{
+      const b = ch.getBoundingClientRect();
+      const ox=b.left+b.width/2, oy=b.top+b.height/2;
+      const dx=ox-cx, dy=oy-cy;
+      const dist=Math.hypot(dx,dy)||1;
+      const dirx=dx/dist, diry=dy/dist;
+      const power = 90 + Math.random()*160;
+      const rot = (Math.random()*720-360);
+      const delay = (dist/600)*180;
+      ch.style.willChange='transform,opacity';
+      setTimeout(()=>{
+        ch.animate([
+          { transform:'translate3d(0,0,0) rotate(0deg)', opacity:1 },
+          { transform:'translate3d('+(dirx*power)+'px,'+(diry*power)+'px,0) rotate('+rot+'deg)', opacity:0 }
+        ], { duration: 620 + Math.random()*320, easing:'cubic-bezier(.2,.9,.2,1)', fill:'forwards' });
+      }, delay);
+    });
+
+    const c = centerOf(textEl);
+    seedSparks(c.x,c.y,110);
+    tick();
+    shake(4,380);
+
+    setTimeout(()=>{ motto.classList.remove('preglow'); animating=false; }, 1200);
+  }
+
+  // Trigger: se esiste un bottone con id btn-explode
+  const btn = document.getElementById('btn-explode');
+  if(btn) btn.addEventListener('click', explode);
+
+  // Esporta API globale minimale:
+  window.EchiExplode = explode;
+})();
 </script>
 
 </body>
