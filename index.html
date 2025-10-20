@@ -540,14 +540,14 @@ main {
       }     
       /* Footer */
 footer {
-    margin-top: 120px; /* Spazio aggiuntivo */
+    position: relative; z-index: 120;margin-top: 120px; /* Spazio aggiuntivo */
     position: relative;
     z-index: 10;
     background: #06060d;
     /* resto del CSS */
 }
     footer {
-      background: #06060d;
+      position: relative; z-index: 120;background: #06060d;
       color: #e9eef5;
       margin-top: auto;
       padding: 1.5rem 0;
@@ -783,7 +783,7 @@ footer {
       .audio-title{font-weight:600}.audio-player .controls{display:flex;align-items:center;gap:.62rem}.audio-player input[type=range]{width:7.5rem}
       .articles-blob{position:fixed;right:1.25rem;top:9.5rem;width:20rem;z-index:90;background:radial-gradient(120% 150% at 100% 0%,rgba(50,120,255,.16),rgba(10,10,30,.82));border:1px solid rgba(255,255,255,.08);border-radius:1rem;padding:.88rem 1rem;box-shadow:0 .94rem 1.88rem rgba(0,0,0,.35)}
       .articles-blob h3{margin:0 0 .5rem;font-family:'Cinzel',serif;color:#ffd86a}.articles-blob ul{list-style:none;margin:0;padding:0}.articles-blob li{margin:.25rem 0}.articles-blob a{color:#cfe8ff;text-decoration:none;font-weight:700}.articles-blob a:hover{color:#fff;text-decoration:underline}
-      .right-embed{position:fixed;right:1.25rem;top:40rem;width:20rem;z-index:25;background:rgba(10,10,30,.8);border:1px solid rgba(255,215,0,.25);border-radius:.75rem;padding:.5rem}
+      .right-embed{position:fixed;right:1.25rem;top:40rem;width:20rem;z-index: 90;background:rgba(10,10,30,.8);border:1px solid rgba(255,215,0,.25);border-radius:.75rem;padding:.5rem}
       .right-embed iframe{width:100%;height:264px;display:block;border:0}
       #russell-box{position:fixed;bottom:8vh;left:2rem;z-index:10;background:rgba(10,10,30,.8);border:1px solid rgba(255,215,0,.25);border-radius:.62rem;padding:.62rem .75rem;max-width:24rem;box-shadow:0 .5rem 1.12rem rgba(0,0,0,.35)}
       #russell-btn{all:unset;cursor:pointer;display:block;color:#ffd86a}#russell-hint{position:fixed;bottom:19vh;left:3.5rem;z-index:92;color:#cfe8ff;opacity:.85;font-style:italic}
@@ -796,7 +796,7 @@ footer {
     </style>
 <style id="right-links-css">
       .right-box{
-      position:fixed; right:1.25rem; width:20rem; z-index:25;
+      position:fixed; right:1.25rem; width:20rem; z-index: 90;
       background: rgba(10,10,30,.86); border:1px solid rgba(255,215,0,.25);
       border-radius:.75rem; padding:.62rem .75rem; box-shadow:0 .9rem 1.8rem rgba(0,0,0,.34)
       }
@@ -1212,14 +1212,56 @@ window.googleTranslateElementInit = function(){
     document.documentElement.removeAttribute('data-gt-error');
   }catch(e){ console.warn('GT init error', e); }
 };
-</script><script defer="True" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script><style id="motto-style-2">
+</script><script defer="True" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<style id="motto-style-2">
 /* Elegant motto styling with typographic separators */
-.motto { letter-spacing:.295em; }
-.motto .m-text { font-size:1.06em; }
-.motto .m-icon { font-size:1.08em; }
-.motto .m-sep { opacity:.6; padding:0 .4ch; }
-@media (max-width:600px){
-  .motto { font-size:.96rem; }
+.motto { 
+    letter-spacing: 0.195em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4ch;
+}
+
+.motto .m-text { 
+    font-size: 1.06em;
+    font-weight: 600;
+}
+
+.motto .m-icon { 
+    font-size: 1.08em;
+    opacity: 0.9;
+}
+
+.motto .m-sep { 
+    opacity: 0.6;
+    padding: 0 0.4ch;
+}
+
+/* Mobile optimization */
+@media (max-width: 600px) {
+    .motto { 
+        font-size: 0.96rem;
+        letter-spacing: 0.2em;
+        gap: 0.3ch;
+    }
+    
+    .motto .m-sep {
+        padding: 0 0.3ch;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .motto .m-sep {
+        opacity: 0.8;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .motto {
+        transition: none;
+    }
 }
 </style>
 
@@ -1434,7 +1476,7 @@ window.googleTranslateElementInit = function(){
   transform: translateY(-2px) scale(1.015);
   background-color: rgba(20,20,40,.88);
    filter: brightness(2.10) saturate(2.08);
-  z-index: 2147483600; /* bring above misc overlays while pinging */
+  z-index: 110; /* bring above misc overlays while pinging */
 }
 /* Button visual sync */
 #russell-btn{
@@ -2579,7 +2621,7 @@ document.addEventListener('DOMContentLoaded', function(){
 }
 
 [data-theme="light"] footer {
-  background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+  position: relative; z-index: 120;background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
   color: #0f1419;
   border-top: 3px solid rgba(59, 130, 246, 0.4);
 }
@@ -3656,6 +3698,7 @@ exploding-text {
 
 
 
+<style id="russell-hide-css">#russell-box.rb-hidden{opacity:0;pointer-events:none;transform:translateY(12px);transition:opacity .22s ease, transform .22s ease}</style>
 </head>
 
 <body><div hidden="True" id="search-backdrop"></div><div class="search-panel" id="search-panel"><div class="search-header"><h3 class="search-title">Risultati</h3><button aria-label="Chiudi pannello" class="search-close" id="search-close" type="button">Chiudi</button></div><div class="search-results results-scroll" id="search-results"><div class="sp-item" data-placeholder="true"><h4 class="result-title">Suggerimento</h4><p class="result-desc">Digita nel campo di ricerca in alto per vedere i risultati qui.</p></div></div></div>
