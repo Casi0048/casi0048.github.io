@@ -50,21 +50,66 @@
 </script>
     
 <style>
-      :root {
-      --bg: #0a0a1a;
-      --gold: #d4af37;
-      --cyan: #00ccff;
-      --menu-bg: rgba(10, 10, 30, .98);
-      --menu-border: rgba(255, 215, 0, .22);
-      --glass: rgba(0, 0, 0, .35);
-      --text-light: #e9eef5;
-      --text-accent: #9ad0ff;
-      }
-      * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      }
+     :root {
+  /* === COLORI FONDAMENTALI === */
+  --bg: #0a0a1a;
+  --text-light: #e9eef5;
+  --text-accent: #9ad0ff;
+  
+  /* === COLORI ACCENT PRINCIPALI === */
+  --gold: #ffd86a;
+  --cyan: #00ccff;
+  --purple: #b967ff;
+  
+  /* === COLORI SECONDARI === */
+  --gold-secondary: #d4af37;
+  --cyan-dark: #0099cc;
+  --purple-dark: #8a4dcc;
+  
+  /* === SPACING SYSTEM === */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+  
+  /* === BREAKPOINTS SYSTEM === */
+  --bp-mobile: 768px;
+  --bp-tablet: 1024px;
+  --bp-desktop: 1200px;
+  
+  /* === TYPOGRAPHY SCALE === */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 2rem;
+  --text-4xl: 3rem;
+  
+  /* === COMPONENT VARIABLES === */
+  --menu-bg: rgba(10, 10, 30, .98);
+  --menu-border: rgba(255, 215, 0, .22);
+  --glass: rgba(0, 0, 0, .35);
+  --card-bg: rgba(10, 10, 30, 0.9);
+  --card-border: rgba(255, 215, 0, 0.3);
+}
+    * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Ripristina padding per elementi che ne hanno bisogno */
+button, input, select, textarea {
+  padding: 0.25rem 0.5rem;
+}
+
+/* Ripristina margini per alcuni elementi testuali */
+p, h1, h2, h3, h4, h5, h6 {
+  margin-bottom: 1rem;
+}
       body {
       font-family: 'Montserrat', sans-serif;
       background: var(--bg);
@@ -439,7 +484,7 @@ main {
 }
 
 .welcome-title {
-  font-family: "Cinzel", cursive;
+ font-family: 'Cinzel Decorative', cursive;
   font-weight: 700;
   font-size: 3.5rem;
   color: transparent;
@@ -1529,269 +1574,262 @@ window.googleTranslateElementInit = function(){
 .timeline-container{ overflow: visible !important; }
 </style>
 <style>
-        :root {
-            --accent-gold: #ffd86a;
-            --accent-cyan: #00ccff;
-            --accent-purple: #b967ff;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Arial', sans-serif;
-            background: #0a0a1a;
-            color: #e9eef5;
-            padding: 2rem;
-            min-height: 100vh;
-        }
-        
-        .timeline-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            position: relative;
-        }
-        
-        .timeline-title {
-            color: var(--accent-gold);
-            text-align: center;
-            margin-bottom: 4rem;
-            font-size: 3rem;
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
-        }
-        
-        .timeline {
-            position: relative;
-            padding: 2rem 0;
-        }
-        
-        /* Linea centrale */
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 50%;
-            top: 0;
-            bottom: 0;
-            width: 4px;
-            transform: translateX(-50%);
-            background: linear-gradient(180deg, 
-                var(--accent-purple) 0%,
-                var(--accent-cyan) 30%,
-                var(--accent-gold) 70%,
-                var(--accent-purple) 100%);
-            box-shadow: 0 0 20px rgba(185, 103, 255, 0.6);
-            z-index: 1;
-        }
-        
-        .timeline-item {
-            position: relative;
-            width: 45%;
-            margin: 4rem 0;
-            opacity: 0;
-            transform: translateY(50px);
-            transition: all 0.8s ease;
-        }
-        
-        /* Posizionamento alternato */
-        .timeline-item.left {
-            left: 0;
-            margin-right: auto;
-            padding-right: 60px;
-            text-align: right;
-        }
-        
-        .timeline-item.right {
-            left: 55%;
-            margin-left: auto;
-            padding-left: 60px;
-            text-align: left;
-        }
-        
-        /* Animazione quando visibile */
-        .timeline-item.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        /* Card styling */
-        .timeline-content {
-            background: linear-gradient(145deg, 
-                rgba(10, 10, 30, 0.9) 0%,
-                rgba(20, 20, 50, 0.8) 50%,
-                rgba(10, 10, 30, 0.9) 100%);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            border-radius: 15px;
-            padding: 2rem;
-            backdrop-filter: blur(10px);
-            box-shadow: 
-                0 15px 35px rgba(0, 0, 0, 0.5),
-                0 0 0 1px rgba(255, 215, 0, 0.2);
-            transition: all 0.4s ease;
-        }
-        
-        .timeline-content:hover {
-            transform: translateY(-5px);
-            box-shadow: 
-                0 20px 40px rgba(0, 0, 0, 0.6),
-                0 0 0 1px rgba(255, 215, 0, 0.4);
-        }
-        
-        .timeline-content h3 {
-            color: var(--accent-gold);
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-        }
-        
-        .period {
-            color: var(--accent-cyan);
-            font-style: italic;
-            margin-bottom: 1rem;
-            display: inline-block;
-            padding: 0.3rem 1rem;
-            background: rgba(0, 204, 255, 0.1);
-            border-radius: 20px;
-            border: 1px solid rgba(0, 204, 255, 0.3);
-        }
-        
-        /* Punto sulla timeline */
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            top: 2rem;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 35% 35%, 
-                #ffffff 0%, 
-                var(--accent-gold) 30%,
-                var(--accent-cyan) 70%,
-                var(--accent-purple) 100%);
-            box-shadow: 
-                0 0 0 6px rgba(255, 215, 0, 0.3),
-                0 0 0 12px rgba(0, 204, 255, 0.2),
-                0 0 20px 8px rgba(255, 215, 0, 0.5);
-            z-index: 2;
-            opacity: 0;
-            transform: scale(0);
-            transition: all 0.6s ease 0.3s;
-        }
-        
-        .timeline-item.left::before {
-            right: -10px;
-        }
-        
-        .timeline-item.right::before {
-            left: -10px;
-        }
-        
-        .timeline-item.visible::before {
-            opacity: 1;
-            transform: scale(1);
-            animation: pulse 2s ease-in-out infinite 1s;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { 
-                box-shadow: 
-                    0 0 0 6px rgba(255, 215, 0, 0.3),
-                    0 0 0 12px rgba(0, 204, 255, 0.2),
-                    0 0 20px 8px rgba(255, 215, 0, 0.5);
-            }
-            50% { 
-                box-shadow: 
-                    0 0 0 8px rgba(255, 215, 0, 0.5),
-                    0 0 0 16px rgba(0, 204, 255, 0.3),
-                    0 0 30px 12px rgba(255, 215, 0, 0.7);
-            }
-        }
-        
-        /* CONNETTORI - CORREZIONE PRINCIPALE */
-        .timeline-item::after {
-            content: '';
-            position: absolute;
-            top: 2rem;
-            height: 2px;
-            width: 50px;
-            background: linear-gradient(90deg, 
-                var(--gold, #d4af37),
-                var(--accent-cyan),
-                var(--accent-purple));
-            opacity: 0;
-            transform: scaleX(0);
-            transition: all 0.6s ease 0.5s;
-            z-index: 1;
-            filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6));
-        }
-        
-        /* Connettore per cards SINISTRA - CORRETTO */
-        .timeline-item.left::after {
-            right: -50px;
-            transform-origin: right center;
-            background: linear-gradient(270deg, 
-                var(--accent-gold),
-                var(--accent-cyan),
-                var(--accent-purple));
-        }
-        
-        /* Connettore per cards DESTRA */
-        .timeline-item.right::after {
-            left: -50px;
-            transform-origin: left center;
-            background: linear-gradient(90deg, 
-                var(--accent-gold),
-                var(--accent-cyan),
-                var(--accent-purple));
-        }
-        
-        .timeline-item.visible::after {
-            opacity: 1;
-            transform: scaleX(1);
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .timeline::before {
-                left: 30px;
-            }
-            
-            .timeline-item {
-                width: auto;
-                margin: 3rem 0;
-            }
-            
-            .timeline-item.left,
-            .timeline-item.right {
-                left: 0;
-                padding-left: 70px;
-                padding-right: 20px;
-                text-align: left;
-            }
-            
-            .timeline-item.visible {
-                transform: translateX(0) translateY(0);
-            }
-            
-            .timeline-item.left::before,
-            .timeline-item.right::before {
-                left: 20px;
-                right: auto;
-            }
-            
-            .timeline-item.left::after,
-            .timeline-item.right::after {
-                left: 40px;
-                right: auto;
-                transform-origin: left center;
-                background: linear-gradient(90deg, 
-                    var(--accent-gold),
-                    var(--accent-cyan),
-                    var(--accent-purple));
-            }
-        }
-    </style>
+.timeline-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.timeline-title {
+    color: var(--gold);
+    text-align: center;
+    margin-bottom: var(--space-xl);
+    font-size: clamp(var(--text-3xl), 5vw, var(--text-4xl));
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+}
+
+.timeline {
+    position: relative;
+    padding: var(--space-lg) 0;
+}
+
+/* Linea centrale */
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    transform: translateX(-50%);
+    background: linear-gradient(180deg, 
+        var(--purple) 0%,
+        var(--cyan) 30%,
+        var(--gold) 70%,
+        var(--purple) 100%);
+    box-shadow: 0 0 20px rgba(185, 103, 255, 0.6);
+    z-index: 1;
+}
+
+.timeline-item {
+    position: relative;
+    width: 45%;
+    margin: var(--space-xl) 0;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.8s ease;
+    will-change: transform, opacity;
+}
+
+/* Posizionamento alternato */
+.timeline-item.left {
+    left: 0;
+    margin-right: auto;
+    padding-right: 60px;
+    text-align: right;
+}
+
+.timeline-item.right {
+    left: 55%;
+    margin-left: auto;
+    padding-left: 60px;
+    text-align: left;
+}
+
+.timeline-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Card styling */
+.timeline-content {
+    background: linear-gradient(145deg, 
+        var(--card-bg) 0%,
+        rgba(20, 20, 50, 0.8) 50%,
+        var(--card-bg) 100%);
+    border: 1px solid var(--card-border);
+    border-radius: 15px;
+    padding: var(--space-lg);
+    backdrop-filter: blur(10px);
+    box-shadow: 
+        0 15px 35px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(255, 215, 0, 0.2);
+    transition: all 0.4s ease;
+    position: relative;
+    z-index: 3;
+}
+
+.timeline-content:hover {
+    transform: translateY(-5px);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(255, 215, 0, 0.4);
+}
+
+.timeline-content h3 {
+    color: var(--gold);
+    margin-bottom: var(--space-sm);
+    font-size: var(--text-xl);
+}
+
+.period {
+    color: var(--cyan);
+    font-style: italic;
+    margin-bottom: var(--space-sm);
+    display: inline-block;
+    padding: var(--space-xs) var(--space-md);
+    background: rgba(0, 204, 255, 0.15);
+    border-radius: 20px;
+    border: 1px solid rgba(0, 204, 255, 0.4);
+}
+
+/* Punto timeline */
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    top: 2rem;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, 
+        #ffffff 0%, 
+        var(--gold) 30%,
+        var(--cyan) 70%,
+        var(--purple) 100%);
+    box-shadow: 
+        0 0 0 6px rgba(255, 215, 0, 0.3),
+        0 0 0 12px rgba(0, 204, 255, 0.2),
+        0 0 20px 8px rgba(255, 215, 0, 0.5);
+    z-index: 4;
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.6s ease 0.3s;
+}
+
+.timeline-item.left::before {
+    right: -10px;
+}
+
+.timeline-item.right::before {
+    left: -10px;
+}
+
+.timeline-item.visible::before {
+    opacity: 1;
+    transform: scale(1);
+    animation: pulse 2s ease-in-out infinite 1s;
+}
+
+@keyframes pulse {
+    0%, 100% { 
+        box-shadow: 
+            0 0 0 6px rgba(255, 215, 0, 0.3),
+            0 0 0 12px rgba(0, 204, 255, 0.2),
+            0 0 20px 8px rgba(255, 215, 0, 0.5);
+    }
+    50% { 
+        box-shadow: 
+            0 0 0 8px rgba(255, 215, 0, 0.5),
+            0 0 0 16px rgba(0, 204, 255, 0.3),
+            0 0 30px 12px rgba(255, 215, 0, 0.7);
+    }
+}
+
+/* Connettori */
+.timeline-item::after {
+    content: '';
+    position: absolute;
+    top: 2rem;
+    height: 2px;
+    width: 50px;
+    background: linear-gradient(90deg, 
+        var(--gold),
+        var(--cyan),
+        var(--purple));
+    opacity: 0;
+    transform: scaleX(0);
+    transition: all 0.6s ease 0.5s;
+    z-index: 3;
+    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6));
+}
+
+.timeline-item.left::after {
+    right: -50px;
+    transform-origin: right center;
+    background: linear-gradient(270deg, 
+        var(--gold),
+        var(--cyan),
+        var(--purple));
+}
+
+.timeline-item.right::after {
+    left: -50px;
+    transform-origin: left center;
+    background: linear-gradient(90deg, 
+        var(--gold),
+        var(--cyan),
+        var(--purple));
+}
+
+.timeline-item.visible::after {
+    opacity: 1;
+    transform: scaleX(1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .timeline::before {
+        left: 30px;
+    }
+    
+    .timeline-item {
+        width: calc(100% - 70px);
+        margin: var(--space-lg) 0;
+        margin-left: 70px;
+    }
+    
+    .timeline-item.left,
+    .timeline-item.right {
+        left: 0;
+        padding: 0 0 0 var(--space-sm);
+        text-align: left;
+    }
+    
+    .timeline-item.left::before,
+    .timeline-item.right::before {
+        left: -40px;
+        right: auto;
+    }
+    
+    .timeline-item.left::after,
+    .timeline-item.right::after {
+        left: -30px;
+        right: auto;
+        width: 30px;
+        transform-origin: left center;
+        background: linear-gradient(90deg, 
+            var(--gold),
+            var(--cyan),
+            var(--purple));
+    }
+}
+
+/* Accessibilità */
+@media (prefers-reduced-motion: reduce) {
+    .timeline-item,
+    .timeline-content,
+    .timeline-item::before,
+    .timeline-item::after {
+        transition: none;
+        animation: none;
+    }
+    
+    .timeline-item {
+        opacity: 1;
+        transform: none;
+    }
+}
+</style>
 <style>
 /* === TIMELINE SPETTACOLARE ULTIMATE - CARDS A DOPPIA LARGHEZZA === */
 .timeline-container {
@@ -3059,7 +3097,8 @@ html {
   box-shadow: 0 1rem 2rem rgba(0,0,0,.45);
   backdrop-filter: blur(.5rem);
 }
-</style><style id="search-panel-anim">
+</style>
+<style id="search-panel-anim">
 /* === Search Panel Animations (CSS-only) === */
 #search-panel, #searchPanel, .search-panel, .results-panel{
   transform: translateX(-50%) translateY(-6px) scale(.985);
@@ -6333,43 +6372,8 @@ document.addEventListener('DOMContentLoaded', function() {
   optimizeAnimations();
 });
 </script>
+
 <script>
-// === Search panel animation helper ===
-(function(){
-  function qs(sel){ return document.querySelector(sel); }
-  function qsa(sel){ return Array.from(document.querySelectorAll(sel)); }
-
-  window.animateSearchResults = function(){
-    const panel  = qs('#search-panel, #searchPanel, .search-panel, .results-panel');
-    const scroll = qs('#search-results, #searchResults, .search-results, .results-scroll');
-    const items  = scroll ? qsa(':scope > *').map((el, i) => { el.style.setProperty('--i', i); return el; }) : [];
-    const backdrop = document.getElementById('search-backdrop');
-
-    if (panel && !panel.classList.contains('open')) panel.classList.add('open');
-    if (backdrop){
-      backdrop.hidden = false;
-      backdrop.classList.add('open');
-      backdrop.onclick = () => {
-        panel && panel.classList.remove('open');
-        backdrop.classList.remove('open');
-        setTimeout(() => { backdrop.hidden = true; }, 200);
-      };
-    }
-  };
-
-  // Facoltativo: chiusura via ESC
-  document.addEventListener('keydown', (e)=>{
-    if (e.key === 'Escape'){
-      const panel = qs('#search-panel.open, #searchPanel.open, .search-panel.open, .results-panel.open');
-      const backdrop = document.getElementById('search-backdrop');
-      if (panel){
-        panel.classList.remove('open');
-        if (backdrop){ backdrop.classList.remove('open'); setTimeout(()=>backdrop.hidden = true, 200); }
-      }
-    }
-  });
-})();
-</script><script>
     (function(){
       const panel = document.querySelector('#search-panel');
       const btnClose = document.getElementById('search-close');
@@ -6388,7 +6392,8 @@ document.addEventListener('DOMContentLoaded', function() {
         window.animateSearchResults && window.animateSearchResults();
       };
     })();
-    </script><script id="search-auto-open">
+    </script>
+    <script id="search-auto-open">
 // === Auto-open search panel when real results are injected ===
 (function(){
   const panel    = document.querySelector('#search-panel, #searchPanel, .search-panel, .results-panel');
@@ -6441,45 +6446,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <button aria-label="Torna all'inizio" class="back-to-top floating glow" id="backToTop">
     ↑
 </button>
-<script>
-  // === PULSANTE TORNA SU ===
-(function(){
-    const backToTop = document.getElementById('backToTop');
-    if (!backToTop) return;
-    
-    // Mostra/nascondi il pulsante durante lo scroll
-    function toggleBackToTop() {
-        if (window.scrollY > 300) {
-            backToTop.style.display = 'flex';
-        } else {
-            backToTop.style.display = 'none';
-        }
-    }
-    
-    // Scroll fluido verso l'alto
-    function scrollToTop() {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    }
-    
-    // Event listeners
-    window.addEventListener('scroll', toggleBackToTop);
-    backToTop.addEventListener('click', scrollToTop);
-    
-    // Anche con tasto Enter per accessibilità
-    backToTop.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            scrollToTop();
-        }
-    });
-    
-    // Inizializza
-    toggleBackToTop();
-})();
-</script>
+
 <script>
 // === GENERATORE DI STELLE - VERSIONE CORRETTA ===
 (function() {
@@ -6487,7 +6454,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!container) return;
     
     // Crea stelle normali - QUESTA RIGA MANCAVA!
-    const starCount = Math.min(900, Math.floor((window.innerWidth * window.innerHeight) / 2000));
+    const starCount = Math.min(1800, Math.floor((window.innerWidth * window.innerHeight) / 2000));
     for (let i = 0; i < starCount; i++) createStar();
     
     // Crea stelle cadenti immediatamente
@@ -6576,7 +6543,7 @@ document.addEventListener('DOMContentLoaded', function() {
         clearTimeout(resizeTimeout);
         resizeTimeout = setTimeout(() => {
             container.innerHTML = '';
-            const newStarCount = Math.min(600, Math.floor((window.innerWidth * window.innerHeight) / 2000));
+            const newStarCount = Math.min(800, Math.floor((window.innerWidth * window.innerHeight) / 2000));
             for (let i = 0; i < newStarCount; i++) createStar();
             createMultipleShootingStars();
         }, 250);
@@ -7158,6 +7125,44 @@ function softPlay(audio, volume, delay) {
   window.EchiExplode = explode;
 })();
 </script>
-
+<script>
+  // === PULSANTE TORNA SU ===
+(function(){
+    const backToTop = document.getElementById('backToTop');
+    if (!backToTop) return;
+    
+    // Mostra/nascondi il pulsante durante lo scroll
+    function toggleBackToTop() {
+        if (window.scrollY > 300) {
+            backToTop.style.display = 'flex';
+        } else {
+            backToTop.style.display = 'none';
+        }
+    }
+    
+    // Scroll fluido verso l'alto
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+    
+    // Event listeners
+    window.addEventListener('scroll', toggleBackToTop);
+    backToTop.addEventListener('click', scrollToTop);
+    
+    // Anche con tasto Enter per accessibilità
+    backToTop.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            scrollToTop();
+        }
+    });
+    
+    // Inizializza
+    toggleBackToTop();
+})();
+</script>
 </body>
 </html>
