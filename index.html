@@ -4753,11 +4753,23 @@ exploding-text {
 
 document.addEventListener('DOMContentLoaded', function() {
   
-  // 1. PRELOAD RISORSE CRITICHE
-  const criticalResources = [
-    'https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700',
-    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css'
-  ];
+  // 1. PRELOAD RISORSE CRITICHE - Solo se necessario
+const criticalResources = [
+  // Rimuovi i font Google che causano warning
+  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css'
+];
+
+criticalResources.forEach(resource => {
+  // Solo per Font Awesome
+  if (resource.includes('font-awesome')) {
+    const preload = document.createElement('link');
+    preload.rel = 'preload';
+    preload.href = resource;
+    preload.as = 'style';
+    preload.crossOrigin = 'anonymous';
+    document.head.appendChild(preload);
+  }
+});
   
   criticalResources.forEach(resource => {
     const link = document.createElement('link');
@@ -4868,17 +4880,33 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  // 6. MONITORAGGIO PERFORMANCE
-  if ('performance' in window) {
-    window.addEventListener('load', () => {
-      const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
-      console.log(`Page loaded in ${loadTime}ms`);
-      
-      if (loadTime > 3000) {
-        console.warn('Page load time exceeds 3 seconds - consider optimization');
+  // 6. MONITORAGGIO PERFORMANCE - Versione sicura
+if ('performance' in window) {
+  window.addEventListener('load', () => {
+    safeDOMOperation(() => {
+      // Usa l'API moderna se disponibile
+      if (performance.getEntriesByType) {
+        const navEntries = performance.getEntriesByType('navigation');
+        if (navEntries.length > 0) {
+          const navEntry = navEntries[0];
+          const loadTime = navEntry.loadEventEnd - navEntry.startTime;
+          if (loadTime > 0) {
+            console.log(`Page loaded in ${Math.round(loadTime)}ms`);
+          }
+        }
+      }
+      // Fallback per browser più vecchi
+      else if (performance.timing) {
+        const timing = performance.timing;
+        if (timing.loadEventEnd > 0 && timing.navigationStart > 0) {
+          const loadTime = timing.loadEventEnd - timing.navigationStart;
+          if (loadTime > 0) {
+            console.log(`Page loaded in ${loadTime}ms`);
+          }
+        }
       }
     });
-  }
+  });
 
   // 7. GESTIONE ERRORI GLOBALE
   window.addEventListener('error', (event) => {
@@ -4928,11 +4956,39 @@ style.textContent = performanceCSS;
 document.head.appendChild(style);
 </script>
 <script>
+ // ========== UTILITY SICURE AGGIUNTE ==========
+// Safe DOM manipulation utility
+function safeDOMOperation(operation) {
+  try {
+    if (typeof operation === 'function') {
+      return operation();
+    }
+  } catch (error) {
+    console.warn('DOM operation failed:', error.message);
+    return null;
+  }
+}
+
+// Safe element selector
+function getElementSafe(selector) {
+  return safeDOMOperation(() => {
+    const element = typeof selector === 'string' ? 
+      document.querySelector(selector) : selector;
+    return element && document.body.contains(element) ? element : null;
+  });
+}
       document.addEventListener('DOMContentLoaded', ()=>{
         const effects = document.getElementById('effects-ctrl');
-        if(effects){
+        if(effects && document.body.contains(effects)){
           const host = document.querySelector('.topbar, .top-bar, header .menu-desktop, header nav, header, .navbar');
-          if(host){ try{ host.appendChild(effects); effects.style.position=''; effects.style.top=''; effects.style.right=''; }catch(_){ } }
+          if(host && document.body.contains(host)){ 
+            try{ 
+              host.appendChild(effects); 
+              effects.style.position=''; 
+              effects.style.top=''; 
+              effects.style.right=''; 
+            }catch(_){ } 
+          }
         }
       });
       (function(){const inner=document.getElementById('sliderInner');if(!inner)return;let pos=0,speed=.35,dir=1,running=true;function step(){if(!running){requestAnimationFrame(step);return}pos+=dir*speed;inner.style.transform=`translateY(${-pos}px)`;const total=inner.scrollHeight-inner.clientHeight;if(pos>=total)pos=0;if(pos<0)pos=total;requestAnimationFrame(step)}requestAnimationFrame(step);const t=document.getElementById('slider-toggle'),i=document.getElementById('slider-invert'),sp=document.getElementById('slider-speed');t?.addEventListener('click',()=>running=!running);i?.addEventListener('click',()=>dir*=-1);sp?.addEventListener('input',()=>{const v=parseInt(sp.value,10)||8;speed=.1+(v-1)*.08})})();
