@@ -600,9 +600,6 @@ main {
   50%, 100% { opacity: 0; }
 }
 
-
-
-/* Citazioni filosofiche fluttuanti */
       /* Citazioni filosofiche fluttuanti */
       .floating-quotes {
     position: fixed;
@@ -782,23 +779,7 @@ footer {
       padding: 0 .15em;
       border-radius: .2em;
       }
-      left: auto !important;
-      right: 0 !important;
-      transform: translateY(0.62rem) !important;
-      }
-      left: auto !important;
-      right: 0 !important;
-      transform: translateY(0) !important;
-      }
-      left: auto !important;
-      right: 0 !important;
-      transform: translateY(0.62rem) !important;
-      }
-      left: auto !important;
-      right: 0 !important;
-      transform: translateY(0) !important;
-      }
-      /* Pannello ricerca: pulsante chiudi */
+       /* Pannello ricerca: pulsante chiudi */
       #search-panel .search-close {
       position: absolute;
       top: 6px;
@@ -7500,8 +7481,27 @@ function topRelated(query, exclude, limit = 3) {
 })();
 </script>
 <script>
-// VERIFICA INTEGRITÀ CODICE
-console.log('✅ Tutti gli script sono stati caricati completamente');
+// RICERCA SICURA CON CONTROLLI
+document.addEventListener('DOMContentLoaded', function() {
+    try {
+        const input = document.getElementById('site-search');
+        const wrap = input && input.closest('.search-container');
+        
+        if (wrap && input) {
+            wrap.addEventListener('click', function(e) {
+                // Se clicchi ovunque nel riquadro, il focus va all'input
+                if (e.target !== input && document.body.contains(input)) {
+                    input.focus();
+                }
+            });
+            console.log('✅ Search container inizializzato');
+        } else {
+            console.warn('ℹ️ Search container non trovato');
+        }
+    } catch (error) {
+        console.error('❌ Errore inizializzazione search:', error);
+    }
+});
 </script>
 </body>
 </html>
