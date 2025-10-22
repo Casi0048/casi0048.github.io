@@ -4712,27 +4712,27 @@ exploding-text {
 </div>
 </div>
 <script>
-  // === PERFORMANCE & ERROR HANDLING - UNIFICATO ===
+// === PERFORMANCE & ERROR HANDLING - UNIFICATO ===
 
 document.addEventListener('DOMContentLoaded', function() {
   
   // 1. PRELOAD RISORSE CRITICHE - Solo se necessario
-const criticalResources = [
-  // Rimuovi i font Google che causano warning
-  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css'
-];
+  const criticalResources = [
+    // Rimuovi i font Google che causano warning
+    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css'
+  ];
 
-criticalResources.forEach(resource => {
-  // Solo per Font Awesome
-  if (resource.includes('font-awesome')) {
-    const preload = document.createElement('link');
-    preload.rel = 'preload';
-    preload.href = resource;
-    preload.as = 'style';
-    preload.crossOrigin = 'anonymous';
-    document.head.appendChild(preload);
-  }
-});
+  criticalResources.forEach(resource => {
+    // Solo per Font Awesome
+    if (resource.includes('font-awesome')) {
+      const preload = document.createElement('link');
+      preload.rel = 'preload';
+      preload.href = resource;
+      preload.as = 'style';
+      preload.crossOrigin = 'anonymous';
+      document.head.appendChild(preload);
+    }
+  });
   
   criticalResources.forEach(resource => {
     const link = document.createElement('link');
@@ -4844,32 +4844,33 @@ criticalResources.forEach(resource => {
   }
 
   // 6. MONITORAGGIO PERFORMANCE - Versione sicura
-if ('performance' in window) {
-  window.addEventListener('load', () => {
-    safeDOMOperation(() => {
-      // Usa l'API moderna se disponibile
-      if (performance.getEntriesByType) {
-        const navEntries = performance.getEntriesByType('navigation');
-        if (navEntries.length > 0) {
-          const navEntry = navEntries[0];
-          const loadTime = navEntry.loadEventEnd - navEntry.startTime;
-          if (loadTime > 0) {
-            console.log(`Page loaded in ${Math.round(loadTime)}ms`);
+  if ('performance' in window) {
+    window.addEventListener('load', () => {
+      safeDOMOperation(() => {
+        // Usa l'API moderna se disponibile
+        if (performance.getEntriesByType) {
+          const navEntries = performance.getEntriesByType('navigation');
+          if (navEntries.length > 0) {
+            const navEntry = navEntries[0];
+            const loadTime = navEntry.loadEventEnd - navEntry.startTime;
+            if (loadTime > 0) {
+              console.log(`Page loaded in ${Math.round(loadTime)}ms`);
+            }
           }
         }
-      }
-      // Fallback per browser più vecchi
-      else if (performance.timing) {
-        const timing = performance.timing;
-        if (timing.loadEventEnd > 0 && timing.navigationStart > 0) {
-          const loadTime = timing.loadEventEnd - timing.navigationStart;
-          if (loadTime > 0) {
-            console.log(`Page loaded in ${loadTime}ms`);
+        // Fallback per browser più vecchi
+        else if (performance.timing) {
+          const timing = performance.timing;
+          if (timing.loadEventEnd > 0 && timing.navigationStart > 0) {
+            const loadTime = timing.loadEventEnd - timing.navigationStart;
+            if (loadTime > 0) {
+              console.log(`Page loaded in ${loadTime}ms`);
+            }
           }
         }
-      }
+      });
     });
-  });
+  } // ← CHIUSURA DELL'IF CHE MANCAVA!
 
   // 7. GESTIONE ERRORI GLOBALE
   window.addEventListener('error', (event) => {
@@ -4877,44 +4878,66 @@ if ('performance' in window) {
     // Non bloccare l'esperienza utente per errori minori
   });
 
-// 8. GESTIONE OFFLINE
-window.addEventListener('online', () => {
-  console.log('Connection restored');
-  document.body.classList.remove('offline');
-});
+  // 8. GESTIONE OFFLINE
+  window.addEventListener('online', () => {
+    console.log('Connection restored');
+    document.body.classList.remove('offline');
+  });
 
-window.addEventListener('offline', () => {
-  console.log('Connection lost');
-  document.body.classList.add('offline');
-});
+  window.addEventListener('offline', () => {
+    console.log('Connection lost');
+    document.body.classList.add('offline');
+  });
 
-// CSS aggiuntivo per stati speciali
-const performanceCSS = `
-  .fade-in {
-    animation: fadeIn 0.5s ease-in;
-  }
-  
-  .offline {
-    opacity: 0.8;
-    filter: grayscale(0.3);
-  }
-  
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-  
-  @media (prefers-reduced-motion: reduce) {
+  // CSS aggiuntivo per stati speciali
+  const performanceCSS = `
     .fade-in {
-      animation: none;
+      animation: fadeIn 0.5s ease-in;
+    }
+    
+    .offline {
+      opacity: 0.8;
+      filter: grayscale(0.3);
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @media (prefers-reduced-motion: reduce) {
+      .fade-in {
+        animation: none;
+      }
+    }
+  `;
+
+  // Inietta CSS performance
+  const style = document.createElement('style');
+  style.textContent = performanceCSS;
+  document.head.appendChild(style);
+
+}); // ← CHIUSURA DEL DOMContentLoaded CHE MANCAVA!
+
+// FUNZIONE safeDOMOperation CHE MANCAVA
+function safeDOMOperation(operation, fallback = null) {
+  try {
+    if (typeof operation === 'function') {
+      return operation();
+    }
+  } catch (error) {
+    console.warn('DOM operation failed:', error.message);
+    if (fallback && typeof fallback === 'function') {
+      try {
+        return fallback();
+      } catch (fallbackError) {
+        console.error('Fallback also failed:', fallbackError);
+      }
     }
   }
-`;
+  return null;
+}
 
-// Inietta CSS performance
-const style = document.createElement('style');
-style.textContent = performanceCSS;
-document.head.appendChild(style);
 </script>
 <script>
  // ========== UTILITY SICURE AGGIUNTE ==========
