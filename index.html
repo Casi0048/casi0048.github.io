@@ -4712,49 +4712,17 @@ exploding-text {
 </div>
 </div>
 <script>
-// === PERFORMANCE & ERROR HANDLING - UNIFICATO ===
+// === PERFORMANCE & ERROR HANDLING - VERSIONE PULITA ===
 
 document.addEventListener('DOMContentLoaded', function() {
   
-  // 1. PRELOAD RISORSE CRITICHE - Solo se necessario
-  const criticalResources = [
-    // Rimuovi i font Google che causano warning
-    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css'
-  ];
-
-  criticalResources.forEach(resource => {
-    // Solo per Font Awesome
-    if (resource.includes('font-awesome')) {
-      const preload = document.createElement('link');
-      preload.rel = 'preload';
-      preload.href = resource;
-      preload.as = 'style';
-      preload.crossOrigin = 'anonymous';
-      document.head.appendChild(preload);
-    }
-  });
-  
-  criticalResources.forEach(resource => {
-    const link = document.createElement('link');
-    if (resource.includes('fonts.googleapis.com')) {
-      link.rel = 'preconnect';
-      link.href = 'https://fonts.googleapis.com';
-      document.head.appendChild(link);
-      
-      const link2 = document.createElement('link');
-      link2.rel = 'preconnect';
-      link2.href = 'https://fonts.gstatic.com';
-      link2.crossOrigin = true;
-      document.head.appendChild(link2);
-    }
-    
-    const preload = document.createElement('link');
-    preload.rel = 'preload';
-    preload.href = resource;
-    preload.as = resource.includes('font') ? 'font' : 'style';
-    preload.crossOrigin = 'anonymous';
-    document.head.appendChild(preload);
-  });
+  // 1. CARICAMENTO FONT AWESOME SEMPLIFICATO (senza preload problematico)
+  const fontAwesomeCSS = document.createElement('link');
+  fontAwesomeCSS.rel = 'stylesheet';
+  fontAwesomeCSS.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css';
+  fontAwesomeCSS.crossOrigin = 'anonymous';
+  document.head.appendChild(fontAwesomeCSS);
+  console.log('✅ Font Awesome caricato');
 
   // 2. LAZY LOADING IMMAGINI TIMELINE
   const lazyImages = document.querySelectorAll('.timeline-content img[data-src]');
@@ -4870,7 +4838,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       });
     });
-  } // ← CHIUSURA DELL'IF CHE MANCAVA!
+  }
 
   // 7. GESTIONE ERRORI GLOBALE
   window.addEventListener('error', (event) => {
@@ -4889,7 +4857,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.body.classList.add('offline');
   });
 
-  // CSS aggiuntivo per stati speciali
+  // 9. CSS PER STATI SPECIALI
   const performanceCSS = `
     .fade-in {
       animation: fadeIn 0.5s ease-in;
@@ -4917,9 +4885,11 @@ document.addEventListener('DOMContentLoaded', function() {
   style.textContent = performanceCSS;
   document.head.appendChild(style);
 
-}); // ← CHIUSURA DEL DOMContentLoaded CHE MANCAVA!
+  console.log('✅ Sistema performance inizializzato');
 
-// FUNZIONE safeDOMOperation CHE MANCAVA
+});
+
+// FUNZIONE safeDOMOperation
 function safeDOMOperation(operation, fallback = null) {
   try {
     if (typeof operation === 'function') {
