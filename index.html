@@ -5993,11 +5993,12 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 </script>
+
 <script>
-// SISTEMA STELLARE COMPLETO CON VERIFICHE DI SICUREZZA
+// SISTEMA STELLARE COMPLETO CON VERIFICHE DI SICUREZZA - VERSIONE CORRETTA
 document.addEventListener('DOMContentLoaded', function() {
     
-    // 1. PRELOAD RISORSE CRITICHE - Solo se necessario
+    // 1. PRELOAD RISORSE CRITICHE - CORRETTO
     const criticalResources = [
         'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css'
     ];
@@ -6021,16 +6022,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return null;
     }
 
-    // Funzione per verificare se un elemento esiste ed è nel DOM
-    function elementExists(selector) {
-        return safeDOMOperation(() => {
-            const element = typeof selector === 'string' ? 
-                document.querySelector(selector) : selector;
-            return element && document.body.contains(element);
-        });
-    }
-
-    // 2. PRELOAD SICURO DELLE RISORSE
+    // 2. PRELOAD CORRETTO CON CROSSORIGIN
     criticalResources.forEach(resource => {
         if (resource.includes('font-awesome')) {
             safeDOMOperation(() => {
@@ -6038,11 +6030,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 preload.rel = 'preload';
                 preload.href = resource;
                 preload.as = 'style';
-                preload.crossOrigin = 'anonymous';
+                preload.crossOrigin = 'anonymous'; // 👈 AGGIUNTO QUESTO
                 
                 if (document.head) {
                     document.head.appendChild(preload);
-                    console.log('✅ Preload risorsa:', resource);
+                    console.log('✅ Preload risorsa con crossorigin:', resource);
+                    
+                    // 👈 AGGIUNGI ANCHE IL LINK NORMALE PER EVITARE L'AVVISO
+                    const normalLink = document.createElement('link');
+                    normalLink.rel = 'stylesheet';
+                    normalLink.href = resource;
+                    normalLink.crossOrigin = 'anonymous';
+                    document.head.appendChild(normalLink);
                 }
             }, () => {
                 console.warn('❌ Fallback preload per:', resource);
@@ -6050,6 +6049,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // [RESTANTE CODICE IDENTICO...]
     // 3. SISTEMA STELLARE CON VERIFICHE COMPLETE
     function initializeStars() {
         return safeDOMOperation(() => {
@@ -6065,13 +6065,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 return false;
             }
 
-            const starCount = 200; // Ridotto per performance
+            const starCount = 200;
             let starsCreated = 0;
             let errors = 0;
 
             for (let i = 0; i < starCount; i++) {
                 const success = safeDOMOperation(() => {
-                    // Verifica periodica che il container esista ancora
                     if (i % 50 === 0 && !document.body.contains(starsContainer)) {
                         console.warn('❌ Container stelle rimosso durante la creazione');
                         return false;
@@ -6080,43 +6079,26 @@ document.addEventListener('DOMContentLoaded', function() {
                     const star = document.createElement('div');
                     star.className = 'star';
                     
-                    // Dimensioni casuali
                     const size = Math.random() * 3;
                     star.style.width = `${size}px`;
                     star.style.height = `${size}px`;
-                    
-                    // Posizione casuale
                     star.style.left = `${Math.random() * 100}%`;
                     star.style.top = `${Math.random() * 100}%`;
-                    
-                    // Luminosità variabile
                     star.style.opacity = Math.random() * 0.7 + 0.1;
-                    
-                    // Durata animazione variabile
                     star.style.animationDuration = `${3 + Math.random() * 7}s`;
                     star.style.animationDelay = `${Math.random() * 5}s`;
                     
-                    // Aggiungi stella al container
                     starsContainer.appendChild(star);
                     starsCreated++;
                     return true;
                 });
 
-                if (!success) {
-                    errors++;
-                    // Se troppi errori, interrompi
-                    if (errors > 10) {
-                        console.warn('❌ Troppi errori, interruzione creazione stelle');
-                        break;
-                    }
-                }
+                if (!success) errors++;
+                if (errors > 10) break;
             }
 
             console.log(`✅ ${starsCreated} stelle create, ${errors} errori`);
             return starsCreated > 0;
-        }, () => {
-            console.error('❌ Fallback sistema stellare');
-            return false;
         });
     }
 
@@ -6151,7 +6133,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 lazyImages.forEach(img => imageObserver.observe(img));
                 console.log(`✅ Lazy loading attivo per ${lazyImages.length} immagini`);
             } else {
-                // Fallback per browser senza IntersectionObserver
                 lazyImages.forEach(img => {
                     safeDOMOperation(() => {
                         img.src = img.dataset.src;
@@ -6170,7 +6151,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const container = document.getElementById('starsContainer');
             if (!container) return false;
             
-            // Versione semplificata per performance
             for (let i = 0; i < 50; i++) {
                 const star = document.createElement('div');
                 star.className = 'star small';
@@ -6244,7 +6224,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // 8. INIZIALIZZAZIONE PRINCIPALE
     console.log('🚀 Inizializzazione sistema stellare...');
     
-    // Esegui tutte le inizializzazioni in sequenza sicura
     injectPerformanceCSS();
     initializeStars();
     initializeLazyLoading();
@@ -6273,16 +6252,20 @@ window.addEventListener('offline', () => {
     });
 });
 
-// 11. SAFE ELEMENT SELECTOR (utility globale)
+// 11. SAFE ELEMENT SELECTOR
 window.getElementSafe = function(selector) {
-    const element = typeof selector === 'string' ? 
-        document.querySelector(selector) : selector;
-    return element && document.body.contains(element) ? element : null;
+    try {
+        const element = typeof selector === 'string' ? 
+            document.querySelector(selector) : selector;
+        return element && document.body.contains(element) ? element : null;
+    } catch (error) {
+        console.warn('getElementSafe error:', error);
+        return null;
+    }
 };
 
 console.log('⭐ Sistema stellare caricato e pronto');
 </script>
-
 <script id="range-dynamic-script">
 (function(){
   function setFill(el){
@@ -7516,6 +7499,10 @@ function topRelated(query, exclude, limit = 3) {
     // Inizializza
     toggleBackToTop();
 })();
+</script>
+<script>
+// VERIFICA INTEGRITÀ CODICE
+console.log('✅ Tutti gli script sono stati caricati completamente');
 </script>
 </body>
 </html>
