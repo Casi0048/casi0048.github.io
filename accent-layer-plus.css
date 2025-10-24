@@ -1418,3 +1418,49 @@
   .brand + .welcome-switcher{ margin-left: .4rem; gap: .35rem; }
   .welcome-switcher + .btn-ghost{ margin-left: .5rem; }
 }
+* CONTENUTO CARD CON BORDO LUMINOSO FUNZIONANTE */
+.timeline .card,
+.timeline-card {
+  position: relative !important;
+  background: linear-gradient(145deg, 
+    rgba(10, 10, 30, 0.95) 0%,
+    rgba(20, 20, 50, 0.85) 50%,
+    rgba(10, 10, 30, 0.95) 100%) !important;
+  border-radius: 20px !important;
+  padding: 2rem !important;
+  border: 1px solid color-mix(in oklab, var(--accent) 25%, transparent) !important;
+}
+
+/* BORDO LUMINOSO - VERSIONE SEMPLIFICATA E FUNZIONANTE */
+.timeline .card::before,
+.timeline-card::before {
+  content: '' !important;
+  position: absolute !important;
+  top: -2px !important;
+  left: -2px !important;
+  right: -2px !important;
+  bottom: -2px !important;
+  border-radius: 22px !important;
+  background: linear-gradient(45deg, 
+    var(--accent-purple, #b967ff), 
+    var(--accent-cyan, #00ccff), 
+    var(--accent-gold, #ffd86a), 
+    var(--accent-purple, #b967ff)) !important;
+  background-size: 300% 300% !important;
+  animation: borderGlow 3s ease infinite !important;
+  z-index: -1 !important;
+  opacity: 0.7 !important;
+  pointer-events: none !important;
+}
+
+/* ANIMAZIONE DEL BORDO */
+@keyframes borderGlow {
+  0%, 100% { 
+    background-position: 0% 50%;
+    opacity: 0.6;
+  }
+  50% { 
+    background-position: 100% 50%;
+    opacity: 0.8;
+  }
+}
