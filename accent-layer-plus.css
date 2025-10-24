@@ -1199,59 +1199,36 @@
     pointer-events: none !important;
   }
 }
-
-/* Versione SEMPLIFICATA e SICURA - senza maschere complesse */
+/* ========= TIMELINE — BORDO LUMINOSO CON BOX-SHADOW ========= */
 :root body .timeline-content {
   position: relative !important;
-  border: 2px solid transparent !important;
-  background-clip: padding-box !important;
+  background: linear-gradient(145deg, 
+    rgba(10, 10, 30, 0.9) 0%,
+    rgba(20, 20, 50, 0.8) 50%,
+    rgba(10, 10, 30, 0.9) 100%) !important;
+  border: 1px solid rgba(255, 215, 0, 0.5) !important;
+  border-radius: 20px !important;
+  box-shadow: 
+    0 0 0 1px rgba(185, 103, 255, 0.6),
+    0 0 0 2px rgba(0, 204, 255, 0.4),
+    0 0 20px 3px rgba(255, 215, 0, 0.3),
+    inset 0 0 20px rgba(255, 255, 255, 0.1) !important;
+  animation: glowPulse 2s ease-in-out infinite !important;
 }
 
-:root body .timeline-content::before {
-  content: '' !important;
-  position: absolute !important;
-  top: -2px !important;
-  left: -2px !important;
-  right: -2px !important;
-  bottom: -2px !important;
-  border-radius: 22px !important;
-  background: linear-gradient(45deg, 
-    var(--accent-purple), 
-    var(--accent-cyan), 
-    var(--accent-gold), 
-    var(--accent-purple)) !important;
-  background-size: 300% 300% !important;
-  animation: borderGlow 3s ease infinite !important;
-  z-index: -1 !important; /* IMPORTANTE: sotto il contenuto */
-  opacity: 0.8 !important;
-  pointer-events: none !important;
-}
-
-/* Assicurati che il contenuto della card sia sopra */
-:root body .timeline-content > * {
-  position: relative !important;
-  z-index: 2 !important;
-}
-
-/* Titoli card leggibili e in tinta accent */
-:root body .timeline-content h3{
-  color: color-mix(in oklab, var(--accent) 96%, white 4%) !important;
-  background: none !important;
-  -webkit-background-clip: initial !important;
-  background-clip: initial !important;
-  -webkit-text-fill-color: currentColor !important;
-  position: relative !important;
-  z-index: 3 !important; /* Sopra tutto */
-}
-
-/* Animazione del bordo */
-@keyframes borderGlow {
+@keyframes glowPulse {
   0%, 100% { 
-    background-position: 0% 50%;
-    opacity: 0.6;
+    box-shadow: 
+      0 0 0 1px rgba(185, 103, 255, 0.6),
+      0 0 0 2px rgba(0, 204, 255, 0.4),
+      0 0 20px 3px rgba(255, 215, 0, 0.3),
+      inset 0 0 20px rgba(255, 255, 255, 0.1);
   }
   50% { 
-    background-position: 100% 50%;
-    opacity: 1;
+    box-shadow: 
+      0 0 0 2px rgba(185, 103, 255, 0.8),
+      0 0 0 3px rgba(0, 204, 255, 0.6),
+      0 0 30px 5px rgba(255, 215, 0, 0.5),
+      inset 0 0 30px rgba(255, 255, 255, 0.2);
   }
 }
