@@ -1265,4 +1265,114 @@
   border-color: color-mix(in oklab, var(--accent) 28%, var(--menu-border) 72%) !important;
   background-clip: padding-box !important;  /* evita che eventuali sfondi coprano il bordo */
 }
+<!--  -->
+/* ========= TIMELINE — BORDO LUMINOSO FUNZIONANTE ========= */
+:root body .timeline-content {
+  position: relative !important;
+  z-index: 0 !important;
+  background: linear-gradient(145deg, 
+    rgba(10, 10, 30, 0.9) 0%,
+    rgba(20, 20, 50, 0.8) 50%,
+    rgba(10, 10, 30, 0.9) 100%) !important;
+  border-radius: 20px !important;
+  padding: 2rem 2.5rem !important;
+}
 
+/* Contenuto sopra il bordo */
+:root body .timeline-content > * {
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+/* BORDO LUMINOSO PRINCIPALE */
+:root body .timeline-content::before {
+  content: '' !important;
+  position: absolute !important;
+  top: -3px !important;
+  left: -3px !important;
+  right: -3px !important;
+  bottom: -3px !important;
+  border-radius: 23px !important;
+  background: linear-gradient(45deg, 
+    #b967ff, 
+    #00ccff, 
+    #ffd86a, 
+    #b967ff) !important;
+  background-size: 300% 300% !important;
+  animation: borderGlow 3s ease infinite !important;
+  z-index: 1 !important;
+  opacity: 0.9 !important;
+  pointer-events: none !important;
+  
+  /* Maschera per mostrare SOLO il bordo */
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0) !important;
+  -webkit-mask-composite: xor !important;
+  mask-composite: exclude !important;
+  padding: 3px !important;
+}
+
+/* Animazione del bordo */
+@keyframes borderGlow {
+  0%, 100% { 
+    background-position: 0% 50%;
+    opacity: 0.8;
+  }
+  50% { 
+    background-position: 100% 50%;
+    opacity: 1;
+  }
+}
+
+/* ========= FIX MASCHERE TITOLI ========= */
+.timeline-content h3,
+.timeline .card h3,
+.timeline-card h3 {
+  /* RIMUOVI TUTTE LE MASCHERE */
+  -webkit-mask: none !important;
+  mask: none !important;
+  clip-path: none !important;
+  -webkit-clip-path: none !important;
+  
+  /* RIMUOVI BACKGROUND-CLIP TEXT */
+  background: none !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+  -webkit-text-fill-color: currentColor !important;
+  
+  /* FORZA COLORE SOLIDO */
+  color: #ffd86a !important;
+  opacity: 1 !important;
+  filter: none !important;
+  mix-blend-mode: normal !important;
+  
+  /* LEGGIBILITÀ MASSIMA */
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.4) !important;
+  position: relative !important;
+  z-index: 3 !important;
+}
+
+/* RIMUOVI PSEUDO-ELEMENTI DAI TITOLI */
+.timeline-content h3::before,
+.timeline-content h3::after,
+.timeline .card h3::before,
+.timeline .card h3::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* Fallback per browser senza mask support */
+@supports not ((-webkit-mask-composite: xor) or (mask-composite: exclude)) {
+  :root body .timeline-content::before {
+    display: none !important;
+  }
+  
+  :root body .timeline-content {
+    border: 2px solid #ffd86a !important;
+    box-shadow: 
+      0 0 10px rgba(255, 215, 0, 0.5),
+      0 0 20px rgba(185, 103, 255, 0.3),
+      0 0 30px rgba(0, 204, 255, 0.2) !important;
+  }
+}
