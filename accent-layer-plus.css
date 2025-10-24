@@ -1143,29 +1143,47 @@
   position: relative !important;
   z-index: 1 !important;
 }
-/* ========= TIMELINE — BORDO LUMINOSO SICURO ========= */
-/* Contenuto sempre sopra all’overlay */
+/* ========= TIMELINE — BORDO LUMINOSO *DIETRO* AL CONTENUTO ========= */
+
+/* 0) Stacking locale della card */
 :root body .timeline-content{
   position: relative !important;
-  z-index: 1 !important;
+  z-index: 0 !important;              /* base */
 }
 
-/* (opzionale) se il tuo ::before usa una var per il glow, colora con l’accento */
+/* Assicura che il contenuto stia sopra */
+:root body .timeline-content > *{
+  position: relative !important;
+  z-index: 1 !important;              /* testo/immagini sopra al ::before */
+}
+
+/* (opzionale) opacità/colore del glow, legato all'accento */
 :root body .timeline{
   --timeline-glow: var(--accent);
+  --timeline-glow-opacity: .35;       /* regola l’intensità del bordo */
 }
 
-/* Mostra il bordo/overlay SOLO se le mask sono supportate */
+/* 1) Solo se le mask sono supportate, mostra il bordo MA dietro al contenuto */
 @supports (mask-composite: exclude) or (-webkit-mask-composite: xor){
   :root body .timeline-content::before{
     display: block !important;
     pointer-events: none !important;
-    z-index: 0 !important; /* sotto a testo e contenuti */
-    /* le animazioni/opacity restano quelle del tuo CSS originale */
+
+    /* 🔑 Dietro al contenuto, non davanti */
+    position: absolute !important;
+    z-index: -1 !important;
+
+    /* niente blend/filtri che ricoprano il testo */
+    mix-blend-mode: normal !important;
+    filter: none !important;
+    backdrop-filter: none !important;
+
+    /* (se il tuo CSS originale usa opacity, limitane la forza) */
+    opacity: var(--timeline-glow-opacity, .35) !important;
   }
 }
 
-/* In browser senza mask: niente overlay (evita il “quadrato”) */
+/* 2) In browser senza mask: nascondi l’overlay per evitare il “quadrato” */
 @supports not (mask-composite: exclude) and not (-webkit-mask-composite: xor){
   :root body .timeline-content::before{
     content: none !important;
@@ -1173,12 +1191,21 @@
   }
 }
 
-/* (facoltativo ma utile) Titoli card leggibili e in tinta accent */
+/* 3) Titolo card: colore pieno e leggibile (no text-clip) */
 :root body .timeline-content h3{
   color: color-mix(in oklab, var(--accent) 96%, white 4%) !important;
   background: none !important;
   -webkit-background-clip: initial !important;
   background-clip: initial !important;
   -webkit-text-fill-color: currentColor !important;
+  position: relative !important;
+  z-index: 1 !important;              /* sopra al ::before (che è -1) */
+  text-shadow: 0 0 8px color-mix(in oklab, var(--accent) 16%, transparent) !important;
 }
 
+/* 4) Bordo della card visibile (se l’overlay lo “mangiava”) */
+:root body .timeline-content{
+  /* Se la tua card ha già un bordo, questo non lo sovrascrive; altrimenti lo aggiunge */
+  border-color: color-mix(in oklab, var(--accent) 28%, var(--menu-border) 72%) !important;
+  background-clip: padding-box !important;  /* evita che eventuali sfondi coprano il bordo */
+}
