@@ -281,4 +281,59 @@
 :root body .follow-accent .border{
   border-color: var(--_accent-local) !important;
 }
+/* === TIMELINE TITLE: segue l'accento === */
+:root body .timeline-title{
+  /* testo “sfumato” che prende l’accento */
+  background: linear-gradient(90deg, var(--accent), var(--accent-3), var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+
+  /* glow morbido in tinta */
+  text-shadow: 0 0 18px color-mix(in oklab, var(--accent) 22%, transparent) !important;
+}
+
+/* Se il titolo ha anche un’icona SVG */
+:root body .timeline-title svg{
+  color: var(--accent);
+  fill: currentColor;
+  stroke: currentColor;
+}
+
+/* === MENU PRINCIPALE (contenitore generico) === */
+:root body .menu-container a{
+  color: color-mix(in oklab, var(--accent) 82%, white 18%);
+  transition: color .15s ease, border-color .15s ease, background .15s ease;
+  text-decoration: none;
+}
+
+/* Hover: leggero fondo in tinta e colore più acceso */
+:root body .menu-container a:hover{
+  background: color-mix(in oklab, var(--accent) 12%, transparent);
+  color: color-mix(in oklab, var(--accent) 92%, white 8%);
+}
+
+/* Stato attivo/corrente (usa quello che hai: .active o aria-current) */
+:root body .menu-container a.active,
+:root body .menu-container a[aria-current="page"]{
+  color: var(--accent) !important;
+  border-bottom: 2px solid var(--accent) !important;
+}
+
+/* Sottomenu: titoli in tinta e voci con hover coerente */
+:root body .menu-container .submenu .title{
+  color: var(--accent);
+  text-shadow: 0 0 12px color-mix(in oklab, var(--accent) 25%, transparent);
+}
+:root body .menu-container .submenu a:hover{
+  background: color-mix(in oklab, var(--accent) 14%, transparent);
+  color: color-mix(in oklab, var(--accent) 88%, white 12%);
+}
+
+/* Focus ring coerente per accessibilità */
+:root body .menu-container a:focus-visible{
+  outline: none;
+  box-shadow: var(--ring);
+  border-radius: 8px; /* se vuoi un accenno di pill */
+}
 
