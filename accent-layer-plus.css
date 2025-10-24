@@ -653,4 +653,125 @@
   fill: currentColor !important;
   stroke: currentColor !important;
 }
+/***** NUCLEAR FIX — TIMELINE CARDS TITLES leggibili sempre *****/
+
+/* 0) Se il contenitore timeline crea maschere/blend, annullale */
+:root body .timeline,
+:root body .timeline * {
+  mix-blend-mode: normal !important;
+}
+
+/* 1) Disattiva maschere/clip sugli elementi card timeline (agli antenati dei titoli)
+   NB: se una maschera è applicata al wrapper, i figli restano mascherati.
+   Qui la rimuoviamo sul wrapper card e suoi pseudo-elementi. */
+:root body .timeline .card,
+:root body .timeline .card::before,
+:root body .timeline .card::after {
+  -webkit-mask: none !important;
+  mask: none !important;
+  background-clip: border-box !important;
+  -webkit-background-clip: border-box !important;
+  mix-blend-mode: normal !important;
+  isolation: auto !important;
+  opacity: 1 !important;
+}
+
+/* 2) Qualsiasi “overlay/decor” nelle card va DIETRO il contenuto
+   (nomi comuni: overlay, decor, bg, bar, title-bg, title-mask, glow, gradient, etc.) */
+:root body .timeline .card [class*="overlay"],
+:root body .timeline .card [class*="decor"],
+:root body .timeline .card [class*="bg"],
+:root body .timeline .card [class*="bar"],
+:root body .timeline .card [class*="mask"],
+:root body .timeline .card [class*="gradient"],
+:root body .timeline .card .title-bg,
+:root body .timeline .card .title-mask {
+  position: relative !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+  -webkit-mask: none !important;
+  mask: none !important;
+  mix-blend-mode: normal !important;
+}
+
+/* 3) Titoli delle card (h3) SEMPRE sopra, pieni, senza clip */
+:root body .timeline .card h3,
+:root body .timeline-card h3,
+:root body .timeline-cards h3,
+:root body .card.timeline h3 {
+  position: relative !important;
+  z-index: 3 !important;
+  isolation: isolate !important;
+
+  /* Niente gradient-clip / testo trasparente */
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  -webkit-text-fill-color: currentColor !important;
+
+  /* Colore pieno legato all’accento */
+  color: color-mix(in oklab, var(--accent) 96%, white 4%) !important;
+
+  /* Leggibilità */
+  text-shadow: 0 0 10px color-mix(in oklab, var(--accent) 18%, transparent) !important;
+
+  /* Evita tagli del testo */
+  overflow: visible !important;
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+/* 4) Qualsiasi pseudo-elemento del titolo non deve coprirlo */
+:root body .timeline .card h3::before,
+:root body .timeline .card h3::after {
+  z-index: 0 !important;
+  pointer-events: none !important;
+  -webkit-mask: none !important;
+  mask: none !important;
+  mix-blend-mode: normal !important;
+}
+
+/* 5) Emoji/icone dentro l'h3 ereditano il colore */
+:root body .timeline .card h3 svg,
+:root body .timeline .card h3 .icon {
+  color: currentColor !important;
+  fill: currentColor !important;
+  stroke: currentColor !important;
+}
+
+/* 6) Titolo principale della timeline (h2.timeline-title) — nessuna maschera sopra */
+:root body .timeline-title {
+  position: relative !important;
+  z-index: 3 !important;
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  -webkit-text-fill-color: currentColor !important;
+  color: color-mix(in oklab, var(--accent) 96%, white 4%) !important;
+  text-shadow: 0 0 16px color-mix(in oklab, var(--accent) 20%, transparent) !important;
+}
+:root body .timeline-title::before,
+:root body .timeline-title::after {
+  z-index: 0 !important;
+  pointer-events: none !important;
+  -webkit-mask: none !important;
+  mask: none !important;
+  mix-blend-mode: normal !important;
+}
+
+/* 7) “Ultimi articoli” (box) — titolo pieno e in tinta */
+:root body #ultimi-articoli h3,
+:root body .ultimi-articoli h3,
+:root body .latest-articles h3,
+:root body .articles-blob h3 {
+  position: relative !important;
+  z-index: 2 !important;
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  -webkit-text-fill-color: currentColor !important;
+  color: color-mix(in oklab, var(--accent) 94%, white 6%) !important;
+  text-shadow: 0 0 8px color-mix(in oklab, var(--accent) 16%, transparent) !important;
+}
+
 
