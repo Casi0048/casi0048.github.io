@@ -453,3 +453,216 @@
   .brand + .welcome-switcher{ margin-left: .4rem; gap: .35rem; }
   .welcome-switcher + .btn-ghost{ margin-left: .5rem; }
 }
+/* ========= TIMELINE — FIX ALLINEAMENTO E MASCHERA CARDS ========= */
+
+/* CONTENITORE PRINCIPALE TIMELINE */
+.timeline {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  width: 100% !important;
+  position: relative !important;
+}
+
+/* CARD SINISTRA E DESTRA - ALLINEAMENTO CORRETTO */
+.timeline .card.left,
+.timeline .card.right,
+.timeline-card.left, 
+.timeline-card.right {
+  position: relative !important;
+  width: 45% !important;
+  margin: 2rem 0 !important;
+  z-index: 1 !important;
+}
+
+/* CARD SINISTRA - ALLINEA A SINISTRA */
+.timeline .card.left,
+.timeline-card.left {
+  align-self: flex-start !important;
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+
+/* CARD DESTRA - ALLINEA A DESTRA */
+.timeline .card.right,
+.timeline-card.right {
+  align-self: flex-end !important;
+  margin-left: auto !important;
+  margin-right: 0 !important;
+}
+
+/* CONTENUTO CARD CON BORDO LUMINOSO FUNZIONANTE */
+.timeline .card,
+.timeline-card {
+  position: relative !important;
+  background: linear-gradient(145deg, 
+    rgba(10, 10, 30, 0.95) 0%,
+    rgba(20, 20, 50, 0.85) 50%,
+    rgba(10, 10, 30, 0.95) 100%) !important;
+  border-radius: 20px !important;
+  padding: 2rem !important;
+  border: 1px solid color-mix(in oklab, var(--accent) 25%, transparent) !important;
+}
+
+/* BORDO LUMINOSO - VERSIONE SEMPLIFICATA E FUNZIONANTE */
+.timeline .card::before,
+.timeline-card::before {
+  content: '' !important;
+  position: absolute !important;
+  top: -2px !important;
+  left: -2px !important;
+  right: -2px !important;
+  bottom: -2px !important;
+  border-radius: 22px !important;
+  background: linear-gradient(45deg, 
+    var(--accent-purple, #b967ff), 
+    var(--accent-cyan, #00ccff), 
+    var(--accent-gold, #ffd86a), 
+    var(--accent-purple, #b967ff)) !important;
+  background-size: 300% 300% !important;
+  animation: borderGlow 3s ease infinite !important;
+  z-index: -1 !important;
+  opacity: 0.7 !important;
+  pointer-events: none !important;
+}
+
+/* ANIMAZIONE DEL BORDO */
+@keyframes borderGlow {
+  0%, 100% { 
+    background-position: 0% 50%;
+    opacity: 0.6;
+  }
+  50% { 
+    background-position: 100% 50%;
+    opacity: 0.8;
+  }
+}
+
+/* CONTENUTO SOPRA IL BORDO */
+.timeline .card > *,
+.timeline-card > * {
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+/* FIX MASCHERE TITOLI - RIMUOVI TUTTE LE INTERFERENZE */
+.timeline .card h3,
+.timeline-card h3,
+.timeline .card h2,
+.timeline-card h2 {
+  /* RIMUOVI MASCHERE */
+  -webkit-mask: none !important;
+  mask: none !important;
+  clip-path: none !important;
+  -webkit-clip-path: none !important;
+  
+  /* RIMUOVI BACKGROUND-CLIP TEXT */
+  background: none !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+  -webkit-text-fill-color: currentColor !important;
+  
+  /* COLORE LEGGIBILE */
+  color: color-mix(in oklab, var(--accent) 96%, white 4%) !important;
+  text-shadow: 0 0 8px color-mix(in oklab, var(--accent) 20%, transparent) !important;
+  
+  /* POSIZIONAMENTO CORRETTO */
+  position: relative !important;
+  z-index: 3 !important;
+  opacity: 1 !important;
+  filter: none !important;
+  mix-blend-mode: normal !important;
+}
+
+/* RIMUOVI PSEUDO-ELEMENTI CHE INTERFERISCONO */
+.timeline .card h3::before,
+.timeline .card h3::after,
+.timeline-card h3::before,
+.timeline-card h3::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* LINEA CENTRALE TIMELINE */
+.timeline::before {
+  content: '' !important;
+  position: absolute !important;
+  left: 50% !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  width: 3px !important;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--accent),
+    var(--accent-3),
+    var(--accent),
+    transparent
+  ) !important;
+  transform: translateX(-50%) !important;
+  z-index: 0 !important;
+}
+
+/* PUNTINI SULLA LINEA */
+.timeline .dot,
+.timeline .marker {
+  position: absolute !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 12px !important;
+  height: 12px !important;
+  border-radius: 50% !important;
+  background: var(--accent) !important;
+  border: 2px solid color-mix(in oklab, var(--accent) 80%, white 20%) !important;
+  z-index: 2 !important;
+  box-shadow: 0 0 10px color-mix(in oklab, var(--accent) 50%, transparent) !important;
+}
+
+/* RESPONSIVE PER MOBILE */
+@media (max-width: 768px) {
+  .timeline .card.left,
+  .timeline .card.right,
+  .timeline-card.left,
+  .timeline-card.right {
+    width: 90% !important;
+    align-self: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  
+  .timeline::before {
+    left: 30px !important;
+  }
+  
+  .timeline .dot,
+  .timeline .marker {
+    left: 30px !important;
+  }
+}
+
+/* FIX PER CARDS SENZA CLASSI LEFT/RIGHT */
+.timeline .card:nth-child(odd) {
+  align-self: flex-start !important;
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+
+.timeline .card:nth-child(even) {
+  align-self: flex-end !important;
+  margin-left: auto !important;
+  margin-right: 0 !important;
+}
+
+/* FIX PER CONTENUTO TIMELINE ESISTENTE */
+.timeline-content {
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+/* ASSICURA CHE LE CARD SIANO VISIBILI */
+.timeline .card,
+.timeline-card {
+  visibility: visible !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
