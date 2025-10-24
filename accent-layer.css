@@ -1,0 +1,184 @@
+/* =========================================================
+   Echi di Sofia — Global Accent Layer (drop-in)
+   - Default accent: GOLD in :root
+   - Variants via body[data-accent="blue|green|red"]
+   - Make components follow accent by using variables below
+   ========================================================= */
+
+/* ---------- TOKENS ---------- */
+:root{
+  /* Base tokens expected to exist in project */
+  --text: #e9eef5;
+  --text-light:#dfe6f3;
+  --menu-border: rgba(255,255,255,.12);
+
+  /* Accent (default GOLD) */
+  --accent:#ffd700;
+  --accent-2:#e5c200;
+  --accent-3:#ffe066;
+  --accent-5:#fff7b0;
+  --accent-contrast:#1a1400;
+  --ring: 0 0 0 3px color-mix(in oklab, var(--accent) 45%, transparent);
+  --accent-glow: drop-shadow(0 0 10px color-mix(in oklab, var(--accent) 65%, transparent));
+}
+
+/* Variants */
+body[data-accent="blue"]  { --accent:#55b6ff; --accent-2:#2f98e6; --accent-3:#9bd6ff; --accent-5:#d5ecff; --accent-contrast:#001321; }
+body[data-accent="green"] { --accent:#3de07f; --accent-2:#27c16a; --accent-3:#89f0b4; --accent-5:#d6fae6; --accent-contrast:#00170a; }
+body[data-accent="red"]   { --accent:#ff5a6a; --accent-2:#e23f52; --accent-3:#ff9aa5; --accent-5:#ffd5da; --accent-contrast:#190004; }
+
+/* ---------- GLOBAL AFFORDANCES ---------- */
+/* Text selection */
+::selection{
+  background: color-mix(in oklab, var(--accent) 45%, transparent);
+  color: var(--accent-contrast);
+}
+
+/* Links */
+a{ color: color-mix(in oklab, var(--accent) 82%, white 18%); }
+a:hover{ text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--accent-3); }
+
+/* Focus ring */
+:focus-visible{
+  outline: none;
+  box-shadow: var(--ring);
+  border-color: color-mix(in oklab, var(--accent) 62%, var(--menu-border) 38%) !important;
+}
+
+/* Headings that can glow with accent */
+h1,h2,h3,[data-accent-title="on"]{
+  text-shadow: 0 0 18px color-mix(in oklab, var(--accent) 20%, transparent);
+}
+
+/* HR & dividers */
+hr, .divider{
+  border: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--accent) 35%, transparent), transparent);
+}
+
+/* Lists */
+li::marker{ color: var(--accent-3); }
+
+/* Scrollbar (webkit) */
+*::-webkit-scrollbar{ height: 10px; width: 10px; }
+*::-webkit-scrollbar-thumb{
+  background: linear-gradient(180deg, var(--accent), var(--accent-2));
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+*::-webkit-scrollbar-track{ background: rgba(255,255,255,.06); }
+
+/* ---------- BUTTONS ---------- */
+button, .btn, .btn-primary{
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+  color: var(--accent-contrast);
+  border: 1px solid color-mix(in oklab, var(--accent) 45%, transparent);
+  border-radius: 12px;
+  padding: .56rem .9rem;
+  cursor: pointer;
+  box-shadow: 0 8px 20px color-mix(in oklab, var(--accent) 12%, transparent);
+  transition: filter .18s ease, transform .18s ease, box-shadow .18s ease;
+}
+button:hover, .btn:hover, .btn-primary:hover{
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+}
+button:active, .btn:active, .btn-primary:active{ transform: translateY(0); }
+
+/* Ghost buttons */
+.btn-ghost{
+  border:1px dashed color-mix(in oklab, var(--accent) 65%, #ffffff22 35%);
+  background: color-mix(in oklab, var(--accent) 16%, transparent);
+  color: var(--text-light);
+}
+.btn-ghost:hover{ border-style: solid; background: color-mix(in oklab, var(--accent) 26%, transparent); filter: var(--accent-glow); }
+
+/* Badges / Pills */
+.badge,.pill{
+  display:inline-flex; align-items:center; gap:.5rem;
+  background: color-mix(in oklab, var(--accent) 65%, transparent);
+  border: 1px solid color-mix(in oklab, var(--accent) 55%, transparent);
+  color: var(--accent-contrast);
+  border-radius: 999px;
+  padding: .3rem .6rem;
+  filter: var(--accent-glow);
+}
+
+/* ---------- PANELS / CARDS ---------- */
+.panel,.card,.box,.callout{
+  border:1px solid color-mix(in oklab, var(--accent) 25%, var(--menu-border) 75%);
+  transition: border-color .2s ease, transform .2s ease;
+}
+.panel:hover,.card:hover,.box:hover,.callout:hover{
+  border-color: color-mix(in oklab, var(--accent) 55%, var(--menu-border) 45%);
+}
+
+/* ---------- NAV / MENUS ---------- */
+.nav a:hover, .menu a:hover, .mega-menu a:hover{
+  color: color-mix(in oklab, var(--accent) 85%, white 15%);
+  text-decoration: none;
+}
+.nav .active, .menu .active, .mega-menu .active{
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+}
+
+/* ---------- FORMS ---------- */
+input[type="text"], input[type="search"], input[type="email"], input[type="url"],
+input[type="password"], textarea, select{
+  border: 1px solid var(--menu-border);
+  background: rgba(20,20,40,.75);
+  color: var(--text);
+  border-radius: 10px;
+  padding: .55rem .7rem;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+input:focus, textarea:focus, select:focus{
+  border-color: color-mix(in oklab, var(--accent) 60%, var(--menu-border) 40%);
+  box-shadow: var(--ring);
+}
+
+/* Checkboxes / Radios (accent aware) */
+input[type="checkbox"], input[type="radio"]{
+  accent-color: var(--accent);
+}
+
+/* Range slider */
+input[type=range]{
+  width: 100%;
+  background: transparent;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--accent-2);
+  margin-top: -6px;
+}
+input[type=range]::-webkit-slider-runnable-track{
+  height: 4px; border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent-3), var(--accent));
+}
+
+/* Progress / meter */
+progress::-webkit-progress-value{ background: var(--accent); }
+meter::-webkit-meter-optimum-value{ background: var(--accent); }
+
+/* ---------- UTILITIES ---------- */
+.accent-text{ color: var(--accent) !important; }
+.accent-border{ border-color: var(--accent) !important; }
+.accent-bg{ background: color-mix(in oklab, var(--accent) 15%, transparent) !important; }
+.accent-underline{ text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: .2em; }
+
+/* Icons & SVG: use currentColor then set color via accent */
+.icon, svg.accent{ color: var(--accent); fill: currentColor; stroke: currentColor; }
+
+/* Cookie banner / alerts / toasts */
+.cookie-banner .btn-accept, .alert-primary, .toast-primary{
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: var(--accent-contrast);
+  border-color: color-mix(in oklab, var(--accent) 50%, transparent);
+}
+.cookie-banner .link, .alert-primary a{ color: var(--accent-3); }
