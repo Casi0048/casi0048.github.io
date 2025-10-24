@@ -1199,72 +1199,70 @@
     pointer-events: none !important;
   }
 }
-/* ========= NUCLEAR FIX - RIMUOVI MASCHERE DA TUTTI I TITOLI ========= */
-.timeline-content h3,
-.timeline .card h3,
-.timeline-card h3,
-.timeline-cards h3,
-.card.timeline h3,
-.articles-blob h3,
-[class*="timeline"] h3 {
-  /* DISABILITA COMPLETAMENTE TUTTE LE MASCHERE */
-  -webkit-mask: none !important;
-  mask: none !important;
-  clip-path: none !important;
-  -webkit-clip-path: none !important;
-  
-  /* DISABILITA BACKGROUND-CLIP TEXT */
-  background: none !important;
-  -webkit-background-clip: border-box !important;
-  background-clip: border-box !important;
-  -webkit-text-fill-color: currentColor !important;
-  
-  /* FORZA COLORE SOLIDO E VISIBILITÀ */
-  color: #ffd86a !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  mix-blend-mode: normal !important;
-  filter: none !important;
-  
-  /* GARANTISCI LEGGIBILITÀ */
-  text-shadow: 0 0 10px rgba(255, 215, 0, 0.4) !important;
+/* ========= TIMELINE — BORDO LUMINOSO *DIETRO* AL CONTENUTO ========= */
+
+/* 0) Stacking locale della card */
+:root body .timeline-content{
   position: relative !important;
-  z-index: 9999 !important;
+  z-index: 0 !important;              /* base */
 }
 
-/* DISABILITA PSEUDO-ELEMENTI CHE CREANO MASCHERE */
-.timeline-content h3::before,
-.timeline-content h3::after,
-.timeline .card h3::before,
-.timeline .card h3::after,
-.timeline-card h3::before,
-.timeline-card h3::after {
-  display: none !important;
-  content: none !important;
+/* Assicura che il contenuto stia sopra */
+:root body .timeline-content > *{
+  position: relative !important;
+  z-index: 1 !important;              /* testo/immagini sopra al ::before */
 }
 
-/* DISABILITA MASCHERE SU TUTTI GLI ELEMENTI DELLA TIMELINE */
-.timeline-container *,
-.timeline *,
-.timeline-item *,
-.timeline-content * {
-  -webkit-mask: none !important;
-  mask: none !important;
-  clip-path: none !important;
-  -webkit-clip-path: none !important;
-}
-/* FIX EMERGENZA - Inserisci nel <head> DOPO tutti gli altri CSS */
-* {
-  -webkit-mask: none !important;
-  mask: none !important;
+/* (opzionale) opacità/colore del glow, legato all'accento */
+:root body .timeline{
+  --timeline-glow: var(--accent);
+  --timeline-glow-opacity: .35;       /* regola l’intensità del bordo */
 }
 
-h1, h2, h3, h4, h5, h6 {
-  -webkit-mask: none !important;
-  mask: none !important;
-  clip-path: none !important;
+/* 1) Solo se le mask sono supportate, mostra il bordo MA dietro al contenuto */
+@supports (mask-composite: exclude) or (-webkit-mask-composite: xor){
+  :root body .timeline-content::before{
+    display: block !important;
+    pointer-events: none !important;
+
+    /* 🔑 Dietro al contenuto, non davanti */
+    position: absolute !important;
+    z-index: -1 !important;
+
+    /* niente blend/filtri che ricoprano il testo */
+    mix-blend-mode: normal !important;
+    filter: none !important;
+    backdrop-filter: none !important;
+
+    /* (se il tuo CSS originale usa opacity, limitane la forza) */
+    opacity: var(--timeline-glow-opacity, .35) !important;
+  }
+}
+
+/* 2) In browser senza mask: nascondi l’overlay per evitare il “quadrato” */
+@supports not (mask-composite: exclude) and not (-webkit-mask-composite: xor){
+  :root body .timeline-content::before{
+    content: none !important;
+    display: none !important;
+  }
+}
+
+/* 3) Titolo card: colore pieno e leggibile (no text-clip) */
+:root body .timeline-content h3{
+  color: color-mix(in oklab, var(--accent) 96%, white 4%) !important;
   background: none !important;
-  -webkit-background-clip: border-box !important;
-  color: inherit !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
   -webkit-text-fill-color: currentColor !important;
+  position: relative !important;
+  z-index: 1 !important;              /* sopra al ::before (che è -1) */
+  text-shadow: 0 0 8px color-mix(in oklab, var(--accent) 16%, transparent) !important;
 }
+
+/* 4) Bordo della card visibile (se l’overlay lo “mangiava”) */
+:root body .timeline-content{
+  /* Se la tua card ha già un bordo, questo non lo sovrascrive; altrimenti lo aggiunge */
+  border-color: color-mix(in oklab, var(--accent) 28%, var(--menu-border) 72%) !important;
+  background-clip: padding-box !important;  /* evita che eventuali sfondi coprano il bordo */
+}
+
