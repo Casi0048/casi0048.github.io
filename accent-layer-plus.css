@@ -1068,59 +1068,7 @@
   color: color-mix(in oklab, var(--accent) 92%, white 8%) !important;
   text-shadow: 0 0 8px color-mix(in oklab, var(--accent) 16%, transparent) !important;
 }
-/************* SAFE FIX — TITOLI CARDS TIMELINE *************/
 
-/* Titoli delle card in primo piano, colore pieno (no text-clip) */
-:root body .timeline .card h3,
-:root body .timeline-card h3,
-:root body .timeline-cards h3,
-:root body .card.timeline h3 {
-  position: relative !important;
-  z-index: 3 !important;
-  isolation: isolate !important;
-
-  /* niente gradient clip/mask sul testo */
-  background: none !important;
-  -webkit-background-clip: initial !important;
-  background-clip: initial !important;
-  -webkit-text-fill-color: currentColor !important;
-
-  /* colore leggibile che segue l’accento */
-  color: color-mix(in oklab, var(--accent) 96%, white 4%) !important;
-  text-shadow: 0 0 10px color-mix(in oklab, var(--accent) 18%, transparent) !important;
-
-  /* evita tagli del testo */
-  overflow: visible !important;
-}
-
-/* Nessuna decorazione del titolo sopra al testo */
-:root body .timeline .card h3::before,
-:root body .timeline .card h3::after {
-  content: none !important;   /* se vuoi solo mandarle sotto, togli questa riga e usa z-index:0 */
-  z-index: 0 !important;
-  pointer-events: none !important;
-  -webkit-mask: none !important;
-  mask: none !important;
-  mix-blend-mode: normal !important;
-}
-
-/* Overlay/maschere SOLO correlati al titolo: sotto al testo */
-:root body .timeline .card [class*="title-"],
-:root body .timeline .card [class*="mask"],
-:root body .timeline .card [class*="overlay"] {
-  position: relative !important;
-  z-index: 0 !important;       /* il testo (z=3) sta sopra */
-  pointer-events: none !important;
-  mix-blend-mode: normal !important;
-}
-
-/* Emoji/Icone nel titolo ereditano il colore del testo */
-:root body .timeline .card h3 svg,
-:root body .timeline .card h3 .icon {
-  color: currentColor !important;
-  fill: currentColor !important;
-  stroke: currentColor !important;
-}
 /************* TIMELINE — CARD OVERLAY DEMOTION (SAFE) *************/
 /* 1) Ogni card crea uno stacking locale: così i suoi z-index non “collidono” */
 :root body .timeline .card {
