@@ -1199,36 +1199,57 @@
     pointer-events: none !important;
   }
 }
-/* ========= TIMELINE — BORDO LUMINOSO CON BOX-SHADOW ========= */
-:root body .timeline-content {
+/* ========= NUCLEAR FIX - RIMUOVI MASCHERE DA TUTTI I TITOLI ========= */
+.timeline-content h3,
+.timeline .card h3,
+.timeline-card h3,
+.timeline-cards h3,
+.card.timeline h3,
+.articles-blob h3,
+[class*="timeline"] h3 {
+  /* DISABILITA COMPLETAMENTE TUTTE LE MASCHERE */
+  -webkit-mask: none !important;
+  mask: none !important;
+  clip-path: none !important;
+  -webkit-clip-path: none !important;
+  
+  /* DISABILITA BACKGROUND-CLIP TEXT */
+  background: none !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+  -webkit-text-fill-color: currentColor !important;
+  
+  /* FORZA COLORE SOLIDO E VISIBILITÀ */
+  color: #ffd86a !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  mix-blend-mode: normal !important;
+  filter: none !important;
+  
+  /* GARANTISCI LEGGIBILITÀ */
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.4) !important;
   position: relative !important;
-  background: linear-gradient(145deg, 
-    rgba(10, 10, 30, 0.9) 0%,
-    rgba(20, 20, 50, 0.8) 50%,
-    rgba(10, 10, 30, 0.9) 100%) !important;
-  border: 1px solid rgba(255, 215, 0, 0.5) !important;
-  border-radius: 20px !important;
-  box-shadow: 
-    0 0 0 1px rgba(185, 103, 255, 0.6),
-    0 0 0 2px rgba(0, 204, 255, 0.4),
-    0 0 20px 3px rgba(255, 215, 0, 0.3),
-    inset 0 0 20px rgba(255, 255, 255, 0.1) !important;
-  animation: glowPulse 2s ease-in-out infinite !important;
+  z-index: 9999 !important;
 }
 
-@keyframes glowPulse {
-  0%, 100% { 
-    box-shadow: 
-      0 0 0 1px rgba(185, 103, 255, 0.6),
-      0 0 0 2px rgba(0, 204, 255, 0.4),
-      0 0 20px 3px rgba(255, 215, 0, 0.3),
-      inset 0 0 20px rgba(255, 255, 255, 0.1);
-  }
-  50% { 
-    box-shadow: 
-      0 0 0 2px rgba(185, 103, 255, 0.8),
-      0 0 0 3px rgba(0, 204, 255, 0.6),
-      0 0 30px 5px rgba(255, 215, 0, 0.5),
-      inset 0 0 30px rgba(255, 255, 255, 0.2);
-  }
+/* DISABILITA PSEUDO-ELEMENTI CHE CREANO MASCHERE */
+.timeline-content h3::before,
+.timeline-content h3::after,
+.timeline .card h3::before,
+.timeline .card h3::after,
+.timeline-card h3::before,
+.timeline-card h3::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* DISABILITA MASCHERE SU TUTTI GLI ELEMENTI DELLA TIMELINE */
+.timeline-container *,
+.timeline *,
+.timeline-item *,
+.timeline-content * {
+  -webkit-mask: none !important;
+  mask: none !important;
+  clip-path: none !important;
+  -webkit-clip-path: none !important;
 }
