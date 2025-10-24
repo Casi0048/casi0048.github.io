@@ -773,3 +773,104 @@
   color: color-mix(in oklab, var(--accent) 94%, white 6%) !important;
   text-shadow: 0 0 8px color-mix(in oklab, var(--accent) 16%, transparent) !important;
 }
+/************* TIMELINE — NUCLEAR UNBLOCK FOR TITLES *************/
+/* 0) Spegni blend globali e maschere nel perimetro timeline */
+:root body .timeline,
+:root body .timeline *{
+  mix-blend-mode: normal !important;
+  -webkit-mask: none !important;
+  mask: none !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+  filter: none !important;
+}
+
+/* 1) Le card devono creare lo stacking giusto (titolo sopra, decor sotto) */
+:root body .timeline .card{
+  position: relative !important;
+  z-index: 0 !important;
+  overflow: visible !important; /* evita che il titolo venga “tagliato” */
+}
+:root body .timeline .card::before,
+:root body .timeline .card::after{
+  position: absolute !important;
+  z-index: 0 !important;              /* DECOR sotto */
+  pointer-events: none !important;
+  -webkit-mask: none !important;
+  mask: none !important;
+  mix-blend-mode: normal !important;
+}
+
+/* 2) Qualunque overlay/decor interno alla card sta SOTTO il contenuto */
+:root body .timeline .card [class*="overlay"],
+:root body .timeline .card [class*="decor"],
+:root body .timeline .card [class*="bg"],
+:root body .timeline .card [class*="bar"],
+:root body .timeline .card [class*="mask"],
+:root body .timeline .card [class*="gradient"],
+:root body .timeline .card .title-bg,
+:root body .timeline .card .title-mask{
+  position: absolute !important;
+  z-index: 0 !important;              /* sempre sotto al titolo */
+  pointer-events: none !important;
+  -webkit-mask: none !important;
+  mask: none !important;
+  mix-blend-mode: normal !important;
+}
+
+/* 3) I TITOLI DELLE CARD (h3) DEVONO ESSERE SEMPRE LEGGIBILI E SOPRA */
+:root body .timeline .card h3,
+:root body .timeline-card h3,
+:root body .timeline-cards h3,
+:root body .card.timeline h3{
+  position: relative !important;
+  z-index: 3 !important;              /* sopra tutto nella card */
+  isolation: isolate !important;
+  overflow: visible !important;
+
+  /* Pieno, niente text-clip/maschere */
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  -webkit-text-fill-color: currentColor !important;
+
+  /* Colore leggibile che segue l’accento */
+  color: color-mix(in oklab, var(--accent) 96%, white 4%) !important;
+  text-shadow: 0 0 10px color-mix(in oklab, var(--accent) 18%, transparent) !important;
+
+  /* No filtri opacizzanti */
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+/* 4) Qualsiasi pseudo-elemento del TITOLO non deve coprirlo */
+:root body .timeline .card h3::before,
+:root body .timeline .card h3::after{
+  position: absolute !important;
+  z-index: 0 !important;              /* sotto al testo del titolo */
+  pointer-events: none !important;
+  -webkit-mask: none !important;
+  mask: none !important;
+  mix-blend-mode: normal !important;
+}
+
+/* 5) Emoji/icone dentro l’h3 ereditano il colore del testo */
+:root body .timeline .card h3 svg,
+:root body .timeline .card h3 .icon{
+  color: currentColor !important;
+  fill: currentColor !important;
+  stroke: currentColor !important;
+}
+
+/* 6) (facoltativo ma utile) i sottotitoli/heading dentro card */
+:root body .timeline .card h4,
+:root body .timeline .card .card-title{
+  position: relative !important;
+  z-index: 2 !important;
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  -webkit-text-fill-color: currentColor !important;
+  color: color-mix(in oklab, var(--accent) 90%, white 10%) !important;
+  text-shadow: 0 0 8px color-mix(in oklab, var(--accent) 16%, transparent) !important;
+}
