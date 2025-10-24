@@ -414,4 +414,153 @@
 }
 :root body [data-follow-accent] .border,
 :root body .follow-accent .border{ border-color: var(--accent) !important; }
+/************* FIX TIMELINE TITLE COPERTO *************/
+/* 1) Rendi il titolo leggibile: colore pieno (no text-clip trasparente) */
+:root body .timeline-title{
+  position: relative;
+  z-index: 1; /* sopra eventuali decorazioni */
+  color: color-mix(in oklab, var(--accent) 94%, white 6%) !important;
+  -webkit-text-fill-color: currentColor !important;
+  background: none !important;           /* disattiva gradient clip */
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  text-shadow: 0 0 16px color-mix(in oklab, var(--accent) 20%, transparent) !important;
+}
+
+/* 2) Se avevi barre/decori via pseudo-elementi sul titolo, mandali sotto */
+:root body .timeline-title::before,
+:root body .timeline-title::after{
+  z-index: 0 !important;
+  pointer-events: none !important;
+}
+
+/* 3) Nel dubbio, se un overlay generico passa davanti, forzalo sotto */
+:root body .timeline .overlay,
+:root body .timeline .decor,
+:root body .timeline .bg,
+:root body .timeline .bar{
+  position: relative;
+  z-index: 0 !important;
+  pointer-events: none !important;
+}
+
+/************* TITOLI CARD DELLA TIMELINE *************/
+:root body .timeline .card h1,
+:root body .timeline .card h2,
+:root body .timeline .card h3,
+:root body .timeline-card h1,
+:root body .timeline-card h2,
+:root body .timeline-card h3,
+:root body .timeline .card-title{
+  position: relative;
+  z-index: 1;
+  color: color-mix(in oklab, var(--accent) 92%, white 8%) !important;
+  text-shadow: 0 0 10px color-mix(in oklab, var(--accent) 18%, transparent) !important;
+  background: none !important;           /* evita clip trasparente */
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+
+/* se le card hanno “decorazioni” che passano sopra i titoli */
+:root body .timeline .card h1::before,
+:root body .timeline .card h1::after,
+:root body .timeline .card h2::before,
+:root body .timeline .card h2::after,
+:root body .timeline .card h3::before,
+:root body .timeline .card h3::after{
+  z-index: 0 !important;
+  pointer-events: none !important;
+}
+
+/************* LINEA / DOT / PERIODI DELLA TIMELINE *************/
+:root body .timeline::before{
+  background: linear-gradient(180deg, var(--accent-2), var(--accent), var(--accent-2)) !important;
+  box-shadow: 0 0 24px color-mix(in oklab, var(--accent) 30%, transparent) !important;
+}
+:root body .timeline .dot,
+:root body .timeline .marker{
+  background: var(--accent) !important;
+  border-color: color-mix(in oklab, var(--accent) 55%, transparent) !important;
+}
+:root body .timeline .period{
+  color: color-mix(in oklab, var(--accent) 85%, white 15%) !important;
+  background: color-mix(in oklab, var(--accent) 12%, transparent) !important;
+  border-color: color-mix(in oklab, var(--accent) 45%, transparent) !important;
+}
+
+/************* MENU PRINCIPALE NEL CONTENITORE *************/
+:root body .menu-container a{
+  color: color-mix(in oklab, var(--accent) 82%, white 18%);
+  text-decoration: none;
+  transition: color .15s ease, border-color .15s ease, background .15s ease;
+}
+:root body .menu-container a:hover{
+  background: color-mix(in oklab, var(--accent) 12%, transparent);
+  color: color-mix(in oklab, var(--accent) 92%, white 8%);
+}
+:root body .menu-container a.active,
+:root body .menu-container a[aria-current="page"]{
+  color: var(--accent) !important;
+  border-bottom: 2px solid var(--accent) !important;
+}
+
+/************* RUSSELL BOX (ID o classi comuni) *************/
+:root body #russell-box,
+:root body .russell-box,
+:root body .russel-box,        /* varianti comuni di naming */
+:root body .box-russell{
+  border-color: color-mix(in oklab, var(--accent) 35%, var(--menu-border) 65%) !important;
+  background: radial-gradient(600px 300px at -10% -10%, color-mix(in oklab, var(--accent) 12%, transparent), transparent 60%) !important;
+  box-shadow: 0 12px 34px color-mix(in oklab, var(--accent) 10%, transparent) !important;
+}
+:root body #russell-box .title,
+:root body .russell-box .title,
+:root body .russel-box .title,
+:root body .box-russell .title{
+  color: color-mix(in oklab, var(--accent) 85%, white 15%) !important;
+  text-shadow: 0 0 12px color-mix(in oklab, var(--accent) 25%, transparent) !important;
+}
+:root body #russell-box .quote,
+:root body .russell-box .quote,
+:root body .russel-box .quote,
+:root body .box-russell .quote{
+  border-left: 3px solid var(--accent) !important;
+}
+:root body #russell-box .ref,
+:root body .russell-box .ref,
+:root body .russel-box .ref,
+:root body .box-russell .ref{
+  color: color-mix(in oklab, var(--accent) 70%, white 30%) !important;
+}
+
+/************* BOX “ULTIMI ARTICOLI” *************/
+:root body #ultimi-articoli,
+:root body .ultimi-articoli,
+:root body .latest-articles,
+:root body .articles-blob{
+  border: 1px solid color-mix(in oklab, var(--accent) 25%, var(--menu-border) 75%) !important;
+  border-radius: 14px;
+  box-shadow: 0 10px 24px color-mix(in oklab, var(--accent) 12%, transparent) !important;
+}
+:root body #ultimi-articoli h3,
+:root body .ultimi-articoli h3,
+:root body .latest-articles h3,
+:root body .articles-blob h3{
+  color: var(--accent) !important;
+  text-shadow: 0 0 10px color-mix(in oklab, var(--accent) 20%, transparent) !important;
+}
+:root body #ultimi-articoli a,
+:root body .ultimi-articoli a,
+:root body .latest-articles a,
+:root body .articles-blob a{
+  color: color-mix(in oklab, var(--accent) 82%, white 18%) !important;
+}
+:root body #ultimi-articoli a:hover,
+:root body .ultimi-articoli a:hover,
+:root body .latest-articles a:hover,
+:root body .articles-blob a:hover{
+  background: color-mix(in oklab, var(--accent) 12%, transparent) !important;
+  color: color-mix(in oklab, var(--accent) 94%, white 6%) !important;
+}
 
