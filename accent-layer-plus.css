@@ -176,11 +176,141 @@
   margin-top: .4rem; font-size: .92rem; color: color-mix(in oklab, var(--accent) 70%, white 30%);
 }
 
+/* ========= TIMELINE — BORDO LUMINOSO FUNZIONANTE PER CARDS ========= */
+.timeline-content,
+.timeline .card,
+.timeline-card {
+  position: relative !important;
+  z-index: 0 !important;
+  background: linear-gradient(145deg, 
+    rgba(10, 10, 30, 0.9) 0%,
+    rgba(20, 20, 50, 0.8) 50%,
+    rgba(10, 10, 30, 0.9) 100%) !important;
+  border-radius: 20px !important;
+  padding: 2rem 2.5rem !important;
+  margin: 1rem 0 !important;
+}
+
+/* Contenuto sopra il bordo */
+.timeline-content > *,
+.timeline .card > *,
+.timeline-card > * {
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+/* BORDO LUMINOSO PRINCIPALE */
+.timeline-content::before,
+.timeline .card::before,
+.timeline-card::before {
+  content: '' !important;
+  position: absolute !important;
+  top: -3px !important;
+  left: -3px !important;
+  right: -3px !important;
+  bottom: -3px !important;
+  border-radius: 23px !important;
+  background: linear-gradient(45deg, 
+    var(--accent-purple, #b967ff), 
+    var(--accent-cyan, #00ccff), 
+    var(--accent-gold, #ffd86a), 
+    var(--accent-purple, #b967ff)) !important;
+  background-size: 300% 300% !important;
+  animation: borderGlow 3s ease infinite !important;
+  z-index: 1 !important;
+  opacity: 0.9 !important;
+  pointer-events: none !important;
+  
+  /* Maschera per mostrare SOLO il bordo */
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0) !important;
+  -webkit-mask-composite: xor !important;
+  mask-composite: exclude !important;
+  padding: 3px !important;
+}
+
+/* Animazione del bordo */
+@keyframes borderGlow {
+  0%, 100% { 
+    background-position: 0% 50%;
+    opacity: 0.8;
+  }
+  50% { 
+    background-position: 100% 50%;
+    opacity: 1;
+  }
+}
+
+/* ========= FIX MASCHERE TITOLI ========= */
+.timeline-content h3,
+.timeline .card h3,
+.timeline-card h3,
+.timeline-content h2,
+.timeline .card h2,
+.timeline-card h2 {
+  /* RIMUOVI TUTTE LE MASCHERE */
+  -webkit-mask: none !important;
+  mask: none !important;
+  clip-path: none !important;
+  -webkit-clip-path: none !important;
+  
+  /* RIMUOVI BACKGROUND-CLIP TEXT */
+  background: none !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+  -webkit-text-fill-color: currentColor !important;
+  
+  /* FORZA COLORE SOLIDO */
+  color: color-mix(in oklab, var(--accent) 96%, white 4%) !important;
+  opacity: 1 !important;
+  filter: none !important;
+  mix-blend-mode: normal !important;
+  
+  /* LEGGIBILITÀ MASSIMA */
+  text-shadow: 0 0 10px color-mix(in oklab, var(--accent) 18%, transparent) !important;
+  position: relative !important;
+  z-index: 3 !important;
+}
+
+/* RIMUOVI PSEUDO-ELEMENTI DAI TITOLI */
+.timeline-content h3::before,
+.timeline-content h3::after,
+.timeline .card h3::before,
+.timeline .card h3::after,
+.timeline-content h2::before,
+.timeline-content h2::after,
+.timeline .card h2::before,
+.timeline .card h2::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* Fallback per browser senza mask support */
+@supports not ((-webkit-mask-composite: xor) or (mask-composite: exclude)) {
+  .timeline-content::before,
+  .timeline .card::before,
+  .timeline-card::before {
+    display: none !important;
+  }
+  
+  .timeline-content,
+  .timeline .card,
+  .timeline-card {
+    border: 2px solid var(--accent-gold, #ffd86a) !important;
+    box-shadow: 
+      0 0 10px color-mix(in oklab, var(--accent) 30%, transparent),
+      0 0 20px color-mix(in oklab, var(--accent) 20%, transparent),
+      0 0 30px color-mix(in oklab, var(--accent) 10%, transparent) !important;
+  }
+}
+
 /* ---------- SMALL UTILITIES for these blocks ---------- */
 .box-accent{ border:1px solid color-mix(in oklab, var(--accent) 22%, var(--menu-border) 78%); border-radius: 12px; }
 .bg-accent-soft{ background: color-mix(in oklab, var(--accent) 10%, transparent); }
 .text-accent-strong{ color: color-mix(in oklab, var(--accent) 90%, white 10%); }
-/* ====== TIMELINE: titoli e indicatori seguono l’accento ====== */
+
+/* ====== TIMELINE: titoli e indicatori seguono l'accento ====== */
 :root body .timeline h1,
 :root body .timeline h2,
 :root body .timeline h3,
@@ -267,7 +397,7 @@
 }
 
 /* ====== FALLBACK UTILITY: applica accento ovunque serva ====== */
-/* Aggiungi data-follow-accent a qualunque blocco “testardo” */
+/* Aggiungi data-follow-accent a qualunque blocco "testardo" */
 :root body [data-follow-accent],
 :root body .follow-accent{
   --_accent-local: var(--accent);
@@ -281,1101 +411,6 @@
 :root body .follow-accent .border{
   border-color: var(--_accent-local) !important;
 }
-/* === TIMELINE TITLE: segue l'accento === */
-:root body .timeline-title{
-  /* testo “sfumato” che prende l’accento */
-  background: linear-gradient(90deg, var(--accent), var(--accent-3), var(--accent));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent !important;
-
-  /* glow morbido in tinta */
-  text-shadow: 0 0 18px color-mix(in oklab, var(--accent) 22%, transparent) !important;
-}
-
-/* Se il titolo ha anche un’icona SVG */
-:root body .timeline-title svg{
-  color: var(--accent);
-  fill: currentColor;
-  stroke: currentColor;
-}
-
-/* === MENU PRINCIPALE (contenitore generico) === */
-:root body .menu-container a{
-  color: color-mix(in oklab, var(--accent) 82%, white 18%);
-  transition: color .15s ease, border-color .15s ease, background .15s ease;
-  text-decoration: none;
-}
-
-/* Hover: leggero fondo in tinta e colore più acceso */
-:root body .menu-container a:hover{
-  background: color-mix(in oklab, var(--accent) 12%, transparent);
-  color: color-mix(in oklab, var(--accent) 92%, white 8%);
-}
-
-/* Stato attivo/corrente (usa quello che hai: .active o aria-current) */
-:root body .menu-container a.active,
-:root body .menu-container a[aria-current="page"]{
-  color: var(--accent) !important;
-  border-bottom: 2px solid var(--accent) !important;
-}
-
-/* Sottomenu: titoli in tinta e voci con hover coerente */
-:root body .menu-container .submenu .title{
-  color: var(--accent);
-  text-shadow: 0 0 12px color-mix(in oklab, var(--accent) 25%, transparent);
-}
-:root body .menu-container .submenu a:hover{
-  background: color-mix(in oklab, var(--accent) 14%, transparent);
-  color: color-mix(in oklab, var(--accent) 88%, white 12%);
-}
-
-/* Focus ring coerente per accessibilità */
-:root body .menu-container a:focus-visible{
-  outline: none;
-  box-shadow: var(--ring);
-  border-radius: 8px; /* se vuoi un accenno di pill */
-}
-/* === TIMELINE TITLE -> usa l'accento === */
-:root body .timeline-title{
-  background: linear-gradient(90deg, var(--accent), var(--accent-3), var(--accent));
-  -webkit-background-clip: text; background-clip: text;
-  color: transparent !important;
-  text-shadow: 0 0 18px color-mix(in oklab, var(--accent) 22%, transparent) !important;
-}
-:root body .timeline-title::after{
-  background: linear-gradient(90deg, transparent, var(--accent), transparent) !important;
-}
-
-/* === TIMELINE: card heading/period/dot/line in tinta === */
-:root body .timeline-content h3{ color: color-mix(in oklab, var(--accent) 92%, white 8%) !important; }
-:root body .timeline .period{
-  color: color-mix(in oklab, var(--accent) 88%, white 12%) !important;
-  background: color-mix(in oklab, var(--accent) 14%, transparent) !important;
-  border-color: color-mix(in oklab, var(--accent) 45%, transparent) !important;
-}
-:root body .timeline::before{
-  background: linear-gradient(180deg, var(--accent-2), var(--accent), var(--accent-2)) !important;
-  box-shadow: 0 0 30px color-mix(in oklab, var(--accent) 40%, transparent) !important;
-}
-
-/* === MENU (menu-container + mega menu) === */
-:root body .menu-container{ border-bottom-color: color-mix(in oklab, var(--accent) 22%, transparent) !important; }
-:root body .menu-container .menu-btn,
-:root body .menu-container nav.menu-desktop li > a{
-  color: color-mix(in oklab, var(--accent) 82%, white 18%) !important;
-  text-shadow: 0 0 .38rem color-mix(in oklab, var(--accent) 30%, transparent) !important;
-  transition: color .15s ease, background .15s ease, border-color .15s ease;
-}
-:root body .menu-container .menu-btn:hover,
-:root body .menu-container nav.menu-desktop li > a:hover{
-  color: color-mix(in oklab, var(--accent) 94%, white 6%) !important;
-  background: color-mix(in oklab, var(--accent) 12%, transparent) !important;
-}
-:root body .menu-container a.active,
-:root body .menu-container a[aria-current="page"]{
-  color: var(--accent) !important;
-  border-bottom: 2px solid var(--accent) !important;
-}
-
-/* Mega menu pannello e titoli */
-:root body .mega-menu{
-  border-color: color-mix(in oklab, var(--accent) 35%, transparent) !important;
-  box-shadow: 0 20px 40px color-mix(in oklab, var(--accent) 12%, #000) !important;
-}
-:root body .mega-menu h4{
-  color: var(--accent) !important;
-}
-:root body .mega-menu a{
-  color: color-mix(in oklab, var(--accent) 75%, white 25%) !important;
-}
-:root body .mega-menu a:hover{
-  color: color-mix(in oklab, var(--accent) 92%, white 8%) !important;
-  background: color-mix(in oklab, var(--accent) 14%, transparent) !important;
-  text-shadow: 0 0 10px color-mix(in oklab, var(--accent) 30%, transparent) !important;
-}
-
-/* === RUSSELL BOX === */
-:root body #russell-box{
-  border-color: color-mix(in oklab, var(--accent) 35%, var(--menu-border) 65%) !important;
-  background: radial-gradient(600px 300px at -10% -10%, color-mix(in oklab, var(--accent) 12%, transparent), transparent 60%) !important;
-  box-shadow: 0 .5rem 1.12rem color-mix(in oklab, var(--accent) 18%, rgba(0,0,0,.35)) !important;
-}
-:root body #russell-btn{ color: var(--accent) !important; }
-:root body #russell-hint{ color: color-mix(in oklab, var(--accent) 70%, white 30%) !important; }
-
-/* === RIGHT BOX (articoli) – header in tinta === */
-:root body .articles-blob h3{ color: var(--accent) !important; }
-
-/* === Utility: applica accento a qualsiasi wrapper “ostinato” === */
-:root body [data-follow-accent],
-:root body .follow-accent{
-  color: color-mix(in oklab, var(--accent) 90%, white 10%) !important;
-}
-:root body [data-follow-accent] .border,
-:root body .follow-accent .border{ border-color: var(--accent) !important; }
-/************* FIX TIMELINE TITLE COPERTO *************/
-/* 1) Rendi il titolo leggibile: colore pieno (no text-clip trasparente) */
-:root body .timeline-title{
-  position: relative;
-  z-index: 1; /* sopra eventuali decorazioni */
-  color: color-mix(in oklab, var(--accent) 94%, white 6%) !important;
-  -webkit-text-fill-color: currentColor !important;
-  background: none !important;           /* disattiva gradient clip */
-  -webkit-background-clip: initial !important;
-  background-clip: initial !important;
-  text-shadow: 0 0 16px color-mix(in oklab, var(--accent) 20%, transparent) !important;
-}
-
-/* 2) Se avevi barre/decori via pseudo-elementi sul titolo, mandali sotto */
-:root body .timeline-title::before,
-:root body .timeline-title::after{
-  z-index: 0 !important;
-  pointer-events: none !important;
-}
-
-/* 3) Nel dubbio, se un overlay generico passa davanti, forzalo sotto */
-:root body .timeline .overlay,
-:root body .timeline .decor,
-:root body .timeline .bg,
-:root body .timeline .bar{
-  position: relative;
-  z-index: 0 !important;
-  pointer-events: none !important;
-}
-
-/************* TITOLI CARD DELLA TIMELINE *************/
-:root body .timeline .card h1,
-:root body .timeline .card h2,
-:root body .timeline .card h3,
-:root body .timeline-card h1,
-:root body .timeline-card h2,
-:root body .timeline-card h3,
-:root body .timeline .card-title{
-  position: relative;
-  z-index: 1;
-  color: color-mix(in oklab, var(--accent) 92%, white 8%) !important;
-  text-shadow: 0 0 10px color-mix(in oklab, var(--accent) 18%, transparent) !important;
-  background: none !important;           /* evita clip trasparente */
-  -webkit-background-clip: initial !important;
-  background-clip: initial !important;
-  -webkit-text-fill-color: currentColor !important;
-}
-
-/* se le card hanno “decorazioni” che passano sopra i titoli */
-:root body .timeline .card h1::before,
-:root body .timeline .card h1::after,
-:root body .timeline .card h2::before,
-:root body .timeline .card h2::after,
-:root body .timeline .card h3::before,
-:root body .timeline .card h3::after{
-  z-index: 0 !important;
-  pointer-events: none !important;
-}
-
-/************* LINEA / DOT / PERIODI DELLA TIMELINE *************/
-:root body .timeline::before{
-  background: linear-gradient(180deg, var(--accent-2), var(--accent), var(--accent-2)) !important;
-  box-shadow: 0 0 24px color-mix(in oklab, var(--accent) 30%, transparent) !important;
-}
-:root body .timeline .dot,
-:root body .timeline .marker{
-  background: var(--accent) !important;
-  border-color: color-mix(in oklab, var(--accent) 55%, transparent) !important;
-}
-:root body .timeline .period{
-  color: color-mix(in oklab, var(--accent) 85%, white 15%) !important;
-  background: color-mix(in oklab, var(--accent) 12%, transparent) !important;
-  border-color: color-mix(in oklab, var(--accent) 45%, transparent) !important;
-}
-
-/************* MENU PRINCIPALE NEL CONTENITORE *************/
-:root body .menu-container a{
-  color: color-mix(in oklab, var(--accent) 82%, white 18%);
-  text-decoration: none;
-  transition: color .15s ease, border-color .15s ease, background .15s ease;
-}
-:root body .menu-container a:hover{
-  background: color-mix(in oklab, var(--accent) 12%, transparent);
-  color: color-mix(in oklab, var(--accent) 92%, white 8%);
-}
-:root body .menu-container a.active,
-:root body .menu-container a[aria-current="page"]{
-  color: var(--accent) !important;
-  border-bottom: 2px solid var(--accent) !important;
-}
-
-/************* RUSSELL BOX (ID o classi comuni) *************/
-:root body #russell-box,
-:root body .russell-box,
-:root body .russel-box,        /* varianti comuni di naming */
-:root body .box-russell{
-  border-color: color-mix(in oklab, var(--accent) 35%, var(--menu-border) 65%) !important;
-  background: radial-gradient(600px 300px at -10% -10%, color-mix(in oklab, var(--accent) 12%, transparent), transparent 60%) !important;
-  box-shadow: 0 12px 34px color-mix(in oklab, var(--accent) 10%, transparent) !important;
-}
-:root body #russell-box .title,
-:root body .russell-box .title,
-:root body .russel-box .title,
-:root body .box-russell .title{
-  color: color-mix(in oklab, var(--accent) 85%, white 15%) !important;
-  text-shadow: 0 0 12px color-mix(in oklab, var(--accent) 25%, transparent) !important;
-}
-:root body #russell-box .quote,
-:root body .russell-box .quote,
-:root body .russel-box .quote,
-:root body .box-russell .quote{
-  border-left: 3px solid var(--accent) !important;
-}
-:root body #russell-box .ref,
-:root body .russell-box .ref,
-:root body .russel-box .ref,
-:root body .box-russell .ref{
-  color: color-mix(in oklab, var(--accent) 70%, white 30%) !important;
-}
-
-/************* BOX “ULTIMI ARTICOLI” *************/
-:root body #ultimi-articoli,
-:root body .ultimi-articoli,
-:root body .latest-articles,
-:root body .articles-blob{
-  border: 1px solid color-mix(in oklab, var(--accent) 25%, var(--menu-border) 75%) !important;
-  border-radius: 14px;
-  box-shadow: 0 10px 24px color-mix(in oklab, var(--accent) 12%, transparent) !important;
-}
-:root body #ultimi-articoli h3,
-:root body .ultimi-articoli h3,
-:root body .latest-articles h3,
-:root body .articles-blob h3{
-  color: var(--accent) !important;
-  text-shadow: 0 0 10px color-mix(in oklab, var(--accent) 20%, transparent) !important;
-}
-:root body #ultimi-articoli a,
-:root body .ultimi-articoli a,
-:root body .latest-articles a,
-:root body .articles-blob a{
-  color: color-mix(in oklab, var(--accent) 82%, white 18%) !important;
-}
-:root body #ultimi-articoli a:hover,
-:root body .ultimi-articoli a:hover,
-:root body .latest-articles a:hover,
-:root body .articles-blob a:hover{
-  background: color-mix(in oklab, var(--accent) 12%, transparent) !important;
-  color: color-mix(in oklab, var(--accent) 94%, white 6%) !important;
-}
-/************* EMERGENCY FIX — TIMELINE CARD TITLES (h3) *************/
-/* 1) Titolo sempre pieno, non clip, sopra a overlay */
-:root body .timeline .card h3,
-:root body .timeline-card h3,
-:root body .timeline-cards h3,
-:root body .card.timeline h3,
-:root body .articles-blob .card h3 {
-  position: relative !important;
-  z-index: 2 !important;
-  isolation: auto !important;
-  mix-blend-mode: normal !important;
-
-  /* niente text-clip / gradient mask */
-  background: none !important;
-  -webkit-background-clip: initial !important;
-  background-clip: initial !important;
-  color: color-mix(in oklab, var(--accent) 92%, white 8%) !important;
-  -webkit-text-fill-color: currentColor !important;
-
-  /* leggibilità morbida */
-  text-shadow: 0 0 10px color-mix(in oklab, var(--accent) 18%, transparent) !important;
-
-  /* se qualche card dava overflow hidden, lasciamo respirare il titolo */
-  overflow: visible !important;
-}
-
-/* 2) Tutte le decorazioni che possono coprire il titolo… sotto */
-:root body .timeline .card h3::before,
-:root body .timeline .card h3::after,
-:root body .timeline-card h3::before,
-:root body .timeline-card h3::after,
-:root body .timeline .card .title-decor,
-:root body .timeline .card .title-bg,
-:root body .timeline .card .title-mask {
-  position: relative !important;
-  z-index: 0 !important;
-  pointer-events: none !important;
-  mix-blend-mode: normal !important;
-  -webkit-mask: none !important;
-  mask: none !important;
-}
-
-/* 3) Se la CARD stessa ha overlay che passa sopra al titolo, spingilo giù */
-:root body .timeline .card .overlay,
-:root body .timeline .card .decor,
-:root body .timeline .card .bg,
-:root body .timeline .card .bar {
-  position: relative !important;
-  z-index: 0 !important;
-  pointer-events: none !important;
-  -webkit-mask: none !important;
-  mask: none !important;
-}
-
-/* 4) Titoli in blocchi “Ultimi articoli” (varie denominazioni) */
-:root body #ultimi-articoli h3,
-:root body .ultimi-articoli h3,
-:root body .latest-articles h3,
-:root body .articles-blob h3 {
-  position: relative !important;
-  z-index: 2 !important;
-  background: none !important;
-  -webkit-background-clip: initial !important;
-  background-clip: initial !important;
-  color: color-mix(in oklab, var(--accent) 92%, white 8%) !important;
-  -webkit-text-fill-color: currentColor !important;
-  text-shadow: 0 0 8px color-mix(in oklab, var(--accent) 16%, transparent) !important;
-}
-:root body .articles-blob h3::before,
-:root body .articles-blob h3::after {
-  z-index: 0 !important;
-  pointer-events: none !important;
-  -webkit-mask: none !important;
-  mask: none !important;
-}
-
-/* 5) Se qualche regola globale impone blend/mask sui titoli, annullala */
-:root body h3 {
-  mix-blend-mode: normal !important;
-  -webkit-mask: none !important;
-  mask: none !important;
-}
-
-/* 6) Colore dell’emoji (🏛️) = ereditato dal testo */
-:root body .timeline .card h3 svg,
-:root body .timeline .card h3 .icon {
-  color: currentColor !important;
-  fill: currentColor !important;
-  stroke: currentColor !important;
-}
-/***** NUCLEAR FIX — TIMELINE CARDS TITLES leggibili sempre *****/
-
-/* 0) Se il contenitore timeline crea maschere/blend, annullale */
-:root body .timeline,
-:root body .timeline * {
-  mix-blend-mode: normal !important;
-}
-
-/* 1) Disattiva maschere/clip sugli elementi card timeline (agli antenati dei titoli)
-   NB: se una maschera è applicata al wrapper, i figli restano mascherati.
-   Qui la rimuoviamo sul wrapper card e suoi pseudo-elementi. */
-:root body .timeline .card,
-:root body .timeline .card::before,
-:root body .timeline .card::after {
-  -webkit-mask: none !important;
-  mask: none !important;
-  background-clip: border-box !important;
-  -webkit-background-clip: border-box !important;
-  mix-blend-mode: normal !important;
-  isolation: auto !important;
-  opacity: 1 !important;
-}
-
-/* 2) Qualsiasi “overlay/decor” nelle card va DIETRO il contenuto
-   (nomi comuni: overlay, decor, bg, bar, title-bg, title-mask, glow, gradient, etc.) */
-:root body .timeline .card [class*="overlay"],
-:root body .timeline .card [class*="decor"],
-:root body .timeline .card [class*="bg"],
-:root body .timeline .card [class*="bar"],
-:root body .timeline .card [class*="mask"],
-:root body .timeline .card [class*="gradient"],
-:root body .timeline .card .title-bg,
-:root body .timeline .card .title-mask {
-  position: relative !important;
-  z-index: 0 !important;
-  pointer-events: none !important;
-  -webkit-mask: none !important;
-  mask: none !important;
-  mix-blend-mode: normal !important;
-}
-
-/* 3) Titoli delle card (h3) SEMPRE sopra, pieni, senza clip */
-:root body .timeline .card h3,
-:root body .timeline-card h3,
-:root body .timeline-cards h3,
-:root body .card.timeline h3 {
-  position: relative !important;
-  z-index: 3 !important;
-  isolation: isolate !important;
-
-  /* Niente gradient-clip / testo trasparente */
-  background: none !important;
-  -webkit-background-clip: initial !important;
-  background-clip: initial !important;
-  -webkit-text-fill-color: currentColor !important;
-
-  /* Colore pieno legato all’accento */
-  color: color-mix(in oklab, var(--accent) 96%, white 4%) !important;
-
-  /* Leggibilità */
-  text-shadow: 0 0 10px color-mix(in oklab, var(--accent) 18%, transparent) !important;
-
-  /* Evita tagli del testo */
-  overflow: visible !important;
-  filter: none !important;
-  opacity: 1 !important;
-}
-
-/* 4) Qualsiasi pseudo-elemento del titolo non deve coprirlo */
-:root body .timeline .card h3::before,
-:root body .timeline .card h3::after {
-  z-index: 0 !important;
-  pointer-events: none !important;
-  -webkit-mask: none !important;
-  mask: none !important;
-  mix-blend-mode: normal !important;
-}
-
-/* 5) Emoji/icone dentro l'h3 ereditano il colore */
-:root body .timeline .card h3 svg,
-:root body .timeline .card h3 .icon {
-  color: currentColor !important;
-  fill: currentColor !important;
-  stroke: currentColor !important;
-}
-
-/* 6) Titolo principale della timeline (h2.timeline-title) — nessuna maschera sopra */
-:root body .timeline-title {
-  position: relative !important;
-  z-index: 3 !important;
-  background: none !important;
-  -webkit-background-clip: initial !important;
-  background-clip: initial !important;
-  -webkit-text-fill-color: currentColor !important;
-  color: color-mix(in oklab, var(--accent) 96%, white 4%) !important;
-  text-shadow: 0 0 16px color-mix(in oklab, var(--accent) 20%, transparent) !important;
-}
-:root body .timeline-title::before,
-:root body .timeline-title::after {
-  z-index: 0 !important;
-  pointer-events: none !important;
-  -webkit-mask: none !important;
-  mask: none !important;
-  mix-blend-mode: normal !important;
-}
-
-/* 7) “Ultimi articoli” (box) — titolo pieno e in tinta */
-:root body #ultimi-articoli h3,
-:root body .ultimi-articoli h3,
-:root body .latest-articles h3,
-:root body .articles-blob h3 {
-  position: relative !important;
-  z-index: 2 !important;
-  background: none !important;
-  -webkit-background-clip: initial !important;
-  background-clip: initial !important;
-  -webkit-text-fill-color: currentColor !important;
-  color: color-mix(in oklab, var(--accent) 94%, white 6%) !important;
-  text-shadow: 0 0 8px color-mix(in oklab, var(--accent) 16%, transparent) !important;
-}
-/************* TIMELINE — NUCLEAR UNBLOCK FOR TITLES *************/
-/* 0) Spegni blend globali e maschere nel perimetro timeline */
-:root body .timeline,
-:root body .timeline *{
-  mix-blend-mode: normal !important;
-  -webkit-mask: none !important;
-  mask: none !important;
-  -webkit-background-clip: border-box !important;
-  background-clip: border-box !important;
-  filter: none !important;
-}
-
-/* 1) Le card devono creare lo stacking giusto (titolo sopra, decor sotto) */
-:root body .timeline .card{
-  position: relative !important;
-  z-index: 0 !important;
-  overflow: visible !important; /* evita che il titolo venga “tagliato” */
-}
-:root body .timeline .card::before,
-:root body .timeline .card::after{
-  position: absolute !important;
-  z-index: 0 !important;              /* DECOR sotto */
-  pointer-events: none !important;
-  -webkit-mask: none !important;
-  mask: none !important;
-  mix-blend-mode: normal !important;
-}
-
-/* 2) Qualunque overlay/decor interno alla card sta SOTTO il contenuto */
-:root body .timeline .card [class*="overlay"],
-:root body .timeline .card [class*="decor"],
-:root body .timeline .card [class*="bg"],
-:root body .timeline .card [class*="bar"],
-:root body .timeline .card [class*="mask"],
-:root body .timeline .card [class*="gradient"],
-:root body .timeline .card .title-bg,
-:root body .timeline .card .title-mask{
-  position: absolute !important;
-  z-index: 0 !important;              /* sempre sotto al titolo */
-  pointer-events: none !important;
-  -webkit-mask: none !important;
-  mask: none !important;
-  mix-blend-mode: normal !important;
-}
-
-/* 3) I TITOLI DELLE CARD (h3) DEVONO ESSERE SEMPRE LEGGIBILI E SOPRA */
-:root body .timeline .card h3,
-:root body .timeline-card h3,
-:root body .timeline-cards h3,
-:root body .card.timeline h3{
-  position: relative !important;
-  z-index: 3 !important;              /* sopra tutto nella card */
-  isolation: isolate !important;
-  overflow: visible !important;
-
-  /* Pieno, niente text-clip/maschere */
-  background: none !important;
-  -webkit-background-clip: initial !important;
-  background-clip: initial !important;
-  -webkit-text-fill-color: currentColor !important;
-
-  /* Colore leggibile che segue l’accento */
-  color: color-mix(in oklab, var(--accent) 96%, white 4%) !important;
-  text-shadow: 0 0 10px color-mix(in oklab, var(--accent) 18%, transparent) !important;
-
-  /* No filtri opacizzanti */
-  filter: none !important;
-  opacity: 1 !important;
-}
-
-/* 4) Qualsiasi pseudo-elemento del TITOLO non deve coprirlo */
-:root body .timeline .card h3::before,
-:root body .timeline .card h3::after{
-  position: absolute !important;
-  z-index: 0 !important;              /* sotto al testo del titolo */
-  pointer-events: none !important;
-  -webkit-mask: none !important;
-  mask: none !important;
-  mix-blend-mode: normal !important;
-}
-
-/* 5) Emoji/icone dentro l’h3 ereditano il colore del testo */
-:root body .timeline .card h3 svg,
-:root body .timeline .card h3 .icon{
-  color: currentColor !important;
-  fill: currentColor !important;
-  stroke: currentColor !important;
-}
-
-/* 6) (facoltativo ma utile) i sottotitoli/heading dentro card */
-:root body .timeline .card h4,
-:root body .timeline .card .card-title{
-  position: relative !important;
-  z-index: 2 !important;
-  background: none !important;
-  -webkit-background-clip: initial !important;
-  background-clip: initial !important;
-  -webkit-text-fill-color: currentColor !important;
-  color: color-mix(in oklab, var(--accent) 90%, white 10%) !important;
-  text-shadow: 0 0 8px color-mix(in oklab, var(--accent) 16%, transparent) !important;
-}
-/***** TIMELINE — KILL SWITCH PER MASCHERE & OVERLAY *****/
-
-/* 0) Spegni effetti che possono “mangiare” il testo in tutta la timeline */
-:root body .timeline,
-:root body .timeline * ,
-:root body .timeline *::before,
-:root body .timeline *::after{
-  mix-blend-mode: normal !important;
-  -webkit-mask: none !important;
-  mask: none !important;
-  clip-path: none !important;
-  -webkit-clip-path: none !important;
-  filter: none !important;
-  backdrop-filter: none !important;
-}
-
-/* 1) Le card devono creare lo stacking corretto (titolo sopra, decor sotto) */
-:root body .timeline .card{
-  position: relative !important;
-  z-index: 0 !important;
-  overflow: visible !important; /* evita che il titolo venga tagliato */
-}
-:root body .timeline .card::before,
-:root body .timeline .card::after{
-  position: absolute !important;
-  z-index: 0 !important;           /* DECOR sotto al contenuto */
-  pointer-events: none !important;
-}
-
-/* 2) Qualsiasi overlay/decor all’interno delle card va sotto al testo */
-:root body .timeline .card [class*="overlay"],
-:root body .timeline .card [class*="decor"],
-:root body .timeline .card [class*="bg"],
-:root body .timeline .card [class*="mask"],
-:root body .timeline .card [class*="gradient"],
-:root body .timeline .card [class*="shade"],
-:root body .timeline .card .title-bg,
-:root body .timeline .card .title-mask{
-  position: absolute !important;
-  z-index: 0 !important;
-  pointer-events: none !important;
-}
-
-/* 3) I TITOLI DELLE CARD (h3) DEVONO ESSERE SEMPRE LEGGIBILI E SOPRA */
-:root body .timeline .card h3,
-:root body .timeline-card h3,
-:root body .timeline-cards h3,
-:root body .card.timeline h3{
-  position: relative !important;
-  z-index: 2147483647 !important;   /* sopra a tutto */
-  isolation: isolate !important;
-  overflow: visible !important;
-
-  /* stop a text-clip, mask, trasparenze */
-  background: none !important;
-  -webkit-background-clip: initial !important;
-  background-clip: initial !important;
-  -webkit-text-fill-color: currentColor !important;
-
-  /* colore pieno e leggibile che segue l’accento */
-  color: color-mix(in oklab, var(--accent) 96%, white 4%) !important;
-  text-shadow: 0 0 10px color-mix(in oklab, var(--accent) 18%, transparent) !important;
-
-  /* evita qualunque velatura residua */
-  opacity: 1 !important;
-  filter: none !important;
-  mix-blend-mode: normal !important;
-}
-
-/* 4) Nessun pseudo-elemento del titolo può coprirlo */
-:root body .timeline .card h3::before,
-:root body .timeline .card h3::after{
-  position: absolute !important;
-  z-index: 0 !important;
-  pointer-events: none !important;
-}
-
-/* 5) Icone/emoji nel titolo ereditano il colore del testo */
-:root body .timeline .card h3 svg,
-:root body .timeline .card h3 .icon{
-  color: currentColor !important;
-  fill: currentColor !important;
-  stroke: currentColor !important;
-}
-
-/* 6) (optional) Sottotitoli nelle card */
-:root body .timeline .card h4,
-:root body .timeline .card .card-title{
-  position: relative !important;
-  z-index: 9999999 !important;
-  background: none !important;
-  -webkit-background-clip: initial !important;
-  background-clip: initial !important;
-  -webkit-text-fill-color: currentColor !important;
-  color: color-mix(in oklab, var(--accent) 92%, white 8%) !important;
-  text-shadow: 0 0 8px color-mix(in oklab, var(--accent) 16%, transparent) !important;
-}
-/***** TIMELINE — KILL SWITCH PER MASCHERE & OVERLAY *****/
-
-/* 0) Spegni effetti che possono “mangiare” il testo in tutta la timeline */
-:root body .timeline,
-:root body .timeline * ,
-:root body .timeline *::before,
-:root body .timeline *::after{
-  mix-blend-mode: normal !important;
-  -webkit-mask: none !important;
-  mask: none !important;
-  clip-path: none !important;
-  -webkit-clip-path: none !important;
-  filter: none !important;
-  backdrop-filter: none !important;
-}
-
-/* 1) Le card devono creare lo stacking corretto (titolo sopra, decor sotto) */
-:root body .timeline .card{
-  position: relative !important;
-  z-index: 0 !important;
-  overflow: visible !important; /* evita che il titolo venga tagliato */
-}
-:root body .timeline .card::before,
-:root body .timeline .card::after{
-  position: absolute !important;
-  z-index: 0 !important;           /* DECOR sotto al contenuto */
-  pointer-events: none !important;
-}
-
-/* 2) Qualsiasi overlay/decor all’interno delle card va sotto al testo */
-:root body .timeline .card [class*="overlay"],
-:root body .timeline .card [class*="decor"],
-:root body .timeline .card [class*="bg"],
-:root body .timeline .card [class*="mask"],
-:root body .timeline .card [class*="gradient"],
-:root body .timeline .card [class*="shade"],
-:root body .timeline .card .title-bg,
-:root body .timeline .card .title-mask{
-  position: absolute !important;
-  z-index: 0 !important;
-  pointer-events: none !important;
-}
-
-/* 3) I TITOLI DELLE CARD (h3) DEVONO ESSERE SEMPRE LEGGIBILI E SOPRA */
-:root body .timeline .card h3,
-:root body .timeline-card h3,
-:root body .timeline-cards h3,
-:root body .card.timeline h3{
-  position: relative !important;
-  z-index: 2147483647 !important;   /* sopra a tutto */
-  isolation: isolate !important;
-  overflow: visible !important;
-
-  /* stop a text-clip, mask, trasparenze */
-  background: none !important;
-  -webkit-background-clip: initial !important;
-  background-clip: initial !important;
-  -webkit-text-fill-color: currentColor !important;
-
-  /* colore pieno e leggibile che segue l’accento */
-  color: color-mix(in oklab, var(--accent) 96%, white 4%) !important;
-  text-shadow: 0 0 10px color-mix(in oklab, var(--accent) 18%, transparent) !important;
-
-  /* evita qualunque velatura residua */
-  opacity: 1 !important;
-  filter: none !important;
-  mix-blend-mode: normal !important;
-}
-
-/* 4) Nessun pseudo-elemento del titolo può coprirlo */
-:root body .timeline .card h3::before,
-:root body .timeline .card h3::after{
-  position: absolute !important;
-  z-index: 0 !important;
-  pointer-events: none !important;
-}
-
-/* 5) Icone/emoji nel titolo ereditano il colore del testo */
-:root body .timeline .card h3 svg,
-:root body .timeline .card h3 .icon{
-  color: currentColor !important;
-  fill: currentColor !important;
-  stroke: currentColor !important;
-}
-
-/* 6) (optional) Sottotitoli nelle card */
-:root body .timeline .card h4,
-:root body .timeline .card .card-title{
-  position: relative !important;
-  z-index: 9999999 !important;
-  background: none !important;
-  -webkit-background-clip: initial !important;
-  background-clip: initial !important;
-  -webkit-text-fill-color: currentColor !important;
-  color: color-mix(in oklab, var(--accent) 92%, white 8%) !important;
-  text-shadow: 0 0 8px color-mix(in oklab, var(--accent) 16%, transparent) !important;
-}
-
-/************* TIMELINE — CARD OVERLAY DEMOTION (SAFE) *************/
-/* 1) Ogni card crea uno stacking locale: così i suoi z-index non “collidono” */
-:root body .timeline .card {
-  position: relative !important;
-  isolation: isolate !important;    /* nuovo stacking context locale */
-  overflow: visible !important;      /* evita che il titolo venga tagliato */
-  z-index: 0 !important;             /* base della card */
-}
-
-/* 2) TUTTE le decorazioni della card vanno sotto (nomi comuni coperti) */
-:root body .timeline .card::before,
-:root body .timeline .card::after,
-:root body .timeline .card [class*="overlay"],
-:root body .timeline .card [class*="decor"],
-:root body .timeline .card [class*="shade"],
-:root body .timeline .card [class*="mask"],
-:root body .timeline .card [class*="gradient"],
-:root body .timeline .card [class*="bg"],
-:root body .timeline .card [class*="image"],
-:root body .timeline .card .title-bg,
-:root body .timeline .card .title-mask {
-  position: absolute !important;
-  z-index: -1 !important;            /* SOTTO al contenuto reale */
-  pointer-events: none !important;
-  mix-blend-mode: normal !important;
-  -webkit-mask: none !important;
-  mask: none !important;
-}
-
-/* 3) Porta DAVVERO in primo piano i contenuti della card */
-:root body .timeline .card > * {
-  position: relative !important;
-  z-index: 1 !important;             /* contenuto sempre sopra alle decorazioni */
-  filter: none !important;
-  opacity: 1 !important;
-  mix-blend-mode: normal !important;
-}
-
-/* 4) Titoli (h3) visibili e leggibili, senza “text-clip” */
-:root body .timeline .card h3 {
-  z-index: 2 !important;             /* sopra al resto del contenuto della card */
-  background: none !important;
-  -webkit-background-clip: initial !important;
-  background-clip: initial !important;
-  -webkit-text-fill-color: currentColor !important;
-  color: color-mix(in oklab, var(--accent) 96%, white 4%) !important;
-  text-shadow: 0 0 10px color-mix(in oklab, var(--accent) 18%, transparent) !important;
-  overflow: visible !important;
-}
-
-/* 5) Pseudo-elementi del titolo non possono coprirlo */
-:root body .timeline .card h3::before,
-:root body .timeline .card h3::after {
-  content: none !important;          /* se vuoi mantenerli: togli questa riga e lascia z-index:-1 */
-  position: absolute !important;
-  z-index: -1 !important;
-  pointer-events: none !important;
-}
-
-/* 6) Emoji/Icone nel titolo ereditano il colore del testo */
-:root body .timeline .card h3 svg,
-:root body .timeline .card h3 .icon {
-  color: currentColor !important;
-  fill: currentColor !important;
-  stroke: currentColor !important;
-}
-
-/* 7) (Opzionale) Se usi wrapper di contenuto comuni, portali sopra */
-:root body .timeline .card .content,
-:root body .timeline .card .card-body,
-:root body .timeline .card .body {
-  position: relative !important;
-  z-index: 1 !important;
-}
-/* ========= TIMELINE — BORDO LUMINOSO SICURO ========= */
-/* Contenuto sempre sopra all’overlay */
-:root body .timeline-content{
-  position: relative !important;
-  z-index: 1 !important;
-}
-
-/* (opzionale) se il tuo ::before usa una var per il glow, colora con l’accento */
-:root body .timeline{
-  --timeline-glow: var(--accent);
-}
-
-/* Mostra il bordo/overlay SOLO se le mask sono supportate - VERSIONE CORRETTA */
-@supports (mask-composite: exclude) or (-webkit-mask-composite: xor){
-  :root body .timeline-content::before{
-    display: block !important;
-    pointer-events: none !important;
-    z-index: -1 !important; /* SOTTO la card invece che sopra */
-    /* Assicurati che la maschera scopra il contenuto */
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0) !important;
-    mask-composite: exclude !important;
-    -webkit-mask-composite: xor !important;
-    /* Riduci l'opacità del fill per non coprire */
-    background: linear-gradient(45deg, 
-      var(--accent-purple), 
-      var(--accent-cyan), 
-      var(--accent-gold), 
-      var(--accent-purple)) !important;
-    background-size: 300% 300% !important;
-    opacity: 0.7 !important; /* Più trasparente */
-  }
-}
-
-/* In browser senza mask: bordo semplice senza maschere */
-@supports not (mask-composite: exclude) and not (-webkit-mask-composite: xor){
-  :root body .timeline-content::before{
-    content: '' !important;
-    display: block !important;
-    position: absolute !important;
-    top: -2px !important;
-    left: -2px !important;
-    right: -2px !important;
-    bottom: -2px !important;
-    border-radius: 22px !important; /* Leggermente più grande della card */
-    background: linear-gradient(45deg, 
-      var(--accent-purple), 
-      var(--accent-cyan), 
-      var(--accent-gold), 
-      var(--accent-purple)) !important;
-    background-size: 300% 300% !important;
-    animation: borderGlow 3s ease infinite !important;
-    z-index: -1 !important; /* SOTTO la card */
-    opacity: 0.8 !important;
-    pointer-events: none !important;
-  }
-}
-/* ========= TIMELINE — BORDO LUMINOSO *DIETRO* AL CONTENUTO ========= */
-
-/* 0) Stacking locale della card */
-:root body .timeline-content{
-  position: relative !important;
-  z-index: 0 !important;              /* base */
-}
-
-/* Assicura che il contenuto stia sopra */
-:root body .timeline-content > *{
-  position: relative !important;
-  z-index: 1 !important;              /* testo/immagini sopra al ::before */
-}
-
-/* (opzionale) opacità/colore del glow, legato all'accento */
-:root body .timeline{
-  --timeline-glow: var(--accent);
-  --timeline-glow-opacity: .35;       /* regola l’intensità del bordo */
-}
-
-/* 1) Solo se le mask sono supportate, mostra il bordo MA dietro al contenuto */
-@supports (mask-composite: exclude) or (-webkit-mask-composite: xor){
-  :root body .timeline-content::before{
-    display: block !important;
-    pointer-events: none !important;
-
-    /* 🔑 Dietro al contenuto, non davanti */
-    position: absolute !important;
-    z-index: -1 !important;
-
-    /* niente blend/filtri che ricoprano il testo */
-    mix-blend-mode: normal !important;
-    filter: none !important;
-    backdrop-filter: none !important;
-
-    /* (se il tuo CSS originale usa opacity, limitane la forza) */
-    opacity: var(--timeline-glow-opacity, .35) !important;
-  }
-}
-
-/* 2) In browser senza mask: nascondi l’overlay per evitare il “quadrato” */
-@supports not (mask-composite: exclude) and not (-webkit-mask-composite: xor){
-  :root body .timeline-content::before{
-    content: none !important;
-    display: none !important;
-  }
-}
-
-/* 3) Titolo card: colore pieno e leggibile (no text-clip) */
-:root body .timeline-content h3{
-  color: color-mix(in oklab, var(--accent) 96%, white 4%) !important;
-  background: none !important;
-  -webkit-background-clip: initial !important;
-  background-clip: initial !important;
-  -webkit-text-fill-color: currentColor !important;
-  position: relative !important;
-  z-index: 1 !important;              /* sopra al ::before (che è -1) */
-  text-shadow: 0 0 8px color-mix(in oklab, var(--accent) 16%, transparent) !important;
-}
-
-/* 4) Bordo della card visibile (se l’overlay lo “mangiava”) */
-:root body .timeline-content{
-  /* Se la tua card ha già un bordo, questo non lo sovrascrive; altrimenti lo aggiunge */
-  border-color: color-mix(in oklab, var(--accent) 28%, var(--menu-border) 72%) !important;
-  background-clip: padding-box !important;  /* evita che eventuali sfondi coprano il bordo */
-}
-<!--  -->
-/* ========= TIMELINE — BORDO LUMINOSO FUNZIONANTE ========= */
-:root body .timeline-content {
-  position: relative !important;
-  z-index: 0 !important;
-  background: linear-gradient(145deg, 
-    rgba(10, 10, 30, 0.9) 0%,
-    rgba(20, 20, 50, 0.8) 50%,
-    rgba(10, 10, 30, 0.9) 100%) !important;
-  border-radius: 20px !important;
-  padding: 2rem 2.5rem !important;
-}
-
-/* Contenuto sopra il bordo */
-:root body .timeline-content > * {
-  position: relative !important;
-  z-index: 2 !important;
-}
-
-/* BORDO LUMINOSO PRINCIPALE */
-:root body .timeline-content::before {
-  content: '' !important;
-  position: absolute !important;
-  top: -3px !important;
-  left: -3px !important;
-  right: -3px !important;
-  bottom: -3px !important;
-  border-radius: 23px !important;
-  background: linear-gradient(45deg, 
-    #b967ff, 
-    #00ccff, 
-    #ffd86a, 
-    #b967ff) !important;
-  background-size: 300% 300% !important;
-  animation: borderGlow 3s ease infinite !important;
-  z-index: 1 !important;
-  opacity: 0.9 !important;
-  pointer-events: none !important;
-  
-  /* Maschera per mostrare SOLO il bordo */
-  -webkit-mask: 
-    linear-gradient(#fff 0 0) content-box, 
-    linear-gradient(#fff 0 0) !important;
-  -webkit-mask-composite: xor !important;
-  mask-composite: exclude !important;
-  padding: 3px !important;
-}
-
-/* Animazione del bordo */
-@keyframes borderGlow {
-  0%, 100% { 
-    background-position: 0% 50%;
-    opacity: 0.8;
-  }
-  50% { 
-    background-position: 100% 50%;
-    opacity: 1;
-  }
-}
-
-/* ========= FIX MASCHERE TITOLI ========= */
-.timeline-content h3,
-.timeline .card h3,
-.timeline-card h3 {
-  /* RIMUOVI TUTTE LE MASCHERE */
-  -webkit-mask: none !important;
-  mask: none !important;
-  clip-path: none !important;
-  -webkit-clip-path: none !important;
-  
-  /* RIMUOVI BACKGROUND-CLIP TEXT */
-  background: none !important;
-  -webkit-background-clip: border-box !important;
-  background-clip: border-box !important;
-  -webkit-text-fill-color: currentColor !important;
-  
-  /* FORZA COLORE SOLIDO */
-  color: #ffd86a !important;
-  opacity: 1 !important;
-  filter: none !important;
-  mix-blend-mode: normal !important;
-  
-  /* LEGGIBILITÀ MASSIMA */
-  text-shadow: 0 0 10px rgba(255, 215, 0, 0.4) !important;
-  position: relative !important;
-  z-index: 3 !important;
-}
-
-/* RIMUOVI PSEUDO-ELEMENTI DAI TITOLI */
-.timeline-content h3::before,
-.timeline-content h3::after,
-.timeline .card h3::before,
-.timeline .card h3::after {
-  display: none !important;
-  content: none !important;
-}
-
-/* Fallback per browser senza mask support */
-@supports not ((-webkit-mask-composite: xor) or (mask-composite: exclude)) {
-  :root body .timeline-content::before {
-    display: none !important;
-  }
-  
-  :root body .timeline-content {
-    border: 2px solid #ffd86a !important;
-    box-shadow: 
-      0 0 10px rgba(255, 215, 0, 0.5),
-      0 0 20px rgba(185, 103, 255, 0.3),
-      0 0 30px rgba(0, 204, 255, 0.2) !important;
-  }
-}
 
 /* === TOP-BAR: spaziature pulite tra elementi a sinistra === */
 
@@ -1386,13 +421,13 @@
   gap: .8rem;              /* spazio di base fra i figli diretti */
 }
 
-/* 2) brand → switcher colori: un po’ più di respiro */
+/* 2) brand → switcher colori: un po' più di respiro */
 .brand + .welcome-switcher{
   margin-left: .6rem;      /* aumenta se vuoi: .8rem / 1rem */
   gap: .5rem;              /* spazio interno tra i bottoni Oro/Blu/Verde/Rosso */
 }
 
-/* 3) switcher → "Maestri del Pensiero" (anch’esso è .btn-ghost) */
+/* 3) switcher → "Maestri del Pensiero" (anch'esso è .btn-ghost) */
 .welcome-switcher + .btn-ghost,
 .welcome-switcher + [class*="btn"]{
   margin-left: .8rem;      /* distanzia il blocco "Maestri" dallo switcher */
