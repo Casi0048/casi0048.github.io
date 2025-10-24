@@ -1422,3 +1422,44 @@
   position: relative !important;
   z-index: 2 !important;
 }
+/* === TOP-BAR: spaziature pulite tra elementi a sinistra === */
+
+/* 1) usa il gap nativo del flex container */
+.top-bar{
+  display:flex;
+  align-items:center;
+  gap: .8rem;              /* spazio di base fra i figli diretti */
+}
+
+/* 2) brand → switcher colori: un po’ più di respiro */
+.brand + .welcome-switcher{
+  margin-left: .6rem;      /* aumenta se vuoi: .8rem / 1rem */
+  gap: .5rem;              /* spazio interno tra i bottoni Oro/Blu/Verde/Rosso */
+}
+
+/* 3) switcher → "Maestri del Pensiero" (anch’esso è .btn-ghost) */
+.welcome-switcher + .btn-ghost,
+.welcome-switcher + [class*="btn"]{
+  margin-left: .8rem;      /* distanzia il blocco "Maestri" dallo switcher */
+}
+
+/* 4) tieni il gruppo destro a destra, ma con un piccolo stacco dal blocco sinistro */
+.bar-right{
+  margin-left: auto;       /* spinge a destra */
+}
+.brand + .welcome-switcher + .btn-ghost + .bar-right,
+.welcome-switcher + .btn-ghost + .bar-right{
+  margin-left: 1rem;       /* leggero spazio prima del gruppo destro */
+}
+
+/* 5) ritocco leggibile dei ghost (facoltativo) */
+.welcome-switcher .btn-ghost{
+  padding: .5rem .8rem;
+}
+
+/* 6) su schermi stretti riduci gli spazi per non andare a capo */
+@media (max-width: 640px){
+  .top-bar{ gap: .5rem; }
+  .brand + .welcome-switcher{ margin-left: .4rem; gap: .35rem; }
+  .welcome-switcher + .btn-ghost{ margin-left: .5rem; }
+}
