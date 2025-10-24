@@ -1121,3 +1121,77 @@
   fill: currentColor !important;
   stroke: currentColor !important;
 }
+/************* TIMELINE — CARD OVERLAY DEMOTION (SAFE) *************/
+/* 1) Ogni card crea uno stacking locale: così i suoi z-index non “collidono” */
+:root body .timeline .card {
+  position: relative !important;
+  isolation: isolate !important;    /* nuovo stacking context locale */
+  overflow: visible !important;      /* evita che il titolo venga tagliato */
+  z-index: 0 !important;             /* base della card */
+}
+
+/* 2) TUTTE le decorazioni della card vanno sotto (nomi comuni coperti) */
+:root body .timeline .card::before,
+:root body .timeline .card::after,
+:root body .timeline .card [class*="overlay"],
+:root body .timeline .card [class*="decor"],
+:root body .timeline .card [class*="shade"],
+:root body .timeline .card [class*="mask"],
+:root body .timeline .card [class*="gradient"],
+:root body .timeline .card [class*="bg"],
+:root body .timeline .card [class*="image"],
+:root body .timeline .card .title-bg,
+:root body .timeline .card .title-mask {
+  position: absolute !important;
+  z-index: -1 !important;            /* SOTTO al contenuto reale */
+  pointer-events: none !important;
+  mix-blend-mode: normal !important;
+  -webkit-mask: none !important;
+  mask: none !important;
+}
+
+/* 3) Porta DAVVERO in primo piano i contenuti della card */
+:root body .timeline .card > * {
+  position: relative !important;
+  z-index: 1 !important;             /* contenuto sempre sopra alle decorazioni */
+  filter: none !important;
+  opacity: 1 !important;
+  mix-blend-mode: normal !important;
+}
+
+/* 4) Titoli (h3) visibili e leggibili, senza “text-clip” */
+:root body .timeline .card h3 {
+  z-index: 2 !important;             /* sopra al resto del contenuto della card */
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  -webkit-text-fill-color: currentColor !important;
+  color: color-mix(in oklab, var(--accent) 96%, white 4%) !important;
+  text-shadow: 0 0 10px color-mix(in oklab, var(--accent) 18%, transparent) !important;
+  overflow: visible !important;
+}
+
+/* 5) Pseudo-elementi del titolo non possono coprirlo */
+:root body .timeline .card h3::before,
+:root body .timeline .card h3::after {
+  content: none !important;          /* se vuoi mantenerli: togli questa riga e lascia z-index:-1 */
+  position: absolute !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+}
+
+/* 6) Emoji/Icone nel titolo ereditano il colore del testo */
+:root body .timeline .card h3 svg,
+:root body .timeline .card h3 .icon {
+  color: currentColor !important;
+  fill: currentColor !important;
+  stroke: currentColor !important;
+}
+
+/* 7) (Opzionale) Se usi wrapper di contenuto comuni, portali sopra */
+:root body .timeline .card .content,
+:root body .timeline .card .card-body,
+:root body .timeline .card .body {
+  position: relative !important;
+  z-index: 1 !important;
+}
