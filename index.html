@@ -23,9 +23,9 @@
 <meta content="Scopri la filosofia attraverso autori, correnti e pensieri. Risorse gratuite per appassionati." name="twitter:description">
 <meta content="https://casi0048.github.io/immagini%20per%20sito/Socrates_Louvre.jpg" name="twitter:image">
 <!-- Favicon -->
-<link rel="stylesheet" href="accent-layer-plus.css">
 <link href="favicon_io/favicon-32x32.png" rel="icon" type="image/png"/>
 <link href="favicon_io/apple-touch-icon.png" rel="apple-touch-icon">
+<link rel="stylesheet" href="accent-layer-plus.css">
 <!-- ========== PRELOAD CRITICO ========== -->
 <link as="style" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&amp;family=Montserrat:wght@300;400;600&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'" rel="preload"/>
 <link as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" onload="this.onload=null;this.rel='stylesheet'" rel="preload"/>
@@ -54,6 +54,28 @@
 }
 </script>
 <style>
+
+/* === ACCENT TOKENS (default: gold) === */
+:root{
+  --accent:#ffd700;
+  --accent-2:#e5c200;
+  --accent-3:#ffe066;
+  --accent-5:#fff7b0;
+  --accent-contrast:#1a1400;
+  --ring: 0 0 0 3px color-mix(in oklab, var(--accent) 45%, transparent);
+  --accent-glow: drop-shadow(0 0 9px color-mix(in oklab, var(--accent) 70%, transparent));
+}
+body[data-accent="blue"]{
+  --accent:#55b6ff; --accent-2:#2f98e6; --accent-3:#9bd6ff; --accent-5:#d5ecff; --accent-contrast:#001321;
+}
+body[data-accent="green"]{
+  --accent:#3de07f; --accent-2:#27c16a; --accent-3:#89f0b4; --accent-5:#d6fae6; --accent-contrast:#00170a;
+}
+body[data-accent="red"]{
+  --accent:#ff5a6a; --accent-2:#e23f52; --accent-3:#ff9aa5; --accent-5:#ffd5da; --accent-contrast:#190004;
+}
+
+
      :root {
   /* === COLORI FONDAMENTALI === */
   --bg: #0a0a1a;
@@ -172,7 +194,7 @@ p, h1, h2, h3, h4, h5, h6 {
       left: 0;
       width: 100%;
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-start;
       align-items: center;
       padding: 0.8rem 1.2rem;
       background: var(--menu-bg);
@@ -201,14 +223,15 @@ p, h1, h2, h3, h4, h5, h6 {
       font-family: 'Cinzel Decorative', cursive;
       font-weight: 700;
       letter-spacing: 0.1rem;
-      background: linear-gradient(90deg, #ffd700, #fff7b0, #ffd700);
+      background: linear-gradient(90deg, var(--accent), var(--accent-5), var(--accent));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      text-shadow: 0 0 0.62rem rgba(255, 215, 0, .35);
+      text-shadow: 0 0 0.62rem color-mix(in oklab, var(--accent) 35%, transparent);
       font-size: 1.5rem;
       }
       .bar-right {
+  margin-left: auto;
       display: flex;
       align-items: center;
       gap: 0.62rem;
@@ -860,7 +883,12 @@ footer {
       #search-panel .search-close:hover {
       background: rgba(255,255,255,0.06);
       }
-    </style>
+    
+/* Switcher accanto al brand */
+.brand + .welcome-switcher{ display:inline-flex; gap:.4rem; margin-left:.75rem; align-items:center; }
+
+.btn-ghost:hover{ border-style: solid; background: color-mix(in oklab, var(--accent) 26%, transparent); filter: var(--accent-glow); }
+</style>
 <style id="menu-fix-overrides">
 /* RIMUOVI LA TRANSITION DAI MEGA-MENU PER APERTURA ISTANTANEA */
 nav.menu-desktop .mega-menu {
@@ -2710,10 +2738,10 @@ document.addEventListener('DOMContentLoaded', function(){
 }
 
 [data-theme="light"] .brand span {
-  background: linear-gradient(90deg, #ca8a04, #eab308, #ca8a04);
+  background: linear-gradient(90deg, var(--accent), var(--accent-5), var(--accent));
   -webkit-background-clip: text;
   background-clip: text;
-  text-shadow: 0 0 0.62rem rgba(202, 138, 4, 0.4);
+  text-shadow: 0 0 0.62rem color-mix(in oklab, var(--accent) 35%, transparent);
 }
 
 [data-theme="light"] .welcome-title {
@@ -4273,6 +4301,10 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 }
 .btn-accent:hover{ transform: translateY(-1px); box-shadow: 0 10px 32px -8px var(--accent-glow); }
 .btn-ghost{
+  border:1px dashed color-mix(in oklab, var(--accent) 65%, #ffffff22 35%);
+  background: color-mix(in oklab, var(--accent) 16%, transparent);
+  color: var(--text-light);
+      
   background: transparent;
   color: var(--accent);
   border: 1px solid var(--accent);
@@ -4607,7 +4639,7 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 <line x1="12" x2="12" y1="22.08" y2="12"></line>
 </svg>
 <span>Echi di Sofia</span>
-</a><div aria-label="Cambia colore tema" class="welcome-switcher" style="display:flex; gap:.5rem; align-items:center; margin:.75rem 0;;display:inline-flex;gap:.4rem;margin-left:-8.6rem;align-items:center;">
+</a><div aria-label="Cambia colore tema" class="welcome-switcher" style="display:flex; gap:.5rem; align-items:center; margin:.75rem 0;;display:inline-flex;gap:.4rem;align-items:center;">
 <button class="btn-ghost" data-variant="gold" type="button">Oro</button>
 <button class="btn-ghost" data-variant="blue" type="button">Blu</button>
 <button class="btn-ghost" data-variant="green" type="button">Verde</button>
