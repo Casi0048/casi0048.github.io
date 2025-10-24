@@ -563,4 +563,94 @@
   background: color-mix(in oklab, var(--accent) 12%, transparent) !important;
   color: color-mix(in oklab, var(--accent) 94%, white 6%) !important;
 }
+/************* EMERGENCY FIX — TIMELINE CARD TITLES (h3) *************/
+/* 1) Titolo sempre pieno, non clip, sopra a overlay */
+:root body .timeline .card h3,
+:root body .timeline-card h3,
+:root body .timeline-cards h3,
+:root body .card.timeline h3,
+:root body .articles-blob .card h3 {
+  position: relative !important;
+  z-index: 2 !important;
+  isolation: auto !important;
+  mix-blend-mode: normal !important;
+
+  /* niente text-clip / gradient mask */
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  color: color-mix(in oklab, var(--accent) 92%, white 8%) !important;
+  -webkit-text-fill-color: currentColor !important;
+
+  /* leggibilità morbida */
+  text-shadow: 0 0 10px color-mix(in oklab, var(--accent) 18%, transparent) !important;
+
+  /* se qualche card dava overflow hidden, lasciamo respirare il titolo */
+  overflow: visible !important;
+}
+
+/* 2) Tutte le decorazioni che possono coprire il titolo… sotto */
+:root body .timeline .card h3::before,
+:root body .timeline .card h3::after,
+:root body .timeline-card h3::before,
+:root body .timeline-card h3::after,
+:root body .timeline .card .title-decor,
+:root body .timeline .card .title-bg,
+:root body .timeline .card .title-mask {
+  position: relative !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+  mix-blend-mode: normal !important;
+  -webkit-mask: none !important;
+  mask: none !important;
+}
+
+/* 3) Se la CARD stessa ha overlay che passa sopra al titolo, spingilo giù */
+:root body .timeline .card .overlay,
+:root body .timeline .card .decor,
+:root body .timeline .card .bg,
+:root body .timeline .card .bar {
+  position: relative !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+  -webkit-mask: none !important;
+  mask: none !important;
+}
+
+/* 4) Titoli in blocchi “Ultimi articoli” (varie denominazioni) */
+:root body #ultimi-articoli h3,
+:root body .ultimi-articoli h3,
+:root body .latest-articles h3,
+:root body .articles-blob h3 {
+  position: relative !important;
+  z-index: 2 !important;
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  color: color-mix(in oklab, var(--accent) 92%, white 8%) !important;
+  -webkit-text-fill-color: currentColor !important;
+  text-shadow: 0 0 8px color-mix(in oklab, var(--accent) 16%, transparent) !important;
+}
+:root body .articles-blob h3::before,
+:root body .articles-blob h3::after {
+  z-index: 0 !important;
+  pointer-events: none !important;
+  -webkit-mask: none !important;
+  mask: none !important;
+}
+
+/* 5) Se qualche regola globale impone blend/mask sui titoli, annullala */
+:root body h3 {
+  mix-blend-mode: normal !important;
+  -webkit-mask: none !important;
+  mask: none !important;
+}
+
+/* 6) Colore dell’emoji (🏛️) = ereditato dal testo */
+:root body .timeline .card h3 svg,
+:root body .timeline .card h3 .icon {
+  color: currentColor !important;
+  fill: currentColor !important;
+  stroke: currentColor !important;
+}
 
