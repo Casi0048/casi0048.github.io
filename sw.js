@@ -1,70 +1,62 @@
-// sw.js — SAFE per GitHub Pages (solo asset same-origin reali)
-const CACHE = 'echi-v5';  // ↑ incrementa a ogni modifica importante
+// sw.js — Single-file site (index.html inline CSS/JS)
+const CACHE = 'echi-single-v1';
 
-// Metti SOLO file che esistono davvero nel tuo repo e sullo stesso dominio
+// Metti SOLO risorse same-origin che ESISTONO nel repo
 const ASSETS = [
-  '/',                                  // homepage (index.html alla root)
+  '/',               // homepage (equivale a /index.html su GitHub Pages)
   '/index.html',
-  '/stile.css',                         // il tuo CSS principale (adatta se nome diverso)
-  '/script.js',                         // il tuo JS principale (adatta se nome diverso)
-  '/favicon_io/favicon-32x32.png',
-  '/favicon_io/apple-touch-icon.png',
-  '/immagini%20per%20sito/Socrates_Louvre.jpg',
-  '/suoni/Strauss.mp3'                  // opzionale: precache dell'audio
-  // ⚠️ NON mettere URL esterni (no cdnjs, no fonts.googleapis.com, ecc.)
+  // opzionali: aggiungi asset LOCALI che vuoi disponibili offline
+  // '/immagini%20per%20sito/Socrates_Louvre.jpg',
+  // '/suoni/Strauss.mp3'
 ];
 
+// Install: precache senza fallire se un file manca
 self.addEventListener('install', (event) => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE);
-    // Aggiunge uno per uno: se un file manca NON fallisce l'install
     await Promise.allSettled(ASSETS.map(u => cache.add(u)));
   })());
-  self.skipWaiting(); // attiva subito il nuovo SW
+  self.skipWaiting();
 });
 
+// Activate: pulizia cache vecchie
 self.addEventListener('activate', (event) => {
   event.waitUntil((async () => {
     const keys = await caches.keys();
     await Promise.all(
-      keys
-        .filter(k => k.startsWith('echi-') && k !== CACHE)
-        .map(k => caches.delete(k))
+      keys.filter(k => k.startsWith('echi-') && k !== CACHE)
+          .map(k => caches.delete(k))
     );
     await self.clients.claim();
   })());
 });
 
-// Strategia: network-first per search-index.json; cache-first per il resto.
-// Cache dinamica solo per risorse same-origin via GET.
+// Fetch:
+// - Navigazioni pagina: network-first con fallback a index.html cache (offline)
+// - Altre richieste: cache-first con cache dinamica SOLO same-origin
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
   const url = new URL(event.request.url);
 
-  // Network-first per l'indice di ricerca (sempre aggiornato se online)
-  if (url.pathname.endsWith('search-index.json')) {
+  // Navigazioni (HTML): prova rete, altrimenti servi index in cache
+  if (event.request.mode === 'navigate') {
     event.respondWith((async () => {
       try {
-        const fresh = await fetch(event.request);
-        // cache solo se same-origin
-        if (url.origin === self.location.origin) {
-          const cache = await caches.open(CACHE);
-          cache.put(event.request, fresh.clone());
-        }
-        return fresh;
+        return await fetch(event.request);
       } catch {
-        const cached = await caches.match(event.request);
-        return cached || Response.error();
+        // offline fallback
+        return (await caches.match('/index.html')) || Response.error();
       }
     })());
     return;
   }
 
-  // Default: cache-first con fallback alla rete
+  // Default: cache-first; se manca, prova rete e metti in cache se same-origin
   event.respondWith((async () => {
     const cached = await caches.match(event.request);
     if (cached) return cached;
+
     try {
       const resp = await fetch(event.request);
       if (url.origin === self.location.origin) {
