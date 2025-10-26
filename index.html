@@ -1276,39 +1276,10 @@ nav.menu-desktop .mega-menu.right-align:hover {
     }
   }
 </style>
-<style id="ultimate-clickthrough-zfix-2025-10-08">
-/* === Ultimate: quotes must not block clicks; floating list hidden === */
-#quote-runner, #quote-runner *{ pointer-events:none !important; }
-#quote-runner{ z-index: 20 !important; }
-.floating-quotes{ display:none !important; pointer-events:none !important; z-index:20 !important; }
-</style><style id="quote-runner-css-solid-2025-10-08">
-#quote-runner{ position:fixed; left:50%; bottom:270px; transform:translateX(-50%); z-index:20; pointer-events:none; max-width:min(86vw,680px); }
-#quote-runner .quote-bubble{ position:relative; opacity:0; margin:0; backdrop-filter: blur(5px); will-change: transform, opacity; }
-#quote-runner .quote-bubble .quote-text{ font-size:1.05rem; line-height:1.4; }
-#quote-runner .quote-bubble .quote-author{ margin-top:.25rem; }
-#quote-runner .slide-in{ animation:quoteSlideInOut 9s cubic-bezier(.2,1,.2,1) forwards; }
-@keyframes quoteSlideInOut{
-  0%{ transform:translateX(55vw); opacity:0; }
-  18%{ opacity:1; }
-  40%{ transform:translateX(0); opacity:1; }
-  70%{ transform:translateX(0); opacity:1; }
-  100%{ transform:translateX(-55vw); opacity:0; }
-}
-@media(max-width:600px){
-  #quote-runner{ bottom:160px; }
-  #quote-runner .quote-bubble .quote-text{ font-size:1rem; }
-}
-</style><style id="zfix-submenu-overlays-2025-10-08">
-/* === Z-INDEX FIX: keep submenu above right-side boxes (articles/dictionary/encyclopedia) === */
-.menu-container{ z-index: 100 !important; } /* above .articles-blob/.right-embed (3600) */
-nav.menu-desktop, nav.menu-desktop ul, nav.menu-desktop li{ position: relative; z-index: 101 !important; }
-nav.menu-desktop .mega-menu{ z-index: 2147483606 !important; pointer-events: auto !important; }
-/* Ensure right boxes don't steal hover on desktop when menu is open */
-@media (min-width: 981px){
-  nav.menu-desktop li.dropdown:hover ~ .right-box,
-  nav.menu-desktop li.dropdown:focus-within ~ .right-box{ pointer-events: none !important; }
-}
-</style><script type="application/ld+json">{
+
+
+
+<script type="application/ld+json">{
   "@context":"https://schema.org",
   "@type":"CollectionPage",
   "name":"Timeline filosofica",
@@ -1321,18 +1292,8 @@ nav.menu-desktop .mega-menu{ z-index: 2147483606 !important; pointer-events: aut
 }
 </style>
 
-<script id="gt-init">
-window.googleTranslateElementInit = function(){
-  try{
-    new google.translate.TranslateElement({
-      pageLanguage: 'it',
-      includedLanguages: 'en,fr,de,es,pl',
-      autoDisplay: false
-    }, 'google_translate_element');
-    document.documentElement.removeAttribute('data-gt-error');
-  }catch(e){ console.warn('GT init error', e); }
-};
-</script><script defer="True" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script><style id="motto-style-2">
+
+<script defer="True" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script><style id="motto-style-2">
 /* Elegant motto styling with typographic separators */
 .motto { letter-spacing:.295em; }
 .motto .m-text { font-size:1.06em; }
@@ -2548,90 +2509,8 @@ window.googleTranslateElementInit = function(){
 }
 */
 </style>
-<style id="timeline-suggest-perf">/* TIMELINE (HINT PERFORMANCE) */
-/* - Scopo: applica 'will-change' solo quando gli elementi sono visibili per migliorare performance. */
-/* - Non altera il layout; sicuro rimuovere se non necessario. */
 
-.timeline .timeline-item.visible,
-.timeline .timeline-item.visible::before,
-.timeline .timeline-item.visible::after{
-  will-change: transform, opacity;
-}
-</style>
-<script id="timeline-suggest-aria">// TIMELINE (ACCESSIBILITÀ)
-// - Scopo: aggiunge role='region' e aria-label alla sezione della timeline, se mancanti.
-// - Non modifica stili/animazioni; migliora la fruibilità con tecnologie assistive.
 
-document.addEventListener('DOMContentLoaded', function(){
-  var sec = document.querySelector('section.timeline-container');
-  if (sec){
-    if (!sec.hasAttribute('role')) sec.setAttribute('role','region');
-    if (!sec.hasAttribute('aria-label')) sec.setAttribute('aria-label','Linea del tempo filosofica');
-  }
-});
-</script><script id="timeline-suggest-nojs-flag">// FALLBACK NO-JS (FLAG)
-// - Scopo: aggiunge '.no-js' all'elemento <html> prima del DOMContentLoaded.
-// - Serve a mostrare la timeline se JS è disattivato (vedi CSS relativo).
-(function(){ document.documentElement.classList.add('no-js'); })();</script><style id="timeline-suggest-nojs-css">/* FALLBACK NO-JS (CSS) */
-/* - Scopo: se JS resta disattivato, mostra tutti gli elementi senza animazioni. */
-/* - Disattivabile rimuovendo questo blocco o la classe '.no-js' su <html>. */
-
-.no-js .timeline .timeline-item{
-  opacity: 1 !important;
-  transform: none !important;
-  transition: none !important;
-}
-</style><script id="timeline-suggest-nojs-remove">// FALLBACK NO-JS (REMOVE FLAG)
-// - Scopo: rimuove la classe '.no-js' al DOMContentLoaded (JS attivo).
-// - Assicura che, con JS attivo, la timeline torni ad animarsi normalmente.
-
-document.addEventListener('DOMContentLoaded', function(){
-  document.documentElement.classList.remove('no-js');
-});
-</script><script defer="defer" id="timeline-suggest-io">// TIMELINE (MICRO-STAGGER NON INVASIVO)
-// - Scopo: sfalsa leggermente i tempi d'ingresso delle card per migliorare la lettura visiva.
-// - Usa IntersectionObserver. Ritardo = index*70ms (+120ms per card a destra), max 600ms.
-// - Per disattivare: rimuovere questo script o impostare delayMs=0.
-// - Rispetto accessibilità: si può aggiungere controllo di prefers-reduced-motion.
-
-document.addEventListener('DOMContentLoaded', function(){
-  var items = Array.prototype.slice.call(document.querySelectorAll('.timeline .timeline-item'));
-  if (!items.length) return;
-
-  var seen = new WeakSet();
-  var io = new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      if (e.isIntersecting && !seen.has(e.target)){
-        var idx = items.indexOf(e.target);
-        var sideRight = e.target.classList.contains('right') ? 120 : 0;  // piccolo offset lato destro
-        var delayMs = Math.min(idx*70 + sideRight, 600);
-        e.target.style.transitionDelay = (delayMs/1000)+'s';
-        e.target.classList.add('visible');
-        seen.add(e.target);
-        io.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.08, rootMargin: '0px 0px -10% 0px' });
-
-  items.forEach(function(el){ io.observe(el); });
-
-  // Primo pass: se già in viewport
-  requestAnimationFrame(function(){
-    items.forEach(function(el){
-      var r = el.getBoundingClientRect();
-      if (r.top < (innerHeight*0.9) && r.bottom > 0){
-        var idx = items.indexOf(el);
-        var sideRight = el.classList.contains('right') ? 120 : 0;
-        var delayMs = Math.min(idx*70 + sideRight, 600);
-        el.style.transitionDelay = (delayMs/1000)+'s';
-        el.classList.add('visible');
-        seen.add(el);
-        io.unobserve(el);
-      }
-    });
-  });
-});
-</script>
 <style>
 /* === THEME TOGGLE STYLES === */
 .theme-btn {
@@ -3290,73 +3169,9 @@ html {
 }
 
 </style>
-<style id="search-panel-skin">
-/* Restore search panel background & border */
-#search-panel, #searchPanel, .search-panel, .results-panel{
-  background: rgba(10,10,30,.96);
-  border: 1px solid rgba(255,215,0,.28);
-  box-shadow: 0 1rem 2rem rgba(0,0,0,.45);
-  backdrop-filter: blur(.5rem);
-}
-</style>
-<style id="search-panel-anim">
-/* === Search Panel Animations (CSS-only) === */
-#search-panel, #searchPanel, .search-panel, .results-panel{
-  transform: translateX(-50%) translateY(-6px) scale(.985);
-  opacity: 0;
-  pointer-events: none;
-  transition:
-    transform .35s cubic-bezier(.2, .9, .2, 1),
-    opacity   .32s ease;
-  will-change: transform, opacity;
-}
-#search-panel.open, #searchPanel.open, .search-panel.open, .results-panel.open{
-  opacity: 1;
-  transform: translateX(-50%) translateY(0) scale(1);
-  pointer-events: auto;
-}
 
-/* Backdrop per click-out */
-#search-backdrop{
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,.45);
-  backdrop-filter: blur(2px);
-  opacity: 0; pointer-events: none;
-  transition: opacity .28s ease;
-  z-index: 2147483604;
-}
-#search-backdrop.open{ opacity: 1; pointer-events: auto; }
 
-@media (prefers-reduced-motion: reduce){
-  #search-panel, #searchPanel, .search-panel, .results-panel { transition: none !important; }
-  #search-backdrop{ transition: none !important; }
-}
-</style><style id="search-results-stagger">
-/* === Staggered results & highlight pulse === */
-#search-results > *, .search-results > *, #searchResults > *{
-  opacity: 0;
-  transform: translateY(8px);
-  will-change: transform, opacity;
-  animation: spItemIn .48s cubic-bezier(.2,1,.2,1) both;
-  animation-delay: calc(var(--i, 0) * 60ms);
-}
-@keyframes spItemIn{
-  to{ opacity:1; transform: translateY(0); }
-}
-#search-results mark, .search-results mark, #searchResults mark{
-  animation: hlPulse 1.4s ease-out .2s 1 both;
-}
-@keyframes hlPulse{
-  0% { box-shadow: 0 0 0 rgba(255,215,0,0); }
-  35%{ box-shadow: 0 0 .8rem rgba(255,215,0,.35); }
-  100%{ box-shadow: 0 0 0 rgba(255,215,0,0); }
-}
-@media (prefers-reduced-motion: reduce){
-  #search-results > *, .search-results > *, #searchResults > *{
-    animation: none !important; opacity: 1; transform: none;
-  }
-}
-</style>
+
 <style>
 /* === PULSANTE TORNA SU - VERSIONE FLUTTUANTE === */
 .back-to-top.floating {
