@@ -63,10 +63,23 @@ footer{ margin-top:2rem; padding:1rem; text-align:center; color:#9ec3ff; border-
 <body>
 <header>
   <div class="top wrap">
-    <a class="brand" href="/index.html"><img src="/logo-filosofia.svg" alt="Echi di Sofia"><span>Echi di Sofia</span></a>
+    <a class="brand" href="/" aria-label="Echi di Sofia – Home">
+      <svg class="logo" viewBox="0 0 24 24" width="28" height="28" fill="none"
+           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+           aria-hidden="true">
+        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+        <line x1="12" y1="22.08" x2="12" y2="12"></line>
+      </svg>
+      <span>Echi di Sofia</span>
+    </a>
+
     <div class="spacer"></div>
-    <a class="home" href="/index.html">🏠 Torna all'Incipit</a>
+
+    <a class="home" href="/" aria-label="Torna all’Incipit">🏠 Torna all'Incipit</a>
   </div>
+</header>
+
 
   <!-- INPUT con wrapper per il cerchietto -->
   <div class="searchbar wrap">
@@ -182,5 +195,37 @@ footer{ margin-top:2rem; padding:1rem; text-align:center; color:#9ec3ff; border-
 <script>
   window.SEARCH_INDEX_URLS = ['/search-index.json?v=20251016','/assets/search-index.json?v=20251016'];
 </script>
+  <script>
+(function () {
+  // 1) Se l’URL è /index.html ⇒ sostituisci con /
+  if (location.pathname.toLowerCase() === '/index.html') {
+    const clean = '/' + (location.search || '') + (location.hash || '');
+    history.replaceState(null, '', clean);
+  }
+
+  // 2) Riscrivi link che puntano a index.html ⇒ /
+  function rewriteAnchor(a) {
+    const href = a.getAttribute('href') || '';
+    if (/(^|\/)index\.html(\?|#|$)/i.test(href)) {
+      const u = new URL(href, location.origin);
+      a.setAttribute('href', '/' + (u.search || '') + (u.hash || ''));
+    }
+  }
+  document.querySelectorAll('a[href]').forEach(rewriteAnchor);
+
+  // 3) Intercetta click su link (anche generati dopo) e forza /
+  document.addEventListener('click', function (e) {
+    const a = e.target.closest('a[href]');
+    if (!a) return;
+    const href = a.getAttribute('href') || '';
+    if (/(^|\/)index\.html(\?|#|$)/i.test(href)) {
+      e.preventDefault();
+      const u = new URL(a.href, location.origin);
+      location.assign('/' + (u.search || '') + (u.hash || ''));
+    }
+  }, { capture: true });
+})();
+</script>
+
 </body>
 </html>
