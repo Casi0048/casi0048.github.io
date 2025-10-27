@@ -190,29 +190,25 @@ mark{
 <body>
   <!-- TOP BAR -->
   <header class="topbar">
-    <div class="wrap row">
-      <a class="brand" href="/index.html">
-        <img src="/logo-filosofia.svg" alt="Echi di Sofia"><span>Echi di Sofia</span>
-      </a>
-    </div>
-  </header>
-
- <!-- HERO -->
+  <div class="wrap row">
+    <a class="brand" href="/">
+      <img src="/logo-filosofia.svg" alt="Echi di Sofia"><span>Echi di Sofia</span>
+    </a>
+    <div class="spacer"></div>
+    <nav class="nav">
+      <a id="open-search" href="#" title="Cerca">🔎 Cerca</a>
+      <a href="/">🏠 Torna all'Incipit</a>
+    </nav>
+  </div>
+</header>
+  <!-- HERO -->
 <section class="hero wrap">
   <h1>Articoli e Approfondimenti</h1>
   <p>La raccolta completa dei contenuti pubblicati su Echi di Sofia.</p>
 
   <div class="cta">
-    <a class="btn primary" href="/cerca.html" aria-current="page" aria-label="Apri la pagina di ricerca">🔎 Cerca</a>
+    <a class="btn primary" href="/cerca.html" aria-label="Apri la pagina di ricerca">🔎 Cerca</a>
     <a class="btn secondary" href="/" aria-label="Torna alla home (Incipit)">🏠 Torna all’Incipit</a>
-  </div>
-
-  <!-- Pannello ricerca unico (l’engine userà questi ID) -->
-  <div class="search-panel" id="search-panel-hero" role="search">
-    <input id="site-search" class="search-input" type="search"
-           placeholder="Cerca autori, scuole, concetti…"
-           aria-label="Cerca nel sito" autocomplete="off" />
-    <ul id="search-list" class="search-results" role="listbox" aria-live="polite"></ul>
   </div>
 </section>
 
@@ -612,6 +608,32 @@ mark{
   input.addEventListener('input', e => render(e.target.value || ''));
   // Render iniziale (vuoto/suggeriti)
   try{ render(''); }catch(e){}
+})();
+</script>
+<script>
+(function(){
+  // Se esiste un vecchio wiring verso #site-search dell'hero, lo neutralizziamo
+  const heroInput = document.getElementById('site-search');
+  if (heroInput) {
+    heroInput.replaceWith((() => {
+      const span = document.createElement('span');
+      span.id = 'site-search-removed';
+      span.hidden = true;
+      return span;
+    })());
+  }
+  // Garantiamo che esista il trigger lente
+  const open = document.getElementById('open-search');
+  if (open && typeof open.onclick !== 'function') {
+    open.addEventListener('click', (e) => {
+      e.preventDefault();
+      // se hai una funzione globale per aprire l’overlay, richiamala
+      if (typeof window.openSearchOverlay === 'function') window.openSearchOverlay();
+      // altrimenti simula il click sul bottone “chiama ricerca” già presente
+      const btn = document.querySelector('[data-open-search], .js-open-search, #open-search-overlay');
+      if (btn) btn.click();
+    });
+  }
 })();
 </script>
 
