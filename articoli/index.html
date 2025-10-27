@@ -116,6 +116,20 @@
       filter: sepia(1) saturate(5.5) hue-rotate(345deg) brightness(1.05) contrast(1.05);
       opacity: 1;
     }
+    .search-results .search-card[aria-selected="true"],
+.search-results .search-card:hover,
+.search-results .search-card:focus-within{
+  background: rgba(18, 28, 58, 0.96) !important;
+  border-color: rgba(0, 204, 255, .35) !important;
+}
+.search-results .search-card mark{
+  background: rgba(0, 204, 255, 0.22) !important;
+  color: #eaffff !important;
+  padding: 0 .18em;
+  border-radius: .28em;
+  box-shadow: inset 0 0 0 1px rgba(0,204,255,.28);
+  font-weight: 700;
+}
   </style>
 </head>
 <body>
@@ -310,6 +324,10 @@
         desc: it.desc || it.description || it.excerpt || it.summary || '',
         tag:  (it.tag || it.category || it.categoria || it.section || it.type || '').toString().trim()
       }));
+// include anche eventuali voci dichiarate fuori (footer ecc.)
+if (Array.isArray(window.EXTRA_SECTIONS)) {
+  DATA = DATA.concat(window.EXTRA_SECTIONS);
+}
 
       // Tags unici (con conteggi)
       TAGS = uniqueTags(DATA);
@@ -417,27 +435,18 @@
     });
   })();
   </script>
- <script id="extra-sections-2025-10-27">
-(function(){
-  try{
-    const EXTRA_SECTIONS = [
-      { title: 'Incipit',            url: 'pagine/benvenuti.html',           desc: 'Sezione del portale', tag: 'Sezione' },
-      { title: 'Cinismo',            url: 'articoli/cinismo.html',           desc: 'Sezione del portale', tag: 'Sezione' },
-      { title: 'Epicureismo',        url: 'articoli/epicureismo.html',       desc: 'Sezione del portale', tag: 'Sezione' },
-      { title: 'Filosofia indiana',  url: 'articoli/filosofia-indiana.html', desc: 'Sezione del portale', tag: 'Sezione' },
-      { title: 'Platonismo',         url: 'articoli/platonismo.html',        desc: 'Sezione del portale', tag: 'Sezione' },
-      { title: 'Scetticismo',        url: 'articoli/scetticismo.html',       desc: 'Sezione del portale', tag: 'Sezione' },
-      { title: 'Stoicismo',          url: 'articoli/stoicismo.html',         desc: 'Sezione del portale', tag: 'Sezione' }
-    ];
-    // concatena in sicurezza anche se DATA non è ancora definito al parse time
-    window.addEventListener('DOMContentLoaded', function(){
-      try{
-        if (typeof window.DATA === 'undefined') window.DATA = [];
-        window.DATA = [].concat(window.DATA || [], EXTRA_SECTIONS);
-      }catch(_){}
-    });
-  }catch(_){}
-})();
+<script id="extra-sections-2025-10-27">
+  // Dati extra da includere nell'indice (il main li concatenerà a DATA)
+  window.EXTRA_SECTIONS = [
+    { title: 'Incipit',            url: '/pagine/benvenuti.html',           desc: 'Sezione del portale', tag: 'Sezione' },
+    { title: 'Cinismo',            url: '/articoli/cinismo.html',           desc: 'Sezione del portale', tag: 'Sezione' },
+    { title: 'Epicureismo',        url: '/articoli/epicureismo.html',       desc: 'Sezione del portale', tag: 'Sezione' },
+    { title: 'Filosofia indiana',  url: '/articoli/filosofia-indiana.html', desc: 'Sezione del portale', tag: 'Sezione' },
+    { title: 'Platonismo',         url: '/articoli/platonismo.html',        desc: 'Sezione del portale', tag: 'Sezione' },
+    { title: 'Scetticismo',        url: '/articoli/scetticismo.html',       desc: 'Sezione del portale', tag: 'Sezione' },
+    { title: 'Stoicismo',          url: '/articoli/stoicismo.html',         desc: 'Sezione del portale', tag: 'Sezione' }
+  ];
 </script>
+
 </body>
 </html>
