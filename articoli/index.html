@@ -434,6 +434,72 @@ if (Array.isArray(window.EXTRA_SECTIONS)) {
     { title: 'Stoicismo',          url: '/articoli/stoicismo.html',         desc: 'Sezione del portale', tag: 'Sezione' }
   ];
 </script>
+<script id="fix-search-override-2025-10-27">
+(function(){
+  // 1) Stile che vince sempre sull'evidenziazione
+  const MARK_STYLE = 'background: rgba(0,204,255,.22) !important; color:#eaffff !important; padding:0 .18em; border-radius:.28em; box-shadow: inset 0 0 0 1px rgba(0,204,255,.28); font-weight:700;';
+  const style = document.createElement('style');
+  style.textContent = `
+    .search-results .search-card[aria-selected="true"],
+    .search-results .search-card:hover,
+    .search-results .search-card:focus-within{
+      background: rgba(18,28,58,.96) !important;
+      border-color: rgba(0,204,255,.35) !important;
+      outline: none !important;
+    }
+    .search-results .search-card mark{ ${MARK_STYLE} }
+  `;
+  document.head.appendChild(style);
+
+  // 2) Dati extra (sezioni footer) — URL assoluti per sicurezza
+  window.EXTRA_SECTIONS = [
+    { title: 'Incipit',            url: '/pagine/benvenuti.html',           desc: 'Sezione del portale', tag: 'Sezione' },
+    { title: 'Cinismo',            url: '/articoli/cinismo.html',           desc: 'Sezione del portale', tag: 'Sezione' },
+    { title: 'Epicureismo',        url: '/articoli/epicureismo.html',       desc: 'Sezione del portale', tag: 'Sezione' },
+    { title: 'Filosofia indiana',  url: '/articoli/filosofia-indiana.html', desc: 'Sezione del portale', tag: 'Sezione' },
+    { title: 'Platonismo',         url: '/articoli/platonismo.html',        desc: 'Sezione del portale', tag: 'Sezione' },
+    { title: 'Scetticismo',        url: '/articoli/scetticismo.html',       desc: 'Sezione del portale', tag: 'Sezione' },
+    { title: 'Stoicismo',          url: '/articoli/stoicismo.html',         desc: 'Sezione del portale', tag: 'Sezione' }
+  ];
+
+  // 3) Intercetta l'assegnazione a DATA (anche se il main usa "let DATA" locale)
+  try{
+    let _DATA = [];
+    Object.defineProperty(window, 'DATA', {
+      configurable: true,
+      get(){ return _DATA; },
+      set(v){
+        try{
+          const base = Array.isArray(v) ? v : [];
+          _DATA = base.concat(window.EXTRA_SECTIONS || []);
+          // trigger refresh della UI
+          const inp = document.querySelector('#site-search');
+          if (inp) {
+            const ev = new Event('input', {bubbles:true});
+            inp.dispatchEvent(ev);
+          } else if (typeof window.renderSearch === 'function') {
+            window.renderSearch('');
+          }
+        }catch(e){
+          _DATA = v;
+        }
+      }
+    });
+  }catch(e){ /* se non va, non blocchiamo nulla */ }
+
+  // 4) Se esiste highlight(), applica stile inline ai <mark>
+  if (typeof window.highlight === 'function'){
+    const orig = window.highlight;
+    window.highlight = function(text, q){
+      const out = orig(text, q);
+      // rimuovo !important per inline style (non serve sugli inline)
+      const inlineStyle = MARK_STYLE.replace(/ !important/g, '');
+      return out.replaceAll('<mark>', `<mark style="${inlineStyle}">`);
+    };
+  }
+})();
+</script>
+
 
 </body>
 </html>
