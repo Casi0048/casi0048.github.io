@@ -315,7 +315,48 @@
 if (Array.isArray(window.EXTRA_SECTIONS)) {
   DATA = DATA.concat(window.EXTRA_SECTIONS);
 }
+// Carica indice e avvia
+(async () => {
+  let arr = [];
+  for(const u of SOURCES){
+    try{
+      const r = await fetch(u, { cache: 'no-store' });
+      if(!r.ok) continue;
+      const j = await r.json();
+      arr = Array.isArray(j) ? j : (j.items || j.entries || []);
+      break;
+    }catch(_){}
+  }
+  DATA = arr.map(it => ({
+    title: it.title || it.name || it.slug || 'Senza titolo',
+    url: (it.url || it.link || '').toString(),
+    desc: it.desc || it.description || it.excerpt || it.summary || '',
+    tag:  (it.tag || it.category || it.categoria || it.section || it.type || '').toString().trim()
+  }));
 
+  // ⬇️⬇️⬇️ AGGIUNGI QUESTO BLOCCO QUI ⬇️⬇️⬇️
+  // Integra le sezioni extra se presenti
+  if (window.EXTRA_SECTIONS && Array.isArray(window.EXTRA_SECTIONS)) {
+    DATA = DATA.concat(window.EXTRA_SECTIONS);
+  }
+  // ⬆️⬆️⬆️ FINE DEL BLOCCO AGGIUNTO ⬆️⬆️⬆️
+
+  // Tags unici (con conteggi)
+  TAGS = uniqueTags(DATA);
+
+  // Costruisci UI filtri
+  buildFilters();
+
+  // Filtro da URL (?cat=...)
+  const url = new URL(window.location.href);
+  const fromURL = url.searchParams.get('cat');
+  if(fromURL){
+    CURRENT = fromURL;
+  }
+
+  // Render iniziale
+  render( filtered() );
+})();
       // Tags unici (con conteggi)
       TAGS = uniqueTags(DATA);
 
