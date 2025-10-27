@@ -514,6 +514,24 @@ mark {
   }
 })();
 </script>
+<script>
+(function () {
+  // 1) Se siamo su /index.html, sostituisci in barra con /
+  if (location.pathname === '/index.html') {
+    history.replaceState(null, '', '/');
+  }
+
+  // 2) Correggi tutti i link che puntano a index.html -> /
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('a[href$="index.html"]').forEach(function (a) {
+      try {
+        const u = new URL(a.getAttribute('href'), location.origin);
+        if (u.pathname === '/index.html') a.setAttribute('href', '/');
+      } catch (_) {}
+    });
+  });
+})();
+</script>
 
 
 </body>
