@@ -128,6 +128,60 @@ mark {
   box-shadow: inset 0 0 0 1px rgba(0,204,255,.28);
   font-weight: 700;
 }
+  /* Versione HERO del pannello: blocco statico sotto al testo */
+.hero .search-panel{
+  position: static;                  /* niente absolute */
+  transform: none;
+  width: min(900px, 92vw);
+  margin: 1rem auto 0;
+  background: rgba(10,10,30,.96);
+  border: 1px solid rgba(255,215,0,.22);
+  border-radius: 14px;
+  box-shadow: 0 1.4rem 2.4rem rgba(0,0,0,.45);
+  padding: .9rem 1rem 1rem;
+}
+.hero .search-panel .search-header{ padding: 0; border: 0; }
+.hero .search-panel #site-search{
+  display:block;
+  width:100%;
+  background: rgba(20,20,40,.85);
+  color:#e9eef5;
+  border:1px solid rgba(255,255,255,.14);
+  border-radius: 10px;
+  padding:.7rem 2.6rem .7rem 2.6rem; /* spazio per icone */
+  font-size:1rem;
+  outline:none;
+}
+.hero .search-panel .search-results{
+  padding: .8rem 0 0;                /* margini interni ottimizzati */
+  max-height: 60vh;
+  overflow:auto;
+}
+  /* Item attivo/hover: bg solido e bordo visibile */
+.search-results .search-card[aria-selected="true"],
+.search-results .search-card:hover,
+.search-results .search-card:focus-within{
+  background: rgba(18, 28, 58, 0.96) !important;
+  border-color: rgba(0, 204, 255, .40) !important;
+  outline: none !important;
+}
+
+/* Testo che matcha: azzurro elegante */
+.search-results .search-card mark,
+.search-panel mark,
+mark{
+  background: rgba(0, 204, 255, 0.24) !important;
+  color: #eaffff !important;
+  padding: 0 .18rem;
+  border-radius: .28rem;
+  box-shadow: inset 0 0 0 1px rgba(0,204,255,.28);
+  font-weight: 700;
+}
+
+/* (opzionale) Titoli meno “oro su oro” per contrasto migliore */
+.search-results .search-card .title{ color:#cfefff; }
+.search-results .search-card .title:hover{ color:#fff; }
+
   </style>
 </head>
 <body>
@@ -140,15 +194,24 @@ mark {
     </div>
   </header>
 
-  <!-- HERO -->
-  <section class="hero wrap">
-    <h1>Articoli e Approfondimenti</h1>
-    <p>La raccolta completa dei contenuti pubblicati su Echi di Sofia.</p>
-    <div class="cta">
-      <a class="btn primary" href="/" aria-label="Torna alla home (Incipit)">🏠 Torna all’Incipit</a>
-      <a href="/cerca.html" class="active" aria-current="page">Cerca</a>
+ <!-- HERO -->
+<section class="hero wrap">
+  <h1>Articoli e Approfondimenti</h1>
+  <p>La raccolta completa dei contenuti pubblicati su Echi di Sofia.</p>
 
-  </section>
+  <div class="cta">
+    <a class="btn primary" href="/cerca.html" aria-current="page" aria-label="Apri la pagina di ricerca">🔎 Cerca</a>
+    <a class="btn secondary" href="/" aria-label="Torna alla home (Incipit)">🏠 Torna all’Incipit</a>
+  </div>
+
+  <!-- Pannello ricerca unico (l’engine userà questi ID) -->
+  <div class="search-panel" id="search-panel-hero" role="search">
+    <input id="site-search" class="search-input" type="search"
+           placeholder="Cerca autori, scuole, concetti…"
+           aria-label="Cerca nel sito" autocomplete="off" />
+    <ul id="search-list" class="search-results" role="listbox" aria-live="polite"></ul>
+  </div>
+</section>
 
   <!-- FILTRI -->
   <section class="wrap">
@@ -526,6 +589,28 @@ mark {
 })();
 </script>
 
+<script>
+(function(){
+  // Normalizza la home in barra (mai /index.html)
+  if (location.pathname === '/index.html') {
+    history.replaceState(null, '', '/');
+  }
+
+  // Forza l’engine a usare l’input/list dell’HERO
+  const input = document.getElementById('site-search');
+  const list  = document.getElementById('search-list');
+  if (!input || !list) return;
+
+  // Se hai già renderSearch, lo riuso. Altrimenti fallback neutro.
+  const render = (typeof window.renderSearch === 'function')
+    ? window.renderSearch
+    : (q)=>{ list.innerHTML=''; };
+
+  input.addEventListener('input', e => render(e.target.value || ''));
+  // Render iniziale (vuoto/suggeriti)
+  try{ render(''); }catch(e){}
+})();
+</script>
 
 </body>
 </html>
