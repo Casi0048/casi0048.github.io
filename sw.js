@@ -1,5 +1,5 @@
 // sw.js — Single-file site (index.html inline CSS/JS)
-const CACHE = 'echi-single-v1';
+ 'echi-single-v9';
 
 // Metti SOLO risorse same-origin che ESISTONO nel repo
 const ASSETS = [
@@ -13,7 +13,7 @@ const ASSETS = [
 // Install: precache senza fallire se un file manca
 self.addEventListener('install', (event) => {
   event.waitUntil((async () => {
-    const cache = await caches.open(CACHE);
+     await caches.open(CACHE);
     await Promise.allSettled(ASSETS.map(u => cache.add(u)));
   })());
   self.skipWaiting();
@@ -60,7 +60,7 @@ self.addEventListener('fetch', (event) => {
     try {
       const resp = await fetch(event.request);
       if (url.origin === self.location.origin) {
-        const cache = await caches.open(CACHE);
+         await caches.open(CACHE);
         cache.put(event.request, resp.clone());
       }
       return resp;
