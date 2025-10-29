@@ -894,6 +894,128 @@ nav.menu-desktop .mega-menu.right-align:hover {
       #effects-ctrl .ctrl-btn{min-width:6.5rem}
       @media (min-width:1200px){ main{padding-left:16rem;padding-right:22rem} }
     </style>
+<style id="patch-ui-override">
+/* ==== Slider verticale: dimensioni fisse & anti-jitter ==== */
+.slider-vertical{
+  /* larghezza card e altezze fisse */
+  --slide-w: 260px;
+  --slide-h: 240px;  /* altezza TOTALE della card (img + didascalia + padding) */
+  --img-h: 180px;    /* altezza dell’immagine dentro la card */
+  width: var(--slide-w);           /* coerente con la card */
+  /* opzionale: se vuoi la finestra un po' più alta, lascia la tua 20rem */
+  /* height: calc(var(--slide-h) * 1.35); */
+}
+
+.slider-vertical .slider-inner{
+  position:absolute; inset:0;
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);        /* forza compositing GPU */
+}
+
+.slide-vertical{
+  width: 100%;
+  height: var(--slide-h);
+  padding: .62rem .62rem .88rem;
+  display: flex; flex-direction: column; align-items: center; gap: .5rem;
+  box-sizing: border-box;
+  overflow: hidden;                /* niente trabordi durante il movimento */
+  contain: content;                /* isola layout/paint della card */
+  backface-visibility: hidden;
+}
+
+.slide-vertical img{
+  width: 100%;
+  height: var(--img-h);
+  object-fit: cover;               /* riempi la card tagliando l’eccesso */
+  display: block;
+  background: rgba(0,0,0,.25);
+  border-radius: .62rem;
+  border: 1px solid rgba(255,255,255,.1);
+  box-shadow: 0 .38rem .88rem rgba(0,0,0,.25);
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* Didascalia: spazio stabile, 2 righe max */
+.slide-vertical p{
+  margin: .25rem 0 0;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: .92rem;
+  text-align: center;
+  color: #ffe9b8;
+  text-shadow: 0 0 .5rem rgba(255,215,0,.25);
+  min-height: 2.6em; line-height: 1.3;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Consiglio: tieni luci/ombre leggere per evitare tremolii su alcuni browser */
+</style>
+
+    <link rel="stylesheet" href="patch-ui-override.css?v=20251029">
+
+    <style id="patch-ui-override">
+/* ==== Slider verticale: dimensioni fisse & anti-jitter ==== */
+.slider-vertical{
+  /* larghezza card e altezze fisse */
+  --slide-w: 260px;
+  --slide-h: 240px;  /* altezza TOTALE della card (img + didascalia + padding) */
+  --img-h: 180px;    /* altezza dell’immagine dentro la card */
+  width: var(--slide-w);           /* coerente con la card */
+  /* opzionale: se vuoi la finestra un po' più alta, lascia la tua 20rem */
+  /* height: calc(var(--slide-h) * 1.35); */
+}
+
+.slider-vertical .slider-inner{
+  position:absolute; inset:0;
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);        /* forza compositing GPU */
+}
+
+.slide-vertical{
+  width: 100%;
+  height: var(--slide-h);
+  padding: .62rem .62rem .88rem;
+  display: flex; flex-direction: column; align-items: center; gap: .5rem;
+  box-sizing: border-box;
+  overflow: hidden;                /* niente trabordi durante il movimento */
+  contain: content;                /* isola layout/paint della card */
+  backface-visibility: hidden;
+}
+
+.slide-vertical img{
+  width: 100%;
+  height: var(--img-h);
+  object-fit: cover;               /* riempi la card tagliando l’eccesso */
+  display: block;
+  background: rgba(0,0,0,.25);
+  border-radius: .62rem;
+  border: 1px solid rgba(255,255,255,.1);
+  box-shadow: 0 .38rem .88rem rgba(0,0,0,.25);
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* Didascalia: spazio stabile, 2 righe max */
+.slide-vertical p{
+  margin: .25rem 0 0;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: .92rem;
+  text-align: center;
+  color: #ffe9b8;
+  text-shadow: 0 0 .5rem rgba(255,215,0,.25);
+  min-height: 2.6em; line-height: 1.3;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Consiglio: tieni luci/ombre leggere per evitare tremolii su alcuni browser */
+</style>
+
 <style id="right-links-css">
       .right-box{
       position:fixed; right:1.25rem; width:20rem; z-index:25;
