@@ -4409,7 +4409,11 @@ body {
   <div class="search-panel" id="search-panel"><div class="search-header"><h3 class="search-title">Risultati</h3><button aria-label="Chiudi pannello" class="search-close" id="search-close" type="button">Chiudi</button></div><div class="search-results results-scroll" id="search-results"><div class="sp-item" data-placeholder="true"><h4 class="result-title">Suggerimento</h4><p class="result-desc">Digita nel campo di ricerca in alto per vedere i risultati qui.</p></div></div></div>
 <!-- UI PATCH BLOCKS -->
 <!-- ===== SLIDER VERTICALE — solo .webp dai tuoi /foto ===== -->
-<div aria-label="Galleria autori" class="slider-vertical" data-vertical-slider="on">
+<div aria-label="Galleria autori"
+     class="slider-vertical"
+     data-vertical-slider="on"
+     data-speed="300"         <!-- ⬅️ velocità iniziale in px/s (prova 240, 300, 360) -->
+     data-max-speed="1200">   <!-- ⬅️ opzionale: alza il tetto max se previsto dai controlli -->
   <div class="slider-inner" id="sliderInner">
     <div class="slide-vertical">
       <img src="/foto/aristotele.webp" alt="Aristotele" width="260" height="340" loading="eager" decoding="async" />
@@ -8698,6 +8702,20 @@ document.addEventListener('DOMContentLoaded', function(){
     function clamp(v, a, b){ return Math.max(a, Math.min(b, v)); }
   });
 })();
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.slider-vertical,[data-vertical-slider="on"]').forEach(c => {
+    // alza (o imposta) il tetto massimo usato dai controlli, se presente
+    c.dataset.maxSpeed = c.dataset.maxSpeed || '1200';
+
+    // spingi subito la velocità se è rimasta bassa
+    const S = c.__rafState || (c.__rafState = {paused:false, dir:-1, y:0, speed:40});
+    if (S.speed < (parseFloat(c.dataset.speed)||0)) {
+      S.speed = parseFloat(c.dataset.speed);
+    }
+  });
+});
 </script>
 
 </body>
