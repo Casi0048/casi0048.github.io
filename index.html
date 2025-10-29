@@ -1,6 +1,5 @@
+<!-- ===== AREA HEAD (metadati, link CSS, script, SEO) ===== -->
 <head>
-<!-- ===== AREA HEAD: META, LINK, TITLE (ordine originale) ===== -->
-
   <meta charset="utf-8">
   <title>Echi di Sofia — Portale di Filosofia</title>
 
@@ -48,8 +47,7 @@
 <link rel="canonical" href="https://www.echidisofia.org/">
 
   <!-- Schema.org -->
-  <!-- ===== SCRIPT NELLA HEAD ===== -->
-<script type="application/ld+json">
+  <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
@@ -64,7 +62,7 @@
     }
   </script>
 
-<!-- ===== STILI NELLA HEAD ===== -->
+
 <style>
      :root {
   /* === COLORI FONDAMENTALI === */
@@ -1706,6 +1704,7 @@ window.googleTranslateElementInit = function(){
 /* Evita overflow che potrebbe nascondere le card destre */
 .timeline-container{ overflow: visible !important; }
 
+
 /* Mobile: una colonna */
 @media (max-width: 900px){
   .timeline > .timeline-item{ width:100% !important; margin-left:0 !important; text-align:left; }
@@ -2195,6 +2194,7 @@ window.googleTranslateElementInit = function(){
 }
 
 /* Punto temporale con effetto pulsante */
+
 
 /* Connettori energetici */
 .tl-connector {
@@ -4180,47 +4180,60 @@ body {
     transform-origin: center center;
 }
 </style>
-<style>
- /* SFONDO SEMPLIFICATO */
-.bg-simple {
-  position: fixed;
-  top: 0;
-  left: 0;
+
+<style id="slider-perf-patch">
+/* ===== Slider Perf Patch (conservativo) ===== */
+.vertical-slider, .v-slider, .slider-vertical, [data-vertical-slider="on"] {
+  will-change: transform;
+  contain: content;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+.vertical-slider .slide, .v-slider .slide, .slider-vertical .slide, [data-vertical-slider="on"] .slide {
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translate3d(0,0,0);
+}
+.vertical-slider .slide, .v-slider .slide, .slider-vertical .slide {
+  box-shadow: none;
+}
+.vertical-slider img, .v-slider img, .slider-vertical img {
+  display: block;
+  height: auto;
+  image-rendering: auto;
+  content-visibility: auto;
+}
+@media (prefers-reduced-motion: reduce) {
+  .vertical-slider, .v-slider, .slider-vertical, [data-vertical-slider="on"] {
+    animation: none !important;
+  }
+}
+</style>
+
+
+<style id="slider-anti-jitter">
+/* Anti-jitter refinements */
+.vertical-slider, .v-slider, .slider-vertical, [data-vertical-slider="on"] {
+  transform-origin: 50% 50%;
+}
+.vertical-slider .slide, .v-slider .slide, .slider-vertical .slide, [data-vertical-slider="on"] .slide {
+  filter: none !important; /* evita jitter causato da blur/drop-shadow dinamici */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+/* Consiglia dimensioni definite alle immagini per evitare ricalcoli layout */
+.vertical-slider img, .v-slider img, .slider-vertical img, [data-vertical-slider="on"] img {
   width: 100%;
-  height: 100%;
-  z-index: -1;
-  background: 
-    radial-gradient(circle at 20% 80%, rgba(106, 90, 255, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(255, 90, 205, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 40% 40%, rgba(90, 200, 255, 0.08) 0%, transparent 50%),
-    linear-gradient(135deg, #0a0a1a 0%, #151530 100%);
-  opacity: 0.6;
-}
-
-.bg-simple::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 30% 30%, rgba(255, 216, 106, 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 70% 70%, rgba(154, 208, 255, 0.05) 0%, transparent 50%);
-  animation: pulse 20s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 0.8; }
+  height: auto;
+  display: block;
 }
 </style>
 
 </head>
 
-<body>
- <div class="bg-simple"></div> 
-  <div hidden="True" id="search-backdrop"></div><div class="search-panel" id="search-panel"><div class="search-header"><h3 class="search-title">Risultati</h3><button aria-label="Chiudi pannello" class="search-close" id="search-close" type="button">Chiudi</button></div><div class="search-results results-scroll" id="search-results"><div class="sp-item" data-placeholder="true"><h4 class="result-title">Suggerimento</h4><p class="result-desc">Digita nel campo di ricerca in alto per vedere i risultati qui.</p></div></div></div>
+<body><div hidden="True" id="search-backdrop"></div><div class="search-panel" id="search-panel"><div class="search-header"><h3 class="search-title">Risultati</h3><button aria-label="Chiudi pannello" class="search-close" id="search-close" type="button">Chiudi</button></div><div class="search-results results-scroll" id="search-results"><div class="sp-item" data-placeholder="true"><h4 class="result-title">Suggerimento</h4><p class="result-desc">Digita nel campo di ricerca in alto per vedere i risultati qui.</p></div></div></div>
 <!-- UI PATCH BLOCKS -->
 <div aria-label="Galleria autori" class="slider-vertical">
 <div class="slider-inner" id="sliderInner">
@@ -4572,6 +4585,7 @@ body {
 </div>
 <!-- Menu principale -->
 <div class="menu-container">
+<!-- ===== INIZIO HEADER (logo, menu, barra superiore visibile) ===== -->
 <header role="banner">
 <nav class="menu-desktop" aria-label="Navigazione principale" role="navigation">
 <ul role="menu">
@@ -4968,13 +4982,13 @@ body {
 </li>
 </ul>
 </nav>
-
 </header>
 </div>
 <div class="scroll-progress">
 <div class="scroll-progress-bar"></div>
 </div>
 <!-- Contenuto principale -->
+<!-- ===== INIZIO MAIN (contenuto principale della pagina) ===== -->
 <main role="main" aria-label="Contenuto principale">
 <!-- Canvas per le piccole cometine variopinte -->
 <canvas class="tiny-comets-canvas" id="tiny-comets"></canvas>
@@ -5148,6 +5162,7 @@ body {
 <!-- Citazioni filosofiche fluttuanti -->
 <div class="floating-quotes"><div class="quote-bubble"><div class="quote-text">“Conosci te stesso”</div><div class="quote-author">— Socrate</div></div><div class="quote-bubble"><div class="quote-text">“So di non sapere”</div><div class="quote-author">— Socrate</div></div><div class="quote-bubble"><div class="quote-text">“Una vita senza ricerca non è degna di essere vissuta”</div><div class="quote-author">— Socrate</div></div><div class="quote-bubble"><div class="quote-text">“La filosofia comincia con la meraviglia”</div><div class="quote-author">— Platone</div></div><div class="quote-bubble"><div class="quote-text">“La bellezza è lo splendore del vero”</div><div class="quote-author">— Platone</div></div><div class="quote-bubble"><div class="quote-text">“Siamo ciò che facciamo ripetutamente. L'eccellenza non è un atto ma un'abitudine”</div><div class="quote-author">— Aristotele</div></div><div class="quote-bubble"><div class="quote-text">“La felicità dipende da noi stessi”</div><div class="quote-author">— Aristotele</div></div><div class="quote-bubble"><div class="quote-text">“Nulla è nell'intelletto che prima non sia passato dai sensi”</div><div class="quote-author">— Aristotele</div></div><div class="quote-bubble"><div class="quote-text">“Tutto scorre”</div><div class="quote-author">— Eraclito</div></div><div class="quote-bubble"><div class="quote-text">“Il carattere è destino”</div><div class="quote-author">— Eraclito</div></div><div class="quote-bubble"><div class="quote-text">“L'uomo è misura di tutte le cose”</div><div class="quote-author">— Protagora</div></div><div class="quote-bubble"><div class="quote-text">“Vivere secondo natura”</div><div class="quote-author">— Zenone di Cizio</div></div><div class="quote-bubble"><div class="quote-text">“Non sono le cose che ci turbano, ma le opinioni che abbiamo su di esse”</div><div class="quote-author">— Epitteto</div></div><div class="quote-bubble"><div class="quote-text">“Non è la morte che dobbiamo temere, ma il non cominciare mai a vivere”</div><div class="quote-author">— Marco Aurelio</div></div><div class="quote-bubble"><div class="quote-text">“La vita è opinione”</div><div class="quote-author">— Marco Aurelio</div></div><div class="quote-bubble"><div class="quote-text">“La felicità consiste nel desiderare ciò che si ha”</div><div class="quote-author">— Seneca</div></div><div class="quote-bubble"><div class="quote-text">“Non esiste vento favorevole per il marinaio che non sa dove andare”</div><div class="quote-author">— Seneca</div></div><div class="quote-bubble"><div class="quote-text">“Il destino guida chi lo segue e trascina chi si oppone”</div><div class="quote-author">— Seneca</div></div><div class="quote-bubble"><div class="quote-text">“Vivi nascosto”</div><div class="quote-author">— Epicuro</div></div><div class="quote-bubble"><div class="quote-text">“Ama e fa' ciò che vuoi”</div><div class="quote-author">— Sant'Agostino</div></div><div class="quote-bubble"><div class="quote-text">“La fede cerca l'intelligenza”</div><div class="quote-author">— Anselmo d'Aosta</div></div><div class="quote-bubble"><div class="quote-text">“Contemplata aliis tradere”</div><div class="quote-author">— Tommaso d'Aquino</div></div><div class="quote-bubble"><div class="quote-text">“Non moltiplicare gli enti senza necessità”</div><div class="quote-author">— Guglielmo di Ockham</div></div><div class="quote-bubble"><div class="quote-text">“È meglio essere temuti che amati, se non si può essere entrambi”</div><div class="quote-author">— Niccolò Machiavelli</div></div><div class="quote-bubble"><div class="quote-text">“Cogito, ergo sum”</div><div class="quote-author">— Cartesio</div></div><div class="quote-bubble"><div class="quote-text">“Il cuore ha le sue ragioni che la ragione non conosce”</div><div class="quote-author">— Blaise Pascal</div></div><div class="quote-bubble"><div class="quote-text">“La mente è una tabula rasa”</div><div class="quote-author">— John Locke</div></div><div class="quote-bubble"><div class="quote-text">“Esse est percipi”</div><div class="quote-author">— George Berkeley</div></div><div class="quote-bubble"><div class="quote-text">“La bellezza delle cose esiste nella mente di chi le contempla”</div><div class="quote-author">— David Hume</div></div><div class="quote-bubble"><div class="quote-text">“Due cose riempiono l’animo: il cielo stellato sopra di me e la legge morale dentro di me”</div><div class="quote-author">— Immanuel Kant</div></div><div class="quote-bubble"><div class="quote-text">“Agisci in modo da trattare l’umanità sempre come fine e mai semplicemente come mezzo”</div><div class="quote-author">— Immanuel Kant</div></div><div class="quote-bubble"><div class="quote-text">“Quel che è reale è razionale”</div><div class="quote-author">— G.W.F. Hegel</div></div><div class="quote-bubble"><div class="quote-text">“La vita oscilla tra la noia e il dolore”</div><div class="quote-author">— Arthur Schopenhauer</div></div><div class="quote-bubble"><div class="quote-text">“La vita dev’essere compresa all’indietro, ma va vissuta in avanti”</div><div class="quote-author">— Søren Kierkegaard</div></div><div class="quote-bubble"><div class="quote-text">“Chi ha un perché per vivere può sopportare quasi ogni come”</div><div class="quote-author">— Friedrich Nietzsche</div></div><div class="quote-bubble"><div class="quote-text">“Diventa ciò che sei”</div><div class="quote-author">— Friedrich Nietzsche</div></div><div class="quote-bubble"><div class="quote-text">“Non esistono fatti, solo interpretazioni”</div><div class="quote-author">— Friedrich Nietzsche</div></div><div class="quote-bubble"><div class="quote-text">“Di ciò di cui non si può parlare si deve tacere”</div><div class="quote-author">— Ludwig Wittgenstein</div></div><div class="quote-bubble"><div class="quote-text">“Il significato è l’uso”</div><div class="quote-author">— Ludwig Wittgenstein</div></div><div class="quote-bubble"><div class="quote-text">“Il linguaggio è la casa dell’essere”</div><div class="quote-author">— Martin Heidegger</div></div><div class="quote-bubble"><div class="quote-text">“L’esistenza precede l’essenza”</div><div class="quote-author">— Jean‑Paul Sartre</div></div><div class="quote-bubble"><div class="quote-text">“Bisogna immaginare Sisifo felice”</div><div class="quote-author">— Albert Camus</div></div></div>
 <!-- Footer -->
+<!-- ===== INIZIO FOOTER (informazioni di chiusura, link utili) ===== -->
 <footer>
 <div class="footer-wrap">
 <div class="footer-columns">
@@ -8447,6 +8462,151 @@ document.addEventListener('DOMContentLoaded', function() {
       if(items && items.length){ panel.style.display = 'block'; panel.removeAttribute('aria-hidden'); }
     };
   }catch(_){}
+})();
+</script>
+
+
+
+
+<script id="slider-raf-enhancer">
+(function(){
+  try{
+    const dpr = window.devicePixelRatio || 1;
+    const candidates = Array.from(document.querySelectorAll(
+      '.vertical-slider, .v-slider, .slider-vertical, [data-vertical-slider="on"]'
+    ));
+    if(!candidates.length) return;
+
+    candidates.forEach(container => {
+      if(container.__rafEnhancedV3) return;
+      container.__rafEnhancedV3 = true;
+
+      let track = container.querySelector('.slides, .track, ul, .list, .items') || container.firstElementChild || container;
+
+      // Duplicate children once to make a seamless loop
+      if(!track.__duplicatedOnce){
+        const kids = Array.from(track.children);
+        if(kids.length){
+          const frag = document.createDocumentFragment();
+          kids.forEach(k => frag.appendChild(k.cloneNode(true)));
+          track.appendChild(frag);
+          track.__duplicatedOnce = true;
+        }
+      }
+
+      // Shared state used by controls adapter
+      const S = container.__rafState = container.__rafState || {
+        paused: false,
+        speed: parseFloat(container.getAttribute('data-speed')) || 40, // px/sec
+        dir: -1,   // -1 up, +1 down
+        y: 0
+      };
+
+      let last = performance.now();
+      let running = true;
+
+      function snap(v){
+        const step = 1 / dpr;
+        return Math.round(v / step) * step;
+      }
+
+      // Pause when tab visibility changes to avoid jumps
+      document.addEventListener('visibilitychange', () => {
+        last = performance.now();
+      });
+
+      // Hover pause
+      container.addEventListener('mouseenter', () => S.paused = true);
+      container.addEventListener('mouseleave', () => S.paused = false);
+
+      function loop(now){
+        if(!running) return;
+        const dt = Math.min(48, now - last);
+        last = now;
+
+        if(!S.paused){
+          S.y += (S.dir * S.speed * dt / 1000);
+          const h = track.scrollHeight;
+          if(h > 0){
+            if(S.y <= -h) S.y += h;
+            if(S.y >= 0)  S.y -= h;
+          }
+          track.style.transform = 'translate3d(0,' + snap(S.y) + 'px,0)';
+        }
+        requestAnimationFrame(loop);
+      }
+      requestAnimationFrame(loop);
+
+      // Pointer drag manual control
+      let startY = null;
+      container.addEventListener('pointerdown', (e)=>{
+        startY = e.clientY;
+        container.setPointerCapture(e.pointerId);
+        S.paused = true;
+      });
+      container.addEventListener('pointermove', (e)=>{
+        if(startY!=null){
+          S.y += (e.clientY - startY);
+          startY = e.clientY;
+          track.style.transform = 'translate3d(0,' + snap(S.y) + 'px,0)';
+        }
+      });
+      window.addEventListener('pointerup', ()=>{
+        if(startY!=null){
+          startY = null;
+          S.paused = false;
+        }
+      });
+    });
+  }catch(err){
+    console.warn('slider-raf-enhancer v3 error:', err);
+  }
+})();
+</script>
+
+
+
+
+<script id="slider-controls-adapter">
+(function(){
+  const sliders = document.querySelectorAll('.vertical-slider,[data-vertical-slider="on"],.v-slider,.slider-vertical');
+  sliders.forEach(container => {
+    // ensure shared state exists
+    container.__rafState = container.__rafState || { paused:false, speed:40, dir:-1, y:0 };
+
+    // simple API exposed per container
+    const S = container.__rafState;
+    container.__rafCtl = container.__rafCtl || {
+      play(){ S.paused = false; },
+      pause(){ S.paused = true; },
+      toggle(){ S.paused = !S.paused; },
+      setSpeed(v){ S.speed = Math.max(1, +v||1); renderSpeed(); },
+      incSpeed(step=4){ S.speed = Math.min(200, (S.speed||40) + step); renderSpeed(); },
+      decSpeed(step=4){ S.speed = Math.max(1, (S.speed||40) - step); renderSpeed(); },
+      reverse(){ S.dir = (S.dir||-1) * -1; }
+    };
+
+    function renderSpeed(){
+      const r = container.querySelector('.speed-readout');
+      if (r) r.textContent = (S.speed||40) + ' px/s';
+    }
+    renderSpeed();
+
+    // Delegate clicks
+    container.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-action]');
+      if (!btn) return;
+      const act = btn.getAttribute('data-action');
+      const ctl = container.__rafCtl;
+      if (!ctl) return;
+      if (act === 'play') ctl.play();
+      else if (act === 'pause') ctl.pause();
+      else if (act === 'toggle') ctl.toggle();
+      else if (act === 'speed-up') ctl.incSpeed();
+      else if (act === 'speed-down') ctl.decSpeed();
+      else if (act === 'reverse') ctl.reverse();
+    }, true);
+  });
 })();
 </script>
 
