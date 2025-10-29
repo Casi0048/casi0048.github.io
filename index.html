@@ -894,16 +894,17 @@ nav.menu-desktop .mega-menu.right-align:hover {
       #effects-ctrl .ctrl-btn{min-width:6.5rem}
       @media (min-width:1200px){ main{padding-left:16rem;padding-right:22rem} }
     </style>
+
 <style id="patch-ui-override">
-/* ==== Slider verticale: dimensioni fisse & anti-jitter ==== */
+/* ==== Slider verticale: dimensioni fisse & anti-jitter (300px) ==== */
 .slider-vertical{
   /* larghezza card e altezze fisse */
   --slide-w: 260px;
-  --slide-h: 240px;  /* altezza TOTALE della card (img + didascalia + padding) */
-  --img-h: 180px;    /* altezza dell’immagine dentro la card */
-  width: var(--slide-w);           /* coerente con la card */
-  /* opzionale: se vuoi la finestra un po' più alta, lascia la tua 20rem */
-  /* height: calc(var(--slide-h) * 1.35); */
+  --slide-h: 300px;        /* altezza card */
+  --vpad: 24px;            /* padding verticale: .62rem top + .88rem bottom ≈ 24px */
+  --caption-h: 52px;       /* spazio fisso per la didascalia (≈ 2 righe) */
+  --img-h: calc(var(--slide-h) - var(--caption-h) - var(--vpad));
+  width: var(--slide-w);
 }
 
 .slider-vertical .slider-inner{
@@ -946,78 +947,17 @@ nav.menu-desktop .mega-menu.right-align:hover {
   text-align: center;
   color: #ffe9b8;
   text-shadow: 0 0 .5rem rgba(255,215,0,.25);
-  min-height: 2.6em; line-height: 1.3;
-  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-/* Consiglio: tieni luci/ombre leggere per evitare tremolii su alcuni browser */
-</style>
-
-    <link rel="stylesheet" href="patch-ui-override.css?v=20251029">
-
-    <style id="patch-ui-override">
-/* ==== Slider verticale: dimensioni fisse & anti-jitter ==== */
-.slider-vertical{
-  --slide-w: 260px;
-  --slide-h: 300px;        /* altezza card */
-  --vpad: 24px;            /* padding verticale: .62rem top + .88rem bottom ≈ 24px */
-  --caption-h: 50px;       /* spazio fisso per la didascalia (≈ 2 righe) */
-  --img-h: calc(var(--slide-h) - var(--caption-h) - var(--vpad));
-  width: var(--slide-w);
-}
-
-.slide-vertical{ height: var(--slide-h); }
-.slide-vertical img{
-  height: var(--img-h);
-  width: 100%;
-  object-fit: cover;
-}
-.slide-vertical p{
   min-height: var(--caption-h);
-}
-.slide-vertical{
-  width: 100%;
-  height: var(--slide-h);
-  padding: .62rem .62rem .88rem;
-  display: flex; flex-direction: column; align-items: center; gap: .5rem;
-  box-sizing: border-box;
-  overflow: hidden;                /* niente trabordi durante il movimento */
-  contain: content;                /* isola layout/paint della card */
-  backface-visibility: hidden;
-}
-
-.slide-vertical img{
-  width: 100%;
-  height: var(--img-h);
-  object-fit: cover;               /* riempi la card tagliando l’eccesso */
-  display: block;
-  background: rgba(0,0,0,.25);
-  border-radius: .62rem;
-  border: 1px solid rgba(255,255,255,.1);
-  box-shadow: 0 .38rem .88rem rgba(0,0,0,.25);
-  will-change: transform;
-  backface-visibility: hidden;
-  transform: translateZ(0);
-}
-
-/* Didascalia: spazio stabile, 2 righe max */
-.slide-vertical p{
-  margin: .25rem 0 0;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: .92rem;
-  text-align: center;
-  color: #ffe9b8;
-  text-shadow: 0 0 .5rem rgba(255,215,0,.25);
-  min-height: 2.6em; line-height: 1.3;
+  line-height: 1.3;
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
   overflow: hidden;
 }
-
-/* Consiglio: tieni luci/ombre leggere per evitare tremolii su alcuni browser */
 </style>
 
-<style id="right-links-css">
+
+<link rel="stylesheet" href="patch-ui-override.css?v=20251029">
+
+    <style id="right-links-css">
       .right-box{
       position:fixed; right:1.25rem; width:20rem; z-index:25;
       background: rgba(10,10,30,.86); border:1px solid rgba(255,215,0,.25);
@@ -8421,6 +8361,17 @@ document.addEventListener('DOMContentLoaded', function() {
 })();
 </script>
 
+
+<script id="slider-clean-img-attrs">
+// Normalizza attributi IMG dello slider (rimuove height hard-coded)
+document.addEventListener('DOMContentLoaded', function(){
+  document.querySelectorAll('.slider-vertical img').forEach(function(img){
+    if (img.hasAttribute('height')) img.removeAttribute('height');
+    if (!img.hasAttribute('width')) img.setAttribute('width','260');
+  });
+});
+</script>
+
 </body> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/ScrollMagic.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/plugins/animation.gsap.min.js"></script>
@@ -8660,6 +8611,17 @@ window.addEventListener('load', function() {
     }
   }, { capture: true });
 })();
+</script>
+
+
+<script id="slider-clean-img-attrs">
+// Normalizza attributi IMG dello slider (rimuove height hard-coded)
+document.addEventListener('DOMContentLoaded', function(){
+  document.querySelectorAll('.slider-vertical img').forEach(function(img){
+    if (img.hasAttribute('height')) img.removeAttribute('height');
+    if (!img.hasAttribute('width')) img.setAttribute('width','260');
+  });
+});
 </script>
 
 </body>
