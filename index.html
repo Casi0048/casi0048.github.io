@@ -959,22 +959,23 @@ nav.menu-desktop .mega-menu.right-align:hover {
     <style id="patch-ui-override">
 /* ==== Slider verticale: dimensioni fisse & anti-jitter ==== */
 .slider-vertical{
-  /* larghezza card e altezze fisse */
   --slide-w: 260px;
-  --slide-h: 270px;  /* altezza TOTALE della card (img + didascalia + padding) */
-  --img-h: 180px;    /* altezza dell’immagine dentro la card */
-  width: var(--slide-w);           /* coerente con la card */
-  /* opzionale: se vuoi la finestra un po' più alta, lascia la tua 20rem */
-  /* height: calc(var(--slide-h) * 1.35); */
+  --slide-h: 300px;        /* altezza card */
+  --vpad: 24px;            /* padding verticale: .62rem top + .88rem bottom ≈ 24px */
+  --caption-h: 50px;       /* spazio fisso per la didascalia (≈ 2 righe) */
+  --img-h: calc(var(--slide-h) - var(--caption-h) - var(--vpad));
+  width: var(--slide-w);
 }
 
-.slider-vertical .slider-inner{
-  position:absolute; inset:0;
-  will-change: transform;
-  backface-visibility: hidden;
-  transform: translateZ(0);        /* forza compositing GPU */
+.slide-vertical{ height: var(--slide-h); }
+.slide-vertical img{
+  height: var(--img-h);
+  width: 100%;
+  object-fit: cover;
 }
-
+.slide-vertical p{
+  min-height: var(--caption-h);
+}
 .slide-vertical{
   width: 100%;
   height: var(--slide-h);
