@@ -8623,6 +8623,82 @@ document.addEventListener('DOMContentLoaded', function(){
   });
 });
 </script>
+<script>
+/* ==== Slider speed sensitivity patch (conservativo) ==== */
+(function(){
+  const sliders = document.querySelectorAll('.slider-vertical,[data-vertical-slider="on"],.v-slider,.slider-vertical');
+  sliders.forEach(container => {
+    const S = container.__rafState = container.__rafState || { paused:false, speed:40, dir:-1, y:0 };
+
+    // ---- 1) Parametri di sensibilità (personalizzabili via data-*) ----
+    const stepClick   = parseFloat(container.dataset.speedStep)   || 8;     // ↑ default 8 px/s a click
+    const stepHold    = parseFloat(container.dataset.speedHold)   || 6;     // incremento mentre tieni premuto
+    const accelAfter  = parseInt(container.dataset.accelDelayMs)  || 500;   // accelera dopo 500ms
+    const accelFactor = parseFloat(container.dataset.accelFactor) || 3;     // moltiplica lo step dopo il ritardo
+    const wheelFactor = parseFloat(container.dataset.speedWheel)  || 0.08;  // sensibilità rotellina
+    const minSpeed    = parseFloat(container.dataset.minSpeed)    || 1;
+    const maxSpeed    = parseFloat(container.dataset.maxSpeed)    || 300;
+
+    // ---- 2) Readout helper ----
+    const readout = container.querySelector('.speed-readout');
+    const renderSpeed = () => { if (readout) readout.textContent = Math.round(S.speed) + ' px/s'; };
+    renderSpeed();
+
+    // ---- 3) Click singolo sui bottoni esistenti ----
+    container.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-action]');
+      if (!btn) return;
+      const act = btn.getAttribute('data-action');
+      if (act === 'speed-up')   { S.speed = Math.min(maxSpeed, (S.speed||40) + stepClick); renderSpeed(); }
+      if (act === 'speed-down') { S.speed = Math.max(minSpeed,   (S.speed||40) - stepClick); renderSpeed(); }
+    }, true);
+
+    // ---- 4) Tenuta prolungata (hold) con accelerazione ----
+    function attachHold(btn, dir){ // dir: +1 up, -1 down
+      let t1=null, t2=null, accelerated=false;
+      btn.addEventListener('mousedown', (e)=>{
+        e.preventDefault();
+        // primo scatto immediato
+        S.speed = clamp((S.speed||40) + dir*stepClick, minSpeed, maxSpeed); renderSpeed();
+        // dopo accelAfter ms, accelera
+        t1 = setTimeout(()=>{
+          accelerated = true;
+          t2 = setInterval(()=>{
+            const inc = dir * (accelerated ? stepHold*accelFactor : stepHold);
+            S.speed = clamp((S.speed||40) + inc, minSpeed, maxSpeed);
+            renderSpeed();
+          }, 70); // ripetizione veloce
+        }, accelAfter);
+      });
+      const cleanup = ()=>{ clearTimeout(t1); clearInterval(t2); accelerated=false; t1=t2=null; };
+      ['mouseup','mouseleave','blur'].forEach(ev => btn.addEventListener(ev, cleanup));
+      window.addEventListener('mouseup', cleanup);
+    }
+    const upBtn = container.querySelector('[data-action="speed-up"]');
+    const dnBtn = container.querySelector('[data-action="speed-down"]');
+    if (upBtn) attachHold(upBtn, +1);
+    if (dnBtn) attachHold(dnBtn, -1);
+
+    // ---- 5) Rotellina del mouse sullo slider: regola velocità ----
+    container.addEventListener('wheel', (e)=>{
+      // preveniamo lo scroll pagina solo sopra lo slider
+      e.preventDefault();
+      // deltaY > 0 → giù (rallenta), < 0 → su (velocizza)
+      const delta = -e.deltaY * wheelFactor; // invertito perché wheel "su" deve aumentare
+      S.speed = clamp((S.speed||40) + delta, minSpeed, maxSpeed);
+      renderSpeed();
+    }, { passive:false });
+
+    // ---- 6) Tastiera: + / - per regolare (funziona quando la pagina ha focus) ----
+    window.addEventListener('keydown', (e)=>{
+      if (e.key === '+' || e.key === '=' ) { S.speed = Math.min(maxSpeed, (S.speed||40) + stepClick); renderSpeed(); }
+      if (e.key === '-' || e.key === '_' ) { S.speed = Math.max(minSpeed,   (S.speed||40) - stepClick); renderSpeed(); }
+    });
+
+    function clamp(v, a, b){ return Math.max(a, Math.min(b, v)); }
+  });
+})();
+</script>
 
 </body>
 </html>
