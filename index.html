@@ -3781,7 +3781,7 @@ html {
         width: 100%;
         height: 100%;
         pointer-events: none;
-        z-index: 9; /* SOPRA le stelle normali */
+        z-index: 7; /* SOPRA le stelle normali */
     }
 </style>
 <style id="ultimate-explosion-effect">
@@ -6097,12 +6097,16 @@ function softPlay(audio, volume, delay) {
             }catch(_){}
           }
         }
-        (function schedule(){
-          setTimeout(()=>{
-            flash();
-            schedule();
-          },10000+Math.random()*5000);
-        })();
+       const LAMPO_MIN_MS = 5000;     // minimo tra un lampo e l'altro
+const LAMPO_JITTER_MS = 3000;  // aggiunta casuale (0..JITTER)
+
+(function schedule(){
+  setTimeout(()=>{
+    flash();
+    schedule();
+  }, LAMPO_MIN_MS + Math.random()*LAMPO_JITTER_MS);
+})();
+
         document.getElementById('explode-btn')?.addEventListener('click',()=>{
           try{
             ex.muted=false;
