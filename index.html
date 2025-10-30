@@ -646,7 +646,22 @@ main {
   font-size: 0.9rem;
   color: var(--gold);
 }
+.speed-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: var(--text-accent);
+}
 
+#speed-readout {
+    background: rgba(255,215,0,0.2);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    min-width: 60px;
+    text-align: center;
+}
 /* Footer */
 footer { padding: 1.5rem 1rem; 
     margin-top: auto; /* Spazio aggiuntivo */
@@ -895,64 +910,7 @@ nav.menu-desktop .mega-menu.right-align:hover {
       @media (min-width:1200px){ main{padding-left:16rem;padding-right:22rem} }
     </style>
 
-<style id="patch-ui-override">
-/* ==== Slider verticale: dimensioni fisse & anti-jitter (300px) ==== */
-.slider-vertical{
-  /* larghezza card e altezze fisse */
-  --slide-w: 260px;
-  --slide-h: 300px;        /* altezza card */
-  --vpad: 24px;            /* padding verticale: .62rem top + .88rem bottom ≈ 24px */
-  --caption-h: 52px;       /* spazio fisso per la didascalia (≈ 2 righe) */
-  --img-h: calc(var(--slide-h) - var(--caption-h) - var(--vpad));
-  width: var(--slide-w);
-}
 
-.slider-vertical .slider-inner{
-  position:absolute; inset:0;
-  will-change: transform;
-  backface-visibility: hidden;
-  transform: translateZ(0);        /* forza compositing GPU */
-}
-
-.slide-vertical{
-  width: 100%;
-  height: var(--slide-h);
-  padding: .62rem .62rem .88rem;
-  display: flex; flex-direction: column; align-items: center; gap: .5rem;
-  box-sizing: border-box;
-  overflow: hidden;                /* niente trabordi durante il movimento */
-  contain: content;                /* isola layout/paint della card */
-  backface-visibility: hidden;
-}
-
-.slide-vertical img{
-  width: 100%;
-  height: var(--img-h);
-  object-fit: cover;               /* riempi la card tagliando l’eccesso */
-  display: block;
-  background: rgba(0,0,0,.25);
-  border-radius: .62rem;
-  border: 1px solid rgba(255,255,255,.1);
-  box-shadow: 0 .38rem .88rem rgba(0,0,0,.25);
-  will-change: transform;
-  backface-visibility: hidden;
-  transform: translateZ(0);
-}
-
-/* Didascalia: spazio stabile, 2 righe max */
-.slide-vertical p{
-  margin: .25rem 0 0;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: .92rem;
-  text-align: center;
-  color: #ffe9b8;
-  text-shadow: 0 0 .5rem rgba(255,215,0,.25);
-  min-height: var(--caption-h);
-  line-height: 1.3;
-  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-</style>
 
 
 <link rel="stylesheet" href="patch-ui-override.css?v=20251029">
@@ -1023,7 +981,7 @@ nav.menu-desktop .mega-menu.right-align:hover {
     width: 15% !important;
     margin-top: 0.5rem;
   }
-  #audio-player{ margin-top: 585px; top: 0; }
+  #audio-player{ margin-top: 595px; top: 0; }
 
   #audio-player .audio-title{
     margin: 0; font-weight: 700;
@@ -1670,22 +1628,7 @@ window.googleTranslateElementInit = function(){
   box-shadow: 0 0 6px rgba(255,215,0,.4);
 }
 </style>
-<style id="speed-readout-css">
-#slider-speed{ vertical-align: middle; }
-#speed-readout{
-  display: inline-block;
-  min-width: 3.5ch;
-  margin-left: .6rem;
-  padding: .15rem .4rem;
-  border-radius: .5rem;
-  font-variant-numeric: tabular-nums;
-  font-size: .9rem;
-  line-height: 1.1;
-  background: rgba(255,255,255,.15);
-  border: 1px solid rgba(212,175,55,.55);
-  box-shadow: 0 0 6px rgba(255,215,0,.25);
-}
-</style>
+
 <style id="russell-conservative-anim">
 /* Conservative micro‑interaction for Russell box — stronger & robust */
 #russell-box{
@@ -3540,6 +3483,35 @@ html {
 }
 </style>
 <style>
+  .speed-control-compact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+}
+
+.speed-header {
+    font-size: 0.85rem;
+    color: var(--text-accent);
+    font-weight: 600;
+}
+
+.speed-value {
+    font-size: 0.8rem;
+    color: var(--gold);
+    font-weight: 600;
+    background: rgba(255,215,0,0.15);
+    padding: 2px 8px;
+    border-radius: 10px;
+    min-width: 60px;
+    text-align: center;
+}
+
+#slider-speed {
+    width: 160px;
+}
+</style>
+<style>
 /* === PULSANTE TORNA SU - VERSIONE FLUTTUANTE === */
 .back-to-top.floating {
     position: fixed;
@@ -4412,11 +4384,12 @@ body {
 <div aria-label="Galleria autori"
      class="slider-vertical"
      data-vertical-slider="on"
-     data-speed="300"         <!-- ⬅️ velocità iniziale in px/s (prova 240, 300, 360) -->
-     data-max-speed="1200">   <!-- ⬅️ opzionale: alza il tetto max se previsto dai controlli -->
+     data-speed="120"      <!-- velocità iniziale soft -->
+     data-max-speed="800"> <!-- tetto prudente -->
   <div class="slider-inner" id="sliderInner">
+
     <div class="slide-vertical">
-      <img src="/foto/aristotele.webp" alt="Aristotele" width="260" height="340" loading="eager" decoding="async" />
+      <img src="/foto/aristotele.webp" alt="Aristotele" width="260" decoding="async" loading="eager">
       <p>Aristotele</p>
     </div>
 
@@ -4529,10 +4502,16 @@ body {
 </div>
 
 <div class="slider-controls" id="slider-controls">
-<button class="ctrl-btn" id="slider-toggle">⏯️ Avvia / Ferma</button>
-<button class="ctrl-btn" id="slider-invert">🔄 Inverti</button>
-<label class="speed-label" for="slider-speed"><span class="speed-label-text">Regola velocità</span><input id="slider-speed" max="12" min="1" type="range" value="8"/></label>
+    <button class="ctrl-btn" id="slider-toggle">⏯️ Avvia / Ferma</button>
+    <button class="ctrl-btn" id="slider-invert">🔄 Inverti</button>
+    
+    <div class="speed-control-compact">
+        <div class="speed-header">Velocità</div>
+        <input id="slider-speed" max="10" min="1" type="range" value="5"/>
+        <div class="speed-value" id="speed-readout">23 px/s</div>
+    </div>
 </div>
+
 <div aria-label="Lettore audio" class="audio-player" id="audio-player">
 <div class="audio-title">🎧 Musica per lo studio</div>
 <br/>
@@ -5686,193 +5665,262 @@ function softPlay(audio, volume, delay) {
         }
       });
 
-      // === SLIDER VERTICALE - VERSIONE VELOCITÀ MIGLIORATA ===
-      (function(){
-        const inner = document.getElementById('sliderInner');
-        if(!inner) return;
-        
-        let pos = 0;
-        let speed = 0.8; // VELOCITÀ BASE PIÙ ALTA
-        let dir = 1;
-        let running = true;
-        
-        function step(){
-          if(!running){
-            requestAnimationFrame(step);
-            return;
-          }
-          pos += dir * speed;
-          inner.style.transform = `translateY(${-pos}px)`;
-          const total = inner.scrollHeight - inner.clientHeight;
-          if(pos >= total) pos = 0;
-          if(pos < 0) pos = total;
-          requestAnimationFrame(step);
-        }
-        requestAnimationFrame(step);
-        
-        const t = document.getElementById('slider-toggle'),
-              i = document.getElementById('slider-invert'),
-              sp = document.getElementById('slider-speed');
-        
-        t?.addEventListener('click', () => running = !running);
-        i?.addEventListener('click', () => dir *= -1);
-        
-        // 🚀 REGOLAZIONE VELOCITÀ MIGLIORATA
-        sp?.addEventListener('input', () => {
-          const v = parseInt(sp.value, 10) || 5;
-          
-          // FORMULA MIGLIORATA: progressione più sensibile
-          if(v <= 6) {
-            speed = 0.2 + (v - 1) * 0.15;
-          } else {
-            speed = 0.2 + (v - 1) * 0.25;
-          }
-        });
-        
-        // Inizializza con velocità media
-        if(sp) {
-          sp.value = 8;
-          sp.dispatchEvent(new Event('input'));
-        }
-      })();
+      // === SLIDER VERTICALE - VERSIONE VELOCITÀ OTTIMIZZATA ===
+(function(){
+  const inner = document.getElementById('sliderInner');
+  if(!inner) {
+    console.warn('Slider inner element not found');
+    return;
+  }
+  
+  let pos = 0;
+  let speed = 0.5; // VELOCITÀ INIZIALE x3.0
+  let dir = 1;
+  let running = true;
+  let animationId = null;
+  
+  function step(){
+    if(!running){
+      animationId = requestAnimationFrame(step);
+      return;
+    }
+    pos += dir * speed;
+    inner.style.transform = `translateY(${-pos}px)`;
+    const total = inner.scrollHeight - inner.clientHeight;
+    if(pos >= total) pos = 0;
+    if(pos < 0) pos = total;
+    animationId = requestAnimationFrame(step);
+  }
+  animationId = requestAnimationFrame(step);
+  
+  const t = document.getElementById('slider-toggle'),
+        i = document.getElementById('slider-invert'),
+        sp = document.getElementById('slider-speed'),
+        speedReadout = document.getElementById('speed-readout');
+  
+  // Gestione toggle
+  t?.addEventListener('click', () => {
+    running = !running;
+    t.textContent = running ? '⏸️ Ferma' : '▶️ Avvia';
+  });
+  
+  // Inversione direzione
+  i?.addEventListener('click', () => {
+    dir *= -1;
+    i.textContent = dir > 0 ? '🔄 Inverti' : '🔄 Normale';
+  });
+  
+  // 🚀 REGOLAZIONE VELOCITÀ MIGLIORATA
+  sp?.addEventListener('input', () => {
+    const v = parseInt(sp.value, 10) || 5;
+    
+    // FORMULA PER VELOCITÀ x3.0 INIZIALE
+    if(v <= 6) {
+      speed = 0.15 + (v - 1) * 0.12;
+    } else {
+      speed = 0.15 + (v - 1) * 0.20;
+    }
+    
+    // Aggiorna display velocità
+    if(speedReadout) {
+      speedReadout.textContent = Math.round(speed * 30) + ' px/s';
+    }
+  });
+  
+  // ⭐⭐ INIZIALIZZA CON VELOCITÀ x3.0 ⭐⭐
+  if(sp) {
+    sp.value = 6; // Posizione per velocità x3.0
+    sp.dispatchEvent(new Event('input'));
+  }
+})();2
+// === PLAYER AUDIO PRINCIPALE ===
+window.addEventListener('load',()=>{
+  const a = document.getElementById('myAudio'),
+        btn = document.getElementById('playPause'),
+        tm = document.getElementById('time'),
+        v = document.getElementById('volume');
+  
+  if(!a || !btn) return;
+  
+  // Formattazione tempo
+  function f(s){
+    if(!isFinite(s)) return '0:00';
+    const m = Math.floor(s/60),
+          c = Math.floor(s % 60);
+    return m + ':' + (c < 10 ? '0' + c : c);
+  }
+  
+  // Aggiornamento display
+  function u(){
+    if(tm) tm.textContent = `${f(a.currentTime)} / ${f(a.duration)}`;
+  }
+  
+  // Configurazione iniziale
+  v.value = 0.8;
+  a.volume = parseFloat(v.value);
+  
+  // Gestione play/pause
+  btn.addEventListener('click', () => {
+    if(a.paused){
+      a.play().catch(() => {});
+      btn.textContent = '⏸️';
+    } else {
+      a.pause();
+      btn.textContent = '▶️';
+    }
+  });
+  
+  // Event listeners
+  v.addEventListener('input', () => a.volume = parseFloat(v.value));
+  a.addEventListener('timeupdate', u);
+  a.addEventListener('loadedmetadata', u);
+  a.addEventListener('ended', () => { 
+    btn.textContent = '▶️';
+    a.currentTime = 0;
+  });
+});
 
-      window.addEventListener('load',()=>{
-        const a=document.getElementById('myAudio'),
-              btn=document.getElementById('playPause'),
-              tm=document.getElementById('time'),
-              v=document.getElementById('volume');
-        if(!a||!btn)return;
-        function f(s){if(!isFinite(s))return'0:00';const m=Math.floor(s/60),c=Math.floor(s%60);return m+':'+(c<10?'0'+c:c)}
-        function u(){tm.textContent=`${f(a.currentTime)} / ${f(a.duration)}`}
-        v.value=.8;
-        a.volume=parseFloat(v.value);
-        btn.addEventListener('click',()=>{
-          if(a.paused){
-            a.play().catch(()=>{});
-            btn.textContent='⏸️';
-          }else{
-            a.pause();
-            btn.textContent='▶️';
-          }
-        });
-        v.addEventListener('input',()=>a.volume=parseFloat(v.value));
-        a.addEventListener('timeupdate',u);
-        a.addEventListener('loadedmetadata',u);
-        a.addEventListener('ended',()=>{btn.textContent='▶️'});
-      });
-
-      (function(){
-        const b=document.getElementById('russell-btn'),
-              h=document.getElementById('russell-hint'),
-              a=document.getElementById('russell-audio');
-        if(!b||!a)return;
-        let u=false;
-        function lk(){
-          if(u)return;
-          u=true;
-          a.muted=false;
-          a.play().then(()=>{a.pause();a.currentTime=0}).catch(()=>{});
-          window.removeEventListener('pointerdown',lk,{capture:true});
-          window.removeEventListener('keydown',lk,{capture:true});
-        }
-        window.addEventListener('pointerdown',lk,{once:true,capture:true,passive:true});
-        window.addEventListener('keydown',lk,{once:true,capture:true});
-        b.addEventListener('click',()=>{
-          try{
-            a.currentTime=0;
-            a.play().catch(()=>{});
-          }catch(_){ }
-        });
-      })();
-
-      (function(){
-        const btn=document.getElementById('btn-thunder'),
-              th=document.getElementById('thunder-sound'),
-              ex=document.getElementById('explosionSound'),
-              ov=document.getElementById('lightning'),
-              bo=document.getElementById('bolt');
-        if(!btn||!th||!ov||!bo)return;
-        let unlocked=false;
-        async function unlockOnce(){
-          if(unlocked)return;
-          unlocked=true;
-          for(const s of [th,ex]){
-            try{
-              s.muted=false;
-              await s.play();
-              s.pause();
-              s.currentTime=0;
-            }catch(_){}
-          }
-        }
-        window.addEventListener('pointerdown',unlockOnce,{once:true,passive:true,capture:true});
-        window.addEventListener('keydown',unlockOnce,{once:true,capture:true});
-        let on=false;
-        function up(){
-          btn.classList.toggle('active',on);
-          btn.setAttribute('aria-pressed',on?'true':'false');
-          btn.textContent=on?'⚡ Tuono: ON':'⚡ Tuono';
-        }
-        btn.addEventListener('click',e=>{
-          e.preventDefault();
-          on=!on;
-          if(on){
-            try{
-              th.currentTime=0;
-              softPlay(th, 1.0, 140);
-            }catch(_){}
-          }else{
-            try{
-              th.pause();
-              th.currentTime=0;
-            }catch(_){}
-          }
-          up();
-        });
-        up();
-        function flash(){
-          const x=15+Math.random()*70,
-                y=10+Math.random()*65,
-                ang=-25+Math.random()*50,
-                sy=.8+Math.random()*1.2;
-          ov.style.transition='none';
-          ov.offsetHeight;
-          ov.style.background=`radial-gradient(circle at ${x}% ${y}%, rgba(255,255,255,.95), rgba(255,255,255,.22) 40%, transparent 65%)`;
-          ov.style.opacity='1';
-          ov.style.transition='opacity 80ms ease-out';
-          setTimeout(()=>ov.style.opacity='0',140);
-          bo.style.left=x+'%';
-          bo.style.top=y+'%';
-          bo.style.transform=`translate(-50%,-50%) rotate(${ang}deg) scaleY(${sy})`;
-          bo.style.transition='transform 90ms ease-out, opacity 280ms ease-out';
-          bo.style.opacity='1';
-          setTimeout(()=>bo.style.opacity='0',180);
-          if(on){
-            try{
-              th.currentTime=0;
-              softPlay(th, 1.0, 140);
-            }catch(_){}
-          }
-        }
-       const LAMPO_MIN_MS = 5000;     // minimo tra un lampo e l'altro
-const LAMPO_JITTER_MS = 3000;  // aggiunta casuale (0..JITTER)
-
-(function schedule(){
-  setTimeout(()=>{
-    flash();
-    schedule();
-  }, LAMPO_MIN_MS + Math.random()*LAMPO_JITTER_MS);
+// === AUDIO RUSSELL (CHITARRA) ===
+(function(){
+  const b = document.getElementById('russell-btn'),
+        h = document.getElementById('russell-hint'),
+        a = document.getElementById('russell-audio');
+  
+  if(!b || !a) return;
+  
+  let unlocked = false;
+  
+  function unlockAudio(){
+    if(unlocked) return;
+    unlocked = true;
+    a.muted = false;
+    a.play().then(() => {
+      a.pause();
+      a.currentTime = 0;
+    }).catch(() => {});
+    
+    // Rimuovi listeners di unlock
+    window.removeEventListener('pointerdown', unlockAudio, { capture: true });
+    window.removeEventListener('keydown', unlockAudio, { capture: true });
+    
+    // Nascondi hint dopo unlock
+    if(h) h.style.display = 'none';
+  }
+  
+  // Setup unlock
+  window.addEventListener('pointerdown', unlockAudio, { once: true, capture: true, passive: true });
+  window.addEventListener('keydown', unlockAudio, { once: true, capture: true });
+  
+  // Play chitarra al click
+  b.addEventListener('click', () => {
+    try {
+      a.currentTime = 0;
+      a.play().catch(() => {});
+    } catch(_) {}
+  });
 })();
 
-        document.getElementById('explode-btn')?.addEventListener('click',()=>{
-          try{
-            ex.muted=false;
-            ex.volume=1.0;
-            ex.currentTime=0;
-            softPlay(ex, 1.0, 140);
-          }catch(_){}
-        });
-      })();
+// === EFFETTI TUONO E LAMP ===
+(function(){
+  const btn = document.getElementById('btn-thunder'),
+        th = document.getElementById('thunder-sound'),
+        ex = document.getElementById('explosionSound'),
+        ov = document.getElementById('lightning'),
+        bo = document.getElementById('bolt');
+  
+  if(!btn || !th || !ov || !bo) return;
+  
+  let unlocked = false;
+  let on = false;
+  
+  // Unlock audio effetti
+  async function unlockOnce(){
+    if(unlocked) return;
+    unlocked = true;
+    for(const s of [th, ex]){
+      try {
+        s.muted = false;
+        await s.play();
+        s.pause();
+        s.currentTime = 0;
+      } catch(_) {}
+    }
+  }
+  
+  window.addEventListener('pointerdown', unlockOnce, { once: true, passive: true, capture: true });
+  window.addEventListener('keydown', unlockOnce, { once: true, capture: true });
+  
+  // Aggiornamento stato pulsante
+  function updateButtonState(){
+    btn.classList.toggle('active', on);
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    btn.textContent = on ? '⚡ Tuono: ON' : '⚡ Tuono';
+  }
+  
+  // Toggle tuono
+  btn.addEventListener('click', e => {
+    e.preventDefault();
+    on = !on;
+    updateButtonState();
+  });
+  
+  updateButtonState();
+  
+  // Effetto lampo
+  function flash(){
+    const x = 15 + Math.random() * 70,
+          y = 10 + Math.random() * 65,
+          ang = -25 + Math.random() * 50,
+          sy = 0.8 + Math.random() * 1.2;
+    
+    // Reset transizioni
+    ov.style.transition = 'none';
+    ov.offsetHeight; // Forza reflow
+    
+    // Animazione overlay
+    ov.style.background = `radial-gradient(circle at ${x}% ${y}%, rgba(255,255,255,.95), rgba(255,255,255,.22) 40%, transparent 65%)`;
+    ov.style.opacity = '1';
+    ov.style.transition = 'opacity 80ms ease-out';
+    setTimeout(() => ov.style.opacity = '0', 140);
+    
+    // Animazione bolt
+    bo.style.left = x + '%';
+    bo.style.top = y + '%';
+    bo.style.transform = `translate(-50%, -50%) rotate(${ang}deg) scaleY(${sy})`;
+    bo.style.transition = 'transform 90ms ease-out, opacity 280ms ease-out';
+    bo.style.opacity = '1';
+    setTimeout(() => bo.style.opacity = '0', 180);
+    
+    // Riproduci tuono se attivo
+    if(on){
+      try {
+        th.currentTime = 0;
+        softPlay(th, 1.0, 140);
+      } catch(_) {}
+    }
+  }
+  
+  // Schedulazione lampi
+  const LAMPO_MIN_MS = 5000;
+  const LAMPO_JITTER_MS = 3000;
+  
+  (function schedule(){
+    setTimeout(() => {
+      flash();
+      schedule();
+    }, LAMPO_MIN_MS + Math.random() * LAMPO_JITTER_MS);
+  })();
+  
+  // Gestione esplosione
+  document.getElementById('btn-explode')?.addEventListener('click', () => {
+    try {
+      ex.muted = false;
+      ex.volume = 1.0;
+      ex.currentTime = 0;
+      softPlay(ex, 1.0, 140);
+    } catch(_) {}
+  });
+})();
 </script>
 <script id="search-init-smart">
       (function(){
@@ -8366,17 +8414,8 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 
-<script id="slider-clean-img-attrs">
-// Normalizza attributi IMG dello slider (rimuove height hard-coded)
-document.addEventListener('DOMContentLoaded', function(){
-  document.querySelectorAll('.slider-vertical img').forEach(function(img){
-    if (img.hasAttribute('height')) img.removeAttribute('height');
-    if (!img.hasAttribute('width')) img.setAttribute('width','260');
-  });
-});
-</script>
 
-</body> -->
+</body> 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/ScrollMagic.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/plugins/animation.gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
@@ -8618,104 +8657,92 @@ window.addEventListener('load', function() {
 </script>
 
 
-<script id="slider-clean-img-attrs">
-// Normalizza attributi IMG dello slider (rimuove height hard-coded)
-document.addEventListener('DOMContentLoaded', function(){
-  document.querySelectorAll('.slider-vertical img').forEach(function(img){
-    if (img.hasAttribute('height')) img.removeAttribute('height');
-    if (!img.hasAttribute('width')) img.setAttribute('width','260');
-  });
-});
-</script>
+
 <script>
-/* ==== Slider speed sensitivity patch (conservativo) ==== */
+// === SLIDER VERTICALE - VERSIONE UNIFICATA E FUNZIONANTE ===
 (function(){
-  const sliders = document.querySelectorAll('.slider-vertical,[data-vertical-slider="on"],.v-slider,.slider-vertical');
-  sliders.forEach(container => {
-    const S = container.__rafState = container.__rafState || { paused:false, speed:40, dir:-1, y:0 };
-
-    // ---- 1) Parametri di sensibilità (personalizzabili via data-*) ----
-    const stepClick   = parseFloat(container.dataset.speedStep)   || 8;     // ↑ default 8 px/s a click
-    const stepHold    = parseFloat(container.dataset.speedHold)   || 6;     // incremento mentre tieni premuto
-    const accelAfter  = parseInt(container.dataset.accelDelayMs)  || 500;   // accelera dopo 500ms
-    const accelFactor = parseFloat(container.dataset.accelFactor) || 3;     // moltiplica lo step dopo il ritardo
-    const wheelFactor = parseFloat(container.dataset.speedWheel)  || 0.08;  // sensibilità rotellina
-    const minSpeed    = parseFloat(container.dataset.minSpeed)    || 1;
-    const maxSpeed    = parseFloat(container.dataset.maxSpeed)    || 300;
-
-    // ---- 2) Readout helper ----
-    const readout = container.querySelector('.speed-readout');
-    const renderSpeed = () => { if (readout) readout.textContent = Math.round(S.speed) + ' px/s'; };
-    renderSpeed();
-
-    // ---- 3) Click singolo sui bottoni esistenti ----
-    container.addEventListener('click', (e) => {
-      const btn = e.target.closest('[data-action]');
-      if (!btn) return;
-      const act = btn.getAttribute('data-action');
-      if (act === 'speed-up')   { S.speed = Math.min(maxSpeed, (S.speed||40) + stepClick); renderSpeed(); }
-      if (act === 'speed-down') { S.speed = Math.max(minSpeed,   (S.speed||40) - stepClick); renderSpeed(); }
-    }, true);
-
-    // ---- 4) Tenuta prolungata (hold) con accelerazione ----
-    function attachHold(btn, dir){ // dir: +1 up, -1 down
-      let t1=null, t2=null, accelerated=false;
-      btn.addEventListener('mousedown', (e)=>{
-        e.preventDefault();
-        // primo scatto immediato
-        S.speed = clamp((S.speed||40) + dir*stepClick, minSpeed, maxSpeed); renderSpeed();
-        // dopo accelAfter ms, accelera
-        t1 = setTimeout(()=>{
-          accelerated = true;
-          t2 = setInterval(()=>{
-            const inc = dir * (accelerated ? stepHold*accelFactor : stepHold);
-            S.speed = clamp((S.speed||40) + inc, minSpeed, maxSpeed);
-            renderSpeed();
-          }, 70); // ripetizione veloce
-        }, accelAfter);
-      });
-      const cleanup = ()=>{ clearTimeout(t1); clearInterval(t2); accelerated=false; t1=t2=null; };
-      ['mouseup','mouseleave','blur'].forEach(ev => btn.addEventListener(ev, cleanup));
-      window.addEventListener('mouseup', cleanup);
+    const inner = document.getElementById('sliderInner');
+    if(!inner) return;
+    
+    let pos = 0;
+    let speed = 3.0; // ⚡ VELOCITÀ NORMALE di default
+    let dir = 1;
+    let running = true;
+    let lastTime = 0;
+    
+    function step(timestamp) {
+        if(!lastTime) lastTime = timestamp;
+        const delta = timestamp - lastTime;
+        lastTime = timestamp;
+        
+        if(!running) {
+            requestAnimationFrame(step);
+            return;
+        }
+        
+        // Calcolo posizione basato sul tempo reale
+        pos += dir * speed * (delta / 16);
+        inner.style.transform = `translateY(${-pos}px)`;
+        
+        const totalHeight = inner.scrollHeight - inner.parentElement.clientHeight;
+        if(pos >= totalHeight) pos = 0;
+        if(pos < 0) pos = totalHeight;
+        
+        requestAnimationFrame(step);
     }
-    const upBtn = container.querySelector('[data-action="speed-up"]');
-    const dnBtn = container.querySelector('[data-action="speed-down"]');
-    if (upBtn) attachHold(upBtn, +1);
-    if (dnBtn) attachHold(dnBtn, -1);
-
-    // ---- 5) Rotellina del mouse sullo slider: regola velocità ----
-    container.addEventListener('wheel', (e)=>{
-      // preveniamo lo scroll pagina solo sopra lo slider
-      e.preventDefault();
-      // deltaY > 0 → giù (rallenta), < 0 → su (velocizza)
-      const delta = -e.deltaY * wheelFactor; // invertito perché wheel "su" deve aumentare
-      S.speed = clamp((S.speed||40) + delta, minSpeed, maxSpeed);
-      renderSpeed();
-    }, { passive:false });
-
-    // ---- 6) Tastiera: + / - per regolare (funziona quando la pagina ha focus) ----
-    window.addEventListener('keydown', (e)=>{
-      if (e.key === '+' || e.key === '=' ) { S.speed = Math.min(maxSpeed, (S.speed||40) + stepClick); renderSpeed(); }
-      if (e.key === '-' || e.key === '_' ) { S.speed = Math.max(minSpeed,   (S.speed||40) - stepClick); renderSpeed(); }
-    });
-
-    function clamp(v, a, b){ return Math.max(a, Math.min(b, v)); }
-  });
+    
+    // CONTROLLI
+    const toggleBtn = document.getElementById('slider-toggle');
+    const invertBtn = document.getElementById('slider-invert');
+    const speedSlider = document.getElementById('slider-speed');
+    
+    // 🎛️ REGOLAZIONE VELOCITÀ - SCALA BILANCIATA
+    if(speedSlider) {
+        speedSlider.addEventListener('input', () => {
+            const value = parseInt(speedSlider.value, 10);
+            
+            // SCALA BILANCIATA - da molto lento a molto veloce
+            if(value <= 3) {
+                speed = 0.3 + (value - 1) * 0.4;      // 0.3 - 1.5 (molto lento)
+            } else if(value <= 6) {
+                speed = 1.5 + (value - 3) * 0.8;      // 1.5 - 4.0 (normale)
+            } else if(value <= 9) {
+                speed = 4.0 + (value - 6) * 1.5;      // 4.0 - 8.5 (veloce)
+            } else {
+                speed = 8.5 + (value - 9) * 2.5;      // 8.5 - 16.0 (molto veloce)
+            }
+            
+            // Aggiorna visualizzazione velocità se presente
+            const speedReadout = document.getElementById('speed-readout');
+            if(speedReadout) {
+                speedReadout.textContent = Math.round(speed * 10) + ' px/s';
+            }
+        });
+        
+        // ⭐ IMPOSTA VELOCITÀ NORMALE DI DEFAULT (valore 5 = ~2.3 px/frame)
+        speedSlider.value = 3;
+        speedSlider.dispatchEvent(new Event('input'));
+    }
+    
+    if(toggleBtn) {
+        toggleBtn.addEventListener('click', () => {
+            running = !running;
+            toggleBtn.textContent = running ? '⏸️ Ferma' : '▶️ Avvia';
+        });
+    }
+    
+    if(invertBtn) {
+        invertBtn.addEventListener('click', () => {
+            dir *= -1;
+            invertBtn.textContent = dir > 0 ? '🔄 Inverti' : '🔄 Normale';
+        });
+    }
+    
+    // AVVIA L'ANIMAZIONE
+    requestAnimationFrame(step);
+    
+    console.log('✅ Slider verticale inizializzato - Velocità normale attiva');
 })();
-</script>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.slider-vertical,[data-vertical-slider="on"]').forEach(c => {
-    // alza (o imposta) il tetto massimo usato dai controlli, se presente
-    c.dataset.maxSpeed = c.dataset.maxSpeed || '1200';
-
-    // spingi subito la velocità se è rimasta bassa
-    const S = c.__rafState || (c.__rafState = {paused:false, dir:-1, y:0, speed:40});
-    if (S.speed < (parseFloat(c.dataset.speed)||0)) {
-      S.speed = parseFloat(c.dataset.speed);
-    }
-  });
-});
 </script>
 
 </body>
