@@ -891,8 +891,69 @@ nav.menu-desktop .mega-menu.right-align:hover {
       .slider-vertical .slider-inner{position:absolute;inset:0;will-change:transform}
       .slide-vertical{width:100%;padding:.62rem .62rem .88rem;display:flex;flex-direction:column;align-items:center;gap:.5rem}
       .slide-vertical img{width:100%;height:8.75rem;object-fit:contain;display:block;background:rgba(0,0,0,.25);border-radius:.62rem;border:1px solid rgba(255,255,255,.1);box-shadow:0 .38rem .88rem rgba(0,0,0,.25)}
-      .slide-vertical p{margin:.25rem 0 0;font-family:'Cormorant Garamond',serif;font-size:.92rem;text-align:center;color:#ffe9b8;text-shadow:0 0 .5rem rgba(255,215,0,.25);min-height:2.6em;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-      .slider-controls{position:fixed;left:3.25rem;top:27.81rem;width:11.25rem;display:flex;flex-direction:column;gap:.5rem;background:rgba(10,10,25,.55);border:1px solid rgba(255,215,0,.22);border-radius:.62rem;padding:.5rem;z-index:80}
+      
+      /* --- Didascalia base: 1 riga/clamp 2 righe --- */
+      .slide-vertical p{
+        margin:.25rem 0 0;
+        font-family:'Cormorant Garamond',serif;
+        font-size:.92rem;
+        line-height:1.3;
+        text-align:center;
+        color:#ffe9b8;
+        text-shadow:0 0 .5rem rgba(255,215,0,.25);
+        white-space:normal;               /* consenti l'andata a capo */
+        overflow:hidden;
+        display:-webkit-box;
+        -webkit-box-orient:vertical;
+        -webkit-line-clamp:2;             /* max 2 righe */
+        min-height:calc(1.3em * 2);       /* riserva spazio per 2 righe */
+        overflow-wrap:anywhere;
+word-break:normal;
+hyphens:auto;
+      }
+
+      /* --- Variante B: titolo + sottotitolo controllati --- */
+      .slide-vertical .cap-sub{
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;  /* era 1 */
+  overflow:hidden;
+  font-size:.86rem;
+  line-height:1.2;
+  opacity:.95;
+  margin-top:.1rem;
+}
+
+      .slide-vertical p.cap{
+        margin:.25rem 0 0;
+        text-align:center;
+        color:#ffe9b8;
+        font-family:'Cormorant Garamond',serif;
+        text-shadow:0 0 .5rem rgba(255,215,0,.25);
+      }
+
+      .slide-vertical .cap-main{
+        display:block;
+        font-size:.95rem;
+        line-height:1.25;
+        font-weight:600;
+        overflow:hidden;
+        text-overflow:ellipsis;
+        white-space:nowrap;               /* titolo sempre su 1 riga */
+      }
+
+      /* sottotitolo: una riga clampata (se troppo lungo viene tagliato) */
+      .slide-vertical .cap-sub{
+        display:-webkit-box;
+        -webkit-box-orient:vertical;
+        -webkit-line-clamp:1;             /* max 1 riga per il sottotitolo */
+        overflow:hidden;
+        font-size:.86rem;
+        line-height:1.2;
+        opacity:.95;
+        margin-top:.1rem;
+      }
+      .slider-controls{position:fixed;left:5.75rem;top:27.81rem;width:11.25rem;display:flex;flex-direction:column;gap:.5rem;background:rgba(10,10,25,.55);border:1px solid rgba(255,215,0,.22);border-radius:.62rem;padding:.5rem;z-index:80}
       .ctrl-btn{display:inline-flex;align-items:center;justify-content:center;min-height:2rem;margin-bottom:2px;padding:.38rem .62rem;font-weight:600;cursor:pointer;border-radius:.5rem;border:1px solid rgba(255,215,0,.25);background:rgba(20,20,40,.7);color:#ffd86a}
       .audio-player{ margin-top:.5rem;  max-width:520px; position:fixed;left:3.25rem;top:40.38rem;z-index:80;display:flex;align-items:center;gap:.62rem;padding:.5rem .62rem;background:rgba(10,10,30,.8);border:1px solid rgba(255,215,0,.25);border-radius:.62rem;opacity:1;transform:none}
       .audio-title{font-weight:600}.audio-player .controls{display:flex;align-items:center;gap:.62rem}.audio-player input[type=range]{width:7.5rem}
@@ -909,7 +970,6 @@ nav.menu-desktop .mega-menu.right-align:hover {
       #effects-ctrl .ctrl-btn{min-width:6.5rem}
       @media (min-width:1200px){ main{padding-left:16rem;padding-right:22rem} }
     </style>
-
 
 
 
@@ -4440,7 +4500,7 @@ body {
 
     <div class="slide-vertical">
       <img src="/foto/kant.webp" alt="Immanuel Kant" width="260" decoding="async" loading="lazy">
-      <p>Immanuel Kant</p>
+      <p>Immanuel Kant il più zoppo tra gli storpi del concetto.</p>
     </div>
 
     <div class="slide-vertical">
@@ -4536,7 +4596,7 @@ body {
        alt="Dante Alighieri" 
        width="260" height="340" 
        loading="lazy" decoding="async" />
-  <p>Dante Alighieri</p>
+  <p>Dante Alighieri ovvero la iena che poeta fra le tombe.</p>
 </div>
 <div class="slide-vertical">
   <img src="/foto/gadamer.webp" 
