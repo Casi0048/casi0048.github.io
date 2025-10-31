@@ -1017,7 +1017,7 @@ hyphens:auto;
       position: fixed;
       top: var(--effects-top) !important;
       right: var(--effects-right) !important;
-      z-index: 2147483603;
+      z-index: 214;
       }
       /* Caso B: quando li appendiamo dentro header/topbar/navbar */
       header, .topbar, .navbar{ position: relative; overflow: visible; }
@@ -1092,7 +1092,7 @@ hyphens:auto;
     max-height: var(--search-panel-maxh);
     border-radius: 12px;
     overflow: hidden; /* scorre solo il body interno */
-    z-index: 2147483605;
+    z-index: 200;
   }
 
   /* Header del pannello: titolo + chiudi */
@@ -1237,7 +1237,7 @@ hyphens:auto;
     box-shadow: 0 1.2rem 2.4rem rgba(0,0,0,.45);
     padding: .95rem 1rem;
     display: none;
-    z-index: 2147483607; /* sopra tutto */
+    z-index: 100; /* sopra tutto */
     backdrop-filter: blur(.5rem);
   }
   .cc-banner.open{ display: grid; gap: .75rem; grid-template-columns: 1fr auto; align-items: start; }
@@ -1254,7 +1254,7 @@ hyphens:auto;
   /* MODALE “Personalizza” */
   .cc-modal{
     position: fixed; inset: 0; display: none; place-items: center;
-    background: rgba(0,0,0,.55); z-index: 2147483608;
+    background: rgba(0,0,0,.55); z-index: 201;
   }
   .cc-modal.open{ display: grid; }
   .cc-card{
@@ -1285,7 +1285,7 @@ hyphens:auto;
     background: rgba(20,20,40,.78);
     display: grid; place-items: center; cursor: pointer;
     box-shadow: 0 .8rem 1.6rem rgba(0,0,0,.45);
-    z-index: 2147483606;
+    z-index: 202;
     color:#ffde9a; font-size:1.25rem;
   }
   #cookie-fab:hover{ box-shadow: 0 0 .85rem rgba(255,215,0,.45); }
@@ -1348,7 +1348,7 @@ hyphens:auto;
 /* === Z-INDEX FIX: keep submenu above right-side boxes (articles/dictionary/encyclopedia) === */
 .menu-container{ z-index: 100 !important; } /* above .articles-blob/.right-embed (3600) */
 nav.menu-desktop, nav.menu-desktop ul, nav.menu-desktop li{ position: relative; z-index: 101 !important; }
-nav.menu-desktop .mega-menu{ z-index: 2147483606 !important; pointer-events: auto !important; }
+nav.menu-desktop .mega-menu{ z-index: 100 !important; pointer-events: auto !important; }
 /* Ensure right boxes don't steal hover on desktop when menu is open */
 @media (min-width: 981px){
   nav.menu-desktop li.dropdown:hover ~ .right-box,
@@ -1390,7 +1390,7 @@ window.googleTranslateElementInit = function(){
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 5;
+    z-index: 2;
     overflow: hidden;
 }
 
@@ -1433,7 +1433,7 @@ window.googleTranslateElementInit = function(){
     filter: blur(0.2px);
     box-shadow: 0 0 4px #00ccff, 0 0 8px #ffffff;
     opacity: 0;
-    z-index: 1;
+    z-index: 6;
 }
 
 /* VARIANTI DI VELOCITÀ - COMETE PICCOLE */
@@ -1702,7 +1702,7 @@ window.googleTranslateElementInit = function(){
   transform: translateY(-2px) scale(1.015);
   background-color: rgba(20,20,40,.88);
    filter: brightness(2.10) saturate(2.08);
-  z-index: 2147483600; /* bring above misc overlays while pinging */
+  z-index: 20; /* bring above misc overlays while pinging */
 }
 /* Button visual sync */
 #russell-btn{
@@ -2759,7 +2759,8 @@ document.addEventListener('DOMContentLoaded', function(){
     if (!sec.hasAttribute('aria-label')) sec.setAttribute('aria-label','Linea del tempo filosofica');
   }
 });
-</script><script id="timeline-suggest-nojs-flag">// FALLBACK NO-JS (FLAG)
+</script>
+<script id="timeline-suggest-nojs-flag">// FALLBACK NO-JS (FLAG)
 // - Scopo: aggiunge '.no-js' all'elemento <html> prima del DOMContentLoaded.
 // - Serve a mostrare la timeline se JS è disattivato (vedi CSS relativo).
 (function(){ document.documentElement.classList.add('no-js'); })();</script><style id="timeline-suggest-nojs-css">/* FALLBACK NO-JS (CSS) */
@@ -3509,7 +3510,7 @@ html {
   backdrop-filter: blur(2px);
   opacity: 0; pointer-events: none;
   transition: opacity .28s ease;
-  z-index: 2147483604;
+  z-index: 90;
 }
 #search-backdrop.open{ opacity: 1; pointer-events: auto; }
 
@@ -3714,248 +3715,10 @@ html {
         width: 100%;
         height: 100%;
         pointer-events: none;
-        z-index: 2;
+        z-index: 0;
     }
 </style>
-<script>
-// === ESPLOSIONE CON RICOMPOSIZIONE A ONDA ===
-document.addEventListener('DOMContentLoaded', function() {
-  const explodingText = document.getElementById('exploding');
-  const explodeBtn = document.getElementById('btn-explode');
-  const explosionSound = document.getElementById('explosionSound');
-  
-  if (!explodingText) return;
 
-  // CSS PER ESPLOSIONE E ONDA
-  const explosionCSS = `
-    @keyframes letterExplodeOut {
-      0% {
-        transform: translate(0, 0) rotate(0deg) scale(1);
-        opacity: 1;
-        filter: blur(0px);
-      }
-      70% {
-        transform: translate(var(--explode-dx), var(--explode-dy)) rotate(var(--explode-rotate)) scale(1.4);
-        opacity: 0.5;
-        filter: blur(4px);
-      }
-      100% {
-        transform: translate(var(--explode-dx), var(--explode-dy)) rotate(var(--explode-rotate)) scale(1.4);
-        opacity: 0;
-        filter: blur(4px);
-      }
-    }
-    
-    @keyframes letterWaveIn {
-      0% {
-        transform: translate(var(--explode-dx), var(--explode-dy)) rotate(var(--explode-rotate)) scale(1.4);
-        opacity: 0;
-        filter: blur(4px);
-      }
-      60% {
-        transform: translate(calc(var(--explode-dx) * 0.2), calc(var(--explode-dy) * 0.2)) rotate(calc(var(--explode-rotate) * 0.3)) scale(1.1);
-        opacity: 0.8;
-        filter: blur(1px);
-      }
-      100% {
-        transform: translate(0, 0) rotate(0deg) scale(1);
-        opacity: 1;
-        filter: blur(0px);
-      }
-    }
-    
-    @keyframes pageShake {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-8px) rotate(-1deg); }
-      50% { transform: translateX(6px) rotate(0.8deg); }
-      75% { transform: translateX(-4px) rotate(-0.5deg); }
-    }
-    
-    .char {
-      display: inline-block;
-      transition: all 0.3s ease;
-    }
-    
-    .exploding-active {
-      animation: pageShake 1s ease-in-out;
-    }
-    
-    /* PARTICELLE */
-    .explosion-particle {
-      position: fixed;
-      pointer-events: none;
-      z-index: 2147483600;
-      border-radius: 50%;
-      animation: particleFly 1.5s ease-out forwards;
-    }
-    
-    @keyframes particleFly {
-      0% {
-        transform: translate(0, 0) scale(1) rotate(0deg);
-        opacity: 1;
-      }
-      100% {
-        transform: translate(var(--particle-dx), var(--particle-dy)) scale(0) rotate(360deg);
-        opacity: 0;
-      }
-    }
-  `;
-  
-  const style = document.createElement('style');
-  style.textContent = explosionCSS;
-  document.head.appendChild(style);
-
-  function getRandomColor() {
-    const colors = [
-      '#FF6B00', '#FF0000', '#00CCFF', '#B967FF', 
-      '#FFD700', '#00FF88', '#FF00FF', '#FFFFFF'
-    ];
-    return colors[Math.floor(Math.random() * colors.length)];
-  }
-
-  function createParticleSwarm(element, particleCount = 40) {
-    const rect = element.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    
-    for (let i = 0; i < particleCount; i++) {
-      const particle = document.createElement('div');
-      particle.className = 'explosion-particle';
-      particle.style.left = centerX + 'px';
-      particle.style.top = centerY + 'px';
-      
-      const angle = Math.random() * Math.PI * 2;
-      const distance = 60 + Math.random() * 180;
-      const dx = Math.cos(angle) * distance;
-      const dy = Math.sin(angle) * distance;
-      
-      particle.style.setProperty('--particle-dx', dx + 'px');
-      particle.style.setProperty('--particle-dy', dy + 'px');
-      
-      const size = 2 + Math.random() * 6;
-      particle.style.width = size + 'px';
-      particle.style.height = size + 'px';
-      particle.style.background = getRandomColor();
-      
-      document.body.appendChild(particle);
-      setTimeout(() => particle.remove(), 1500);
-    }
-  }
-
-  // ESPLOSIONE CON EFFETTO ONDA
-  function triggerWaveExplosion() {
-    if (explodingText.classList.contains('exploding')) return;
-    
-    // SUONO
-    if (explosionSound) {
-      try {
-        explosionSound.currentTime = 0;
-        explosionSound.volume = 0.7;
-        explosionSound.play();
-      } catch(e) {}
-    }
-
-    // SCUOTIMENTO
-    document.body.classList.add('exploding-active');
-    setTimeout(() => document.body.classList.remove('exploding-active'), 1000);
-
-    // PARTICELLE
-    createParticleSwarm(explodingText, 50);
-
-    const chars = explodingText.querySelectorAll('.char');
-    explodingText.classList.add('exploding');
-
-    // FASE 1: ESPLOSIONE IN USCITA (tutte insieme)
-    chars.forEach((char, index) => {
-      const distance = 40 + Math.random() * 80;
-      const angle = Math.random() * Math.PI * 2;
-      const dx = Math.cos(angle) * distance;
-      const dy = Math.sin(angle) * distance;
-      const rotation = (Math.random() - 0.5) * 480;
-      
-      char.style.setProperty('--explode-dx', dx + 'px');
-      char.style.setProperty('--explode-dy', dy + 'px');
-      char.style.setProperty('--explode-rotate', rotation + 'deg');
-
-      // ANIMAZIONE USCITA - TUTTE INSIEME
-      char.animate([
-        { transform: 'translate(0, 0) rotate(0deg) scale(1)', opacity: 1, filter: 'blur(0px)' },
-        { transform: `translate(${dx}px, ${dy}px) rotate(${rotation}deg) scale(1.4)`, opacity: 0, filter: 'blur(4px)' }
-      ], {
-        duration: 600,
-        easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
-        fill: 'forwards'
-      });
-    });
-
-    // FASE 2: RICOMPOSIZIONE A ONDA (sequenziale)
-    setTimeout(() => {
-      chars.forEach((char, index) => {
-        // RITARDO PROGRESSIVO PER EFFETTO ONDA
-        const waveDelay = index * 80; // 80ms tra ogni lettera
-        
-        setTimeout(() => {
-          // ANIMAZIONE RIENTRO A ONDA
-          char.animate([
-            { 
-              transform: `translate(var(--explode-dx), var(--explode-dy)) rotate(var(--explode-rotate)) scale(1.4)`, 
-              opacity: 0, 
-              filter: 'blur(4px)',
-              color: getRandomColor()
-            },
-            { 
-              transform: `translate(calc(var(--explode-dx) * 0.3), calc(var(--explode-dy) * 0.3)) rotate(calc(var(--explode-rotate) * 0.2)) scale(1.1)`, 
-              opacity: 0.9, 
-              filter: 'blur(1px)',
-              color: getRandomColor()
-            },
-            { 
-              transform: 'translate(0, 0) rotate(0deg) scale(1)', 
-              opacity: 1, 
-              filter: 'blur(0px)',
-              color: 'currentColor'
-            }
-          ], {
-            duration: 500,
-            easing: 'cubic-bezier(0.2, 0.8, 0.4, 1.2)',
-            fill: 'forwards'
-          }).onfinish = () => {
-            // PULIZIA FINALE
-            char.style.transform = '';
-            char.style.opacity = '';
-            char.style.filter = '';
-            char.style.color = '';
-            
-            // ULTIMA LETTERA - FINE ESPLOSIONE
-            if (index === chars.length - 1) {
-              explodingText.classList.remove('exploding');
-              
-              // EFFETTO FINALE DI CALMA
-              setTimeout(() => {
-                createParticleSwarm(explodingText, 15);
-              }, 200);
-            }
-          };
-        }, waveDelay);
-      });
-    }, 600); // Ritardo prima di iniziare l'onda
-  }
-
-  // EVENT LISTENERS
-  if (explodeBtn) {
-    explodeBtn.addEventListener('click', triggerWaveExplosion);
-  }
-
-  explodingText.addEventListener('click', triggerWaveExplosion);
-
-  console.log('🌊 Esplosione a onda caricata!');
-});
-
-// TEST
-setTimeout(() => {
-  console.log('✅ Sistema onda pronto - Lettere:', document.querySelectorAll('.char').length);
-}, 1000);
-</script>
 <style id="explosion-theater-css">
 /* === EXPLOSION THEATER (conservative, layered) === */
 
@@ -4433,6 +4196,272 @@ setTimeout(() => {
 /* Assicurati che il body possa essere animato */
 body {
     transform-origin: center center;
+}
+</style>
+<style>
+/* === EFFETTO LAMPOSCOOP SPETTACOLARE === */
+#flash-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, 
+        rgba(255,255,255,0.9) 0%,
+        rgba(255,255,255,0.7) 20%,
+        rgba(255,215,0,0.5) 40%,
+        rgba(255,107,0,0.3) 60%,
+        transparent 80%);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 2147483599; /* Appena sotto le particelle ma sopra tutto il resto */
+    mix-blend-mode: screen;
+    transition: opacity 0.15s ease-out;
+}
+
+#flash-overlay.intense {
+    background: radial-gradient(circle at center,
+        rgba(255,255,255,1) 0%,
+        rgba(255,255,255,0.9) 15%,
+        rgba(255,255,0,0.8) 30%,
+        rgba(255,165,0,0.6) 50%,
+        rgba(255,69,0,0.4) 70%,
+        transparent 90%);
+}
+
+/* Effetto scossa della pagina */
+@keyframes pageShake {
+    0%, 100% { transform: translateX(0) translateY(0) rotate(0deg); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px) translateY(-3px) rotate(-0.5deg); }
+    20%, 40%, 60%, 80% { transform: translateX(5px) translateY(3px) rotate(0.5deg); }
+}
+
+.page-shake {
+    animation: pageShake 0.8s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+/* Supporto per preferenze di movimento ridotto */
+@media (prefers-reduced-motion: reduce) {
+    .page-shake {
+        animation: none;
+    }
+    #flash-overlay {
+        transition: none;
+    }
+}
+</style>
+<style>
+/* === EFFETTI AURORA BOREALE DOPO ESPLOSIONE === */
+#aurora-effect {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2147483598;
+    opacity: 0;
+    background: linear-gradient(45deg,
+        rgba(255,0,0,0.1) 0%,
+        rgba(255,165,0,0.15) 20%,
+        rgba(255,255,0,0.1) 40%,
+        rgba(0,255,0,0.08) 60%,
+        rgba(0,0,255,0.1) 80%,
+        rgba(128,0,128,0.12) 100%);
+    mix-blend-mode: overlay;
+    transition: opacity 1.5s ease-out;
+}
+
+/* Effetto ripple aggiuntivo */
+@keyframes explosionRipple {
+    0% {
+        transform: scale(0);
+        opacity: 0.6;
+    }
+    100% {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+.ripple {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 100px;
+    height: 100px;
+    border: 3px solid rgba(255,255,255,0.8);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 2147483597;
+}
+</style>
+
+<style>
+/* === RIPPLE SUPER INTENSI === */
+.explosion-ripple {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 9999;
+}
+
+/* Ripple principale - BIANCO/ORO intenso */
+.ripple-intense-1 {
+    border: 6px solid rgba(255, 255, 255, 0.95);
+    box-shadow: 
+        0 0 40px rgba(255, 255, 255, 0.9),
+        0 0 80px rgba(255, 255, 0, 0.8),
+        0 0 120px rgba(255, 215, 0, 0.7),
+        0 0 200px rgba(255, 165, 0, 0.6),
+        0 0 300px rgba(255, 69, 0, 0.4),
+        inset 0 0 60px rgba(255, 255, 255, 0.3);
+    background: radial-gradient(circle, 
+        rgba(255,255,255,0.3) 0%,
+        rgba(255,255,255,0.1) 30%,
+        transparent 70%);
+}
+
+/* Ripple secondario - GIALLO/ARANCIONE esplosivo */
+.ripple-intense-2 {
+    border: 5px solid rgba(255, 255, 0, 0.9);
+    box-shadow: 
+        0 0 50px rgba(255, 255, 0, 0.8),
+        0 0 100px rgba(255, 215, 0, 0.7),
+        0 0 150px rgba(255, 165, 0, 0.6),
+        0 0 250px rgba(255, 107, 0, 0.5),
+        0 0 350px rgba(255, 69, 0, 0.3),
+        inset 0 0 80px rgba(255, 255, 0, 0.4);
+    background: radial-gradient(circle, 
+        rgba(255,255,0,0.25) 0%,
+        rgba(255,215,0,0.15) 40%,
+        transparent 80%);
+}
+
+/* Ripple terziario - ROSSO/FUOCO */
+.ripple-intense-3 {
+    border: 4px solid rgba(255, 69, 0, 0.85);
+    box-shadow: 
+        0 0 60px rgba(255, 69, 0, 0.8),
+        0 0 120px rgba(255, 107, 0, 0.7),
+        0 0 180px rgba(255, 140, 0, 0.6),
+        0 0 280px rgba(255, 165, 0, 0.5),
+        0 0 400px rgba(255, 215, 0, 0.3),
+        inset 0 0 100px rgba(255, 69, 0, 0.3);
+    background: radial-gradient(circle, 
+        rgba(255,69,0,0.2) 0%,
+        rgba(255,107,0,0.1) 50%,
+        transparent 90%);
+}
+
+/* Ripple quarto - MULTICOLORE PSICHEDELICO */
+.ripple-intense-4 {
+    border: 8px solid transparent;
+    border-image: linear-gradient(45deg, 
+        #ff0000, #ff8000, #ffff00, #00ff00, #00ffff, #0000ff, #8000ff, #ff00ff
+    ) 1;
+    box-shadow: 
+        0 0 70px rgba(255, 0, 255, 0.7),
+        0 0 140px rgba(0, 255, 255, 0.6),
+        0 0 210px rgba(255, 255, 0, 0.5),
+        0 0 320px rgba(255, 0, 0, 0.4),
+        0 0 450px rgba(0, 0, 255, 0.3),
+        inset 0 0 120px rgba(255, 255, 255, 0.2);
+    background: radial-gradient(circle, 
+        rgba(255,0,255,0.15) 0%,
+        rgba(0,255,255,0.1) 25%,
+        rgba(255,255,0,0.08) 50%,
+        transparent 80%);
+}
+
+/* Ripple quinto - BIANCO PURISSIMO */
+.ripple-intense-5 {
+    border: 7px solid rgba(255, 255, 255, 0.98);
+    box-shadow: 
+        0 0 80px rgba(255, 255, 255, 0.95),
+        0 0 160px rgba(255, 255, 255, 0.85),
+        0 0 240px rgba(255, 255, 255, 0.7),
+        0 0 360px rgba(255, 255, 255, 0.5),
+        0 0 500px rgba(255, 255, 255, 0.3),
+        0 0 700px rgba(255, 255, 255, 0.2),
+        inset 0 0 150px rgba(255, 255, 255, 0.4);
+    background: radial-gradient(circle, 
+        rgba(255,255,255,0.4) 0%,
+        rgba(255,255,255,0.2) 20%,
+        rgba(255,255,255,0.05) 50%,
+        transparent 80%);
+}
+
+/* Animazioni ripple più dinamiche */
+@keyframes rippleExplosion {
+    0% {
+        transform: translate(-50%, -50%) scale(0.1);
+        opacity: 1;
+        filter: blur(0px);
+    }
+    50% {
+        opacity: 0.9;
+        filter: blur(2px);
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(4);
+        opacity: 0;
+        filter: blur(10px);
+    }
+}
+
+@keyframes rippleExplosionLarge {
+    0% {
+        transform: translate(-50%, -50%) scale(0.05);
+        opacity: 1;
+        filter: blur(0px);
+    }
+    30% {
+        opacity: 0.8;
+        filter: blur(1px);
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(6);
+        opacity: 0;
+        filter: blur(15px);
+    }
+}
+
+@keyframes rippleExplosionHuge {
+    0% {
+        transform: translate(-50%, -50%) scale(0.02);
+        opacity: 1;
+        filter: blur(0px);
+    }
+    20% {
+        opacity: 0.7;
+        filter: blur(2px);
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(8);
+        opacity: 0;
+        filter: blur(20px);
+    }
+}
+
+.ripple-animation-fast {
+    animation: rippleExplosion 1.2s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
+}
+
+.ripple-animation-medium {
+    animation: rippleExplosion 1.6s cubic-bezier(0.1, 0.7, 0.3, 1) forwards;
+}
+
+.ripple-animation-slow {
+    animation: rippleExplosionLarge 2s cubic-bezier(0.1, 0.6, 0.4, 1) forwards;
+}
+
+.ripple-animation-huge {
+    animation: rippleExplosionHuge 2.5s cubic-bezier(0.1, 0.5, 0.5, 1) forwards;
 }
 </style>
 </head>
@@ -5637,9 +5666,6 @@ function safeDOMOperation(operation, fallback = null) {
   return null;
 }
 
-
-    
-
 // Crea particelle esplosive che si diffondono sullo schermo
 function createExplosionParticles() {
     const colors = ['#FFD700', '#FF6B00', '#FF0000', '#FFFFFF', '#00CCFF'];
@@ -5660,7 +5686,7 @@ function createExplosionParticles() {
                 background: ${color};
                 border-radius: 50%;
                 pointer-events: none;
-                z-index: 2147483601;
+                z-index: 101;
                 opacity: 0.8;
                 box-shadow: 0 0 10px ${color};
             `;
@@ -5698,63 +5724,6 @@ function createExplosionParticles() {
         });
     }
 }
-
-// === INTEGRAZIONE CON IL CODICE ESISTENTE ===
-document.addEventListener('DOMContentLoaded', function() {
-    // Attiva l'esplosione con il pulsante esistente
-    const explodeBtn = document.getElementById('btn-explode');
-    if (explodeBtn) {
-        explodeBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            createPageShakingExplosion();
-        });
-    }
-    
-    // Aggiungi anche l'esplosione al click sul motto
-    const explodingText = document.getElementById('exploding');
-    if (explodingText) {
-        const originalClick = explodingText.onclick;
-        explodingText.addEventListener('click', function(e) {
-            // Esegui l'effetto originale se esiste
-            if (typeof originalClick === 'function') {
-                originalClick.call(this, e);
-            }
-            // Aggiungi l'esplosione della pagina
-            createPageShakingExplosion();
-        });
-    }
-    
-    // Stili aggiuntivi per il pulsante esplosione
-    const explosionStyles = `
-        #btn-explode {
-            background: linear-gradient(135deg, #ff6b00, #ff0000) !important;
-            border: 2px solid rgba(255,255,255,0.5) !important;
-            color: white !important;
-            font-weight: bold !important;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.5) !important;
-            box-shadow: 0 0 20px rgba(255,107,0,0.7) !important;
-            transition: all 0.3s ease !important;
-        }
-        
-        #btn-explode:hover {
-            transform: scale(1.1) !important;
-            box-shadow: 0 0 30px rgba(255,107,0,0.9) !important;
-        }
-        
-        body {
-            transform-origin: center center;
-        }
-    `;
-    
-    // Aggiungi gli stili solo se non esistono già
-    if (!document.getElementById('explosion-styles')) {
-        const styleEl = document.createElement('style');
-        styleEl.id = 'explosion-styles';
-        styleEl.textContent = explosionStyles;
-        document.head.appendChild(styleEl);
-    }
-});
 </script>
 <script>
 // ========== UTILITY SICURE AGGIUNTE ==========
@@ -6058,6 +6027,14 @@ window.addEventListener('load',()=>{
     } catch(_) {}
   });
 })();
+
+
+
+
+
+
+
+
 </script>
 <script id="search-init-smart">
       (function(){
@@ -6917,147 +6894,6 @@ document.addEventListener("DOMContentLoaded", function(){
 <script>if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
 }</script>
-<script id="boomfx-js-2025-10-09">(function(){
-  function byId(id){ return document.getElementById(id); }
-  var exploding = byId('exploding');
-  if(!exploding) return;
-  if(!exploding.__wrapped){
-    var wrap = document.createElement('span');
-    wrap.className = 'exploding-stage';
-    exploding.parentNode.insertBefore(wrap, exploding);
-    wrap.appendChild(exploding);
-    exploding.__wrapped = true;
-  }
-  function buildChars(target){
-    if(target.__charsBuilt) return;
-    var nodes = Array.from(target.childNodes);
-    target.innerHTML = '';
-    nodes.forEach(function(n){
-      if(n.nodeType === 3){ // text
-        var txt = n.nodeValue;
-        for(var i=0;i<txt.length;i++){
-          var span = document.createElement('span');
-          span.className = 'char';
-          span.textContent = txt[i];
-          target.appendChild(span);
-        }
-      }else{
-        target.appendChild(n); // keep tags like <b> etc.
-      }
-    });
-    target.__charsBuilt = true;
-  }
-  function rand(min,max){ return Math.random()*(max-min)+min; }
-  function spawnShockFlash(x,y){
-    var root = document.body;
-    var ring = document.createElement('div');
-    ring.className = 'boom-shockwave';
-    ring.style.setProperty('--x', x+'px');
-    ring.style.setProperty('--y', y+'px');
-    var flash = document.createElement('div');
-    flash.className = 'boom-flash';
-    flash.style.setProperty('--x', x+'px');
-    flash.style.setProperty('--y', y+'px');
-    root.appendChild(ring); root.appendChild(flash);
-    setTimeout(function(){ ring.remove(); flash.remove(); }, 1200);
-  }
-  function spawnSparks(x,y){
-    var root = document.body;
-    var isMobile = (window.matchMedia && window.matchMedia('(max-width: 768px)').matches);
-    var N = isMobile ? 50 : 110;
-    for (var i=0;i<N;i++){
-      var s = document.createElement('div');
-      s.className = 'boom-spark';
-      s.style.setProperty('--x', x+'px'); s.style.setProperty('--y', y+'px');
-      var ang = Math.random()*Math.PI*2;
-      var spd = rand(120, isMobile? 360 : 520);
-      var dx = Math.cos(ang)*spd;
-      var dy = Math.sin(ang)*spd + rand(40,120);
-      var rot = rand(-540,540);
-      var dur = rand(900,1400);
-      var fade = dur + rand(0,200);
-      var b0 = rand(0,.6), b1 = rand(.6,2.2);
-      var size = rand(3,7);
-      s.style.setProperty('--dx', dx.toFixed(1)+'px');
-      s.style.setProperty('--dy', dy.toFixed(1)+'px');
-      s.style.setProperty('--rot', rot.toFixed(1)+'deg');
-      s.style.setProperty('--dur', Math.round(dur)+'ms');
-      s.style.setProperty('--fade', Math.round(fade)+'ms');
-      s.style.setProperty('--b0', b0.toFixed(2)+'px');
-      s.style.setProperty('--b1', b1.toFixed(2)+'px');
-      s.style.setProperty('--w', size.toFixed(1)+'px');
-      s.style.setProperty('--h', size.toFixed(1)+'px');
-      root.appendChild(s);
-      setTimeout((function(el){ return function(){ el.remove(); }; })(s), fade+80);
-    }
-  }
-  function explodeAt(target, x, y){
-    buildChars(target);
-    document.body.classList.add('boom-shake');
-    setTimeout(function(){ document.body.classList.remove('boom-shake'); }, 560);
-    target.classList.add('boom-primed');
-    setTimeout(function(){
-      target.classList.remove('boom-primed');
-      target.classList.add('boom-active');
-      var rect = target.getBoundingClientRect();
-      var cx = rect.left + rect.width/2, cy = rect.top + rect.height/2;
-      var chars = target.querySelectorAll('.char');
-      for (var i=0;i<chars.length;i++){
-        var el = chars[i];
-        var bb = el.getBoundingClientRect();
-        var vx = (bb.left + bb.width/2) - cx;
-        var vy = (bb.top + bb.height/2) - cy;
-        var dist = Math.max(1, Math.sqrt(vx*vx + vy*vy));
-        var mult = rand(120, 300);
-        var dx = (vx/dist) * mult + rand(-60,60);
-        var dy = (vy/dist) * mult + rand(-60,60);
-        var dz = rand(-140,140);
-        el.style.setProperty('--dx', dx.toFixed(1)+'px');
-        el.style.setProperty('--dy', dy.toFixed(1)+'px');
-        el.style.setProperty('--dz', dz.toFixed(1)+'px');
-        el.style.setProperty('--rx', rand(-40,40).toFixed(1)+'deg');
-        el.style.setProperty('--ry', rand(-60,60).toFixed(1)+'deg');
-        el.style.setProperty('--rz', rand(-120,120).toFixed(1)+'deg');
-        el.style.setProperty('--blur', rand(.2,1.4).toFixed(2)+'px');
-        el.style.setProperty('--td', Math.round(rand(820,1150))+'ms');
-      }
-      spawnShockFlash(x,y);
-      spawnSparks(x,y);
-      var boom = document.getElementById('explosionSound');
-      try{ if(boom){ boom.currentTime=0; boom.volume=1.0; boom.muted=false; softPlay(boom, 1.0, 140).catch(function(){}); } }catch(_){}
-      setTimeout(function(){
-        target.classList.remove('boom-active');
-        var chars2 = target.querySelectorAll('.char');
-        for (var j=0;j<chars2.length;j++){
-          (function(el,k){
-            setTimeout(function(){
-              el.style.setProperty('--dx','0px');
-              el.style.setProperty('--dy','0px');
-              el.style.setProperty('--dz','0px');
-              el.style.setProperty('--rx','0deg');
-              el.style.setProperty('--ry','0deg');
-              el.style.setProperty('--rz','0deg');
-              el.style.setProperty('--blur','0px');
-              el.style.setProperty('--td', Math.round(rand(400,700))+'ms');
-              el.style.opacity='1'; el.style.transform='translate3d(0,0,0)';
-            }, k*8);
-          })(chars2[j], j);
-        }
-      }, 1200);
-    }, 120);
-  }
-  function onClick(e){
-    var x = (e && 'clientX' in e) ? e.clientX : (window.innerWidth/2);
-    var y = (e && 'clientY' in e) ? e.clientY : (window.innerHeight/2);
-    explodeAt(exploding, x, y);
-    setTimeout(function(){ explodeAt(exploding, x, y); }, 260); // boom–boom
-  }
-  exploding.style.cursor='pointer';
-  exploding.addEventListener('click', onClick, true);
-  var btn = document.getElementById('btn-explode') || document.getElementById('explode-btn');
-  if(btn){ btn.addEventListener('click', function(ev){ ev.preventDefault(); onClick(ev); }, true); }
-})();</script>
-
 <script id="gt-wire">
 document.addEventListener('DOMContentLoaded', function() {
   var translateSelect = document.getElementById('customTranslate');
@@ -8219,7 +8055,7 @@ document.addEventListener('DOMContentLoaded', function() {
     .explosion-particle {
       position: fixed;
       pointer-events: none;
-      z-index: 2147483600;
+      z-index: 214;
       border-radius: 50%;
       animation: particleFly 1.5s ease-out forwards;
     }
@@ -8340,10 +8176,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  // FUNZIONE PRINCIPALE DI ESPLOSIONE
+// FUNZIONE PRINCIPALE DI ESPLOSIONE
+
   function triggerExplosion() {
     if (explodingText.classList.contains('exploding')) return;
-    
+
     // SUONO ESPLOSIONE
     if (explosionSound) {
       try {
@@ -8537,216 +8374,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
-  <!-- Nel tuo file HTML, prima della chiusura 
-<script>
-(function(){
-  try{
-    window.showSearchPanelOnResults = function(panelSel, items){
-      var panel = document.querySelector(panelSel || '#search-panel, #searchPanel, .search-panel');
-      if(!panel) return;
-      if(items && items.length){ panel.style.display = 'block'; panel.removeAttribute('aria-hidden'); }
-    };
-  }catch(_){}
-})();
-</script>
-
-
-
-</body> 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/ScrollMagic.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/plugins/animation.gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tippy.js/6.3.7/tippy-bundle.umd.min.js"></script>
-<script src="script.js"></script>
-<script>
-// === ESPLOSIONE CHE SCUOTE LA PAGINA ===
-function createPageShakingExplosion() {
-    // Crea l'effetto visivo dell'esplosione
-    const explosionOverlay = document.createElement('div');
-    explosionOverlay.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: radial-gradient(circle at center, 
-            rgba(255,255,255,0.8) 0%,
-            rgba(255,215,0,0.6) 20%,
-            rgba(255,100,0,0.4) 40%,
-            rgba(255,0,0,0.2) 60%,
-            transparent 80%
-        );
-        pointer-events: none;
-        z-index: 2147483600;
-        opacity: 0;
-        animation: explosionFlash 0.8s ease-out;
-    `;
-    
-    // Aggiungi i keyframes per l'esplosione
-    const explosionStyle = document.createElement('style');
-    explosionStyle.textContent = `
-        @keyframes explosionFlash {
-            0% { 
-                opacity: 0; 
-                transform: scale(0.1);
-            }
-            20% { 
-                opacity: 1; 
-                transform: scale(1.2);
-            }
-            40% { 
-                opacity: 0.8; 
-                transform: scale(1.5);
-            }
-            100% { 
-                opacity: 0; 
-                transform: scale(2);
-            }
-        }
-        
-        @keyframes shakePage {
-            0%, 100% { transform: translateX(0) translateY(0) rotate(0); }
-            10% { transform: translateX(-10px) translateY(-5px) rotate(-1deg); }
-            20% { transform: translateX(8px) translateY(4px) rotate(1deg); }
-            30% { transform: translateX(-6px) translateY(-3px) rotate(-0.5deg); }
-            40% { transform: translateX(4px) translateY(2px) rotate(0.5deg); }
-            50% { transform: translateX(-2px) translateY(-1px) rotate(-0.25deg); }
-            60% { transform: translateX(1px) translateY(0.5px) rotate(0.25deg); }
-        }
-        
-        .page-shake {
-            animation: shakePage 0.8s ease-out;
-        }
-    `;
-    
-    document.head.appendChild(explosionStyle);
-    document.body.appendChild(explosionOverlay);
-    
-    // Applica l'effetto di scuotimento a tutto il body
-    document.body.classList.add('page-shake');
-    
-    // Riproduci il suono dell'esplosione se disponibile
-    const explosionSound = document.getElementById('explosionSound');
-    if (explosionSound) {
-        explosionSound.currentTime = 0;
-        explosionSound.volume = 0.7;
-        explosionSound.play().catch(e => console.log('Audio non riprodotto:', e));
-    }
-    
-    // Crea particelle esplosive aggiuntive
-    createExplosionParticles();
-    
-    // Rimuovi gli effetti dopo l'animazione
-    setTimeout(() => {
-        if (explosionOverlay.parentNode) {
-            explosionOverlay.parentNode.removeChild(explosionOverlay);
-        }
-        document.body.classList.remove('page-shake');
-        if (explosionStyle.parentNode) {
-            explosionStyle.parentNode.removeChild(explosionStyle);
-        }
-    }, 800);
-}
-
-// Crea particelle esplosive che si diffondono sullo schermo
-function createExplosionParticles() {
-    const colors = ['#FFD700', '#FF6B00', '#FF0000', '#FFFFFF', '#00CCFF'];
-    const particleCount = 30;
-    
-    for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        const size = Math.random() * 15 + 5;
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        
-        particle.style.cssText = `
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            width: ${size}px;
-            height: ${size}px;
-            background: ${color};
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 2147483601;
-            opacity: 0.8;
-            box-shadow: 0 0 10px ${color};
-        `;
-        
-        document.body.appendChild(particle);
-        
-        // Animazione casuale per ogni particella
-        const angle = Math.random() * Math.PI * 2;
-        const distance = 100 + Math.random() * 200;
-        const duration = 0.5 + Math.random() * 0.5;
-        
-        particle.animate([
-            {
-                transform: 'translate(-50%, -50%) scale(1)',
-                opacity: 0.8
-            },
-            {
-                transform: `translate(${Math.cos(angle) * distance - 50}%, ${Math.sin(angle) * distance - 50}%) scale(0)`,
-                opacity: 0
-            }
-        ], {
-            duration: duration * 1000,
-            easing: 'ease-out',
-            fill: 'forwards'
-        });
-        
-        // Rimuovi la particella dopo l'animazione
-        setTimeout(() => {
-            if (particle.parentNode) {
-                particle.parentNode.removeChild(particle);
-            }
-        }, duration * 1000);
-    }
-}
-
-// === ATTIVA L'ESPLOSIONE CON IL PULSANTE ESISTENTE ===
-document.addEventListener('DOMContentLoaded', function() {
-    const explodeBtn = document.getElementById('btn-explode');
-    if (explodeBtn) {
-        explodeBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            createPageShakingExplosion();
-        });
-    }
-    
-    // Aggiungi anche l'esplosione al click sul motto
-    const explodingText = document.getElementById('exploding');
-    if (explodingText) {
-        explodingText.addEventListener('click', function() {
-            createPageShakingExplosion();
-        });
-    }
-});
-
-// === ESPLOSIONE AUTOMATICA AL CARICAMENTO (OPZIONALE) ===
-// Rimuovi il commento se vuoi l'esplosione automatica all'avvio
-/*
-window.addEventListener('load', function() {
-    setTimeout(() => {
-        createPageShakingExplosion();
-    }, 2000);
-});
-*/
-</script>
-
-
-<script>
-(function(){
-  try{
-    window.showSearchPanelOnResults = function(panelSel, items){
-      var panel = document.querySelector(panelSel || '#search-panel, #searchPanel, .search-panel');
-      if(!panel) return;
-      if(items && items.length){ panel.style.display = 'block'; panel.removeAttribute('aria-hidden'); }
-    };
-  }catch(_){}
-})();
-</script>
+ 
 <script>
 (function(){
   if (!('serviceWorker' in navigator)) return;
@@ -8758,140 +8386,471 @@ window.addEventListener('load', function() {
 })();
 </script>
 <script>
-(function () {
-  // 1) Se siamo su /index.html ⇒ sostituisci in barra con /
-  if (location.pathname.toLowerCase() === '/index.html') {
-    const clean = '/' + (location.search || '') + (location.hash || '');
-    history.replaceState(null, '', clean);
-  }
-
-  // 2) Rewriter dei link: se un <a> punta a index.html, trasformalo in /
-  function rewriteAnchor(a) {
-    const href = a.getAttribute('href') || '';
-    if (/(^|\/)index\.html(\?|#|$)/i.test(href)) {
-      // conserva query e hash
-      const u = new URL(href, location.origin);
-      a.setAttribute('href', '/' + (u.search || '') + (u.hash || ''));
+// === FUNZIONE EFFETTO LAMPOSCOOP SPETTACOLARE ===
+function createFlashEffect(intensity = 'normal') {
+    // Crea o riutilizza l'overlay del flash
+    let flashOverlay = document.getElementById('flash-overlay');
+    if (!flashOverlay) {
+        flashOverlay = document.createElement('div');
+        flashOverlay.id = 'flash-overlay';
+        document.body.appendChild(flashOverlay);
     }
-  }
-
-  // iniziale
-  document.querySelectorAll('a[href]').forEach(rewriteAnchor);
-
-  // 3) Intercetta i click (anche su link generati dinamicamente) e forza /
-  document.addEventListener('click', function (e) {
-    const a = e.target.closest('a[href]');
-    if (!a) return;
-    const href = a.getAttribute('href') || '';
-    if (/(^|\/)index\.html(\?|#|$)/i.test(href)) {
-      e.preventDefault();
-      const u = new URL(a.href, location.origin);
-      // naviga a "/" preservando query e hash
-      location.assign('/' + (u.search || '') + (u.hash || ''));
+    
+    // Imposta l'intensità
+    if (intensity === 'intense') {
+        flashOverlay.classList.add('intense');
+    } else {
+        flashOverlay.classList.remove('intense');
     }
-  }, { capture: true });
-})();
+    
+    // Animazione del flash
+    flashOverlay.style.opacity = '1';
+    
+    // Rimuovi il flash dopo l'animazione
+    setTimeout(() => {
+        flashOverlay.style.opacity = '0';
+    }, 150);
+    
+    // Rimuovi completamente dopo la transizione
+    setTimeout(() => {
+        if (flashOverlay.parentNode && flashOverlay.style.opacity === '0') {
+            flashOverlay.remove();
+        }
+    }, 500);
+}
+
+// === FUNZIONE SCOSSA PAGINA ===
+function shakePage() {
+    document.documentElement.classList.add('page-shake');
+    setTimeout(() => {
+        document.documentElement.classList.remove('page-shake');
+    }, 800);
+}
+
+// === MODIFICA LA FUNZIONE ESPLOSIONE ESISTENTE ===
+function enhancedExplosion() {
+    // 1. FLASH LUMINOSO (prima di tutto)
+    createFlashEffect('intense');
+    
+    // 2. SCOSSA PAGINA 
+    shakePage();
+    
+    // 3. ESPLOSIONE PARTICELARE (la tua funzione esistente)
+    createExplosionParticles();
+    
+    // 4. SUONO ESPLOSIONE (se presente)
+    const explosionSound = document.getElementById('explosionSound');
+    if (explosionSound) {
+        try {
+            explosionSound.currentTime = 0;
+            explosionSound.volume = 0.7;
+            explosionSound.play().catch(() => {});
+        } catch (_) {}
+    }
+}
+
+// === AGGIORNA IL BOTTONE ESPLODI ===
+document.addEventListener('DOMContentLoaded', function() {
+    const explodeBtn = document.getElementById('btn-explode');
+    if (explodeBtn) {
+        // Sostituisci l'evento onclick esistente
+        explodeBtn.onclick = function(e) {
+            e.preventDefault();
+            enhancedExplosion();
+        };
+    }
+    
+    // Anche per il motto "Sustine et abstine"
+    const explodingText = document.getElementById('exploding');
+    if (explodingText) {
+        explodingText.addEventListener('click', function(e) {
+            e.preventDefault();
+            enhancedExplosion();
+        });
+    }
+});
+
+// === AGGIORNA LA TUA FUNZIONE createExplosionParticles PER COORDINAZIONE ===
+// (Mantieni la tua funzione esistente, ma assicurati che venga chiamata da enhancedExplosion)
 </script>
-
-
 
 <script>
-// === SLIDER VERTICALE - VERSIONE UNIFICATA E FUNZIONANTE ===
-(function(){
-    const inner = document.getElementById('sliderInner');
-    if(!inner) return;
+// === FUNZIONE EFFETTO LAMPOSCOOP ===
+function createFlashEffect(intensity = 'normal') {
+    let flashOverlay = document.getElementById('flash-overlay');
+    if (!flashOverlay) {
+        flashOverlay = document.createElement('div');
+        flashOverlay.id = 'flash-overlay';
+        document.body.appendChild(flashOverlay);
+    }
     
-    let pos = 0;
-    let speed = 3.0; // ⚡ VELOCITÀ NORMALE di default
-    let dir = 1;
-    let running = true;
-    let lastTime = 0;
+    if (intensity === 'intense') {
+        flashOverlay.classList.add('intense');
+    } else {
+        flashOverlay.classList.remove('intense');
+    }
     
-    function step(timestamp) {
-        if(!lastTime) lastTime = timestamp;
-        const delta = timestamp - lastTime;
-        lastTime = timestamp;
-        
-        if(!running) {
-            requestAnimationFrame(step);
-            return;
+    // Flash immediato
+    flashOverlay.style.opacity = '1';
+    
+    setTimeout(() => {
+        flashOverlay.style.opacity = '0';
+    }, 100);
+    
+    setTimeout(() => {
+        if (flashOverlay.parentNode && flashOverlay.style.opacity === '0') {
+            flashOverlay.remove();
         }
-        
-        // Calcolo posizione basato sul tempo reale
-        pos += dir * speed * (delta / 16);
-        inner.style.transform = `translateY(${-pos}px)`;
-        
-        const totalHeight = inner.scrollHeight - inner.parentElement.clientHeight;
-        if(pos >= totalHeight) pos = 0;
-        if(pos < 0) pos = totalHeight;
-        
-        requestAnimationFrame(step);
-    }
-    
-    // CONTROLLI
-    const toggleBtn = document.getElementById('slider-toggle');
-    const invertBtn = document.getElementById('slider-invert');
-    const speedSlider = document.getElementById('slider-speed');
-    
-    // 🎛️ REGOLAZIONE VELOCITÀ - SCALA BILANCIATA
-    if(speedSlider) {
-        speedSlider.addEventListener('input', () => {
-            const value = parseInt(speedSlider.value, 10);
-            
-            // SCALA BILANCIATA - da molto lento a molto veloce
-            if(value <= 3) {
-                speed = 0.3 + (value - 1) * 0.4;      // 0.3 - 1.5 (molto lento)
-            } else if(value <= 6) {
-                speed = 1.5 + (value - 3) * 0.8;      // 1.5 - 4.0 (normale)
-            } else if(value <= 9) {
-                speed = 4.0 + (value - 6) * 1.5;      // 4.0 - 8.5 (veloce)
-            } else {
-                speed = 8.5 + (value - 9) * 2.5;      // 8.5 - 16.0 (molto veloce)
-            }
-            
-            // Aggiorna visualizzazione velocità se presente
-            const speedReadout = document.getElementById('speed-readout');
-            if(speedReadout) {
-                speedReadout.textContent = Math.round(speed * 10) + ' px/s';
-            }
-        });
-        
-        // ⭐ IMPOSTA VELOCITÀ NORMALE DI DEFAULT (valore 5 = ~2.3 px/frame)
-        
-// Legge una velocità desiderata dal contenitore (UI units 1..15); fallback 8
-(function(){
-  const container = inner.closest('.slider-vertical');
-  const desired = container && container.dataset && parseInt(container.dataset.speed, 10);
-  const v = (desired && desired >= 1 && desired <= 15) ? desired : 8;
-  try {
-    speedSlider.min = 1; speedSlider.max = 15;
-    speedSlider.value = v;
-    speedSlider.dispatchEvent(new Event('input'));
-  } catch(e){}
-})();
+    }, 500);
+}
 
+// === FUNZIONE SCOSSA PAGINA ===
+function shakePage() {
+    document.documentElement.classList.add('page-shake');
+    setTimeout(() => {
+        document.documentElement.classList.remove('page-shake');
+    }, 600);
+}
+
+// === FUNZIONE RIPPLE MULTICOLORE ===
+function createRippleEffect() {
+    const colors = ['', 'ripple-color-1', 'ripple-color-2', 'ripple-color-3'];
+    const sizes = [50, 80, 120, 160];
+    
+    colors.forEach((colorClass, index) => {
+        setTimeout(() => {
+            const ripple = document.createElement('div');
+            ripple.className = `explosion-ripple ${colorClass}`;
+            ripple.style.width = `${sizes[index]}px`;
+            ripple.style.height = `${sizes[index]}px`;
+            document.body.appendChild(ripple);
+            
+            // Animazione ripple
+            const animation = ripple.animate([
+                { 
+                    transform: 'translate(-50%, -50%) scale(0.5)', 
+                    opacity: 0.9,
+                    borderWidth: '4px'
+                },
+                { 
+                    transform: 'translate(-50%, -50%) scale(3)', 
+                    opacity: 0,
+                    borderWidth: '1px'
+                }
+            ], {
+                duration: 1200,
+                easing: 'cubic-bezier(0.2, 0.8, 0.4, 1)',
+                fill: 'forwards'
+            });
+            
+            animation.onfinish = () => {
+                if (ripple.parentNode) {
+                    ripple.parentNode.removeChild(ripple);
+                }
+            };
+        }, index * 150); // Ripple sequenziali
+    });
+}
+
+// === FUNZIONE AURORA BOREALE ===
+function createAuroraEffect() {
+    const aurora = document.createElement('div');
+    aurora.id = 'aurora-effect';
+    document.body.appendChild(aurora);
+    
+    // Appare gradualmente
+    setTimeout(() => {
+        aurora.style.opacity = '0.8';
+    }, 50);
+    
+    // Scompare gradualmente con effetto onda
+    setTimeout(() => {
+        aurora.style.opacity = '0.4';
+    }, 300);
+    
+    setTimeout(() => {
+        aurora.style.opacity = '0.2';
+    }, 500);
+    
+    setTimeout(() => {
+        aurora.style.opacity = '0';
+        setTimeout(() => {
+            if (aurora.parentNode) {
+                aurora.parentNode.removeChild(aurora);
+            }
+        }, 800);
+    }, 700);
+}
+
+// === FUNZIONE ESPLOSIONE COMPLETA ===
+function enhancedExplosion() {
+    console.log('💥 Avvio esplosione spettacolare!');
+    
+    // SEQUENZA TIMING PERFETTA:
+    
+    // T+0ms: Flash principale + Scossa pagina
+    createFlashEffect('intense');
+    shakePage();
+    
+    // T+50ms: Primo ripple bianco
+    setTimeout(() => {
+        createRippleEffect();
+    }, 50);
+    
+    // T+100ms: Aurora boreale
+    setTimeout(() => {
+        createAuroraEffect();
+    }, 100);
+    
+    // T+200ms: Flash secondario più debole
+    setTimeout(() => {
+        createFlashEffect('normal');
+    }, 200);
+    
+    // T+300ms: Esplosione particelle (la tua funzione esistente)
+    setTimeout(() => {
+        if (typeof createExplosionParticles === 'function') {
+            createExplosionParticles();
+        }
+    }, 300);
+    
+    // SUONO ESPLOSIONE
+    const explosionSound = document.getElementById('explosionSound');
+    if (explosionSound) {
+        try {
+            explosionSound.currentTime = 0;
+            explosionSound.volume = 0.8;
+            explosionSound.play().catch(() => {});
+        } catch (_) {}
+    }
+}
+
+// === INIZIALIZZAZIONE ===
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🎇 Sistema esplosione caricato!');
+    
+    // Bottone Esplodi
+    const explodeBtn = document.getElementById('btn-explode');
+    if (explodeBtn) {
+        explodeBtn.onclick = function(e) {
+            e.preventDefault();
+            enhancedExplosion();
+        };
     }
     
-    if(toggleBtn) {
-        toggleBtn.addEventListener('click', () => {
-            running = !running;
-            toggleBtn.textContent = running ? '⏸️ Ferma' : '▶️ Avvia';
+    // Testo "Sustine et abstine"
+    const explodingText = document.getElementById('exploding');
+    if (explodingText) {
+        explodingText.addEventListener('click', function(e) {
+            e.preventDefault();
+            enhancedExplosion();
         });
     }
-    
-    if(invertBtn) {
-        invertBtn.addEventListener('click', () => {
-            dir *= -1;
-            invertBtn.textContent = dir > 0 ? '🔄 Inverti' : '🔄 Normale';
-        });
-    }
-    
-    // AVVIA L'ANIMAZIONE
-    requestAnimationFrame(step);
-    
-    console.log('✅ Slider verticale inizializzato - Velocità normale attiva');
-})();
+});
+
+// === FUNZIONE DI DEBUG (opzionale) ===
+function debugExplosion() {
+    console.log('🔍 Debug esplosione:');
+    console.log('- Flash overlay:', document.getElementById('flash-overlay'));
+    console.log('- Ripple elements:', document.querySelectorAll('.explosion-ripple').length);
+    console.log('- Aurora effect:', document.getElementById('aurora-effect'));
+    console.log('- Page shake class:', document.documentElement.classList.contains('page-shake'));
+}
+
+// Per testare, puoi chiamare debugExplosion() nella console
 </script>
+<script>
+// === FUNZIONE RIPPLE SUPER INTENSA ===
+function createIntenseRippleEffect() {
+    const rippleConfigs = [
+        {
+            class: 'ripple-intense-1 ripple-animation-fast',
+            size: 60,
+            delay: 0
+        },
+        {
+            class: 'ripple-intense-2 ripple-animation-fast',
+            size: 100,
+            delay: 50
+        },
+        {
+            class: 'ripple-intense-3 ripple-animation-medium',
+            size: 150,
+            delay: 100
+        },
+        {
+            class: 'ripple-intense-4 ripple-animation-medium',
+            size: 200,
+            delay: 150
+        },
+        {
+            class: 'ripple-intense-5 ripple-animation-slow',
+            size: 250,
+            delay: 200
+        },
+        {
+            class: 'ripple-intense-1 ripple-animation-huge',
+            size: 300,
+            delay: 250
+        },
+        {
+            class: 'ripple-intense-2 ripple-animation-huge',
+            size: 400,
+            delay: 300
+        },
+        {
+            class: 'ripple-intense-3 ripple-animation-huge',
+            size: 500,
+            delay: 350
+        }
+    ];
 
+    rippleConfigs.forEach((config, index) => {
+        setTimeout(() => {
+            const ripple = document.createElement('div');
+            ripple.className = `explosion-ripple ${config.class}`;
+            ripple.style.width = `${config.size}px`;
+            ripple.style.height = `${config.size}px`;
+            
+            // Aggiungi un po' di variazione casuale alla posizione
+            const randomX = (Math.random() - 0.5) * 20;
+            const randomY = (Math.random() - 0.5) * 15;
+            ripple.style.transform = `translate(calc(-50% + ${randomX}px), calc(-50% + ${randomY}px))`;
+            
+            document.body.appendChild(ripple);
+
+            // Rimuovi dopo l'animazione
+            setTimeout(() => {
+                if (ripple.parentNode) {
+                    ripple.parentNode.removeChild(ripple);
+                }
+            }, 3000);
+
+        }, config.delay);
+    });
+}
+
+// === FUNZIONE ESPLOSIONE MEGA INTENSA ===
+function megaExplosion() {
+    console.log('💥💥💥 MEGA ESPLOSIONE ATTIVATA!');
+    
+    // SEQUENZA IPER-INTENSA:
+    
+    // T+0ms: Flash nucleare + Scossa pagina potente
+    createFlashEffect('intense');
+    shakePage();
+    
+    // T+20ms: Primi ripple esplosivi
+    setTimeout(() => {
+        createIntenseRippleEffect();
+    }, 20);
+    
+    // T+50ms: Aurora boreale super colorata
+    setTimeout(() => {
+        createAuroraEffect();
+    }, 50);
+    
+    // T+100ms: Secondo flash
+    setTimeout(() => {
+        createFlashEffect('normal');
+    }, 100);
+    
+    // T+200ms: Terzo flash (debole)
+    setTimeout(() => {
+        createFlashEffect('normal');
+    }, 200);
+    
+    // T+300ms: Ripple aggiuntivi casuali
+    setTimeout(() => {
+        createRandomRipples();
+    }, 300);
+    
+    // T+400ms: Esplosione particelle
+    setTimeout(() => {
+        if (typeof createExplosionParticles === 'function') {
+            createExplosionParticles();
+        }
+    }, 400);
+    
+    // SUONO ESPLOSIONE MASSIMA
+    const explosionSound = document.getElementById('explosionSound');
+    if (explosionSound) {
+        try {
+            explosionSound.currentTime = 0;
+            explosionSound.volume = 1.0;
+            explosionSound.play().catch(() => {});
+        } catch (_) {}
+    }
+}
+
+// === RIPPLE RANDOM AGGIUNTIVI ===
+function createRandomRipples() {
+    for (let i = 0; i < 6; i++) {
+        setTimeout(() => {
+            const randomX = 30 + Math.random() * 40;
+            const randomY = 30 + Math.random() * 40;
+            const randomSize = 30 + Math.random() * 100;
+            const randomColor = Math.floor(Math.random() * 5) + 1;
+            
+            const ripple = document.createElement('div');
+            ripple.className = `explosion-ripple ripple-intense-${randomColor} ripple-animation-fast`;
+            ripple.style.width = `${randomSize}px`;
+            ripple.style.height = `${randomSize}px`;
+            ripple.style.left = `${randomX}%`;
+            ripple.style.top = `${randomY}%`;
+            ripple.style.transform = 'translate(-50%, -50%)';
+            
+            document.body.appendChild(ripple);
+
+            setTimeout(() => {
+                if (ripple.parentNode) {
+                    ripple.parentNode.removeChild(ripple);
+                }
+            }, 2000);
+            
+        }, i * 80);
+    }
+}
+
+// === AGGIORNA LA FUNZIONE PRINCIPALE ===
+function enhancedExplosion() {
+    // Usa la versione MEGA per massima intensità
+    megaExplosion();
+}
+
+// === SCOSSA PAGINA PIÙ FORTE ===
+function shakePage() {
+    // Aggiungi una classe più intensa
+    document.documentElement.classList.add('page-shake');
+    
+    // Rimuovi dopo l'animazione
+    setTimeout(() => {
+        document.documentElement.classList.remove('page-shake');
+    }, 800);
+}
+
+// Aggiorna il CSS della scossa per renderla più intensa
+const intenseShakeCSS = `
+.page-shake {
+    animation: pageShake 0.8s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes pageShake {
+    0%, 100% { transform: translateX(0) translateY(0) rotate(0deg) scale(1); }
+    10% { transform: translateX(-15px) translateY(-8px) rotate(-1.5deg) scale(1.03); }
+    20% { transform: translateX(12px) translateY(6px) rotate(1.2deg) scale(0.97); }
+    30% { transform: translateX(-10px) translateY(-4px) rotate(-0.8deg) scale(1.02); }
+    40% { transform: translateX(8px) translateY(2px) rotate(0.6deg) scale(0.985); }
+    50% { transform: translateX(-6px) translateY(-1px) rotate(-0.3deg) scale(1.01); }
+    60% { transform: translateX(4px) translateY(0px) rotate(0.2deg) scale(0.995); }
+    70%, 100% { transform: translateX(0) translateY(0) rotate(0deg) scale(1); }
+}
+`;
+
+// Inietta il CSS della scossa intensa
+const style = document.createElement('style');
+style.textContent = intenseShakeCSS;
+document.head.appendChild(style);
+</script>
 </body>
 </html>
