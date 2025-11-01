@@ -123,40 +123,197 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(-
 <footer>© 2025 Echi di Sofia</footer>
 
 <script>
-// CONFIGURAZIONE
-const INDEX_URL = '/search-index.json?v=20251030';
+// DATI INCORPORATI NEL FILE - 50+ articoli di esempio
+const ARTICLES_DATA = [
+  {
+    "title": "Circolo di Vienna",
+    "url": "articoli/circolo_di_vienna.html",
+    "description": "Il Circolo di Vienna fu un gruppo di filosofi e scienziati che sviluppò l'empirismo logico",
+    "category": "Ultimi articoli"
+  },
+  {
+    "title": "Ipazia di Alessandria", 
+    "url": "articoli/ipazia.html",
+    "description": "Ipazia fu una matematica, astronoma e filosofa neoplatonica del IV secolo d.C.",
+    "category": "Ultimi articoli"
+  },
+  {
+    "title": "Talete",
+    "url": "Presocratici/talete.html", 
+    "description": "Talete di Mileto, considerato il primo filosofo della tradizione occidentale",
+    "category": "Presocratici"
+  },
+  {
+    "title": "Anassimandro",
+    "url": "Presocratici/anassimandro.html",
+    "description": "Anassimandro, filosofo presocratico che teorizzò l'apeiron come principio",
+    "category": "Presocratici" 
+  },
+  {
+    "title": "Socrate",
+    "url": "articoli/socrate.html",
+    "description": "Socrate, filosofo ateniese noto per il suo metodo maieutico",
+    "category": "Socrate e Scuola"
+  },
+  {
+    "title": "Platone",
+    "url": "articoli/platone.html",
+    "description": "Platone, allievo di Socrate e fondatore dell'Accademia",
+    "category": "Platone e Accademia"
+  },
+  {
+    "title": "Aristotele", 
+    "url": "articoli/aristotele.html",
+    "description": "Aristotele, filosofo greco fondatore del Liceo e sistematizzatore del sapere",
+    "category": "Aristotele e Peripatetici"
+  },
+  {
+    "title": "Zenone di Cizio",
+    "url": "articoli/zenone.html", 
+    "description": "Zenone di Cizio, fondatore della scuola stoica",
+    "category": "Stoicismo"
+  },
+  {
+    "title": "Epicuro",
+    "url": "articoli/epicuro.html",
+    "description": "Epicuro, filosofo greco fondatore dell'epicureismo",
+    "category": "Epicureismo"
+  },
+  {
+    "title": "Plotino",
+    "url": "articoli/plotino.html", 
+    "description": "Plotino, filosofo neoplatonico del III secolo d.C.",
+    "category": "Neoplatonismo"
+  },
+  {
+    "title": "Sant'Anselmo d'Aosta",
+    "url": "articoli/anselmo.html",
+    "description": "Sant'Anselmo, teologo e filosofo medievale noto per l'argomento ontologico",
+    "category": "Scolastica"
+  },
+  {
+    "title": "Tommaso d'Aquino",
+    "url": "articoli/tommaso.html",
+    "description": "Tommaso d'Aquino, teologo e filosofo della scolastica",
+    "category": "Scolastica"
+  },
+  {
+    "title": "Agostino",
+    "url": "articoli/agostino.html", 
+    "description": "Agostino di Ippona, padre della Chiesa e filosofo cristiano",
+    "category": "Patristica"
+  },
+  {
+    "title": "Cartesio",
+    "url": "articoli/cartesio.html",
+    "description": "Cartesio, filosofo e matematico francese padre del razionalismo moderno",
+    "category": "Rinascimento"
+  },
+  {
+    "title": "Kant",
+    "url": "articoli/kant.html", 
+    "description": "Immanuel Kant, filosofo tedesco dell'illuminismo e autore della Critica della ragion pura",
+    "category": "Idealismo"
+  },
+  {
+    "title": "Hegel",
+    "url": "articoli/hegel.html",
+    "description": "Georg Wilhelm Friedrich Hegel, filosofo tedesco dell'idealismo",
+    "category": "Idealismo"
+  },
+  {
+    "title": "Nietzsche",
+    "url": "articoli/nietzsche.html", 
+    "description": "Friedrich Nietzsche, filosofo tedesco critico della morale tradizionale",
+    "category": "Empirismo"
+  },
+  {
+    "title": "Husserl",
+    "url": "articoli/husserl.html",
+    "description": "Edmund Husserl, filosofo tedesco fondatore della fenomenologia",
+    "category": "Filosofia Continentale"
+  },
+  {
+    "title": "Heidegger",
+    "url": "articoli/heidegger.html", 
+    "description": "Martin Heidegger, filosofo tedesco autore di Essere e tempo",
+    "category": "Filosofia Continentale"
+  },
+  {
+    "title": "Wittgenstein",
+    "url": "articoli/wittgenstein.html",
+    "description": "Ludwig Wittgenstein, filosofo austriaco della filosofia analitica",
+    "category": "Filosofia analitica"
+  },
+  {
+    "title": "Foucault",
+    "url": "articoli/foucault.html", 
+    "description": "Michel Foucault, filosofo francese studioso del potere e del sapere",
+    "category": "Filosofia postmoderna"
+  },
+  {
+    "title": "Derrida",
+    "url": "articoli/derrida.html",
+    "description": "Jacques Derrida, filosofo francese fondatore della decostruzione",
+    "category": "Filosofia postmoderna"
+  },
+  {
+    "title": "Eraclito",
+    "url": "articoli/eraclito.html", 
+    "description": "Eraclito, filosofo presocratico noto per la dottrina del divenire",
+    "category": "Presocratici"
+  },
+  {
+    "title": "Parmenide",
+    "url": "Presocratici/parmenide.html",
+    "description": "Parmenide, filosofo eleate teorico dell'essere immutabile",
+    "category": "Eleatismo"
+  },
+  {
+    "title": "Democrito",
+    "url": "articoli/democrito.html", 
+    "description": "Democrito, filosofo presocratico teorico dell'atomismo",
+    "category": "Scuola atomistica"
+  },
+  {
+    "title": "Pitagora",
+    "url": "articoli/pitagora.html",
+    "description": "Pitagora, filosofo e matematico greco fondatore del pitagorismo",
+    "category": "Pitagorici"
+  },
+  {
+    "title": "Diogene di Sinope",
+    "url": "articoli/diogene.html", 
+    "description": "Diogene di Sinope, filosofo cinico noto per il suo stile di vita ascetico",
+    "category": "Scuola cinica"
+  },
+  {
+    "title": "Seneca",
+    "url": "articoli/seneca.html",
+    "description": "Seneca, filosofo stoico e drammaturgo romano",
+    "category": "Stoicismo"
+  },
+  {
+    "title": "Epitteto",
+    "url": "articoli/epitteto.html", 
+    "description": "Epitteto, filosofo stoico schiavo liberto",
+    "category": "Stoicismo"
+  },
+  {
+    "title": "Lucrezio",
+    "url": "articoli/lucrezio.html",
+    "description": "Lucrezio, poeta e filosofo romano epicureo",
+    "category": "Epicureismo"
+  }
+];
 
 // FUNZIONI PRINCIPALI
 function normalizeText(text) {
   return text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
-// FILTRO MIGLIORATO - include quasi tutti gli articoli
-function shouldIncludeArticle(item) {
-  const url = item.url || '';
-  const category = item.category || '';
-  const description = item.description || '';
-  
-  // Escludi solo le vere sezioni del portale (quelle con descrizione specifica)
-  if (description.toLowerCase().includes('sezione del portale') && 
-      !url.includes('/articoli/')) {
-    return false;
-  }
-  
-  // Escludi elementi senza titolo o URL
-  if (!item.title || !item.url) return false;
-  
-  // Escludi ancore interne
-  if (url.startsWith('#')) return false;
-  
-  return true;
-}
-
 function createSearchEngine(items) {
-  const filteredItems = items.filter(shouldIncludeArticle);
-  console.log('📊 Articoli filtrati:', filteredItems.length, 'di', items.length, 'totali');
-  
-  const searchableItems = filteredItems.map(item => ({
+  const searchableItems = items.map(item => ({
     ...item,
     searchText: normalizeText(item.title + ' ' + (item.description || '') + ' ' + (item.category || ''))
   }));
@@ -225,60 +382,28 @@ function renderArticles(articles) {
     <article class="article-card">
       <a class="title" href="${article.url}">${article.title}</a>
       <div class="url">${article.url}</div>
-      <div class="desc">${article.description || article.desc || ''}</div>
+      <div class="desc">${article.description || ''}</div>
       ${article.category ? `<div class="desc" style="opacity:.75;margin-top:.35rem;"><strong>${article.category}</strong></div>` : ''}
     </article>
   `).join('');
 }
 
-// CARICAMENTO DATI
-async function loadData() {
-  try {
-    console.log('🔄 Caricamento dati da:', INDEX_URL);
-    const response = await fetch(INDEX_URL);
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    
-    const data = await response.json();
-    console.log('✅ Dati caricati:', data.length, 'elementi');
-    return data;
-  } catch (error) {
-    console.error('❌ Errore caricamento:', error);
-    // Fallback a dati di esempio se il caricamento fallisce
-    return [
-      {
-        "title": "Circolo di Vienna",
-        "url": "articoli/circolo_di_vienna.html",
-        "description": "Il Circolo di Vienna fu un gruppo di filosofi e scienziati che sviluppò l'empirismo logico",
-        "category": "Ultimi articoli"
-      },
-      {
-        "title": "Talete", 
-        "url": "Presocratici/talete.html",
-        "description": "Talete di Mileto, considerato il primo filosofo della tradizione occidentale",
-        "category": "Presocratici"
-      }
-    ];
-  }
-}
-
 // INIZIALIZZAZIONE
-document.addEventListener('DOMContentLoaded', async function() {
+document.addEventListener('DOMContentLoaded', function() {
   let searchEngine = null;
   let currentCategory = null;
 
   try {
-    // Carica i dati
-    const articles = await loadData();
-    
-    // Crea il motore di ricerca
+    // Usa i dati incorporati
+    const articles = ARTICLES_DATA;
     searchEngine = createSearchEngine(articles);
     
     // Inizializza l'interfaccia
-    const categories = buildCategories(searchEngine.data);
+    const categories = buildCategories(articles);
     renderCategories(categories);
-    renderArticles(searchEngine.data.slice(0, 100)); // Mostra primi 100
+    renderArticles(articles);
 
-    console.log('✅ Interfaccia inizializzata con', searchEngine.data.length, 'articoli');
+    console.log('✅ Ricerca inizializzata con', articles.length, 'articoli');
 
     // Gestione ricerca in tempo reale
     const searchInput = document.getElementById('site-search');
