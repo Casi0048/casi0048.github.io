@@ -5881,44 +5881,46 @@ window.addEventListener('load',()=>{
   });
 });
 
-// === AUDIO RUSSELL (CHITARRA) ===
+// === AUDIO RUSSELL (CHITARRA) — senza listener globali, hint sempre visibile ===
 (function(){
-  const b = document.getElementById('russell-btn'),
-        h = document.getElementById('russell-hint'),
-        a = document.getElementById('russell-audio');
-  
+  const b = document.getElementById('russell-btn');
+  const a = document.getElementById('russell-audio');
+  // NB: NON prendiamo h e NON lo nascondiamo mai
+
   if(!b || !a) return;
-  
-  let unlocked = false;
-  
-  function unlockAudio(){
-    if(unlocked) return;
-    unlocked = true;
-    a.muted = false;
-    a.play().then(() => {
-      a.pause();
-      a.currentTime = 0;
-    }).catch(() => {});
-    
-    // Rimuovi listeners di unlock
-    window.removeEventListener('pointerdown', unlockAudio, { capture: true });
-    window.removeEventListener('keydown', unlockAudio, { capture: true });
-    
-    // Nascondi hint dopo unlock
-    if(h) h.style.display = 'none';
-  }
-  
-  // Setup unlock
-  window.addEventListener('pointerdown', unlockAudio, { once: true, capture: true, passive: true });
-  window.addEventListener('keydown', unlockAudio, { once: true, capture: true });
-  
-  // Play chitarra al click
-  b.addEventListener('click', () => {
+
+  function unlockOnceAndPlay(){
     try {
+      // sblocca eventuale audio context (se lo usi altrove)
+      if (window.Howler?.ctx?.state === 'suspended') {
+        window.Howler.ctx.resume().catch(()=>{});
+      } else if (window.__audioCtx && window.__audioCtx.state === 'suspended') {
+        window.__audioCtx.resume().catch(()=>{});
+      }
+    } catch(_){}
+
+    try {
+      a.muted = false;
       a.currentTime = 0;
-      a.play().catch(() => {});
-    } catch(_) {}
-  });
+      const p = a.play();
+      if (p && p.catch) p.catch(()=>{});
+    } catch(_){}
+
+    // dopo il primo click, passiamo alla logica "replay"
+    b.removeEventListener('click', unlockOnceAndPlay);
+    b.addEventListener('click', replayFromStart);
+  }
+
+  function replayFromStart(){
+    try {
+      if (!a.paused) a.currentTime = 0;
+      const p = a.play();
+      if (p && p.catch) p.catch(()=>{});
+    } catch(_){}
+  }
+
+  // primo click: sblocca e suona
+  b.addEventListener('click', unlockOnceAndPlay);
 })();
 
 // === EFFETTI TUONO E LAMP ===
