@@ -267,9 +267,9 @@ p, h1, h2, h3, h4, h5, h6 {
 }
 
 /* Lente: incollata al bordo sinistro allineata verticalmente */
-.search-container .search-icon{
+.search-container .search-icon {
   position: absolute;
-  left: .8rem;   
+  left: .8rem;
   top: 50%;
   transform: translateY(-50%);
   font-size: 1.05rem;
@@ -279,49 +279,66 @@ p, h1, h2, h3, h4, h5, h6 {
   pointer-events: none;    /* decorativa: non blocca i clic sull'input */
   z-index: 3003;
 }
+
 /* Fallback se la <i> è vuota (niente FA) */
-.search-container .search-icon:empty::before{
+.search-container .search-icon:empty::before {
   content: "🔎";
   display: inline-block;
   transform: translateY(1px);
 }
 
-/* X nativa di Safari: resa visibile e “oro” */
-.search-container input[type="search"]::-webkit-search-cancel-button{
+/* X nativa di Safari: resa visibile e "oro" - VERSIONE CORRETTA */
+.search-container input[type="search"]::-webkit-search-cancel-button {
   -webkit-appearance: none;
-  height: 18px; width: 18px; opacity: 1;
+  height: 18px;
+  width: 18px;
+  opacity: 1;
   background-color: var(--gold, #d4af37);
   border-radius: 50%;
-  -webkit-mask: url('data:image/svg+xml;utf8,\
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">\
-  <path d="M6 6L18 18M6 18L18 6" stroke="white" stroke-width="3" stroke-linecap="round"/>\
-</svg>') no-repeat center / 100% 100%;
+  cursor: pointer;
+  -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 6L18 18M6 18L18 6" stroke="white" stroke-width="3" stroke-linecap="round"/></svg>') no-repeat center / 12px 12px;
 }
 
-/* (Se nel markup c’è anche un bottone .clear-search) – stesso allineamento della X nativa */
-.search-container .clear-search{
+/* Bottone clear-search custom */
+.search-container .clear-search {
   position: absolute;
-  right: 1.95rem;
+  right: 0.8rem; /* Posizione più logica */
   top: 50%;
   transform: translateY(-50%);
-  width: 22px; height: 22px;
-  display: none;                 /* mostralo con la tua logica o tienilo sempre visibile */
-  align-items: center; justify-content: center;
-  border: 0; border-radius: 50%;
-  background: rgba(255,255,255,.12);
-  box-shadow: inset 0 0 0 1px rgba(255,215,0,.25);
-  color: var(--gold, #d4af37);
-  font-weight: 700; cursor: pointer;
+  width: 20px;
+  height: 20px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 50%;
+  background: var(--gold, #d4af37); /* Stesso colore della X nativa */
+  color: #0b1022; /* Testo scuro per contrasto */
+  font-weight: 700;
+  cursor: pointer;
   z-index: 3004;
+  transition: all 0.2s ease;
 }
 
-/* Se vuoi farlo apparire senza JS quando c’è testo (richiede l’HTML: input prima, poi .clear-search) */
-.search-container input:not(:placeholder-shown) ~ .clear-search,
-.search-container input:focus ~ .clear-search{
+/* Icona X per il clear-search */
+.search-container .clear-search::before {
+  content: "×";
+  font-size: 14px;
+  line-height: 1;
+}
+
+/* Mostra il bottone quando c'è testo */
+.search-container input:not(:placeholder-shown) ~ .clear-search {
   display: flex;
 }
 
-      .menu-container {
+/* Effetti hover per migliore UX */
+.search-container .clear-search:hover {
+  background: var(--gold-secondary, #ffeb3b);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.menu-container {
       position: fixed;
       top: 4.5rem;
       left: 0;
