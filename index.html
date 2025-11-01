@@ -87,7 +87,6 @@
     }
   }
   </script>
-<link rel="preload" href="/search-js.html?v=20251029" as="fetch" type="application/json" crossorigin>
 </head>
 <style>
 
@@ -987,7 +986,7 @@ nav.menu-desktop .mega-menu.right-align:hover {
       .right-embed{position:fixed;right:1.25rem;top:40rem;width:20rem;z-index:25;background:rgba(10,10,30,.8);border:1px solid rgba(255,215,0,.25);border-radius:.75rem;padding:.5rem}
       .right-embed iframe{width:100%;height:264px;display:block;border:0}
       #russell-box{position:fixed;bottom:8vh;left:2rem;z-index:10;background:rgba(10,10,30,.8);border:1px solid rgba(255,215,0,.25);border-radius:.62rem;padding:.62rem .75rem;max-width:24rem;box-shadow:0 .5rem 1.12rem rgba(0,0,0,.35)}
-      #russell-btn{all:unset;cursor:pointer;display:block;color:#ffd86a;}#russell-hint{position:fixed;bottom:19vh;left:3.5rem;z-index:92;color:#cfe8ff;opacity:.85;font-style:italic;font-weight:700}
+      #russell-btn{all:unset;cursor:pointer;display:block;color:#ffd86a;}#russell-hint{position:fixed;bottom:19vh;left:3.5rem;z-index:5;color:#cfe8ff;opacity:.85;font-style:italic;font-weight:700}
       #lightning,#bolt{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:0}
       #lightning{background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.9),rgba(255,255,255,.2) 40%,transparent 65%);transition:opacity .18s ease-out}
       #bolt{width:160px;height:400px;left:50%;top:50%;background:linear-gradient(to bottom,rgba(255,255,255,1),rgba(255,255,255,0));clip-path:polygon(48% 0,52% 0,60% 25%,45% 25%,55% 55%,40% 55%,48% 100%,42% 100%,35% 60%,50% 60%,38% 28%,58% 28%);filter:drop-shadow(0 0 12px rgba(255,255,255,.8));transition:opacity .28s ease-out,transform .09s ease-out}
@@ -1189,7 +1188,11 @@ nav.menu-desktop .mega-menu.right-align:hover {
 </script>
 <script id="search-config">
   // prova prima l’URL del tuo dominio, poi i fallback relativi
-  window.SEARCH_INDEX_URLS = ['/search-js.html?v=20251029'];
+  window.SEARCH_INDEX_URLS = [
+    'https://www.echidisofia.org/search-index.json?v=20251007',
+    'search-index.json?v=20251016',
+    '/assets/search-index.json?v=20251016'
+  ];
 </script>
 <style id="search-clear-btn">
   /* Assicura il contesto */
@@ -4685,6 +4688,7 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
             border: 1px solid rgba(255, 215, 0, 0.25);
             border-radius: 0.5rem;
             padding: 0.5rem 1rem;
+  margin-left: 10px;
             color: #ffd86a;
             font-weight: 700;
             cursor: pointer;
@@ -5139,6 +5143,7 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 <div>
 <h4>Periodo comunista</h4>
 <a href="articoli/malinowski.html" role="menuitem">Bronisław Malinowski</a>
+<a href="articoli/swie%C5%BCawski.html" role="menuitem">Stefan Swieżawski</a>
 <a href="articoli/kolakowski.html" role="menuitem">Leszek Kołakowski</a>
 <a href="articoli/wojtyla.html" role="menuitem">
                 Karol Wojtyła<br/>
@@ -5163,7 +5168,6 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 </div>
 <!-- Contenuto principale -->
 <main aria-label="Contenuto principale" role="main">
-<div id=\"search-results-home\"></div>
 <!-- Canvas per le piccole cometine variopinte -->
 <canvas class="tiny-comets-canvas" id="tiny-comets"></canvas>
 <section class="welcome-section">
@@ -7576,7 +7580,7 @@ document.addEventListener('click', function(e){
 });
 </script>
 <script>
-  window.SEARCH_INDEX_URLS = ['/search-js.html?v=20251029'];
+  window.SEARCH_INDEX_URLS = ['/search-index.json?v=2','/assets/search-index.json?v=2'];
 </script>
 <script>
   // Aggiungi questo script per ottimizzare le animazioni
@@ -8442,83 +8446,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 })();
 </script>
-
-
-<script>
-  async function loadIndex(url, t=8000){
-    const ac=new AbortController(); const to=setTimeout(()=>ac.abort(),t);
-    const r=await fetch(url,{signal:ac.signal,cache:'no-store'}); clearTimeout(to);
-    if(!r.ok) throw new Error('HTTP '+r.status);
-    const txt=await r.text();
-    let data=null; try{ data=JSON.parse(txt);}catch{ const m=txt.match(/\[\s*\{[\s\S]*?\}\s*\]/); data=m?JSON.parse(m[0]):null; }
-    if(!data) throw new Error('Indice non valido');
-    const items=Array.isArray(data)?data:(data&&Array.isArray(data.items)?data.items:[]);
-    return items.map(it=>({
-      title:it.title||it.name||'', url:it.url||it.href||'#',
-      category:it.category||it.section||'', description:it.description||it.desc||'',
-      date:it.date||''
-    })).filter(x=>x.title&&x.url);
-  }
-  function isExt(u){return /^https?:\/\//i.test(u)}; function isAnc(u){return typeof u==='string'&&u.trim().startsWith('#')};
-  function isLocalHtml(u){return !isExt(u)&&!isAnc(u)&&/\.html?(\?|#|$)/i.test(u)}
-  const CONTENT=/^(\/)?(articoli|Presocratici|filosofi|pagine|Sezioni)(\/|$)/i;
-  function isArticle(x){const u=x.url||'', c=(x.category||'').toLowerCase(); return (isLocalHtml(u)&&CONTENT.test(u)) || ['articolo','pagina'].includes(c);}
-  function makeEngine(items){
-    const bank=items.map(x=>({...x,_hay:(x.title+' '+(x.category||'')+' '+(x.description||'')).toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'')}));
-    function sortByDate(a){return a.slice().sort((A,B)=>(Date.parse(B.date||'')||0)-(Date.parse(A.date||'')||0))}
-    function search(q,lim=200){
-      const query=(q||'').trim();
-      if(!query) return sortByDate(bank.filter(isArticle)).slice(0,lim);
-      const qq=query.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,''); const terms=qq.split(/\s+/);
-      const scored=[];
-      for(const it of bank){
-        if(!terms.every(t=>it._hay.includes(t))) continue;
-        let s=0; if((it.title||'').toLowerCase().includes(qq)) s+=10;
-        if(isArticle(it)) s+=3; if((it.description||'').length>80) s+=1;
-        scored.push({it,s});
-      }
-      scored.sort((a,b)=>b.s-a.s); return scored.slice(0,lim).map(x=>x.it);
-    }
-    return {search};
-  }
-  function render(results, mount='#search-results-home'){
-    const root=document.querySelector(mount); if(!root) return;
-    root.innerHTML='';
-    if(!results.length){ root.innerHTML='<p class="muted">Nessun risultato.</p>'; return;}
-    const frag=document.createDocumentFragment();
-    for(const r of results){
-      const a=document.createElement('a'); a.className='result-item'; a.href=r.url;
-      a.innerHTML=`<h3 class="result-title">${r.title}</h3>
-                   ${r.description?`<p class="result-desc">${r.description}</p>`:''}
-                   ${r.category?`<span class="result-cat">${r.category}</span>`:''}`;
-      frag.appendChild(a);
-    }
-    root.appendChild(frag);
-  }
-  (async function(){
-    try{
-      const url=(window.SEARCH_INDEX_URLS&&window.SEARCH_INDEX_URLS[0])||'/search-js.html?v=20251029';
-      const items=await loadIndex(url);
-      console.log('[Ricerca] tot:', items.length, 'articoli-like:', items.filter(x=>((x.url||'').match(/\.html?(\?|#|$)/i)&&/^(\/)?(articoli|Presocratici|filosofi|pagine|Sezioni)(\/|$)/i.test(x.url||''))||['articolo','pagina'].includes((x.category||'').toLowerCase())).length);
-      console.log('[Ricerca] Swieżawski?', items.some(x => (x.title||'').toLowerCase().includes('swie')));
-      const engine=makeEngine(items);
-      const input=document.getElementById('site-search')||document.querySelector('input[type="search"],input[name="q"]');
-      // AVVIO: TUTTI gli articoli
-      render(engine.search('', 200), '#search-results-home');
-      if(input){ input.addEventListener('input', e=>render(engine.search(e.target.value,200),'#search-results-home')); }
-    }catch(e){
-      console.error('Ricerca — init error:', e);
-      const m=document.querySelector('#search-results-home'); if(m) m.innerHTML='<p class="error">Errore nel caricamento dell’indice.</p>';
-    }
-  })();
-</script>
-<style>
-  #search-results-home .result-item{display:block;padding:.65rem .9rem;margin:.5rem 0;border:1px solid rgba(255,215,0,.12);border-radius:.6rem;background:rgba(255,255,255,.04);text-decoration:none}
-  #search-results-home .result-item:hover{background:rgba(255,255,255,.09)}
-  #search-results-home .result-title{margin:0 0 .25rem;font-size:1rem;line-height:1.25;color:#ffeb9a}
-  #search-results-home .result-desc{margin:.15rem 0 .35rem;font-size:.92rem;line-height:1.4;opacity:.92;color:#cfe2ff}
-  #search-results-home .result-cat{display:inline-block;font-size:.75rem;opacity:.75;color:#0b1022;background:linear-gradient(90deg,#ffd86a,#ffeb9a);border-radius:999px;padding:.08rem .5rem;font-weight:800}
-</style>
 
 </body>
 </html>
