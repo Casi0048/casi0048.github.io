@@ -5,725 +5,289 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cerca — Echi di Sofia</title>
 <link rel="icon" type="image/png" href="/favicon_io/favicon-32x32.png">
+<link rel="preload" href="/search-js.html?v=20251029" as="fetch" type="application/json" crossorigin>
+
+<!-- Sorgente unica indice -->
+<script>
+  (function () {
+    window.SEARCH_INDEX_URLS = ['/search-js.html?v=20251029'];
+  })();
+</script>
+
 <style>
-:root {
-  --bg: #0a0a1a;
-  --text: #e9eef5;
-  --gold: #ffd86a;
-  --cyan: #9ad0ff;
-  --panel: rgba(10, 10, 30, .9);
-}
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
-  line-height: 1.5;
-}
-
-.wrap {
-  width: min(1100px, 94vw);
-  margin: 0 auto;
-  padding: 1rem 0 2rem;
-}
+:root { --bg:#0a0a1a; --text:#e9eef5; --gold:#ffd86a; --cyan:#9ad0ff; --panel:rgba(10,10,30,.9) }
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;line-height:1.5}
+.wrap{width:min(1100px,94vw);margin:0 auto;padding:1rem 0 2rem}
 
 /* HEADER */
-header {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  background: rgba(10, 10, 30, .96);
-  border-bottom: 1px solid rgba(255, 215, 0, .2);
-  backdrop-filter: blur(6px);
-}
+header{position:sticky;top:0;z-index:10;background:rgba(10,10,30,.96);border-bottom:1px solid rgba(255,215,0,.2);backdrop-filter:blur(6px)}
+.top{display:flex;align-items:center;gap:.75rem;padding:.8rem 1rem}
+.brand{display:flex;align-items:center;gap:.5rem;color:var(--gold);font-weight:800;text-decoration:none}
+.brand span{background:linear-gradient(90deg,#ffd700,#fff7b0,#ffd700);-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.04em}
+.spacer{flex:1}
+.home{color:var(--cyan);text-decoration:none;font-weight:700;transition:color .2s ease}
+.home:hover{color:#fff;text-decoration:underline}
 
-.top {
-  display: flex;
-  align-items: center;
-  gap: .75rem;
-  padding: .8rem 1rem;
-}
+/* SEARCH HINT */
+.hint{opacity:.8;font-size:.9rem;margin-top:.5rem;color:var(--cyan)}
+.hint em{font-style:italic;color:var(--gold)}
 
-.brand {
-  display: flex;
-  align-items: center;
-  gap: .5rem;
-  color: var(--gold);
-  font-weight: 800;
-  text-decoration: none;
-}
+/* EXPLORA LAYOUT */
+.explora-layout{display:grid;grid-template-columns:260px 1fr;gap:1.25rem;margin-top:1rem}
+.explora-side{background:rgba(10,10,30,.9);border:1px solid rgba(255,215,0,.18);border-radius:14px;padding:1rem}
+.side-title{margin:.25rem 0 1rem;font-size:1.05rem;color:var(--gold)}
+.cat-list{display:flex;flex-direction:column;gap:.25rem}
+.cat-item{display:flex;justify-content:space-between;align-items:center;padding:.45rem .6rem;border-radius:.55rem;text-decoration:none;color:#e9eef5;border:1px solid transparent}
+.cat-item:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.08)}
+.cat-item.active{background:linear-gradient(90deg,rgba(255,216,106,.18),rgba(154,208,255,.18));border-color:rgba(255,255,255,.18)}
+.cat-name{font-weight:700}
+.cat-count{font-family:monospace;opacity:.9}
 
-.brand img {
-  width: 32px;
-  height: 32px;
-  filter: drop-shadow(0 0 .5rem rgba(255, 215, 0, .35));
-}
+.explora-toolbar{display:flex;justify-content:flex-end;margin-bottom:.75rem}
+.explora-toolbar input[type=search]{width:min(520px,100%);padding:10px 14px;border-radius:10px;background:rgba(20,20,40,.85);border:1px solid rgba(255,255,255,.14);color:#e9eef5}
+.article-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
 
-.brand span {
-  background: linear-gradient(90deg, #ffd700, #fff7b0, #ffd700);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  letter-spacing: .04em;
-}
+/* CARDS */
+.article-card{background:var(--panel);border:1px solid rgba(255,215,0,.18);border-radius:14px;padding:1rem;transition:transform .2s ease, box-shadow .2s ease;box-shadow:0 .8rem 2rem rgba(0,0,0,.35);animation:fadeIn .3s ease-out}
+.article-card:hover{transform:translateY(-2px);box-shadow:0 1rem 2.5rem rgba(0,0,0,.4)}
+.article-card .title{display:block;color:var(--gold);font-weight:800;text-decoration:none;margin-bottom:.25rem}
+.article-card .title:hover{text-decoration:underline;color:#fff}
+.article-card .url{font-size:.8rem;opacity:.85;color:#9bb7ff;margin:.15rem 0 .5rem;word-break:break-all;font-family:monospace}
+.article-card .desc{color:#cfe2ff;opacity:.95;line-height:1.4;font-size:.92rem}
 
-.spacer {
-  flex: 1;
-}
+/* Legacy results (se usi #results senza griglia) */
+.results{display:grid;gap:.8rem;margin-top:1rem}
+.card{background:var(--panel);border:1px solid rgba(255,215,0,.18);border-radius:14px;padding:1.2rem;box-shadow:0 .8rem 2rem rgba(0,0,0,.35);transition:transform .2s ease,box-shadow .2s ease}
+.card a.title{color:var(--gold);font-weight:800;text-decoration:none;font-size:1.1rem;display:block;margin-bottom:.3rem}
+.card a.title:hover{color:#fff;text-decoration:underline}
+.url{font-size:.85rem;color:#9bb7ff;opacity:.9;margin:.2rem 0 .6rem;word-break:break-all;font-family:monospace}
+.desc{color:#cfe2ff;opacity:.95;line-height:1.4}
 
-.home {
-  color: var(--cyan);
-  text-decoration: none;
-  font-weight: 700;
-  transition: color 0.2s ease;
-}
-
-.home:hover {
-  color: #fff;
-  text-decoration: underline;
-}
-
-/* SEARCH AREA */
-.search-header {
-  padding: 1.5rem 0 0.5rem;
-}
-
-#search-title {
-  display: block;
-  font-size: 1.2rem;
-  margin-bottom: 0.8rem;
-  color: var(--gold);
-}
-
-.input-wrap {
-  position: relative;
-  display: inline-block;
-  width: 100%;
-  max-width: 600px;
-}
-
-/* Lente a destra */
-.input-wrap::before {
-  content: "🔍";
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 16px;
-  color: #9ad0ff;
-  z-index: 2;
-  pointer-events: none;
-}
-
-/* Campo di ricerca */
-#site-search {
-  width: 100%;
-  padding: 12px 40px 12px 16px;
-  background: rgba(20, 20, 40, .85);
-  color: #e9eef5;
-  border: 1px solid rgba(255, 255, 255, .14);
-  border-radius: 10px;
-  font-size: 1rem;
-  outline: none;
-  transition: border-color 0.2s ease;
-}
-
-#site-search:focus {
-  border-color: rgba(0, 204, 255, .6);
-}
-
-#site-search::placeholder {
-  color: rgba(233, 238, 245, 0.6);
-}
-
-/* Pulsante cancella personalizzato */
-.clear-btn {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  font-size: 16px;
-  color: #ff6b6b;
-  cursor: pointer;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.2s ease;
-  z-index: 3;
-  padding: 4px;
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.clear-btn:hover {
-  color: #ff4444;
-  background: rgba(255, 107, 107, 0.1);
-  transform: translateY(-50%) scale(1.1);
-}
-
-.clear-btn.visible {
-  opacity: 1;
-  visibility: visible;
-}
-
-/* HINT TEXT */
-.hint {
-  opacity: .8;
-  font-size: .9rem;
-  margin-top: 0.5rem;
-  color: var(--cyan);
-}
-
-.hint em {
-  font-style: italic;
-  color: var(--gold);
-}
-
-/* RESULTS */
-.results {
-  display: grid;
-  gap: .8rem;
-  margin-top: 1rem;
-}
-
-.card {
-  background: var(--panel);
-  border: 1px solid rgba(255, 215, 0, .18);
-  border-radius: 14px;
-  padding: 1.2rem;
-  box-shadow: 0 .8rem 2rem rgba(0, 0, 0, .35);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, .4);
-}
-
-.card a.title {
-  color: var(--gold);
-  font-weight: 800;
-  text-decoration: none;
-  font-size: 1.1rem;
-  display: block;
-  margin-bottom: 0.3rem;
-  transition: color 0.2s ease;
-}
-
-.card a.title:hover {
-  color: #fff;
-  text-decoration: underline;
-}
-
-.url {
-  font-size: .85rem;
-  color: #9bb7ff;
-  opacity: .9;
-  margin: .2rem 0 .6rem;
-  word-break: break-all;
-  font-family: monospace;
-}
-
-.desc {
-  color: #cfe2ff;
-  opacity: .95;
-  line-height: 1.4;
-}
-
-/* HIGHLIGHTING */
-mark {
-  background: linear-gradient(120deg, rgba(255, 216, 106, 0.3), rgba(154, 208, 255, 0.3));
-  color: inherit;
-  padding: 0.1em 0.2em;
-  border-radius: 0.2em;
-}
-
-/* NO RESULTS & PLACEHOLDER */
-.results p {
-  text-align: center;
-  padding: 2rem;
-  opacity: 0.8;
-  font-style: italic;
-}
-
-.results p strong {
-  color: var(--gold);
-  font-style: normal;
-}
+/* HIGHLIGHT */
+mark{background:linear-gradient(120deg,rgba(255,216,106,.3),rgba(154,208,255,.3));color:inherit;padding:.1em .2em;border-radius:.2em}
 
 /* FOOTER */
-footer {
-  margin-top: 3rem;
-  padding: 1.5rem 1rem;
-  text-align: center;
-  color: #9ec3ff;
-  border-top: 1px solid rgba(255, 255, 255, .06);
-  font-size: 0.9rem;
-}
+footer{margin-top:3rem;padding:1.5rem 1rem;text-align:center;color:#9ec3ff;border-top:1px solid rgba(255,255,255,.06);font-size:.9rem}
 
-/* RESPONSIVE DESIGN */
-@media (max-width: 768px) {
-  .wrap {
-    width: 92vw;
-    padding: 0.5rem 0 1.5rem;
-  }
-  
-  .top {
-    padding: 0.6rem 0.8rem;
-  }
-  
-  .brand span {
-    font-size: 0.9rem;
-  }
-  
-  .home {
-    font-size: 0.9rem;
-  }
-  
-  #site-search {
-    font-size: 0.95rem;
-    padding: 10px 36px 10px 14px;
-  }
-  
-  .card {
-    padding: 1rem;
-  }
-  
-  .card a.title {
-    font-size: 1rem;
-  }
-  
-  .hint {
-    font-size: 0.85rem;
-  }
-}
+/* RESP */
+@media (max-width:1000px){.explora-layout{grid-template-columns:1fr}.explora-side{order:2}.explora-body{order:1}.article-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.article-grid{grid-template-columns:1fr}}
+@media (max-width:768px){.wrap{width:92vw;padding:.5rem 0 1.5rem}.top{padding:.6rem .8rem}}
+@media (max-width:480px){.top{flex-wrap:wrap;gap:.5rem}.brand{flex:1}.spacer{display:none}.home{width:100%;text-align:center;order:3;margin-top:.5rem;padding-top:.5rem;border-top:1px solid rgba(255,255,255,.1)}}
 
-@media (max-width: 480px) {
-  .top {
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-  
-  .brand {
-    flex: 1;
-  }
-  
-  .spacer {
-    display: none;
-  }
-  
-  .home {
-    width: 100%;
-    text-align: center;
-    order: 3;
-    margin-top: 0.5rem;
-    padding-top: 0.5rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  
-  #search-title {
-    font-size: 1.1rem;
-  }
-}
+/* ANIM */
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
-/* ANIMATIONS */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.card {
-  animation: fadeIn 0.3s ease-out;
-}
-
-/* SCROLLBAR STYLING */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: rgba(10, 10, 30, 0.8);
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 216, 106, 0.3);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 216, 106, 0.5);
-}
-
-/* FOCUS STYLES FOR ACCESSIBILITY */
-a:focus-visible,
-button:focus-visible,
-input:focus-visible {
-  outline: 2px solid var(--cyan);
-  outline-offset: 2px;
-  border-radius: 2px;
-}
+/* ACCESSIBILITÀ */
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;border-radius:2px}
 </style>
-  <style>
-  /* Stile essenziale (coerente con Echi di Sofia) */
-  .result-item { display:block; padding:.65rem .9rem; margin:.5rem 0; border:1px solid rgba(255,255,255,.12); border-radius:.6rem; background:rgba(255,255,255,.04); text-decoration:none }
-  .result-item:hover { background:rgba(255,255,255,.09); }
-  .result-title { margin:0 0 .25rem; font-size:1rem; line-height:1.25 }
-  .result-desc { margin:.15rem 0 .35rem; font-size:.92rem; line-height:1.4; opacity:.92 }
-  .result-cat { display:inline-block; font-size:.75rem; opacity:.75 }
-</style>
-<link rel="preload" href="/search-js.html?v=20251029" as="fetch" type="application/json" crossorigin>
 </head>
 <body>
+
 <header>
   <div class="top wrap">
     <a class="brand" href="/" aria-label="Echi di Sofia – Home">
-      <svg class="logo" viewBox="0 0 24 24" width="28" height="28" fill="none"
-           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-           aria-hidden="true">
+      <svg class="logo" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
         <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
         <line x1="12" y1="22.08" x2="12" y2="12"></line>
       </svg>
       <span>Echi di Sofia</span>
     </a>
-
     <div class="spacer"></div>
-
     <a class="home" href="/" aria-label="Torna all'Incipit">🏠 Torna all'Incipit</a>
   </div>
 
-  <!-- SEARCH SECTION -->
   <div class="wrap">
-    <div style="margin: 1.5rem 0 0.5rem;">
-      <strong style="font-size: 1.2rem;">Cerca</strong>
-    </div>
-    
-    <div class="input-wrap">
-      <input type="text" id="site-search" placeholder="Cerca… (es. Platone, Ipazia, Talete)" autocomplete="off" spellcheck="false">
-    </div>
-    
-    <div class="hint" style="margin-top: 0.5rem;">
-      Suggerimento: puoi cercare anche per <em>titolo</em> o parole contenute nella <em>descrizione</em>.
-    </div>
+    <div style="margin: 1.5rem 0 0.5rem;"><strong style="font-size: 1.2rem;">Esplora articoli</strong></div>
+    <div class="hint">Suggerimento: filtra per <em>titolo</em> o parole nella <em>descrizione</em>; clicca una <em>categoria</em> per restringere.</div>
   </div>
 </header>
 
 <main class="wrap">
-  <div id="results" class="results" role="list"></div>
+  <div class="explora-layout">
+    <aside class="explora-side">
+      <h2 class="side-title">Categorie</h2>
+      <nav id="cat-list" class="cat-list" aria-label="Categorie articoli"></nav>
+    </aside>
+    <section class="explora-body">
+      <div class="explora-toolbar">
+        <input type="search" id="site-search" placeholder="Filtra… (titolo/descrizione)" autocomplete="off" spellcheck="false">
+      </div>
+      <div id="article-grid" class="article-grid" role="list"></div>
+    </section>
+  </div>
 </main>
 
 <footer>© 2025 Echi di Sofia</footer>
 
-
-
-<style>
-  .result-item { display:block; padding:.65rem .9rem; margin:.5rem 0; border:1px solid rgba(255,255,255,.12); border-radius:.6rem; background:rgba(255,255,255,.04); text-decoration:none }
-  .result-item:hover { background:rgba(255,255,255,.09); }
-  .result-title { margin:0 0 .25rem; font-size:1rem; line-height:1.25 }
-  .result-desc { margin:.15rem 0 .35rem; font-size:.92rem; line-height:1.4; opacity:.92 }
-  .result-cat { display:inline-block; font-size:.75rem; opacity:.75 }
-</style>
-
-
-<!-- Config unica per l'indice -->
-<!-- Indici di ricerca (ordine: locale principale -> eventuali fallback) -->
-
- <style>
-  /* Stile essenziale (coerente con Echi di Sofia) */
-  .result-item { display:block; padding:.65rem .9rem; margin:.5rem 0; border:1px solid rgba(255,255,255,.12); border-radius:.6rem; background:rgba(255,255,255,.04); text-decoration:none }
-  .result-item:hover { background:rgba(255,255,255,.09); }
-  .result-title { margin:0 0 .25rem; font-size:1rem; line-height:1.25 }
-  .result-desc { margin:.15rem 0 .35rem; font-size:.92rem; line-height:1.4; opacity:.92 }
-  .result-cat { display:inline-block; font-size:.75rem; opacity:.75 }
-</style>
-
-
-
-
-<!-- Indice di ricerca (dedupe-safe) -->
-
-
-<!-- Loader + Motore + Render (unificato) -->
 <script>
-  async function loadIndexes(urls, timeoutMs = 8000) {
-    const all = [];
-    for (const url of urls) {
-      try {
-        const ac = new AbortController(); const to = setTimeout(() => ac.abort(), timeoutMs);
-        const res = await fetch(url, { signal: ac.signal, cache: 'no-store' });
-        clearTimeout(to);
-        if (!res.ok) continue;
-        const text = await res.text();
-        let data = null;
-        try { data = JSON.parse(text); }
-        catch { const m = text.match(/\[\s*\{[\s\S]*?\}\s*\]/); data = m ? JSON.parse(m[0]) : null; }
-        if (!data) continue;
+/* ===== Config / util ===== */
+const INDEX_URL = (window.SEARCH_INDEX_URLS && window.SEARCH_INDEX_URLS[0]) || '/search-js.html?v=20251029';
+const FOOTER_SECTIONS_SELECTOR = '.footer-sections, #sezioni, .sezioni-footer'; // se presente, viene nascosto quando ci sono risultati
 
-        const items = Array.isArray(data) ? data : (data && Array.isArray(data.items) ? data.items : null);
-        if (!items) continue;
+const norm  = s => (s||'').toString().trim();
+const deburr= s => s.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'');
+const isExt = u => /^https?:\/\//i.test(u||'');
+const isAnc = u => (u||'').trim().startsWith('#');
+const isLocalHtml = u => !isExt(u) && !isAnc(u) && /\.html?(\?|#|$)/i.test(u||'');
+const CONTENT_RE = /^(\/)?(articoli|Presocratici|filosofi|pagine|Sezioni)(\/|$)/i;
+const isArticleLike = it => {
+  const u = it.url || '', c = deburr(it.category||'');
+  return (isLocalHtml(u) && CONTENT_RE.test(u)) || (c==='articolo' || c==='pagina');
+};
+const hideFooterSections = (hasResults) => {
+  const f = document.querySelector(FOOTER_SECTIONS_SELECTOR);
+  if (f) f.style.display = hasResults ? 'none' : '';
+};
 
-        const norm = items.map(it => ({
-          title: it.title || it.name || '',
-          url: it.url || it.href || '#',
-          category: it.category || it.section || '',
-          description: it.description || it.desc || '',
-          date: it.date || ''
-        })).filter(x => x.title && x.url);
+/* ===== Loader indice ===== */
+async function loadIndex(url=INDEX_URL, timeout=8000){
+  const ac = new AbortController(); const to = setTimeout(()=>ac.abort(), timeout);
+  const res = await fetch(url, { signal: ac.signal, cache:'no-store' }).catch(()=>null);
+  clearTimeout(to);
+  if(!res || !res.ok) throw new Error('Indice non disponibile');
+  const txt = await res.text();
+  let data = null;
+  try { data = JSON.parse(txt); }
+  catch { const m = txt.match(/\[\s*\{[\s\S]*?\}\s*\]/); data = m ? JSON.parse(m[0]) : null; }
+  const arr = Array.isArray(data) ? data : (data && Array.isArray(data.items) ? data.items : []);
+  return arr.map(it => ({
+    title: norm(it.title || it.name),
+    url: norm(it.url || it.href),
+    category: norm(it.category || it.section),
+    description: norm(it.description || it.desc),
+    date: norm(it.date)
+  })).filter(x => x.title && x.url);
+}
 
-        all.push(...norm);
-      } catch {}
+/* ===== Motore ===== */
+function makeEngine(items){
+  const bank = items.filter(isArticleLike).map(x => ({
+    ...x, _hay: deburr(`${x.title} ${x.category||''} ${x.description||''}`)
+  }));
+  const sortByDate = list => list.slice().sort((A,B)=>(Date.parse(B.date||'')||0)-(Date.parse(A.date||'')||0));
+  const search = (q, limit=500) => {
+    const query = norm(q);
+    if(!query) return sortByDate(bank).slice(0, limit);
+    const terms = deburr(query).split(/\s+/);
+    const scored = [];
+    for (const it of bank){
+      if (!terms.every(t => it._hay.includes(t))) continue;
+      let s=0;
+      if (deburr(it.title).includes(deburr(query))) s+=8;
+      if ((it.description||'').length>80) s+=1;
+      scored.push({it,s});
     }
-    // dedupe per (title+url)
-    const seen = new Set(), out = [];
-    for (const it of all) {
-      const k = (it.title + '|' + it.url).toLowerCase();
-      if (!seen.has(k)) { seen.add(k); out.push(it); }
-    }
-    return out;
+    scored.sort((a,b)=>b.s-a.s);
+    return scored.slice(0,limit).map(o=>o.it);
+  };
+  return { search, data: bank };
+}
+
+/* ===== Categorie ===== */
+function buildCategories(items){
+  const map = new Map();
+  for (const it of items){
+    const raw = norm(it.category) || 'Senza categoria';
+    map.set(raw, (map.get(raw)||0) + 1);
   }
+  return Array.from(map.entries()).sort((a,b)=> b[1]-a[1] || a[0].localeCompare(b[0]));
+}
+function renderCategories(list, activeKey=null){
+  const nav = document.getElementById('cat-list');
+  if(!nav) return;
+  nav.innerHTML = '';
+  const total = list.reduce((acc, [,n])=>acc+n,0);
+  const make = (label, key, count) => {
+    const a = document.createElement('a');
+    a.href = '#';
+    a.className = 'cat-item' + (activeKey===key ? ' active':'');
+    a.dataset.key = key||'';
+    a.innerHTML = `<span class="cat-name">${label}</span><span class="cat-count">${count}</span>`;
+    return a;
+  };
+  nav.appendChild(make('Tutte', '', total));
+  for (const [cat, n] of list){ nav.appendChild(make(cat, cat, n)); }
+}
 
-  function isExternal(u){ return /^https?:\/\//i.test(u); }
-  function isAnchor(u){ return typeof u==='string' && u.trim().startsWith('#'); }
-  function isLocalHtml(u){ return !isExternal(u) && !isAnchor(u) && /\.html?(\?|#|$)/i.test(u); }
-
-  const CONTENT_DIRS = ['articoli','Presocratici','filosofi','pagine','Sezioni'];
-  const CONTENT_DIRS_RE = new RegExp('^(?:\\/)?(' + CONTENT_DIRS.map(d=>d.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|') + ')(\\/|$)','i');
-
-  function isLocalArticleLike(item){
-    const u = item.url || '';
-    const c = (item.category || '').toLowerCase();
-    const looksLikePage = isLocalHtml(u) && CONTENT_DIRS_RE.test(u);
-    const byCategory = ['articolo','pagina'].includes(c);
-    return (looksLikePage || byCategory) && !isAnchor(u);
+/* ===== Render griglia ===== */
+function renderGrid(items){
+  const root = document.getElementById('article-grid') || document.getElementById('results');
+  if(!root) return;
+  root.innerHTML = '';
+  if(!items.length){
+    root.innerHTML = '<p class="muted">Nessun articolo.</p>';
+    hideFooterSections(false);
+    return;
   }
-
-  function makeEngine(items){
-    const bank = items.map(x => ({
-      ...x,
-      _hay: (x.title + ' ' + (x.category||'') + ' ' + (x.description||''))
-            .toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'')
-    }));
-    function sortByDate(list){
-      return list.slice().sort((a,b)=>{
-        const ad = Date.parse(a.date||'')||0, bd = Date.parse(b.date||'')||0;
-        return bd - ad;
-      });
-    }
-    function search(q, limit=150){
-      const query = (q||'').trim();
-      if (!query) {
-        return sortByDate(bank.filter(isLocalArticleLike)).slice(0, limit);
-      }
-      const qq = query.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'');
-      const terms = qq.split(/\s+/);
-      const scored = [];
-      for (const it of bank){
-        if (!terms.every(t => it._hay.includes(t))) continue;
-        let score = 0;
-        if ((it.title||'').toLowerCase().includes(qq)) score += 10;
-        if (isLocalArticleLike(it)) score += 3;
-        if ((it.description||'').length > 80) score += 1;
-        scored.push({it, score});
-      }
-      scored.sort((a,b)=>b.score-a.score);
-      return scored.slice(0, limit).map(s=>s.it);
-    }
-    return { search };
+  hideFooterSections(true);
+  const frag = document.createDocumentFragment();
+  for (const it of items){
+    const card = document.createElement('article');
+    card.className = 'article-card';
+    card.innerHTML = `
+      <a class="title" href="${it.url}">${it.title}</a>
+      <div class="url">${it.url}</div>
+      ${it.description ? `<div class="desc">${it.description}</div>` : ''}
+      ${it.category ? `<div class="desc" style="opacity:.75;margin-top:.35rem;"><strong>${it.category}</strong></div>` : ''}
+    `;
+    frag.appendChild(card);
   }
+  root.appendChild(frag);
+}
 
-  function ensureResultsMount(selector){
-    let el = document.querySelector(selector);
-    if (!el){
-      el = document.createElement('div'); el.id = selector.replace('#','');
-      const near = document.querySelector('#search-mount') || document.querySelector('main') || document.body;
-      near.appendChild(el);
-    }
-    return el;
-  }
+/* ===== Init ===== */
+(function(){
+  let currentCat = null;
 
-  function render(results, mount='#results'){
-    const root = ensureResultsMount(mount);
-    root.innerHTML = '';
-    if (!results.length){ root.innerHTML = '<p class="muted">Nessun risultato.</p>'; return; }
-    const frag = document.createDocumentFragment();
-    for (const r of results){
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.innerHTML = `
-        <a class="title" href="${r.url}">${r.title}</a>
-        <div class="url">${r.url}</div>
-        ${r.description ? `<div class="desc">${r.description}</div>` : ''}
-        ${r.category ? `<div class="desc" style="opacity:.75;margin-top:.35rem;">${r.category}</div>` : ''}
-      `;
-      frag.appendChild(card);
-    }
-    root.appendChild(frag);
-  }
-
-  (async function(){
-    const urls = (window.SEARCH_INDEX_URLS || ['/search-js.html?v=20251029','/search-index.json?v=20251029']).slice();
-    const items = await loadIndexes(urls);
-    console.log('[Ricerca] tot:', items.length, 'articoli-like:', items.filter(isLocalArticleLike).length);
-    console.log('[Ricerca] Swieżawski?', items.some(x => (x.title||'').toLowerCase().includes('swie')));
-
-    const engine = makeEngine(items);
-    const input = document.getElementById('site-search') || document.querySelector('input[type="search"], input[name="q"]');
-
-    // Primo render: TUTTI gli articoli locali
-    render(engine.search('', 150), '#results');
-
-    if (input) {
-      input.addEventListener('input', e => {
-        render(engine.search(e.target.value, 150), '#results');
-      });
-    }
-  })().catch(e => {
-    console.error('Ricerca — init error:', e);
-    const m = document.querySelector('#results');
-    if (m) m.innerHTML = '<p class="error">Errore nel caricamento dell’indice.</p>';
-  });
-</script>
-<!-- === Ricerca: elenco TUTTI gli articoli all'avvio === -->
-<script>
-  // ===== Loader singolo: prende l'indice unico =====
-  async function loadIndex(url = (window.SEARCH_INDEX_URLS && window.SEARCH_INDEX_URLS[0]) || '/search-js.html?v=20251029', timeoutMs = 8000) {
-    const ac = new AbortController(); const to = setTimeout(() => ac.abort(), timeoutMs);
-    const res = await fetch(url, { signal: ac.signal, cache: 'no-store' }); clearTimeout(to);
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const text = await res.text();
-    let data = null;
-    try { data = JSON.parse(text); }
-    catch { const m = text.match(/\[\s*\{[\s\S]*?\}\s*\]/); data = m ? JSON.parse(m[0]) : null; }
-    if (!data) throw new Error('Indice non valido');
-
-    const items = Array.isArray(data) ? data : (data && Array.isArray(data.items) ? data.items : []);
-    return items.map(it => ({
-      title: it.title || it.name || '',
-      url: it.url || it.href || '#',
-      category: it.category || it.section || '',
-      description: it.description || it.desc || '',
-      date: it.date || ''
-    })).filter(x => x.title && x.url);
-  }
-
-  // ===== Heuristic: cos'è un "articolo" locale =====
-  function isExternal(u){ return /^https?:\/\//i.test(u); }
-  function isAnchor(u){ return typeof u==='string' && u.trim().startsWith('#'); }
-  function isLocalHtml(u){ return !isExternal(u) && !isAnchor(u) && /\.html?(\?|#|$)/i.test(u); }
-  const CONTENT_DIRS_RE = /^(\/)?(articoli|Presocratici|filosofi|pagine|Sezioni)(\/|$)/i;
-  function isLocalArticleLike(x){
-    const u = x.url || '', c = (x.category || '').toLowerCase();
-    const looksLikePage = isLocalHtml(u) && CONTENT_DIRS_RE.test(u);
-    const byCategory = ['articolo','pagina'].includes(c);
-    return (looksLikePage || byCategory) && !isAnchor(u);
-  }
-
-  // ===== Motore di ricerca =====
-  function makeEngine(items){
-    const bank = items.map(x => ({
-      ...x,
-      _hay: (x.title + ' ' + (x.category||'') + ' ' + (x.description||''))
-            .toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'')
-    }));
-    function sortByDate(list){
-      return list.slice().sort((a,b)=> (Date.parse(b.date||'')||0) - (Date.parse(a.date||'')||0));
-    }
-    function search(q, limit=200){
-      const query = (q||'').trim();
-      // AVVIO: query vuota => TUTTI gli articoli locali
-      if (!query) return sortByDate(bank.filter(isLocalArticleLike)).slice(0, limit);
-
-      const qq = query.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'');
-      const terms = qq.split(/\s+/);
-      const scored = [];
-      for (const it of bank){
-        if (!terms.every(t => it._hay.includes(t))) continue;
-        let s = 0;
-        if ((it.title||'').toLowerCase().includes(qq)) s += 10;
-        if (isLocalArticleLike(it)) s += 3;
-        if ((it.description||'').length > 80) s += 1;
-        scored.push({it, s});
-      }
-      scored.sort((a,b)=> b.s - a.s);
-      return scored.slice(0, limit).map(x=>x.it);
-    }
-    return { search };
-  }
-
-  // ===== Render =====
-  function render(results, mount='#results'){
-    const root = document.querySelector(mount) || (()=>{ const d=document.createElement('div'); d.id=mount.replace('#',''); document.body.appendChild(d); return d; })();
-    root.innerHTML = '';
-    if (!results.length){ root.innerHTML = '<p class="muted">Nessun risultato.</p>'; return; }
-
-    const frag = document.createDocumentFragment();
-    for (const r of results){
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.innerHTML = `
-        <a class="title" href="${r.url}">${r.title}</a>
-        <div class="url">${r.url}</div>
-        ${r.description ? `<div class="desc">${r.description}</div>` : ''}
-        ${r.category ? `<div class="desc" style="opacity:.75;margin-top:.35rem;">${r.category}</div>` : ''}
-      `;
-      frag.appendChild(card);
-    }
-    root.appendChild(frag);
-  }
-
-  // ===== Init =====
   (async function(){
     try{
       const items = await loadIndex();
       const engine = makeEngine(items);
 
-      // 1) Primo render: TUTTI GLI ARTICOLI
-      render(engine.search('', 200), '#results');
+      // Categorie
+      const cats = buildCategories(engine.data);
+      renderCategories(cats, null);
 
-      // 2) Input live
-      const input = document.getElementById('site-search') || document.querySelector('input[type="search"], input[name="q"]');
-      if (input) {
-        input.addEventListener('input', e => render(engine.search(e.target.value, 200), '#results'));
-        const form = input.closest('form');
-        if (form) form.addEventListener('submit', ev => { ev.preventDefault(); render(engine.search(input.value, 200), '#results'); });
+      // Tutti gli articoli all’avvio
+      renderGrid(engine.search('', 500));
+
+      // Filtro testo
+      const input = document.getElementById('site-search');
+      const doFilter = () => {
+        const q = input ? input.value : '';
+        let res = engine.search(q, 500);
+        if (currentCat){
+          res = res.filter(it => (norm(it.category)||'Senza categoria') === currentCat);
+        }
+        renderGrid(res);
+      };
+      if (input){
+        input.addEventListener('input', doFilter);
+        const form = input.closest('form'); if(form) form.addEventListener('submit', e => { e.preventDefault(); doFilter(); });
       }
 
-      // 3) (opzionale) se avevi un blocco “sezioni/footer”, rimuovilo o nascondilo qui
-      // const footerSections = document.querySelector('.footer-sections, #sezioni, .sezioni-footer');
-      // if (footerSections) footerSections.style.display = 'none';
+      // Click categorie
+      const nav = document.getElementById('cat-list');
+      if (nav){
+        nav.addEventListener('click', (e) => {
+          const a = e.target.closest('a.cat-item'); if(!a) return;
+          e.preventDefault();
+          currentCat = a.dataset.key || null; // '' = tutte
+          nav.querySelectorAll('.cat-item').forEach(el => el.classList.toggle('active', el === a));
+          doFilter();
+        });
+      }
     }catch(err){
-      console.error('Ricerca — init error:', err);
-      const m = document.querySelector('#results');
-      if (m) m.innerHTML = '<p class="error">Errore nel caricamento dell’indice.</p>';
+      console.error('Esplora — errore init:', err);
+      const root = document.getElementById('article-grid') || document.getElementById('results');
+      if (root) root.innerHTML = '<p class="error">Errore nel caricamento dell’indice.</p>';
     }
   })();
+})();
 </script>
-
-
-<style>
-  /* Stile base coerente */
-  .result-item{display:block;padding:.65rem .9rem;margin:.5rem 0;border:1px solid rgba(255,255,255,.12);border-radius:.6rem;background:rgba(255,255,255,.04);text-decoration:none}
-  .result-item:hover{background:rgba(255,255,255,.09)}
-  .result-title{margin:0 0 .25rem;font-size:1rem;line-height:1.25}
-  .result-desc{margin:.15rem 0 .35rem;font-size:.92rem;line-height:1.4;opacity:.92}
-  .result-cat{display:inline-block;font-size:.75rem;opacity:.75}
-</style>
 
 </body>
 </html>
