@@ -83,6 +83,9 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(-
 
 .error{color:#ff6b6b;text-align:center;padding:2rem}
 .muted{opacity:.6;text-align:center;padding:2rem}
+
+/* NASCONDI SOLO LE SEZIONI LEGACY, NON LA RICERCA PRINCIPALE */
+.legacy-section{display:none !important}
 </style>
 </head>
 <body>
@@ -292,7 +295,35 @@ function renderGrid(items){
   root.appendChild(frag);
 }
 
-/* ================= Init ================= */
+/* ================= NASCONDI SOLO SEZIONI LEGACY ================= */
+
+function hideOnlyLegacySections(){
+  // Selettori specifici per le sezioni legacy che vogliamo nascondere
+  const LEGACY_SELECTORS = [
+    '.footer-sections', 
+    '#sezioni', 
+    '.sezioni-footer',
+    '#catalogo-sezioni', 
+    '.cards.sezioni', 
+    '.sezioni-portale'
+  ];
+  
+  LEGACY_SELECTORS.forEach(selector => {
+    document.querySelectorAll(selector).forEach(el => {
+      el.classList.add('legacy-section');
+    });
+  });
+  
+  // Euristica per identificare sezioni "Sezione del portale"
+  document.querySelectorAll('section, div, footer').forEach(el => {
+    const text = (el.textContent || '').trim();
+    if (text.includes('Sezione del portale') && !el.closest('.explora-layout')) {
+      el.classList.add('legacy-section');
+    }
+  });
+}
+
+/* ================= INIT PRINCIPALE ================= */
 
 (function(){
   let currentCat = null;
@@ -300,6 +331,10 @@ function renderGrid(items){
 
   async function initializeSearch(){
     try{
+      // PRIMA nascondi le sezioni legacy
+      hideOnlyLegacySections();
+      
+      // POI carica l'indice e mostra i risultati
       const items = await loadIndexRobusto();
       engine = makeEngine(items);
 
@@ -346,7 +381,7 @@ function renderGrid(items){
     }
   }
 
-  // Bottone "Cerca"
+  // Bottone "Cerca" - solo per focus e scroll
   function wireSearchButton(){
     const btn = document.getElementById('open-search');
     const input = document.getElementById('site-search');
@@ -363,9 +398,9 @@ function renderGrid(items){
     });
   }
 
-  // Avvio
+  // Avvio IMMEDIATO all'apertura della pagina
   document.addEventListener('DOMContentLoaded', () => {
-    initializeSearch();
+    initializeSearch(); // Questo mostra SUBITO la griglia completa
     wireSearchButton();
   });
 })();
