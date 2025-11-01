@@ -387,6 +387,7 @@ input:focus-visible {
   .result-desc { margin:.15rem 0 .35rem; font-size:.92rem; line-height:1.4; opacity:.92 }
   .result-cat { display:inline-block; font-size:.75rem; opacity:.75 }
 </style>
+<link rel="preload" href="/search-js.html?v=20251029" as="fetch" type="application/json" crossorigin>
 </head>
 <body>
 <header>
@@ -429,20 +430,54 @@ input:focus-visible {
 
 <footer>© 2025 Echi di Sofia</footer>
 
+
+
+<style>
+  .result-item { display:block; padding:.65rem .9rem; margin:.5rem 0; border:1px solid rgba(255,255,255,.12); border-radius:.6rem; background:rgba(255,255,255,.04); text-decoration:none }
+  .result-item:hover { background:rgba(255,255,255,.09); }
+  .result-title { margin:0 0 .25rem; font-size:1rem; line-height:1.25 }
+  .result-desc { margin:.15rem 0 .35rem; font-size:.92rem; line-height:1.4; opacity:.92 }
+  .result-cat { display:inline-block; font-size:.75rem; opacity:.75 }
+</style>
+
+
+<!-- Config unica per l'indice -->
+<!-- Indici di ricerca (ordine: locale principale -> eventuali fallback) -->
+
+ 
+ 
+
+
+<style>
+  /* Stile essenziale (coerente con Echi di Sofia) */
+  .result-item { display:block; padding:.65rem .9rem; margin:.5rem 0; border:1px solid rgba(255,255,255,.12); border-radius:.6rem; background:rgba(255,255,255,.04); text-decoration:none }
+  .result-item:hover { background:rgba(255,255,255,.09); }
+  .result-title { margin:0 0 .25rem; font-size:1rem; line-height:1.25 }
+  .result-desc { margin:.15rem 0 .35rem; font-size:.92rem; line-height:1.4; opacity:.92 }
+  .result-cat { display:inline-block; font-size:.75rem; opacity:.75 }
+</style>
+
+
+
+
+<!-- Indice di ricerca (dedupe-safe) -->
 <script>
-  // 1) Sorgenti indice (metti entrambi; verrà usato il primo valido)
   (function () {
     var next = [
-      '/search-js.html?v=20251029',        // indice nuovo (array puro)
-      '/search-index.json?v=20251029'      // indice legacy (oggetto o array)
+      '/search-js.html?v=20251029',
+      '/search-index.json?v=20251029'
     ];
     if (!window.SEARCH_INDEX_URLS) { window.SEARCH_INDEX_URLS = next; return; }
-    var set = new Set(); var merged = [];
-    next.concat(window.SEARCH_INDEX_URLS).forEach(function(u){ if (typeof u==='string' && !set.has(u)) { set.add(u); merged.push(u); } });
+    var set = new Set(), merged = [];
+    next.concat(window.SEARCH_INDEX_URLS).forEach(function(u){
+      if (typeof u==='string' && !set.has(u)) { set.add(u); merged.push(u); }
+    });
     window.SEARCH_INDEX_URLS = merged;
   })();
+</script>
 
-  // 2) Loader robusto: accetta array puro o {items:[...]} e unisce più indici
+<!-- Loader + Motore + Render (unificato) -->
+<script>
   async function loadIndexes(urls, timeoutMs = 8000) {
     const all = [];
     for (const url of urls) {
@@ -454,39 +489,36 @@ input:focus-visible {
         const text = await res.text();
         let data = null;
         try { data = JSON.parse(text); }
-        catch { const m = text.match(/\[\s*\{[\s\S]*\}\s*\]/); data = m ? JSON.parse(m[0]) : null; }
+        catch { const m = text.match(/\[\s*\{[\s\S]*?\}\s*\]/); data = m ? JSON.parse(m[0]) : null; }
         if (!data) continue;
 
         const items = Array.isArray(data) ? data : (data && Array.isArray(data.items) ? data.items : null);
         if (!items) continue;
 
-        // normalizza minimi campi
         const norm = items.map(it => ({
           title: it.title || it.name || '',
           url: it.url || it.href || '#',
           category: it.category || it.section || '',
           description: it.description || it.desc || '',
-          date: it.date || '',
+          date: it.date || ''
         })).filter(x => x.title && x.url);
 
         all.push(...norm);
-      } catch(e) { /* tenta prossimo */ }
+      } catch {}
     }
-    // dedupe per (titolo+url)
-    const key = new Set(); const deduped = [];
+    // dedupe per (title+url)
+    const seen = new Set(), out = [];
     for (const it of all) {
       const k = (it.title + '|' + it.url).toLowerCase();
-      if (!key.has(k)) { key.add(k); deduped.push(it); }
+      if (!seen.has(k)) { seen.add(k); out.push(it); }
     }
-    return deduped;
+    return out;
   }
 
-  // 3) Heuristic: cosa è un "articolo" (mostra TUTTI all'avvio)
   function isExternal(u){ return /^https?:\/\//i.test(u); }
   function isAnchor(u){ return typeof u==='string' && u.trim().startsWith('#'); }
   function isLocalHtml(u){ return !isExternal(u) && !isAnchor(u) && /\.html?(\?|#|$)/i.test(u); }
 
-  // cartelle di contenuto (aggiungi se ti servono)
   const CONTENT_DIRS = ['articoli','Presocratici','filosofi','pagine','Sezioni'];
   const CONTENT_DIRS_RE = new RegExp('^(?:\\/)?(' + CONTENT_DIRS.map(d=>d.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|') + ')(\\/|$)','i');
 
@@ -494,29 +526,25 @@ input:focus-visible {
     const u = item.url || '';
     const c = (item.category || '').toLowerCase();
     const looksLikePage = isLocalHtml(u) && CONTENT_DIRS_RE.test(u);
-    const byCategory = ['articolo','pagina'].includes(c); // estendi se vuoi
+    const byCategory = ['articolo','pagina'].includes(c);
     return (looksLikePage || byCategory) && !isAnchor(u);
   }
 
-  // 4) Motore + render
   function makeEngine(items){
     const bank = items.map(x => ({
       ...x,
       _hay: (x.title + ' ' + (x.category||'') + ' ' + (x.description||''))
             .toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'')
     }));
-
     function sortByDate(list){
       return list.slice().sort((a,b)=>{
         const ad = Date.parse(a.date||'')||0, bd = Date.parse(b.date||'')||0;
-        return bd - ad; // più recenti prima
+        return bd - ad;
       });
     }
-
     function search(q, limit=150){
       const query = (q||'').trim();
-      if (!query){
-        // 🔴 QUI: elenco iniziale = TUTTI gli articoli locali (incluso "Stefan Swieżawski")
+      if (!query) {
         return sortByDate(bank.filter(isLocalArticleLike)).slice(0, limit);
       }
       const qq = query.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'');
@@ -536,281 +564,58 @@ input:focus-visible {
     return { search };
   }
 
-  function render(results, mount='#search-results'){
-    const root = document.querySelector(mount);
-    if (!root) return;
+  function ensureResultsMount(selector){
+    let el = document.querySelector(selector);
+    if (!el){
+      el = document.createElement('div'); el.id = selector.replace('#','');
+      const near = document.querySelector('#search-mount') || document.querySelector('main') || document.body;
+      near.appendChild(el);
+    }
+    return el;
+  }
+
+  function render(results, mount='#results'){
+    const root = ensureResultsMount(mount);
     root.innerHTML = '';
     if (!results.length){ root.innerHTML = '<p class="muted">Nessun risultato.</p>'; return; }
     const frag = document.createDocumentFragment();
     for (const r of results){
-      const a = document.createElement('a'); a.className='result-item'; a.href=r.url;
-      a.innerHTML = `
-        <h3 class="result-title">${r.title}</h3>
-        ${r.description ? `<p class="result-desc">${r.description}</p>` : ''}
-        ${r.category ? `<span class="result-cat">${r.category}</span>` : ''}
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <a class="title" href="${r.url}">${r.title}</a>
+        <div class="url">${r.url}</div>
+        ${r.description ? `<div class="desc">${r.description}</div>` : ''}
+        ${r.category ? `<div class="desc" style="opacity:.75;margin-top:.35rem;">${r.category}</div>` : ''}
       `;
-      frag.appendChild(a);
+      frag.appendChild(card);
     }
     root.appendChild(frag);
   }
 
-  // 5) Init: carica indici, mostra tutti gli articoli, poi filtra on-input
   (async function(){
-    const urls = (window.SEARCH_INDEX_URLS || ['/search-js.html?v=20251029', '/search-index.json?v=20251029']).slice();
+    const urls = (window.SEARCH_INDEX_URLS || ['/search-js.html?v=20251029','/search-index.json?v=20251029']).slice();
     const items = await loadIndexes(urls);
-    // DEBUG: vedi quante voci caricate e quante sono "articoli"
-    console.log('[Ricerca] items totali:', items.length, 'articoli-like:', items.filter(isLocalArticleLike).length);
-    // verifica che "Stefan Swieżawski" sia presente
-    console.log('[Ricerca] Swieżawski presente?', items.some(x => (x.title||'').toLowerCase().includes('swie')));
+    console.log('[Ricerca] tot:', items.length, 'articoli-like:', items.filter(isLocalArticleLike).length);
+    console.log('[Ricerca] Swieżawski?', items.some(x => (x.title||'').toLowerCase().includes('swie')));
 
-    // mount auto se manca
-    if (!document.querySelector('#search-results')) {
-      const d = document.createElement('div'); d.id='search-results'; document.body.appendChild(d);
-    }
     const engine = makeEngine(items);
-    const input = document.querySelector('#search-input, input[type="search"][name="q"]') || document.querySelector('input[type="search"]');
+    const input = document.getElementById('site-search') || document.querySelector('input[type="search"], input[name="q"]');
 
     // Primo render: TUTTI gli articoli locali
-    render(engine.search('', 150));
+    render(engine.search('', 150), '#results');
 
-    if (input) input.addEventListener('input', e => render(engine.search(e.target.value, 150)));
+    if (input) {
+      input.addEventListener('input', e => {
+        render(engine.search(e.target.value, 150), '#results');
+      });
+    }
   })().catch(e => {
-    console.error('Ricerca — errore init:', e);
-    const m = document.querySelector('#search-results'); if (m) m.innerHTML = '<p class="error">Errore nel caricamento dell’indice.</p>';
+    console.error('Ricerca — init error:', e);
+    const m = document.querySelector('#results');
+    if (m) m.innerHTML = '<p class="error">Errore nel caricamento dell’indice.</p>';
   });
 </script>
 
-<style>
-  .result-item { display:block; padding:.65rem .9rem; margin:.5rem 0; border:1px solid rgba(255,255,255,.12); border-radius:.6rem; background:rgba(255,255,255,.04); text-decoration:none }
-  .result-item:hover { background:rgba(255,255,255,.09); }
-  .result-title { margin:0 0 .25rem; font-size:1rem; line-height:1.25 }
-  .result-desc { margin:.15rem 0 .35rem; font-size:.92rem; line-height:1.4; opacity:.92 }
-  .result-cat { display:inline-block; font-size:.75rem; opacity:.75 }
-</style>
-
-
-<!-- Config unica per l'indice -->
-<!-- Indici di ricerca (ordine: locale principale -> eventuali fallback) -->
-<script>
-  window.SEARCH_INDEX_URLS = [
-    '/search-js.html?v=20251029'           // nuovo indice unico (il file che abbiamo appena generato)
-    // '/assets/search-js.html?v=20251029'  // opzionale: se in futuro crei una copia in /assets
-  ];
-</script>
- 
- <script>
-  // ===== Loader indice (come già messo prima) =====
-  async function loadFirstAvailableIndex(urls, timeoutMs = 8000) {
-    for (const url of urls) {
-      try {
-        const ac = new AbortController();
-        const to = setTimeout(() => ac.abort(), timeoutMs);
-        const res = await fetch(url, { signal: ac.signal, cache: 'no-store' });
-        clearTimeout(to);
-        if (!res.ok) continue;
-
-        const text = await res.text();
-        let data;
-        try { data = JSON.parse(text); }
-        catch {
-          const m = text.match(/\[\s*\{[\s\S]*\}\s*\]/);
-          data = m ? JSON.parse(m[0]) : null;
-        }
-        if (!data) continue;
-
-        const items = Array.isArray(data) ? data : (Array.isArray(data.items) ? data.items : null);
-        if (!items) continue;
-
-        // Normalizza i campi minimi
-        const norm = items.map((it) => ({
-          title: it.title || it.name || '',
-          url: it.url || it.href || '#',
-          category: it.category || it.section || '',
-          description: it.description || it.desc || '',
-          date: it.date || ''
-        }));
-        return norm.filter(x => x.title && x.url);
-      } catch {}
-    }
-    throw new Error('Indice non disponibile');
-  }
-
-  // ===== Utility per riconoscere "articoli" veri =====
-  function isExternal(u){ return /^https?:\/\//i.test(u); }
-  function isAnchor(u){ return u.startsWith('#'); }
-  function isLocalHtml(u){ return !isExternal(u) && !isAnchor(u) && /\.html?(\?|#|$)/i.test(u); }
-
-  // directory considerate "contenuti" del sito
-  const CONTENT_DIRS = [
-    'articoli','Presocratici','filosofi','pagine','Sezioni' // aggiungi/riordina a piacere
-  ];
-  const CONTENT_DIRS_RE = new RegExp('^(?:\\/)?(' + CONTENT_DIRS.map(d=>d.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|') + ')(\\/|$)','i');
-
-  function isLocalArticleLike(item){
-    const u = item.url || '';
-    const c = (item.category || '').toLowerCase();
-    const looksLikePage = isLocalHtml(u) && CONTENT_DIRS_RE.test(u);
-    const byCategory = ['articolo','pagina'].includes(c); // estendibile
-    return looksLikePage || byCategory;
-  }
-
-  // ===== Motore di ricerca =====
-  function makeSearchEngine(items) {
-    // banca dati + haystack normalizzato
-    const bank = items.map((x) => ({
-      ...x,
-      _hay: (x.title + ' ' + (x.category||'') + ' ' + (x.description||''))
-            .toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'')
-    }));
-
-    // Ordinatore: prima data (se presente), poi ordine originale
-    function sortByDateDesc(list){
-      return list.slice().sort((a,b)=>{
-        const ad = Date.parse(a.date || '') || 0;
-        const bd = Date.parse(b.date || '') || 0;
-        return bd - ad;
-      });
-    }
-
-    function search(q, limit = 100) {
-      const query = (q||'').trim();
-      // 🔹 Caso chiave: query vuota => mostra TUTTI gli articoli locali (non solo 'Sezioni')
-      if (!query) {
-        const allArticles = bank.filter(isLocalArticleLike);
-        return sortByDateDesc(allArticles).slice(0, limit);
-      }
-
-      // 🔹 Query presente => ricerca inclusiva su tutto
-      const qq = query.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'');
-      const terms = qq.split(/\s+/);
-
-      const scored = [];
-      for (const it of bank) {
-        // tutti i termini devono comparire da qualche parte
-        const okAll = terms.every(t => it._hay.includes(t));
-        if (!okAll) continue;
-
-        let score = 0;
-        // boost titolo
-        const t = (it.title||'').toLowerCase();
-        if (t.includes(qq)) score += 10;
-        // boost se è "articolo" locale
-        if (isLocalArticleLike(it)) score += 3;
-        // boost se description più corposa
-        if ((it.description||'').length > 80) score += 1;
-
-        scored.push({it, score});
-      }
-      scored.sort((a,b)=> b.score - a.score);
-      return scored.slice(0, limit).map(s=>s.it);
-    }
-
-    return { search };
-  }
-
-  // ===== Render =====
-  function renderResults(results, mountSelector = '#search-results') {
-    const root = document.querySelector(mountSelector);
-    if (!root) return;
-    root.innerHTML = '';
-
-    if (!results.length) {
-      root.innerHTML = '<p class="muted">Nessun risultato.</p>';
-      return;
-    }
-
-    const frag = document.createDocumentFragment();
-    for (const r of results) {
-      const a = document.createElement('a');
-      a.className = 'result-item';
-      a.href = r.url;
-      a.innerHTML = `
-        <h3 class="result-title">${r.title}</h3>
-        ${r.description ? `<p class="result-desc">${r.description}</p>` : ''}
-        ${r.category ? `<span class="result-cat">${r.category}</span>` : ''}
-      `;
-      frag.appendChild(a);
-    }
-    root.appendChild(frag);
-  }
-
-  // ===== Init =====
-  (async function initSearch(){
-    try{
-      const urls = (window.SEARCH_INDEX_URLS || ['/search-js.html?v=20251029']).slice();
-      const items = await loadFirstAvailableIndex(urls);
-      const engine = makeSearchEngine(items);
-
-      // mount
-      if (!document.querySelector('#search-results')) {
-        const div = document.createElement('div');
-        div.id = 'search-results';
-        document.body.appendChild(div);
-      }
-
-      const input = document.querySelector('#search-input, input[type="search"][name="q"]') || document.querySelector('input[type="search"]');
-
-      function run(q){ renderResults(engine.search(q, 100)); }
-
-      // 🔸 Primo render: TUTTI gli articoli locali (grazie a search(''))
-      run('');
-
-      if (input) {
-        input.addEventListener('input', e => run(e.target.value));
-      }
-    }catch(err){
-      console.error('Ricerca — init error:', err);
-      const m = document.querySelector('#search-results');
-      if (m) m.innerHTML = '<p class="error">Errore nel caricamento dell’indice.</p>';
-    }
-  })();
-</script>
-
-
-<style>
-  /* Stile essenziale (coerente con Echi di Sofia) */
-  .result-item { display:block; padding:.65rem .9rem; margin:.5rem 0; border:1px solid rgba(255,255,255,.12); border-radius:.6rem; background:rgba(255,255,255,.04); text-decoration:none }
-  .result-item:hover { background:rgba(255,255,255,.09); }
-  .result-title { margin:0 0 .25rem; font-size:1rem; line-height:1.25 }
-  .result-desc { margin:.15rem 0 .35rem; font-size:.92rem; line-height:1.4; opacity:.92 }
-  .result-cat { display:inline-block; font-size:.75rem; opacity:.75 }
-</style>
-
-
-<script>
-// Pulsante cancella (funzionalità UI)
-document.addEventListener('DOMContentLoaded', function() {
-  const searchInput = document.getElementById('site-search');
-  const inputWrap = document.querySelector('.input-wrap');
-  
-  if (searchInput && inputWrap) {
-    const clearBtn = document.createElement('button');
-    clearBtn.type = 'button';
-    clearBtn.className = 'clear-btn';
-    clearBtn.innerHTML = '✕';
-    clearBtn.setAttribute('aria-label', 'Cancella ricerca');
-    
-    inputWrap.appendChild(clearBtn);
-    
-    function updateClearButton() {
-      const hasValue = searchInput.value.trim() !== '';
-      clearBtn.style.opacity = hasValue ? '1' : '0';
-      clearBtn.style.visibility = hasValue ? 'visible' : 'hidden';
-    }
-    
-    searchInput.addEventListener('input', updateClearButton);
-    
-    clearBtn.addEventListener('click', function() {
-      searchInput.value = '';
-      searchInput.focus();
-      updateClearButton();
-      const inputEvent = new Event('input', { bubbles: true });
-      searchInput.dispatchEvent(inputEvent);
-    });
-    
-    updateClearButton();
-  }
-});
-</script>
 </body>
 </html>
