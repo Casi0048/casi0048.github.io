@@ -575,8 +575,9 @@ input:focus-visible {
     // '/assets/search-js.html?v=20251029'  // opzionale: se in futuro crei una copia in /assets
   ];
 </script>
+ 
  <script>
-  // ===== Loader indice robusto =====
+  // ===== Loader indice (come già messo prima) =====
   async function loadFirstAvailableIndex(urls, timeoutMs = 8000) {
     for (const url of urls) {
       try {
@@ -588,79 +589,104 @@ input:focus-visible {
 
         const text = await res.text();
         let data;
-        try {
-          data = JSON.parse(text);
-        } catch(e) {
-          // qualcuno ha salvato l'array dentro una variabile JS? prova a estrarlo
+        try { data = JSON.parse(text); }
+        catch {
           const m = text.match(/\[\s*\{[\s\S]*\}\s*\]/);
           data = m ? JSON.parse(m[0]) : null;
         }
         if (!data) continue;
 
-        // Supporta sia array puro che {items:[...]}
-        const items = Array.isArray(data) ? data : Array.isArray(data.items) ? data.items : null;
+        const items = Array.isArray(data) ? data : (Array.isArray(data.items) ? data.items : null);
         if (!items) continue;
 
-        // Normalizza campi minimi: title, url, category, description/desc
+        // Normalizza i campi minimi
         const norm = items.map((it) => ({
           title: it.title || it.name || '',
           url: it.url || it.href || '#',
           category: it.category || it.section || '',
-          description: it.description || it.desc || ''
+          description: it.description || it.desc || '',
+          date: it.date || ''
         }));
-
-        // Rimuovi filtri "nascosti" (niente section==='Sezioni', niente category==='articolo' hard)
         return norm.filter(x => x.title && x.url);
-      } catch(_) {/* prova prossimo url */}
+      } catch {}
     }
     throw new Error('Indice non disponibile');
   }
 
-  // ===== Ricerca semplice, inclusiva =====
+  // ===== Utility per riconoscere "articoli" veri =====
+  function isExternal(u){ return /^https?:\/\//i.test(u); }
+  function isAnchor(u){ return u.startsWith('#'); }
+  function isLocalHtml(u){ return !isExternal(u) && !isAnchor(u) && /\.html?(\?|#|$)/i.test(u); }
+
+  // directory considerate "contenuti" del sito
+  const CONTENT_DIRS = [
+    'articoli','Presocratici','filosofi','pagine','Sezioni' // aggiungi/riordina a piacere
+  ];
+  const CONTENT_DIRS_RE = new RegExp('^(?:\\/)?(' + CONTENT_DIRS.map(d=>d.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|') + ')(\\/|$)','i');
+
+  function isLocalArticleLike(item){
+    const u = item.url || '';
+    const c = (item.category || '').toLowerCase();
+    const looksLikePage = isLocalHtml(u) && CONTENT_DIRS_RE.test(u);
+    const byCategory = ['articolo','pagina'].includes(c); // estendibile
+    return looksLikePage || byCategory;
+  }
+
+  // ===== Motore di ricerca =====
   function makeSearchEngine(items) {
-    // Prepara un testo ricercabile per ogni item
+    // banca dati + haystack normalizzato
     const bank = items.map((x) => ({
       ...x,
       _hay: (x.title + ' ' + (x.category||'') + ' ' + (x.description||''))
-              .toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'')
+            .toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'')
     }));
 
-    function search(q, limit = 50) {
-      if (!q || !q.trim()) return bank.slice(0, limit);
+    // Ordinatore: prima data (se presente), poi ordine originale
+    function sortByDateDesc(list){
+      return list.slice().sort((a,b)=>{
+        const ad = Date.parse(a.date || '') || 0;
+        const bd = Date.parse(b.date || '') || 0;
+        return bd - ad;
+      });
+    }
 
-      const qq = q.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'').trim();
+    function search(q, limit = 100) {
+      const query = (q||'').trim();
+      // 🔹 Caso chiave: query vuota => mostra TUTTI gli articoli locali (non solo 'Sezioni')
+      if (!query) {
+        const allArticles = bank.filter(isLocalArticleLike);
+        return sortByDateDesc(allArticles).slice(0, limit);
+      }
+
+      // 🔹 Query presente => ricerca inclusiva su tutto
+      const qq = query.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'');
       const terms = qq.split(/\s+/);
 
-      // Match inclusivo: titolo > descrizione > categoria
       const scored = [];
       for (const it of bank) {
-        let score = 0;
-
-        // boost per match in titolo
-        const title = (it.title||'').toLowerCase();
-        if (title.includes(qq)) score += 10;
-
-        // tutti i termini devono comparire **da qualche parte** (_hay)
+        // tutti i termini devono comparire da qualche parte
         const okAll = terms.every(t => it._hay.includes(t));
         if (!okAll) continue;
 
-        // boost extra se categoria presente
-        if (it.category && it.category.toLowerCase().includes(terms[0])) score += 2;
-
-        // leggeri boost per lunghezza descrizione (informatività)
+        let score = 0;
+        // boost titolo
+        const t = (it.title||'').toLowerCase();
+        if (t.includes(qq)) score += 10;
+        // boost se è "articolo" locale
+        if (isLocalArticleLike(it)) score += 3;
+        // boost se description più corposa
         if ((it.description||'').length > 80) score += 1;
 
-        scored.push({ it, score });
+        scored.push({it, score});
       }
-
-      scored.sort((a,b) => b.score - a.score);
-      return scored.slice(0, limit).map(s => s.it);
+      scored.sort((a,b)=> b.score - a.score);
+      return scored.slice(0, limit).map(s=>s.it);
     }
 
     return { search };
   }
 
-  // ===== Render risultati =====
+  // ===== Render =====
   function renderResults(results, mountSelector = '#search-results') {
     const root = document.querySelector(mountSelector);
     if (!root) return;
@@ -672,57 +698,52 @@ input:focus-visible {
     }
 
     const frag = document.createDocumentFragment();
-    results.forEach(r => {
+    for (const r of results) {
       const a = document.createElement('a');
       a.className = 'result-item';
       a.href = r.url;
-
       a.innerHTML = `
         <h3 class="result-title">${r.title}</h3>
         ${r.description ? `<p class="result-desc">${r.description}</p>` : ''}
         ${r.category ? `<span class="result-cat">${r.category}</span>` : ''}
       `;
-
       frag.appendChild(a);
-    });
+    }
     root.appendChild(frag);
   }
 
   // ===== Init =====
-  (async function initSearch() {
-    try {
+  (async function initSearch(){
+    try{
       const urls = (window.SEARCH_INDEX_URLS || ['/search-js.html?v=20251029']).slice();
       const items = await loadFirstAvailableIndex(urls);
       const engine = makeSearchEngine(items);
 
-      // bind input
-      const input = document.querySelector('#search-input, input[type="search"][name="q"]') || document.querySelector('input[type="search"]');
-      const mount = document.querySelector('#search-results');
-      if (!mount) {
-        // crea un mount se non esiste
+      // mount
+      if (!document.querySelector('#search-results')) {
         const div = document.createElement('div');
         div.id = 'search-results';
         document.body.appendChild(div);
       }
 
-      function run(query) {
-        const res = engine.search(query, 50);
-        renderResults(res, '#search-results');
-      }
+      const input = document.querySelector('#search-input, input[type="search"][name="q"]') || document.querySelector('input[type="search"]');
+
+      function run(q){ renderResults(engine.search(q, 100)); }
+
+      // 🔸 Primo render: TUTTI gli articoli locali (grazie a search(''))
+      run('');
 
       if (input) {
-        input.addEventListener('input', (e) => run(e.target.value));
-        run(input.value || ''); // primo render
-      } else {
-        run(''); // mostra qualcosa anche senza input
+        input.addEventListener('input', e => run(e.target.value));
       }
-    } catch (err) {
-      console.error('Ricerca — errore inizializzazione:', err);
+    }catch(err){
+      console.error('Ricerca — init error:', err);
       const m = document.querySelector('#search-results');
       if (m) m.innerHTML = '<p class="error">Errore nel caricamento dell’indice.</p>';
     }
   })();
 </script>
+
 
 <style>
   /* Stile essenziale (coerente con Echi di Sofia) */
