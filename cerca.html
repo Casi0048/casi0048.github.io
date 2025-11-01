@@ -132,11 +132,30 @@ const deburr= s => s.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,''
 const isExt = u => /^https?:\/\//i.test(u||'');
 const isAnc = u => (u||'').trim().startsWith('#');
 const isLocalHtml = u => !isExt(u) && !isAnc(u) && /\.html?(\?|#|$)/i.test(u||'');
-const CONTENT_RE = /^(\/)?(articoli|Presocratici|filosofi|pagine|Sezioni)(\/|$)/i;
+// Includi SOLO le vere pagine di contenuto
+const CONTENT_RE     = /^(\/)?(articoli|Presocratici|filosofi)(\/|$)/i;
+// Escludi directory/segnaposto non desiderati
+const EXCLUDE_DIRS   = /^(\/)?(Sezioni|pagine)(\/|$)/i;
+// Escludi voci “finto-articolo” (tipico: “Sezione del portale”)
+const EXCLUDE_PHRASES = [/sezione del portale/i];
+
 const isArticleLike = it => {
-  const u = it.url || '', c = deburr(it.category||'');
-  return (isLocalHtml(u) && CONTENT_RE.test(u)) || (c==='articolo' || c==='pagina');
+  const u = it.url || '';
+  const c = deburr(it.category || '');
+  const d = it.description || '';
+
+  if (!isLocalHtml(u) || isAnc(u)) return false;   // URL locali, non anchor
+  if (EXCLUDE_DIRS.test(u))        return false;   // niente /Sezioni, /pagine
+  if (c === 'sezione')             return false;   // niente categoria “Sezione”
+  if (EXCLUDE_PHRASES.some(rx => rx.test(d))) return false; // niente “Sezione del portale”
+
+  // Articoli veri: cartelle di contenuto o metadato esplicito
+  if (CONTENT_RE.test(u)) return true;
+  if (c === 'articolo' || c === 'pagina') return true;
+
+  return false;
 };
+
 const hideFooterSections = (hasResults) => {
   const f = document.querySelector(FOOTER_SECTIONS_SELECTOR);
   if (f) f.style.display = hasResults ? 'none' : '';
