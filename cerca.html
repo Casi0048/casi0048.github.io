@@ -71,6 +71,17 @@ footer{margin-top:3rem;padding:1.5rem 1rem;text-align:center;color:#9ec3ff;borde
 
 /* ACCESSIBILITÀ */
 a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;border-radius:2px}
+  <style>
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.45rem .8rem;border-radius:.6rem;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.04);color:#9ad0ff;text-decoration:none;
+  font-weight:700;box-shadow:0 .2rem .6rem rgba(0,0,0,.25);
+}
+.btn-ghost:hover{background:rgba(255,255,255,.09);color:#fff}
+</style>
+
 </style>
 </head>
 <body>
@@ -88,6 +99,10 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(-
     <div class="spacer"></div>
     <a class="home" href="/" aria-label="Torna all'Incipit">🏠 Torna all'Incipit</a>
   </div>
+<!-- Bottone Cerca -->
+<a id="open-search" class="btn-ghost" href="#explore" aria-label="Cerca">
+  🔎 Cerca
+</a>
 
   <div class="wrap">
     <div style="margin: 1.5rem 0 0.5rem;"><strong style="font-size: 1.2rem;">Esplora articoli</strong></div>
@@ -331,6 +346,105 @@ function renderGrid(items){
     }
   })();
 })();
+</script>
+<script>
+/* ============ Forza vista Esplora all'avvio + toggle Cerca ============ */
+
+/* 1) Selezori possibili dei “vecchi 7 riquadri” da nascondere */
+const LEGACY_SECTION_SELECTORS = [
+  '.footer-sections', '#sezioni', '.sezioni-footer',
+  '#catalogo-sezioni', '.cards.sezioni', '.sezioni-portale'
+];
+
+/* Euristica di fallback: blocchi che contengono “Sezione del portale” */
+function hideLegacySections(){
+  LEGACY_SECTION_SELECTORS.forEach(sel=>{
+    document.querySelectorAll(sel).forEach(el=> el.style.display='none');
+  });
+  // Heuristica testuale
+  document.querySelectorAll('section,div').forEach(el=>{
+    if (el.offsetParent === null) return; // già nascosto
+    const t = (el.innerText || '').trim();
+    if (t && /Sezione del portale/i.test(t) && el.querySelector('a,article')) {
+      el.style.display = 'none';
+    }
+  });
+}
+
+/* 2) Mostra il layout “Esplora” (categorie + griglia) e avvia il motore */
+async function bootExploreOnLoad(){
+  // Mostra contenitore Esplora se presente
+  const explore = document.querySelector('.explora-layout') || document.getElementById('article-grid') || document.getElementById('results');
+  if (explore) explore.style.display = ''; // assicura visibile
+
+  // Nascondi subito le sezioni legacy PRIMA di caricare l’indice
+  hideLegacySections();
+
+  // Se il tuo motore espone loadIndexRobusto/makeEngine/renderGrid già nel file, usali:
+  if (typeof loadIndexRobusto === 'function' && typeof makeEngine === 'function' && typeof renderGrid === 'function'){
+    try{
+      // Evita doppia inizializzazione
+      if (window.__EXPLORE_BOOTED__) return;
+      window.__EXPLORE_BOOTED__ = true;
+
+      const items  = await loadIndexRobusto();
+      const engine = makeEngine(items);
+
+      // Categorie
+      if (typeof buildCategories === 'function' && typeof renderCategories === 'function'){
+        const cats = buildCategories(engine.data);
+        renderCategories(cats, null);
+      }
+
+      // TUTTI articoli al primo render
+      renderGrid(engine.search('', 500));
+
+      // Filtro live se c'è input
+      const input = document.getElementById('site-search');
+      const doFilter = () => {
+        const q = input ? input.value : '';
+        let res = engine.search(q, 500);
+        // Se usi il filtro per categoria nel tuo file:
+        if (window.__CURRENT_CAT__){
+          const norm = s => (s||'').toString().trim();
+          res = res.filter(it => (norm(it.category)||'Senza categoria') === window.__CURRENT_CAT__);
+        }
+        renderGrid(res);
+      };
+      if (input){
+        input.addEventListener('input', doFilter);
+        const form = input.closest('form'); if (form) form.addEventListener('submit', e => { e.preventDefault(); doFilter(); });
+      }
+    }catch(err){
+      console.error('Esplora — init immediato fallito:', err);
+      // Lascia il messaggio d'errore che già gestisci nel tuo codice
+    }
+  }
+}
+
+/* 3) Bottone “🔎 Cerca”: porta il focus al filtro e scrolla alla griglia */
+function wireSearchButton(){
+  const btn   = document.getElementById('open-search');
+  const input = document.getElementById('site-search');
+  const grid  = document.getElementById('article-grid') || document.getElementById('results');
+
+  if (!btn) return;
+  btn.addEventListener('click', (e)=>{
+    e.preventDefault();
+    bootExploreOnLoad(); // assicura che l’explore sia attivo
+    if (grid){
+      const y = grid.getBoundingClientRect().top + window.scrollY - 80;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+    if (input) setTimeout(()=> input.focus(), 200);
+  }, { passive:false });
+}
+
+/* 4) Avvio immediato all’apertura pagina (senza click) */
+document.addEventListener('DOMContentLoaded', ()=>{
+  bootExploreOnLoad();  // <-- questa riga fa apparire SUBITO categorie + griglia
+  wireSearchButton();   // wiring del tasto Cerca
+});
 </script>
 
 </body>
