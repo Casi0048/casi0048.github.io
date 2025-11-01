@@ -123,59 +123,46 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(-
 <footer>© 2025 Echi di Sofia</footer>
 
 <script>
-// DATI DI ESEMPIO - sostituisci con i tuoi dati reali
-const SAMPLE_DATA = [
-  {
-    "title": "Circolo di Vienna",
-    "url": "articoli/circolo_di_vienna.html",
-    "desc": "Ultimi articoli",
-    "category": "Ultimi articoli"
-  },
-  {
-    "title": "Ipazia di Alessandria",
-    "url": "articoli/ipazia.html", 
-    "desc": "Ultimi articoli",
-    "category": "Ultimi articoli"
-  },
-  {
-    "title": "Talete",
-    "url": "Presocratici/talete.html",
-    "desc": "Presocratici", 
-    "category": "Presocratici"
-  },
-  {
-    "title": "Socrate",
-    "url": "articoli/socrate.html",
-    "desc": "Socrate e Scuola",
-    "category": "Socrate e Scuola"
-  },
-  {
-    "title": "Platone",
-    "url": "articoli/platone.html",
-    "desc": "Platone e Accademia", 
-    "category": "Platone e Accademia"
-  },
-  {
-    "title": "Aristotele",
-    "url": "articoli/aristotele.html",
-    "desc": "Aristotele e Peripatetici",
-    "category": "Aristotele e Peripatetici"
-  }
-];
+// CONFIGURAZIONE
+const INDEX_URL = '/search-index.json?v=20251030';
 
 // FUNZIONI PRINCIPALI
 function normalizeText(text) {
   return text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
+// FILTRO MIGLIORATO - include quasi tutti gli articoli
+function shouldIncludeArticle(item) {
+  const url = item.url || '';
+  const category = item.category || '';
+  const description = item.description || '';
+  
+  // Escludi solo le vere sezioni del portale (quelle con descrizione specifica)
+  if (description.toLowerCase().includes('sezione del portale') && 
+      !url.includes('/articoli/')) {
+    return false;
+  }
+  
+  // Escludi elementi senza titolo o URL
+  if (!item.title || !item.url) return false;
+  
+  // Escludi ancore interne
+  if (url.startsWith('#')) return false;
+  
+  return true;
+}
+
 function createSearchEngine(items) {
-  const searchableItems = items.map(item => ({
+  const filteredItems = items.filter(shouldIncludeArticle);
+  console.log('📊 Articoli filtrati:', filteredItems.length, 'di', items.length, 'totali');
+  
+  const searchableItems = filteredItems.map(item => ({
     ...item,
-    searchText: normalizeText(item.title + ' ' + (item.desc || '') + ' ' + (item.category || ''))
+    searchText: normalizeText(item.title + ' ' + (item.description || '') + ' ' + (item.category || ''))
   }));
 
   return {
-    search: function(query, limit = 100) {
+    search: function(query, limit = 500) {
       if (!query.trim()) {
         return searchableItems.slice(0, limit);
       }
@@ -238,106 +225,121 @@ function renderArticles(articles) {
     <article class="article-card">
       <a class="title" href="${article.url}">${article.title}</a>
       <div class="url">${article.url}</div>
-      <div class="desc">${article.desc || ''}</div>
+      <div class="desc">${article.description || article.desc || ''}</div>
       ${article.category ? `<div class="desc" style="opacity:.75;margin-top:.35rem;"><strong>${article.category}</strong></div>` : ''}
     </article>
   `).join('');
 }
 
-// INIZIALIZZAZIONE
-document.addEventListener('DOMContentLoaded', function() {
-  let searchEngine = null;
-  let currentCategory = null;
-
-  // Usa i dati di esempio per ora
-  const articles = SAMPLE_DATA;
-  searchEngine = createSearchEngine(articles);
-
-  // Inizializza l'interfaccia
-  const categories = buildCategories(articles);
-  renderCategories(categories);
-  renderArticles(articles);
-
-  // Gestione ricerca in tempo reale
-  const searchInput = document.getElementById('site-search');
-  if (searchInput) {
-    searchInput.addEventListener('input', function() {
-      const query = this.value;
-      let results = searchEngine.search(query);
-      
-      if (currentCategory) {
-        results = results.filter(article => article.category === currentCategory);
-      }
-      
-      renderArticles(results);
-    });
-  }
-
-  // Gestione click sulle categorie
-  const categoryList = document.getElementById('cat-list');
-  if (categoryList) {
-    categoryList.addEventListener('click', function(e) {
-      e.preventDefault();
-      const link = e.target.closest('.cat-item');
-      if (!link) return;
-
-      currentCategory = link.dataset.category || null;
-
-      // Aggiorna stato attivo
-      this.querySelectorAll('.cat-item').forEach(item => {
-        item.classList.remove('active');
-      });
-      link.classList.add('active');
-
-      // Applica filtri
-      const query = searchInput ? searchInput.value : '';
-      let results = searchEngine.search(query);
-      
-      if (currentCategory) {
-        results = results.filter(article => article.category === currentCategory);
-      }
-      
-      renderArticles(results);
-    });
-  }
-
-  // Bottone cerca per focus
-  const searchButton = document.getElementById('open-search');
-  if (searchButton && searchInput) {
-    searchButton.addEventListener('click', function(e) {
-      e.preventDefault();
-      searchInput.focus();
-    });
-  }
-
-  console.log('✅ Ricerca inizializzata con', articles.length, 'articoli');
-});
-
-// PROVA A CARICARE I DATI REALI
-async function loadRealData() {
+// CARICAMENTO DATI
+async function loadData() {
   try {
-    const response = await fetch('/search-js.html');
-    if (!response.ok) throw new Error('Network response was not ok');
+    console.log('🔄 Caricamento dati da:', INDEX_URL);
+    const response = await fetch(INDEX_URL);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
     
-    const text = await response.text();
-    // Prova a estrarre JSON dal file HTML
-    const match = text.match(/\[[\s\S]*\]/);
-    if (match) {
-      const realData = JSON.parse(match[0]);
-      console.log('✅ Dati reali caricati:', realData.length, 'elementi');
-      return realData;
-    }
+    const data = await response.json();
+    console.log('✅ Dati caricati:', data.length, 'elementi');
+    return data;
   } catch (error) {
-    console.log('ℹ️ Usando dati di esempio:', error.message);
-    return SAMPLE_DATA;
+    console.error('❌ Errore caricamento:', error);
+    // Fallback a dati di esempio se il caricamento fallisce
+    return [
+      {
+        "title": "Circolo di Vienna",
+        "url": "articoli/circolo_di_vienna.html",
+        "description": "Il Circolo di Vienna fu un gruppo di filosofi e scienziati che sviluppò l'empirismo logico",
+        "category": "Ultimi articoli"
+      },
+      {
+        "title": "Talete", 
+        "url": "Presocratici/talete.html",
+        "description": "Talete di Mileto, considerato il primo filosofo della tradizione occidentale",
+        "category": "Presocratici"
+      }
+    ];
   }
 }
 
-// Sostituisci con questo se vuoi provare a caricare i dati reali:
-// document.addEventListener('DOMContentLoaded', async function() {
-//   const articles = await loadRealData();
-//   // ... resto del codice di inizializzazione
-// });
+// INIZIALIZZAZIONE
+document.addEventListener('DOMContentLoaded', async function() {
+  let searchEngine = null;
+  let currentCategory = null;
+
+  try {
+    // Carica i dati
+    const articles = await loadData();
+    
+    // Crea il motore di ricerca
+    searchEngine = createSearchEngine(articles);
+    
+    // Inizializza l'interfaccia
+    const categories = buildCategories(searchEngine.data);
+    renderCategories(categories);
+    renderArticles(searchEngine.data.slice(0, 100)); // Mostra primi 100
+
+    console.log('✅ Interfaccia inizializzata con', searchEngine.data.length, 'articoli');
+
+    // Gestione ricerca in tempo reale
+    const searchInput = document.getElementById('site-search');
+    if (searchInput) {
+      searchInput.addEventListener('input', function() {
+        const query = this.value;
+        let results = searchEngine.search(query);
+        
+        if (currentCategory) {
+          results = results.filter(article => article.category === currentCategory);
+        }
+        
+        renderArticles(results);
+      });
+    }
+
+    // Gestione click sulle categorie
+    const categoryList = document.getElementById('cat-list');
+    if (categoryList) {
+      categoryList.addEventListener('click', function(e) {
+        e.preventDefault();
+        const link = e.target.closest('.cat-item');
+        if (!link) return;
+
+        currentCategory = link.dataset.category || null;
+
+        // Aggiorna stato attivo
+        this.querySelectorAll('.cat-item').forEach(item => {
+          item.classList.remove('active');
+        });
+        link.classList.add('active');
+
+        // Applica filtri
+        const query = searchInput ? searchInput.value : '';
+        let results = searchEngine.search(query);
+        
+        if (currentCategory) {
+          results = results.filter(article => article.category === currentCategory);
+        }
+        
+        renderArticles(results);
+      });
+    }
+
+    // Bottone cerca per focus
+    const searchButton = document.getElementById('open-search');
+    if (searchButton && searchInput) {
+      searchButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        searchInput.focus();
+      });
+    }
+
+  } catch (error) {
+    console.error('❌ Errore inizializzazione:', error);
+    const grid = document.getElementById('article-grid');
+    if (grid) {
+      grid.innerHTML = '<div class="error">Errore nel caricamento degli articoli</div>';
+    }
+  }
+});
 </script>
 
 </body>
