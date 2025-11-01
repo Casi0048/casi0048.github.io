@@ -560,8 +560,33 @@ input:focus-visible {
 </script>
 
 <!-- Config unica per l'indice -->
+<!-- Indici di ricerca (ordine: locale principale -> eventuali fallback) -->
 <script>
-  window.SEARCH_INDEX_URLS = ['/search-index.json?v=20251016','/assets/search-index.json?v=20251016'];
+  window.SEARCH_INDEX_URLS = [
+    '/search-js.html?v=20251029'           // nuovo indice unico (il file che abbiamo appena generato)
+    // '/assets/search-js.html?v=20251029'  // opzionale: se in futuro crei una copia in /assets
+  ];
+</script>
+  <script>
+  async function loadFirstAvailableIndex(urls, timeoutMs = 8000) {
+    for (const url of urls) {
+      try {
+        const ac = new AbortController();
+        const to = setTimeout(() => ac.abort(), timeoutMs);
+        const res = await fetch(url, { signal: ac.signal, cache: 'no-store' });
+        clearTimeout(to);
+        if (!res.ok) continue;
+        const text = await res.text();
+        // Il file è JSON puro anche se ha estensione .html
+        const data = JSON.parse(text);
+        if (Array.isArray(data)) return data;
+      } catch (_) { /* tenta il prossimo */ }
+    }
+    throw new Error('Nessun indice disponibile');
+  }
+
+  // Esempio d’uso:
+  // loadFirstAvailableIndex(window.SEARCH_INDEX_URLS).then(initSearch).catch(showSearchError);
 </script>
 
 <script>
