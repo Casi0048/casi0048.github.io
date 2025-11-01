@@ -567,7 +567,8 @@ input:focus-visible {
     // '/assets/search-js.html?v=20251029'  // opzionale: se in futuro crei una copia in /assets
   ];
 </script>
-  <script>
+ <script>
+  // ===== Loader indice robusto =====
   async function loadFirstAvailableIndex(urls, timeoutMs = 8000) {
     for (const url of urls) {
       try {
@@ -576,18 +577,154 @@ input:focus-visible {
         const res = await fetch(url, { signal: ac.signal, cache: 'no-store' });
         clearTimeout(to);
         if (!res.ok) continue;
+
         const text = await res.text();
-        // Il file è JSON puro anche se ha estensione .html
-        const data = JSON.parse(text);
-        if (Array.isArray(data)) return data;
-      } catch (_) { /* tenta il prossimo */ }
+        let data;
+        try {
+          data = JSON.parse(text);
+        } catch(e) {
+          // qualcuno ha salvato l'array dentro una variabile JS? prova a estrarlo
+          const m = text.match(/\[\s*\{[\s\S]*\}\s*\]/);
+          data = m ? JSON.parse(m[0]) : null;
+        }
+        if (!data) continue;
+
+        // Supporta sia array puro che {items:[...]}
+        const items = Array.isArray(data) ? data : Array.isArray(data.items) ? data.items : null;
+        if (!items) continue;
+
+        // Normalizza campi minimi: title, url, category, description/desc
+        const norm = items.map((it) => ({
+          title: it.title || it.name || '',
+          url: it.url || it.href || '#',
+          category: it.category || it.section || '',
+          description: it.description || it.desc || ''
+        }));
+
+        // Rimuovi filtri "nascosti" (niente section==='Sezioni', niente category==='articolo' hard)
+        return norm.filter(x => x.title && x.url);
+      } catch(_) {/* prova prossimo url */}
     }
-    throw new Error('Nessun indice disponibile');
+    throw new Error('Indice non disponibile');
   }
 
-  // Esempio d’uso:
-  // loadFirstAvailableIndex(window.SEARCH_INDEX_URLS).then(initSearch).catch(showSearchError);
+  // ===== Ricerca semplice, inclusiva =====
+  function makeSearchEngine(items) {
+    // Prepara un testo ricercabile per ogni item
+    const bank = items.map((x) => ({
+      ...x,
+      _hay: (x.title + ' ' + (x.category||'') + ' ' + (x.description||''))
+              .toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'')
+    }));
+
+    function search(q, limit = 50) {
+      if (!q || !q.trim()) return bank.slice(0, limit);
+
+      const qq = q.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'').trim();
+      const terms = qq.split(/\s+/);
+
+      // Match inclusivo: titolo > descrizione > categoria
+      const scored = [];
+      for (const it of bank) {
+        let score = 0;
+
+        // boost per match in titolo
+        const title = (it.title||'').toLowerCase();
+        if (title.includes(qq)) score += 10;
+
+        // tutti i termini devono comparire **da qualche parte** (_hay)
+        const okAll = terms.every(t => it._hay.includes(t));
+        if (!okAll) continue;
+
+        // boost extra se categoria presente
+        if (it.category && it.category.toLowerCase().includes(terms[0])) score += 2;
+
+        // leggeri boost per lunghezza descrizione (informatività)
+        if ((it.description||'').length > 80) score += 1;
+
+        scored.push({ it, score });
+      }
+
+      scored.sort((a,b) => b.score - a.score);
+      return scored.slice(0, limit).map(s => s.it);
+    }
+
+    return { search };
+  }
+
+  // ===== Render risultati =====
+  function renderResults(results, mountSelector = '#search-results') {
+    const root = document.querySelector(mountSelector);
+    if (!root) return;
+    root.innerHTML = '';
+
+    if (!results.length) {
+      root.innerHTML = '<p class="muted">Nessun risultato.</p>';
+      return;
+    }
+
+    const frag = document.createDocumentFragment();
+    results.forEach(r => {
+      const a = document.createElement('a');
+      a.className = 'result-item';
+      a.href = r.url;
+
+      a.innerHTML = `
+        <h3 class="result-title">${r.title}</h3>
+        ${r.description ? `<p class="result-desc">${r.description}</p>` : ''}
+        ${r.category ? `<span class="result-cat">${r.category}</span>` : ''}
+      `;
+
+      frag.appendChild(a);
+    });
+    root.appendChild(frag);
+  }
+
+  // ===== Init =====
+  (async function initSearch() {
+    try {
+      const urls = (window.SEARCH_INDEX_URLS || ['/search-js.html?v=20251029']).slice();
+      const items = await loadFirstAvailableIndex(urls);
+      const engine = makeSearchEngine(items);
+
+      // bind input
+      const input = document.querySelector('#search-input, input[type="search"][name="q"]') || document.querySelector('input[type="search"]');
+      const mount = document.querySelector('#search-results');
+      if (!mount) {
+        // crea un mount se non esiste
+        const div = document.createElement('div');
+        div.id = 'search-results';
+        document.body.appendChild(div);
+      }
+
+      function run(query) {
+        const res = engine.search(query, 50);
+        renderResults(res, '#search-results');
+      }
+
+      if (input) {
+        input.addEventListener('input', (e) => run(e.target.value));
+        run(input.value || ''); // primo render
+      } else {
+        run(''); // mostra qualcosa anche senza input
+      }
+    } catch (err) {
+      console.error('Ricerca — errore inizializzazione:', err);
+      const m = document.querySelector('#search-results');
+      if (m) m.innerHTML = '<p class="error">Errore nel caricamento dell’indice.</p>';
+    }
+  })();
 </script>
+
+<style>
+  /* Stile essenziale (coerente con Echi di Sofia) */
+  .result-item { display:block; padding:.65rem .9rem; margin:.5rem 0; border:1px solid rgba(255,255,255,.12); border-radius:.6rem; background:rgba(255,255,255,.04); text-decoration:none }
+  .result-item:hover { background:rgba(255,255,255,.09); }
+  .result-title { margin:0 0 .25rem; font-size:1rem; line-height:1.25 }
+  .result-desc { margin:.15rem 0 .35rem; font-size:.92rem; line-height:1.4; opacity:.92 }
+  .result-cat { display:inline-block; font-size:.75rem; opacity:.75 }
+</style>
+
 
 <script>
 // Pulsante cancella (funzionalità UI)
