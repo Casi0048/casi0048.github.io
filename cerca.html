@@ -7,7 +7,6 @@
 <link rel="icon" type="image/png" href="/favicon_io/favicon-32x32.png">
 <link rel="preload" href="/search-js.html?v=20251030" as="fetch" type="application/json" crossorigin>
 
-<!-- Sorgente unica -->
 <script>
   (function () {
     window.SEARCH_INDEX_URLS = ['/search-js.html?v=20251030'];
@@ -56,8 +55,6 @@ header{position:sticky;top:0;z-index:10;background:rgba(10,10,30,.96);border-bot
 .article-card .url{font-size:.8rem;opacity:.85;color:#9bb7ff;margin:.15rem 0 .5rem;word-break:break-all;font-family:monospace}
 .article-card .desc{color:#cfe2ff;opacity:.95;line-height:1.4;font-size:.92rem}
 
-.results{display:grid;gap:.8rem;margin-top:1rem}
-
 footer{margin-top:3rem;padding:1.5rem 1rem;text-align:center;color:#9ec3ff;border-top:1px solid rgba(255,255,255,.06);font-size:.9rem}
 
 /* RESP */
@@ -83,9 +80,6 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(-
 
 .error{color:#ff6b6b;text-align:center;padding:2rem}
 .muted{opacity:.6;text-align:center;padding:2rem}
-
-/* NASCONDI SOLO LE SEZIONI LEGACY, NON LA RICERCA PRINCIPALE */
-.legacy-section{display:none !important}
 </style>
 </head>
 <body>
@@ -131,33 +125,30 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(-
 <footer>© 2025 Echi di Sofia</footer>
 
 <script>
-/* ================= HOT-FIX: loader indice robusto ================= */
-
-// Candidati (dedupe): prima quello definito in head, poi fallback noti
+// ================= CONFIGURAZIONE =================
 const CANDIDATE_INDEX_URLS = Array.from(new Set([
   (window.SEARCH_INDEX_URLS && window.SEARCH_INDEX_URLS[0]) || '',
   '/search-js.html?v=20251030',
   '/search-js.html',
   '/search-index.json?v=20251030',
-  '/search-index.json',
-  '/assets/search-js.html',
-  '/assets/search-index.json'
+  '/search-index.json'
 ])).filter(Boolean);
 
-// Tollerante a JSON "incapsulato" in HTML
+// ================= CARICAMENTO INDICE =================
 function parseIndexText(txt){
-  try { return JSON.parse(txt); } catch {}
-  const s = txt.indexOf('['), e = txt.lastIndexOf(']');
-  if (s !== -1 && e !== -1 && e > s){
-    try { return JSON.parse(txt.slice(s, e+1)); } catch {}
+  try { return JSON.parse(txt); } 
+  catch {
+    const s = txt.indexOf('['), e = txt.lastIndexOf(']');
+    if (s !== -1 && e !== -1 && e > s){
+      try { return JSON.parse(txt.slice(s, e+1)); } catch {}
+    }
+    return null;
   }
-  const m = txt.match(/"items"\s*:\s*(\[\s*\{[\s\S]*?\}\s*\])/);
-  if (m){ try { return { items: JSON.parse(m[1]) }; } catch {} }
-  return null;
 }
 
 async function tryFetch(url, timeout=8000){
-  const ac = new AbortController(); const to = setTimeout(()=>ac.abort(), timeout);
+  const ac = new AbortController(); 
+  const to = setTimeout(()=>ac.abort(), timeout);
   try{
     const res = await fetch(url, { signal: ac.signal, cache:'no-store' });
     clearTimeout(to);
@@ -165,8 +156,9 @@ async function tryFetch(url, timeout=8000){
     const txt = await res.text();
     const raw = parseIndexText(txt);
     if(!raw) throw new Error('Formato non riconosciuto');
-    const arr = Array.isArray(raw) ? raw : (raw && Array.isArray(raw.items) ? raw.items : []);
+    const arr = Array.isArray(raw) ? raw : (raw.items || []);
     if(!arr.length) throw new Error('Indice vuoto');
+    
     return arr.map(it => ({
       title: it.title || it.name || '',
       url: it.url || it.href || '',
@@ -175,12 +167,12 @@ async function tryFetch(url, timeout=8000){
       date: it.date || ''
     })).filter(x => x.title && x.url);
   }catch(err){
-    console.warn('[Indice] fallito', url, err && err.message);
+    console.warn('[Indice] fallito', url, err.message);
     return null;
   }
 }
 
-async function loadIndexRobusto(){
+async function loadIndex(){
   for (const url of CANDIDATE_INDEX_URLS){
     const items = await tryFetch(url);
     if (items && items.length){
@@ -191,65 +183,35 @@ async function loadIndexRobusto(){
   throw new Error('Nessuna sorgente indice valida');
 }
 
-/* ================= Utilità e filtri ================= */
+// ================= MOTORE DI RICERCA =================
+const norm = s => (s||'').toString().trim();
+const deburr = s => s.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'');
 
-const norm  = s => (s||'').toString().trim();
-const deburr= s => s.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'');
-const isExt = u => /^https?:\/\//i.test(u||'');
-const isAnc = u => (u||'').trim().startsWith('#');
-const isLocalHtml = u => !isExt(u) && !isAnc(u) && /\.html?(\?|#|$)/i.test(u||'');
-
-// Includi SOLO contenuti veri (no "Sezioni", no "pagine")
-const CONTENT_RE      = /^(\/)?(articoli|Presocratici|filosofi)(\/|$)/i;
-const EXCLUDE_DIRS    = /^(\/)?(Sezioni|pagine)(\/|$)/i;
-const EXCLUDE_PHRASES = [/sezione del portale/i];
-
-function isArticleLike(it){
-  const u = it.url || '';
-  const c = deburr(it.category || '');
-  const d = it.description || '';
-
-  if (!isLocalHtml(u) || isAnc(u)) return false;
-  if (EXCLUDE_DIRS.test(u))        return false;
-  if (c === 'sezione')             return false;
-  if (EXCLUDE_PHRASES.some(rx => rx.test(d))) return false;
-
-  if (CONTENT_RE.test(u)) return true;
-  if (c === 'articolo' || c === 'pagina') return true;
-
-  return false;
-}
-
-/* ================= Motore, categorie, render ================= */
-
-function makeEngine(items){
-  const bank = items.filter(isArticleLike).map(x => ({
-    ...x, _hay: deburr(`${x.title} ${x.category||''} ${x.description||''}`)
+function createSearchEngine(items){
+  const bank = items.map(x => ({
+    ...x, 
+    _search: deburr(`${x.title} ${x.category||''} ${x.description||''}`)
   }));
-  const sortByDate = list => list.slice().sort((A,B)=>(Date.parse(B.date||'')||0)-(Date.parse(A.date||'')||0));
-  const search = (q, limit=500) => {
-    const query = norm(q);
-    if(!query) return sortByDate(bank).slice(0, limit);
-    const terms = deburr(query).split(/\s+/);
-    const scored = [];
-    for (const it of bank){
-      if (!terms.every(t => it._hay.includes(t))) continue;
-      let s=0;
-      if (deburr(it.title).includes(deburr(query))) s+=8;
-      if ((it.description||'').length>80) s+=1;
-      scored.push({it,s});
-    }
-    scored.sort((a,b)=>b.s-a.s);
-    return scored.slice(0,limit).map(o=>o.it);
+  
+  const search = (query, limit=500) => {
+    const q = norm(query);
+    if(!q) return bank.slice(0, limit);
+    
+    const terms = deburr(q).split(/\s+/);
+    return bank.filter(item => 
+      terms.every(term => item._search.includes(term))
+    ).slice(0, limit);
   };
+  
   return { search, data: bank };
 }
 
+// ================= INTERFACCIA UTENTE =================
 function buildCategories(items){
   const map = new Map();
   for (const it of items){
-    const raw = norm(it.category) || 'Senza categoria';
-    map.set(raw, (map.get(raw)||0) + 1);
+    const cat = norm(it.category) || 'Senza categoria';
+    map.set(cat, (map.get(cat)||0) + 1);
   }
   return Array.from(map.entries()).sort((a,b)=> b[1]-a[1] || a[0].localeCompare(b[0]));
 }
@@ -257,9 +219,11 @@ function buildCategories(items){
 function renderCategories(list, activeKey=null){
   const nav = document.getElementById('cat-list');
   if(!nav) return;
+  
   nav.innerHTML = '';
-  const total = list.reduce((acc, [,n])=>acc+n,0);
-  const mk = (label, key, count) => {
+  const total = list.reduce((acc, [,n]) => acc + n, 0);
+  
+  const createCategory = (label, key, count) => {
     const a = document.createElement('a');
     a.href = '#';
     a.className = 'cat-item' + (activeKey===key ? ' active':'');
@@ -267,143 +231,131 @@ function renderCategories(list, activeKey=null){
     a.innerHTML = `<span class="cat-name">${label}</span><span class="cat-count">${count}</span>`;
     return a;
   };
-  nav.appendChild(mk('Tutte', '', total));
-  for (const [cat, n] of list){ nav.appendChild(mk(cat, cat, n)); }
+  
+  nav.appendChild(createCategory('Tutte', '', total));
+  for (const [cat, n] of list){ 
+    nav.appendChild(createCategory(cat, cat, n)); 
+  }
 }
 
 function renderGrid(items){
-  const root = document.getElementById('article-grid');
-  if(!root) return;
-  root.innerHTML = '';
+  const grid = document.getElementById('article-grid');
+  if(!grid) return;
+  
+  grid.innerHTML = '';
+  
   if(!items.length){
-    root.innerHTML = '<p class="muted">Nessun articolo trovato.</p>';
+    grid.innerHTML = '<p class="muted">Nessun articolo trovato.</p>';
     return;
   }
 
-  const frag = document.createDocumentFragment();
-  for (const it of items){
+  const fragment = document.createDocumentFragment();
+  
+  for (const item of items){
     const card = document.createElement('article');
     card.className = 'article-card';
     card.innerHTML = `
-      <a class="title" href="${it.url}">${it.title}</a>
-      <div class="url">${it.url}</div>
-      ${it.description ? `<div class="desc">${it.description}</div>` : ''}
-      ${it.category ? `<div class="desc" style="opacity:.75;margin-top:.35rem;"><strong>${it.category}</strong></div>` : ''}
+      <a class="title" href="${item.url}">${item.title}</a>
+      <div class="url">${item.url}</div>
+      ${item.description ? `<div class="desc">${item.description}</div>` : ''}
+      ${item.category ? `<div class="desc" style="opacity:.75;margin-top:.35rem;"><strong>${item.category}</strong></div>` : ''}
     `;
-    frag.appendChild(card);
+    fragment.appendChild(card);
   }
-  root.appendChild(frag);
+  
+  grid.appendChild(fragment);
 }
 
-/* ================= NASCONDI SOLO SEZIONI LEGACY ================= */
-
-function hideOnlyLegacySections(){
-  // Selettori specifici per le sezioni legacy che vogliamo nascondere
-  const LEGACY_SELECTORS = [
-    '.footer-sections', 
-    '#sezioni', 
-    '.sezioni-footer',
-    '#catalogo-sezioni', 
-    '.cards.sezioni', 
-    '.sezioni-portale'
-  ];
+// ================= APPLICAZIONE PRINCIPALE =================
+document.addEventListener('DOMContentLoaded', async function() {
+  let currentEngine = null;
+  let currentCategory = null;
   
-  LEGACY_SELECTORS.forEach(selector => {
-    document.querySelectorAll(selector).forEach(el => {
-      el.classList.add('legacy-section');
-    });
-  });
-  
-  // Euristica per identificare sezioni "Sezione del portale"
-  document.querySelectorAll('section, div, footer').forEach(el => {
-    const text = (el.textContent || '').trim();
-    if (text.includes('Sezione del portale') && !el.closest('.explora-layout')) {
-      el.classList.add('legacy-section');
-    }
-  });
-}
-
-/* ================= INIT PRINCIPALE ================= */
-
-(function(){
-  let currentCat = null;
-  let engine = null;
-
-  async function initializeSearch(){
-    try{
-      // PRIMA nascondi le sezioni legacy
-      hideOnlyLegacySections();
-      
-      // POI carica l'indice e mostra i risultati
-      const items = await loadIndexRobusto();
-      engine = makeEngine(items);
-
-      // Categorie
-      const cats = buildCategories(engine.data);
-      renderCategories(cats, null);
-
-      // Primo render: TUTTI gli articoli
-      renderGrid(engine.search('', 500));
-
-      // Filtro testo
-      const input = document.getElementById('site-search');
-      const doFilter = () => {
-        const q = input ? input.value : '';
-        let res = engine.search(q, 500);
-        if (currentCat){
-          res = res.filter(it => (norm(it.category)||'Senza categoria') === currentCat);
+  try {
+    // 1. Carica i dati
+    console.log('🔄 Caricamento indice...');
+    const items = await loadIndex();
+    
+    // 2. Crea il motore di ricerca
+    currentEngine = createSearchEngine(items);
+    console.log('✅ Motore di ricerca pronto con', items.length, 'articoli');
+    
+    // 3. Inizializza l'interfaccia
+    const categories = buildCategories(items);
+    renderCategories(categories, null);
+    renderGrid(currentEngine.search('', 200));
+    
+    // 4. Configura la ricerca in tempo reale
+    const searchInput = document.getElementById('site-search');
+    if (searchInput) {
+      searchInput.addEventListener('input', function() {
+        const query = this.value.trim();
+        let results = currentEngine.search(query, 200);
+        
+        if (currentCategory) {
+          results = results.filter(item => 
+            (norm(item.category) || 'Senza categoria') === currentCategory
+          );
         }
-        renderGrid(res);
-      };
-      
-      if (input){
-        input.addEventListener('input', doFilter);
-        const form = input.closest('form'); 
-        if(form) form.addEventListener('submit', e => { e.preventDefault(); doFilter(); });
-      }
-
-      // Click categorie
-      const nav = document.getElementById('cat-list');
-      if (nav){
-        nav.addEventListener('click', (e) => {
-          const a = e.target.closest('a.cat-item'); 
-          if(!a) return;
-          e.preventDefault();
-          currentCat = a.dataset.key || null;
-          nav.querySelectorAll('.cat-item').forEach(el => el.classList.toggle('active', el === a));
-          doFilter();
-        });
-      }
-    }catch(err){
-      console.error('Esplora — errore init:', err);
-      const root = document.getElementById('article-grid');
-      if (root) root.innerHTML = '<p class="error">Errore nel caricamento dell\'indice di ricerca.</p>';
+        
+        renderGrid(results);
+      });
+    }
+    
+    // 5. Configura i filtri categoria
+    const categoryNav = document.getElementById('cat-list');
+    if (categoryNav) {
+      categoryNav.addEventListener('click', function(e) {
+        e.preventDefault();
+        const link = e.target.closest('.cat-item');
+        if (!link) return;
+        
+        currentCategory = link.dataset.key || null;
+        
+        // Aggiorna stato attivo
+        categoryNav.querySelectorAll('.cat-item').forEach(el => 
+          el.classList.remove('active')
+        );
+        link.classList.add('active');
+        
+        // Ricerca con filtro categoria
+        const query = searchInput ? searchInput.value.trim() : '';
+        let results = currentEngine.search(query, 200);
+        
+        if (currentCategory) {
+          results = results.filter(item => 
+            (norm(item.category) || 'Senza categoria') === currentCategory
+          );
+        }
+        
+        renderGrid(results);
+      });
+    }
+    
+    // 6. Bottone "Cerca" per focus
+    const searchBtn = document.getElementById('open-search');
+    if (searchBtn && searchInput) {
+      searchBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        searchInput.focus();
+      });
+    }
+    
+    console.log('✅ Ricerca completamente inizializzata');
+    
+  } catch (error) {
+    console.error('❌ Errore inizializzazione ricerca:', error);
+    const grid = document.getElementById('article-grid');
+    if (grid) {
+      grid.innerHTML = `
+        <div class="error">
+          <p>Errore nel caricamento degli articoli</p>
+          <small>${error.message}</small>
+        </div>
+      `;
     }
   }
-
-  // Bottone "Cerca" - solo per focus e scroll
-  function wireSearchButton(){
-    const btn = document.getElementById('open-search');
-    const input = document.getElementById('site-search');
-    const grid = document.getElementById('article-grid');
-
-    if (!btn) return;
-    btn.addEventListener('click', (e)=>{
-      e.preventDefault();
-      if (grid){
-        const y = grid.getBoundingClientRect().top + window.scrollY - 80;
-        window.scrollTo({ top: y, behavior: 'smooth' });
-      }
-      if (input) setTimeout(()=> input.focus(), 200);
-    });
-  }
-
-  // Avvio IMMEDIATO all'apertura della pagina
-  document.addEventListener('DOMContentLoaded', () => {
-    initializeSearch(); // Questo mostra SUBITO la griglia completa
-    wireSearchButton();
-  });
-})();
+});
 </script>
 
 </body>
