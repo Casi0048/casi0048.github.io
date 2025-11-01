@@ -616,6 +616,155 @@ input:focus-visible {
     if (m) m.innerHTML = '<p class="error">Errore nel caricamento dell’indice.</p>';
   });
 </script>
+<!-- === Ricerca: elenco TUTTI gli articoli all'avvio === -->
+<script>
+  // 1) Loader indice (usa SOLO /search-js.html)
+  async function loadIndex(url = (window.SEARCH_INDEX_URLS && window.SEARCH_INDEX_URLS[0]) || '/search-js.html?v=20251029', timeoutMs = 8000) {
+    const ac = new AbortController(); const to = setTimeout(() => ac.abort(), timeoutMs);
+    const res = await fetch(url, { signal: ac.signal, cache: 'no-store' }); clearTimeout(to);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const text = await res.text();
+    let data = null;
+    try { data = JSON.parse(text); }
+    catch { const m = text.match(/\[\s*\{[\s\S]*?\}\s*\]/); data = m ? JSON.parse(m[0]) : null; }
+    const items = Array.isArray(data) ? data : (data && Array.isArray(data.items) ? data.items : []);
+    return items.map(it => ({
+      title: it.title || it.name || '',
+      url: it.url || it.href || '#',
+      category: it.category || it.section || '',
+      description: it.description || it.desc || '',
+      date: it.date || ''
+    })).filter(x => x.title && x.url);
+  }
+
+  // 2) Heuristic: cosa consideriamo “articolo”
+  function isExternal(u){ return /^https?:\/\//i.test(u); }
+  function isAnchor(u){ return typeof u==='string' && u.trim().startsWith('#'); }
+  function isLocalHtml(u){ return !isExternal(u) && !isAnchor(u) && /\.html?(\?|#|$)/i.test(u); }
+  const CONTENT_DIRS_RE = /^(\/)?(articoli|Presocratici|filosofi|pagine|Sezioni)(\/|$)/i;
+  function isLocalArticleLike(x){
+    const u = x.url || '', c = (x.category || '').toLowerCase();
+    const looksLikePage = isLocalHtml(u) && CONTENT_DIRS_RE.test(u);
+    const byCategory = ['articolo','pagina'].includes(c);
+    return (looksLikePage || byCategory) && !isAnchor(u);
+  }
+
+  // 3) Motore e ricerca
+  function makeEngine(items){
+    const bank = items.map(x => ({ 
+      ...x, 
+      _hay: (x.title + ' ' + (x.category||'') + ' ' + (x.description||''))
+            .toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'')
+    }));
+    function sortByDate(list){
+      return list.slice().sort((a,b)=> (Date.parse(b.date||'')||0) - (Date.parse(a.date||'')||0));
+    }
+    function search(q, limit = 200){
+      const query = (q||'').trim();
+      // ⬅︎ QUI: se query vuota, mostra TUTTI gli articoli locali
+      if (!query) return sortByDate(bank.filter(isLocalArticleLike)).slice(0, limit);
+      const qq = query.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'');
+      const terms = qq.split(/\s+/);
+      const scored = [];
+      for (const it of bank){
+        if (!terms.every(t => it._hay.includes(t))) continue;
+        let s = 0;
+        if ((it.title||'').toLowerCase().includes(qq)) s += 10;    // boost titolo
+        if (isLocalArticleLike(it)) s += 3;                        // boost articoli locali
+        if ((it.description||'').length > 80) s += 1;              // boost descrizione ricca
+        scored.push({it, s});
+      }
+      scored.sort((a,b)=> b.s - a.s);
+      return scored.slice(0, limit).map(x=>x.it);
+    }
+    return { search };
+  }
+
+  // 4) Render risultati + hide/sezioni
+  const RESULTS_MOUNT = '#results';                    // ID del contenitore risultati nella tua cerca.html
+  const FOOTER_SECTIONS_SELECTOR = '.footer-sections'; // cambia se il tuo blocco sezioni ha un selettore diverso
+
+  function ensureMount(sel){
+    let el = document.querySelector(sel);
+    if (!el){ el = document.createElement('div'); el.id = sel.replace('#',''); document.body.appendChild(el); }
+    return el;
+  }
+  function setVisibility(el, show){ if(!el) return; el.style.display = show ? '' : 'none'; }
+
+  function render(results){
+    const root = ensureMount(RESULTS_MOUNT);
+    root.innerHTML = '';
+    if (!results.length){
+      root.innerHTML = '<p class="muted">Nessun risultato.</p>';
+      setVisibility(document.querySelector(FOOTER_SECTIONS_SELECTOR), true);
+      return;
+    }
+    // nascondi le sezioni del footer se abbiamo risultati
+    setVisibility(document.querySelector(FOOTER_SECTIONS_SELECTOR), false);
+
+    const frag = document.createDocumentFragment();
+    for (const r of results){
+      const a = document.createElement('a');
+      a.className = 'result-item';
+      a.href = r.url;
+      a.innerHTML = `
+        <h3 class="result-title">${r.title}</h3>
+        ${r.description ? `<p class="result-desc">${r.description}</p>` : ''}
+        ${r.category ? `<span class="result-cat">${r.category}</span>` : ''}
+      `;
+      frag.appendChild(a);
+    }
+    root.appendChild(frag);
+  }
+
+  // 5) Init: mostra SUBITO tutti gli articoli + bind input/bottone
+  (async function initSearchPage(){
+    try{
+      const items = await loadIndex();
+      const engine = makeEngine(items);
+
+      // Primo render: TUTTI GLI ARTICOLI (query vuota)
+      render(engine.search('', 200));
+
+      // Bind input testo
+      const input = document.querySelector('#site-search, input[type="search"][name="q"]');
+      if (input){
+        input.addEventListener('input', e => render(engine.search(e.target.value, 200)));
+      }
+
+      // Bind al submit del form "cerca" (evita reload pagina)
+      const form = input ? input.closest('form') : null;
+      if (form){
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          render(engine.search(input.value, 200));
+        });
+      }
+
+      // Bind al bottone "Cerca" se presente (evita che navighi altrove)
+      const btn = document.querySelector('#search-btn, button[data-role="search"]');
+      if (btn && input){
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          render(engine.search(input.value, 200));
+        });
+      }
+    }catch(err){
+      console.error('Ricerca — init error:', err);
+      const m = document.querySelector(RESULTS_MOUNT);
+      if (m) m.innerHTML = '<p class="error">Errore nel caricamento dell’indice.</p>';
+    }
+  })();
+</script>
+
+<style>
+  /* Stile base coerente */
+  .result-item{display:block;padding:.65rem .9rem;margin:.5rem 0;border:1px solid rgba(255,255,255,.12);border-radius:.6rem;background:rgba(255,255,255,.04);text-decoration:none}
+  .result-item:hover{background:rgba(255,255,255,.09)}
+  .result-title{margin:0 0 .25rem;font-size:1rem;line-height:1.25}
+  .result-desc{margin:.15rem 0 .35rem;font-size:.92rem;line-height:1.4;opacity:.92}
+  .result-cat{display:inline-block;font-size:.75rem;opacity:.75}
+</style>
 
 </body>
 </html>
