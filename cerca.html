@@ -90,21 +90,54 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(-
 /* spazio per la X a destra */
 .search-wrap #site-search{ padding-right:3.25rem; }
 
-/* X grande ed elegante */
+/* spazio extra a destra nell’input per la X spostata */
+.search-wrap #site-search{
+  /* prima ~3.25rem; aggiungo ~4rem per coprire la X nativa */
+  padding-right: calc(3.25rem + 4rem);
+}
+
+/* Chrome/Safari: nascondi la X nativa per evitare doppioni */
+#site-search::-webkit-search-cancel-button{
+  -webkit-appearance: none;
+  appearance: none;
+  width: 0; height: 0; margin: 0; padding: 0; opacity: 0;
+}
+
+/* X grande ed elegante — spostata a sinistra per coprire la X nativa */
 .clear-btn{
-  position:absolute; right:.4rem; top:50%; transform:translateY(-50%) scale(.96);
+  position:absolute; right:4.4rem; top:50%; transform:translateY(-50%) scale(.96);
   width:34px; height:34px; display:inline-grid; place-items:center;
   border-radius:999px; border:1px solid rgba(255,255,255,.18);
-  background: radial-gradient(120% 120% at 30% 20%, rgba(255,255,255,.08), rgba(255,255,255,.02)), rgba(20,20,40,.75);
-  color:#ffd86a; box-shadow:0 2px 8px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.06);
+  background:
+    radial-gradient(120% 120% at 30% 20%, rgba(255,255,255,.08), rgba(255,255,255,.02)),
+    rgba(20,20,40,.75);
+  color:#ffd86a;
+  box-shadow:0 2px 8px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.06);
   backdrop-filter: blur(6px); cursor:pointer;
   opacity:0; visibility:hidden; transition:opacity .18s, transform .18s, color .18s, background .18s;
 }
-.clear-btn.is-visible{ opacity:1; visibility:visible; transform:translateY(-50%) scale(1); }
-.clear-btn:hover{ color:#ff6b6b; background: rgba(40,40,70,.85); }
-.clear-btn:focus-visible{ outline:2px solid var(--cyan); outline-offset:2px; }
-@media (prefers-reduced-motion: reduce){ .clear-btn{ transition:none; } }
-@media (max-width:480px){ .clear-btn{ right:.5rem; width:36px; height:36px; } }
+
+.clear-btn.is-visible{
+  opacity:1; visibility:visible; transform:translateY(-50%) scale(1);
+}
+
+.clear-btn:hover{
+  color:#ff6b6b; background: rgba(40,40,70,.85);
+}
+
+.clear-btn:focus-visible{
+  outline:2px solid var(--cyan); outline-offset:2px;
+}
+
+@media (prefers-reduced-motion: reduce){
+  .clear-btn{ transition:none; }
+}
+
+/* Mobile: X leggermente meno spostata + padding coerente */
+@media (max-width:480px){
+  .clear-btn{ right:3.2rem; width:36px; height:36px; }
+  .search-wrap #site-search{ padding-right: calc(3.25rem + 2.8rem); }
+}
 
 </style>
   
