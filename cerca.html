@@ -12,7 +12,7 @@
 </script>
 <link rel="preload" href="/search-index.json?v=20251031" as="fetch" type="application/json" crossorigin>
 
-<!-- Kill di eventuali “sezioni del portale” legacy -->
+<!-- Nasconde eventuali “sezioni del portale” legacy -->
 <style id="force-explore-first">
   .explora-layout{display:grid!important;visibility:visible!important}
   .footer-sections,#sezioni,.sezioni-footer,#catalogo-sezioni,
@@ -137,12 +137,15 @@ const CANDIDATE_INDEX_URLS = Array.from(new Set([
 
 function parseIndexText(txt){
   try { return JSON.parse(txt); } catch {}
+  // array puro
   const s = txt.indexOf('['), e = txt.lastIndexOf(']');
   if (s !== -1 && e !== -1 && e > s){ try { return JSON.parse(txt.slice(s, e+1)); } catch {} }
-  const m = txt.match(/"items"\\s*:\\s*(\\[\\s*\\{[\\s\\S]*?\\}\\s*\\])/);
+  // { "items": [ ... ] }
+  const m = txt.match(/"items"\s*:\s*(\[\s*\{[\s\S]*?\}\s*\])/);
   if (m){ try { return { items: JSON.parse(m[1]) }; } catch {} }
   return null;
 }
+
 async function tryFetch(url, timeout=8000){
   const ac = new AbortController(); const to = setTimeout(()=>ac.abort(), timeout);
   try{
@@ -166,6 +169,7 @@ async function tryFetch(url, timeout=8000){
     return null;
   }
 }
+
 async function loadIndex(){
   for (const url of CANDIDATE_INDEX_URLS){
     const items = await tryFetch(url);
@@ -187,15 +191,15 @@ const EXCLUDE_URLS = new Set([
   '/articoli/scetticismo.html',
   '/articoli/stoicismo.html'
 ]);
-const CONTENT_RE      = /^(\\/)?(articoli|Presocratici|filosofi)(\\/|$)/i;
-const EXCLUDE_DIRS    = /^(\\/)?(Sezioni|pagine)(\\/|$)/i;
+const CONTENT_RE      = /^(\/)?(articoli|Presocratici|filosofi)(\/|$)/i;
+const EXCLUDE_DIRS    = /^(\/)?(Sezioni|pagine)(\/|$)/i;
 const EXCLUDE_PHRASES = [/sezione del portale/i];
 
 const norm   = s => (s||'').toString().trim();
-const deburr = s => s.toLowerCase().normalize('NFD').replace(/\\p{Diacritic}/gu,'');
-const isExt  = u => /^https?:\\/\\//i.test(u||'');
+const deburr = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');  // compatibile
+const isExt  = u => /^https?:\/\//i.test(u||'');
 const isAnc  = u => (u||'').trim().startsWith('#');
-const isLocalHtml = u => !isExt(u) && !isAnc(u) && /\\.html?(\\?|#|$)/i.test(u||'');
+const isLocalHtml = u => !isExt(u) && !isAnc(u) && /\.html?(\?|#|$)/i.test(u||'');
 
 function isArticleLike(it){
   const u = norm(it.url);
@@ -223,7 +227,7 @@ function makeEngine(items){
   const search = (q, limit=500) => {
     const query = norm(q);
     if(!query) return sortByDate(bank).slice(0, limit);
-    const terms = deburr(query).split(/\\s+/);
+    const terms = deburr(query).split(/\s+/);
     const scored = [];
     for (const it of bank){
       if (!terms.every(t => it._hay.includes(t))) continue;
