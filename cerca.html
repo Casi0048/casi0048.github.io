@@ -1,32 +1,343 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="utf-8">
-  <title>Reindirizzamento… — Echi di Sofia</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cerca / Esplora — Echi di Sofia</title>
+<link rel="icon" type="image/png" href="/favicon_io/favicon-32x32.png">
 
-  <!-- SEO: questa è solo una “pagina ponte” -->
-  <meta name="robots" content="noindex,follow">
-  <link rel="canonical" href="/cerca.html">
+<!-- Indice: usa SOLO il JSON reale -->
+<script>
+  window.SEARCH_INDEX_URLS = ['/search-index.json?v=20251031'];
+</script>
+<link rel="preload" href="/search-index.json?v=20251031" as="fetch" type="application/json" crossorigin>
 
-  <script>
-    // Reindirizza preservando query (?...) e hash (#...)
-    (function () {
-      var dest = "/cerca.html" + (location.search || "") + (location.hash || "");
-      // replace() non sporca la cronologia
-      location.replace(dest);
-    })();
-  </script>
+<!-- Kill di eventuali “sezioni del portale” legacy -->
+<style id="force-explore-first">
+  .explora-layout{display:grid!important;visibility:visible!important}
+  .footer-sections,#sezioni,.sezioni-footer,#catalogo-sezioni,
+  .cards.sezioni,.sezioni-portale,.cards--sezioni,.sezioni-grid,.sezioni-list{display:none!important}
+</style>
+<script>
+(function(){
+  const KILL = ['.footer-sections','#sezioni','.sezioni-footer','#catalogo-sezioni','.cards.sezioni','.sezioni-portale','.cards--sezioni','.sezioni-grid','.sezioni-list'];
+  function nuke(){
+    KILL.forEach(sel=>document.querySelectorAll(sel).forEach(el=>el.style.display='none'));
+    document.querySelectorAll('section,div').forEach(el=>{
+      if (el.offsetParent===null) return;
+      const t=(el.textContent||'').toLowerCase();
+      if (t.includes('sezione del portale') && !el.closest('.explora-layout')) el.style.display='none';
+    });
+  }
+  if (document.readyState!=='loading') nuke(); else document.addEventListener('DOMContentLoaded', nuke, {once:true});
+})();
+</script>
 
-  <!-- Fallback se JS è disattivato -->
-  <meta http-equiv="refresh" content="0; url=/cerca.html">
-  <style>
-    html,body{height:100%}body{margin:0;display:grid;place-items:center;background:#0a0a1a;color:#e9eef5;
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
-    a{color:#9ad0ff}
-  </style>
+<style>
+:root { --bg:#0a0a1a; --text:#e9eef5; --gold:#ffd86a; --cyan:#9ad0ff; --panel:rgba(10,10,30,.9); --border:rgba(255,215,0,.18) }
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;line-height:1.5}
+.wrap{width:min(1100px,94vw);margin:0 auto;padding:1rem 0 2rem}
+
+/* HEADER */
+header{position:sticky;top:0;z-index:10;background:rgba(10,10,30,.96);border-bottom:1px solid rgba(255,215,0,.2);backdrop-filter:blur(6px)}
+.top{display:flex;align-items:center;gap:.75rem;padding:.8rem 1rem}
+.brand{display:flex;align-items:center;gap:.5rem;color:var(--gold);font-weight:800;text-decoration:none}
+.brand .logo{width:28px;height:28px;color:currentColor;filter: drop-shadow(0 0 .35rem rgba(255,215,0,.35))}
+.brand span{background:linear-gradient(90deg,#ffd700,#fff7b0,#ffd700);-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.04em}
+.spacer{flex:1}
+.home{color:var(--cyan);text-decoration:none;font-weight:700;transition:color .2s ease}
+.home:hover{color:#fff;text-decoration:underline}
+
+/* LAYOUT ESPLORA */
+.explora-layout{display:grid;grid-template-columns:260px 1fr;gap:1.25rem;margin-top:1rem}
+.explora-side{background:rgba(10,10,30,.9);border:1px solid var(--border);border-radius:14px;padding:1rem}
+.side-title{margin:.25rem 0 1rem;font-size:1.05rem;color:var(--gold)}
+.cat-list{display:flex;flex-direction:column;gap:.25rem}
+.cat-item{display:flex;justify-content:space-between;align-items:center;padding:.45rem .6rem;border-radius:.55rem;text-decoration:none;color:#e9eef5;border:1px solid transparent}
+.cat-item:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.08)}
+.cat-item.active{background:linear-gradient(90deg,rgba(255,216,106,.18),rgba(154,208,255,.18));border-color:rgba(255,255,255,.18)}
+.cat-name{font-weight:700}
+.cat-count{font-family:monospace;opacity:.9}
+
+.explora-toolbar{display:flex;gap:.5rem;justify-content:flex-end;margin-bottom:.75rem;align-items:center}
+.explora-toolbar input[type=search]{width:min(520px,100%);padding:10px 14px;border-radius:10px;background:rgba(20,20,40,.85);border:1px solid rgba(255,255,255,.14);color:#e9eef5}
+
+.article-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+.article-card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:1rem;transition:transform .2s ease, box-shadow .2s ease;box-shadow:0 .8rem 2rem rgba(0,0,0,.35);animation:fadeIn .3s ease-out}
+.article-card:hover{transform:translateY(-2px);box-shadow:0 1rem 2.5rem rgba(0,0,0,.4)}
+.article-card .title{display:block;color:var(--gold);font-weight:800;text-decoration:none;margin-bottom:.25rem}
+.article-card .title:hover{text-decoration:underline;color:#fff}
+.article-card .url{font-size:.8rem;opacity:.85;color:#9bb7ff;margin:.15rem 0 .5rem;word-break:break-all;font-family:monospace}
+.article-card .desc{color:#cfe2ff;opacity:.95;line-height:1.4;font-size:.92rem}
+
+/* FOOTER */
+footer{margin-top:3rem;padding:1.5rem 1rem;text-align:center;color:#9ec3ff;border-top:1px solid rgba(255,255,255,.06);font-size:.9rem}
+
+/* RESP */
+@media (max-width:1000px){.explora-layout{grid-template-columns:1fr}.explora-side{order:2}.explora-body{order:1}.article-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.article-grid{grid-template-columns:1fr}}
+@media (max-width:768px){.wrap{width:92vw;padding:.5rem 0 1.5rem}.top{padding:.6rem .8rem}}
+@media (max-width:480px){.top{flex-wrap:wrap;gap:.5rem}.brand{flex:1}.spacer{display:none}.home{width:100%;text-align:center;order:3;margin-top:.5rem;padding-top:.5rem;border-top:1px solid rgba(255,255,255,.1)}}
+
+/* ANIM */
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ACCESSIBILITÀ */
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;border-radius:2px}
+</style>
 </head>
 <body>
-  <p>Reindirizzamento in corso verso <a href="/cerca.html">/cerca.html</a>…</p>
+
+<header>
+  <div class="top wrap">
+    <a class="brand" href="/" aria-label="Echi di Sofia – Home">
+      <svg class="logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+        <line x1="12" y1="22.08" x2="12" y2="12"></line>
+      </svg>
+      <span>Echi di Sofia</span>
+    </a>
+    <div class="spacer"></div>
+    <a class="home" href="/" aria-label="Torna all'Incipit">🏠 Torna all'Incipit</a>
+  </div>
+
+  <div class="wrap">
+    <div style="margin: 1.0rem 0 0.4rem;">
+      <strong style="font-size: 1.2rem;">Esplora articoli</strong>
+    </div>
+    <div class="explora-toolbar">
+      <input type="search" id="site-search" placeholder="Filtra… (titolo/descrizione)" autocomplete="off" spellcheck="false">
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="explora-layout" id="explore">
+    <aside class="explora-side">
+      <h2 class="side-title">Categorie</h2>
+      <nav id="cat-list" class="cat-list" aria-label="Categorie articoli"></nav>
+    </aside>
+    <section class="explora-body">
+      <div id="article-grid" class="article-grid" role="list"></div>
+    </section>
+  </div>
+</main>
+
+<footer>© 2025 Echi di Sofia</footer>
+
+<script>
+/* ================= Loader indice (usa il JSON reale) ================= */
+const CANDIDATE_INDEX_URLS = Array.from(new Set([
+  (window.SEARCH_INDEX_URLS && window.SEARCH_INDEX_URLS[0]) || '',
+  '/search-index.json?v=20251031',
+  '/search-index.json'
+])).filter(Boolean);
+
+function parseIndexText(txt){
+  try { return JSON.parse(txt); } catch {}
+  const s = txt.indexOf('['), e = txt.lastIndexOf(']');
+  if (s !== -1 && e !== -1 && e > s){ try { return JSON.parse(txt.slice(s, e+1)); } catch {} }
+  const m = txt.match(/"items"\\s*:\\s*(\\[\\s*\\{[\\s\\S]*?\\}\\s*\\])/);
+  if (m){ try { return { items: JSON.parse(m[1]) }; } catch {} }
+  return null;
+}
+async function tryFetch(url, timeout=8000){
+  const ac = new AbortController(); const to = setTimeout(()=>ac.abort(), timeout);
+  try{
+    const res = await fetch(url, { signal: ac.signal, cache:'no-store' });
+    clearTimeout(to);
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const txt = await res.text();
+    const raw = parseIndexText(txt);
+    if(!raw) throw new Error('Formato non riconosciuto');
+    const arr = Array.isArray(raw) ? raw : (raw && Array.isArray(raw.items) ? raw.items : []);
+    if(!arr.length) throw new Error('Indice vuoto');
+    return arr.map(it => ({
+      title: it.title || it.name || it.slug || 'Senza titolo',
+      url: (it.url || it.link || '').toString(),
+      category: it.category || it.categoria || it.section || it.tag || it.type || '',
+      description: it.description || it.desc || it.excerpt || it.summary || '',
+      date: it.date || ''
+    }));
+  }catch(err){
+    console.warn('[Indice] fallito', url, err && err.message);
+    return null;
+  }
+}
+async function loadIndex(){
+  for (const url of CANDIDATE_INDEX_URLS){
+    const items = await tryFetch(url);
+    if (items && items.length){
+      console.log('[Indice] OK →', url, 'items:', items.length);
+      return items;
+    }
+  }
+  throw new Error('Nessuna sorgente indice valida');
+}
+
+/* ================= Filtri contenuto ================= */
+/* Esclusione hard delle 6 “Sezioni del portale” */
+const EXCLUDE_URLS = new Set([
+  '/articoli/cinismo.html',
+  '/articoli/epicureismo.html',
+  '/articoli/filosofia-indiana.html',
+  '/articoli/platonismo.html',
+  '/articoli/scetticismo.html',
+  '/articoli/stoicismo.html'
+]);
+const CONTENT_RE      = /^(\\/)?(articoli|Presocratici|filosofi)(\\/|$)/i;
+const EXCLUDE_DIRS    = /^(\\/)?(Sezioni|pagine)(\\/|$)/i;
+const EXCLUDE_PHRASES = [/sezione del portale/i];
+
+const norm   = s => (s||'').toString().trim();
+const deburr = s => s.toLowerCase().normalize('NFD').replace(/\\p{Diacritic}/gu,'');
+const isExt  = u => /^https?:\\/\\//i.test(u||'');
+const isAnc  = u => (u||'').trim().startsWith('#');
+const isLocalHtml = u => !isExt(u) && !isAnc(u) && /\\.html?(\\?|#|$)/i.test(u||'');
+
+function isArticleLike(it){
+  const u = norm(it.url);
+  const c = deburr(it.category || '');
+  const d = it.description || '';
+
+  if (!isLocalHtml(u) || isAnc(u)) return false;
+  if (EXCLUDE_URLS.has(u))         return false;
+  if (EXCLUDE_DIRS.test(u))        return false;
+  if (c === 'sezione')             return false;
+  if (EXCLUDE_PHRASES.some(rx => rx.test(d))) return false;
+
+  if (CONTENT_RE.test(u)) return true;
+  if (c === 'articolo' || c === 'pagina') return true;
+
+  return false;
+}
+
+/* ================= Motore, categorie, render ================= */
+function makeEngine(items){
+  const bank = items.filter(isArticleLike).map(x => ({
+    ...x, _hay: deburr(`${x.title} ${x.category||''} ${x.description||''}`)
+  }));
+  const sortByDate = list => list.slice().sort((A,B)=>(Date.parse(B.date||'')||0)-(Date.parse(A.date||'')||0));
+  const search = (q, limit=500) => {
+    const query = norm(q);
+    if(!query) return sortByDate(bank).slice(0, limit);
+    const terms = deburr(query).split(/\\s+/);
+    const scored = [];
+    for (const it of bank){
+      if (!terms.every(t => it._hay.includes(t))) continue;
+      let s=0;
+      if (deburr(it.title).includes(deburr(query))) s+=8;
+      if ((it.description||'').length>80) s+=1;
+      scored.push({it,s});
+    }
+    scored.sort((a,b)=>b.s-a.s);
+    return scored.slice(0,limit).map(o=>o.it);
+  };
+  return { search, data: bank };
+}
+
+function buildCategories(items){
+  const map = new Map();
+  for (const it of items){
+    const raw = norm(it.category) || 'Senza categoria';
+    map.set(raw, (map.get(raw)||0) + 1);
+  }
+  return Array.from(map.entries()).sort((a,b)=> b[1]-a[1] || a[0].localeCompare(b[0]));
+}
+
+function renderCategories(list, activeKey=null){
+  const nav = document.getElementById('cat-list');
+  if(!nav) return;
+  nav.innerHTML = '';
+  const total = list.reduce((acc, [,n])=>acc+n,0);
+  const mk = (label, key, count) => {
+    const a = document.createElement('a');
+    a.href = '#';
+    a.className = 'cat-item' + (activeKey===key ? ' active':'');
+    a.dataset.key = key||'';
+    a.innerHTML = `<span class="cat-name">${label}</span><span class="cat-count">${count}</span>`;
+    return a;
+  };
+  nav.appendChild(mk('Tutte', '', total));
+  for (const [cat, n] of list){ nav.appendChild(mk(cat, cat, n)); }
+}
+
+function renderGrid(items){
+  const root = document.getElementById('article-grid');
+  if(!root) return;
+  root.innerHTML = '';
+  if(!items.length){
+    root.innerHTML = '<p class="muted">Nessun articolo.</p>';
+    return;
+  }
+  const frag = document.createDocumentFragment();
+  for (const it of items){
+    const card = document.createElement('article');
+    card.className = 'article-card';
+    card.innerHTML = `
+      <a class="title" href="${it.url}">${it.title}</a>
+      <div class="url">${it.url}</div>
+      ${it.description ? `<div class="desc">${it.description}</div>` : ''}
+      ${it.category ? `<div class="desc" style="opacity:.75;margin-top:.35rem;"><strong>${it.category}</strong></div>` : ''}
+    `;
+    frag.appendChild(card);
+  }
+  root.appendChild(frag);
+}
+
+/* ================= Init ================= */
+(function(){
+  let currentCat = null;
+
+  async function boot(){
+    try{
+      const items  = await loadIndex();
+      const engine = makeEngine(items);
+
+      // Categorie
+      const cats = buildCategories(engine.data);
+      renderCategories(cats, null);
+
+      // Primo render: TUTTI gli articoli
+      renderGrid(engine.search('', 500));
+
+      // Filtro testo
+      const input = document.getElementById('site-search');
+      const doFilter = () => {
+        const q = input ? input.value : '';
+        let res = engine.search(q, 500);
+        if (currentCat){ res = res.filter(it => (norm(it.category)||'Senza categoria') === currentCat); }
+        renderGrid(res);
+      };
+      if (input){
+        input.addEventListener('input', doFilter);
+        const form = input.closest('form'); if(form) form.addEventListener('submit', e => { e.preventDefault(); doFilter(); });
+      }
+
+      // Click categorie
+      const nav = document.getElementById('cat-list');
+      if (nav){
+        nav.addEventListener('click', (e) => {
+          const a = e.target.closest('a.cat-item'); if(!a) return;
+          e.preventDefault();
+          currentCat = a.dataset.key || null; // '' = tutte
+          nav.querySelectorAll('.cat-item').forEach(el => el.classList.toggle('active', el === a));
+          doFilter();
+        });
+      }
+    }catch(err){
+      console.error('Esplora — errore init:', err);
+      const root = document.getElementById('article-grid');
+      if (root) root.innerHTML = '<p class="error">Errore nel caricamento dell’indice.</p>';
+    }
+  }
+
+  if (document.readyState!=='loading') boot();
+  else document.addEventListener('DOMContentLoaded', boot, {once:true});
+})();
+</script>
+
 </body>
 </html>
