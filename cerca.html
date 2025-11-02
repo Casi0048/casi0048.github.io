@@ -85,7 +85,29 @@ footer{margin-top:3rem;padding:1.5rem 1rem;text-align:center;color:#9ec3ff;borde
 
 /* ACCESSIBILITÀ */
 a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;border-radius:2px}
+  /* wrapper input + bottone clear */
+.search-wrap{ position:relative; width:min(560px,100%); }
+/* spazio per la X a destra */
+.search-wrap #site-search{ padding-right:3.25rem; }
+
+/* X grande ed elegante */
+.clear-btn{
+  position:absolute; right:.4rem; top:50%; transform:translateY(-50%) scale(.96);
+  width:34px; height:34px; display:inline-grid; place-items:center;
+  border-radius:999px; border:1px solid rgba(255,255,255,.18);
+  background: radial-gradient(120% 120% at 30% 20%, rgba(255,255,255,.08), rgba(255,255,255,.02)), rgba(20,20,40,.75);
+  color:#ff8a8a; box-shadow:0 2px 8px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.06);
+  backdrop-filter: blur(6px); cursor:pointer;
+  opacity:0; visibility:hidden; transition:opacity .18s, transform .18s, color .18s, background .18s;
+}
+.clear-btn.is-visible{ opacity:1; visibility:visible; transform:translateY(-50%) scale(1); }
+.clear-btn:hover{ color:#ff6b6b; background: rgba(40,40,70,.85); }
+.clear-btn:focus-visible{ outline:2px solid var(--cyan); outline-offset:2px; }
+@media (prefers-reduced-motion: reduce){ .clear-btn{ transition:none; } }
+@media (max-width:480px){ .clear-btn{ right:.5rem; width:36px; height:36px; } }
+
 </style>
+  
 </head>
 <body>
 
@@ -107,10 +129,21 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(-
     <div style="margin: 1.0rem 0 0.4rem;">
       <strong style="font-size: 1.2rem;">Esplora articoli</strong>
     </div>
-    <div class="explora-toolbar">
-      <input type="search" id="site-search" placeholder="Filtra… (titolo/descrizione)" autocomplete="off" spellcheck="false">
-    </div>
+   <div class="explora-toolbar">
+  <div class="search-wrap">
+    <input type="search" id="site-search"
+           placeholder="Filtra… (titolo/descrizione)"
+           autocomplete="off" spellcheck="false">
+    <button type="button" class="clear-btn" id="clear-search"
+            aria-label="Cancella ricerca" title="Cancella (Esc)">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+        <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
   </div>
+</div>
+
 </header>
 
 <main class="wrap">
@@ -340,6 +373,34 @@ function renderGrid(items){
 
   if (document.readyState!=='loading') boot();
   else document.addEventListener('DOMContentLoaded', boot, {once:true});
+})();
+</script>
+<script>
+(function(){
+  const input = document.getElementById('site-search');
+  const btn   = document.getElementById('clear-search');
+  if(!input || !btn) return;
+
+  const toggle = () => btn.classList.toggle('is-visible', !!input.value.trim());
+
+  input.addEventListener('input', toggle);
+  input.addEventListener('keydown', (e)=>{
+    if(e.key === 'Escape' && input.value){
+      input.value = '';
+      input.dispatchEvent(new Event('input', {bubbles:true}));
+      input.focus();
+    }
+  });
+
+  btn.addEventListener('click', (e)=>{
+    e.preventDefault();
+    if(!input.value) return;
+    input.value = '';
+    input.dispatchEvent(new Event('input', {bubbles:true}));
+    input.focus();
+  });
+
+  toggle(); // stato iniziale
 })();
 </script>
 
