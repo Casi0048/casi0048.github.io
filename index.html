@@ -1475,7 +1475,7 @@ window.googleTranslateElementInit = function(){
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 5;
+    z-index: 1;
     overflow: hidden;
 }
 
@@ -1507,8 +1507,8 @@ window.googleTranslateElementInit = function(){
 /* COMETE VOLANTI - DIMENSIONI RIDOTTE */
 .shooting-star {
     position: absolute;
-    width: 4px;
-    height: 1px; 
+    width: 10px;
+    height: 2px; 
     background: linear-gradient(90deg, 
         transparent 0%, 
         #ffffff 15%, 
@@ -3621,7 +3621,7 @@ html {
         width: 100%;
         height: 100%;
         pointer-events: none;
-        z-index: 9;
+        z-index: 0;
     }
 </style>
 <style id="ultimate-explosion-effect">
@@ -4784,7 +4784,7 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 <div style="text-align: center;">
 <img alt="Platone" decoding="async" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/immagini%20per%20sito/platone.png" style="width: 100%; max-width: 80px; border-radius: 50%; border: 3px solid #d4af37;"/>
 <p style="margin-top: 10px; color: #e9eef5; font-weight: bold; font-family: 'Cormorant Garamond', serif;">Platone</p>
-<p style="font-style: italic; color: #9ad0ff; font-size: 0.85rem;font-weight: 700;">"La realtà è un'ombra delle Idee." - tradotto: 'Come il “mondo vero” finí per diventare favola'.</p>
+<p style="font-style: italic; color: #9ad0ff; font-size: 0.85rem;font-weight: 700;">"La realtà è un'ombra delle Idee."</p>
 </div>
 <div style="text-align: center;">
 <img alt="Kant" decoding="async" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/immagini%20per%20sito/kant.webp" style="width: 100%; max-width: 80px; border-radius: 50%; border: 3px solid #d4af37;"/>
@@ -5254,7 +5254,7 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 </div>
 </div>
 </div>
-<p class="decoration-caption">...Contemplata aliis tradere</p>
+<p class="decoration-caption">Radici del Sapere</p>
 </div>
 <h1 class="welcome-title-themable" id="welcomeTitle">Benvenuto in<br/>Echi di Sofia</h1>
 
@@ -6261,6 +6261,122 @@ document.addEventListener('DOMContentLoaded', ()=>{
   sync();
 });
 </script>
+
+<!-- === COMETINE MULTIDIREZIONALI CORTO === -->
+<!-- === INIZIO COMETINE ORIZZONTALI BIDIREZIONALI === -->
+<style>
+  .comet{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 30px;    /* lunghezza scia */
+  height: 2px;    /* spessore scia */
+  z-index: 2;     /* livello: sotto UI, sopra lo sfondo */
+    opacity: .85;
+     pointer-events: none;
+    transform: translateX(-100%);
+    border-radius: 2px;
+    animation: comet-move-ltr linear forwards;
+    filter: drop-shadow(0 0 6px rgba(255,255,255,.7));
+     z-index: 4;
+  }
+
+  /* piccolo “nucleo” luminoso */
+  .comet::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 6px;
+    height: 6px;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    background: rgba(255,255,255,.95);
+    box-shadow: 0 0 10px rgba(255,255,255,.9), 0 0 18px rgba(255,255,255,.6);
+  }
+
+  /* direzione sinistra → destra */
+  @keyframes comet-move-ltr {
+    from { transform: translateX(-10%) translateY(var(--startY)); opacity:.8; }
+    to   { transform: translateX(110vw) translateY(var(--endY)); opacity:0; }
+  }
+
+  /* direzione destra → sinistra */
+  @keyframes comet-move-rtl {
+    from { transform: translateX(110vw) translateY(var(--startY)); opacity:.8; }
+    to   { transform: translateX(-10%) translateY(var(--endY)); opacity:0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .comet { animation: none !important; opacity: 0; }
+  }
+</style>
+
+<script>
+(function(){
+  const BODY = document.body;
+  const rnd = (min,max)=> Math.random()*(max-min)+min;
+
+  const MIN_INTERVAL = 800;
+  const MAX_INTERVAL = 2200;
+
+  function createComet(){
+    const comet = document.createElement('div');
+    comet.className = 'comet';
+
+    const y = rnd(0, window.innerHeight * 0.9);
+    const drift = rnd(-30,30);
+    const duration = rnd(3,7);
+
+    const dir = Math.random() < 0.5 ? 'ltr' : 'rtl';
+    const hue = rnd(40,240);  // oro → azzurro/blu
+
+    if(dir === 'ltr'){
+      comet.style.background = `linear-gradient(90deg,
+        hsla(${hue},100%,70%,0) 0%,
+        hsla(${hue},100%,85%,.95) 100%)`;
+      comet.style.animationName = 'comet-move-ltr';
+      comet.style.left = '0';
+      comet.style.right = 'auto';
+      comet.style.setProperty('--startY', `${y}px`);
+      comet.style.setProperty('--endY', `${y+drift}px`);
+      comet.style.setProperty('--head-pos', 'right');
+    } else {
+      comet.style.background = `linear-gradient(270deg,
+        hsla(${hue},100%,70%,0) 0%,
+        hsla(${hue},100%,85%,.95) 100%)`;
+      comet.style.animationName = 'comet-move-rtl';
+      comet.style.left = 'auto';
+      comet.style.right = '0';
+      comet.style.setProperty('--startY', `${y}px`);
+      comet.style.setProperty('--endY', `${y+drift}px`);
+      comet.style.setProperty('--head-pos', 'left');
+    }
+
+    // sposta la testolina luminosa a seconda della direzione
+    comet.style.setProperty('--duration', `${duration}s`);
+    comet.style.animationDuration = `${duration}s`;
+
+    const head = comet::after;
+    if(dir === 'rtl') {
+      comet.style.setProperty('--head-side', 'left');
+    }
+
+    // aggiunta
+    BODY.appendChild(comet);
+    setTimeout(()=> comet.remove(), duration*1000);
+  }
+
+  function loop(){
+    createComet();
+    setTimeout(loop, rnd(MIN_INTERVAL, MAX_INTERVAL));
+  }
+
+  window.addEventListener('DOMContentLoaded', loop);
+})();
+</script>
+
+<!-- === COMETINE MULTIDIREZIONALI FINE=== -->
+<!-- === COMETINE MULTIDIREZIONALI FINE=== -->
 <!-- Cookie Banner -->
 <div aria-label="Impostazioni cookie" aria-live="polite" class="cc-banner" id="cookie-banner" role="dialog">
 <div>
