@@ -8614,6 +8614,119 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 })();
 </script>
+<script>
 
+// Aggiungi questo script per gestire lo slider
+class VerticalSlider {
+    constructor() {
+        this.sliderInner = document.getElementById('sliderInner');
+        this.toggleBtn = document.getElementById('slider-toggle');
+        this.invertBtn = document.getElementById('slider-invert');
+        this.speedSlider = document.getElementById('slider-speed');
+        this.speedReadout = document.getElementById('speed-readout') || this.createSpeedReadout();
+        
+        this.isPlaying = true;
+        this.direction = 1;
+        this.speed = 8;
+        this.animationId = null;
+        this.position = 0;
+        
+        this.init();
+    }
+    
+    createSpeedReadout() {
+        const readout = document.createElement('span');
+        readout.id = 'speed-readout';
+        readout.textContent = '8';
+        this.speedSlider.parentNode.appendChild(readout);
+        return readout;
+    }
+    
+    init() {
+        // Event listeners
+        this.toggleBtn.addEventListener('click', () => this.toggle());
+        this.invertBtn.addEventListener('click', () => this.invert());
+        this.speedSlider.addEventListener('input', (e) => this.setSpeed(e.target.value));
+        
+        // Espandi range velocità a 1-20
+        this.speedSlider.min = 1;
+        this.speedSlider.max = 20;
+        this.speedSlider.value = 8;
+        
+        this.startAnimation();
+    }
+    
+    setSpeed(value) {
+        this.speed = parseInt(value);
+        this.speedReadout.textContent = value;
+        
+        // Mappa valori a intervalli di tempo (più granulare)
+        const speedMap = {
+            1: 200,   // Molto lento
+            5: 100,   // Lento
+            8: 50,    // Normale
+            12: 20,   // Veloce
+            16: 10,   // Molto veloce
+            20: 5     // Massima velocità
+        };
+        
+        this.animationSpeed = speedMap[this.speed] || 50;
+        
+        if (this.isPlaying) {
+            this.stopAnimation();
+            this.startAnimation();
+        }
+    }
+    
+    toggle() {
+        this.isPlaying = !this.isPlaying;
+        this.toggleBtn.textContent = this.isPlaying ? '⏸️ Ferma' : '▶️ Avvia';
+        
+        if (this.isPlaying) {
+            this.startAnimation();
+        } else {
+            this.stopAnimation();
+        }
+    }
+    
+    invert() {
+        this.direction *= -1;
+        this.invertBtn.textContent = this.direction === 1 ? '🔄 Inverti' : '🔄 Normale';
+    }
+    
+    startAnimation() {
+        if (this.animationId) return;
+        
+        const animate = () => {
+            this.position += this.direction * (this.speed / 2);
+            
+            // Reset quando raggiunge la fine
+            const maxScroll = this.sliderInner.scrollHeight - this.sliderInner.parentElement.clientHeight;
+            if (this.position >= maxScroll) {
+                this.position = 0;
+            } else if (this.position < 0) {
+                this.position = maxScroll;
+            }
+            
+            this.sliderInner.style.transform = `translateY(-${this.position}px)`;
+            this.animationId = requestAnimationFrame(animate);
+        };
+        
+        this.animationId = requestAnimationFrame(animate);
+    }
+    
+    stopAnimation() {
+        if (this.animationId) {
+            cancelAnimationFrame(this.animationId);
+            this.animationId = null;
+        }
+    }
+}
+
+// Inizializza slider quando DOM è pronto
+document.addEventListener('DOMContentLoaded', () => {
+    new VerticalSlider();
+});
+</script>
 </body>
 </html>
