@@ -1123,3 +1123,237 @@ window.getElementSafe = function(selector) {
 };
 
 console.log('⭐ Sistema stellare caricato e pronto');
+/* =========================
+   timeline-bidirectional-scroll
+========================= */
+document.addEventListener('DOMContentLoaded', function() {
+  const timelineItems = document.querySelectorAll('.timeline-item');
+  
+  if (!timelineItems.length) return;
+  
+  // Intersection Observer per entrambe le direzioni
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const item = entry.target;
+      
+      if (entry.isIntersecting) {
+        // Item entra nella viewport - anima in
+        item.classList.add('visible');
+        
+        // Rimuovi la classe dopo l'animazione per permettere il replay
+        setTimeout(() => {
+          if (entry.isIntersecting) {
+            item.style.opacity = '1';
+            item.style.transform = 'none';
+          }
+        }, 800);
+      } else {
+        // Item esce dalla viewport - resetta per nuova animazione
+        item.classList.remove('visible');
+        
+        // Piccolo delay per evitare flickering
+        setTimeout(() => {
+          if (!entry.isIntersecting) {
+            item.style.opacity = '0';
+            if (item.classList.contains('left')) {
+              item.style.transform = 'translateX(-80px) translateY(40px)';
+            } else if (item.classList.contains('right')) {
+              item.style.transform = 'translateX(80px) translateY(40px)';
+            } else {
+              item.style.transform = 'translateY(40px)';
+            }
+          }
+        }, 50);
+      }
+    });
+  }, {
+    threshold: 0.15, // Trigger quando il 15% dell'elemento è visibile
+    rootMargin: '-50px 0px -50px 0px' // Area di trigger ridotta
+  });
+
+  // Osserva tutti gli item
+  timelineItems.forEach(item => {
+    observer.observe(item);
+  });
+
+  // Forza un check iniziale
+  setTimeout(() => {
+    timelineItems.forEach(item => {
+      const rect = item.getBoundingClientRect();
+      const isVisible = (
+        rect.top >= 0 &&
+        rect.left >= 0 &&
+        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+      );
+      
+      if (isVisible) {
+        item.classList.add('visible');
+      }
+    });
+  }, 100);
+
+  // Gestione del resize per ripristinare le animazioni
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      timelineItems.forEach(item => {
+        const rect = item.getBoundingClientRect();
+        const isVisible = (
+          rect.top >= 0 &&
+          rect.bottom <= (window.innerHeight || document.documentElement.clientHeight)
+        );
+        
+        if (!isVisible) {
+          item.classList.remove('visible');
+        }
+      });
+    }, 250);
+  });
+});
+
+// Versione alternativa più aggressiva per animazioni continue
+function setupTimelineAnimations() {
+  const items = document.querySelectorAll('.timeline-item');
+  let ticking = false;
+  
+  function updateAnimations() {
+    const windowHeight = window.innerHeight;
+    const triggerPoint = windowHeight * 0.8;
+    
+    items.forEach(item => {
+      const rect = item.getBoundingClientRect();
+      const isInView = rect.top < triggerPoint && rect.bottom > 0;
+      
+      if (isInView && !item.classList.contains('visible')) {
+        item.classList.add('visible');
+      } else if (!isInView && item.classList.contains('visible')) {
+        item.classList.remove('visible');
+      }
+    });
+    
+    ticking = false;
+  }
+  
+  function onScroll() {
+    if (!ticking) {
+      requestAnimationFrame(updateAnimations);
+      ticking = true;
+    }
+  }
+  
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  
+  // Check iniziale
+  updateAnimations();
+}
+
+// Avvia le animazioni
+document.addEventListener('DOMContentLoaded', setupTimelineAnimations);
+* === THEME TOGGLE FUNCTIONALITY === */
+document.addEventListener('DOMContentLoaded', function() {
+  const themeToggle = document.getElementById('theme-toggle');
+  if (!themeToggle) return;
+  
+  // Get saved theme or default to dark
+  const savedTheme = localStorage.getItem('theme') || 'dark';
+  
+  // Apply saved theme
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  updateToggleButton(savedTheme);
+  
+  // Toggle theme on click
+  themeToggle.addEventListener('click', function() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    // Apply new theme
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateToggleButton(newTheme);
+    
+    // Smooth transition
+    document.documentElement.style.transition = 'all 0.5s ease';
+    setTimeout(() => {
+      document.documentElement.style.transition = '';
+    }, 500);
+  });
+  
+  function updateToggleButton(theme) {
+    const icon = theme === 'dark' ? '🌙' : '☀️';
+    const label = theme === 'dark' ? 'Attiva tema chiaro' : 'Attiva tema scuro';
+    
+    themeToggle.innerHTML = icon;
+    themeToggle.setAttribute('aria-label', label);
+    themeToggle.setAttribute('title', label);
+    
+    // Add click feedback
+    themeToggle.style.transform = 'scale(0.9)';
+    setTimeout(() => {
+      themeToggle.style.transform = 'scale(1)';
+    }, 150);
+  }
+  
+  // Listen for system preference changes
+  const systemTheme = window.matchMedia('(prefers-color-scheme: light)');
+  systemTheme.addEventListener('change', function(e) {
+    if (!localStorage.getItem('theme')) {
+      const newTheme = e.matches ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      updateToggleButton(newTheme);
+    }
+  });
+});
+* === Timeline scroll reveal (IO) v2 === */
+document.addEventListener("DOMContentLoaded", function(){
+  var items = Array.prototype.slice.call(document.querySelectorAll(".timeline-item"));
+  if (!items.length) return;
+  items.forEach(function(el, i){
+    el.classList.remove("left","right","visible");
+    el.classList.add(i % 2 === 0 ? "left" : "right");
+  });
+  function computeDelay(el){
+    var rect = el.getBoundingClientRect();
+    var y = Math.max(0, Math.min(1, (rect.top / Math.max(1, window.innerHeight))));
+    var w = Math.max(320, window.innerWidth || 0);
+    var scale = (w >= 1200) ? 1.6 : (w >= 1024 ? 1.4 : (w >= 601 ? 1.1 : 0.8));
+    var base = Math.round(y * 250 * scale);
+    var jitter = Math.round((Math.random()*120));
+    return base + jitter;
+  }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if (entry.isIntersecting) {
+        var d = computeDelay(entry.target);
+        entry.target.style.setProperty("--delay", d + "ms");
+        entry.target.classList.add("visible");
+        io.unobserve(entry.target);
+      }
+    });
+  }, { root: null, rootMargin: "0px 0px -8% 0px", threshold: 0.18 });
+  items.forEach(function(el){ io.observe(el); });
+  // Sync iniziale + fallback
+  function initialSync(){
+    var vh = Math.max(1, window.innerHeight || 1);
+    items.forEach(function(el){
+      if (!el.classList.contains('visible')){
+        var r = el.getBoundingClientRect();
+        if (r.top < vh*0.88 && r.bottom > vh*0.12){ el.classList.add('visible'); }
+      }
+    });
+  }
+  function scrollFallback(){
+    var vh = Math.max(1, window.innerHeight || 1);
+    items.forEach(function(el){
+      if (!el.classList.contains('visible')){
+        var r = el.getBoundingClientRect();
+        if (r.top < vh*0.9 && r.bottom > 0){ el.classList.add('visible'); }
+      }
+    });
+  }
+  requestAnimationFrame(initialSync);
+  window.addEventListener('scroll', scrollFallback, {passive:true});
+  window.addEventListener('resize', scrollFallback);
+});
