@@ -279,6 +279,44 @@ p, h1, h2, h3, h4, h5, h6 {
 .search-container input:focus ~ .clear-search{
   display: flex;
 }
+/* [search-panel] pannello con fondo pieno e scroll */
+.search-panel {
+  /* il wrapper del box risultati */
+  position: fixed;
+  left: 50%;
+  top: clamp(56px, 6vh, 96px);
+  transform: translateX(-50%);
+  width: min(900px, 92vw);
+  max-height: min(72vh, 800px);
+  overflow: auto;
+
+  background: rgba(11, 15, 25, 0.96);   /* <— fondo pieno che copre i “vuoti” */
+  border: 1px solid rgba(255, 255, 255, .08);
+  border-radius: 16px;
+  box-shadow: 0 24px 60px rgba(0,0,0,.45);
+  z-index: 6000;                         /* sopra starfield/particles */
+}
+
+/* la lista dei risultati: usa il gap ma il “vuoto” avrà il bg del contenitore */
+.search-results {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+}
+
+/* singolo risultato come “card” */
+.search-results .result {
+  background: #131a2a;
+  border-radius: 12px;
+  padding: 12px 14px;
+  /* opzionale: bordino separatore invece del bg card
+     border: 1px solid rgba(255,255,255,.06); */
+}
+
+/* se hai canvas/strati sotto molto alti, tieni il pannello sopra */
+#particles-js, .starfield, .nebula, canvas {
+  z-index: 0 !important;  /* solo se serve, per sicurezza */
+}
 
       .menu-container {
       position: fixed;
