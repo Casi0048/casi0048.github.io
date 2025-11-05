@@ -458,66 +458,67 @@ function topRelated(query, exclude, limit = 3) {
     
     return scored;
 }
-/*! Dizionario filosofico – routing fonti */
+/*! Dizionario filosofico – handler unico */
 document.addEventListener('DOMContentLoaded', () => {
-  const form = document.getElementById('dict-form');
+  const form  = document.getElementById('dict-form');
   const input = document.getElementById('dict-q');
-  if (!form || !input) return;
+  if (!form || !input) {
+    console.warn('EDS dizionario: form o input non trovati');
+    return;
+  }
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     const q = input.value.trim();
     if (!q) return;
 
-    // Apri una scheda per ogni fonte selezionata
     const checks = form.querySelectorAll('.sources input[type="checkbox"]:checked');
-    checks.forEach(chk => {
-      const urlTpl = chk.dataset.url || '';
-      const isTreccani  = /treccani\.it/i.test(urlTpl);
-      const isWikipedia = /wikipedia\.org/i.test(urlTpl);
+    if (!checks.length) {
+      console.warn('EDS dizionario: nessuna fonte selezionata');
+      return;
+    }
 
+    checks.forEach((chk, i) => {
+      const urlTpl = chk.dataset.url || '';
       let finalURL;
-      if (isTreccani) {
-        finalURL = treccaniURL(q, 'vocabolario'); // oppure 'enciclopedia'
-      } else if (isWikipedia) {
+
+      if (/treccani\.it/i.test(urlTpl)) {
+        finalURL = treccaniURL(q, TRECCANI_SECTION); // 'vocabolario' o 'enciclopedia'
+      } else if (/wikipedia\.org/i.test(urlTpl)) {
         finalURL = wikipediaURL(q);
       } else {
-        // sostituisci {q} nel template con l’encoded query
         finalURL = urlTpl.replace('{q}', encodeURIComponent(q));
       }
 
+      // Apri in nuove schede. Alcuni browser potrebbero bloccare molte schede:
+      // prova con 1-2 fonti alla volta per test.
       window.open(finalURL, '_blank', 'noopener');
+      if (i === 0) {
+        console.log('EDS dizionario: aperta', finalURL);
+      }
     });
   });
 });
 
-/* ---------- Helpers ---------- */
+/* ---- Config rapida ---- */
+const TRECCANI_SECTION = 'vocabolario'; // oppure 'enciclopedia'
 
-// Normalizza “virtù” -> “virtu”, tolowercase, rimuove segni
+/* ---- Helpers ---- */
 function slugifyIT(term) {
   return term
-    .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // toglie accenti/diacritici
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // virtù -> virtu
     .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, '')                    // lascia lettere/numeri/spazi/trattini
+    .replace(/[^a-z0-9\s-]/g, '')
     .trim();
 }
-
-// Treccani: prova URL diretto alla voce (Vocabolario o Enciclopedia)
 function treccaniURL(term, section = 'vocabolario') {
   const base = 'https://www.treccani.it';
-  const simple = slugifyIT(term).replace(/\s+/g, ''); // “virtù” -> “virtu”, “causa prima” -> “causaprima”
-  const direct = section === 'enciclopedia'
+  const simple = slugifyIT(term).replace(/\s+/g, ''); // "causa prima" -> "causaprima"
+  return section === 'enciclopedia'
     ? `${base}/enciclopedia/${simple}/`
     : `${base}/vocabolario/${simple}/`;
-
-  // Fallback ricerca ufficiale (se vuoi usarla al posto del diretto)
-  // const search = `${base}/risultati?q=${encodeURIComponent(term)}`;
-  return direct;
 }
-
-// Wikipedia: vai diretto alla voce (spazi -> underscore)
 function wikipediaURL(term) {
-  const title = term.trim().replace(/\s+/g, '_');
-  return `https://it.wikipedia.org/wiki/${encodeURIComponent(title)}`;
+  return `https://it.wikipedia.org/wiki/${encodeURIComponent(term.trim().replace(/\s+/g, '_'))}`;
 }
 
