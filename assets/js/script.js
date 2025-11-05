@@ -458,3 +458,51 @@ function topRelated(query, exclude, limit = 3) {
     
     return scored;
 }
+/*! Dizionario filosofico – handler compatto */
+document.addEventListener('DOMContentLoaded', () => {
+  const form  = document.getElementById('dict-form');
+  const input = document.getElementById('dict-q');
+  if (!form || !input) return;
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const q = input.value.trim();
+    if (!q) return;
+
+    const checks = form.querySelectorAll('.sources input[type="checkbox"]:checked');
+    checks.forEach(chk => {
+      const urlTpl = chk.dataset.url || '';
+      let finalURL;
+
+      if (/treccani\.it/i.test(urlTpl)) {
+        finalURL = treccaniURL(q, TRECCANI_SECTION);  // 'vocabolario' o 'enciclopedia'
+      } else if (/wikipedia\.org/i.test(urlTpl)) {
+        finalURL = wikipediaURL(q);
+      } else {
+        finalURL = urlTpl.replace('{q}', encodeURIComponent(q));
+      }
+
+      window.open(finalURL, '_blank', 'noopener');
+    });
+  });
+});
+
+/* ---- Config rapida ---- */
+// Cambia qui se vuoi Treccani di default su enciclopedia
+const TRECCANI_SECTION = 'vocabolario'; // oppure 'enciclopedia'
+
+/* ---- Helpers ---- */
+function slugifyIT(term) {
+  return term.normalize('NFD').replace(/[\u0300-\u036f]/g, '') // virtù -> virtu
+             .toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim();
+}
+function treccaniURL(term, section = 'vocabolario') {
+  const base = 'https://www.treccani.it';
+  const simple = slugifyIT(term).replace(/\s+/g, ''); // "causa prima" -> "causaprima"
+  return section === 'enciclopedia'
+    ? `${base}/enciclopedia/${simple}/`
+    : `${base}/vocabolario/${simple}/`;
+}
+function wikipediaURL(term) {
+  return `https://it.wikipedia.org/wiki/${encodeURIComponent(term.trim().replace(/\s+/g, '_'))}`;
+}
