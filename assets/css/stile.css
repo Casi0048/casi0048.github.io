@@ -911,4 +911,107 @@ footer {
 
 .btn-ghost:hover{ border-style: solid; background: color-mix(in oklab, var(--accent) 26%, transparent); filter: var(--accent-glow); }
 /*! Echi di Sofia – patch slider ONLY (scoped) */
+/* === COMETINE ORIZZONTALI BIDIREZIONALI CORRETTE === */
+.comet{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 2px;
+  opacity: .85;
+  pointer-events: none;
+  transform: translateX(-100%);
+  transform-origin: 100% 50%;
+  border-radius: 999px;
+  animation: comet-move-ltr linear forwards;
+  filter: drop-shadow(0 0 6px rgba(255,255,255,.7));
+  z-index: 3;
+  background: linear-gradient(to left,
+    transparent 0%,
+    rgba(174,233,255,.85) 30%,
+    rgba(174,233,255,.35) 70%,
+    transparent 100%);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+.comet::after{
+  content:"";
+  position:absolute;
+  top:50%;
+  right:0;
+  width:6px;
+  height:6px;
+  transform: translate(50%,-50%);
+  border-radius:50%;
+  background: rgba(255,255,255,.95);
+  box-shadow: 0 0 10px rgba(255,255,255,.9), 0 0 18px rgba(255,255,255,.6);
+}
+.comet.rtl{
+  animation: comet-move-rtl linear forwards;
+  background: linear-gradient(to right,
+    transparent 0%,
+    rgba(174,233,255,.85) 30%,
+    rgba(174,233,255,.35) 70%,
+    transparent 100%);
+  background-size: 100% 100%;
+}
+.comet.rtl::after{
+  right:auto;
+  left:0;
+  transform: translate(-50%,-50%);
+}
+@keyframes comet-move-ltr{
+  from{ transform: translateX(-10%) translateY(var(--startY)); opacity:.8; }
+  to  { transform: translateX(110vw) translateY(var(--endY));  opacity:0; }
+}
+@keyframes comet-move-rtl{
+  from{ transform: translateX(110vw) translateY(var(--startY)); opacity:.8; }
+  to  { transform: translateX(-10%)  translateY(var(--endY));   opacity:0; }
+}
+/* Varianti colore (facoltative) */
+.comet.gold{
+  background: linear-gradient(to left,
+    transparent 0%,
+    rgba(255,215,0,.85) 30%,
+    rgba(255,215,0,.35) 70%,
+    transparent 100%);
+  background-size: 100% 100%;
+  filter: drop-shadow(0 0 6px rgba(255,215,0,.7));
+}
+.comet.gold::after{
+  background: rgba(255,215,0,.95);
+  box-shadow: 0 0 10px rgba(255,215,0,.9), 0 0 18px rgba(255,215,0,.6);
+}
+.comet.purple{
+  background: linear-gradient(to left,
+    transparent 0%,
+    rgba(185,103,255,.85) 30%,
+    rgba(185,103,255,.35) 70%,
+    transparent 100%);
+  background-size: 100% 100%;
+  filter: drop-shadow(0 0 6px rgba(185,103,255,.7));
+}
+.comet.purple::after{
+  background: rgba(185,103,255,.95);
+  box-shadow: 0 0 10px rgba(185,103,255,.9), 0 0 18px rgba(185,103,255,.6);
+}
+.comet.rtl.gold{
+  background: linear-gradient(to right,
+    transparent 0%,
+    rgba(255,215,0,.85) 30%,
+    rgba(255,215,0,.35) 70%,
+    transparent 100%);
+  background-size: 100% 100%;
+}
+.comet.rtl.purple{
+  background: linear-gradient(to right,
+    transparent 0%,
+    rgba(185,103,255,.85) 30%,
+    rgba(185,103,255,.35) 70%,
+    transparent 100%);
+  background-size: 100% 100%;
+}
+@media (prefers-reduced-motion: reduce){
+  .comet{ animation:none !important; opacity:0; }
+}
 
