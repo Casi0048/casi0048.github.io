@@ -912,3 +912,75 @@ footer {
 .btn-ghost:hover{ border-style: solid; background: color-mix(in oklab, var(--accent) 26%, transparent); filter: var(--accent-glow); }
 /*! Echi di Sofia – patch slider ONLY (scoped) */
 
+/* COMETE — testa sempre avanti, coda dietro */
+.shooting-star {
+  position: absolute;
+  /* lunghezza = coda; altezza = spessore scia */
+  width: 120px;
+  height: 2px;
+  /* testa luminosa ancorata a DESTRA + coda verso SINISTRA */
+  background:
+    radial-gradient(circle at 100% 50%,
+      #ffffff 0 3px,            /* nucleo brillante */
+      #aee9ff 4px,              /* alone azzurrino */
+      transparent 10px)         /* dissolve testa */
+    ,
+    linear-gradient(to left,
+      rgba(174, 233, 255, .85) 0%,
+      rgba(174, 233, 255, .35) 35%,
+      rgba(174, 233, 255, .10) 70%,
+      transparent 100%);        /* coda sfumata */
+  border-radius: 999px;
+  filter: drop-shadow(0 0 8px #aee9ff);
+  opacity: 0;
+  z-index: 10;
+
+  /* ruota attorno alla testa: così la coda rimane dietro in ogni direzione */
+  transform-origin: 100% 50%;
+}
+
+/* varianti di colore/velocità (opzionali) */
+.shooting-star.fast  { animation-duration: 4s;  filter: drop-shadow(0 0 10px #ffd700); }
+.shooting-star.slow  { animation-duration: 10s; filter: drop-shadow(0 0 8px  #b967ff); }
+.shooting-star.micro { height: 1px; width: 90px; }
+
+/* DIREZIONI — ruota l'elemento, non i gradienti */
+.shooting-star.horizontal { transform: rotate(0deg); }
+.shooting-star.vertical   { transform: rotate(90deg); }
+.shooting-star.diagonal   { transform: rotate(45deg); }
+.shooting-star.reverse    { transform: rotate(180deg); } /* destra→sinistra */
+
+/* ANIMAZIONI SOLO DI TRASLAZIONE (niente rotate nei keyframes) */
+@keyframes fly-horizontal {
+  0%   { transform: translateX(-150px) rotate(0deg);    opacity: 0; }
+  10%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { transform: translateX(calc(100vw + 150px)) rotate(0deg); opacity: 0; }
+}
+
+@keyframes fly-vertical {
+  0%   { transform: translateY(-150px) rotate(90deg);   opacity: 0; }
+  10%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { transform: translateY(calc(100vh + 150px)) rotate(90deg); opacity: 0; }
+}
+
+@keyframes fly-diagonal {
+  0%   { transform: translate(-150px, -150px) rotate(45deg); opacity: 0; }
+  10%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { transform: translate(calc(100vw + 150px), calc(100vh + 150px)) rotate(45deg); opacity: 0; }
+}
+
+@keyframes fly-reverse {
+  0%   { transform: translate(calc(100vw + 150px), -150px) rotate(180deg); opacity: 0; }
+  10%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { transform: translate(-150px, calc(100vh + 150px)) rotate(180deg); opacity: 0; }
+}
+
+/* collega classi → animazioni */
+.shooting-star.horizontal { animation: fly-horizontal 6s ease-out infinite; }
+.shooting-star.vertical   { animation: fly-vertical   8s ease-out infinite; }
+.shooting-star.diagonal   { animation: fly-diagonal   7s ease-out infinite; }
+.shooting-star.reverse    { animation: fly-reverse    7s ease-out infinite; }
