@@ -5667,23 +5667,26 @@ document.addEventListener('DOMContentLoaded', ()=>{
     position: fixed;
     top: 0;
     left: 0;
-    width: 20px;    /* lunghezza scia */
+    width: 20px;    /* lunghezza scia (coda breve) */
     height: 2px;    /* spessore scia */
-    z-index: 2;     /* livello: sotto UI, sopra lo sfondo */
     opacity: .85;
     pointer-events: none;
     transform: translateX(-100%);
-    border-radius: 2px;
+    transform-origin: 100% 50%;        /* ✅ testa ancorata a destra */
+    border-radius: 999px;              /* ✅ scia più morbida */
     animation: comet-move-ltr linear forwards;
     filter: drop-shadow(0 0 6px rgba(255,255,255,.7));
-    z-index: 3;
-    
-    /* CODA: gradiente che parte dalla testa e si allunga dietro */
+    z-index: 3;                         /* (rimosso il doppione) */
+    will-change: transform, opacity;    /* ✅ performance */
+
+    /* CODA: gradiente che parte dalla testa (a destra) e si allunga dietro (a sinistra) */
     background: linear-gradient(to left,
       transparent 0%,
       rgba(174,233,255,.85) 30%,
       rgba(174,233,255,.35) 70%,
       transparent 100%);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;         /* ✅ copre tutta la barra */
   }
 
   /* TESTA: nucleo luminoso all'estremità DESTRA (avanti) */
@@ -5691,77 +5694,68 @@ document.addEventListener('DOMContentLoaded', ()=>{
     content: "";
     position: absolute;
     top: 50%;
-    right: 0;  /* 👈 TESTA IN AVANTI per LTR */
+    right: 0;                           /* 👈 testa in avanti per LTR */
     width: 6px;
     height: 6px;
-    transform: translateY(-50%);
+    transform: translate(50%, -50%);    /* ✅ sporge leggermente oltre la punta */
     border-radius: 50%;
     background: rgba(255,255,255,.95);
     box-shadow: 0 0 10px rgba(255,255,255,.9), 0 0 18px rgba(255,255,255,.6);
+    will-change: transform;
   }
 
   /* Classe per comete destra → sinistra */
   .comet.rtl {
     animation: comet-move-rtl linear forwards;
-    
-    /* INVERTI GRADIENTE per RTL */
+    /* INVERTI GRADIENTE per RTL (la coda va verso destra, la testa resta avanti a sinistra) */
     background: linear-gradient(to right,
       transparent 0%,
       rgba(174,233,255,.85) 30%,
       rgba(174,233,255,.35) 70%,
       transparent 100%);
+    background-size: 100% 100%;
   }
 
   /* TESTA per RTL: nucleo all'estremità SINISTRA (avanti) */
   .comet.rtl::after {
     right: auto;
-    left: 0;  /* 👈 TESTA IN AVANTI per RTL */
+    left: 0;                            /* 👈 testa in avanti per RTL */
+    transform: translate(-50%, -50%);
   }
 
   /* direzione sinistra → destra (LTR) */
   @keyframes comet-move-ltr {
-    from { 
-      transform: translateX(-10%) translateY(var(--startY)); 
-      opacity: .8; 
-    }
-    to   { 
-      transform: translateX(110vw) translateY(var(--endY)); 
-      opacity: 0; 
-    }
+    from { transform: translateX(-10%) translateY(var(--startY)); opacity: .8; }
+    to   { transform: translateX(110vw) translateY(var(--endY));  opacity: 0; }
   }
 
   /* direzione destra → sinistra (RTL) */
   @keyframes comet-move-rtl {
-    from { 
-      transform: translateX(110vw) translateY(var(--startY)); 
-      opacity: .8; 
-    }
-    to   { 
-      transform: translateX(-10%) translateY(var(--endY)); 
-      opacity: 0; 
-    }
+    from { transform: translateX(110vw) translateY(var(--startY)); opacity: .8; }
+    to   { transform: translateX(-10%)  translateY(var(--endY));   opacity: 0; }
   }
 
-  /* Varianti colore */
+  /* Varianti colore (facoltative) */
   .comet.gold {
     background: linear-gradient(to left,
       transparent 0%,
       rgba(255,215,0,.85) 30%,
       rgba(255,215,0,.35) 70%,
       transparent 100%);
+    background-size: 100% 100%;
     filter: drop-shadow(0 0 6px rgba(255,215,0,.7));
   }
   .comet.gold::after {
     background: rgba(255,215,0,.95);
     box-shadow: 0 0 10px rgba(255,215,0,.9), 0 0 18px rgba(255,215,0,.6);
   }
-
   .comet.purple {
     background: linear-gradient(to left,
       transparent 0%,
       rgba(185,103,255,.85) 30%,
       rgba(185,103,255,.35) 70%,
       transparent 100%);
+    background-size: 100% 100%;
     filter: drop-shadow(0 0 6px rgba(185,103,255,.7));
   }
   .comet.purple::after {
@@ -5769,30 +5763,29 @@ document.addEventListener('DOMContentLoaded', ()=>{
     box-shadow: 0 0 10px rgba(185,103,255,.9), 0 0 18px rgba(185,103,255,.6);
   }
 
-  /* Per comete RTL con colori, aggiungi le varianti invertite */
+  /* Varianti colore per RTL (inverte il verso del gradiente) */
   .comet.rtl.gold {
     background: linear-gradient(to right,
       transparent 0%,
       rgba(255,215,0,.85) 30%,
       rgba(255,215,0,.35) 70%,
       transparent 100%);
+    background-size: 100% 100%;
   }
-
   .comet.rtl.purple {
     background: linear-gradient(to right,
       transparent 0%,
       rgba(185,103,255,.85) 30%,
       rgba(185,103,255,.35) 70%,
       transparent 100%);
+    background-size: 100% 100%;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .comet { 
-      animation: none !important; 
-      opacity: 0; 
-    }
+    .comet { animation: none !important; opacity: 0; }
   }
 </style>
+
 
 <script>
 (function(){
