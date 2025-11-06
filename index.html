@@ -932,161 +932,12 @@ window.googleTranslateElementInit = function(){
     80% { opacity: 0.4; transform: scale(1); }
     100% { opacity: 0.2; transform: scale(1); }
 }
-/* === FIX COMETE - CORREZIONE DEFINITIVA === */
 
-/* COMETE BASE - TESTA SEMPRE IN AVANTI */
-.shooting-star {
-  position: absolute;
-  width: 15px;
-  height: 2px;
-  
-  /* GRADIENTE CORRETTO: testa luminosa a DESTRA, coda verso SINISTRA */
-  background:
-    radial-gradient(circle at 100% 50%,
-      #ffffff 0 3px,
-      #aee9ff 4px,
-      transparent 10px)
-    ,
-    linear-gradient(to left,
-      rgba(174,233,255,.85) 0%,
-      rgba(174,233,255,.35) 35%,
-      rgba(174,233,255,.10) 70%,
-      transparent 100%);
-  
-  border-radius: 999px;
-  filter: drop-shadow(0 0 8px #aee9ff);
-  opacity: 0;
-  z-index: 10;
-
-  /* Punto di rotazione fisso sulla TESTA (destra) */
-  transform-origin: 100% 50%;
-}
-
-/* VARIANTI COLORI */
-.shooting-star.micro { 
-  height: 1px; 
-  width: 90px; 
-  filter: blur(0.1px); 
-}
-
-.shooting-star.fast { 
-  animation-duration: 4s;  
-  filter: drop-shadow(0 0 10px #ffd700); 
-}
-
-.shooting-star.slow { 
-  animation-duration: 10s; 
-  filter: drop-shadow(0 0 8px #b967ff); 
-}
-
-/* ORIENTAMENTI - ROTAZIONE FISSA */
-.shooting-star.horizontal { 
-  transform: rotate(0deg); 
-  animation: fly-horizontal 6s ease-out infinite; 
-}
-
-.shooting-star.vertical { 
-  transform: rotate(90deg); 
-  animation: fly-vertical 8s ease-out infinite; 
-}
-
-.shooting-star.diagonal { 
-  transform: rotate(45deg); 
-  animation: fly-diagonal 7s ease-out infinite; 
-}
-
-.shooting-star.reverse { 
-  transform: rotate(180deg); 
-  animation: fly-reverse 7s ease-out infinite; 
-}
-
-/* ANIMAZIONI CORRETTE - SOLO TRASLAZIONE */
-@keyframes fly-horizontal {
-  0%   { 
-    transform: rotate(0deg) translateX(-150px); 
-    opacity: 0; 
-  }
-  10%  { opacity: 1; }
-  80%  { opacity: 1; }
-  100% { 
-    transform: rotate(0deg) translateX(calc(100vw + 150px)); 
-    opacity: 0; 
-  }
-}
-
-@keyframes fly-vertical {
-  0%   { 
-    transform: rotate(90deg) translateY(-150px); 
-    opacity: 0; 
-  }
-  10%  { opacity: 1; }
-  80%  { opacity: 1; }
-  100% { 
-    transform: rotate(90deg) translateY(calc(100vh + 150px)); 
-    opacity: 0; 
-  }
-}
-
-@keyframes fly-diagonal {
-  0%   { 
-    transform: rotate(45deg) translate(-150px, -150px); 
-    opacity: 0; 
-  }
-  10%  { opacity: 1; }
-  80%  { opacity: 1; }
-  100% { 
-    transform: rotate(45deg) translate(calc(100vw + 150px), calc(100vh + 150px)); 
-    opacity: 0; 
-  }
-}
-
-@keyframes fly-reverse {
-  0%   { 
-    transform: rotate(180deg) translate(calc(100vw + 150px), -150px); 
-    opacity: 0; 
-  }
-  10%  { opacity: 1; }
-  80%  { opacity: 1; }
-  100% { 
-    transform: rotate(180deg) translate(-150px, calc(100vh + 150px)); 
-    opacity: 0; 
-  }
-}
-
-/* COMETE MICRO CORRETTE */
-.shooting-star.micro {
-  width: 3px !important;
-  height: 0.5px !important;
-  filter: blur(0.1px) !important;
-  box-shadow: 0 0 2px currentColor !important;
-}
-
-/* TEMA CHIARO */
-[data-theme="light"] .shooting-star { 
-  opacity: 0.35; 
-}
-
-/* ACCESSIBILITÀ */
-@media (prefers-reduced-motion: reduce) {
-  .shooting-star { 
-    animation: none !important; 
-    opacity: 0.5; 
-  }
-}
-/* COMETE MICRO */
-.shooting-star.micro {
-    width: 3px !important;
-    height: 0.5px !important;
-    filter: blur(0.1px) !important;
-    box-shadow: 0 0 2px currentColor !important;
-}
-
-  <!--    -->
-  /* === COMETE — testa sempre avanti, coda dietro (fix) === */
+/* === COMETE — testa sempre avanti, coda dietro (fix) === */
 .shooting-star {
   position: absolute;
   /* lunghezza = coda; altezza = spessore scia */
-  width: 15px;
+  width: 20px;
   height: 2px;
 
   /* Testa luminosa ancorata a DESTRA + coda verso SINISTRA */
@@ -1158,27 +1009,26 @@ window.googleTranslateElementInit = function(){
 @media (prefers-reduced-motion: reduce) {
   .shooting-star { animation: none !important; opacity: 0.5; }
 }
-<!--   -->
-  .stars-container .shooting-star {
-  background:
-    radial-gradient(circle at 100% 50%, #fff 0 3px, #aee9ff 4px, transparent 10px),
-    linear-gradient(to left, rgba(174,233,255,.85) 0%, rgba(174,233,255,.35) 35%, rgba(174,233,255,.10) 70%, transparent 100%) !important;
-  background-repeat: no-repeat, no-repeat !important;
-  background-size: 10px 10px, 100% 100% !important;
-  transform-origin: 100% 50%;
-}
-.stars-container .shooting-star.fast,
-.stars-container .shooting-star.slow,
-.stars-container .shooting-star.horizontal,
-.stars-container .shooting-star.vertical,
-.stars-container .shooting-star.diagonal,
-.stars-container .shooting-star.reverse {
-  background-image: inherit !important;
-  background-size: inherit !important;
-  background-repeat: inherit !important;
-  background-position: inherit !important;
+
+
+/* COMETE MICRO */
+
+/* TEMA CHIARO */
+[data-theme="light"] .star { opacity: 0.1; background-color: #1a202c; }
+[data-theme="light"] .shooting-star { opacity: 0.3; }
+
+/* ACCESSIBILITÀ */
+@media (prefers-reduced-motion: reduce) {
+    .star, .shooting-star { animation: none !important; opacity: 0.5; }
 }
 
+/* COMETE MICRO */
+.shooting-star.micro {
+    width: 3px !important;
+    height: 0.5px !important;
+    filter: blur(0.1px) !important;
+    box-shadow: 0 0 2px currentColor !important;
+}
 </style>
 <style id="lens-left-fix">
 /* --- Lens left & vertically centered (scoped, minimal) --- */
