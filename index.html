@@ -934,45 +934,53 @@ window.googleTranslateElementInit = function(){
 }
 
 /* === COMETE — testa sempre avanti, coda dietro (fix) === */
+/* === COMETE — testa sempre avanti, coda dietro (definitivo) === */
 .shooting-star {
   position: absolute;
-  /* lunghezza = coda; altezza = spessore scia */
-  width: 20px;
-  height: 2px;
 
-  /* Testa luminosa ancorata a DESTRA + coda verso SINISTRA */
+  /* lunghezza coda e spessore (personalizzabili) */
+  --trail: 120px;             /* lunghezza scia */
+  --thick: 2px;               /* spessore scia */
+  --tail: rgba(174,233,255,.85); /* colore coda (puoi cambiare) */
+
+  width: var(--trail);
+  height: var(--thick);
+
+  /* Testa luminosa ANCORATA a DESTRA + coda verso SINISTRA */
   background:
     radial-gradient(circle at 100% 50%,
       #ffffff 0 3px,
       #aee9ff 4px,
-      transparent 10px)
-    ,
+      transparent 10px),
     linear-gradient(to left,
-      rgba(174,233,255,.85) 0%,
+      var(--tail) 0%,
       rgba(174,233,255,.35) 35%,
       rgba(174,233,255,.10) 70%,
       transparent 100%);
+  background-repeat: no-repeat, no-repeat;
+  background-size: 10px 10px, 100% 100%;
+
   border-radius: 999px;
   filter: drop-shadow(0 0 8px #aee9ff);
   opacity: 0;
   z-index: 10;
 
-  /* Ruota attorno alla testa: la coda resta dietro in ogni direzione */
+  /* Ruota attorno alla TESTA: la coda resta dietro in ogni direzione */
   transform-origin: 100% 50%;
 }
 
-/* Varianti (opzionali) */
-.shooting-star.micro { height: 1px; width: 90px; filter: blur(0.1px); }
+/* Varianti (NO background qui!) */
+.shooting-star.micro { --trail: 90px;  --thick: 1px; filter: blur(0.1px); }
 .shooting-star.fast  { animation-duration: 4s;  filter: drop-shadow(0 0 10px #ffd700); }
 .shooting-star.slow  { animation-duration: 10s; filter: drop-shadow(0 0 8px  #b967ff); }
 
-/* Direzioni — ruota solo la cometa, NON i gradienti */
+/* Direzioni — ruota l’elemento, NON i gradienti */
 .shooting-star.horizontal { transform: rotate(0deg); }
 .shooting-star.vertical   { transform: rotate(90deg); }
 .shooting-star.diagonal   { transform: rotate(45deg); }
-.shooting-star.reverse    { transform: rotate(180deg); } /* destra→sinistra */
+.shooting-star.reverse    { transform: rotate(180deg); } /* destra → sinistra */
 
-/* Animazioni: SOLO traslazione, la rotazione è fissa nelle classi sopra */
+/* Solo traslazione nei keyframes (niente rotate dentro) */
 @keyframes fly-horizontal {
   0%   { transform: translateX(-150px) rotate(0deg);    opacity: 0; }
   10%  { opacity: 1; }
@@ -1004,31 +1012,12 @@ window.googleTranslateElementInit = function(){
 .shooting-star.diagonal   { animation: fly-diagonal   7s ease-out infinite; }
 .shooting-star.reverse    { animation: fly-reverse    7s ease-out infinite; }
 
-/* Tema chiaro / accessibilità (senza duplicati) */
+/* Tema chiaro / accessibilità (una sola volta) */
 [data-theme="light"] .shooting-star { opacity: 0.35; }
 @media (prefers-reduced-motion: reduce) {
   .shooting-star { animation: none !important; opacity: 0.5; }
 }
 
-
-/* COMETE MICRO */
-
-/* TEMA CHIARO */
-[data-theme="light"] .star { opacity: 0.1; background-color: #1a202c; }
-[data-theme="light"] .shooting-star { opacity: 0.3; }
-
-/* ACCESSIBILITÀ */
-@media (prefers-reduced-motion: reduce) {
-    .star, .shooting-star { animation: none !important; opacity: 0.5; }
-}
-
-/* COMETE MICRO */
-.shooting-star.micro {
-    width: 3px !important;
-    height: 0.5px !important;
-    filter: blur(0.1px) !important;
-    box-shadow: 0 0 2px currentColor !important;
-}
 </style>
 <style id="lens-left-fix">
 /* --- Lens left & vertically centered (scoped, minimal) --- */
@@ -3786,17 +3775,6 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
   box-shadow: 0 0 0 2px color-mix(in oklab, var(--accent) 30%, transparent);
 }
 
-/* ===== STARS FIELD (if present) ===== */
-.star.color-accent{ background-color: var(--accent); box-shadow: 0 0 8px var(--accent); }
-.shooting-star{
-  box-shadow: 0 0 10px var(--accent), 0 0 20px #ffffff;
-  background: linear-gradient(90deg, transparent 0%, var(--accent) 40%, #ffffff 60%, transparent 100%);
-}
-[data-accent] .shooting-star.accent { filter: drop-shadow(0 0 6px var(--accent)); }
-
-@media (prefers-reduced-motion: reduce){
-  .welcome-title-themable{ animation:none !important; text-shadow:none !important; }
-}
 </style><style id="topbar-switcher-inline-css">
 /* Compact switcher inside top-bar */
 .topbar-switcher .btn-ghost{ 
