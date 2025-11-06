@@ -999,57 +999,106 @@ window.googleTranslateElementInit = function(){
 .star.color-orange { background-color: #ffaa00; box-shadow: 0 0 6px #ffaa00; }
 
 /* ANIMAZIONI KEYFRAMES COMETE - VERSIONE CORRETTA */
+/* ANIMAZIONI KEYFRAMES COMETE - CORREZIONE DEFINITIVA */
+
+/* Cometa diagonale da sinistra-alto a destra-basso */
+.shooting-star.diagonal {
+    animation: shoot-diagonal 7s ease-out infinite;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        #ffffff 15%, 
+        #00ccff 40%, 
+        transparent 100%);
+}
+
+/* Cometa orizzontale da sinistra a destra */
+.shooting-star.horizontal {
+    animation: shoot-horizontal 6s ease-out infinite;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        #ffffff 15%, 
+        #00ccff 40%, 
+        transparent 100%);
+}
+
+/* Cometa verticale dall'alto al basso */
+.shooting-star.vertical {
+    animation: shoot-vertical 8s ease-out infinite;
+    background: linear-gradient(180deg, 
+        transparent 0%, 
+        #ffffff 15%, 
+        #00ccff 40%, 
+        transparent 100%);
+}
+
+/* Cometa diagonale da destra-alto a sinistra-basso (REVERSE) */
+.shooting-star.reverse {
+    animation: shoot-reverse 7s ease-out infinite;
+    background: linear-gradient(270deg,  /* CAMBIATO: da 90deg a 270deg */
+        transparent 0%, 
+        #ffffff 15%, 
+        #00ccff 40%, 
+        transparent 100%);
+}
+
+/* VARIANTI DI VELOCITÀ - COMETE PICCOLE */
+.shooting-star.fast {
+    animation-duration: 4s;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        #ffd700 15%, 
+        #ffffff 35%, 
+        transparent 100%);
+}
+
+.shooting-star.slow {
+    animation-duration: 10s;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        #b967ff 15%, 
+        #ffffff 35%, 
+        transparent 100%);
+}
+
+/* ANIMAZIONI KEYFRAMES COMETE */
 @keyframes shoot-diagonal {
-    0% { 
-        transform: translateX(-150px) translateY(-150px) rotate(45deg); 
-        opacity: 0; 
-    }
+    0% { transform: translateX(-150px) translateY(-150px) rotate(45deg); opacity: 0; }
     10% { opacity: 1; }
     30% { opacity: 1; }
-    100% { 
-        transform: translateX(calc(100vw + 150px)) translateY(calc(100vh + 150px)) rotate(45deg); 
-        opacity: 0; 
-    }
+    100% { transform: translateX(calc(100vw + 150px)) translateY(calc(100vh + 150px)) rotate(45deg); opacity: 0; }
 }
 
 @keyframes shoot-horizontal {
-    0% { 
-        transform: translateX(-150px) rotate(0deg); 
-        opacity: 0; 
-    }
+    0% { transform: translateX(-150px) rotate(0deg); opacity: 0; }
     15% { opacity: 1; }
     40% { opacity: 1; }
-    100% { 
-        transform: translateX(calc(100vw + 150px)) rotate(0deg); 
-        opacity: 0; 
-    }
+    100% { transform: translateX(calc(100vw + 150px)) rotate(0deg); opacity: 0; }
 }
 
 @keyframes shoot-vertical {
-    0% { 
-        transform: translateY(-150px) rotate(90deg); 
-        opacity: 0; 
-    }
+    0% { transform: translateY(-150px) rotate(90deg); opacity: 0; }
     15% { opacity: 1; }
     35% { opacity: 1; }
-    100% { 
-        transform: translateY(calc(100vh + 150px)) rotate(90deg); 
-        opacity: 0; 
-    }
+    100% { transform: translateY(calc(100vh + 150px)) rotate(90deg); opacity: 0; }
 }
 
 @keyframes shoot-reverse {
-    0% { 
-        transform: translateX(calc(100vw + 150px)) translateY(-150px) rotate(-135deg); 
-        opacity: 0; 
-    }
+    0% { transform: translateX(calc(100vw + 150px)) translateY(-150px) rotate(-45deg); opacity: 0; }
     10% { opacity: 1; }
     30% { opacity: 1; }
-    100% { 
-        transform: translateX(-150px) translateY(calc(100vh + 150px)) rotate(-135deg); 
-        opacity: 0; 
-    }
+    100% { transform: translateX(-150px) translateY(calc(100vh + 150px)) rotate(-45deg); opacity: 0; }
 }
+
+/* TEMA CHIARO */
+[data-theme="light"] .star { opacity: 0.1; background-color: #1a202c; }
+[data-theme="light"] .shooting-star { opacity: 0.3; }
+
+/* ACCESSIBILITÀ */
+@media (prefers-reduced-motion: reduce) {
+    .star, .shooting-star { animation: none !important; opacity: 0.5; }
+}
+
+/* COMETE MICRO */
 
 /* TEMA CHIARO */
 [data-theme="light"] .star { opacity: 0.1; background-color: #1a202c; }
