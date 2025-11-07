@@ -522,7 +522,7 @@ function wikipediaURL(term) {
   return `https://it.wikipedia.org/wiki/${encodeURIComponent(term.trim().replace(/\s+/g, '_'))}`;
 }
 
- // === PULSANTE TORNA SU ===
+// === PULSANTE TORNA SU ===
 (function(){
     const backToTop = document.getElementById('backToTop');
     if (!backToTop) return;
@@ -547,7 +547,7 @@ function wikipediaURL(term) {
     // Event listeners
     window.addEventListener('scroll', toggleBackToTop);
     backToTop.addEventListener('click', scrollToTop);
-    
+
     // Anche con tasto Enter per accessibilità
     backToTop.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -555,10 +555,11 @@ function wikipediaURL(term) {
             scrollToTop();
         }
     });
-    
+
     // Inizializza
     toggleBackToTop();
 })();
+
 /* ===== ESPLOSIONE TEATRALE ===== */
 (function(){
   const motto = document.getElementById('exploding');
