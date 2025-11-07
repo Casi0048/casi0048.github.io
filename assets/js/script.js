@@ -739,5 +739,7 @@ function wikipediaURL(term) {
     requestAnimationFrame(toggle);
   });
 })();
+const maybeScrollable = document.querySelector('main, [data-scroll], .page-content');
+if (maybeScrollable) maybeScrollable.addEventListener('scroll', onScroll, { passive:true });
 
 
