@@ -742,3 +742,199 @@ function wikipediaURL(term) {
 const maybeScrollable = document.querySelector('main, [data-scroll], .page-content');
 if (maybeScrollable) maybeScrollable.addEventListener('scroll', onScroll, { passive:true });
 
+
+// === PERFORMANCE & ERROR HANDLING - VERSIONE PULITA ===
+
+document.addEventListener('DOMContentLoaded', function() {
+  
+  // 1. CARICAMENTO FONT AWESOME SEMPLIFICATO (senza preload problematico)
+  const fontAwesomeCSS = document.createElement('link');
+  fontAwesomeCSS.rel = 'stylesheet';
+  fontAwesomeCSS.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css';
+  fontAwesomeCSS.crossOrigin = 'anonymous';
+  document.head.appendChild(fontAwesomeCSS);
+  console.log('✅ Font Awesome caricato');
+
+  // 2. LAZY LOADING IMMAGINI TIMELINE
+  const lazyImages = document.querySelectorAll('.timeline-content img[data-src]');
+  
+  if ('IntersectionObserver' in window) {
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          safeEffect(() => {
+            img.src = img.dataset.src;
+            img.removeAttribute('data-src');
+            img.classList.add('fade-in');
+          }, () => {
+            // Fallback: carica immediatamente
+            img.src = img.dataset.src;
+          });
+          observer.unobserve(img);
+        }
+      });
+    }, { 
+      rootMargin: '50px 0px',
+      threshold: 0.1
+    });
+
+    lazyImages.forEach(img => imageObserver.observe(img));
+  } else {
+    // Fallback per browser senza IntersectionObserver
+    lazyImages.forEach(img => {
+      img.src = img.dataset.src;
+      img.removeAttribute('data-src');
+    });
+  }
+
+  // 3. GESTIONE ERRORI ROBUSTA
+  function safeEffect(callback, fallback = null) {
+    try {
+      if (typeof callback === 'function') {
+        callback();
+      }
+    } catch (error) {
+      console.warn('Effect failed:', error.message);
+      if (fallback && typeof fallback === 'function') {
+        try {
+          fallback();
+        } catch (fallbackError) {
+          console.error('Fallback also failed:', fallbackError);
+        }
+      }
+    }
+  }
+
+  // 4. INIZIALIZZAZIONE SICURA EFFETTI STELLARI
+  safeEffect(
+    () => {
+      // Qui va il tuo initStars() esistente
+      if (typeof initStars === 'function') {
+        initStars();
+      } else {
+        // Se initStars non esiste, fallback base
+        createBasicStars();
+      }
+    },
+    () => {
+      console.log('Stars effect disabled due to performance issues');
+      const starsContainer = document.getElementById('starsContainer');
+      if (starsContainer) {
+        starsContainer.style.display = 'none';
+      }
+    }
+  );
+
+  // 5. FALLBACK STELLE SEMPLIFICATO
+  function createBasicStars() {
+    const container = document.getElementById('starsContainer');
+    if (!container) return;
+    
+    // Versione semplificata per performance
+    for (let i = 0; i < 50; i++) {
+      const star = document.createElement('div');
+      star.className = 'star small';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.animationDelay = Math.random() * 5 + 's';
+      container.appendChild(star);
+    }
+  }
+
+  // 6. MONITORAGGIO PERFORMANCE - Versione sicura
+  if ('performance' in window) {
+    window.addEventListener('load', () => {
+      safeDOMOperation(() => {
+        // Usa l'API moderna se disponibile
+        if (performance.getEntriesByType) {
+          const navEntries = performance.getEntriesByType('navigation');
+          if (navEntries.length > 0) {
+            const navEntry = navEntries[0];
+            const loadTime = navEntry.loadEventEnd - navEntry.startTime;
+            if (loadTime > 0) {
+              console.log(`Page loaded in ${Math.round(loadTime)}ms`);
+            }
+          }
+        }
+        // Fallback per browser più vecchi
+        else if (performance.timing) {
+          const timing = performance.timing;
+          if (timing.loadEventEnd > 0 && timing.navigationStart > 0) {
+            const loadTime = timing.loadEventEnd - timing.navigationStart;
+            if (loadTime > 0) {
+              console.log(`Page loaded in ${loadTime}ms`);
+            }
+          }
+        }
+      });
+    });
+  }
+
+  // 7. GESTIONE ERRORI GLOBALE
+  window.addEventListener('error', (event) => {
+    console.error('Global error caught:', event.error);
+    // Non bloccare l'esperienza utente per errori minori
+  });
+
+  // 8. GESTIONE OFFLINE
+  window.addEventListener('online', () => {
+    console.log('Connection restored');
+    document.body.classList.remove('offline');
+  });
+
+  window.addEventListener('offline', () => {
+    console.log('Connection lost');
+    document.body.classList.add('offline');
+  });
+
+  // 9. CSS PER STATI SPECIALI
+  const performanceCSS = `
+    .fade-in {
+      animation: fadeIn 0.5s ease-in;
+    }
+    
+    .offline {
+      opacity: 0.8;
+      filter: grayscale(0.3);
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @media (prefers-reduced-motion: reduce) {
+      .fade-in {
+        animation: none;
+      }
+    }
+  `;
+
+  // Inietta CSS performance
+  const style = document.createElement('style');
+  style.textContent = performanceCSS;
+  document.head.appendChild(style);
+
+  console.log('✅ Sistema performance inizializzato');
+
+});
+
+// FUNZIONE safeDOMOperation
+function safeDOMOperation(operation, fallback = null) {
+  try {
+    if (typeof operation === 'function') {
+      return operation();
+    }
+  } catch (error) {
+    console.warn('DOM operation failed:', error.message);
+    if (fallback && typeof fallback === 'function') {
+      try {
+        return fallback();
+      } catch (fallbackError) {
+        console.error('Fallback also failed:', fallbackError);
+      }
+    }
+  }
+  return null;
+}
