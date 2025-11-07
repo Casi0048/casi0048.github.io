@@ -2034,28 +2034,41 @@ window.googleTranslateElementInit = function(){
   .timeline .timeline-item.right::after{ left: calc(45px + 6px) !important; width: 54px !important; }
 }
 */
-  /* CORREZIONE PRINCIPALE: Trattino per cards di sinistra */
-.card-left .card-connector {
-    right: -40px;  /* Posiziona il trattino a DESTRA della card (verso la timeline) */
+  </style>
+<style id="timeline-left-rail-bridge">
+/* === TIMELINE LEFT: dentino to the LEFT of the rail === */
+.timeline .timeline-item.left{ position: relative; }
+
+/* Dot centrato sul rail al bordo DESTRO della card */
+.timeline .timeline-item.left::before{
+  right: 0;
+  transform: translate(50%, -50%); /* 50% verso destra = centro rail */
 }
 
-/* Trattino per cards di destra (già corretto) */
-.card-right .card-connector {
-    left: -40px;   /* Posiziona il trattino a SINISTRA della card (verso la timeline) */
+/* Connettore tutto dentro la card, iniziando subito a SINISTRA del rail
+   6px = metà di un dot da 12px: parte sotto il bordo sinistro del dot */
+.timeline .timeline-item.left::after{
+  right: 6px !important;    /* inizia appena a sinistra del rail */
+  left: auto !important;
+  width: 54px !important;   /* 60px totale - 6px già “coperti” dal dot */
+  transform-origin: right center !important;
+  pointer-events: none;     /* opzionale: evita click “morti” */
 }
 
-/* Assicurati che le cards di sinistra siano allineate a sinistra */
-.card-left {
-    align-self: flex-start;
-    margin-right: auto;
+/* (Opzionale) allineamento mobile se il rail interno si sposta (es. a 45px)
+@media (max-width: 900px){
+  .timeline .timeline-item.left::before{
+    right: 45px;
+    transform: translate(50%, -50%);
+  }
+  .timeline .timeline-item.left::after{
+    right: calc(45px + 6px) !important;
+    width: 54px !important;
+  }
 }
-
-/* E le cards di destra a destra */
-.card-right {
-    align-self: flex-end;
-    margin-left: auto;
-}
+*/
 </style>
+
 <style id="timeline-suggest-perf">/* TIMELINE (HINT PERFORMANCE) */
 /* - Scopo: applica 'will-change' solo quando gli elementi sono visibili per migliorare performance. */
 /* - Non altera il layout; sicuro rimuovere se non necessario. */
