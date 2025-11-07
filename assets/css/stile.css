@@ -1251,3 +1251,62 @@ footer {
 .timeline-item.visible {
     animation-fill-mode: both;
 }
+/* === TIMELINE COSMICA - VERSIONE FORZATA === */
+
+/* RESET ANIMAZIONI ESISTENTI */
+.timeline-item.left,
+.timeline-item.right {
+    animation: none !important;
+    transition: none !important;
+}
+
+/* FORZA STATO INIZIALE */
+.timeline-item:not(.visible) {
+    opacity: 0 !important;
+    transform: 
+        translateX(var(--start-x, -400px)) 
+        translateY(200px)
+        scale(0.3) 
+        rotateY(var(--start-rot, 45deg)) !important;
+    filter: blur(20px) brightness(0.3) !important;
+}
+
+.timeline-item.right:not(.visible) {
+    --start-x: 400px;
+    --start-rot: -45deg;
+}
+
+/* ANIMAZIONE FORZATA */
+.timeline-item.visible {
+    animation: cosmicArrivalForced 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both !important;
+}
+
+@keyframes cosmicArrivalForced {
+    0% {
+        opacity: 0;
+        transform: 
+            translateX(var(--start-x, -400px)) 
+            translateY(200px)
+            scale(0.3) 
+            rotateY(var(--start-rot, 45deg));
+        filter: blur(20px) brightness(0.3);
+    }
+    60% {
+        opacity: 1;
+        transform: 
+            translateX(0) 
+            translateY(0)
+            scale(1) 
+            rotateY(0deg);
+        filter: blur(0) brightness(1);
+    }
+    100% {
+        opacity: 1;
+        transform: 
+            translateX(0) 
+            translateY(0)
+            scale(1) 
+            rotateY(0deg);
+        filter: blur(0) brightness(1);
+    }
+}
