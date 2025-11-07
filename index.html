@@ -2011,62 +2011,63 @@ window.googleTranslateElementInit = function(){
 }
 </style>
 
+<style id="timeline-rail-bridge">
+/* === TIMELINE ITEMS: Connectors aligned properly === */
 
-<style id="timeline-right-rail-bridge">
-/* === TIMELINE RIGHT: dentino to the RIGHT of the rail === */
-.timeline .timeline-item.right{ position: relative; }
-/* Dot stays centered on the rail at the card's left edge */
-.timeline .timeline-item.right::before{
+/* Common styles for both sides */
+.timeline .timeline-item {
+  position: relative;
+}
+
+/* Dots - positioned at card edges */
+.timeline .timeline-item.right::before {
   left: 0;
   transform: translate(-50%, -50%);
 }
-/* Connector segment entirely inside the card, starting just RIGHT of the rail
-   6px = half of 12px dot, so it begins under the dot's right edge */
-.timeline .timeline-item.right::after{
-  left: 6px !important;     /* start just to the right of the rail */
+
+.timeline .timeline-item.left::before {
+  right: 0;
+  transform: translate(50%, -50%);
+}
+
+/* Connectors - positioned inside cards */
+.timeline .timeline-item.right::after {
+  left: 6px !important;
   right: auto !important;
-  width: 54px !important;   /* 60px padding - 6px already covered by dot */
+  width: 54px !important;
   transform-origin: left center !important;
 }
-/* Optional mobile rail alignment (uncomment and tune if your rail shifts to 45px)
-@media (max-width: 900px){
-  .timeline .timeline-item.right::before{ left: 45px; transform: translate(-50%, -50%); }
-  .timeline .timeline-item.right::after{ left: calc(45px + 6px) !important; width: 54px !important; }
-}
-*/
-  </style>
-<style id="timeline-left-rail-bridge">
-/* === TIMELINE LEFT: dentino to the LEFT of the rail === */
-.timeline .timeline-item.left{ position: relative; }
 
-/* Dot centrato sul rail al bordo DESTRO della card */
-.timeline .timeline-item.left::before{
-  right: 0;
-  transform: translate(50%, -50%); /* 50% verso destra = centro rail */
-}
-
-/* Connettore tutto dentro la card, iniziando subito a SINISTRA del rail
-   6px = metà di un dot da 12px: parte sotto il bordo sinistro del dot */
-.timeline .timeline-item.left::after{
-  right: 6px !important;    /* inizia appena a sinistra del rail */
+.timeline .timeline-item.left::after {
+  right: 6px !important;
   left: auto !important;
-  width: 54px !important;   /* 60px totale - 6px già “coperti” dal dot */
+  width: 54px !important;
   transform-origin: right center !important;
-  pointer-events: none;     /* opzionale: evita click “morti” */
+  pointer-events: none;
 }
 
-/* (Opzionale) allineamento mobile se il rail interno si sposta (es. a 45px)
-@media (max-width: 900px){
-  .timeline .timeline-item.left::before{
+/* Optional mobile adjustments */
+@media (max-width: 900px) {
+  .timeline .timeline-item.right::before {
+    left: 45px;
+    transform: translate(-50%, -50%);
+  }
+  
+  .timeline .timeline-item.right::after {
+    left: calc(45px + 6px) !important;
+    width: 54px !important;
+  }
+  
+  .timeline .timeline-item.left::before {
     right: 45px;
     transform: translate(50%, -50%);
   }
-  .timeline .timeline-item.left::after{
+  
+  .timeline .timeline-item.left::after {
     right: calc(45px + 6px) !important;
     width: 54px !important;
   }
 }
-*/
 </style>
 
 <style id="timeline-suggest-perf">/* TIMELINE (HINT PERFORMANCE) */
