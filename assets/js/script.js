@@ -695,5 +695,49 @@ function wikipediaURL(term) {
   window.EchiExplode = explode;
 })();
 /* =====FINE ESPLOSIONE TEATRALE ===== */
+/* ===== PULSANTE TORNA SU (compat Safari) ===== */
+(() => {
+  'use strict';
+
+  const ready = (fn) => {
+    if (document.readyState !== 'loading') fn();
+    else document.addEventListener('DOMContentLoaded', fn, { once:true });
+  };
+
+  ready(() => {
+    const btn = document.getElementById('backToTop');
+    if (!btn) return console.warn('❌ backToTop non trovato');
+
+    const se = document.scrollingElement || document.documentElement;
+    const getScrollTop = () =>
+      se.scrollTop || window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+
+    const toggle = () => {
+      if (getScrollTop() > 300) btn.classList.add('is-visible');
+      else btn.classList.remove('is-visible');
+    };
+
+    const scrollToTop = () => {
+      se.scrollTo ? se.scrollTo({ top: 0, behavior: 'smooth' }) : (se.scrollTop = 0);
+    };
+
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => { toggle(); ticking = false; });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive:true });
+    btn.addEventListener('click', scrollToTop);
+    btn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); scrollToTop(); }
+    });
+
+    toggle();
+    requestAnimationFrame(toggle);
+  });
+})();
 
 
