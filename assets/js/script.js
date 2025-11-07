@@ -671,7 +671,7 @@ function wikipediaURL(term) {
 
   const ready = (fn) => {
     if (document.readyState !== 'loading') fn();
-    else document.addEventListener('DOMContentLoaded', fn, { once:true });
+    else document.addEventListener('DOMContentLoaded', fn, { once: true });
   };
 
   ready(() => {
@@ -699,7 +699,7 @@ function wikipediaURL(term) {
       }
     };
 
-    window.addEventListener('scroll', onScroll, { passive:true });
+    window.addEventListener('scroll', onScroll, { passive: true });
     btn.addEventListener('click', scrollToTop);
     btn.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); scrollToTop(); }
@@ -709,82 +709,8 @@ function wikipediaURL(term) {
     requestAnimationFrame(toggle);
   });
 })();
-const maybeScrollable = document.querySelector('main, [data-scroll], .page-content');
-if (maybeScrollable) maybeScrollable.addEventListener('scroll', onScroll, { passive:true });
 
-// AGGIUNGI QUESTA FUNZIONE AL TUO SCRIPT ESISTENTE
-function initCosmicTimeline() {
-    const timelineItems = document.querySelectorAll('.timeline-item');
-    
-    // Crea l'IntersectionObserver
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const item = entry.target;
-                const index = Array.from(timelineItems).indexOf(item);
-                
-                // Imposta il delay basato sull'indice
-                item.style.setProperty('--item-index', index);
-                
-                // Aggiungi la classe visible per triggerare l'animazione
-                item.classList.add('visible');
-                
-                // Opzionale: trigger particelle casuali
-                triggerRandomParticles(item);
-                
-                observer.unobserve(item);
-            }
-        });
-    }, {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    });
-
-    // Osserva tutti gli item
-    timelineItems.forEach(item => observer.observe(item));
-}
-
-// FUNZIONE PER PARTICELINE RANDOM
-function triggerRandomParticles(item) {
-    const content = item.querySelector('.timeline-content');
-    if (!content) return;
-    
-    // Crea 3-5 particelle in posizioni casuali
-    const particleCount = 3 + Math.floor(Math.random() * 3);
-    
-    for (let i = 0; i < particleCount; i++) {
-        setTimeout(() => {
-            const x = 20 + Math.random() * 60;
-            const y = 20 + Math.random() * 60;
-            
-            content.style.setProperty('--particle-x', `${x}%`);
-            content.style.setProperty('--particle-y', `${y}%`);
-            
-            // Trigger dell'animazione
-            content.classList.remove('particle-trigger');
-            void content.offsetWidth; // Reflow
-            content.classList.add('particle-trigger');
-            
-        }, i * 150);
-    }
-}
-
-// INIZIALIZZA AL CARICAMENTO
-document.addEventListener('DOMContentLoaded', function() {
-    initCosmicTimeline();
-    
-    // Aggiungi anche al resize per ricaricare le animazioni
-    window.addEventListener('resize', () => {
-        document.querySelectorAll('.timeline-item').forEach(item => {
-            item.classList.remove('visible');
-            void item.offsetWidth; // Reflow
-        });
-        
-        setTimeout(initCosmicTimeline, 100);
-    });
-});
-// === TIMELINE COSMICA - VERSIONE DEBUG ===
-
+/* ===== TIMELINE COSMICA - VERSIONE UNIFICATA ===== */
 function initCosmicTimeline() {
     const timelineItems = document.querySelectorAll('.timeline-item');
     
@@ -813,11 +739,14 @@ function initCosmicTimeline() {
                 
                 console.log('✅ Classe "visible" aggiunta a item', index);
                 
+                // Trigger particelle
+                triggerRandomParticles(item);
+                
                 observer.unobserve(item);
             }
         });
     }, {
-        threshold: 0.05, // Più sensibile
+        threshold: 0.05,
         rootMargin: '0px 0px -10% 0px'
     });
 
@@ -827,9 +756,30 @@ function initCosmicTimeline() {
     });
 }
 
+// FUNZIONE PER PARTICELINE RANDOM
+function triggerRandomParticles(item) {
+    const content = item.querySelector('.timeline-content');
+    if (!content) return;
+    
+    const particleCount = 3 + Math.floor(Math.random() * 3);
+    
+    for (let i = 0; i < particleCount; i++) {
+        setTimeout(() => {
+            const x = 20 + Math.random() * 60;
+            const y = 20 + Math.random() * 60;
+            
+            content.style.setProperty('--particle-x', `${x}%`);
+            content.style.setProperty('--particle-y', `${y}%`);
+            
+            content.classList.remove('particle-trigger');
+            void content.offsetWidth;
+            content.classList.add('particle-trigger');
+        }, i * 150);
+    }
+}
+
 // FORZA INIZIALIZZAZIONE ANCHE DOPO SCROLL
 function initScrollTrigger() {
-    // Controlla subito gli elementi già in viewport
     const items = document.querySelectorAll('.timeline-item:not(.visible)');
     items.forEach(item => {
         const rect = item.getBoundingClientRect();
@@ -841,6 +791,7 @@ function initScrollTrigger() {
     });
 }
 
+// INIZIALIZZAZIONE PRINCIPALE
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🎬 Inizializzazione Timeline Cosmica');
     
