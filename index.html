@@ -2835,136 +2835,98 @@ html {
 }
 </style>
 <style>
-/* === PULSANTE TORNA SU - VERSIONE FLUTTUANTE === */
-.back-to-top.floating {
-    position: fixed;
-    bottom: 2px; /* Posizionato sopra il CTA fluttuante */
-    left: 155px;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--gold), #ffeb3b);
-    border: 2px solid rgba(255, 215, 0, 0.3);
-    color: #0a0a1a;
-    font-size: 1.5rem;
-    cursor: pointer;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999; /* Leggermente sotto il CTA (10000) */
-    box-shadow: 
-        0 4px 15px rgba(255, 215, 0, 0.4),
-        0 0 0 2px rgba(10, 10, 30, 0.1); /* Bordo esterno per contrasto */
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    backdrop-filter: blur(10px);
-    animation: float-gentle 3s ease-in-out infinite;
+/* === PULSANTE TORNA SU — versione pulita === */
+#backToTop{
+  position: fixed;
+  bottom: 20px;           /* richiesto */
+  left: 20px;             /* spostato a sinistra */
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,215,0,.3);
+  background: linear-gradient(135deg, var(--gold, #d4af37), #ffeb3b);
+  color: #0a0a1a;
+  font-size: 1.5rem;
+  line-height: 50px;
+  text-align: center;
+  cursor: pointer;
+  z-index: 9999;          /* sotto CTA 10000, alza se serve */
+  box-shadow: 0 4px 15px rgba(255,215,0,.4), 0 0 0 2px rgba(10,10,30,.1);
+  backdrop-filter: blur(10px);
+  transition: transform .25s cubic-bezier(.4,0,.2,1), opacity .2s ease, box-shadow .25s;
+  opacity: 0;             /* nascosto di default */
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: float-gentle 3s ease-in-out infinite;
 }
 
-/* Animazione fluttuante delicata */
-@keyframes float-gentle {
-    0%, 100% {
-        transform: translateY(0px);
-    }
-    50% {
-        transform: translateY(-5px);
-    }
+/* visibile: solo opacità/pointer (più affidabile su Safari) */
+#backToTop.is-visible{
+  opacity: 1;
+  pointer-events: auto;
 }
 
-.back-to-top.floating:hover {
-    transform: translateY(-3px) scale(1.1);
-    box-shadow: 
-        0 8px 25px rgba(255, 215, 0, 0.6),
-        0 0 0 2px rgba(255, 215, 0, 0.2);
-    background: linear-gradient(135deg, #ffeb3b, var(--gold));
-    animation: none; /* Ferma l'animazione durante l'hover */
+#backToTop:hover{
+  transform: translateY(-3px) scale(1.1);
+  box-shadow: 0 8px 25px rgba(255,215,0,.6), 0 0 0 2px rgba(255,215,0,.2);
+  background: linear-gradient(135deg, #ffeb3b, var(--gold, #d4af37));
+  animation: none; /* pausa effetto fluttuante durante hover */
 }
 
-.back-to-top.floating:active {
-    transform: translateY(-1px) scale(1.05);
+#backToTop:active{
+  transform: translateY(-1px) scale(1.05);
 }
 
-/* Versione con effetto "bolla luminosa" */
-.back-to-top.floating.glow {
-    background: radial-gradient(circle at 30% 30%, #ffeb3b, var(--gold));
-    box-shadow: 
-        0 4px 20px rgba(255, 215, 0, 0.5),
-        0 0 30px rgba(255, 215, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+/* variante “glow” opzionale */
+#backToTop.glow{
+  background: radial-gradient(circle at 30% 30%, #ffeb3b, var(--gold, #d4af37));
+  box-shadow: 0 4px 20px rgba(255,215,0,.5), 0 0 30px rgba(255,215,0,.3), inset 0 1px 0 rgba(255,255,255,.4);
 }
 
-/* Versione trasparente/semitrasparente */
-.back-to-top.floating.glass {
-    background: rgba(212, 175, 55, 0.15);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 215, 0, 0.4);
-    color: var(--gold);
-    box-shadow: 
-        0 4px 20px rgba(0, 0, 0, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+/* variante “glass” opzionale */
+#backToTop.glass{
+  background: rgba(212,175,55,.15);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255,215,0,.4);
+  color: var(--gold, #d4af37);
+  box-shadow: 0 4px 20px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.1);
+}
+#backToTop.glass:hover{
+  background: rgba(212,175,55,.25);
+  color: #0a0a1a;
 }
 
-.back-to-top.floating.glass:hover {
-    background: rgba(212, 175, 55, 0.25);
-    color: #0a0a1a;
+/* animazione fluttuante */
+@keyframes float-gentle{
+  0%,100%{ transform: translateY(0); }
+  50%    { transform: translateY(-5px); }
 }
 
-/* Regolazioni per diverse altezze del CTA */
-.back-to-top.floating.above-small-cta {
-    bottom: 90px; /* Per CTA più piccoli */
+/* mobile: dimensioni leggermente ridotte */
+@media (max-width: 768px){
+  #backToTop{
+    left: 20px;
+    width: 45px; height: 45px; line-height: 45px; font-size: 1.3rem;
+    animation: float-gentle-mobile 4s ease-in-out infinite;
+  }
+  @keyframes float-gentle-mobile{
+    0%,100%{ transform: translateY(0); }
+    50%    { transform: translateY(-3px); }
+  }
 }
 
-.back-to-top.floating.above-large-cta {
-    bottom: 120px; /* Per CTA più grandi */
+/* accessibilità: riduci movimento */
+@media (prefers-reduced-motion: reduce){
+  #backToTop{ animation: none; transition: none; }
+  #backToTop:hover{ transform: none; }
 }
 
-.back-to-top.floating.above-xl-cta {
-    bottom: 150px; /* Per CTA molto grandi */
-}
+/* debug: mostralo comunque per 10s all’avvio */
+@keyframes backtotop-debug{ from{opacity:1} to{opacity:1} }
+html[data-btt-debug="1"] #backToTop{ opacity:1; pointer-events:auto; animation: backtotop-debug 10s; }
 
-/* Versione compatta per mobile */
-@media (max-width: 768px) {
-    .back-to-top.floating {
-        bottom: 80px; /* Più vicino al bordo su mobile */
-        left: 20px;
-        width: 45px;
-        height: 45px;
-        font-size: 1.3rem;
-    }
-    
-    .back-to-top.floating.above-small-cta {
-        bottom: 70px;
-    }
-    
-    .back-to-top.floating.above-large-cta {
-        bottom: 100px;
-    }
-    
-    /* Riduci animazione su mobile per performance */
-    .back-to-top.floating {
-        animation: float-gentle-mobile 4s ease-in-out infinite;
-    }
-    
-    @keyframes float-gentle-mobile {
-        0%, 100% {
-            transform: translateY(0px);
-        }
-        50% {
-            transform: translateY(-3px);
-        }
-    }
-}
-
-/* Supporto per preferenze di movimento ridotto */
-@media (prefers-reduced-motion: reduce) {
-    .back-to-top.floating {
-        animation: none;
-        transition: none;
-    }
-    
-    .back-to-top.floating:hover {
-        transform: none;
-    }
-}
 </style>
 <style>
     /* Stili per le cometine variopinte */
