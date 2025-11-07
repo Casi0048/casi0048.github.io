@@ -813,3 +813,72 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(initCosmicTimeline, 100);
     });
 });
+// === TIMELINE COSMICA - VERSIONE DEBUG ===
+
+function initCosmicTimeline() {
+    const timelineItems = document.querySelectorAll('.timeline-item');
+    
+    console.log('🎯 Timeline items trovati:', timelineItems.length);
+    
+    if (!timelineItems.length) {
+        console.warn('❌ Nessun .timeline-item trovato!');
+        return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            console.log('🔍 Item visibile:', entry.isIntersecting, entry.target);
+            
+            if (entry.isIntersecting) {
+                const item = entry.target;
+                const index = Array.from(timelineItems).indexOf(item);
+                
+                console.log('🚀 Animando item:', index, item);
+                
+                item.style.setProperty('--item-index', index);
+                
+                // FORCE REFLOW e aggiungi classe
+                void item.offsetWidth;
+                item.classList.add('visible');
+                
+                console.log('✅ Classe "visible" aggiunta a item', index);
+                
+                observer.unobserve(item);
+            }
+        });
+    }, {
+        threshold: 0.05, // Più sensibile
+        rootMargin: '0px 0px -10% 0px'
+    });
+
+    timelineItems.forEach((item, index) => {
+        console.log(`📦 Item ${index}:`, item.className, item.getBoundingClientRect());
+        observer.observe(item);
+    });
+}
+
+// FORZA INIZIALIZZAZIONE ANCHE DOPO SCROLL
+function initScrollTrigger() {
+    // Controlla subito gli elementi già in viewport
+    const items = document.querySelectorAll('.timeline-item:not(.visible)');
+    items.forEach(item => {
+        const rect = item.getBoundingClientRect();
+        const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+        if (isVisible) {
+            console.log('📜 Item già in viewport:', item);
+            item.classList.add('visible');
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🎬 Inizializzazione Timeline Cosmica');
+    
+    setTimeout(() => {
+        initCosmicTimeline();
+        initScrollTrigger();
+    }, 1000);
+});
+
+// Re-init al resize
+window.addEventListener('resize', initCosmicTimeline);
