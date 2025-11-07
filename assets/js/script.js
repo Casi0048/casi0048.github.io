@@ -45,6 +45,7 @@ class VerticalSlider {
         
         this.speedReadout = document.getElementById('speed-readout') || this.createSpeedReadout();
         
+        
         // Event listeners
         this.toggleBtn.addEventListener('click', () => this.toggle());
         this.invertBtn.addEventListener('click', () => this.invert());
@@ -676,130 +677,110 @@ function wikipediaURL(term) {
 
   ready(() => {
     const btn = document.getElementById('backToTop');
-    if (!btn) return console.warn('❌ backToTop non trovato');
+    if (!btn) {
+      console.warn('❌ backToTop non trovato');
+      return;
+    }
 
     const se = document.scrollingElement || document.documentElement;
     const getScrollTop = () =>
       se.scrollTop || window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
 
     const toggle = () => {
-      if (getScrollTop() > 300) btn.classList.add('is-visible');
-      else btn.classList.remove('is-visible');
+      if (getScrollTop() > 300) {
+        btn.classList.add('is-visible');
+      } else {
+        btn.classList.remove('is-visible');
+      }
     };
 
     const scrollToTop = () => {
-      se.scrollTo ? se.scrollTo({ top: 0, behavior: 'smooth' }) : (se.scrollTop = 0);
+      if (se.scrollTo) {
+        se.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        se.scrollTop = 0;
+      }
     };
 
     let ticking = false;
     const onScroll = () => {
       if (!ticking) {
-        requestAnimationFrame(() => { toggle(); ticking = false; });
+        requestAnimationFrame(() => {
+          toggle();
+          ticking = false;
+        });
         ticking = true;
       }
     };
 
+    // SOLO QUESTI EVENT LISTENER - NIENTE ALTRO!
     window.addEventListener('scroll', onScroll, { passive: true });
     btn.addEventListener('click', scrollToTop);
     btn.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); scrollToTop(); }
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        scrollToTop();
+      }
     });
 
+    // Inizializza
     toggle();
-    requestAnimationFrame(toggle);
   });
 })();
 
-/* ===== TIMELINE COSMICA - VERSIONE UNIFICATA ===== */
+/* ===== TIMELINE COSMICA - VERSIONE SICURA ===== */
 function initCosmicTimeline() {
+  try {
     const timelineItems = document.querySelectorAll('.timeline-item');
-    
     console.log('🎯 Timeline items trovati:', timelineItems.length);
-    
+
     if (!timelineItems.length) {
-        console.warn('❌ Nessun .timeline-item trovato!');
-        return;
+      console.warn('❌ Nessun .timeline-item trovato!');
+      return;
     }
 
     const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            console.log('🔍 Item visibile:', entry.isIntersecting, entry.target);
-            
-            if (entry.isIntersecting) {
-                const item = entry.target;
-                const index = Array.from(timelineItems).indexOf(item);
-                
-                console.log('🚀 Animando item:', index, item);
-                
-                item.style.setProperty('--item-index', index);
-                
-                // FORCE REFLOW e aggiungi classe
-                void item.offsetWidth;
-                item.classList.add('visible');
-                
-                console.log('✅ Classe "visible" aggiunta a item', index);
-                
-                // Trigger particelle
-                triggerRandomParticles(item);
-                
-                observer.unobserve(item);
-            }
-        });
-    }, {
-        threshold: 0.05,
-        rootMargin: '0px 0px -10% 0px'
-    });
-
-    timelineItems.forEach((item, index) => {
-        console.log(`📦 Item ${index}:`, item.className, item.getBoundingClientRect());
-        observer.observe(item);
-    });
-}
-
-// FUNZIONE PER PARTICELINE RANDOM
-function triggerRandomParticles(item) {
-    const content = item.querySelector('.timeline-content');
-    if (!content) return;
-    
-    const particleCount = 3 + Math.floor(Math.random() * 3);
-    
-    for (let i = 0; i < particleCount; i++) {
-        setTimeout(() => {
-            const x = 20 + Math.random() * 60;
-            const y = 20 + Math.random() * 60;
-            
-            content.style.setProperty('--particle-x', `${x}%`);
-            content.style.setProperty('--particle-y', `${y}%`);
-            
-            content.classList.remove('particle-trigger');
-            void content.offsetWidth;
-            content.classList.add('particle-trigger');
-        }, i * 150);
-    }
-}
-
-// FORZA INIZIALIZZAZIONE ANCHE DOPO SCROLL
-function initScrollTrigger() {
-    const items = document.querySelectorAll('.timeline-item:not(.visible)');
-    items.forEach(item => {
-        const rect = item.getBoundingClientRect();
-        const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
-        if (isVisible) {
-            console.log('📜 Item già in viewport:', item);
-            item.classList.add('visible');
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const item = entry.target;
+          const index = Array.from(timelineItems).indexOf(item);
+          
+          console.log('🚀 Animando item:', index);
+          
+          item.style.setProperty('--item-index', index);
+          void item.offsetWidth; // Reflow
+          item.classList.add('visible');
+          
+          console.log('✅ Classe "visible" aggiunta a item', index);
+          observer.unobserve(item);
         }
+      });
+    }, {
+      threshold: 0.05,
+      rootMargin: '0px 0px -10% 0px'
     });
+
+    timelineItems.forEach(item => observer.observe(item));
+    
+  } catch (error) {
+    console.error('❌ Errore in initCosmicTimeline:', error);
+  }
 }
 
 // INIZIALIZZAZIONE PRINCIPALE
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🎬 Inizializzazione Timeline Cosmica');
-    
-    setTimeout(() => {
-        initCosmicTimeline();
-        initScrollTrigger();
-    }, 1000);
+  console.log('🎬 Inizializzazione applicazione');
+  
+  // Timeline con delay
+  setTimeout(initCosmicTimeline, 1000);
 });
 
 // Re-init al resize
 window.addEventListener('resize', initCosmicTimeline);
+
+// Gestione errori globale (aggiungi in cima se non ce l'hai)
+window.addEventListener('error', function(e) {
+  console.error('❌ Errore globale:', e.error);
+  e.preventDefault();
+  return true;
+});
