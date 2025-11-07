@@ -6789,7 +6789,147 @@ function softPlay(el, targetVol, ms){
   }catch(_){}
 }
 </script>
+<script id="timeline-bidirectional-scroll">
+document.addEventListener('DOMContentLoaded', function() {
+  const timelineItems = document.querySelectorAll('.timeline-item');
+  
+  if (!timelineItems.length) return;
+  
+  // Intersection Observer per entrambe le direzioni
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const item = entry.target;
+      
+      if (entry.isIntersecting) {
+        // Item entra nella viewport - anima in
+        item.classList.add('visible');
+        
+        // Rimuovi la classe dopo l'animazione per permettere il replay
+        setTimeout(() => {
+          if (entry.isIntersecting) {
+            item.style.opacity = '1';
+            item.style.transform = 'none';
+          }
+        }, 800);
+      } else {
+        // Item esce dalla viewport - resetta per nuova animazione
+        item.classList.remove('visible');
+        
+        // Piccolo delay per evitare flickering
+        setTimeout(() => {
+          if (!entry.isIntersecting) {
+            item.style.opacity = '0';
+            if (item.classList.contains('left')) {
+              item.style.transform = 'translateX(-80px) translateY(40px)';
+            } else if (item.classList.contains('right')) {
+              item.style.transform = 'translateX(80px) translateY(40px)';
+            } else {
+              item.style.transform = 'translateY(40px)';
+            }
+          }
+        }, 50);
+      }
+    });
+  }, {
+    threshold: 0.15, // Trigger quando il 15% dell'elemento è visibile
+    rootMargin: '-50px 0px -50px 0px' // Area di trigger ridotta
+  });
 
+  // Osserva tutti gli item
+  timelineItems.forEach(item => {
+    observer.observe(item);
+  });
+
+  // Forza un check iniziale
+  setTimeout(() => {
+    timelineItems.forEach(item => {
+      const rect = item.getBoundingClientRect();
+      const isVisible = (
+        rect.top >= 0 &&
+        rect.left >= 0 &&
+        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+      );
+      
+      if (isVisible) {
+        item.classList.add('visible');
+      }
+    });
+  }, 100);
+
+  // Gestione del resize per ripristinare le animazioni
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      timelineItems.forEach(item => {
+        const rect = item.getBoundingClientRect();
+        const isVisible = (
+          rect.top >= 0 &&
+          rect.bottom <= (window.innerHeight || document.documentElement.clientHeight)
+        );
+        
+        if (!isVisible) {
+          item.classList.remove('visible');
+        }
+      });
+    }, 250);
+  });
+});
+
+// Versione alternativa più aggressiva per animazioni continue
+function setupTimelineAnimations() {
+  const items = document.querySelectorAll('.timeline-item');
+  let ticking = false;
+  
+  function updateAnimations() {
+    const windowHeight = window.innerHeight;
+    const triggerPoint = windowHeight * 0.8;
+    
+    items.forEach(item => {
+      const rect = item.getBoundingClientRect();
+      const isInView = rect.top < triggerPoint && rect.bottom > 0;
+      
+      if (isInView && !item.classList.contains('visible')) {
+        item.classList.add('visible');
+      } else if (!isInView && item.classList.contains('visible')) {
+        item.classList.remove('visible');
+      }
+    });
+    
+    ticking = false;
+  }
+  
+  function onScroll() {
+    if (!ticking) {
+      requestAnimationFrame(updateAnimations);
+      ticking = true;
+    }
+  }
+  
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  
+  // Check iniziale
+  updateAnimations();
+}
+
+// Avvia le animazioni
+document.addEventListener('DOMContentLoaded', setupTimelineAnimations);
+</script>
+<script>
+// Animazione delay progressivo per voci menu
+document.addEventListener('DOMContentLoaded', function() {
+    const megaMenus = document.querySelectorAll('.mega-menu');
+    
+    megaMenus.forEach(menu => {
+        const links = menu.querySelectorAll('a');
+        links.forEach((link, index) => {
+            link.style.setProperty('--delay', index);
+        });
+    });
+});
+</script>
 <script>
 // Aggiungi questo script
 document.addEventListener('DOMContentLoaded', function() {
