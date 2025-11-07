@@ -48,6 +48,17 @@
   <link rel="stylesheet" href="/assets/css/stile.css?v=20251106"><!-- ultimo -->
 
   <!-- FONTS -->
+  <link rel="preload" as="style"
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400;600&display=swap"
+      crossorigin
+      onload="this.onload=null;this.rel='stylesheet'">
+
+<noscript>
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400;600&display=swap"
+        crossorigin>
+</noscript>
+
   <link
     rel="preload"
     as="style"
@@ -616,32 +627,77 @@ body {
     background: rgba(10,10,30,.78);
   }
 
-  /* Titolo risultato */
-  #search-results h4, .search-results h4, .result-title{
-    margin: 0 0 .2rem; font-size: 1rem; font-weight: 700; color:#ffeb9a;
-  }
+/* Titolo risultato */
+#search-results h4, .search-results h4, .result-title {
+    margin: 0 0 .2rem; 
+    font-size: 1rem; 
+    font-weight: 700; 
+    color: #ffeb9a;
+    /* Aggiungi per sicurezza: */
+    line-height: 1.3;
+}
 
-  /* Tag/meta (es. Idealismo) come “chip” */
-  .result-meta, .result-tag, .tag{
-    display:inline-block; margin: 0 0 .25rem; padding:.1rem .45rem;
-    font-size:.8rem; border-radius:999px; color:#0b1022;
-    background: linear-gradient(90deg,#ffd86a,#ffeb9a);
-  }
+/* Tag/meta (es. Idealismo) come "chip" */
+.result-meta, .result-tag, .tag {
+    display: inline-block; 
+    margin: 0 0 .25rem; 
+    padding: .1rem .45rem;
+    font-size: .8rem; 
+    border-radius: 999px; 
+    color: #0b1022;
+    background: linear-gradient(90deg, #ffd86a, #ffeb9a);
+    /* Miglioramenti accessibilità: */
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
 
-  /* Descrizione + sorgente */
-  .result-desc{ margin:.1rem 0 .15rem; font-size:.9rem; color:#cfe2ff; line-height:1.25; }
-  .result-source{ font-size:.8rem; opacity:.85; }
+/* Descrizione + sorgente */
+.result-desc { 
+    margin: .1rem 0 .15rem; 
+    font-size: .9rem; 
+    color: #cfe2ff; 
+    line-height: 1.25; 
+    /* Miglioramento leggibilità: */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
 
-  /* Evidenziazione (se usi <mark> o aggiungi classe) */
-  mark, .hl{ background: #ffe08a; color:#141414; padding:0 .15rem; border-radius:.2rem; }
+.result-source { 
+    font-size: .8rem; 
+    opacity: .85; 
+    /* Aggiungi: */
+    font-style: italic;
+}
 
-  /* Mobile piena larghezza e un po’ più alto */
-  @media (max-width: 900px){
-    :root{ --search-panel-w: 100vw; --search-panel-maxh: 82vh; }
-    #search-panel, #searchPanel, .search-panel, .results-panel{
-      left:50%; transform:translateX(-50%); width:100vw; border-radius:10px;
+/* Evidenziazione (se usi <mark> o aggiungi classe) */
+mark, .hl { 
+    background: #ffe08a; 
+    color: #141414; 
+    padding: 0 .15rem; 
+    border-radius: .2rem; 
+    /* Miglioramento: */
+    font-weight: 600;
+}
+
+/* Mobile piena larghezza e un po' più alto */
+@media (max-width: 900px){
+    :root { 
+        --search-panel-w: 100vw; 
+        --search-panel-maxh: 82vh; 
     }
-  }
+    #search-panel, #searchPanel, .search-panel, .results-panel {
+        left: 50%; 
+        transform: translateX(-50%); 
+        width: 100vw; 
+        border-radius: 10px;
+        /* Aggiungi per mobile: */
+        margin: 0;
+        max-width: none;
+    }
+}
 </style>
 <script
 // 9. GESTIONE ERRORI GLOBALE
