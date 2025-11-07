@@ -6602,78 +6602,78 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // 6. INIZIALIZZAZIONE SICURA EFFETTI STELLARI
-    function initializeStarEffects() {
-        safeDOMOperation(
-            () => {
-                const starsContainer = document.getElementById('starsContainer');
-                if (starsContainer && typeof initStars === 'function') {
-                    initStars();
-                    console.log('✅ Effetti stelle avanzati attivati');
-                } else if (starsContainer) {
-                    createBasicStars();
-                }
-            },
-            () => {
-                console.log('ℹ️ Effetti stelle disabilitati per problemi di performance');
-                const starsContainer = document.getElementById('starsContainer');
-                if (starsContainer) {
-                    starsContainer.style.display = 'none';
+   // 6. INIZIALIZZAZIONE SICURA EFFETTI STELLARI
+function initializeStarEffects() {
+    safeDOMOperation(
+        () => {
+            const starsContainer = document.getElementById('starsContainer');
+            if (starsContainer && typeof initStars === 'function') {
+                initStars();
+                console.log('✅ Effetti stelle avanzati attivati');
+            } else if (starsContainer) {
+                createBasicStars();
+            }
+        },
+        () => {
+            console.log('ℹ️ Effetti stelle disabilitati per problemi di performance');
+            const starsContainer = document.getElementById('starsContainer');
+            if (starsContainer) {
+                starsContainer.style.display = 'none';
+            }
+        }
+    );
+} // <-- QUESTA CHIUSURA MANCAVA!
+
+// 7. CSS PER STATI SPECIALI
+function injectPerformanceCSS() {
+    return safeDOMOperation(() => {
+        if (!document.head) return false;
+        
+        const performanceCSS = `
+            .fade-in {
+                animation: fadeIn 0.5s ease-in;
+            }
+            
+            .offline {
+                opacity: 0.8;
+                filter: grayscale(0.3);
+            }
+            
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+            
+            @media (prefers-reduced-motion: reduce) {
+                .fade-in, .star {
+                    animation: none !important;
                 }
             }
-        );
-    }
+        `;
 
-    // 7. CSS PER STATI SPECIALI
-    function injectPerformanceCSS() {
-        return safeDOMOperation(() => {
-            if (!document.head) return false;
-            
-            const performanceCSS = `
-                .fade-in {
-                    animation: fadeIn 0.5s ease-in;
-                }
-                
-                .offline {
-                    opacity: 0.8;
-                    filter: grayscale(0.3);
-                }
-                
-                @keyframes fadeIn {
-                    from { opacity: 0; }
-                    to { opacity: 1; }
-                }
-                
-                @media (prefers-reduced-motion: reduce) {
-                    .fade-in, .star {
-                        animation: none !important;
-                    }
-                }
-            `;
+        const style = document.createElement('style');
+        style.textContent = performanceCSS;
+        document.head.appendChild(style);
+        console.log('✅ CSS performance injectato');
+        return true;
+    });
+}
 
-            const style = document.createElement('style');
-            style.textContent = performanceCSS;
-            document.head.appendChild(style);
-            console.log('✅ CSS performance injectato');
-            return true;
-        });
-    }
+// 8. INIZIALIZZAZIONE PRINCIPALE
+console.log('🚀 Inizializzazione sistema stellare...');
 
-    // 8. INIZIALIZZAZIONE PRINCIPALE
-    console.log('🚀 Inizializzazione sistema stellare...');
-    
-    injectPerformanceCSS();
-    initializeStars();
-    initializeLazyLoading();
-    initializeStarEffects();
+injectPerformanceCSS();
+initializeStars();
+initializeLazyLoading();
+initializeStarEffects();
 
-    console.log('✅ Sistema completamente inizializzato');
-});
+console.log('✅ Sistema completamente inizializzato');
+//}); // <-- SE C'È QUESTA, RIMUOVILA!
 
 // 9. GESTIONE ERRORI GLOBALE
 window.addEventListener('error', (event) => {
     console.error('❌ Errore globale catturato:', event.error);
-});
+}); 
 
 // 10. GESTIONE STATO CONNESSIONE
 window.addEventListener('online', () => {
