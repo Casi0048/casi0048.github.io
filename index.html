@@ -3796,6 +3796,21 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
   .topbar-switcher{ gap:.35rem; }
   .topbar-switcher .btn-ghost{ padding:.3rem .5rem; font-size:.92rem; }
 }
+  #backToTop{
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 2147483600;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease;
+  /* aspetto a tuo gusto... */
+}
+#backToTop.is-visible{
+  opacity: 1;
+  pointer-events: auto;
+}
+
 </style>
 </head>
 <body>
@@ -7187,9 +7202,7 @@ document.addEventListener('DOMContentLoaded', function() {
 })();
 </script>
 <!-- Pulsante Torna Su -->
-<!-- Con effetto glow -->
-<button aria-label="Torna all'inizio" class="back-to-top floating glow" id="backToTop">
-    ↑
+ <button id="backToTop" aria-label="Torna su" title="Torna su">↑</button>
 </button>
 <script>
 // === GENERATORE DI STELLE - VERSIONE CORRETTA ===
@@ -7513,49 +7526,72 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 })();
 </script>
-  // === PULSANTE TORNA SU ===
-(function(){
-    const backToTop = document.getElementById('backToTop');
-    if (!backToTop) {
-        console.log('❌ Pulsante backToTop non trovato');
-        return;
+/* ===== PULSANTE TORNA SU (compat Safari) ===== */
+(() => {
+  'use strict';
+
+  function ready(fn){
+    if (document.readyState !== 'loading') fn();
+    else document.addEventListener('DOMContentLoaded', fn, { once:true });
+  }
+
+  ready(() => {
+    const btn = document.getElementById('backToTop');
+    if (!btn) {
+      console.warn('❌ backToTop non trovato');
+      return;
     }
-    
-    // Mostra/nascondi il pulsante durante lo scroll
-    function toggleBackToTop() {
-        if (window.scrollY > 300) {
-            backToTop.style.display = 'block'; // ✅ CAMBIA: flex → block
-        } else {
-            backToTop.style.display = 'none';
-        }
-    }
-    
-    // Scroll fluido verso l'alto
-    function scrollToTop() {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
+
+    // Chi scorre davvero (Safari friendly)
+    const se = document.scrollingElement || document.documentElement;
+
+    const getScrollTop = () =>
+      se.scrollTop || window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+
+    const toggle = () => {
+      if (getScrollTop() > 300) btn.classList.add('is-visible');
+      else btn.classList.remove('is-visible');
+    };
+
+    const scrollToTop = () => {
+      // Safari moderno supporta smooth su Element.scrollTo
+      (se.scrollTo ? se.scrollTo({ top: 0, behavior: 'smooth' }) : (se.scrollTop = 0));
+    };
+
+    // Listener scroll (throttle via rAF)
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          toggle();
+          ticking = false;
         });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    // fallback: alcuni layout scrol-lano <main> o un wrapper
+    const maybeScrollable = document.querySelector('main, [data-scroll], .page-content');
+    if (maybeScrollable) {
+      maybeScrollable.addEventListener('scroll', onScroll, { passive: true });
     }
-    
-    // Event listeners
-    window.addEventListener('scroll', toggleBackToTop);
-    backToTop.addEventListener('click', scrollToTop);
-    
-    // Anche con tasto Enter per accessibilità
-    backToTop.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            scrollToTop();
-        }
+
+    btn.addEventListener('click', scrollToTop);
+    btn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        scrollToTop();
+      }
     });
-    
-    // Inizializza
-    toggleBackToTop();
-    console.log('✅ Back to top inizializzato');
+
+    // Init stato
+    toggle();
+    // Se cambi layout dinamicamente, ricontrolla dopo il paint
+    requestAnimationFrame(toggle);
+  });
 })();
-/* ===== FINE: PULSANTE TORNA SU ===== */
-/* ===== FINE: PULSANTE TORNA SU ===== */
+
 </script>
 <script src="/assets/js/script.js?v=20251104" defer></script>
 </body>
