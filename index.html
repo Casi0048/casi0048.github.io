@@ -670,12 +670,7 @@ mark, .hl {
     }
 }
 </style>
-<script
-// 9. GESTIONE ERRORI GLOBALE
-window.addEventListener('error', (event) => {
-    console.error('❌ Errore globale catturato:', event.error);
-});
-</SCRIPT>
+
 <script>
   document.addEventListener('DOMContentLoaded', ()=>{
     const input = document.getElementById('site-search');
@@ -5823,11 +5818,6 @@ window.addEventListener('error', function(e) {
     return true;
 });
 
-// Gestione errori Promise
-window.addEventListener('unhandledrejection', function(e) {
-    console.error('❌ Promise rejected:', e.reason);
-    e.preventDefault();
-});
 
 // Safe element selector con fallback
 function safeQuery(selector, context = document) {
@@ -6741,23 +6731,64 @@ console.log('⭐ Sistema stellare caricato e pronto');
 <script id="range-dynamic-script">
 (function(){
   function setFill(el){
-    if(!el) return;
-    var min = +el.min || 0;
-    var max = +el.max || 100;
-    var val = +el.value || 0;
-    var pct = ((val - min) * 100) / (max - min);
-    el.style.setProperty('--fill', pct + '%');
+    if(!el || !el.style) return;
+    try {
+      var min = parseFloat(el.min) || 0;
+      var max = parseFloat(el.max) || 100;
+      var val = parseFloat(el.value) || 0;
+      var pct = Math.max(0, Math.min(100, ((val - min) * 100) / (max - min)));
+      el.style.setProperty('--fill', pct + '%');
+    } catch(error) {
+      console.warn('Errore in setFill:', error);
+    }
   }
+  
   function bind(el){
-    if(!el) return;
+    if(!el) {
+      console.warn('Elemento slider non trovato');
+      return;
+    }
     setFill(el);
     el.addEventListener('input', function(){ setFill(el); });
     el.addEventListener('change', function(){ setFill(el); });
   }
-  document.addEventListener('DOMContentLoaded', function(){
-    bind(document.querySelector('#audio-player #volume'));
-    bind(document.querySelector('#slider-speed'));
-  });
+  
+  function initRangeSliders() {
+    console.log('🎚️ Inizializzazione slider...');
+    
+    // Volume slider (dentro audio-player)
+    var audioPlayer = document.getElementById('audio-player');
+    if(audioPlayer) {
+      var volumeSlider = audioPlayer.querySelector('#volume');
+      if(volumeSlider) {
+        bind(volumeSlider);
+        console.log('✅ Volume slider inizializzato');
+      } else {
+        console.warn('❌ #volume non trovato in audio-player');
+      }
+    } else {
+      console.warn('❌ #audio-player non trovato');
+    }
+    
+    // Speed slider
+    var speedSlider = document.getElementById('slider-speed');
+    if(speedSlider) {
+      bind(speedSlider);
+      console.log('✅ Speed slider inizializzato');
+    } else {
+      console.warn('❌ #slider-speed non trovato');
+    }
+  }
+  
+  // INIZIALIZZA CON RITARDO PER ASSICURARSI CHE GLI ELEMENTI ESISTANO
+  setTimeout(function(){
+    if(document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initRangeSliders);
+    } else {
+      initRangeSliders();
+    }
+  }, 100);
+  
 })();
 </script>
 <script id="speed-readout-js">
