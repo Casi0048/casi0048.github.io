@@ -5811,16 +5811,12 @@ if(dir === 'rtl') {
 <!-- Biscottino (riapri preferenze) -->
 <button aria-label="Preferenze cookie" id="cookie-fab" title="Preferenze cookie">🍪 Cookie</button>
 <script>
-// ========== GESTIONE ERRORI GLOBALE - VERSIONE SICURA ==========
+// ========== GESTIONE ERRORI GLOBALE - VERSIONE MINIMA ==========
 window.addEventListener('error', function(e) {
-    console.error('❌ Errore globale catturato:');
-    console.error('📝 Messaggio:', e.message || e.error?.message || 'Nessun messaggio');
-    console.error('📁 File:', e.filename || 'Sconosciuto');
-    console.error('📍 Posizione:', (e.lineno || '?') + ':' + (e.colno || '?'));
-    
-    if (e.error) {
-        console.error('🔗 Stack:', e.error.stack);
-    }
+    console.log('⚠️ Errore catturato (silenziato)');
+    e.preventDefault();
+    return true;
+});
     
     // Previeni il crash della pagina
     e.preventDefault();
