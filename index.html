@@ -1795,8 +1795,123 @@ window.googleTranslateElementInit = function(){
     var(--accent-purple),
     transparent);
 }
+/* ANIMAZIONI DI ENTRATA SPETTACOLARI */
+.timeline-item.visible {
+  opacity: 1;
+  filter: blur(0) brightness(1);
+  animation-duration: 1.2s;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
 
+.timeline-item.visible.left {
+  animation-name: cosmicSlideInLeft;
+}
 
+.timeline-item.visible.right {
+  animation-name: cosmicSlideInRight;
+}
+
+@keyframes cosmicSlideInLeft {
+  0% {
+    transform: translateX(-400px) rotateY(25deg) scale(0.7) skew(-8deg, -5deg);
+    opacity: 0;
+    filter: blur(12px) brightness(0.8);
+  }
+  20% {
+    transform: translateX(-200px) rotateY(15deg) scale(0.8) skew(-4deg, -2deg);
+    opacity: 0.5;
+    filter: blur(6px) brightness(0.9);
+  }
+  50% {
+    transform: translateX(50px) rotateY(-10deg) scale(1.1) skew(2deg, 1deg);
+    opacity: 1;
+    filter: blur(0) brightness(1.1);
+  }
+  70% {
+    transform: translateX(-20px) rotateY(5deg) scale(1.02) skew(-1deg, -0.5deg);
+    opacity: 1;
+    filter: blur(0) brightness(1);
+  }
+  100% {
+    transform: translateX(0) rotateY(0deg) scale(1) skew(0deg, 0deg);
+    opacity: 1;
+    filter: blur(0) brightness(1);
+  }
+}
+
+@keyframes cosmicSlideInRight {
+  0% {
+    transform: translateX(400px) rotateY(-25deg) scale(0.7) skew(8deg, 5deg);
+    opacity: 0;
+    filter: blur(12px) brightness(0.8);
+  }
+  20% {
+    transform: translateX(200px) rotateY(-15deg) scale(0.8) skew(4deg, 2deg);
+    opacity: 0.5;
+    filter: blur(6px) brightness(0.9);
+  }
+  50% {
+    transform: translateX(-50px) rotateY(10deg) scale(1.1) skew(-2deg, -1deg);
+    opacity: 1;
+    filter: blur(0) brightness(1.1);
+  }
+  70% {
+    transform: translateX(20px) rotateY(-5deg) scale(1.02) skew(1deg, 0.5deg);
+    opacity: 1;
+    filter: blur(0) brightness(1);
+  }
+  100% {
+    transform: translateX(0) rotateY(0deg) scale(1) skew(0deg, 0deg);
+    opacity: 1;
+    filter: blur(0) brightness(1);
+  }
+}
+
+/* Animazioni coordinate per punti e connettori */
+.timeline-item.visible .tl-dot {
+  animation: 
+    dotPop 0.6s cubic-bezier(0.2, 0.9, 0.2, 1) forwards 0.3s,
+    dotPulse 2s ease-in-out infinite 1s;
+}
+
+.timeline-item.visible .tl-connector {
+  animation: connectorDraw 0.8s cubic-bezier(0.2, 0.9, 0.2, 1) forwards 0.5s;
+}
+
+@keyframes dotPop {
+  0% { transform: translate(-50%, -50%) scale(0); }
+  60% { transform: translate(-50%, -50%) scale(1.4); }
+  80% { transform: translate(-50%, -50%) scale(0.9); }
+  100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes dotPulse {
+  0%, 100% { 
+    box-shadow: 
+      0 0 0 8px rgba(255, 215, 0, 0.4),
+      0 0 0 16px rgba(0, 204, 255, 0.3),
+      0 0 0 24px rgba(185, 103, 255, 0.2),
+      0 0 30px 12px rgba(255, 215, 0, 0.6);
+  }
+  50% { 
+    box-shadow: 
+      0 0 0 12px rgba(255, 215, 0, 0.6),
+      0 0 0 24px rgba(0, 204, 255, 0.4),
+      0 0 0 36px rgba(185, 103, 255, 0.3),
+      0 0 50px 20px rgba(255, 215, 0, 0.8);
+  }
+}
+
+@keyframes connectorDraw {
+  from { 
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  to { 
+    transform: scaleX(1);
+    opacity: 1;
+  }
 
 /* Effetti hover spettacolari */
 .timeline-content:hover {
