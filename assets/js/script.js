@@ -188,7 +188,56 @@ document.addEventListener('DOMContentLoaded', function() {
   const explosionSound = document.getElementById('explosionSound');
   if (!explodingText) return;
 
-  
+  // AGGIUNGI CSS FISSO PRIMA DI TUTTO  
+  const explosionStyles = `
+    .explosion-char {
+      display: inline-block;
+      will-change: transform, opacity, filter;
+    }
+    
+    .exploding-text.boom-active .explosion-char {
+      animation: none !important; /* Disabilita animazioni CSS conflittuali */
+    }
+    
+   .mega-shockwave {
+    position: fixed;
+    border-radius: 50%;
+    background: radial-gradient(circle, 
+        rgba(255,255,255,1) 0%, 
+        rgba(255,215,0,0.9) 15%, 
+        rgba(255,100,0,0.7) 30%, 
+        rgba(0,204,255,0.5) 50%,
+        transparent 70%
+    );
+    animation: megaShockwave 1.5s ease-out forwards;
+    z-index: 2147483601;
+    pointer-events: none;
+}
+
+@keyframes megaShockwave {
+    0% { 
+        transform: translate(-50%, -50%) scale(0.1); 
+        opacity: 1; 
+    }
+    100% { 
+        transform: translate(-50%, -50%) scale(25);  /* AUMENTA QUESTO VALORE! */
+        opacity: 0; 
+    }
+}
+    
+    .mega-particle {
+      position: fixed;
+      border-radius: 50%;
+      animation: megaParticleFly 2s ease-out forwards;
+      z-index: 2147483600;
+      pointer-events: none;
+    }
+    
+    @keyframes megaParticleFly {
+      0% { transform: translate(0, 0) scale(1); opacity: 1; }
+      100% { transform: translate(var(--p-dx), var(--p-dy)) scale(0); opacity: 0; }
+    }
+  `;
   
   const styleSheet = document.createElement('style');
   styleSheet.textContent = explosionStyles;
