@@ -1310,3 +1310,447 @@ footer {
         filter: blur(0) brightness(1);
     }
 }
+/* === TIMELINE SPETTACOLARE ULTIMATE - CARDS A DOPPIA LARGHEZZA 1586=== */
+.timeline-container {
+  --accent-gold: #ffd86a;
+  --accent-cyan: #00ccff;
+  --accent-purple: #b967ff;
+  perspective: 1200px;
+  margin: 4rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.timeline-title {
+  font-family: 'Cinzel', serif;
+  color: var(--accent-gold);
+  text-align: center;
+  margin-bottom: 0rem;
+  font-size: 3.5rem;
+  text-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+  position: relative;
+}
+
+.timeline-title::after {
+  content: '';
+  display: block;
+  width: 200px;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+  margin: 1rem auto;
+  border-radius: 2px;
+  animation: titleGlow 3s ease-in-out infinite;
+}
+
+@keyframes titleGlow {
+  0%, 100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.4); }
+  50% { box-shadow: 0 0 40px rgba(255, 215, 0, 0.8); }
+}
+
+.timeline {
+  position: relative;
+  max-width: 1400px; /* Aumentata per accomodare cards più larghe */
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+/* Linea temporale cosmica */
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, 
+    var(--accent-purple) 0%,
+    var(--accent-cyan) 30%,
+    var(--accent-gold) 70%,
+    var(--accent-purple) 100%);
+  box-shadow: 
+    0 0 30px rgba(185, 103, 255, 0.6),
+    0 0 60px rgba(0, 204, 255, 0.3);
+  filter: blur(0.5px);
+  z-index: 1;
+}
+
+/* Effetto particelle sulla linea */
+.timeline::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, 
+    transparent 0%,
+    rgba(255, 255, 255, 0.8) 10%,
+    rgba(255, 255, 255, 0.4) 20%,
+    transparent 30%,
+    transparent 70%,
+    rgba(255, 255, 255, 0.4) 80%,
+    rgba(255, 255, 255, 0.8) 90%,
+    transparent 100%);
+  background-size: 100% 200%;
+  animation: particleFlow 4s linear infinite;
+  z-index: 2;
+}
+
+@keyframes particleFlow {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 200%; }
+}
+
+.timeline-item {
+  position: relative;
+  width: calc(90% - 60px); /* RADDOPPIATA: da 50% a 90% */
+  margin: 4rem 0;
+  opacity: 0;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+}
+
+.timeline-item.left {
+  margin-right: auto;
+  padding-right: 80px;
+  text-align: right;
+  transform: 
+    translateX(-400px) 
+    rotateY(25deg) 
+    scale(0.7)
+    skew(-8deg, -5deg);
+  filter: blur(12px) brightness(0.8);
+}
+
+.timeline-item.right {
+  margin-left: auto;
+  padding-left: 80px;
+  text-align: left;
+  transform: 
+    translateX(400px) 
+    rotateY(-25deg) 
+    scale(0.7)
+    skew(8deg, 5deg);
+  filter: blur(12px) brightness(0.8);
+}
+
+/* Card spettacolare con effetto vetro cosmico */
+.timeline-content {
+  position: relative;
+  background: linear-gradient(145deg, 
+    rgba(10, 10, 30, 0.9) 0%,
+    rgba(20, 20, 50, 0.8) 50%,
+    rgba(10, 10, 30, 0.9) 100%);
+  border: 1px solid transparent;
+  border-radius: 20px;
+  padding: 2rem 2.5rem;
+  backdrop-filter: blur(20px);
+  transform: translateZ(50px);
+  box-shadow: 
+    0 25px 50px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 215, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Effetto bordo luminoso animato */
+.timeline-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 20px;
+  padding: 2px;
+  background: linear-gradient(45deg, 
+    var(--accent-purple), 
+    var(--accent-cyan), 
+    var(--accent-gold), 
+    var(--accent-purple));
+  background-size: 300% 300%;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  animation: borderGlow 3s ease infinite;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.timeline-item.visible .timeline-content::before {
+  opacity: 1;
+}
+
+@keyframes borderGlow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Punto temporale con effetto pulsante */
+
+
+/* Connettori energetici */
+.tl-connector {
+  position: absolute;
+  top: 2rem;
+  height: 3px;
+  width: calc(50% - 72px);
+  background: linear-gradient(90deg, 
+    transparent,
+    var(--accent-gold),
+    var(--accent-cyan),
+    var(--accent-purple),
+    transparent);
+  transform-origin: var(--origin);
+  transform: scaleX(0);
+  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8));
+  opacity: 0;
+  z-index: 5;
+}
+
+.timeline-item.left .tl-connector {
+  left: auto;
+  right: calc(50% + 36px);
+  background: linear-gradient(270deg, 
+    transparent,
+    var(--accent-gold),
+    var(--accent-cyan),
+    var(--accent-purple),
+    transparent);
+}
+
+/* ANIMAZIONI DI ENTRATA SPETTACOLARI */
+.timeline-item.visible {
+  opacity: 1;
+  filter: blur(0) brightness(1);
+  animation-duration: 1.2s;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.timeline-item.visible.left {
+  animation-name: cosmicSlideInLeft;
+}
+
+.timeline-item.visible.right {
+  animation-name: cosmicSlideInRight;
+}
+
+@keyframes cosmicSlideInLeft {
+  0% {
+    transform: translateX(-400px) rotateY(25deg) scale(0.7) skew(-8deg, -5deg);
+    opacity: 0;
+    filter: blur(12px) brightness(0.8);
+  }
+  20% {
+    transform: translateX(-200px) rotateY(15deg) scale(0.8) skew(-4deg, -2deg);
+    opacity: 0.5;
+    filter: blur(6px) brightness(0.9);
+  }
+  50% {
+    transform: translateX(50px) rotateY(-10deg) scale(1.1) skew(2deg, 1deg);
+    opacity: 1;
+    filter: blur(0) brightness(1.1);
+  }
+  70% {
+    transform: translateX(-20px) rotateY(5deg) scale(1.02) skew(-1deg, -0.5deg);
+    opacity: 1;
+    filter: blur(0) brightness(1);
+  }
+  100% {
+    transform: translateX(0) rotateY(0deg) scale(1) skew(0deg, 0deg);
+    opacity: 1;
+    filter: blur(0) brightness(1);
+  }
+}
+
+@keyframes cosmicSlideInRight {
+  0% {
+    transform: translateX(400px) rotateY(-25deg) scale(0.7) skew(8deg, 5deg);
+    opacity: 0;
+    filter: blur(12px) brightness(0.8);
+  }
+  20% {
+    transform: translateX(200px) rotateY(-15deg) scale(0.8) skew(4deg, 2deg);
+    opacity: 0.5;
+    filter: blur(6px) brightness(0.9);
+  }
+  50% {
+    transform: translateX(-50px) rotateY(10deg) scale(1.1) skew(-2deg, -1deg);
+    opacity: 1;
+    filter: blur(0) brightness(1.1);
+  }
+  70% {
+    transform: translateX(20px) rotateY(-5deg) scale(1.02) skew(1deg, 0.5deg);
+    opacity: 1;
+    filter: blur(0) brightness(1);
+  }
+  100% {
+    transform: translateX(0) rotateY(0deg) scale(1) skew(0deg, 0deg);
+    opacity: 1;
+    filter: blur(0) brightness(1);
+  }
+}
+
+/* Animazioni coordinate per punti e connettori */
+.timeline-item.visible .tl-dot {
+  animation: 
+    dotPop 0.6s cubic-bezier(0.2, 0.9, 0.2, 1) forwards 0.3s,
+    dotPulse 2s ease-in-out infinite 1s;
+}
+
+.timeline-item.visible .tl-connector {
+  animation: connectorDraw 0.8s cubic-bezier(0.2, 0.9, 0.2, 1) forwards 0.5s;
+}
+
+@keyframes dotPop {
+  0% { transform: translate(-50%, -50%) scale(0); }
+  60% { transform: translate(-50%, -50%) scale(1.4); }
+  80% { transform: translate(-50%, -50%) scale(0.9); }
+  100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes dotPulse {
+  0%, 100% { 
+    box-shadow: 
+      0 0 0 8px rgba(255, 215, 0, 0.4),
+      0 0 0 16px rgba(0, 204, 255, 0.3),
+      0 0 0 24px rgba(185, 103, 255, 0.2),
+      0 0 30px 12px rgba(255, 215, 0, 0.6);
+  }
+  50% { 
+    box-shadow: 
+      0 0 0 12px rgba(255, 215, 0, 0.6),
+      0 0 0 24px rgba(0, 204, 255, 0.4),
+      0 0 0 36px rgba(185, 103, 255, 0.3),
+      0 0 50px 20px rgba(255, 215, 0, 0.8);
+  }
+}
+
+@keyframes connectorDraw {
+  from { 
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  to { 
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+/* Effetti hover spettacolari */
+.timeline-content:hover {
+  transform: translateZ(80px) scale(1.05) rotateX(5deg);
+  box-shadow: 
+    0 35px 70px rgba(0, 0, 0, 0.6),
+    0 0 0 2px rgba(255, 215, 0, 0.5),
+    inset 0 2px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.3);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Styling del contenuto */
+.timeline-content h3 {
+  color: var(--accent-gold);
+  margin-bottom: 1rem;
+  font-size: 1.8rem;
+  font-family: 'Cinzel', serif;
+  text-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+  position: relative;
+}
+
+.period {
+  color: var(--accent-cyan);
+  font-style: italic;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  display: inline-block;
+  padding: 0.5rem 1.2rem;
+  background: rgba(0, 204, 255, 0.15);
+  border-radius: 15px;
+  border: 1px solid rgba(0, 204, 255, 0.3);
+  box-shadow: 0 0 20px rgba(0, 204, 255, 0.2);
+}
+
+.timeline-content p {
+  line-height: 1.7;
+  margin-bottom: 1rem;
+  color: #e9eef5;
+  font-size: 1.05rem;
+}
+
+.timeline-content strong {
+  color: #ffeb9a;
+  text-shadow: 0 0 10px rgba(255, 235, 154, 0.3);
+}
+
+/* Responsive per mobile */
+@media (max-width: 900px) {
+  .timeline::before,
+  .timeline::after {
+    left: 30px;
+  }
+  
+  .timeline-item {
+    width: auto;
+    margin: 3rem 0;
+  }
+  
+  .timeline-item.left,
+  .timeline-item.right {
+    padding-left: 70px;
+    padding-right: 20px;
+    text-align: left;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  
+  .timeline-item.visible.left,
+  .timeline-item.visible.right {
+    animation: mobileSlideIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  }
+  
+  .tl-connector {
+    left: 38px;
+    right: auto;
+    width: calc(100% - 70px);
+  }
+  
+  .timeline-title {
+    font-size: 2.5rem;
+  }
+}
+
+@keyframes mobileSlideIn {
+  0% {
+    transform: translateX(-100px) scale(0.9);
+    opacity: 0;
+    filter: blur(8px);
+  }
+  100% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+/* Riduzione motion per accessibilità */
+@media (prefers-reduced-motion: reduce) {
+  .timeline-item,
+  .timeline-content,
+  .tl-dot,
+  .tl-connector {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+  
+  .timeline::after {
+    animation: none;
+  }
+}
