@@ -2360,7 +2360,100 @@ html {
   }
 }
 </style>
+<style>
+/* === PULSANTE TORNA SU — versione pulita === */
+#backToTop{
+  position: fixed;
+  bottom: 20px;           /* richiesto */
+  left: 155px;           /* spostato a sinistra */
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,215,0,.3);
+  background: linear-gradient(135deg, var(--gold, #d4af37), #ffeb3b);
+  color: #0a0a1a;
+  font-size: 1.5rem;
+  line-height: 50px;
+  text-align: center;
+  cursor: pointer;
+  z-index: 9999;          /* sotto CTA 10000, alza se serve */
+  box-shadow: 0 4px 15px rgba(255,215,0,.4), 0 0 0 2px rgba(10,10,30,.1);
+  backdrop-filter: blur(10px);
+  transition: transform .25s cubic-bezier(.4,0,.2,1), opacity .2s ease, box-shadow .25s;
+  opacity: 0;             /* nascosto di default */
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: float-gentle 3s ease-in-out infinite;
+}
 
+/* visibile: solo opacità/pointer (più affidabile su Safari) */
+#backToTop.is-visible{
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#backToTop:hover{
+  transform: translateY(-3px) scale(1.1);
+  box-shadow: 0 8px 25px rgba(255,215,0,.6), 0 0 0 2px rgba(255,215,0,.2);
+  background: linear-gradient(135deg, #ffeb3b, var(--gold, #d4af37));
+  animation: none; /* pausa effetto fluttuante durante hover */
+}
+
+#backToTop:active{
+  transform: translateY(-1px) scale(1.05);
+}
+
+/* variante “glow” opzionale */
+#backToTop.glow{
+  background: radial-gradient(circle at 30% 30%, #ffeb3b, var(--gold, #d4af37));
+  box-shadow: 0 4px 20px rgba(255,215,0,.5), 0 0 30px rgba(255,215,0,.3), inset 0 1px 0 rgba(255,255,255,.4);
+}
+
+/* variante “glass” opzionale */
+#backToTop.glass{
+  background: rgba(212,175,55,.15);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255,215,0,.4);
+  color: var(--gold, #d4af37);
+  box-shadow: 0 4px 20px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.1);
+}
+#backToTop.glass:hover{
+  background: rgba(212,175,55,.25);
+  color: #0a0a1a;
+}
+
+/* animazione fluttuante */
+@keyframes float-gentle{
+  0%,100%{ transform: translateY(0); }
+  50%    { transform: translateY(-5px); }
+}
+
+/* mobile: dimensioni leggermente ridotte */
+@media (max-width: 768px){
+  #backToTop{
+    left: 20px;
+    width: 45px; height: 45px; line-height: 45px; font-size: 1.3rem;
+    animation: float-gentle-mobile 4s ease-in-out infinite;
+  }
+  @keyframes float-gentle-mobile{
+    0%,100%{ transform: translateY(0); }
+    50%    { transform: translateY(-3px); }
+  }
+}
+
+/* accessibilità: riduci movimento */
+@media (prefers-reduced-motion: reduce){
+  #backToTop{ animation: none; transition: none; }
+  #backToTop:hover{ transform: none; }
+}
+
+/* debug: mostralo comunque per 10s all’avvio */
+@keyframes backtotop-debug{ from{opacity:1} to{opacity:1} }
+html[data-btt-debug="1"] #backToTop{ opacity:1; pointer-events:auto; animation: backtotop-debug 10s; }
+
+</style>
 <style>
     /* Stili per le cometine variopinte */
     .tiny-comets-canvas {
