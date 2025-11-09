@@ -8,7 +8,7 @@
   <meta name="keywords" content="filosofia, storia della filosofia, socrate, platone, aristotele, kant, nietzsche, pensiero filosofico">
   <meta name="author" content="Echi di Sofia">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://casi0048.github.io/">
+  
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
@@ -1420,134 +1420,333 @@ function setCookie(name, value, days){
 <script defer>
 /* ===== SITE SEARCH → pannello nella stessa pagina ===== */
 (function () {
-  const box   = document.getElementById('siteSearch');
+  const box = document.getElementById('siteSearch');
   const input = document.getElementById('siteSearchInput');
-  const btn   = document.getElementById('siteSearchBtn');
+  const btn = document.getElementById('siteSearchBtn');
+  
   if (!box || !input || !btn) return;
 
-  // Crea il pannello se manca
+  console.log('🔍 Search: System initialized');
+
+  // Crea il pannello dei risultati se non esiste
   let panel = document.getElementById('searchPanel');
   if (!panel) {
     panel = document.createElement('div');
     panel.id = 'searchPanel';
     panel.className = 'search-panel';
+    panel.setAttribute('aria-hidden', 'true');
     panel.innerHTML = `<div class="search-results" id="searchResults"></div>`;
     document.body.appendChild(panel);
   }
-  const resultsEl = panel.querySelector('#searchResults');
+  
+  const resultsEl = document.getElementById('searchResults');
 
-  // Carica indice
-  let INDEX = null, loading = false;
-  async function loadIndex(){
-    if (INDEX || loading) return INDEX;
-    loading = true;
-    const urls = (window.SEARCH_INDEX_URLS && window.SEARCH_INDEX_URLS.length)
-      ? window.SEARCH_INDEX_URLS
-      : ['/search-index.json'];
-    for (const url of urls){
-      try{
-        const r = await fetch(url, { credentials: 'same-origin' });
-        if (r.ok){ INDEX = await r.json(); break; }
-      }catch(_){}
+  // DATI DI ESEMPIO PER TEST
+  const SAMPLE_INDEX = [
+    {
+      "title": "Platone",
+      "url": "articoli/platone.html",
+      "desc": "Filosofo greco fondatore dell'Accademia e autore della teoria delle Idee",
+      "category": "Filosofia classica",
+      "tags": ["Platone", "Idee", "Accademia", "Socrate"]
+    },
+    {
+      "title": "Aristotele", 
+      "url": "articoli/aristotele.html",
+      "desc": "Allievo di Platone e fondatore del Liceo, padre della logica formale",
+      "category": "Filosofia classica",
+      "tags": ["Aristotele", "Logica", "Liceo", "Metafisica"]
+    },
+    {
+      "title": "Talete",
+      "url": "Presocratici/talete.html",
+      "desc": "Primo filosofo della scuola di Mileto, noto per la sua teoria sull'acqua come archè",
+      "category": "Presocratici", 
+      "tags": ["Talete", "Acqua", "Mileto", "Presocratici"]
+    },
+    {
+      "title": "Ipazia di Alessandria",
+      "url": "articoli/ipazia.html", 
+      "desc": "Matematica, astronoma e filosofa neoplatonica dell'antica Alessandria",
+      "category": "Filosofia antica",
+      "tags": ["Ipazia", "Neoplatonismo", "Alessandria", "Donne filosofe"]
+    },
+    {
+      "title": "Nietzsche",
+      "url": "articoli/2nietzsche.html",
+      "desc": "Filosofo tedesco noto per la teoria del superuomo e la morte di Dio",
+      "category": "Filosofia contemporanea",
+      "tags": ["Nietzsche", "Oltreuomo", "Volontà di potenza", "Germania"]
+    },
+    {
+      "title": "Il Mito della Caverna di Platone",
+      "url": "articoli/platone_mito_caverna.html",
+      "desc": "Allegoria platonica sulla conoscenza e la realtà dalle Repubblica",
+      "category": "Filosofia classica",
+      "tags": ["Platone", "Mito della Caverna", "Conoscenza", "Repubblica"]
     }
-    loading = false;
-    if (!INDEX) INDEX = [];
-    return INDEX;
+  ];
+
+  let SEARCH_INDEX = null;
+  let isLoading = false;
+
+  /**
+   * Carica l'indice di ricerca
+   */
+  async function loadSearchIndex() {
+    if (SEARCH_INDEX || isLoading) return SEARCH_INDEX;
+    
+    isLoading = true;
+    console.log('🔍 Search: Loading index...');
+    
+    try {
+      // Se siamo in file:// protocol, usa dati di esempio
+      if (window.location.protocol === 'file:') {
+        console.log('🔍 Search: File protocol detected, using sample data');
+        SEARCH_INDEX = SAMPLE_INDEX;
+      } else {
+        // Altrimenti prova a caricare dal server
+        const urls = ['/search-index.json', './search-index.json', 'search-index.json'];
+        
+        for (const url of urls) {
+          try {
+            console.log('🔍 Search: Trying URL:', url);
+            const response = await fetch(url);
+            if (response.ok) {
+              SEARCH_INDEX = await response.json();
+              console.log('🔍 Search: Loaded from', url, '- Items:', SEARCH_INDEX.length);
+              break;
+            }
+          } catch (error) {
+            console.warn('🔍 Search: Failed from', url);
+          }
+        }
+        
+        // Fallback ai dati di esempio
+        if (!SEARCH_INDEX || SEARCH_INDEX.length === 0) {
+          console.warn('🔍 Search: Using sample data as fallback');
+          SEARCH_INDEX = SAMPLE_INDEX;
+        }
+      }
+    } finally {
+      isLoading = false;
+    }
+    
+    console.log('🔍 Search: Final index count:', SEARCH_INDEX.length);
+    return SEARCH_INDEX;
   }
 
-  // Scoring semplice
-  function score(q, it){
-    const t = (it.title||'').toLowerCase();
-    const d = (it.description||it.excerpt||'').toLowerCase();
-    const g = (Array.isArray(it.tags)? it.tags.join(' ') : '').toLowerCase();
-    const ql = q.toLowerCase();
-    let s = 0;
-    if (t.includes(ql)) s += 3;
-    if (g.includes(ql)) s += 2;
-    if (d.includes(ql)) s += 1;
-    return s;
+  /**
+   * Calcola lo score di rilevanza per un item
+   */
+  function calculateRelevanceScore(query, item) {
+    const queryLower = query.toLowerCase();
+    const title = (item.title || '').toLowerCase();
+    const description = (item.description || item.desc || '').toLowerCase();
+    const tags = Array.isArray(item.tags) ? item.tags.join(' ').toLowerCase() : '';
+    const category = (item.category || '').toLowerCase();
+    
+    let score = 0;
+    
+    // Priorità: titolo > tags/category > descrizione
+    if (title.includes(queryLower)) score += 5;
+    if (tags.includes(queryLower)) score += 3;
+    if (category.includes(queryLower)) score += 2;
+    if (description.includes(queryLower)) score += 1;
+    
+    return score;
   }
-  const esc = s => (s||'').replace(/[&<>"']/g,m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
-  function hl(text,q){
+
+  /**
+   * Escape HTML per sicurezza
+   */
+  function escapeHtml(text) {
     if (!text) return '';
-    const rx = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'ig');
-    return text.replace(rx, m=>`<mark>${m}</mark>`);
+    const escapeMap = {
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    };
+    return text.replace(/[&<>"']/g, char => escapeMap[char]);
   }
 
-  // Pannello open/close
-  function openPanel(){
+  /**
+   * Highlight del testo con marcature
+   */
+  function highlightText(text, query) {
+    if (!text || !query) return escapeHtml(text);
+    const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(escapedQuery, 'ig');
+    return escapeHtml(text).replace(regex, match => `<mark class="search-hit">${match}</mark>`);
+  }
+
+  /**
+   * Normalizza i dati dell'indice
+   */
+  function normalizeIndexData(rawData) {
+    const rawArray = Array.isArray(rawData) ? rawData : [];
+    
+    return rawArray.map(item => ({
+      title: item.title || '',
+      url: normalizeUrl(item.url),
+      description: item.desc || item.description || '',
+      tags: normalizeTags(item.tags, item.category),
+      source: item.source || item.section || item.category || ''
+    }));
+  }
+
+  function normalizeUrl(url) {
+    if (!url) return '#';
+    if (url.startsWith('http')) return url;
+    if (url.startsWith('/')) return url;
+    return url; // Mantieni il percorso relativo
+  }
+
+  function normalizeTags(tags, category) {
+    if (category) return [category];
+    if (Array.isArray(tags)) return tags;
+    if (typeof tags === 'string') return [tags];
+    return [];
+  }
+
+  /**
+   * Apre il pannello dei risultati
+   */
+  function openResultsPanel() {
+    console.log('🔍 Search: Opening panel');
     panel.style.display = 'block';
-    panel.setAttribute('aria-hidden','false');
-    document.addEventListener('keydown', onEsc);
-    document.addEventListener('click', onDoc, { capture:true });
+    panel.setAttribute('aria-hidden', 'false');
+    document.addEventListener('keydown', handleEscapeKey);
+    document.addEventListener('click', handleOutsideClick, { capture: true });
   }
-  function closePanel(){
+
+  function closeResultsPanel() {
+    console.log('🔍 Search: Closing panel');
     panel.style.display = 'none';
-    panel.setAttribute('aria-hidden','true');
-    document.removeEventListener('keydown', onEsc);
-    document.removeEventListener('click', onDoc, { capture:true });
+    panel.setAttribute('aria-hidden', 'true');
+    document.removeEventListener('keydown', handleEscapeKey);
+    document.removeEventListener('click', handleOutsideClick, { capture: true });
   }
-  function onEsc(e){ if (e.key === 'Escape') closePanel(); }
-  function onDoc(e){ if (!panel.contains(e.target) && !box.contains(e.target)) closePanel(); }
 
-  // Render risultati
-  function render(q, arr){
-    if (!arr.length){
-      resultsEl.innerHTML = `<div class="result"><div class="result-desc">Nessun risultato per <strong>${esc(q)}</strong>.</div></div>`;
-      openPanel(); return;
+  function handleEscapeKey(event) {
+    if (event.key === 'Escape') {
+      closeResultsPanel();
+      input.focus();
     }
-    resultsEl.innerHTML = arr.map(it=>{
-      const url  = it.url || it.href || '#';
-      const ttl  = it.title || url;
-      const desc = it.description || it.excerpt || '';
-      const tags = Array.isArray(it.tags) ? it.tags : [];
-      const src  = it.source || it.section || '';
-      return `
+  }
+
+  function handleOutsideClick(event) {
+    if (!panel.contains(event.target) && !box.contains(event.target)) {
+      closeResultsPanel();
+    }
+  }
+
+  /**
+   * Renderizza i risultati della ricerca
+   */
+  function renderSearchResults(query, results) {
+    console.log('🔍 Search: Rendering', results.length, 'results for:', query);
+    
+    if (!results.length) {
+      resultsEl.innerHTML = `
         <div class="result">
-          <a class="result-title" href="${url}" rel="noopener">
-            <h4>${hl(esc(ttl), q)}</h4>
-          </a>
-          ${tags.length ? `<div class="result-tags">${tags.map(t=>`<span class="tag">${esc(t)}</span>`).join(' ')}</div>` : ``}
-          <div class="result-desc">${hl(esc(desc), q)}</div>
-          ${src ? `<div class="result-source">Fonte: ${esc(src)}</div>` : ``}
-        </div>`;
-    }).join('');
-    openPanel();
+          <div class="result-desc">Nessun risultato per <strong>${escapeHtml(query)}</strong>.</div>
+        </div>
+      `;
+      openResultsPanel();
+      return;
+    }
+    
+    resultsEl.innerHTML = results.map(item => `
+      <div class="result">
+        <a class="result-title" href="${item.url}" rel="noopener">
+          <h4>${highlightText(item.title, query)}</h4>
+        </a>
+        ${item.tags.length ? `
+          <div class="result-tags">
+            ${item.tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join(' ')}
+          </div>
+        ` : ''}
+        <div class="result-desc">${highlightText(item.description, query)}</div>
+        ${item.source ? `
+          <div class="result-source">Fonte: ${escapeHtml(item.source)}</div>
+        ` : ''}
+      </div>
+    `).join('');
+    
+    openResultsPanel();
   }
 
-  async function doSearch(qRaw){
-    const q = (qRaw||'').trim();
-    if (!q){ input.focus(); return; }
-    resultsEl.innerHTML = `<div class="result"><div class="result-desc">Cerco “${esc(q)}”…</div></div>`;
-    openPanel();
-    const data  = await loadIndex();
-    const items = Array.isArray(data) ? data : (Array.isArray(data.items) ? data.items : []);
-    const out   = items.map(it=>({it, s:score(q,it)})).filter(x=>x.s>0).sort((a,b)=>b.s-a.s).slice(0,30).map(x=>x.it);
-    render(q, out);
+  /**
+   * Esegue la ricerca
+   */
+  async function performSearch(rawQuery) {
+    const query = (rawQuery || '').trim();
+    console.log('🔍 Search: performSearch called with:', query);
+    
+    if (!query) {
+      input.focus();
+      return;
+    }
+    
+    resultsEl.innerHTML = `
+      <div class="result">
+        <div class="result-desc">Cerco "${escapeHtml(query)}"...</div>
+      </div>
+    `;
+    openResultsPanel();
+    
+    const indexData = await loadSearchIndex();
+    const normalizedItems = normalizeIndexData(indexData);
+    
+    const rankedResults = normalizedItems
+      .map(item => ({ item, score: calculateRelevanceScore(query, item) }))
+      .filter(({ score }) => score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 30)
+      .map(({ item }) => item);
+    
+    renderSearchResults(query, rankedResults);
   }
 
-  // Eventi
-  btn.addEventListener('click', ()=>doSearch(input.value));
-  input.addEventListener('keydown', e=>{ if (e.key==='Enter'){ e.preventDefault(); doSearch(input.value); } });
-
-  // Scorciatoia “/”
-  window.addEventListener('keydown', (e)=>{
-    if (e.key === '/' && !e.metaKey && !e.ctrlKey && !e.altKey){
-      const tag = (document.activeElement?.tagName)||'';
-      if (!/INPUT|TEXTAREA|SELECT/.test(tag)){ e.preventDefault(); input.focus(); }
+  // Event handlers
+  btn.addEventListener('click', () => performSearch(input.value));
+  
+  input.addEventListener('keydown', event => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      performSearch(input.value);
     }
   });
 
-  // Avvio da ?q=
-  try{
-    const q0 = new URLSearchParams(location.search).get('q');
-    if (q0 && !input.value){ input.value = q0; doSearch(q0); }
-  }catch{}
+  window.addEventListener('keydown', event => {
+    if (event.key === '/' && !event.metaKey && !event.ctrlKey && !event.altKey) {
+      const activeTag = document.activeElement?.tagName || '';
+      if (!/INPUT|TEXTAREA|SELECT/.test(activeTag)) {
+        event.preventDefault();
+        input.focus();
+      }
+    }
+  });
 
-  // funzione test per la console
-  window.__testSearch = doSearch;
+  function initFromUrlParams() {
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const queryParam = urlParams.get('q');
+      if (queryParam && !input.value) {
+        input.value = queryParam;
+        performSearch(queryParam);
+      }
+    } catch (error) {
+      console.warn('Search: Error reading URL parameters', error);
+    }
+  }
+
+  window.__testSearch = performSearch;
+
+  // Inizializzazione
+  initFromUrlParams();
+  console.log('🔍 Search: Ready! Try: __testSearch("Platone")');
+
 })();
 </script>
-
 </body>
 </html>
