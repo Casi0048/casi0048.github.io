@@ -724,6 +724,25 @@ li.dropdown.filosofia-polacca:focus-within > .mega-menu {
   left: auto !important;
   right: 0 !important;
 }
+
+/*  AGGIUNTO Pannello risultati di ricerca */
+.search-panel{
+  position: fixed; left: 50%; top: 10vh; transform: translateX(-50%);
+  width: min(900px, 92vw); max-height: 72vh; overflow: auto;
+  background: rgba(10,10,30,.92); border: 1px solid rgba(255,215,0,.25);
+  border-radius: 12px; padding: 14px;
+  z-index: 2147483601;           /* MOLTO alto */
+  display: none;                  /* parte nascosto */
+  backdrop-filter: blur(8px);
+}
+.search-results .result{ padding:.6rem .4rem; border-bottom:1px solid rgba(255,255,255,.08); }
+.search-results .result:last-child{ border-bottom: 0; }
+.search-results .result h4{ margin:.1rem 0; color:#ffeb9a; font-size:1rem; }
+.search-results .result .result-desc{ color:#cfe2ff; font-size:.9rem; }
+.search-results .tag{ display:inline-block; margin:.15rem .25rem .15rem 0; padding:.05rem .45rem; border-radius:999px;
+  background: linear-gradient(90deg,#ffd86a,#ffeb9a); color:#0b1022; font-weight:600; font-size:.78rem;}
+
+
     </style>
 </head>
 <body>
@@ -1398,19 +1417,16 @@ function setCookie(name, value, days){
 })();
 </script>
 
-
-<script>
+<script defer>
 /* ===== SITE SEARCH → pannello nella stessa pagina ===== */
 (function () {
   const box   = document.getElementById('siteSearch');
-  if (!box) return;
-
   const input = document.getElementById('siteSearchInput');
   const btn   = document.getElementById('siteSearchBtn');
-  if (!input || !btn) return;
+  if (!box || !input || !btn) return;
 
-  // Crea/aggancia pannello risultati
-  let panel   = document.getElementById('searchPanel') || document.querySelector('.search-panel');
+  // Crea il pannello se manca
+  let panel = document.getElementById('searchPanel');
   if (!panel) {
     panel = document.createElement('div');
     panel.id = 'searchPanel';
@@ -1418,17 +1434,16 @@ function setCookie(name, value, days){
     panel.innerHTML = `<div class="search-results" id="searchResults"></div>`;
     document.body.appendChild(panel);
   }
-  const resultsEl = panel.querySelector('#searchResults') || panel.querySelector('.search-results');
+  const resultsEl = panel.querySelector('#searchResults');
 
-  // Cache indice
+  // Carica indice
   let INDEX = null, loading = false;
   async function loadIndex(){
     if (INDEX || loading) return INDEX;
     loading = true;
-    const urls = (window.SEARCH_INDEX_URLS && Array.isArray(window.SEARCH_INDEX_URLS) && window.SEARCH_INDEX_URLS.length)
+    const urls = (window.SEARCH_INDEX_URLS && window.SEARCH_INDEX_URLS.length)
       ? window.SEARCH_INDEX_URLS
       : ['/search-index.json'];
-
     for (const url of urls){
       try{
         const r = await fetch(url, { credentials: 'same-origin' });
@@ -1452,14 +1467,14 @@ function setCookie(name, value, days){
     if (d.includes(ql)) s += 1;
     return s;
   }
-  function esc(s){return (s||'').replace(/[&<>"']/g,m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));}
+  const esc = s => (s||'').replace(/[&<>"']/g,m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
   function hl(text,q){
     if (!text) return '';
     const rx = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'ig');
     return text.replace(rx, m=>`<mark>${m}</mark>`);
   }
 
-  // Pannello
+  // Pannello open/close
   function openPanel(){
     panel.style.display = 'block';
     panel.setAttribute('aria-hidden','false');
@@ -1473,13 +1488,10 @@ function setCookie(name, value, days){
     document.removeEventListener('click', onDoc, { capture:true });
   }
   function onEsc(e){ if (e.key === 'Escape') closePanel(); }
-  function onDoc(e){
-    if (!panel.contains(e.target) && !box.contains(e.target)) closePanel();
-  }
+  function onDoc(e){ if (!panel.contains(e.target) && !box.contains(e.target)) closePanel(); }
 
-  // Render
+  // Render risultati
   function render(q, arr){
-    if (!resultsEl) return;
     if (!arr.length){
       resultsEl.innerHTML = `<div class="result"><div class="result-desc">Nessun risultato per <strong>${esc(q)}</strong>.</div></div>`;
       openPanel(); return;
@@ -1503,25 +1515,22 @@ function setCookie(name, value, days){
     openPanel();
   }
 
-  // Esegui ricerca
   async function doSearch(qRaw){
     const q = (qRaw||'').trim();
     if (!q){ input.focus(); return; }
-    if (resultsEl) resultsEl.innerHTML = `<div class="result"><div class="result-desc">Cerco “${esc(q)}”…</div></div>`;
+    resultsEl.innerHTML = `<div class="result"><div class="result-desc">Cerco “${esc(q)}”…</div></div>`;
     openPanel();
-    const data = await loadIndex();
+    const data  = await loadIndex();
     const items = Array.isArray(data) ? data : (Array.isArray(data.items) ? data.items : []);
-    const out = items.map(it=>({it, s:score(q,it)})).filter(x=>x.s>0).sort((a,b)=>b.s-a.s).slice(0,30).map(x=>x.it);
+    const out   = items.map(it=>({it, s:score(q,it)})).filter(x=>x.s>0).sort((a,b)=>b.s-a.s).slice(0,30).map(x=>x.it);
     render(q, out);
   }
 
-  // Eventi del box
+  // Eventi
   btn.addEventListener('click', ()=>doSearch(input.value));
-  input.addEventListener('keydown', (e)=>{
-    if (e.key === 'Enter'){ e.preventDefault(); doSearch(input.value); }
-  });
+  input.addEventListener('keydown', e=>{ if (e.key==='Enter'){ e.preventDefault(); doSearch(input.value); } });
 
-  // scorciatoia “/” per focus rapido
+  // Scorciatoia “/”
   window.addEventListener('keydown', (e)=>{
     if (e.key === '/' && !e.metaKey && !e.ctrlKey && !e.altKey){
       const tag = (document.activeElement?.tagName)||'';
@@ -1529,15 +1538,16 @@ function setCookie(name, value, days){
     }
   });
 
-  // Se la pagina ha ?q=...
-  try {
+  // Avvio da ?q=
+  try{
     const q0 = new URLSearchParams(location.search).get('q');
     if (q0 && !input.value){ input.value = q0; doSearch(q0); }
-  } catch {}
+  }catch{}
+
+  // funzione test per la console
+  window.__testSearch = doSearch;
 })();
 </script>
-
-<script src="/assets/js/script.js?v=20251106" defer></script>
 
 </body>
 </html>
