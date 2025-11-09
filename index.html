@@ -1741,7 +1741,25 @@ function setCookie(name, value, days){
   let SEARCH_INDEX = null;
   let isLoading = false;
 
-  
+  // --------- MARKUP: BOX DI RICERCA (solo selezione, nessuna creazione) ---
+const siteSearch = document.getElementById('siteSearch');
+if (!siteSearch) {
+  console.error('🔍 Search: #siteSearch non trovato nel DOM.');
+  return;
+}
+
+// Prendi riferimenti dagli elementi GIÀ presenti nel header
+const input = document.getElementById('siteSearchInput');
+const btn   = document.getElementById('siteSearchBtn');
+const clearInputBtn = document.getElementById('searchClearInput');
+
+if (!input || !btn) {
+  console.error('🔍 Search: input/btn mancanti dentro #siteSearch.');
+  return;
+}
+
+console.log('🔍 Search: UI ready (markup preesistente)');
+
 
   // Scriviamo/aggiorniamo il contenuto della search-box (id standardizzati)
   searchBox.innerHTML = `
