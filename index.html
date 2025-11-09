@@ -144,7 +144,9 @@
             gap: 15px;
         }
 
-       /* ===== SEARCH BOX MIGLIORATA ===== */
+    /* ===== SEARCH SYSTEM ===== */
+
+/* Search Box Container */
 .search-box {
   position: relative;
   display: flex;
@@ -162,6 +164,7 @@
   box-shadow: 0 0 0 2px rgba(138, 109, 59, 0.2);
 }
 
+/* Search Input */
 .search-box input {
   flex: 1;
   background: none;
@@ -176,13 +179,14 @@
   color: var(--text-muted);
 }
 
+/* Search Controls Container */
 .search-controls {
   display: flex;
   align-items: center;
   gap: 5px;
 }
 
-/* Pulsante cancella input */
+/* Clear Input Button */
 .clear-input-btn {
   background: none;
   border: none;
@@ -192,7 +196,7 @@
   border-radius: 50%;
   transition: all 0.3s ease;
   opacity: 0.7;
-  display: flex;
+  display: none; /* Nascosto di default */
   align-items: center;
   justify-content: center;
 }
@@ -208,7 +212,7 @@
   font-size: 1rem;
 }
 
-/* Pulsante ricerca */
+/* Search Button */
 #siteSearchBtn {
   background: var(--primary-color);
   border: none;
@@ -231,7 +235,7 @@
   transform: translateY(0);
 }
 
-/* Pannello risultati migliorato */
+/* Search Results Panel */
 .search-panel {
   position: fixed;
   left: 50%;
@@ -253,6 +257,7 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
+/* Search Panel Header */
 .search-header {
   display: flex;
   justify-content: space-between;
@@ -272,6 +277,7 @@
   font-weight: 600;
 }
 
+/* Clear Search Button in Panel */
 .search-clear-btn {
   background: linear-gradient(135deg, rgba(255, 107, 107, 0.9), rgba(255, 107, 107, 0.7));
   border: none;
@@ -298,11 +304,80 @@
   transform: translateY(0);
 }
 
+/* Search Results Content */
 .search-results {
   padding: 20px;
   max-height: calc(75vh - 80px);
   overflow-y: auto;
 }
+
+/* Individual Search Result */
+.search-results .result {
+  padding: 0.6rem 0.4rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  transition: background-color 0.3s ease;
+}
+
+.search-results .result:hover {
+  background: rgba(255, 215, 0, 0.05);
+}
+
+.search-results .result:last-child {
+  border-bottom: 0;
+}
+
+.search-results .result h4 {
+  margin: 0.1rem 0;
+  color: #ffeb9a;
+  font-size: 1rem;
+}
+
+.search-results .result .result-desc {
+  color: #cfe2ff;
+  font-size: 0.9rem;
+  margin: 0.3rem 0;
+}
+
+.search-results .tag {
+  display: inline-block;
+  margin: 0.15rem 0.25rem 0.15rem 0;
+  padding: 0.05rem 0.45rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ffd86a, #ffeb9a);
+  color: #0b1022;
+  font-weight: 600;
+  font-size: 0.78rem;
+}
+
+/* Search Highlight */
+mark.search-hit {
+  background: rgba(255, 215, 0, 0.35);
+  padding: 0 0.15em;
+  border-radius: 0.2em;
+  color: inherit;
+}
+
+/* ===== MENU CONTAINER ===== */
+.menu-container {
+  position: fixed;
+  top: 4.5rem;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  z-index: 1900;
+  padding: 0.5rem 0;
+  background: rgba(10, 10, 30, 0.9);
+  backdrop-filter: blur(0.5rem);
+  border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.menu-container.hidden {
+  transform: translateY(-100%);
+}
+
+/* Resto del tuo CSS esistente per il menu... */
 
         /* Menu Container */
          .menu-container {
@@ -1624,6 +1699,27 @@ function setCookie(name, value, days){
   const resultsEl = document.getElementById('searchResults');
   const clearBtn = document.getElementById('searchClearBtn');
 
+  // MODIFICA L'HTML DELLA SEARCH BOX PER AGGIUNGERE LA CROCE
+  const searchBox = document.querySelector('.search-box');
+  if (searchBox && !document.getElementById('searchClearInput')) {
+    searchBox.innerHTML = `
+      <input id="siteSearchInput"
+             type="search"
+             placeholder="Cerca filosofi, concetti…"
+             aria-label="Cerca nel sito">
+      <div class="search-controls">
+        <button id="searchClearInput" class="clear-input-btn" type="button" aria-label="Cancella testo" style="display: none;">
+          <i class="fas fa-times-circle"></i>
+        </button>
+        <button id="siteSearchBtn" type="button" aria-label="Esegui ricerca">
+          <i class="fas fa-search" aria-hidden="true"></i>
+        </button>
+      </div>
+    `;
+  }
+
+  const clearInputBtn = document.getElementById('searchClearInput');
+
   // DATI DI ESEMPIO PER TEST - CON MARX
   const SAMPLE_INDEX = [
     {
@@ -1791,11 +1887,33 @@ function setCookie(name, value, days){
   }
 
   /**
+   * Mostra/nasconde la croce cancella nell'input
+   */
+  function toggleClearButton() {
+    if (clearInputBtn && input.value.trim() !== '') {
+      clearInputBtn.style.display = 'flex';
+    } else if (clearInputBtn) {
+      clearInputBtn.style.display = 'none';
+    }
+  }
+
+  /**
+   * Cancella l'input
+   */
+  function clearInput() {
+    input.value = '';
+    toggleClearButton();
+    input.focus();
+    closeResultsPanel();
+  }
+
+  /**
    * Pulisce la ricerca
    */
   function clearSearch() {
     console.log('🔍 Search: Clearing search');
     input.value = '';
+    toggleClearButton();
     closeResultsPanel();
     input.focus();
   }
@@ -1880,12 +1998,13 @@ function setCookie(name, value, days){
       return;
     }
     
+    // APRI SUBITO IL PANNELO (prima del caricamento)
     resultsEl.innerHTML = `
       <div class="result">
         <div class="result-desc">Cerco "${escapeHtml(query)}"...</div>
       </div>
     `;
-    openResultsPanel();
+    openResultsPanel(); // ⬅️ QUESTA RIGA È ESSENZIALE!
     
     const indexData = await loadSearchIndex();
     const normalizedItems = normalizeIndexData(indexData);
@@ -1900,9 +2019,19 @@ function setCookie(name, value, days){
     renderSearchResults(query, rankedResults);
   }
 
-  // Event handlers
+  // ===== EVENT HANDLERS =====
+
+  // Event listeners per la croce cancella
+  if (clearInputBtn) {
+    input.addEventListener('input', toggleClearButton);
+    input.addEventListener('focus', toggleClearButton);
+    clearInputBtn.addEventListener('click', clearInput);
+  }
+
+  // Handler per il pulsante ricerca
   btn.addEventListener('click', () => performSearch(input.value));
   
+  // Handler per Enter nell'input
   input.addEventListener('keydown', event => {
     if (event.key === 'Enter') {
       event.preventDefault();
@@ -1910,12 +2039,13 @@ function setCookie(name, value, days){
     }
   });
 
-  // Handler per il pulsante Cancella
+  // Handler per il pulsante Cancella nel pannello
   clearBtn.addEventListener('click', (event) => {
     event.stopPropagation();
     clearSearch();
   });
 
+  // Shortcut: / per focus sulla search
   window.addEventListener('keydown', event => {
     if (event.key === '/' && !event.metaKey && !event.ctrlKey && !event.altKey) {
       const activeTag = document.activeElement?.tagName || '';
@@ -1942,75 +2072,12 @@ function setCookie(name, value, days){
   window.__testSearch = performSearch;
   window.__clearSearch = clearSearch;
 
-  // Inizializzazione
+  // ===== INIZIALIZZAZIONE =====
   initFromUrlParams();
+  toggleClearButton(); // Nascondi la croce all'inizio
   console.log('🔍 Search: Ready! Try: __testSearch("Marx")');
 
 })();
-  /**
- * Esegue la ricerca
- */
-async function performSearch(rawQuery) {
-  const query = (rawQuery || '').trim();
-  console.log('🔍 Search: performSearch called with:', query);
-  
-  if (!query) {
-    input.focus();
-    return;
-  }
-  
-  // APRI SUBITO IL PANNELO (prima del caricamento)
-  resultsEl.innerHTML = `
-    <div class="result">
-      <div class="result-desc">Cerco "${escapeHtml(query)}"...</div>
-    </div>
-  `;
-  openResultsPanel(); // ⬅️ QUESTA RIGA MANCAVA!
-  
-  const indexData = await loadSearchIndex();
-  const normalizedItems = normalizeIndexData(indexData);
-  
-  const rankedResults = normalizedItems
-    .map(item => ({ item, score: calculateRelevanceScore(query, item) }))
-    .filter(({ score }) => score > 0)
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 30)
-    .map(({ item }) => item);
-  
-  renderSearchResults(query, rankedResults);
-}
-  // Aggiungi queste funzioni dopo la dichiarazione degli elementi
-
-const clearInputBtn = document.getElementById('searchClearInput');
-
-/**
- * Mostra/nasconde la croce cancella nell'input
- */
-function toggleClearButton() {
-  if (input.value.trim() !== '') {
-    clearInputBtn.style.display = 'flex';
-  } else {
-    clearInputBtn.style.display = 'none';
-  }
-}
-
-/**
- * Cancella l'input
- */
-function clearInput() {
-  input.value = '';
-  clearInputBtn.style.display = 'none';
-  input.focus();
-  closeResultsPanel();
-}
-
-// Event listeners per la croce cancella
-input.addEventListener('input', toggleClearButton);
-input.addEventListener('focus', toggleClearButton);
-clearInputBtn.addEventListener('click', clearInput);
-
-// Nascondi la croce all'inizio
-toggleClearButton();
 </script>
 </body>
 </html>
