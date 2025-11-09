@@ -741,7 +741,46 @@ li.dropdown.filosofia-polacca:focus-within > .mega-menu {
 .search-results .result .result-desc{ color:#cfe2ff; font-size:.9rem; }
 .search-results .tag{ display:inline-block; margin:.15rem .25rem .15rem 0; padding:.05rem .45rem; border-radius:999px;
   background: linear-gradient(90deg,#ffd86a,#ffeb9a); color:#0b1022; font-weight:600; font-size:.78rem;}
+/* Aggiungi al tuo CSS esistente */
+.search-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+}
 
+.search-header h3 {
+  color: #ffd700;
+  margin: 0;
+  font-size: 1.2rem;
+  font-family: 'Cinzel', serif;
+}
+
+.search-clear-btn {
+  background: rgba(255, 215, 0, 0.1);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  color: #ffd700;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.search-clear-btn:hover {
+  background: rgba(255, 215, 0, 0.2);
+  border-color: rgba(255, 215, 0, 0.5);
+  transform: translateY(-1px);
+}
+
+.search-clear-btn:active {
+  transform: translateY(0);
+}
 
     </style>
 </head>
@@ -1435,13 +1474,22 @@ function setCookie(name, value, days){
     panel.id = 'searchPanel';
     panel.className = 'search-panel';
     panel.setAttribute('aria-hidden', 'true');
-    panel.innerHTML = `<div class="search-results" id="searchResults"></div>`;
+    panel.innerHTML = `
+      <div class="search-header">
+        <h3>Risultati della ricerca</h3>
+        <button class="search-clear-btn" id="searchClearBtn" aria-label="Cancella ricerca">
+          <i class="fas fa-times"></i> Cancella
+        </button>
+      </div>
+      <div class="search-results" id="searchResults"></div>
+    `;
     document.body.appendChild(panel);
   }
   
   const resultsEl = document.getElementById('searchResults');
+  const clearBtn = document.getElementById('searchClearBtn');
 
-  // DATI DI ESEMPIO PER TEST
+  // DATI DI ESEMPIO PER TEST - CON MARX
   const SAMPLE_INDEX = [
     {
       "title": "Platone",
@@ -1465,11 +1513,18 @@ function setCookie(name, value, days){
       "tags": ["Talete", "Acqua", "Mileto", "Presocratici"]
     },
     {
-      "title": "Ipazia di Alessandria",
-      "url": "articoli/ipazia.html", 
-      "desc": "Matematica, astronoma e filosofa neoplatonica dell'antica Alessandria",
-      "category": "Filosofia antica",
-      "tags": ["Ipazia", "Neoplatonismo", "Alessandria", "Donne filosofe"]
+      "title": "Karl Marx",
+      "url": "articoli/marx.html",
+      "desc": "Filosofo, economista e rivoluzionario tedesco, fondatore del socialismo scientifico",
+      "category": "Filosofia moderna",
+      "tags": ["Marx", "Comunismo", "Materialismo", "Capitalismo"]
+    },
+    {
+      "title": "Marxismo",
+      "url": "articoli/marxismo.html", 
+      "desc": "Corrente filosofica e politica basata sul pensiero di Karl Marx",
+      "category": "Filosofia contemporanea",
+      "tags": ["Marxismo", "Socialismo", "Lotta di classe", "Ideologia"]
     },
     {
       "title": "Nietzsche",
@@ -1477,13 +1532,6 @@ function setCookie(name, value, days){
       "desc": "Filosofo tedesco noto per la teoria del superuomo e la morte di Dio",
       "category": "Filosofia contemporanea",
       "tags": ["Nietzsche", "Oltreuomo", "Volontà di potenza", "Germania"]
-    },
-    {
-      "title": "Il Mito della Caverna di Platone",
-      "url": "articoli/platone_mito_caverna.html",
-      "desc": "Allegoria platonica sulla conoscenza e la realtà dalle Repubblica",
-      "category": "Filosofia classica",
-      "tags": ["Platone", "Mito della Caverna", "Conoscenza", "Repubblica"]
     }
   ];
 
@@ -1608,6 +1656,16 @@ function setCookie(name, value, days){
   }
 
   /**
+   * Pulisce la ricerca
+   */
+  function clearSearch() {
+    console.log('🔍 Search: Clearing search');
+    input.value = '';
+    closeResultsPanel();
+    input.focus();
+  }
+
+  /**
    * Apre il pannello dei risultati
    */
   function openResultsPanel() {
@@ -1717,6 +1775,12 @@ function setCookie(name, value, days){
     }
   });
 
+  // Handler per il pulsante Cancella
+  clearBtn.addEventListener('click', (event) => {
+    event.stopPropagation();
+    clearSearch();
+  });
+
   window.addEventListener('keydown', event => {
     if (event.key === '/' && !event.metaKey && !event.ctrlKey && !event.altKey) {
       const activeTag = document.activeElement?.tagName || '';
@@ -1741,10 +1805,11 @@ function setCookie(name, value, days){
   }
 
   window.__testSearch = performSearch;
+  window.__clearSearch = clearSearch;
 
   // Inizializzazione
   initFromUrlParams();
-  console.log('🔍 Search: Ready! Try: __testSearch("Platone")');
+  console.log('🔍 Search: Ready! Try: __testSearch("Marx")');
 
 })();
 </script>
