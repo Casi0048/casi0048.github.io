@@ -141,37 +141,165 @@
             gap: 15px;
         }
 
-        .search-box {
-            position: relative;
-        }
+       /* ===== SEARCH BOX MIGLIORATA ===== */
+.search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 5px;
+  transition: all 0.3s ease;
+  min-width: 280px;
+}
 
-        .search-box input {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 8px 15px;
-            color: var(--text-color);
-            width: 250px;
-        }
+.search-box:focus-within {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(138, 109, 59, 0.2);
+}
 
-        .search-box button {
-            position: absolute;
-            right: 5px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            cursor: pointer;
-        }
+.search-box input {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 8px 12px;
+  color: var(--text-color);
+  font-size: 0.95rem;
+  outline: none;
+}
 
-        .translate select {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 8px 15px;
-            color: var(--text-color);
-        }
+.search-box input::placeholder {
+  color: var(--text-muted);
+}
+
+.search-controls {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Pulsante cancella input */
+.clear-input-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  opacity: 0.7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clear-input-btn:hover {
+  color: #ff6b6b;
+  background: rgba(255, 107, 107, 0.1);
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.clear-input-btn i {
+  font-size: 1rem;
+}
+
+/* Pulsante ricerca */
+#siteSearchBtn {
+  background: var(--primary-color);
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#siteSearchBtn:hover {
+  background: var(--secondary-color);
+  transform: translateY(-1px);
+}
+
+#siteSearchBtn:active {
+  transform: translateY(0);
+}
+
+/* Pannello risultati migliorato */
+.search-panel {
+  position: fixed;
+  left: 50%;
+  top: 12vh;
+  transform: translateX(-50%);
+  width: min(900px, 92vw);
+  max-height: 75vh;
+  overflow: auto;
+  background: rgba(10, 10, 30, 0.98);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 12px;
+  padding: 0;
+  z-index: 2147483601;
+  display: none;
+  backdrop-filter: blur(12px);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 215, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.search-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0;
+  padding: 15px 20px;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+  background: rgba(255, 215, 0, 0.05);
+  border-radius: 12px 12px 0 0;
+}
+
+.search-header h3 {
+  color: #ffd700;
+  margin: 0;
+  font-size: 1.3rem;
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+}
+
+.search-clear-btn {
+  background: linear-gradient(135deg, rgba(255, 107, 107, 0.9), rgba(255, 107, 107, 0.7));
+  border: none;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+}
+
+.search-clear-btn:hover {
+  background: linear-gradient(135deg, rgba(255, 107, 107, 1), rgba(255, 107, 107, 0.8));
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 107, 107, 0.4);
+}
+
+.search-clear-btn:active {
+  transform: translateY(0);
+}
+
+.search-results {
+  padding: 20px;
+  max-height: calc(75vh - 80px);
+  overflow-y: auto;
+}
 
         /* Menu Container */
          .menu-container {
@@ -793,15 +921,19 @@ li.dropdown.filosofia-polacca:focus-within > .mega-menu {
 <i class="fas fa-balance-scale" style="color:#ffd700;"></i>                   
 <h1>Echi di Sofia</h1>
                 </div>
-                <div class="search-translate">
-                    <div class="search-box" id="siteSearch">
+               div class="search-box" id="siteSearch">
   <input id="siteSearchInput"
          type="search"
          placeholder="Cerca filosofi, concetti…"
          aria-label="Cerca nel sito">
-  <button id="siteSearchBtn" type="button" aria-label="Esegui ricerca">
-    <i class="fas fa-search" aria-hidden="true"></i>
-  </button>
+  <div class="search-controls">
+    <button id="searchClearInput" class="clear-input-btn" type="button" aria-label="Cancella testo" style="display: none;">
+      <i class="fas fa-times-circle"></i>
+    </button>
+    <button id="siteSearchBtn" type="button" aria-label="Esegui ricerca">
+      <i class="fas fa-search" aria-hidden="true"></i>
+    </button>
+  </div>
 </div>
                     <div id="google_translate_element" style="display: none;"></div>
                     <div class="translate-box">
@@ -1812,6 +1944,70 @@ function setCookie(name, value, days){
   console.log('🔍 Search: Ready! Try: __testSearch("Marx")');
 
 })();
+  /**
+ * Esegue la ricerca
+ */
+async function performSearch(rawQuery) {
+  const query = (rawQuery || '').trim();
+  console.log('🔍 Search: performSearch called with:', query);
+  
+  if (!query) {
+    input.focus();
+    return;
+  }
+  
+  // APRI SUBITO IL PANNELO (prima del caricamento)
+  resultsEl.innerHTML = `
+    <div class="result">
+      <div class="result-desc">Cerco "${escapeHtml(query)}"...</div>
+    </div>
+  `;
+  openResultsPanel(); // ⬅️ QUESTA RIGA MANCAVA!
+  
+  const indexData = await loadSearchIndex();
+  const normalizedItems = normalizeIndexData(indexData);
+  
+  const rankedResults = normalizedItems
+    .map(item => ({ item, score: calculateRelevanceScore(query, item) }))
+    .filter(({ score }) => score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 30)
+    .map(({ item }) => item);
+  
+  renderSearchResults(query, rankedResults);
+}
+  // Aggiungi queste funzioni dopo la dichiarazione degli elementi
+
+const clearInputBtn = document.getElementById('searchClearInput');
+
+/**
+ * Mostra/nasconde la croce cancella nell'input
+ */
+function toggleClearButton() {
+  if (input.value.trim() !== '') {
+    clearInputBtn.style.display = 'flex';
+  } else {
+    clearInputBtn.style.display = 'none';
+  }
+}
+
+/**
+ * Cancella l'input
+ */
+function clearInput() {
+  input.value = '';
+  clearInputBtn.style.display = 'none';
+  input.focus();
+  closeResultsPanel();
+}
+
+// Event listeners per la croce cancella
+input.addEventListener('input', toggleClearButton);
+input.addEventListener('focus', toggleClearButton);
+clearInputBtn.addEventListener('click', clearInput);
+
+// Nascondi la croce all'inizio
+toggleClearButton();
 </script>
 </body>
 </html>
