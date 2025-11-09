@@ -2079,5 +2079,36 @@ function setCookie(name, value, days){
 
 })();
 </script>
+  <script>
+  // --- aggiungi queste utility in alto, accanto alle altre funzioni ---
+  function debounce(fn, wait) {
+    let t; 
+    return function(...args) {
+      clearTimeout(t);
+      t = setTimeout(() => fn.apply(this, args), wait);
+    }
+  }
+
+  // --- in fondo, tra gli "EVENT HANDLERS" ---
+  const debouncedSearch = debounce(q => performSearch(q), 180);
+
+  // Ricerca mentre digiti
+  input.addEventListener('input', (e) => {
+    const q = e.target.value.trim();
+    toggleClearButton();                 // già presente in tuo codice
+    if (q.length >= 2) {
+      debouncedSearch(q);                // apre anche il pannello
+    } else {
+      closeResultsPanel();               // se svuoti, chiudi
+    }
+  });
+
+  // Se entri nel campo con testo già presente, mostra subito il pannello
+  input.addEventListener('focus', () => {
+    const q = input.value.trim();
+    if (q.length >= 2) performSearch(q);
+  });
+</script>
+
 </body>
 </html>
