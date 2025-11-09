@@ -1699,92 +1699,52 @@ function setCookie(name, value, days){
 <script defer>
 /* =======================================================================
    SITE SEARCH – Pannello risultati nella stessa pagina (ONE SCRIPT ONLY)
-   - Crea/aggiorna markup della search-box (input + clear + lente)
+   - Usa il markup già presente nel <header> (#siteSearch, #siteSearchInput, ecc.)
    - Apre il pannello automaticamente mentre digiti (debounce)
    - Carica search-index.json con fallback a SAMPLE_INDEX in locale
-   - Pannello accessibile (Esc per chiudere, click fuori per chiudere)
+   - Accessibile: Esc per chiudere, click fuori per chiudere
    ======================================================================= */
 (function () {
   // --------- UTILS ------------------------------------------------------
   function debounce(fn, wait) {
     let t;
-    return function (...args) {
-      clearTimeout(t);
-      t = setTimeout(() => fn.apply(this, args), wait);
-    };
+    return function (...args) { clearTimeout(t); t = setTimeout(() => fn.apply(this, args), wait); };
   }
-
   function escapeHtml(text) {
     if (!text) return '';
-    const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+    const map = { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' };
     return String(text).replace(/[&<>"']/g, c => map[c]);
   }
-
   function highlightText(text, query) {
     if (!text || !query) return escapeHtml(text);
     const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const rx = new RegExp(escaped, 'ig');
-    return escapeHtml(text).replace(rx, m => `<mark class="search-hit">${m}</mark>`);
+    return escapeHtml(text).replace(new RegExp(escaped,'ig'), m => `<mark class="search-hit">${m}</mark>`);
   }
 
-  // --------- DATI DI ESEMPIO (fallback in file:// o se JSON manca) ------
+  // --------- DATI DI ESEMPIO (fallback) ---------------------------------
   const SAMPLE_INDEX = [
-    { title: "Platone", url: "articoli/platone.html", desc: "Filosofo greco fondatore dell'Accademia e autore della teoria delle Idee", category: "Filosofia classica", tags: ["Platone","Idee","Accademia","Socrate"] },
-    { title: "Aristotele", url: "articoli/aristotele.html", desc: "Allievo di Platone e fondatore del Liceo, padre della logica formale", category: "Filosofia classica", tags: ["Aristotele","Logica","Liceo","Metafisica"] },
-    { title: "Talete", url: "Presocratici/talete.html", desc: "Primo filosofo della scuola di Mileto, noto per l'acqua come archè", category: "Presocratici", tags: ["Talete","Acqua","Mileto","Presocratici"] },
-    { title: "Karl Marx", url: "articoli/marx.html", desc: "Filosofo, economista e rivoluzionario; socialismo scientifico", category: "Filosofia moderna", tags: ["Marx","Comunismo","Materialismo","Capitalismo"] },
-    { title: "Marxismo", url: "articoli/marxismo.html", desc: "Corrente basata sul pensiero di Karl Marx", category: "Filosofia contemporanea", tags: ["Marxismo","Socialismo","Lotta di classe","Ideologia"] },
-    { title: "Nietzsche", url: "articoli/2nietzsche.html", desc: "Superuomo e morte di Dio", category: "Filosofia contemporanea", tags: ["Nietzsche","Oltreuomo","Volontà di potenza","Germania"] }
+    { title:"Platone", url:"articoli/platone.html", desc:"Filosofo greco fondatore dell'Accademia e autore della teoria delle Idee", category:"Filosofia classica", tags:["Platone","Idee","Accademia","Socrate"] },
+    { title:"Aristotele", url:"articoli/aristotele.html", desc:"Allievo di Platone e fondatore del Liceo, padre della logica formale", category:"Filosofia classica", tags:["Aristotele","Logica","Liceo","Metafisica"] },
+    { title:"Talete", url:"Presocratici/talete.html", desc:"Primo filosofo della scuola di Mileto, noto per l'acqua come archè", category:"Presocratici", tags:["Talete","Acqua","Mileto","Presocratici"] },
+    { title:"Karl Marx", url:"articoli/marx.html", desc:"Filosofo, economista e rivoluzionario; socialismo scientifico", category:"Filosofia moderna", tags:["Marx","Comunismo","Materialismo","Capitalismo"] },
+    { title:"Marxismo", url:"articoli/marxismo.html", desc:"Corrente basata sul pensiero di Karl Marx", category:"Filosofia contemporanea", tags:["Marxismo","Socialismo","Lotta di classe","Ideologia"] },
+    { title:"Nietzsche", url:"articoli/2nietzsche.html", desc:"Superuomo e morte di Dio", category:"Filosofia contemporanea", tags:["Nietzsche","Oltreuomo","Volontà di potenza","Germania"] }
   ];
 
   // --------- STATO ------------------------------------------------------
   let SEARCH_INDEX = null;
   let isLoading = false;
 
-  // --------- MARKUP: BOX DI RICERCA (solo selezione, nessuna creazione) ---
-const siteSearch = document.getElementById('siteSearch');
-if (!siteSearch) {
-  console.error('🔍 Search: #siteSearch non trovato nel DOM.');
-  return;
-}
+  // --------- MARKUP: SOLO SELEZIONE (nessuna creazione/innerHTML) -------
+  const siteSearch = document.getElementById('siteSearch');
+  if (!siteSearch) { console.error('🔍 Search: #siteSearch non trovato.'); return; }
 
-// Prendi riferimenti dagli elementi GIÀ presenti nel header
-const input = document.getElementById('siteSearchInput');
-const btn   = document.getElementById('siteSearchBtn');
-const clearInputBtn = document.getElementById('searchClearInput');
-
-if (!input || !btn) {
-  console.error('🔍 Search: input/btn mancanti dentro #siteSearch.');
-  return;
-}
-
-console.log('🔍 Search: UI ready (markup preesistente)');
-
-
-  // Scriviamo/aggiorniamo il contenuto della search-box (id standardizzati)
-  searchBox.innerHTML = `
-    <input id="siteSearchInput" type="search" placeholder="Cerca filosofi, concetti…" aria-label="Cerca nel sito">
-    <div class="search-controls">
-      <button id="searchClearInput" class="clear-input-btn" type="button" aria-label="Cancella testo" style="display:none;">
-        <i class="fas fa-times-circle" aria-hidden="true"></i>
-      </button>
-      <button id="siteSearchBtn" type="button" aria-label="Esegui ricerca">
-        <i class="fas fa-search" aria-hidden="true"></i>
-      </button>
-    </div>
-  `;
-
-  // Riferimenti FRESCHI (dopo aver scritto innerHTML)
   const input = document.getElementById('siteSearchInput');
   const btn   = document.getElementById('siteSearchBtn');
   const clearInputBtn = document.getElementById('searchClearInput');
 
-  if (!input || !btn) {
-    console.error('🔍 Search: input/btn mancanti. Interrompo.');
-    return;
-  }
-
-  console.log('🔍 Search: UI ready');
+  if (!input || !btn) { console.error('🔍 Search: input/btn mancanti dentro #siteSearch.'); return; }
+  console.log('🔍 Search: UI ready (markup preesistente)');
 
   // --------- PANNELLO RISULTATI -----------------------------------------
   let panel = document.getElementById('searchPanel');
@@ -1808,11 +1768,13 @@ console.log('🔍 Search: UI ready (markup preesistente)');
   const resultsEl = panel.querySelector('#searchResults');
   const clearBtn  = panel.querySelector('#searchClearBtn');
 
-  // --------- FUNZIONI DI APERTURA/CHIUSURA PANNELLO ---------------------
+  // --------- APERTURA/CHIUSURA -----------------------------------------
   function openResultsPanel() {
     if (panel.style.display !== 'block') {
       panel.style.display = 'block';
       panel.setAttribute('aria-hidden', 'false');
+      const toggleBtn = document.getElementById('siteSearchBtn');
+      if (toggleBtn) toggleBtn.setAttribute('aria-expanded','true');
       document.addEventListener('keydown', handleEscapeKey);
       document.addEventListener('click', handleOutsideClick, { capture: true });
       console.log('🔍 Search: Panel opened');
@@ -1822,73 +1784,45 @@ console.log('🔍 Search: UI ready (markup preesistente)');
     if (panel.style.display !== 'none') {
       panel.style.display = 'none';
       panel.setAttribute('aria-hidden', 'true');
+      const toggleBtn = document.getElementById('siteSearchBtn');
+      if (toggleBtn) toggleBtn.setAttribute('aria-expanded','false');
       document.removeEventListener('keydown', handleEscapeKey);
       document.removeEventListener('click', handleOutsideClick, { capture: true });
       console.log('🔍 Search: Panel closed');
     }
   }
-  function handleEscapeKey(e) {
-    if (e.key === 'Escape') {
-      closeResultsPanel();
-      input.focus();
-    }
-  }
-  function handleOutsideClick(e) {
-    if (!panel.contains(e.target) && !siteSearch.contains(e.target)) {
-      closeResultsPanel();
-    }
-  }
+  function handleEscapeKey(e) { if (e.key === 'Escape') { closeResultsPanel(); input.focus(); } }
+  function handleOutsideClick(e) { if (!panel.contains(e.target) && !siteSearch.contains(e.target)) closeResultsPanel(); }
 
   // --------- CARICAMENTO INDICE ----------------------------------------
   async function loadSearchIndex() {
     if (SEARCH_INDEX || isLoading) return SEARCH_INDEX;
-    isLoading = true;
-    console.log('🔍 Search: Loading index...');
-
+    isLoading = true; console.log('🔍 Search: Loading index...');
     try {
       if (location.protocol === 'file:') {
-        console.log('🔍 Search: file:// → uso SAMPLE_INDEX');
         SEARCH_INDEX = SAMPLE_INDEX;
       } else {
-        const candidates = ['/search-index.json', './search-index.json', 'search-index.json'];
+        const candidates = ['/search-index.json','./search-index.json','search-index.json'];
         for (const url of candidates) {
           try {
-            const res = await fetch(url, { cache: 'no-store' });
+            const res = await fetch(url, { cache:'no-store' });
             if (res.ok) {
               const json = await res.json();
-              if (Array.isArray(json) && json.length) {
-                SEARCH_INDEX = json;
-                console.log('🔍 Search: index caricato da', url, 'items:', json.length);
-                break;
-              }
+              if (Array.isArray(json) && json.length) { SEARCH_INDEX = json; break; }
             }
-          } catch {
-            /* continua con il prossimo */
-          }
+          } catch {/* next */}
         }
-        if (!SEARCH_INDEX) {
-          console.warn('🔍 Search: fallback a SAMPLE_INDEX');
-          SEARCH_INDEX = SAMPLE_INDEX;
-        }
+        if (!SEARCH_INDEX) SEARCH_INDEX = SAMPLE_INDEX;
       }
-    } finally {
-      isLoading = false;
-    }
+    } finally { isLoading = false; }
     return SEARCH_INDEX;
   }
 
   // --------- NORMALIZZAZIONE E RANKING ---------------------------------
-  function normalizeUrl(url) {
-    if (!url) return '#';
-    if (url.startsWith('http') || url.startsWith('/')) return url;
-    return url; // mantieni relativo
-  }
+  function normalizeUrl(url) { if (!url) return '#'; if (url.startsWith('http') || url.startsWith('/')) return url; return url; }
   function normalizeTags(tags, category) {
-    const arr = [];
-    if (Array.isArray(tags)) arr.push(...tags);
-    else if (typeof tags === 'string' && tags.trim()) arr.push(tags.trim());
-    if (category) arr.push(category);
-    return [...new Set(arr)];
+    const arr = []; if (Array.isArray(tags)) arr.push(...tags); else if (typeof tags==='string' && tags.trim()) arr.push(tags.trim());
+    if (category) arr.push(category); return [...new Set(arr)];
   }
   function normalizeIndexData(raw) {
     const arr = Array.isArray(raw) ? raw : [];
@@ -1900,37 +1834,25 @@ console.log('🔍 Search: UI ready (markup preesistente)');
       source: item.source || item.section || item.category || ''
     }));
   }
-
   function calculateRelevanceScore(query, item) {
     const q = query.toLowerCase();
-    const title = (item.title || '').toLowerCase();
-    const desc  = (item.description || '').toLowerCase();
-    const tags  = (item.tags || []).join(' ').toLowerCase();
-    const src   = (item.source || '').toLowerCase();
-
-    let score = 0;
-    if (title.includes(q)) score += 6;     // titolo prioritario
-    if (tags.includes(q))  score += 3;
-    if (src.includes(q))   score += 2;
-    if (desc.includes(q))  score += 1;
+    const title = (item.title||'').toLowerCase();
+    const desc  = (item.description||'').toLowerCase();
+    const tags  = (item.tags||[]).join(' ').toLowerCase();
+    const src   = (item.source||'').toLowerCase();
+    let score = 0; if (title.includes(q)) score += 6; if (tags.includes(q)) score += 3; if (src.includes(q)) score += 2; if (desc.includes(q)) score += 1;
     return score;
   }
 
-  // --------- RENDER RISULTATI -------------------------------------------
+  // --------- RENDER -----------------------------------------------------
   function renderSearchResults(query, results) {
     if (!results.length) {
-      resultsEl.innerHTML = `
-        <div class="result"><div class="result-desc">Nessun risultato per <strong>${escapeHtml(query)}</strong>.</div></div>
-      `;
-      openResultsPanel();
-      return;
+      resultsEl.innerHTML = `<div class="result"><div class="result-desc">Nessun risultato per <strong>${escapeHtml(query)}</strong>.</div></div>`;
+      openResultsPanel(); return;
     }
-
     resultsEl.innerHTML = results.map(item => `
       <div class="result">
-        <a class="result-title" href="${item.url}" rel="noopener">
-          <h4>${highlightText(item.title, query)}</h4>
-        </a>
+        <a class="result-title" href="${item.url}" rel="noopener"><h4>${highlightText(item.title, query)}</h4></a>
         ${item.tags?.length ? `<div class="result-tags">${item.tags.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join(' ')}</div>` : ''}
         <div class="result-desc">${highlightText(item.description, query)}</div>
         ${item.source ? `<div class="result-source">Fonte: ${escapeHtml(item.source)}</div>` : ''}
@@ -1939,125 +1861,68 @@ console.log('🔍 Search: UI ready (markup preesistente)');
     openResultsPanel();
   }
 
-  // --------- ESECUZIONE RICERCA ----------------------------------------
+  // --------- SEARCH -----------------------------------------------------
   async function performSearch(rawQuery) {
-    const query = String(rawQuery || '').trim();
-    console.log('🔍 Search: performSearch', query);
-    if (!query) {
-      input.focus();
-      return;
-    }
-    // feedback immediato + apertura pannello
+    const query = String(rawQuery||'').trim();
+    if (!query) { input.focus(); return; }
     resultsEl.innerHTML = `<div class="result"><div class="result-desc">Cerco “${escapeHtml(query)}”...</div></div>`;
     openResultsPanel();
-
     const data = await loadSearchIndex();
-    const norm = normalizeIndexData(data);
-
-    const ranked = norm
+    const ranked = normalizeIndexData(data)
       .map(item => ({ item, score: calculateRelevanceScore(query, item) }))
       .filter(x => x.score > 0)
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 30)
+      .sort((a,b) => b.score - a.score)
+      .slice(0,30)
       .map(x => x.item);
-
     renderSearchResults(query, ranked);
   }
 
   // --------- CLEAR / TOGGLE ---------------------------------------------
-  function toggleClearButton() {
-    if (!clearInputBtn) return;
-    clearInputBtn.style.display = input.value.trim() ? 'flex' : 'none';
-  }
-  function clearInput() {
-    input.value = '';
-    toggleClearButton();
-    input.focus();
-    closeResultsPanel();
-  }
-  function clearSearch() {
-    input.value = '';
-    toggleClearButton();
-    closeResultsPanel();
-    input.focus();
-  }
+  function toggleClearButton() { if (!clearInputBtn) return; clearInputBtn.style.display = input.value.trim() ? 'flex' : 'none'; }
+  function clearInput() { input.value=''; toggleClearButton(); input.focus(); closeResultsPanel(); }
+  function clearSearch() { input.value=''; toggleClearButton(); closeResultsPanel(); input.focus(); }
 
   // --------- EVENTI -----------------------------------------------------
   const debouncedSearch = debounce(q => performSearch(q), 200);
 
-  // Digita → cerca (>= 2 char) e apri pannello automaticamente
   input.addEventListener('input', (e) => {
     const q = e.target.value.trim();
     toggleClearButton();
-    if (q.length >= 2) debouncedSearch(q);
-    else closeResultsPanel();
+    if (q.length >= 2) debouncedSearch(q); else closeResultsPanel();
   });
-
-  // Focus → se già c’è testo (>=2) mostra risultati aggiornati
   input.addEventListener('focus', () => {
     const q = input.value.trim();
     if (q.length >= 2) performSearch(q);
   });
-
-  // Click sulla lente
   btn.addEventListener('click', () => performSearch(input.value));
-
-  // Invio nell’input
-  input.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      performSearch(input.value);
-    }
-  });
-
-  // Croce dentro l’input
+  input.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); performSearch(input.value); }});
   if (clearInputBtn) {
     input.addEventListener('focus', toggleClearButton);
     clearInputBtn.addEventListener('click', clearInput);
   }
-
-  // Pulsante "Cancella" nel pannello
   if (clearBtn) {
-    clearBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      clearSearch();
-    });
+    clearBtn.addEventListener('click', (e) => { e.stopPropagation(); clearSearch(); });
   }
-
-  // Shortcut: "/" per focus
   window.addEventListener('keydown', (e) => {
     if (e.key === '/' && !e.metaKey && !e.ctrlKey && !e.altKey) {
       const tag = (document.activeElement?.tagName || '').toUpperCase();
-      if (!/INPUT|TEXTAREA|SELECT/.test(tag)) {
-        e.preventDefault();
-        input.focus();
-      }
+      if (!/INPUT|TEXTAREA|SELECT/.test(tag)) { e.preventDefault(); input.focus(); }
     }
   });
-
-  // Parametro ?q= iniziale
-  (function initFromUrlParams() {
-    try {
-      const urlParams = new URLSearchParams(location.search);
-      const q = urlParams.get('q');
-      if (q && !input.value) {
-        input.value = q;
-        performSearch(q);
-      }
-    } catch (err) {
-      console.warn('Search: URL params error', err);
-    }
+  (function initFromUrlParams(){
+    try { const p = new URLSearchParams(location.search); const q = p.get('q'); if (q && !input.value) { input.value=q; performSearch(q); } }
+    catch(err){ console.warn('Search: URL params error', err); }
   })();
 
-  // Espongo per test manuali in console
+  // Test hooks
   window.__testSearch  = performSearch;
   window.__clearSearch = clearSearch;
 
-  // Stato iniziale
   toggleClearButton();
   console.log('🔍 Search: Ready! Esempio: __testSearch("Marx")');
 })();
 </script>
+
 
 
 </body>
