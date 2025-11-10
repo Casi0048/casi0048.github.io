@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I Sofisti: Maestri di Retorica - Filosofia Antica Greca | Protagora, Gorgia</title>
+    <meta name="description" content="Scopri i Sofisti: maestri di retorica nell'antica Grecia. Protagora, Gorgia e la rivoluzione del pensiero umanistico. Arte persuasiva e relativismo conoscitivo.">
+    <meta name="keywords" content="sofisti, retorica, Protagora, Gorgia, filosofia antica, persuasione, relativismo, filosofia greca, insegnamento">
+    <meta name="author" content="Enciclopedia Filosofica">
+    <style>
+        :root {
+            --filosofico-bg: #f5f1e8;
+            --filosofico-text: #2c1810;
+            --filosofico-accent: #8B4513;
+            --filosofico-secondary: #d7ccc8;
+            --filosofico-header: #5d4037;
+            
+            --contemplativo-bg: #f0f7ff;
+            --contemplativo-text: #1a3c5a;
+            --contemplativo-accent: #2c5aa0;
+            --contemplativo-secondary: #c5d5f5;
+            --contemplativo-header: #1e3a5f;
+            
+            --notturno-bg: #1a1a2e;
+            --notturno-text: #e6e6ff;
+            --notturno-accent: #9b59b6;
+            --notturno-secondary: #2d3746;
+            --notturno-header: #6b46c1;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
+        }
+        
+        body {
+            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+            line-height: 1.7;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: var(--filosofico-bg);
+            color: var(--filosofico-text);
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" opacity="0.03"><path fill="%238B4513" d="M50,5 L60,40 L95,40 L65,60 L75,95 L50,75 L25,95 L35,60 L5,40 L40,40 Z"/></svg>');
+        }
+        
+        body.contemplativo {
+            background-color: var(--contemplativo-bg);
+            color: var(--contemplativo-text);
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" opacity="0.03"><circle fill="%232c5aa0" cx="50" cy="50" r="40"/></svg>');
+        }
+        
+        body.notturno {
+            background-color: var(--notturno-bg);
+            color: var(--notturno-text);
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" opacity="0.03"><path fill="%239b59b6" d="M50,10 A40,40 0 1,0 50,90 A40,40 0 1,0 50,10 Z M50,30 A20,20 0 1,1 50,70 A20,20 0 1,1 50,30 Z"/></svg>');
+        }
+        
+        header {
+            text-align: center;
+            padding: 40px 0;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        header::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 20%;
+            width: 60%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--filosofico-accent), transparent);
+        }
+        
+        .contemplativo header::after {
+            background: linear-gradient(90deg, transparent, var(--contemplativo-accent), transparent);
+        }
+        
+        .notturno header::after {
+            background: linear-gradient(90deg, transparent, var(--notturno-accent), transparent);
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--filosofico-header);
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .contemplativo h1 {
+            color: var(--contemplativo-header);
+        }
+        
+        .notturno h1 {
+            color: var(--notturno-header);
+        }
+        
+        .subtitle {
+            font-size: 1.4rem;
+            font-style: italic;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto 20px;
+        }
+        
+        .contemplativo .subtitle {
+            color: #4a6b8a;
+        }
+        
+        .notturno .subtitle {
+            color: #a0a0cc;
+        }
+        
+        .intro-text {
+            max-width: 900px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+            text-align: center;
+            color: #555;
+        }
+        
+        .contemplativo .intro-text {
+            color: #4a5c6e;
+        }
+        
+        .notturno .intro-text {
+            color: #b8b8d6;
+        }
+        
+        .theme-selector {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .theme-btn {
+            padding: 12px 24px;
+            border: 2px solid;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .theme-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .theme-filosofico {
+            background-color: var(--filosofico-accent);
+            color: white;
+            border-color: var(--filosofico-accent);
+        }
+        
+        .theme-contemplativo {
+            background-color: var(--contemplativo-accent);
+            color: white;
+            border-color: var(--contemplativo-accent);
+        }
+        
+        .theme-notturno {
+            background-color: var(--notturno-accent);
+            color: white;
+            border-color: var(--notturno-accent);
+        }
+        
+        .toc {
+            background-color: rgba(0,0,0,0.05);
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .contemplativo .toc {
+            background-color: rgba(44, 90, 160, 0.08);
+        }
+        
+        .notturno .toc {
+            background-color: rgba(155, 89, 182, 0.08);
+        }
+        
+        .toc h2 {
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.8rem;
+            color: var(--filosofico-header);
+        }
+        
+        .contemplativo .toc h2 {
+            color: var(--contemplativo-header);
+        }
+        
+        .notturno .toc h2 {
+            color: var(--notturno-header);
+        }
+        
+        .toc-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .toc-section {
+            padding: 15px;
+            border-left: 3px solid var(--filosofico-accent);
+            background-color: rgba(255,255,255,0.7);
+        }
+        
+        .contemplativo .toc-section {
+            border-left-color: var(--contemplativo-accent);
+            background-color: rgba(255,255,255,0.8);
+        }
+        
+        .notturno .toc-section {
+            border-left-color: var(--notturno-accent);
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        .toc-section h3 {
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .toc-section ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .toc-section li {
+            margin-bottom: 8px;
+            padding-left: 15px;
+            position: relative;
+        }
+        
+        .toc-section li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--filosofico-accent);
+        }
+        
+        .contemplativo .toc-section li::before {
+            color: var(--contemplativo-accent);
+        }
+        
+        .notturno .toc-section li::before {
+            color: var(--notturno-accent);
+        }
+        
+        .toc-section a {
+            text-decoration: none;
+            color: inherit;
+            transition: color 0.3s;
+        }
+        
+        .toc-section a:hover {
+            text-decoration: underline;
+        }
+        
+        section {
+            margin-bottom: 50px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            background-color: rgba(255,255,255,0.8);
+        }
+        
+        .contemplativo section {
+            background-color: rgba(255,255,255,0.85);
+        }
+        
+        .notturno section {
+            background-color: rgba(40, 40, 60, 0.8);
+        }
+        
+        .section-header {
+            padding: 25px;
+            background-color: var(--filosofico-accent);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .contemplativo .section-header {
+            background-color: var(--contemplativo-accent);
+        }
+        
+        .notturno .section-header {
+            background-color: var(--notturno-accent);
+        }
+        
+        h2 {
+            font-size: 2rem;
+            margin: 0;
+        }
+        
+        .toggle-btn {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.5);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .toggle-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .section-content {
+            padding: 30px;
+            overflow: hidden;
+            max-height: 5000px;
+            transition: max-height 0.8s ease, padding 0.5s ease;
+        }
+        
+        .section-content.collapsed {
+            max-height: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+        
+        .philosopher-card {
+            background-color: rgba(0,0,0,0.03);
+            border-radius: 8px;
+            padding: 25px;
+            margin: 25px 0;
+            border-left: 5px solid var(--filosofico-accent);
+        }
+        
+        .contemplativo .philosopher-card {
+            background-color: rgba(44, 90, 160, 0.08);
+            border-left-color: var(--contemplativo-accent);
+        }
+        
+        .notturno .philosopher-card {
+            background-color: rgba(155, 89, 182, 0.08);
+            border-left-color: var(--notturno-accent);
+        }
+        
+        .philosopher-name {
+            font-weight: bold;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--filosofico-accent);
+        }
+        
+        .contemplativo .philosopher-name {
+            color: var(--contemplativo-accent);
+        }
+        
+        .notturno .philosopher-name {
+            color: var(--notturno-accent);
+        }
+        
+        .philosopher-period {
+            font-style: italic;
+            margin-bottom: 15px;
+            color: #666;
+        }
+        
+        .contemplativo .philosopher-period {
+            color: #5d7a9c;
+        }
+        
+        .notturno .philosopher-period {
+            color: #a0a0cc;
+        }
+        
+        .quote {
+            font-style: italic;
+            margin: 20px 0;
+            padding: 20px;
+            border-left: 3px solid;
+            border-color: var(--filosofico-accent);
+            background-color: rgba(255,255,255,0.7);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .contemplativo .quote {
+            border-color: var(--contemplativo-accent);
+            background-color: rgba(255,255,255,0.8);
+        }
+        
+        .notturno .quote {
+            border-color: var(--notturno-accent);
+            background-color: rgba(50, 50, 70, 0.5);
+        }
+        
+        .quote-source {
+            text-align: right;
+            margin-top: 10px;
+            font-style: normal;
+            font-weight: bold;
+        }
+        
+        .concept-box {
+            background-color: var(--filosofico-secondary);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .contemplativo .concept-box {
+            background-color: var(--contemplativo-secondary);
+        }
+        
+        .notturno .concept-box {
+            background-color: var(--notturno-secondary);
+        }
+        
+        .concept-title {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--filosofico-accent);
+        }
+        
+        .contemplativo .concept-title {
+            color: var(--contemplativo-accent);
+        }
+        
+        .notturno .concept-title {
+            color: var(--notturno-accent);
+        }
+        
+        .rhetoric-techniques {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+        
+        .technique-card {
+            background: rgba(255,255,255,0.7);
+            border-radius: 8px;
+            padding: 20px;
+            border-top: 4px solid var(--filosofico-accent);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+        
+        .contemplativo .technique-card {
+            background: rgba(255,255,255,0.8);
+            border-top-color: var(--contemplativo-accent);
+        }
+        
+        .notturno .technique-card {
+            background: rgba(60, 60, 80, 0.5);
+            border-top-color: var(--notturno-accent);
+        }
+        
+        .technique-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--filosofico-accent);
+            font-size: 1.1rem;
+        }
+        
+        .contemplativo .technique-title {
+            color: var(--contemplativo-accent);
+        }
+        
+        .notturno .technique-title {
+            color: var(--notturno-accent);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 60px;
+            border-top: 1px solid;
+            border-color: inherit;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            h2 {
+                font-size: 1.7rem;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .theme-selector {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .theme-btn {
+                width: 80%;
+                justify-content: center;
+            }
+            
+            .toc-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .rhetoric-techniques {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Animazioni */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        section {
+            animation: fadeIn 0.8s ease;
+        }
+        
+        /* Stile per icone (usando caratteri Unicode) */
+        .icon {
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body class="filosofico">
+    <header>
+        <h1>I Sofisti: Maestri di Retorica</h1>
+        <p class="subtitle">I primi professionisti dell'insegnamento e dell'arte persuasiva nell'antica Grecia</p>
+        <p class="intro-text">Nel V secolo a.C., i Sofisti rivoluzionarono il pensiero greco spostando l'attenzione dalla physis (natura) all'anthropos (uomo), ponendo le basi per la riflessione umanistica e sviluppando l'arte della persuasione come strumento di successo nella polis democratica.</p>
+        
+        <div class="theme-selector">
+            <button class="theme-btn theme-filosofico" data-theme="filosofico">
+                <span class="icon">🏛️</span> Tema Filosofico
+            </button>
+            <button class="theme-btn theme-contemplativo" data-theme="contemplativo">
+                <span class="icon">🧠</span> Tema Contemplativo
+            </button>
+            <button class="theme-btn theme-notturno" data-theme="notturno">
+                <span class="icon">🌙</span> Tema Notturno
+            </button>
+        </div>
+    </header>
+    
+    <nav class="toc">
+        <h2>Indice: Il Mondo dei Sofisti</h2>
+        <div class="toc-container">
+            <div class="toc-section">
+                <h3>Contesto Storico</h3>
+                <ul>
+                    <li><a href="#contesto">La Grecia del V secolo a.C.</a></li>
+                    <li><a href="#democrazia">Democrazia e bisogno di persuasione</a></li>
+                    <li><a href="#professione">La professione del sofista</a></li>
+                </ul>
+            </div>
+            <div class="toc-section">
+                <h3>I Grandi Sofisti</h3>
+                <ul>
+                    <li><a href="#protagora">Protagora di Abdera</a></li>
+                    <li><a href="#gorgia">Gorgia di Leontini</a></li>
+                    <li><a href="#prodico">Prodico di Ceo</a></li>
+                    <li><a href="#ippia">Ippia di Elide</a></li>
+                </ul>
+            </div>
+            <div class="toc-section">
+                <h3>Dottrine e Metodi</h3>
+                <ul>
+                    <li><a href="#relativismo">Relativismo conoscitivo</a></li>
+                    <li><a href="#retorica">Arte retorica e persuasione</a></li>
+                    <li><a href="#educazione">Metodi educativi</a></li>
+                    <li><a href="#critiche">Critiche e opposizioni</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <main>
+        <section id="contesto">
+            <div class="section-header">
+                <h2>Contesto Storico e Sociale</h2>
+                <button class="toggle-btn">
+                    <span class="icon">▼</span> Mostra meno
+                </button>
+            </div>
+            <div class="section-content">
+                <p>I Sofisti emersero nella Grecia del V secolo a.C., un periodo di straordinaria fioritura culturale e politica. L'affermazione della democrazia ateniese, in particolare dopo le riforme di Pericle, creò le condizioni ideali per lo sviluppo della loro attività.</p>
+                
+                <p>In una società dove il successo politico e giudiziario dipendeva dalla capacità di persuadere l'assemblea o la giuria, l'arte della retorica divenne un bene prezioso. I Sofisti risposero a questa esigenza offrendo un'educazione pratica finalizzata al successo nella vita pubblica.</p>
+                
+                <div class="concept-box">
+                    <div class="concept-title">Caratteristiche del contesto sofistico</div>
+                    <ul>
+                        <li>Affermazione della democrazia ateniese</li>
+                        <li>Crescita dell'individualismo e della mobilità sociale</li>
+                        <li>Incontro tra diverse culture durante le guerre persiane</li>
+                        <li>Importanza crescente della parola nelle istituzioni democratiche</li>
+                        <li>Passaggio da un'economia agricola a una commerciale</li>
+                    </ul>
+                </div>
+                
+                <p>I Sofisti rappresentano quindi la risposta a un bisogno sociale preciso: formare i cittadini alle nuove esigenze della vita democratica, dove la capacità di parlare in pubblico e persuadere gli altri diventava fondamentale per il successo personale e politico.</p>
+            </div>
+        </section>
+        
+        <section id="protagora">
+            <div class="section-header">
+                <h2>Protagora di Abdera</h2>
+                <button class="toggle-btn">
+                    <span class="icon">▼</span> Mostra meno
+                </button>
+            </div>
+            <div class="section-content">
+                <div class="philosopher-card">
+                    <div class="philosopher-name">Protagora (c. 490-420 a.C.)</div>
+                    <div class="philosopher-period">Abdera, V secolo a.C.</div>
+                    <p>Considerato il primo e più importante sofista, Protagora è celebre per la sua affermazione che "l'uomo è misura di tutte le cose". Viaggiò per tutta la Grecia insegnando retorica e arte politica, accumulando una notevole fortuna.</p>
+                    
+                    <p>Fu amico di Pericle e incaricato di redigere la costituzione per la colonia panellenica di Turi in Magna Grecia. La sua opera più importante, "Sugli dèi", iniziava con un'affermazione scettica sulla possibilità di conoscere gli dèi.</p>
+                </div>
+                
+                <h3>Il Relativismo Protagoreo</h3>
+                <p>La famosa massima di Protagora - "L'uomo è misura di tutte le cose, di quelle che sono in quanto sono, di quelle che non sono in quanto non sono" - esprime un radicale relativismo conoscitivo. Per il sofista di Abdera, non esiste una verità assoluta, ma ogni individuo percepisce la realtà secondo le proprie sensazioni e opinioni.</p>
+                
+                <div class="quote">
+                    "L'uomo è misura di tutte le cose, di quelle che sono in quanto sono, di quelle che non sono in quanto non sono"
+                    <div class="quote-source">— Protagora, fr. 1</div>
+                </div>
+                
+                <div class="quote">
+                    "Riguardo agli dèi, non ho modo di sapere se ci siano o non ci siano, né quale sia il loro aspetto: troppe sono le difficoltà che impediscono di saperlo, sia l'oscurità dell'argomento sia la brevità della vita umana"
+                    <div class="quote-source">— Protagora, Sugli dèi</div>
+                </div>
+                
+                <h3>L'Insegnamento della Virtù</h3>
+                <p>Protagora sosteneva che la virtù (areté) politica, necessaria per essere buoni cittadini, potesse essere insegnata. Contrariamente all'opinione tradizionale che considerava la virtù una qualità innata delle classi aristocratiche, egli affermava che tutti potevano apprendere l'arte di governare e di essere governati.</p>
+                
+                <p>Il suo insegnamento si concentrava sull'antilogia, la capacità di sostenere sia la tesi che l'antitesi su qualsiasi argomento, sviluppando così l'abilità di confutare le opinioni avverse e difendere le proprie.</p>
+            </div>
+        </section>
+        
+        <section id="gorgia">
+            <div class="section-header">
+                <h2>Gorgia di Leontini</h2>
+                <button class="toggle-btn">
+                    <span class="icon">▼</span> Mostra meno
+                </button>
+            </div>
+            <div class="section-content">
+                <div class="philosopher-card">
+                    <div class="philosopher-name">Gorgia (c. 483-375 a.C.)</div>
+                    <div class="philosopher-period">Leontini, Sicilia - V/IV secolo a.C.</div>
+                    <p>Gorgia portò la retorica siciliana ad Atene, dove ottenne un enorme successo. Celebre per il suo stile oratorio ricco di figure retoriche, antitesi e parallelismi, fu maestro nell'arte della persuasione fine a se stessa.</p>
+                    
+                    <p>A differenza di Protagora, Gorgia non si proponeva di insegnare la virtù, ma semplicemente l'arte di persuadere. La sua famosa ambasciata ad Atene nel 427 a.C. dimostrò l'efficacia della retorica nell'influenzare le decisioni politiche.</p>
+                </div>
+                
+                <h3>Le Tre Tesi Sull'Essere</h3>
+                <p>Nell'opera "Sul non-essere o sulla natura", Gorgia sviluppa tre tesi radicali che costituiscono una critica serrata alla filosofia eleatica:</p>
+                
+                <ol>
+                    <li>Nulla esiste</li>
+                    <li>Se anche qualcosa esistesse, non sarebbe conoscibile</li>
+                    <li>Se anche fosse conoscibile, non sarebbe comunicabile</li>
+                </ol>
+                
+                <p>Queste tesi, apparentemente paradossali, dimostrano la potenza del logos nel ribaltare qualsiasi certezza e nel sostenere qualsiasi posizione, anche la più incredibile.</p>
+                
+                <div class="quote">
+                    "La parola è un potente signore che, con un corpo piccolissimo e del tutto invisibile, compie le opere più divine"
+                    <div class="quote-source">— Gorgia, Encomio di Elena</div>
+                </div>
+                
+                <h3>La Retorica Come Arte della Persuasione</h3>
+                <p>Per Gorgia, la retorica è l'arte di creare persuasione attraverso il discorso. Nell'"Encomio di Elena", egli difende la figura mitologica di Elena di Troia sostenendo che, se fosse fuggita con Paride, avrebbe potuto essere stata persuasa dal discorso, che ha un potere pari alla forza fisica o all'amore.</p>
+                
+                <p>La persuasione retorica, secondo Gorgia, agisce sull'anima come i farmaci sul corpo: può curare o avvelenare, a seconda di come viene utilizzata.</p>
+            </div>
+        </section>
+        
+        <section id="retorica">
+            <div class="section-header">
+                <h2>L'Arte Retorica dei Sofisti</h2>
+                <button class="toggle-btn">
+                    <span class="icon">▼</span> Mostra meno
+                </button>
+            </div>
+            <div class="section-content">
+                <p>I Sofisti svilupparono sistematicamente l'arte della retorica, trasformandola da pratica spontanea in tecnica consapevole. La loro insegnamento si basava su metodi pratici finalizzati all'efficacia persuasiva immediata.</p>
+                
+                <h3>Tecniche e Strumenti Retorici</h3>
+                
+                <div class="rhetoric-techniques">
+                    <div class="technique-card">
+                        <div class="technique-title">Antilogia (Disputa)</div>
+                        <p>Capacità di sostenere con uguale forza argomentativa sia una tesi che il suo contrario, dimostrando la relatività di ogni posizione.</p>
+                    </div>
+                    
+                    <div class="technique-card">
+                        <div class="technique-title">Dissoi Logoi (Discorsi Doppi)</div>
+                        <p>Esercizio che consiste nell'affrontare sistematicamente un problema da punti di vista opposti, sviluppando argomenti pro e contro.</p>
+                    </div>
+                    
+                    <div class="technique-card">
+                        <div class="technique-title">Eristica (Arte della Contesa)</div>
+                        <p>Tecnica di disputa finalizzata alla vittoria nell'agone dialettico, spesso attraverso l'uso di argomenti capziosi e ingannevoli.</p>
+                    </div>
+                    
+                    <div class="technique-card">
+                        <div class="technique-title">Protrettica (Esortazione)</div>
+                        <p>Discorso di esortazione che mira a persuadere l'ascoltatore ad abbracciare una certa condotta o a intraprendere lo studio della filosofia.</p>
+                    </div>
+                </div>
+                
+                <h3>I Discorsi Modello</h3>
+                <p>I Sofisti componevano discorsi modello (logoi epitádeioi) che gli allievi potevano imitare e adattare. Questi discorsi affrontavano temi tradizionali in modo innovativo, come:</p>
+                
+                <ul>
+                    <li><strong>Encomi ed etopea:</strong> Elogi di personaggi reali o immaginari e discorsi in carattere</li>
+                    <li><strong>Apologie:</strong> Discorsi difensivi in processi fittizi</li>
+                    <li><strong>Comparazioni (synkriseis):</strong> Confronti tra personaggi, istituzioni o valori</li>
+                    <li><strong>Declamazioni su temi paradossali:</strong> Come l'encomio di personaggi negativi o di concetti astratti</li>
+                </ul>
+                
+                <div class="concept-box">
+                    <div class="concept-title">Le Innovazioni dei Sofisti</div>
+                    <ul>
+                        <li>Sviluppo della prosa artistica come genere autonomo</li>
+                        <li>Analisi sistematica delle figure retoriche</li>
+                        <li>Elaborazione di tecniche di argomentazione</li>
+                        <li>Attenzione alla psicologia dell'ascoltatore</li>
+                        <li>Importanza dell'opportunità (kairos) nel discorso</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <section id="critiche">
+            <div class="section-header">
+                <h2>Critiche e Opposizioni</h2>
+                <button class="toggle-btn">
+                    <span class="icon">▼</span> Mostra meno
+                </button>
+            </div>
+            <div class="section-content">
+                <p>I Sofisti incontrarono forti opposizioni da parte dei filosofi tradizionali, in particolare da Socrate e Platone, che li accusavano di corrompere i giovani e di sostituire la ricerca della verità con l'arte dell'apparenza.</p>
+                
+                <h3>Le Accuse di Socrate e Platone</h3>
+                <p>Platone, attraverso la voce di Socrate nei suoi dialoghi, sviluppa una critica sistematica alla sofistica, accusandola di:</p>
+                
+                <ul>
+                    <li><strong>Relativismo conoscitivo:</strong> Negare l'esistenza di verità assolute</li>
+                    <li><strong>Opportunismo morale:</strong> Insegnare a sostenere qualsiasi tesi, indipendentemente dalla sua verità</li>
+                    <li><strong>Mercificazione del sapere:</strong> Vendere l'insegnamento come una merce</li>
+                    <li><strong>Eristica:</strong> Privilegiare la vittoria nella disputa sulla ricerca della verità</li>
+                    <li><strong>Apparenza versus realtà:</strong> Preferire il persuasivo al vero</li>
+                </ul>
+                
+                <div class="quote">
+                    "I sofisti sono cacciatori di giovani ricchi e illustri, e dopo averli catturati, li smerciano per denaro"
+                    <div class="quote-source">— Platone, Sofista</div>
+                </div>
+                
+                <h3>La Difesa dei Sofisti</h3>
+                <p>Nonostante le critiche, i Sofisti rappresentarono un momento fondamentale nello sviluppo del pensiero occidentale:</p>
+                
+                <div class="concept-box">
+                    <div class="concept-title">Contributi Positivi dei Sofisti</div>
+                    <ul>
+                        <li>Sviluppo della riflessione sull'uomo e sulla società</li>
+                        <li>Democratizzazione dell'educazione superiore</li>
+                        <li>Analisi del linguaggio e delle sue potenzialità persuasive</li>
+                        <li>Critica dei pregiudizi tradizionali</li>
+                        <li>Fondazione delle scienze umane e sociali</li>
+                        <li>Sviluppo del pensiero critico e della capacità argomentativa</li>
+                    </ul>
+                </div>
+                
+                <p>La rivalutazione moderna dei Sofisti ha messo in luce il loro ruolo progressista nell'antichità e la loro importanza come precursori della filosofia del linguaggio, dell'antropologia culturale e delle scienze della comunicazione.</p>
+                
+                <p>I Sofisti rappresentano dunque non solo maestri di retorica, ma pensatori che hanno contribuito in modo decisivo alla nascita della riflessione umanistica, spostando l'attenzione dalla natura all'uomo e dalla verità assoluta alla comunicazione efficace.</p>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="footer-content">
+            <p>Enciclopedia Filosofica - Articolo sui Sofisti: Maestri di Retorica</p>
+            <p>Realizzato per scopi didattici e divulgativi | Fonti: Platone, Gorgia, Guthrie, Kerferd, Untersteiner</p>
+        </div>
+    </footer>
+
+    <script>
+        // Gestione dei bottoni mostra più/mostra meno
+        document.querySelectorAll('.toggle-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const sectionContent = this.parentElement.nextElementSibling;
+                const isCollapsed = sectionContent.classList.contains('collapsed');
+                
+                if (isCollapsed) {
+                    sectionContent.classList.remove('collapsed');
+                    this.innerHTML = '<span class="icon">▼</span> Mostra meno';
+                } else {
+                    sectionContent.classList.add('collapsed');
+                    this.innerHTML = '<span class="icon">►</span> Mostra più';
+                }
+            });
+        });
+        
+        // Gestione dei temi di lettura
+        document.querySelectorAll('.theme-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const theme = this.getAttribute('data-theme');
+                document.body.className = theme;
+                
+                // Aggiorna tutti i bottoni di toggle per mantenere la coerenza
+                document.querySelectorAll('.toggle-btn').forEach(btn => {
+                    const content = btn.parentElement.nextElementSibling;
+                    if (content.classList.contains('collapsed')) {
+                        btn.innerHTML = '<span class="icon">►</span> Mostra più';
+                    } else {
+                        btn.innerHTML = '<span class="icon">▼</span> Mostra meno';
+                    }
+                });
+            });
+        });
+        
+        // Inizializzazione: tutte le sezioni aperte
+        document.querySelectorAll('.toggle-btn').forEach(button => {
+            button.innerHTML = '<span class="icon">▼</span> Mostra meno';
+        });
+        
+        // Smooth scroll per i link dell'indice
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 20,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
