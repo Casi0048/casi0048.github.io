@@ -2116,11 +2116,7 @@ function setCookie(name, value, days){
 
 <script defer>
 /* =======================================================================
-   SITE SEARCH – Pannello risultati nella stessa pagina (ONE SCRIPT ONLY)
-   - Usa il markup già presente nel <header> (#siteSearch, #siteSearchInput, ecc.)
-   - Apre il pannello automaticamente mentre digiti (debounce)
-   - Carica search-index.json con fallback a SAMPLE_INDEX in locale
-   - Accessibile: Esc per chiudere, click fuori per chiudere
+   SITE SEARCH – VERSIONE CORRETTA (Nessun pannello automatico)
    ======================================================================= */
 (function () {
   // --------- UTILS ------------------------------------------------------
@@ -2134,16 +2130,10 @@ function setCookie(name, value, days){
     return String(text).replace(/[&<>"']/g, c => map[c]);
   }
   function highlightText(text, query) {
-  if (!text || !query) return escapeHtml(text);
-  try {
+    if (!text || !query) return escapeHtml(text);
     const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    return escapeHtml(text).replace(new RegExp(escaped, 'ig'), m => 
-      `<mark class="search-hit">${escapeHtml(m)}</mark>`
-    );
-  } catch (e) {
-    return escapeHtml(text); // Fallback sicuro
+    return escapeHtml(text).replace(new RegExp(escaped,'ig'), m => `<mark class="search-hit">${m}</mark>`);
   }
-}
 
   // --------- DATI DI ESEMPIO (fallback) ---------------------------------
   const SAMPLE_INDEX = [
@@ -2158,6 +2148,7 @@ function setCookie(name, value, days){
   // --------- STATO ------------------------------------------------------
   let SEARCH_INDEX = null;
   let isLoading = false;
+  let isPanelOpen = false;
 
   // --------- MARKUP: SOLO SELEZIONE (nessuna creazione/innerHTML) -------
   const siteSearch = document.getElementById('siteSearch');
@@ -2177,8 +2168,7 @@ function setCookie(name, value, days){
     panel.id = 'searchPanel';
     panel.className = 'search-panel';
     panel.setAttribute('aria-hidden', 'true');
-   panel.style.display = 'block';
-panel.style.visibility = 'visible';
+    panel.style.display = 'none';
     panel.innerHTML = `
       <div class="search-header">
         <h3>Risultati della ricerca</h3>
@@ -2195,9 +2185,10 @@ panel.style.visibility = 'visible';
 
   // --------- APERTURA/CHIUSURA -----------------------------------------
   function openResultsPanel() {
-    if (panel.style.display !== 'block') {
+    if (!isPanelOpen) {
       panel.style.display = 'block';
       panel.setAttribute('aria-hidden', 'false');
+      isPanelOpen = true;
       const toggleBtn = document.getElementById('siteSearchBtn');
       if (toggleBtn) toggleBtn.setAttribute('aria-expanded','true');
       document.addEventListener('keydown', handleEscapeKey);
@@ -2206,9 +2197,10 @@ panel.style.visibility = 'visible';
     }
   }
   function closeResultsPanel() {
-    if (panel.style.display !== 'none') {
+    if (isPanelOpen) {
       panel.style.display = 'none';
       panel.setAttribute('aria-hidden', 'true');
+      isPanelOpen = false;
       const toggleBtn = document.getElementById('siteSearchBtn');
       if (toggleBtn) toggleBtn.setAttribute('aria-expanded','false');
       document.removeEventListener('keydown', handleEscapeKey);
@@ -2235,9 +2227,7 @@ panel.style.visibility = 'visible';
               const json = await res.json();
               if (Array.isArray(json) && json.length) { SEARCH_INDEX = json; break; }
             }
-          } catch (err) {
-  console.log(`🔍 Search: Fallback da ${url}`, err.message);
-}
+          } catch {/* next */}
         }
         if (!SEARCH_INDEX) SEARCH_INDEX = SAMPLE_INDEX;
       }
@@ -2246,148 +2236,30 @@ panel.style.visibility = 'visible';
   }
 
   // --------- NORMALIZZAZIONE E RANKING ---------------------------------
-function normalizeUrl(url) {
-  if (!url || typeof url !== 'string') return '#';
-  
-  const cleanUrl = url.trim();
-  
-  if (cleanUrl.startsWith('http') || 
-      cleanUrl.startsWith('/') || 
-      cleanUrl.startsWith('#') ||
-      cleanUrl.startsWith('mailto:') ||
-      cleanUrl.startsWith('tel:')) {
-    return cleanUrl;
+  function normalizeUrl(url) { if (!url) return '#'; if (url.startsWith('http') || url.startsWith('/')) return url; return url; }
+  function normalizeTags(tags, category) {
+    const arr = []; if (Array.isArray(tags)) arr.push(...tags); else if (typeof tags==='string' && tags.trim()) arr.push(tags.trim());
+    if (category) arr.push(category); return [...new Set(arr)];
   }
-  
-  if (cleanUrl.startsWith('./')) {
-    return cleanUrl.substring(2);
+  function normalizeIndexData(raw) {
+    const arr = Array.isArray(raw) ? raw : [];
+    return arr.map(item => ({
+      title: item.title || '',
+      url: normalizeUrl(item.url),
+      description: item.desc || item.description || '',
+      tags: normalizeTags(item.tags, item.category),
+      source: item.source || item.section || item.category || ''
+    }));
   }
-  
-  return cleanUrl;
-}
-
-function normalizeTags(tags, category) {
-  const arr = [];
-  
-  if (Array.isArray(tags)) {
-    arr.push(...tags.filter(tag => tag && typeof tag === 'string')
-                   .map(tag => tag.trim()));
-  } else if (typeof tags === 'string' && tags.trim()) {
-    arr.push(...tags.split(',').map(tag => tag.trim()).filter(tag => tag));
+  function calculateRelevanceScore(query, item) {
+    const q = query.toLowerCase();
+    const title = (item.title||'').toLowerCase();
+    const desc  = (item.description||'').toLowerCase();
+    const tags  = (item.tags||[]).join(' ').toLowerCase();
+    const src   = (item.source||'').toLowerCase();
+    let score = 0; if (title.includes(q)) score += 6; if (tags.includes(q)) score += 3; if (src.includes(q)) score += 2; if (desc.includes(q)) score += 1;
+    return score;
   }
-  
-  if (category && typeof category === 'string' && category.trim()) {
-    arr.push(category.trim());
-  }
-  
-  return [...new Set(arr.filter(tag => tag))];
-}
-
-function normalizeIndexData(raw) {
-  if (!raw) return [];
-  
-  const arr = Array.isArray(raw) ? raw : [];
-  
-  return arr.map(item => {
-    const title = String(item.title || item.name || '').trim();
-    const url = normalizeUrl(item.url || item.link || item.href);
-    const description = String(item.desc || item.description || item.summary || '').trim();
-    const tags = normalizeTags(item.tags, item.category);
-    const source = String(item.source || item.section || item.category || item.type || '').trim();
-    
-    return {
-      title: title || 'Senza titolo',
-      url: url || '#',
-      description,
-      tags,
-      source
-    };
-  });
-}
-
-function calculateRelevanceScore(query, item) {
-  if (!query || typeof query !== 'string' || !item) return 0;
-  
-  const q = query.toLowerCase().trim();
-  if (!q) return 0;
-  
-  const title = String(item.title || '').toLowerCase();
-  const desc = String(item.description || '').toLowerCase();
-  const tags = Array.isArray(item.tags) ? item.tags.join(' ').toLowerCase() : '';
-  const src = String(item.source || '').toLowerCase();
-  
-  let score = 0;
-  
-  // Match esatto nel titolo (massima priorità)
-  if (title === q) score += 10;
-  // Titolo contiene la query
-  else if (title.includes(q)) score += 6;
-  
-  // Match nei tags
-  if (tags.includes(q)) score += 4;
-  
-  // Match nella fonte/categoria
-  if (src.includes(q)) score += 3;
-  
-  // Match nella descrizione
-  if (desc.includes(q)) score += 2;
-  
-  // Bonus per match all'inizio delle parole
-  const words = q.split(/\s+/);
-  words.forEach(word => {
-    if (word.length < 2) return;
-    
-    try {
-      const wordRegex = new RegExp(`\\b${word}`, 'i');
-      if (wordRegex.test(title)) score += 1;
-      if (wordRegex.test(tags)) score += 0.5;
-    } catch (e) {
-      // Fallback sicuro per regex malformate
-    }
-  });
-  
-  return Math.max(0, score);
-}
-
-function calculateRelevanceScore(query, item) {
-  if (!query || typeof query !== 'string' || !item) return 0;
-  
-  const q = query.toLowerCase().trim();
-  if (!q) return 0;
-  
-  const title = String(item.title || '').toLowerCase();
-  const desc = String(item.description || '').toLowerCase();
-  const tags = Array.isArray(item.tags) ? item.tags.join(' ').toLowerCase() : '';
-  const src = String(item.source || '').toLowerCase();
-  
-  let score = 0;
-  
-  // Match esatto nel titolo (massima priorità)
-  if (title === q) score += 10;
-  // Titolo contiene la query
-  else if (title.includes(q)) score += 6;
-  
-  // Match nei tags
-  if (tags.includes(q)) score += 4;
-  
-  // Match nella fonte/categoria
-  if (src.includes(q)) score += 3;
-  
-  // Match nella descrizione
-  if (desc.includes(q)) score += 2;
-  
-  // Bonus per match all'inizio delle parole
-  const words = q.split(/\s+/);
-  words.forEach(word => {
-    if (word.length < 2) return;
-    
-    const wordRegex = new RegExp(`\\b${word}`, 'i');
-    if (wordRegex.test(title)) score += 1;
-    if (wordRegex.test(tags)) score += 0.5;
-  });
-  
-  return Math.max(0, score);
-}
 
   // --------- RENDER -----------------------------------------------------
   function renderSearchResults(query, results) {
@@ -2409,7 +2281,11 @@ function calculateRelevanceScore(query, item) {
   // --------- SEARCH -----------------------------------------------------
   async function performSearch(rawQuery) {
     const query = String(rawQuery||'').trim();
-    if (!query) { input.focus(); return; }
+    if (!query) { 
+      closeResultsPanel(); // CHIUDI il pannello se query vuota
+      input.focus(); 
+      return; 
+    }
     resultsEl.innerHTML = `<div class="result"><div class="result-desc">Cerco “${escapeHtml(query)}”...</div></div>`;
     openResultsPanel();
     const data = await loadSearchIndex();
@@ -2433,11 +2309,11 @@ function calculateRelevanceScore(query, item) {
   input.addEventListener('input', (e) => {
     const q = e.target.value.trim();
     toggleClearButton();
-    if (q.length >= 2) debouncedSearch(q); else closeResultsPanel();
+    if (q.length >= 2) debouncedSearch(q); else closeResultsPanel(); // CHIUDI se query troppo corta
   });
   input.addEventListener('focus', () => {
     const q = input.value.trim();
-    if (q.length >= 2) performSearch(q);
+    if (q.length >= 2) performSearch(q); else closeResultsPanel(); // CHIUDI se query vuota/corta
   });
   btn.addEventListener('click', () => performSearch(input.value));
   input.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); performSearch(input.value); }});
@@ -2454,17 +2330,18 @@ function calculateRelevanceScore(query, item) {
       if (!/INPUT|TEXTAREA|SELECT/.test(tag)) { e.preventDefault(); input.focus(); }
     }
   });
-  (function initFromUrlParams(){
-    try { const p = new URLSearchParams(location.search); const q = p.get('q'); if (q && !input.value) { input.value=q; performSearch(q); } }
-    catch(err){ console.warn('Search: URL params error', err); }
-  })();
+
+  // --------- INIZIALIZZAZIONE SICURA ------------------------------------
+  // ASSICURATI che il pannello sia CHIUSO all'inizio
+  setTimeout(() => {
+    closeResultsPanel();
+    toggleClearButton();
+    console.log('🔍 Search: Ready! Panel closed by default.');
+  }, 100);
 
   // Test hooks
   window.__testSearch  = performSearch;
   window.__clearSearch = clearSearch;
-
-  toggleClearButton();
-  console.log('🔍 Search: Ready! Esempio: __testSearch("Marx")');
 })();
 </script>
 <style>
