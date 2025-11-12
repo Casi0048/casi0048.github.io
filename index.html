@@ -3114,33 +3114,74 @@ function setCookie(name, value, days){
 
 <script defer>
 /* =======================================================================
-   SITE SEARCH – VERSIONE CORRETTA (Nessun pannello automatico)
+   SITE SEARCH – VERSIONE CORRETTA E SICURA
    ======================================================================= */
 (function () {
   // --------- UTILS ------------------------------------------------------
   function debounce(fn, wait) {
     let t;
-    return function (...args) { clearTimeout(t); t = setTimeout(() => fn.apply(this, args), wait); };
+    return function (...args) { 
+      clearTimeout(t); 
+      t = setTimeout(() => fn.apply(this, args), wait); 
+    };
   }
+  
   function escapeHtml(text) {
     if (!text) return '';
     const map = { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' };
     return String(text).replace(/[&<>"']/g, c => map[c]);
   }
+  
   function highlightText(text, query) {
     if (!text || !query) return escapeHtml(text);
     const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    return escapeHtml(text).replace(new RegExp(escaped,'ig'), m => `<mark class="search-hit">${m}</mark>`);
+    return escapeHtml(text).replace(new RegExp(escaped,'gi'), m => `<mark class="search-hit">${m}</mark>`);
   }
 
   // --------- DATI DI ESEMPIO (fallback) ---------------------------------
   const SAMPLE_INDEX = [
-    { title:"Platone", url:"articoli/platone.html", desc:"Filosofo greco fondatore dell'Accademia e autore della teoria delle Idee", category:"Filosofia classica", tags:["Platone","Idee","Accademia","Socrate"] },
-    { title:"Aristotele", url:"articoli/aristotele.html", desc:"Allievo di Platone e fondatore del Liceo, padre della logica formale", category:"Filosofia classica", tags:["Aristotele","Logica","Liceo","Metafisica"] },
-    { title:"Talete", url:"Presocratici/talete.html", desc:"Primo filosofo della scuola di Mileto, noto per l'acqua come archè", category:"Presocratici", tags:["Talete","Acqua","Mileto","Presocratici"] },
-    { title:"Karl Marx", url:"articoli/marx.html", desc:"Filosofo, economista e rivoluzionario; socialismo scientifico", category:"Filosofia moderna", tags:["Marx","Comunismo","Materialismo","Capitalismo"] },
-    { title:"Marxismo", url:"articoli/marxismo.html", desc:"Corrente basata sul pensiero di Karl Marx", category:"Filosofia contemporanea", tags:["Marxismo","Socialismo","Lotta di classe","Ideologia"] },
-    { title:"Nietzsche", url:"articoli/2nietzsche.html", desc:"Superuomo e morte di Dio", category:"Filosofia contemporanea", tags:["Nietzsche","Oltreuomo","Volontà di potenza","Germania"] }
+    { 
+      title:"Platone", 
+      url:"articoli/platone.html", 
+      desc:"Filosofo greco fondatore dell'Accademia e autore della teoria delle Idee", 
+      category:"Filosofia classica", 
+      tags:["Platone","Idee","Accademia","Socrate"] 
+    },
+    { 
+      title:"Aristotele", 
+      url:"articoli/aristotele.html", 
+      desc:"Allievo di Platone e fondatore del Liceo, padre della logica formale", 
+      category:"Filosofia classica", 
+      tags:["Aristotele","Logica","Liceo","Metafisica"] 
+    },
+    { 
+      title:"Talete", 
+      url:"Presocratici/talete.html", 
+      desc:"Primo filosofo della scuola di Mileto, noto per l'acqua come archè", 
+      category:"Presocratici", 
+      tags:["Talete","Acqua","Mileto","Presocratici"] 
+    },
+    { 
+      title:"Karl Marx", 
+      url:"articoli/marx.html", 
+      desc:"Filosofo, economista e rivoluzionario; socialismo scientifico", 
+      category:"Filosofia moderna", 
+      tags:["Marx","Comunismo","Materialismo","Capitalismo"] 
+    },
+    { 
+      title:"Marxismo", 
+      url:"articoli/marxismo.html", 
+      desc:"Corrente basata sul pensiero di Karl Marx", 
+      category:"Filosofia contemporanea", 
+      tags:["Marxismo","Socialismo","Lotta di classe","Ideologia"] 
+    },
+    { 
+      title:"Nietzsche", 
+      url:"articoli/2nietzsche.html", 
+      desc:"Superuomo e morte di Dio", 
+      category:"Filosofia contemporanea", 
+      tags:["Nietzsche","Oltreuomo","Volontà di potenza","Germania"] 
+    }
   ];
 
   // --------- STATO ------------------------------------------------------
@@ -3148,16 +3189,23 @@ function setCookie(name, value, days){
   let isLoading = false;
   let isPanelOpen = false;
 
-  // --------- MARKUP: SOLO SELEZIONE (nessuna creazione/innerHTML) -------
+  // --------- INIZIALIZZAZIONE ELEMENTI ---------------------------------
   const siteSearch = document.getElementById('siteSearch');
-  if (!siteSearch) { console.error('🔍 Search: #siteSearch non trovato.'); return; }
+  if (!siteSearch) { 
+    console.error('🔍 Search: #siteSearch non trovato.'); 
+    return; 
+  }
 
   const input = document.getElementById('siteSearchInput');
-  const btn   = document.getElementById('siteSearchBtn');
+  const btn = document.getElementById('siteSearchBtn');
   const clearInputBtn = document.getElementById('searchClearInput');
 
-  if (!input || !btn) { console.error('🔍 Search: input/btn mancanti dentro #siteSearch.'); return; }
-  console.log('🔍 Search: UI ready (markup preesistente)');
+  if (!input || !btn) { 
+    console.error('🔍 Search: input/btn mancanti dentro #siteSearch.'); 
+    return; 
+  }
+
+  console.log('🔍 Search: UI ready');
 
   // --------- PANNELLO RISULTATI -----------------------------------------
   let panel = document.getElementById('searchPanel');
@@ -3178,10 +3226,11 @@ function setCookie(name, value, days){
     `;
     document.body.appendChild(panel);
   }
-  const resultsEl = panel.querySelector('#searchResults');
-  const clearBtn  = panel.querySelector('#searchClearBtn');
+  
+  const resultsEl = document.getElementById('searchResults');
+  const clearBtn = document.getElementById('searchClearBtn');
 
-  // --------- APERTURA/CHIUSURA -----------------------------------------
+  // --------- GESTIONE PANNELLO -----------------------------------------
   function openResultsPanel() {
     if (!isPanelOpen) {
       panel.style.display = 'block';
@@ -3194,6 +3243,7 @@ function setCookie(name, value, days){
       console.log('🔍 Search: Panel opened');
     }
   }
+  
   function closeResultsPanel() {
     if (isPanelOpen) {
       panel.style.display = 'none';
@@ -3206,140 +3256,313 @@ function setCookie(name, value, days){
       console.log('🔍 Search: Panel closed');
     }
   }
-  function handleEscapeKey(e) { if (e.key === 'Escape') { closeResultsPanel(); input.focus(); } }
-  function handleOutsideClick(e) { if (!panel.contains(e.target) && !siteSearch.contains(e.target)) closeResultsPanel(); }
+  
+  function handleEscapeKey(e) { 
+    if (e.key === 'Escape') { 
+      closeResultsPanel(); 
+      input.focus(); 
+    } 
+  }
+  
+  function handleOutsideClick(e) { 
+    if (!panel.contains(e.target) && !siteSearch.contains(e.target)) {
+      closeResultsPanel(); 
+    }
+  }
 
   // --------- CARICAMENTO INDICE ----------------------------------------
   async function loadSearchIndex() {
     if (SEARCH_INDEX || isLoading) return SEARCH_INDEX;
-    isLoading = true; console.log('🔍 Search: Loading index...');
+    
+    isLoading = true; 
+    console.log('🔍 Search: Loading index...');
+    
     try {
-      if (location.protocol === 'file:') {
+      // Se siamo in ambiente locale (file://), usa i dati di esempio
+      if (window.location.protocol === 'file:') {
         SEARCH_INDEX = SAMPLE_INDEX;
+        console.log('🔍 Search: Using sample index (local environment)');
       } else {
-        const candidates = ['/search-index.json','./search-index.json','search-index.json'];
+        // Prova diversi percorsi per il file di indice
+        const candidates = [
+          '/search-index.json',
+          './search-index.json', 
+          'search-index.json',
+          '/articoli/search-index.json',
+          './articoli/search-index.json'
+        ];
+        
         for (const url of candidates) {
           try {
-            const res = await fetch(url, { cache:'no-store' });
+            console.log(`🔍 Search: Trying ${url}`);
+            const res = await fetch(url, { cache: 'no-store' });
             if (res.ok) {
               const json = await res.json();
-              if (Array.isArray(json) && json.length) { SEARCH_INDEX = json; break; }
+              if (Array.isArray(json) && json.length > 0) { 
+                SEARCH_INDEX = json; 
+                console.log(`🔍 Search: Index loaded from ${url} (${json.length} items)`);
+                break; 
+              }
             }
-          } catch {/* next */}
+          } catch (error) {
+            console.log(`🔍 Search: Failed to load ${url}`, error);
+            // Continua con il prossimo candidato
+          }
         }
-        if (!SEARCH_INDEX) SEARCH_INDEX = SAMPLE_INDEX;
+        
+        // Fallback ai dati di esempio
+        if (!SEARCH_INDEX) {
+          SEARCH_INDEX = SAMPLE_INDEX;
+          console.log('🔍 Search: Using sample index (fallback)');
+        }
       }
-    } finally { isLoading = false; }
+    } catch (error) {
+      console.error('🔍 Search: Error loading index', error);
+      SEARCH_INDEX = SAMPLE_INDEX;
+    } finally { 
+      isLoading = false; 
+    }
+    
     return SEARCH_INDEX;
   }
 
   // --------- NORMALIZZAZIONE E RANKING ---------------------------------
-  function normalizeUrl(url) { if (!url) return '#'; if (url.startsWith('http') || url.startsWith('/')) return url; return url; }
+  function normalizeUrl(url) {
+    if (!url) return '#';
+    // Se l'URL è già assoluto o inizia con /, mantienilo così
+    if (url.startsWith('http') || url.startsWith('/') || url.startsWith('#')) {
+      return url;
+    }
+    // Altrimenti, aggiungi ./ per URL relativi
+    return './' + url;
+  }
+  
   function normalizeTags(tags, category) {
-    const arr = []; if (Array.isArray(tags)) arr.push(...tags); else if (typeof tags==='string' && tags.trim()) arr.push(tags.trim());
-    if (category) arr.push(category); return [...new Set(arr)];
+    const arr = []; 
+    if (Array.isArray(tags)) {
+      arr.push(...tags.filter(tag => tag && typeof tag === 'string'));
+    } else if (typeof tags === 'string' && tags.trim()) {
+      arr.push(tags.trim());
+    }
+    if (category && typeof category === 'string') {
+      arr.push(category.trim());
+    }
+    return [...new Set(arr.filter(Boolean))];
   }
+  
   function normalizeIndexData(raw) {
-    const arr = Array.isArray(raw) ? raw : [];
-    return arr.map(item => ({
-      title: item.title || '',
-      url: normalizeUrl(item.url),
-      description: item.desc || item.description || '',
-      tags: normalizeTags(item.tags, item.category),
-      source: item.source || item.section || item.category || ''
-    }));
+    if (!Array.isArray(raw)) {
+      console.warn('🔍 Search: Raw data is not an array', raw);
+      return [];
+    }
+    
+    return raw.map(item => ({
+      title: String(item.title || item.nome || ''),
+      url: normalizeUrl(item.url || item.link || item.path),
+      description: String(item.desc || item.description || item.descrizione || ''),
+      tags: normalizeTags(item.tags, item.category || item.categoria),
+      source: String(item.source || item.section || item.category || item.categoria || '')
+    })).filter(item => item.title && item.url); // Filtra elementi senza titolo o URL
   }
+  
   function calculateRelevanceScore(query, item) {
-    const q = query.toLowerCase();
-    const title = (item.title||'').toLowerCase();
-    const desc  = (item.description||'').toLowerCase();
-    const tags  = (item.tags||[]).join(' ').toLowerCase();
-    const src   = (item.source||'').toLowerCase();
-    let score = 0; if (title.includes(q)) score += 6; if (tags.includes(q)) score += 3; if (src.includes(q)) score += 2; if (desc.includes(q)) score += 1;
+    const q = query.toLowerCase().trim();
+    if (!q) return 0;
+    
+    const title = String(item.title || '').toLowerCase();
+    const desc = String(item.description || '').toLowerCase();
+    const tags = Array.isArray(item.tags) ? item.tags.join(' ').toLowerCase() : '';
+    const source = String(item.source || '').toLowerCase();
+    
+    let score = 0;
+    
+    // Punteggi per corrispondenze esatte
+    if (title.includes(q)) score += 6;
+    if (tags.includes(q)) score += 3;
+    if (source.includes(q)) score += 2;
+    if (desc.includes(q)) score += 1;
+    
+    // Bonus per corrispondenze all'inizio
+    if (title.startsWith(q)) score += 2;
+    
     return score;
   }
 
-  // --------- RENDER -----------------------------------------------------
+  // --------- RENDER RISULTATI -------------------------------------------
   function renderSearchResults(query, results) {
-    if (!results.length) {
-      resultsEl.innerHTML = `<div class="result"><div class="result-desc">Nessun risultato per <strong>${escapeHtml(query)}</strong>.</div></div>`;
-      openResultsPanel(); return;
+    if (!resultsEl) {
+      console.error('🔍 Search: resultsEl not found');
+      return;
     }
+    
+    if (!results || results.length === 0) {
+      resultsEl.innerHTML = `
+        <div class="result">
+          <div class="result-desc">Nessun risultato per <strong>${escapeHtml(query)}</strong>.</div>
+        </div>
+      `;
+      openResultsPanel();
+      return;
+    }
+    
     resultsEl.innerHTML = results.map(item => `
       <div class="result">
-        <a class="result-title" href="${item.url}" rel="noopener"><h4>${highlightText(item.title, query)}</h4></a>
-        ${item.tags?.length ? `<div class="result-tags">${item.tags.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join(' ')}</div>` : ''}
+        <a class="result-title" href="${item.url}" rel="noopener">
+          <h4>${highlightText(item.title, query)}</h4>
+        </a>
+        ${item.tags && item.tags.length ? `
+          <div class="result-tags">
+            ${item.tags.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join(' ')}
+          </div>
+        ` : ''}
         <div class="result-desc">${highlightText(item.description, query)}</div>
-        ${item.source ? `<div class="result-source">Fonte: ${escapeHtml(item.source)}</div>` : ''}
+        ${item.source ? `
+          <div class="result-source">Fonte: ${escapeHtml(item.source)}</div>
+        ` : ''}
       </div>
     `).join('');
+    
     openResultsPanel();
   }
 
-  // --------- SEARCH -----------------------------------------------------
+  // --------- RICERCA PRINCIPALE ----------------------------------------
   async function performSearch(rawQuery) {
-    const query = String(rawQuery||'').trim();
+    const query = String(rawQuery || '').trim();
+    
+    // Se query vuota, chiudi il pannello
     if (!query) { 
-      closeResultsPanel(); // CHIUDI il pannello se query vuota
+      closeResultsPanel();
       input.focus(); 
       return; 
     }
-    resultsEl.innerHTML = `<div class="result"><div class="result-desc">Cerco “${escapeHtml(query)}”...</div></div>`;
+    
+    // Mostra stato di caricamento
+    if (resultsEl) {
+      resultsEl.innerHTML = `
+        <div class="result">
+          <div class="result-desc">Cerco "${escapeHtml(query)}"...</div>
+        </div>
+      `;
+    }
+    
     openResultsPanel();
-    const data = await loadSearchIndex();
-    const ranked = normalizeIndexData(data)
-      .map(item => ({ item, score: calculateRelevanceScore(query, item) }))
-      .filter(x => x.score > 0)
-      .sort((a,b) => b.score - a.score)
-      .slice(0,30)
-      .map(x => x.item);
-    renderSearchResults(query, ranked);
+    
+    try {
+      const data = await loadSearchIndex();
+      const normalizedData = normalizeIndexData(data);
+      
+      const ranked = normalizedData
+        .map(item => ({ 
+          item, 
+          score: calculateRelevanceScore(query, item) 
+        }))
+        .filter(x => x.score > 0)
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 30)
+        .map(x => x.item);
+      
+      renderSearchResults(query, ranked);
+      
+    } catch (error) {
+      console.error('🔍 Search: Error during search', error);
+      if (resultsEl) {
+        resultsEl.innerHTML = `
+          <div class="result">
+            <div class="result-desc">Errore durante la ricerca.</div>
+          </div>
+        `;
+      }
+    }
   }
 
-  // --------- CLEAR / TOGGLE ---------------------------------------------
-  function toggleClearButton() { if (!clearInputBtn) return; clearInputBtn.style.display = input.value.trim() ? 'flex' : 'none'; }
-  function clearInput() { input.value=''; toggleClearButton(); input.focus(); closeResultsPanel(); }
-  function clearSearch() { input.value=''; toggleClearButton(); closeResultsPanel(); input.focus(); }
+  // --------- GESTIONE INTERFACCIA --------------------------------------
+  function toggleClearButton() { 
+    if (!clearInputBtn) return; 
+    clearInputBtn.style.display = input.value.trim() ? 'flex' : 'none'; 
+  }
+  
+  function clearInput() { 
+    input.value = ''; 
+    toggleClearButton(); 
+    input.focus(); 
+    closeResultsPanel(); 
+  }
+  
+  function clearSearch() { 
+    input.value = ''; 
+    toggleClearButton(); 
+    closeResultsPanel(); 
+    input.focus(); 
+  }
 
-  // --------- EVENTI -----------------------------------------------------
-  const debouncedSearch = debounce(q => performSearch(q), 200);
+  // --------- EVENT LISTENERS -------------------------------------------
+  const debouncedSearch = debounce(q => performSearch(q), 300);
 
+  // Input events
   input.addEventListener('input', (e) => {
     const q = e.target.value.trim();
     toggleClearButton();
-    if (q.length >= 2) debouncedSearch(q); else closeResultsPanel(); // CHIUDI se query troppo corta
+    if (q.length >= 2) {
+      debouncedSearch(q);
+    } else {
+      closeResultsPanel();
+    }
   });
+  
   input.addEventListener('focus', () => {
     const q = input.value.trim();
-    if (q.length >= 2) performSearch(q); else closeResultsPanel(); // CHIUDI se query vuota/corta
+    if (q.length >= 2) {
+      performSearch(q);
+    } else {
+      closeResultsPanel();
+    }
   });
+  
+  input.addEventListener('keydown', (e) => { 
+    if (e.key === 'Enter') { 
+      e.preventDefault(); 
+      performSearch(input.value);
+    }
+  });
+  
+  // Button events
   btn.addEventListener('click', () => performSearch(input.value));
-  input.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); performSearch(input.value); }});
+  
   if (clearInputBtn) {
     input.addEventListener('focus', toggleClearButton);
     clearInputBtn.addEventListener('click', clearInput);
   }
+  
   if (clearBtn) {
-    clearBtn.addEventListener('click', (e) => { e.stopPropagation(); clearSearch(); });
+    clearBtn.addEventListener('click', (e) => { 
+      e.stopPropagation(); 
+      clearSearch(); 
+    });
   }
+  
+  // Keyboard shortcut
   window.addEventListener('keydown', (e) => {
     if (e.key === '/' && !e.metaKey && !e.ctrlKey && !e.altKey) {
       const tag = (document.activeElement?.tagName || '').toUpperCase();
-      if (!/INPUT|TEXTAREA|SELECT/.test(tag)) { e.preventDefault(); input.focus(); }
+      if (!/INPUT|TEXTAREA|SELECT/.test(tag)) { 
+        e.preventDefault(); 
+        input.focus(); 
+      }
     }
   });
 
-  // --------- INIZIALIZZAZIONE SICURA ------------------------------------
-  // ASSICURATI che il pannello sia CHIUSO all'inizio
+  // --------- INIZIALIZZAZIONE FINALE ------------------------------------
   setTimeout(() => {
     closeResultsPanel();
     toggleClearButton();
-    console.log('🔍 Search: Ready! Panel closed by default.');
+    console.log('🔍 Search: Initialization complete');
   }, 100);
 
-  // Test hooks
-  window.__testSearch  = performSearch;
+  // Debug exports
+  window.__testSearch = performSearch;
   window.__clearSearch = clearSearch;
+  window.__getSearchIndex = () => SEARCH_INDEX;
+  
 })();
 </script>
 <style>
