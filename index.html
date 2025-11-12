@@ -42,6 +42,8 @@
   <!-- ===== GOOGLE FONTS (niente preload del CSS) ===== -->
   <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&family=UnifrakturMaguntia&family=Cormorant+Garamond:wght@400;600&display=swap">
+<!-- Aggiungi skip link per accessibilità -->
+<a href="#main-content" class="skip-link">Salta al contenuto principale</a>
 
   <!-- ===== FONT AWESOME (un solo stylesheet) ===== -->
   <link rel="stylesheet"
@@ -64,7 +66,23 @@
       }
     }
   </script>
- 
+ <!-- Schema aggiuntivo per articoli -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Titolo articolo",
+  "description": "Descrizione",
+  "author": {
+    "@type": "Person",
+    "name": "Autore"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Echi di Sofia"
+  }
+}
+</script>
  <style>
         :root {
             --primary-color: #8a6d3b;
@@ -72,7 +90,7 @@
             --dark-bg: #121212;
             --darker-bg: #0a0a0a;
             --card-bg: #1e1e1e;
-            --text-color: #ADFF2F;              #e0e0e0;
+            --text-color: #ADFF2F;              
             --text-muted: #9e9e9e;
             --border-color: #333;
             --hover-color: #2a2a2a;
@@ -1456,7 +1474,7 @@
         </div>
         
         <!-- Menu Container -->
-        <<div class="menu-container">
+        <div class="menu-container">
 <nav class="menu-desktop" aria-label="Navigazione principale" role="navigation">
 <ul role="menu">
 <li class="dropdown">
@@ -2246,13 +2264,11 @@ panel.style.visibility = 'visible';
   }
 
   // --------- NORMALIZZAZIONE E RANKING ---------------------------------
- function normalizeUrl(url) {
+function normalizeUrl(url) {
   if (!url || typeof url !== 'string') return '#';
   
-  // Rimuovi spazi e ritorna a capo
   const cleanUrl = url.trim();
   
-  // Gestisci casi speciali
   if (cleanUrl.startsWith('http') || 
       cleanUrl.startsWith('/') || 
       cleanUrl.startsWith('#') ||
@@ -2261,32 +2277,27 @@ panel.style.visibility = 'visible';
     return cleanUrl;
   }
   
-  // Gestisci path relativi
   if (cleanUrl.startsWith('./')) {
     return cleanUrl.substring(2);
   }
   
-  // Per altri path relativi come "articoli/platone.html", mantieni così
   return cleanUrl;
 }
 
 function normalizeTags(tags, category) {
   const arr = [];
   
-  // Gestione tags
   if (Array.isArray(tags)) {
-    arr.push(...tags.filter(tag => tag && typeof tag === 'string').map(tag => tag.trim()));
+    arr.push(...tags.filter(tag => tag && typeof tag === 'string')
+                   .map(tag => tag.trim()));
   } else if (typeof tags === 'string' && tags.trim()) {
-    // Se tags è una stringa separata da virgole
     arr.push(...tags.split(',').map(tag => tag.trim()).filter(tag => tag));
   }
   
-  // Aggiungi category se esiste
   if (category && typeof category === 'string' && category.trim()) {
     arr.push(category.trim());
   }
   
-  // Rimuovi duplicati e valori vuoti
   return [...new Set(arr.filter(tag => tag))];
 }
 
@@ -2296,7 +2307,6 @@ function normalizeIndexData(raw) {
   const arr = Array.isArray(raw) ? raw : [];
   
   return arr.map(item => {
-    // Valori di default sicuri
     const title = String(item.title || item.name || '').trim();
     const url = normalizeUrl(item.url || item.link || item.href);
     const description = String(item.desc || item.description || item.summary || '').trim();
@@ -2311,6 +2321,50 @@ function normalizeIndexData(raw) {
       source
     };
   });
+}
+
+function calculateRelevanceScore(query, item) {
+  if (!query || typeof query !== 'string' || !item) return 0;
+  
+  const q = query.toLowerCase().trim();
+  if (!q) return 0;
+  
+  const title = String(item.title || '').toLowerCase();
+  const desc = String(item.description || '').toLowerCase();
+  const tags = Array.isArray(item.tags) ? item.tags.join(' ').toLowerCase() : '';
+  const src = String(item.source || '').toLowerCase();
+  
+  let score = 0;
+  
+  // Match esatto nel titolo (massima priorità)
+  if (title === q) score += 10;
+  // Titolo contiene la query
+  else if (title.includes(q)) score += 6;
+  
+  // Match nei tags
+  if (tags.includes(q)) score += 4;
+  
+  // Match nella fonte/categoria
+  if (src.includes(q)) score += 3;
+  
+  // Match nella descrizione
+  if (desc.includes(q)) score += 2;
+  
+  // Bonus per match all'inizio delle parole
+  const words = q.split(/\s+/);
+  words.forEach(word => {
+    if (word.length < 2) return;
+    
+    try {
+      const wordRegex = new RegExp(`\\b${word}`, 'i');
+      if (wordRegex.test(title)) score += 1;
+      if (wordRegex.test(tags)) score += 0.5;
+    } catch (e) {
+      // Fallback sicuro per regex malformate
+    }
+  });
+  
+  return Math.max(0, score);
 }
 
 function calculateRelevanceScore(query, item) {
@@ -2688,7 +2742,6 @@ function calculateRelevanceScore(query, item) {
         }
     </style>
 
-<body>
     <!-- Banner Cookie -->
     <div id="cookieBanner" class="cookie-banner">
         <div class="cookie-header">
@@ -2851,5 +2904,4 @@ function calculateRelevanceScore(query, item) {
 </html>
 
 
-</body>
-</html>
+
