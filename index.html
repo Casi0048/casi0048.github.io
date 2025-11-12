@@ -2884,6 +2884,38 @@ function setCookie(name, value, days){
             // Applica le preferenze al caricamento
             applyCookiePreferences();
         });
+          /* ===== PULSANTE TORNA SU ===== */
+    (function() {
+        const backToTop = document.getElementById('backToTop');
+        
+        if (!backToTop) return;
+        
+        // Mostra/nascondi pulsante allo scroll
+        function toggleBackToTop() {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        }
+        
+        // Scroll fluido verso l'alto
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Event listeners
+        window.addEventListener('scroll', toggleBackToTop);
+        backToTop.addEventListener('click', scrollToTop);
+        
+        // Inizializza lo stato
+        toggleBackToTop();
+        
+        console.log('🔝 Back to top button initialized');
+    })();
     </script>
 </body>
 </html>
