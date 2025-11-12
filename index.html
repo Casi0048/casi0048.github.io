@@ -64,6 +64,97 @@
       }
     }
   </script>
+  <style>
+   /* ===== PULSANTE TORNA SU ===== */
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+    box-shadow: 
+        0 4px 20px rgba(138, 109, 59, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.back-to-top:hover {
+    transform: translateY(-5px);
+    box-shadow: 
+        0 8px 25px rgba(138, 109, 59, 0.6),
+        0 0 0 1px rgba(255, 255, 255, 0.2);
+    background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+}
+
+.back-to-top:active {
+    transform: translateY(-2px);
+}
+
+/* Effetto pulse intermittente */
+.back-to-top::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: 50%;
+    background: rgba(255, 215, 0, 0.2);
+    animation: pulseTop 2s infinite;
+    z-index: -1;
+}
+
+@keyframes pulseTop {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.7;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.3;
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .back-to-top {
+        bottom: 20px;
+        right: 20px;
+        width: 45px;
+        height: 45px;
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .back-to-top {
+        bottom: 15px;
+        right: 15px;
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+}   
+  </style>
 </head>
  <style>
         :root {
@@ -2002,7 +2093,10 @@
             </aside>
         </div>
     </div>
-
+<!-- Pulsante Torna Su -->
+    <button class="back-to-top" id="backToTop" aria-label="Torna all'inizio">
+        <i class="fas fa-chevron-up"></i>
+    </button>
     <!-- Footer -->
     <footer>
         <div class="container">
