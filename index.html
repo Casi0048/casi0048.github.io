@@ -2572,7 +2572,19 @@
                     </article>
                 </div>
             </section>
-
+<!-- SEZIONE INDICE ARTICOLI (solo nella pagina principale) -->
+<section class="articles-index-section">
+  <div class="category-filter-container">
+    <select id="category-filter">
+      <option value="">Tutte le categorie</option>
+      <!-- Le categorie verranno popolate dinamicamente -->
+    </select>
+  </div>
+  
+  <div id="articles-index-container" class="articles-index-container">
+    <!-- Gli articoli verranno caricati qui dinamicamente -->
+  </div>
+</section>
             <!-- Sidebar -->
             <aside class="sidebar">
 <!-- INIZIO Aggiungi questo widget nel sidebar -->
@@ -3649,6 +3661,113 @@ function setCookie(name, value, days){
   window.__getSearchIndex = () => SEARCH_INDEX;
   
 })();
+  // AGGIUNGI QUESTE FUNZIONI AL TUO SCRIPT ESISTENTE
+
+// --------- VISUALIZZAZIONE ARTICOLI IN PAGINA PRINCIPALE ---------------
+function displayAllArticlesInIndex() {
+  const container = document.getElementById('articles-index-container');
+  if (!container) return;
+  
+  // Se non abbiamo ancora caricato l'indice, aspettiamo
+  if (!SEARCH_INDEX) {
+    setTimeout(displayAllArticlesInIndex, 100);
+    return;
+  }
+  
+  const normalizedData = normalizeIndexData(SEARCH_INDEX);
+  
+  container.innerHTML = normalizedData.map(item => `
+    <div class="article-index-card">
+      <a class="article-index-link" href="${item.url}" rel="noopener">
+        <h3 class="article-index-title">${escapeHtml(item.title)}</h3>
+      </a>
+      <p class="article-index-desc">${escapeHtml(item.description)}</p>
+      ${item.tags && item.tags.length ? `
+        <div class="article-index-tags">
+          ${item.tags.map(t => `<span class="article-index-tag">${escapeHtml(t)}</span>`).join(' ')}
+        </div>
+      ` : ''}
+      ${item.source ? `
+        <div class="article-index-source">${escapeHtml(item.source)}</div>
+      ` : ''}
+    </div>
+  `).join('');
+}
+
+// --------- FILTRO ARTICOLI PER CATEGORIA -------------------------------
+function setupCategoryFilter() {
+  const filterSelect = document.getElementById('category-filter');
+  if (!filterSelect) return;
+  
+  // Estrai categorie uniche
+  const categories = [...new Set(SEARCH_INDEX.map(item => item.category || item.source).filter(Boolean))].sort();
+  
+  // Popola il dropdown
+  filterSelect.innerHTML = '<option value="">Tutte le categorie</option>' +
+    categories.map(cat => `<option value="${escapeHtml(cat)}">${escapeHtml(cat)}</option>`).join('');
+  
+  // Aggiungi event listener
+  filterSelect.addEventListener('change', filterArticlesByCategory);
+}
+
+function filterArticlesByCategory() {
+  const container = document.getElementById('articles-index-container');
+  const filterSelect = document.getElementById('category-filter');
+  if (!container || !filterSelect) return;
+  
+  const selectedCategory = filterSelect.value;
+  const normalizedData = normalizeIndexData(SEARCH_INDEX);
+  
+  const filteredData = selectedCategory 
+    ? normalizedData.filter(item => (item.source === selectedCategory))
+    : normalizedData;
+  
+  container.innerHTML = filteredData.map(item => `
+    <div class="article-index-card">
+      <a class="article-index-link" href="${item.url}" rel="noopener">
+        <h3 class="article-index-title">${escapeHtml(item.title)}</h3>
+      </a>
+      <p class="article-index-desc">${escapeHtml(item.description)}</p>
+      ${item.tags && item.tags.length ? `
+        <div class="article-index-tags">
+          ${item.tags.map(t => `<span class="article-index-tag">${escapeHtml(t)}</span>`).join(' ')}
+        </div>
+      ` : ''}
+      ${item.source ? `
+        <div class="article-index-source">${escapeHtml(item.source)}</div>
+      ` : ''}
+    </div>
+  `).join('');
+}
+
+// --------- INIZIALIZZAZIONE PAGINA PRINCIPALE --------------------------
+function initializeIndexPage() {
+  // Controlla se siamo nella pagina principale (dove vogliamo mostrare l'indice completo)
+  const hasIndexContainer = document.getElementById('articles-index-container');
+  const hasCategoryFilter = document.getElementById('category-filter');
+  
+  if (hasIndexContainer || hasCategoryFilter) {
+    // Carica l'indice e poi inizializza la visualizzazione
+    loadSearchIndex().then(() => {
+      if (hasIndexContainer) {
+        displayAllArticlesInIndex();
+      }
+      if (hasCategoryFilter) {
+        setupCategoryFilter();
+      }
+    });
+  }
+}
+
+// --------- MODIFICA L'INIZIALIZZAZIONE FINALE --------------------------
+// Sostituisci il setTimeout finale con questo:
+
+setTimeout(() => {
+  closeResultsPanel();
+  toggleClearButton();
+  initializeIndexPage(); // <-- AGGIUNGI QUESTA RIGA
+  console.log('🔍 Search: Initialization complete');
+}, 100);
 </script>
 <style>
         /* INIZIO BANNER COOKIE Stili per il banner cookie */
