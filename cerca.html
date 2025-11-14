@@ -6,19 +6,7 @@
 <title>Cerca / Esplora — Echi di Sofia</title>
 <link rel="icon" type="image/png" href="/favicon_io/favicon-32x32.png">
 
-<!-- Preload dell'indice di ricerca -->
-<link rel="preload"
-      href="/search-index.json?v=20251106"
-      as="fetch"
-      type="application/json">
 
-<script id="search-config-root">
-  window.SEARCH_INDEX_URLS = [
-    '/search-index.json?v=20251106',
-    '/search-index.json?v=' + new Date().getTime(),
-    '/search-index.json'
-  ];
-</script>
 
 
 <!-- Nasconde eventuali “sezioni del portale” legacy -->
@@ -149,7 +137,33 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(-
 }
 
 </style>
-  
+  <!-- Preload dell'indice di ricerca -->
+<link rel="preload"
+      href="/search-index.json?v=20251106"
+      as="fetch"
+      type="application/json">
+
+<!-- Configurazione UNICA della ricerca -->
+<script id="search-config-root">
+  (function () {
+    const ts = Date.now(); // forza sempre una versione “fresca” del JSON
+
+    window.SEARCH_INDEX_URLS = [
+      '/search-index.json?v=' + ts,  // prima prova: no cache
+      '/search-index.json'           // fallback
+    ];
+
+    window.SEARCH_CONFIG = {
+      indexUrls: window.SEARCH_INDEX_URLS,
+      debounceTime: 300,
+      minQueryLength: 2,
+      version: '20251106'
+    };
+
+    console.log('🔍 SEARCH_INDEX_URLS impostate:', window.SEARCH_INDEX_URLS);
+  })();
+</script>
+
 </head>
 <body>
 
