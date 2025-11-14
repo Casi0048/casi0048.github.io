@@ -72,25 +72,7 @@
   <!-- Preload immagini critiche -->
   <link rel="preload" as="image" href="/foto/socrate.webp?v=20251106">
 
- <script id="search-config-root">
-  // DEFINISCI ENTRAMBI INDIPENDENTEMENTE
-  window.SEARCH_INDEX_URLS = [
-    '/search-index.json?v=20251106',
-    '/search-index.json?v=' + new Date().getTime(),
-    '/search-index.json'
-  ];
-  
-  window.SEARCH_CONFIG = {
-    indexUrls: [
-      '/search-index.json?v=20251106',
-      '/search-index.json?v=' + new Date().getTime(),
-      '/search-index.json'
-    ],
-    debounceTime: 300,
-    minQueryLength: 2,
-    version: '20251106'
-  };
-</script>
+
   <!-- Schema.org -->
   <script type="application/ld+json">
   {
@@ -111,6 +93,33 @@
     }
   }
   </script>
+  <!-- Preload dell'indice di ricerca -->
+<link rel="preload"
+      href="/search-index.json?v=20251106"
+      as="fetch"
+      type="application/json">
+
+<!-- Configurazione UNICA della ricerca -->
+<script id="search-config-root">
+  (function () {
+    const ts = Date.now(); // forza sempre una versione “fresca” del JSON
+
+    window.SEARCH_INDEX_URLS = [
+      '/search-index.json?v=' + ts,  // prima prova: no cache
+      '/search-index.json'           // fallback
+    ];
+
+    window.SEARCH_CONFIG = {
+      indexUrls: window.SEARCH_INDEX_URLS,
+      debounceTime: 300,
+      minQueryLength: 2,
+      version: '20251106'
+    };
+
+    console.log('🔍 SEARCH_INDEX_URLS impostate:', window.SEARCH_INDEX_URLS);
+  })();
+</script>
+
 </head>
 <style>
   /* Versione compatta */
