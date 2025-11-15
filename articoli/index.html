@@ -9,10 +9,7 @@
   <link rel="icon" type="image/png" href="/favicon_io/favicon-32x32.png">
 
 <!-- Preload dell'indice di ricerca -->
-<link rel="preload" href="/search-index.json?v=20251106" as="fetch" type="application/json">
 
-<link rel="preload" href="/search-index.json?v=20251106" as="fetch" type="application/json" crossorigin>
-  <style>
     :root{ --bg:#0a0a1a; --text:#e9eef5; --gold:#ffd86a; --cyan:#9ad0ff; --panel:rgba(10,10,30,.94); --border:rgba(255,215,0,.22); --muted:#9bb7ff; }
     *{ box-sizing:border-box; } html{ scroll-behavior:smooth; }
     body{ margin:0; background:var(--bg); color:var(--text); font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif; min-height:100dvh; display:flex; flex-direction:column; }
@@ -108,23 +105,22 @@
 <!-- Configurazione UNICA della ricerca -->
 <script id="search-config-root">
   (function () {
-    const ts = Date.now(); // forza sempre una versione “fresca” del JSON
-
+    const VERSION = '20251106';
+    const cacheBuster = Date.now();
     window.SEARCH_INDEX_URLS = [
-      '/search-index.json?v=' + ts,  // prima prova: no cache
-      '/search-index.json'           // fallback
+      `/search-index.json?v=${VERSION}`,
+      `/search-index.json?v=${cacheBuster}`,
+      '/search-index.json'
     ];
-
     window.SEARCH_CONFIG = {
       indexUrls: window.SEARCH_INDEX_URLS,
       debounceTime: 300,
       minQueryLength: 2,
-      version: '20251106'
+      version: VERSION
     };
-
-    console.log('🔍 SEARCH_INDEX_URLS impostate:', window.SEARCH_INDEX_URLS);
   })();
 </script>
+
 
 </head>
 <body>
