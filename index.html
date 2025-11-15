@@ -472,6 +472,7 @@
             padding: 5px;
             transition: all 0.3s ease;
             min-width: 280px;
+            margin-left: 50px;
         }
 
         .search-box:focus-within {
@@ -1994,6 +1995,68 @@
         <div class="echo-circle echo-3"></div>
     </div>
 </div>
+<!-- INIZIO 4 FILOSOFI -->
+<div style="position: relative;">
+<button class="ctrl-btn" id="paradigma-btn" style="
+            background: rgba(20,20,40,0.78);
+            border: 1px solid rgba(255,215,0,0.25);
+            border-radius: 0.5rem;
+            padding: 0.4rem 1rem;
+            color: #ffd86a;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            white-space: nowrap;">
+            🎭 Maestri del Pensiero 🧠<span style="font-size: 1.5em; color: #00ccff;">▾</span>
+</button>
+<!-- Overlay 4 Filosofi -->
+<div id="filosofi-overlay" style="
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 5px;
+            background: linear-gradient(to bottom, rgba(10,10,30,0.95), rgba(10,10,30,0.9));
+            border-radius: 10px;
+            max-width: 800px;
+            width: 600px;
+            padding: 15px 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,215,0,0.3);
+            z-index: 1901;
+            backdrop-filter: blur(10px);">
+
+<h3 style="color: #ffd86a; margin-bottom: 20px; font-family: 'Cinzel', serif; text-align: center;">
+                I Filosofi che hanno cambiato il paradigma
+                <span style="font-size: 1.5em; color: #00ccff;">▾</span>
+</h3>
+<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
+<div style="text-align: center;">
+<img alt="Socrate" decoding="async" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/immagini%20per%20sito/Socrates_Louvre.jpg" style="width: 100%; max-width: 80px; border-radius: 50%; border: 3px solid #d4af37;"/>
+<p style="margin-top: 10px; color: #e9eef5; font-weight: bold; font-family: 'Cormorant Garamond', serif;">Socrate</p>
+<p style="font-style: italic; color: #9ad0ff; font-size: 0.85rem;font-weight: 700;">"So di non sapere."</p>
+</div>
+<div style="text-align: center;">
+<img alt="Platone" decoding="async" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/immagini%20per%20sito/platone.png" style="width: 100%; max-width: 80px; border-radius: 50%; border: 3px solid #d4af37;"/>
+<p style="margin-top: 10px; color: #e9eef5; font-weight: bold; font-family: 'Cormorant Garamond', serif;">Platone</p>
+<p style="font-style: italic; color: #9ad0ff; font-size: 0.85rem;font-weight: 700;">"La realtà è un'ombra delle Idee".Tradotto: Come il mondo vero divenne favola</p>
+</div>
+<div style="text-align: center;">
+<img alt="Kant" decoding="async" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/immagini%20per%20sito/kant.webp" style="width: 100%; max-width: 80px; border-radius: 50%; border: 3px solid #d4af37;"/>
+<p style="margin-top: 10px; color: #e9eef5; font-weight: bold; font-family: 'Cormorant Garamond', serif;">Kant</p>
+<p style="font-style: italic; color: #9ad0ff; font-size: 0.85rem;font-weight: 700;">"Sapere aude! Abbi il coraggio di servirti della tua propria intelligenza!"</p>
+</div>
+<div style="text-align: center;">
+<img alt="Nietzsche" decoding="async" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/immagini%20per%20sito/friedrich-nietzsche.jpg" style="width: 100%; max-width: 80px; border-radius: 50%; border: 3px solid #d4af37;"/>
+<p style="margin-top: 10px; color: #e9eef5; font-weight: bold; font-family: 'Cormorant Garamond', serif;">Nietzsche</p>
+<p style="font-style: italic; color: #9ad0ff; font-size: 0.85rem;font-weight: 700;">"Dio è morto! Dio resta morto! E noi lo abbiamo ucciso! "</p>
+</div>
+</div>
+</div>
+</div>
+<!-- FINE 4 FILOSOFI-->
            <!-- Contenitore della search: ruolo "search" per accessibilità -->
 <div class="search-box" id="siteSearch" role="search" aria-label="Ricerca nel sito">
   <label for="siteSearchInput" class="sr-only">Cerca nel sito</label>
@@ -4163,6 +4226,41 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('🎵 Audio player initialized');
 });
     </script>
+    <script>
+// ===== GESTIONE PANNELLO 4 FILOSOFI (HOVER SEMPLICE) =====
+document.addEventListener('DOMContentLoaded', function() {
+    const paradigmaBtn = document.getElementById('paradigma-btn');
+    const filosofiOverlay = document.getElementById('filosofi-overlay');
+    const container = paradigmaBtn.parentElement;
+    
+    if (!paradigmaBtn || !filosofiOverlay) return;
+    
+    // Apri al hover sul contenitore
+    container.addEventListener('mouseenter', function() {
+        filosofiOverlay.style.display = 'block';
+        setTimeout(() => {
+            filosofiOverlay.style.opacity = '1';
+            filosofiOverlay.style.transform = 'translateX(-50%) translateY(0)';
+        }, 10);
+    });
+    
+    // Chiudi al mouse leave dal contenitore
+    container.addEventListener('mouseleave', function(e) {
+        // Piccolo ritardo per evitare chiusure accidentali
+        setTimeout(() => {
+            if (!container.matches(':hover')) {
+                filosofiOverlay.style.opacity = '0';
+                filosofiOverlay.style.transform = 'translateX(-50%) translateY(-10px)';
+                setTimeout(() => {
+                    filosofiOverlay.style.display = 'none';
+                }, 300);
+            }
+        }, 100);
+    });
+    
+    console.log('🎭 Pannello 4 filosofi (hover semplice) inizializzato');
+});
+</script>
 </body>
 </html>
 
