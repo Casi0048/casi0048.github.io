@@ -20,7 +20,6 @@
   <meta property="og:description" content="Esplora il pensiero filosofico attraverso i secoli. Autori, correnti, timeline interattiva e risorse per approfondire." />
   <meta property="og:image" content="https://www.echidisofia.org/foto/socrate.webp" />
   <meta property="og:site_name" content="Echi di Sofia" />
-  <meta property="og:locale" content="it_IT" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
@@ -47,14 +46,14 @@
   <link rel="stylesheet" href="/accent-layer.css">
   <link rel="stylesheet" href="/accent-layer-plus.css">
   <link rel="stylesheet" href="/assets/css/stile.css?v=20251106">
-
-  <!-- FONTS (VERSIONE UNICA OTTIMIZZATA) -->
-  <link rel="preload" as="style"
-        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400;600&display=swap"
+  
+ <!-- FONTS (VERSIONE UNICA OTTIMIZZATA) -->
+  <link rel="preload" as="style" 
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400;600&display=swap&display=swap"
         crossorigin="anonymous"
         onload="this.onload=null;this.rel='stylesheet'">
   <noscript>
-    <link rel="stylesheet"
+    <link rel="stylesheet" 
           href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400;600&display=swap"
           crossorigin="anonymous">
   </noscript>
@@ -70,20 +69,9 @@
           crossorigin="anonymous">
   </noscript>
 
-  <!-- Preload immagine critica -->
+  <!-- Preload immagini critiche -->
   <link rel="preload" as="image" href="/foto/socrate.webp?v=20251106">
 
-  <!-- Search config -->
-  <link rel="preload"
-        href="/search-index.json?v=20251106"
-        as="fetch"
-        type="application/json">
-  <script id="search-config-root">
-    window.SEARCH_INDEX_URLS = [
-      '/search-index.json?v=20251106',
-      '/search-index.json'
-    ];
-  </script>
 
   <!-- Schema.org -->
   <script type="application/ld+json">
@@ -105,8 +93,34 @@
     }
   }
   </script>
-</head>
+  <!-- Preload dell'indice di ricerca -->
+<link rel="preload"
+      href="/search-index.json?v=20251106"
+      as="fetch"
+      type="application/json">
 
+<!-- Configurazione UNICA della ricerca -->
+<script id="search-config-root">
+  (function () {
+    const ts = Date.now(); // forza sempre una versione “fresca” del JSON
+
+    window.SEARCH_INDEX_URLS = [
+      '/search-index.json?v=' + ts,  // prima prova: no cache
+      '/search-index.json'           // fallback
+    ];
+
+    window.SEARCH_CONFIG = {
+      indexUrls: window.SEARCH_INDEX_URLS,
+      debounceTime: 300,
+      minQueryLength: 2,
+      version: '20251106'
+    };
+
+    console.log('🔍 SEARCH_INDEX_URLS impostate:', window.SEARCH_INDEX_URLS);
+  })();
+</script>
+
+</head>
 <style>
   /* Versione compatta */
 .color-dot {
@@ -354,7 +368,7 @@ body {
     position: fixed;
     right: 1.25rem;
     top: 40rem;
-    .right-embed {
+    width: 20rem;
     z-index: 25;
     background: rgba(10, 10, 30, 0.8);
     border: 1px solid rgba(255, 215, 0, 0.25);
