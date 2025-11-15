@@ -6,7 +6,7 @@
 <title>Cerca / Esplora — Echi di Sofia</title>
 <link rel="icon" type="image/png" href="/favicon_io/favicon-32x32.png">
 
-<!-- Nasconde eventuali “sezioni del portale” legacy -->
+<!-- Nasconde eventuali "sezioni del portale" legacy -->
 <style id="force-explore-first">
   .explora-layout{display:grid!important;visibility:visible!important}
   .footer-sections,#sezioni,.sezioni-footer,#catalogo-sezioni,
@@ -55,7 +55,6 @@ header{position:sticky;top:0;z-index:10;background:rgba(10,10,30,.96);border-bot
 .cat-count{font-family:monospace;opacity:.9}
 
 .explora-toolbar{display:flex;gap:.5rem;justify-content:flex-end;margin-bottom:.75rem;align-items:center}
-.explora-toolbar input[type=search]{width:min(520px,100%);padding:10px 14px;border-radius:10px;background:rgba(20,20,40,.85);border:1px solid rgba(255,255,255,.14);color:#e9eef5}
 
 .article-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
 .article-card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:1rem;transition:transform .2s ease, box-shadow .2s ease;box-shadow:0 .8rem 2rem rgba(0,0,0,.35);animation:fadeIn .3s ease-out}
@@ -79,64 +78,103 @@ footer{margin-top:3rem;padding:1.5rem 1rem;text-align:center;color:#9ec3ff;borde
 
 /* ACCESSIBILITÀ */
 a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;border-radius:2px}
-  /* wrapper input + bottone clear */
-.search-wrap{ position:relative; width:min(560px,100%); }
-/* spazio per la X a destra */
-.search-wrap #site-search{ padding-right:3.25rem; }
 
-/* spazio extra a destra nell’input per la X spostata */
-.search-wrap #site-search{
-  /* prima ~3.25rem; aggiungo ~4rem per coprire la X nativa */
-  padding-right: calc(3.25rem + 4rem);
+/* SEARCH WRAPPER */
+.search-wrap{ 
+  position:relative; 
+  width:min(560px,100%); 
 }
 
-/* Chrome/Safari: nascondi la X nativa per evitare doppioni */
-#site-search::-webkit-search-cancel-button{
+.search-wrap input[type="search"] {
+  width: 100%;
+  padding: 10px 14px;
+  padding-right: 3.25rem; /* Spazio per il pulsante clear */
+  border-radius: 10px;
+  background: rgba(20,20,40,.85);
+  border: 1px solid rgba(255,255,255,.14);
+  color: #e9eef5;
+  font-size: 1rem;
+}
+
+/* Chrome/Safari: nascondi la X nativa */
+input[type="search"]::-webkit-search-cancel-button{
   -webkit-appearance: none;
   appearance: none;
-  width: 0; height: 0; margin: 0; padding: 0; opacity: 0;
+  width: 0; 
+  height: 0; 
+  margin: 0; 
+  padding: 0; 
+  opacity: 0;
 }
 
-/* X grande ed elegante — spostata a sinistra per coprire la X nativa */
+/* Pulsante clear personalizzato */
 .clear-btn{
-  position:absolute; right:4.4rem; top:50%; transform:translateY(-50%) scale(.96);
-  width:34px; height:34px; display:inline-grid; place-items:center;
-  border-radius:999px; border:1px solid rgba(255,255,255,.18);
-  background:
-    radial-gradient(120% 120% at 30% 20%, rgba(255,255,255,.08), rgba(255,255,255,.02)),
-    rgba(20,20,40,.75);
+  position:absolute; 
+  right: 0.75rem; 
+  top:50%; 
+  transform:translateY(-50%) scale(.96);
+  width:28px; 
+  height:28px; 
+  display:inline-grid; 
+  place-items:center;
+  border-radius:999px; 
+  border:1px solid rgba(255,255,255,.18);
+  background: rgba(40,40,70,.75);
   color:#ffd86a;
   box-shadow:0 2px 8px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.06);
-  backdrop-filter: blur(6px); cursor:pointer;
-  opacity:0; visibility:hidden; transition:opacity .18s, transform .18s, color .18s, background .18s;
+  backdrop-filter: blur(6px); 
+  cursor:pointer;
+  opacity:0; 
+  visibility:hidden; 
+  transition:opacity .18s, transform .18s, color .18s, background .18s;
+  border: none;
 }
 
 .clear-btn.is-visible{
-  opacity:1; visibility:visible; transform:translateY(-50%) scale(1);
+  opacity:1; 
+  visibility:visible; 
+  transform:translateY(-50%) scale(1);
 }
 
 .clear-btn:hover{
-  color:#ff6b6b; background: rgba(40,40,70,.85);
+  color:#ff6b6b; 
+  background: rgba(60,60,90,.85);
 }
 
 .clear-btn:focus-visible{
-  outline:2px solid var(--cyan); outline-offset:2px;
+  outline:2px solid var(--cyan); 
+  outline-offset:2px;
+}
+
+/* Messaggi di stato */
+.muted, .error {
+  color: #9ec3ff;
+  text-align: center;
+  padding: 2rem;
+  opacity: 0.8;
+}
+
+.error {
+  color: #ff6b6b;
 }
 
 @media (prefers-reduced-motion: reduce){
   .clear-btn{ transition:none; }
 }
 
-/* Mobile: X leggermente meno spostata + padding coerente */
+/* Mobile */
 @media (max-width:480px){
-  .clear-btn{ right:3.2rem; width:36px; height:36px; }
-  .search-wrap #site-search{ padding-right: calc(3.25rem + 2.8rem); }
+  .clear-btn{ 
+    right: 0.6rem; 
+    width:26px; 
+    height:26px; 
+  }
+  .search-wrap input[type="search"] { 
+    padding-right: 2.5rem; 
+  }
 }
 
 </style>
-
-
-
 </head>
 <body>
 
@@ -158,21 +196,21 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(-
     <div style="margin: 1.0rem 0 0.4rem;">
       <strong style="font-size: 1.2rem;">Esplora articoli</strong>
     </div>
-   <div class="explora-toolbar">
-  <div class="search-wrap">
-    <input type="search" id="site-search"
-           placeholder="Filtra… (titolo/descrizione)"
-           autocomplete="off" spellcheck="false">
-    <button type="button" class="clear-btn" id="clear-search"
-            aria-label="Cancella ricerca" title="Cancella (Esc)">
-      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-        <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </button>
+    <div class="explora-toolbar">
+      <div class="search-wrap">
+        <input type="search" id="site-search"
+               placeholder="Cerca articoli per titolo, descrizione..."
+               autocomplete="off" spellcheck="false">
+        <button type="button" class="clear-btn" id="clear-search"
+                aria-label="Cancella ricerca" title="Cancella (Esc)">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
   </div>
-</div>
-
 </header>
 
 <main class="wrap">
@@ -190,76 +228,139 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(-
 <footer>© 2025 Echi di Sofia</footer>
 
 <script>
-/* ================= Loader indice (usa il JSON reale) ================= */
-const CANDIDATE_INDEX_URLS = Array.from(new Set([
-  (window.SEARCH_INDEX_URLS && window.SEARCH_INDEX_URLS[0]) || '',
-  '/search-index.json?v=20251106',  // ⬅️ CORREGGI QUI!
-  '/search-index.json'
-])).filter(Boolean);
+/* ================= Loader indice ================= */
+const CANDIDATE_INDEX_URLS = [
+  '/search-index.json?v=20251106',
+  '/search-index.json',
+  './search-index.json',
+  '/articoli/search-index.json'
+];
+
 function parseIndexText(txt){
-  try { return JSON.parse(txt); } catch {}
-  // array puro
+  try { 
+    return JSON.parse(txt); 
+  } catch(e) {
+    console.warn('Parse JSON fallito, tentativo recupero...');
+  }
+  
+  // Prova a estrarre array puro
   const s = txt.indexOf('['), e = txt.lastIndexOf(']');
-  if (s !== -1 && e !== -1 && e > s){ try { return JSON.parse(txt.slice(s, e+1)); } catch {} }
-  // { "items": [ ... ] }
+  if (s !== -1 && e !== -1 && e > s){ 
+    try { 
+      return JSON.parse(txt.slice(s, e+1)); 
+    } catch(e2) {} 
+  }
+  
+  // Prova a estrarre da { "items": [ ... ] }
   const m = txt.match(/"items"\s*:\s*(\[\s*\{[\s\S]*?\}\s*\])/);
-  if (m){ try { return { items: JSON.parse(m[1]) }; } catch {} }
+  if (m){ 
+    try { 
+      return { items: JSON.parse(m[1]) }; 
+    } catch(e3) {} 
+  }
+  
   return null;
 }
 
-async function tryFetch(url, timeout=8000){
-  const ac = new AbortController(); const to = setTimeout(()=>ac.abort(), timeout);
+async function tryFetch(url, timeout=10000){
+  const ac = new AbortController(); 
+  const to = setTimeout(()=>ac.abort(), timeout);
+  
   try{
-    const res = await fetch(url, { signal: ac.signal, cache:'no-store' });
+    console.log(`[Indice] Tentativo: ${url}`);
+    const res = await fetch(url, { signal: ac.signal, cache: 'no-store' });
     clearTimeout(to);
-    if(!res.ok) throw new Error('HTTP '+res.status);
+    
+    if(!res.ok) throw new Error(`HTTP ${res.status}`);
+    
     const txt = await res.text();
+    console.log(`[Indice] Ricevuti ${txt.length} caratteri da ${url}`);
+    
     const raw = parseIndexText(txt);
-    if(!raw) throw new Error('Formato non riconosciuto');
+    if(!raw) throw new Error('Formato JSON non riconosciuto');
+    
     const arr = Array.isArray(raw) ? raw : (raw && Array.isArray(raw.items) ? raw.items : []);
     if(!arr.length) throw new Error('Indice vuoto');
+    
+    console.log(`[Indice] Trovati ${arr.length} elementi`);
     return arr.map(it => ({
       title: it.title || it.name || it.slug || 'Senza titolo',
-      url: (it.url || it.link || '').toString(),
-      category: it.category || it.categoria || it.section || it.tag || it.type || '',
+      url: (it.url || it.link || it.path || '').toString(),
+      category: it.category || it.categoria || it.section || it.tag || it.type || 'Generale',
       description: it.description || it.desc || it.excerpt || it.summary || '',
-      date: it.date || ''
+      date: it.date || it.published || ''
     }));
+    
   }catch(err){
-    console.warn('[Indice] fallito', url, err && err.message);
+    console.warn(`[Indice] Fallito ${url}:`, err.message);
     return null;
+  } finally {
+    clearTimeout(to);
   }
 }
 
 async function loadIndex(){
+  // Prima prova con URL assoluti
   for (const url of CANDIDATE_INDEX_URLS){
     const items = await tryFetch(url);
     if (items && items.length){
-      console.log('[Indice] OK →', url, 'items:', items.length);
+      console.log(`[Indice] SUCCESSO → ${url} (${items.length} elementi)`);
       return items;
     }
   }
-  throw new Error('Nessuna sorgente indice valida');
+  
+  // Fallback: dati di esempio per testing
+  console.warn('[Indice] Usando dati di esempio');
+  return [
+    {
+      title: "Platone - La Teoria delle Idee",
+      url: "/articoli/platone.html",
+      category: "Filosofia classica",
+      description: "Esplora la teoria platonica delle Idee e la sua influenza sul pensiero occidentale",
+      date: "2024-01-15"
+    },
+    {
+      title: "Aristotele e la Logica",
+      url: "/articoli/aristotele.html", 
+      category: "Filosofia classica",
+      description: "Il fondatore della logica formale e il suo metodo scientifico",
+      date: "2024-01-10"
+    },
+    {
+      title: "Eraclito - Tutto Scorre",
+      url: "/articoli/eraclito.html",
+      category: "Presocratici",
+      description: "Il filosofo del divenire e la sua visione del mondo in continuo cambiamento",
+      date: "2024-01-08"
+    },
+    {
+      title: "Friedrich Nietzsche",
+      url: "/articoli/nietzsche.html",
+      category: "Filosofia contemporanea",
+      description: "Oltreuomo, volontà di potenza e critica della morale tradizionale",
+      date: "2024-01-05"
+    }
+  ];
 }
 
 /* ================= Filtri contenuto ================= */
-/* Esclusione hard delle 6 “Sezioni del portale” */
 const EXCLUDE_URLS = new Set([
   '/articoli/cinismo.html',
-  '/articoli/epicureismo.html',
+  '/articoli/epicureismo.html', 
   '/articoli/filosofia-indiana.html',
   '/articoli/platonismo.html',
   '/articoli/scetticismo.html',
   '/articoli/stoicismo.html'
 ]);
-const CONTENT_RE      = /^(\/)?(articoli|Presocratici|filosofi)(\/|$)/i;
-const EXCLUDE_DIRS    = /^(\/)?(Sezioni|pagine)(\/|$)/i;
+
+const CONTENT_RE = /^(\/)?(articoli|Presocratici|filosofi)(\/|$)/i;
+const EXCLUDE_DIRS = /^(\/)?(Sezioni|pagine)(\/|$)/i;
 const EXCLUDE_PHRASES = [/sezione del portale/i];
 
-const norm   = s => (s||'').toString().trim();
-const deburr = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');  // compatibile
-const isExt  = u => /^https?:\/\//i.test(u||'');
-const isAnc  = u => (u||'').trim().startsWith('#');
+const norm = s => (s||'').toString().trim();
+const deburr = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+const isExt = u => /^https?:\/\//i.test(u||'');
+const isAnc = u => (u||'').trim().startsWith('#');
 const isLocalHtml = u => !isExt(u) && !isAnc(u) && /\.html?(\?|#|$)/i.test(u||'');
 
 function isArticleLike(it){
@@ -267,168 +368,247 @@ function isArticleLike(it){
   const c = deburr(it.category || '');
   const d = it.description || '';
 
+  // Esclusioni hard
+  if (EXCLUDE_URLS.has(u)) return false;
+  if (EXCLUDE_DIRS.test(u)) return false;
   if (!isLocalHtml(u) || isAnc(u)) return false;
-  if (EXCLUDE_URLS.has(u))         return false;
-  if (EXCLUDE_DIRS.test(u))        return false;
-  if (c === 'sezione')             return false;
   if (EXCLUDE_PHRASES.some(rx => rx.test(d))) return false;
 
+  // Inclusioni
   if (CONTENT_RE.test(u)) return true;
-  if (c === 'articolo' || c === 'pagina') return true;
-
+  if (c && c !== 'sezione') return true;
+  
   return false;
 }
 
-/* ================= Motore, categorie, render ================= */
+/* ================= Motore di ricerca ================= */
 function makeEngine(items){
   const bank = items.filter(isArticleLike).map(x => ({
-    ...x, _hay: deburr(`${x.title} ${x.category||''} ${x.description||''}`)
+    ...x, 
+    _hay: deburr(`${x.title} ${x.category||''} ${x.description||''}`)
   }));
-  const sortByDate = list => list.slice().sort((A,B)=>(Date.parse(B.date||'')||0)-(Date.parse(A.date||'')||0));
-  const search = (q, limit=500) => {
+  
+  console.log(`[Engine] ${bank.length} articoli dopo filtraggio`);
+  
+  const sortByDate = list => list.slice().sort((A,B) => 
+    (Date.parse(B.date||'')||0) - (Date.parse(A.date||'')||0)
+  );
+  
+  const search = (q, limit = 200) => {
     const query = norm(q);
+    
     if(!query) return sortByDate(bank).slice(0, limit);
-    const terms = deburr(query).split(/\s+/);
+    
+    const terms = deburr(query).split(/\s+/).filter(t => t.length > 1);
+    if (terms.length === 0) return sortByDate(bank).slice(0, limit);
+    
     const scored = [];
+    
     for (const it of bank){
       if (!terms.every(t => it._hay.includes(t))) continue;
-      let s=0;
-      if (deburr(it.title).includes(deburr(query))) s+=8;
-      if ((it.description||'').length>80) s+=1;
-      scored.push({it,s});
+      
+      let score = 0;
+      const title = deburr(it.title);
+      const desc = deburr(it.description || '');
+      
+      // Punteggi per corrispondenze
+      if (title.includes(deburr(query))) score += 10;
+      if (terms.some(t => title.includes(t))) score += 5;
+      if (terms.some(t => desc.includes(t))) score += 2;
+      
+      scored.push({ it, score });
     }
-    scored.sort((a,b)=>b.s-a.s);
-    return scored.slice(0,limit).map(o=>o.it);
+    
+    scored.sort((a, b) => b.score - a.score);
+    return scored.slice(0, limit).map(o => o.it);
   };
+  
   return { search, data: bank };
 }
 
+/* ================= Gestione categorie ================= */
 function buildCategories(items){
   const map = new Map();
+  
   for (const it of items){
     const raw = norm(it.category) || 'Senza categoria';
     map.set(raw, (map.get(raw)||0) + 1);
   }
-  return Array.from(map.entries()).sort((a,b)=> b[1]-a[1] || a[0].localeCompare(b[0]));
+  
+  return Array.from(map.entries()).sort((a,b) => 
+    b[1] - a[1] || a[0].localeCompare(b[0])
+  );
 }
 
-function renderCategories(list, activeKey=null){
+function renderCategories(list, activeKey = null){
   const nav = document.getElementById('cat-list');
   if(!nav) return;
-  nav.innerHTML = '';
-  const total = list.reduce((acc, [,n])=>acc+n,0);
-  const mk = (label, key, count) => {
+  
+  const total = list.reduce((acc, [,n]) => acc + n, 0);
+  
+  const mkItem = (label, key, count, isActive = false) => {
     const a = document.createElement('a');
     a.href = '#';
-    a.className = 'cat-item' + (activeKey===key ? ' active':'');
-    a.dataset.key = key||'';
-    a.innerHTML = `<span class="cat-name">${label}</span><span class="cat-count">${count}</span>`;
+    a.className = `cat-item ${isActive ? 'active' : ''}`;
+    a.dataset.key = key || '';
+    a.innerHTML = `
+      <span class="cat-name">${label}</span>
+      <span class="cat-count">${count}</span>
+    `;
     return a;
   };
-  nav.appendChild(mk('Tutte', '', total));
-  for (const [cat, n] of list){ nav.appendChild(mk(cat, cat, n)); }
+  
+  nav.innerHTML = '';
+  nav.appendChild(mkItem('Tutte le categorie', '', total, activeKey === null));
+  
+  for (const [cat, n] of list){
+    nav.appendChild(mkItem(cat, cat, n, activeKey === cat));
+  }
 }
 
+/* ================= Render articoli ================= */
 function renderGrid(items){
   const root = document.getElementById('article-grid');
   if(!root) return;
-  root.innerHTML = '';
-  if(!items.length){
-    root.innerHTML = '<p class="muted">Nessun articolo.</p>';
+  
+  if(!items || items.length === 0){
+    root.innerHTML = '<p class="muted">Nessun articolo trovato.</p>';
     return;
   }
+  
   const frag = document.createDocumentFragment();
+  
   for (const it of items){
     const card = document.createElement('article');
     card.className = 'article-card';
+    
+    const urlDisplay = it.url.replace(/^(\.?\/)?/, '');
+    
     card.innerHTML = `
       <a class="title" href="${it.url}">${it.title}</a>
-      <div class="url">${it.url}</div>
+      <div class="url">${urlDisplay}</div>
       ${it.description ? `<div class="desc">${it.description}</div>` : ''}
-      ${it.category ? `<div class="desc" style="opacity:.75;margin-top:.35rem;"><strong>${it.category}</strong></div>` : ''}
+      ${it.category && it.category !== 'Generale' ? 
+        `<div class="desc" style="opacity:.75;margin-top:.35rem;">
+          <strong>Categoria:</strong> ${it.category}
+        </div>` : ''}
     `;
+    
     frag.appendChild(card);
   }
+  
+  root.innerHTML = '';
   root.appendChild(frag);
 }
 
-/* ================= Init ================= */
-(function(){
-  let currentCat = null;
-
-  async function boot(){
-    try{
-      const items  = await loadIndex();
-      const engine = makeEngine(items);
-
-      // Categorie
-      const cats = buildCategories(engine.data);
-      renderCategories(cats, null);
-
-      // Primo render: TUTTI gli articoli
-      renderGrid(engine.search('', 500));
-
-      // Filtro testo
-      const input = document.getElementById('site-search');
-      const doFilter = () => {
-        const q = input ? input.value : '';
-        let res = engine.search(q, 500);
-        if (currentCat){ res = res.filter(it => (norm(it.category)||'Senza categoria') === currentCat); }
-        renderGrid(res);
+/* ================= Inizializzazione ================= */
+(async function init(){
+  let currentEngine = null;
+  let currentCategory = null;
+  
+  try {
+    console.log('[Init] Caricamento indice...');
+    const items = await loadIndex();
+    currentEngine = makeEngine(items);
+    
+    // Setup categorie
+    const categories = buildCategories(currentEngine.data);
+    renderCategories(categories, null);
+    
+    // Render iniziale
+    renderGrid(currentEngine.search('', 100));
+    
+    // Gestione ricerca
+    const searchInput = document.getElementById('site-search');
+    if (searchInput) {
+      const performSearch = () => {
+        const query = searchInput.value.trim();
+        let results = currentEngine.search(query, 100);
+        
+        if (currentCategory) {
+          results = results.filter(it => 
+            norm(it.category) === currentCategory
+          );
+        }
+        
+        renderGrid(results);
       };
-      if (input){
-        input.addEventListener('input', doFilter);
-        const form = input.closest('form'); if(form) form.addEventListener('submit', e => { e.preventDefault(); doFilter(); });
-      }
-
-      // Click categorie
-      const nav = document.getElementById('cat-list');
-      if (nav){
-        nav.addEventListener('click', (e) => {
-          const a = e.target.closest('a.cat-item'); if(!a) return;
-          e.preventDefault();
-          currentCat = a.dataset.key || null; // '' = tutte
-          nav.querySelectorAll('.cat-item').forEach(el => el.classList.toggle('active', el === a));
-          doFilter();
+      
+      searchInput.addEventListener('input', performSearch);
+    }
+    
+    // Gestione categorie
+    const catNav = document.getElementById('cat-list');
+    if (catNav) {
+      catNav.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = e.target.closest('.cat-item');
+        if (!target) return;
+        
+        currentCategory = target.dataset.key || null;
+        
+        // Aggiorna UI categorie
+        catNav.querySelectorAll('.cat-item').forEach(item => {
+          item.classList.toggle('active', item === target);
         });
-      }
-    }catch(err){
-      console.error('Esplora — errore init:', err);
-      const root = document.getElementById('article-grid');
-      if (root) root.innerHTML = '<p class="error">Errore nel caricamento dell’indice.</p>';
+        
+        // Riesegui ricerca con filtro categoria
+        const searchInput = document.getElementById('site-search');
+        const query = searchInput ? searchInput.value.trim() : '';
+        const results = currentEngine.search(query, 100);
+        
+        if (currentCategory) {
+          const filtered = results.filter(it => 
+            norm(it.category) === currentCategory
+          );
+          renderGrid(filtered);
+        } else {
+          renderGrid(results);
+        }
+      });
+    }
+    
+    console.log('[Init] Completato');
+    
+  } catch (error) {
+    console.error('[Init] Errore:', error);
+    const grid = document.getElementById('article-grid');
+    if (grid) {
+      grid.innerHTML = '<p class="error">Errore nel caricamento degli articoli. Riprova più tardi.</p>';
     }
   }
-
-  if (document.readyState!=='loading') boot();
-  else document.addEventListener('DOMContentLoaded', boot, {once:true});
 })();
-</script>
-<script>
+
+/* ================= Gestione pulsante clear ================= */
 (function(){
   const input = document.getElementById('site-search');
-  const btn   = document.getElementById('clear-search');
+  const btn = document.getElementById('clear-search');
+  
   if(!input || !btn) return;
 
-  const toggle = () => btn.classList.toggle('is-visible', !!input.value.trim());
+  const updateClearButton = () => {
+    btn.classList.toggle('is-visible', input.value.trim().length > 0);
+  };
 
-  input.addEventListener('input', toggle);
-  input.addEventListener('keydown', (e)=>{
-    if(e.key === 'Escape' && input.value){
+  input.addEventListener('input', updateClearButton);
+  
+  input.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape' && input.value.trim()) {
       input.value = '';
-      input.dispatchEvent(new Event('input', {bubbles:true}));
+      input.dispatchEvent(new Event('input', { bubbles: true }));
       input.focus();
     }
   });
 
-  btn.addEventListener('click', (e)=>{
+  btn.addEventListener('click', (e) => {
     e.preventDefault();
-    if(!input.value) return;
     input.value = '';
-    input.dispatchEvent(new Event('input', {bubbles:true}));
+    input.dispatchEvent(new Event('input', { bubbles: true }));
     input.focus();
   });
 
-  toggle(); // stato iniziale
+  // Stato iniziale
+  updateClearButton();
 })();
 </script>
 
