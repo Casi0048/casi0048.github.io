@@ -58,16 +58,7 @@
         integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
         crossorigin="anonymous">
 
-  <!-- ===== RICERCA E CONFIGURAZIONE ===== -->
-  <link rel="prefetch" href="/search-index.json?v=20251106" as="fetch" type="application/json" crossorigin>
-  <script id="search-config-root">
-    window.SEARCH_INDEX_URLS = [
-      '/search-index.json?v=20251106',
-      '/search-index.json',
-      './search-index.json',
-      '/articoli/search-index.json'
-    ];
-  </script>
+ 
 
   <!-- Schema.org markup -->
   <script type="application/ld+json">
@@ -113,6 +104,37 @@
       ]
     }
   </script>
+  <!-- Search config UNICA per l'intero sito -->
+<link rel="prefetch"
+      href="/search-index.json?v=20251106"
+      as="fetch"
+      type="application/json"
+      crossorigin>
+
+<script id="search-config-root">
+  (function () {
+    const VERSION = '20251106';
+    const cacheBuster = Date.now();
+
+    // URL da cui caricare l'indice di ricerca
+    window.SEARCH_INDEX_URLS = [
+      `/search-index.json?v=${VERSION}`,   // versione "stabile"
+      `/search-index.json?v=${cacheBuster}`, // fallback anti-cache
+      '/search-index.json'                // fallback base
+    ];
+
+    // Config globale usata dallo script di ricerca
+    window.SEARCH_CONFIG = {
+      indexUrls: window.SEARCH_INDEX_URLS,
+      debounceTime: 300,
+      minQueryLength: 2,
+      version: VERSION
+    };
+
+    console.log('SEARCH_INDEX_URLS inizializzati:', window.SEARCH_INDEX_URLS);
+  })();
+</script>
+
 </head>
   <style>
    /* ===== PULSANTE TORNA SU ===== */
