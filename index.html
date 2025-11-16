@@ -1133,142 +1133,285 @@
             font-size: 0.9rem;
         }
 
-        /* === ANIMAZIONE HERO SECTION === */
-        .hero {
-            position: relative;
-            overflow: hidden;
-        }
+        /* === ANIMAZIONE HERO SECTION AGGIORNATA === */
+.hero {
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    animation: heroEntrance 1s ease-out forwards;
+}
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(
-                45deg,
-                rgba(138, 109, 59, 0.1) 0%,
-                rgba(176, 141, 87, 0.05) 25%,
-                rgba(138, 109, 59, 0.1) 50%,
-                rgba(176, 141, 87, 0.05) 75%,
-                rgba(138, 109, 59, 0.1) 100%
-            );
-            background-size: 400% 400%;
-            animation: gradientShift 8s ease-in-out infinite;
-            z-index: 1;
-        }
-
-        .hero .container {
-            position: relative;
-            z-index: 2;
-        }
-
-        .hero h2 {
-            animation: fadeInUp 1.2s ease-out 0.3s both;
-            position: relative;
-        }
-
-        .hero h2::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #ffd700, transparent);
-            animation: lineExpandHero 3s ease-in-out 1.5s infinite;
-        }
-
-        .hero p {
-            animation: fadeInUp 1.2s ease-out 0.6s both;
-            position: relative;
-        }
-
-        .hero .btn {
-            animation: fadeInUp 1.2s ease-out 0.9s both, btnPulse 3s ease-in-out 2s infinite;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            animation: btnShimmer 4s ease-in-out 2.5s infinite;
-        }
-
-        /* Particelle fluttuanti */
-        .floating-particles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .particle {
-            position: absolute;
-            background: rgba(255, 215, 0, 0.3);
-            border-radius: 50%;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .particle:nth-child(1) {
-            width: 4px;
-            height: 4px;
-            top: 20%;
-            left: 10%;
-            animation-delay: 0s;
-        }
-
-        .particle:nth-child(2) {
-            width: 6px;
-            height: 6px;
-            top: 60%;
-            left: 80%;
-            animation-delay: 1s;
-        }
-
-        .particle:nth-child(3) {
-            width: 3px;
-            height: 3px;
-            top: 40%;
-            left: 20%;
-            animation-delay: 2s;
-        }
-
-        .particle:nth-child(4) {
-            width: 5px;
-            height: 5px;
-            top: 80%;
-            left: 40%;
-            animation-delay: 3s;
-        }
-
-        .particle:nth-child(5) {
-            width: 4px;
-            height: 4px;
-            top: 30%;
-            left: 70%;
-            animation-delay: 4s;
-        }
-
-        .hero-quotes-container {
+.hero::before {
+    content: '';
     position: absolute;
-    bottom: 20px;
+    top: 0;
     left: 0;
     right: 0;
-    height: 40px;
+    bottom: 0;
+    background: linear-gradient(
+        45deg,
+        rgba(138, 109, 59, 0.1) 0%,
+        rgba(176, 141, 87, 0.05) 25%,
+        rgba(138, 109, 59, 0.1) 50%,
+        rgba(176, 141, 87, 0.05) 75%,
+        rgba(138, 109, 59, 0.1) 100%
+    );
+    background-size: 400% 400%;
+    animation: gradientShift 8s ease-in-out infinite;
+    z-index: 1;
+}
+
+.hero .container {
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    transform: translateY(40px);
+    animation: containerReveal 1.2s ease-out 0.3s forwards;
+}
+
+/* TITOLO CON EFFETTO PENSIERO FILOSOFICO */
+.hero h2 {
+    font-size: 2.8rem;
+    font-family: 'Cinzel Decorative', cursive;
+    margin-bottom: 25px;
+    color: var(--text-color);
+    opacity: 0;
+    transform: translateY(30px);
+    animation: philosophicalTitle 2.2s ease-out 0.6s forwards;
+    position: relative;
+    text-align: center;
+    line-height: 1.3;
+}
+
+.hero h2::before {
+    content: '❝';
+    position: absolute;
+    left: -40px;
+    top: -10px;
+    font-size: 3rem;
+    color: rgba(255, 215, 0, 0.3);
+    opacity: 0;
+    animation: quoteMarkIn 1s ease-out 1s forwards;
+}
+
+.hero h2::after {
+    content: '❞';
+    position: absolute;
+    right: -40px;
+    bottom: -10px;
+    font-size: 3rem;
+    color: rgba(255, 215, 0, 0.3);
+    opacity: 0;
+    animation: quoteMarkIn 1s ease-out 1s forwards;
+}
+
+.hero h2 .thinking-dots {
+    display: inline-block;
+    margin-left: 10px;
+    opacity: 0;
+    animation: thinkingDots 2s infinite 2s;
+}
+
+.hero h2 .thinking-dots::after {
+    content: '...';
+    animation: dotPulse 1.5s infinite;
+}
+
+/* PARAGRAFO CON EFFETTO SCRITTURA */
+.hero p {
+    font-size: 1.3rem;
+    max-width: 700px;
+    margin: 0 auto 30px;
+    color: #ffd700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    position: relative;
+    line-height: 1.6;
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    
+    /* Animazione migliorata */
+    opacity: 0;
+    animation: textReveal 2.5s ease-out 1.2s forwards;
+}
+
+@keyframes textReveal {
+    0% {
+        opacity: 0;
+        letter-spacing: 5px;
+        filter: blur(2px);
+    }
+    50% {
+        opacity: 0.7;
+        letter-spacing: 2px;
+        filter: blur(1px);
+    }
+    100% {
+        opacity: 1;
+        letter-spacing: normal;
+        filter: blur(0);
+    }
+}
+
+.hero p::after {
+    content: '|';
+    position: absolute;
+    right: -10px;
+    animation: cursorBlink 0.8s infinite 1.2s;
+    color: #ffd700;
+    font-weight: bold;
+    opacity: 0;
+    animation-fill-mode: both;
+}
+
+/* PULSANTE CON TRANSIZIONE FLUIDA */
+.hero .btn {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 15px 35px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    transform: scale(0.8) translateY(20px);
+    animation: buttonReveal 1s ease-out 2s forwards;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(138, 109, 59, 0.3);
+    letter-spacing: 0.5px;
+}
+
+.hero .btn:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 
+        0 12px 30px rgba(255, 215, 0, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.1);
+    letter-spacing: 1px;
+    background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+}
+
+.hero .btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.6s ease;
+}
+
+.hero .btn:hover::before {
+    left: 100%;
+}
+
+.hero .btn::after {
+    content: '🧭';
+    margin-left: 8px;
+    display: inline-block;
+    animation: compassSpin 4s linear infinite;
+}
+
+/* PARTICELLE FILOSOFICHE MIGLIORATE */
+.floating-particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.particle {
+    position: absolute;
+    border-radius: 50%;
+    animation: philosophicalFloat 8s ease-in-out infinite;
+    filter: blur(0.5px);
+}
+
+/* Varietà di particelle */
+.particle:nth-child(1) {
+    width: 4px;
+    height: 4px;
+    background: rgba(255, 215, 0, 0.6);
+    top: 20%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.particle:nth-child(2) {
+    width: 6px;
+    height: 6px;
+    background: rgba(255, 215, 0, 0.4);
+    top: 60%;
+    left: 80%;
+    animation-delay: 1.5s;
+}
+
+.particle:nth-child(3) {
+    width: 3px;
+    height: 3px;
+    background: rgba(255, 215, 0, 0.8);
+    top: 40%;
+    left: 20%;
+    animation-delay: 3s;
+}
+
+.particle:nth-child(4) {
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 215, 0, 0.5);
+    top: 80%;
+    left: 40%;
+    animation-delay: 4.5s;
+}
+
+.particle:nth-child(5) {
+    width: 4px;
+    height: 4px;
+    background: rgba(255, 215, 0, 0.7);
+    top: 30%;
+    left: 70%;
+    animation-delay: 6s;
+}
+
+/* Aggiungi più particelle per un effetto più ricco */
+.particle:nth-child(6) {
+    width: 2px;
+    height: 2px;
+    background: rgba(255, 215, 0, 0.9);
+    top: 15%;
+    left: 50%;
+    animation-delay: 2s;
+}
+
+.particle:nth-child(7) {
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 215, 0, 0.3);
+    top: 75%;
+    left: 25%;
+    animation-delay: 5s;
+}
+
+/* QUOTES CONTAINER */
+.hero-quotes-container {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    height: 50px;
     overflow: hidden;
     cursor: pointer;
+    opacity: 0;
+    animation: quotesAppear 1s ease-out 2.5s forwards;
 }
 
 .hero-quote {
@@ -1279,190 +1422,196 @@
     text-align: center;
     font-style: italic;
     font-weight: 700;
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.15rem;
     white-space: nowrap;
     opacity: 0;
     transform: translateY(20px);
     transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+    font-family: 'Cormorant Garamond', serif;
+    padding: 0 20px;
 }
 
 .hero-quote.active {
     opacity: 1;
     transform: translateY(0);
-    animation: gentleGlow 3s ease-in-out infinite;
+    animation: gentleGlow 4s ease-in-out infinite;
 }
 
-@keyframes gentleGlow {
-    0%, 100% {
-        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-    }
-    50% {
-        text-shadow: 0 2px 20px rgba(255, 215, 0, 0.3);
-    }
-}
-
-/* Effetto di dissolvenza tra le citazioni */
 .hero-quote.exiting {
     opacity: 0;
     transform: translateY(-20px);
 }
 
-        /* Responsive */
-        @media (max-width: 1200px) {
-            .mega-menu {
-                width: 800px;
-            }
-        }
+/* KEYFRAMES ANIMAZIONI */
+@keyframes heroEntrance {
+    to {
+        opacity: 1;
+    }
+}
 
-        @media (max-width: 992px) {
-            .mega-menu {
-                width: 700px;
-            }
-            
-            .columns-4 {
-                grid-template-columns: repeat(3, 1fr);
-            }
-            
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .footer-content {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
+@keyframes containerReveal {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
-        @media (max-width: 768px) {
-            .header-top {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .search-box input {
-                width: 200px;
-            }
-            
-            .mega-menu {
-                width: 500px;
-                left: 50%;
-                transform: translateX(-50%) translateY(10px);
-            }
-            
-            .anchor-right {
-                left: 50%;
-                right: auto;
-                transform: translateX(-50%) translateY(10px);
-            }
-            
-            .dropdown:hover .mega-menu {
-                transform: translateX(-50%) translateY(0);
-            }
-            
-            .columns-4 {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .articles-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .footer-content {
-                grid-template-columns: 1fr;
-            }
+@keyframes philosophicalTitle {
+    0% {
+        opacity: 0;
+        transform: translateY(30px) scale(0.9);
+        letter-spacing: 10px;
+    }
+    50% {
+        opacity: 0.7;
+        transform: translateY(-5px) scale(1.02);
+        letter-spacing: 2px;
+        text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        letter-spacing: normal;
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+    }
+}
 
-            .logo h1 {
-                font-size: 1.8rem;
-            }
-            
-            .subtitle {
-                font-size: 0.8rem;
-                letter-spacing: 1px;
-            }
-            
-            .logo i {
-                font-size: 1.8rem;
-            }
+@keyframes quoteMarkIn {
+    to {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+}
 
-            .hero h2::after {
-                animation: lineExpandHero 3s ease-in-out 1.5s infinite;
-            }
-            
-            @keyframes lineExpandHero {
-                0%, 100% {
-                    width: 0;
-                    opacity: 0;
-                }
-                50% {
-                    width: 150px;
-                    opacity: 1;
-                }
-            }
-            
-            .hero-quote {
-                font-size: 0.8rem;
-                bottom: 15px;
-            }
-            
-            .particle {
-                display: none;
-            }
-        }
+@keyframes thinkingDots {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+}
 
-        @media (max-width: 576px) {
-            .menu-desktop ul {
-                flex-direction: column;
-                gap: 0;
-            }
-            
-            .mega-menu {
-                width: 300px;
-                position: static;
-                display: none;
-                transform: none;
-            }
-            
-            .dropdown:hover .mega-menu {
-                display: block;
-                transform: none;
-            }
-            
-            .columns-4 {
-                grid-template-columns: 1fr;
-            }
+@keyframes dotPulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
 
-            .logo h1 {
-                font-size: 1.5rem;
-            }
-            
-            .subtitle {
-                font-size: 0.7rem;
-            }
-            
-            .logo i {
-                font-size: 1.5rem;
-            }
+@keyframes typewriterEffect {
+    0% {
+        opacity: 0;
+        width: 0;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+        width: 100%;
+    }
+}
 
-            .hero h2 {
-                font-size: 2rem;
-            }
-            
-            .hero p {
-                font-size: 1rem;
-            }
-            
-            @keyframes lineExpandHero {
-                0%, 100% {
-                    width: 0;
-                    opacity: 0;
-                }
-                50% {
-                    width: 100px;
-                    opacity: 1;
-                }
-            }
-        }
+@keyframes cursorBlink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+@keyframes buttonReveal {
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes compassSpin {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(1.1); }
+    100% { transform: rotate(360deg) scale(1); }
+}
+
+@keyframes philosophicalFloat {
+    0%, 100% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+    }
+    25% {
+        transform: translateY(-25px) translateX(15px) rotate(90deg);
+    }
+    50% {
+        transform: translateY(0) translateX(30px) rotate(180deg);
+    }
+    75% {
+        transform: translateY(25px) translateX(15px) rotate(270deg);
+    }
+}
+
+@keyframes gentleGlow {
+    0%, 100% {
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+    }
+    50% {
+        text-shadow: 
+            0 2px 20px rgba(255, 215, 0, 0.4),
+            0 0 30px rgba(255, 215, 0, 0.2);
+    }
+}
+
+@keyframes quotesAppear {
+    to {
+        opacity: 1;
+    }
+}
+
+/* ANIMAZIONI ESISTENTI MANTENUTE */
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .hero h2 {
+        font-size: 2.2rem;
+    }
+    
+    .hero h2::before,
+    .hero h2::after {
+        display: none; /* Nascondi le virgolette su mobile */
+    }
+    
+    .hero p {
+        font-size: 1.1rem;
+        padding: 0 15px;
+    }
+    
+    .hero .btn {
+        padding: 12px 25px;
+        font-size: 1rem;
+    }
+    
+    .hero-quote {
+        font-size: 0.9rem;
+        white-space: normal;
+        padding: 0 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero h2 {
+        font-size: 1.8rem;
+    }
+    
+    .hero p {
+        font-size: 0.95rem;
+    }
+    
+    .particle {
+        display: none; /* Riduci particelle su schermi piccoli */
+    }
+}
         .video-player iframe {
     width: 100%;
     height: 230px;
@@ -2578,12 +2727,14 @@
         <div class="particle"></div>
         <div class="particle"></div>
         <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
     </div>
     
     <div class="container">
-        <h2>Benvenuto in Echi di Sofia</h2>
+        <h2>Benvenuto in Echi di Sofia<span class="thinking-dots"></span></h2>
         <p>Dal fuoco dei Presocratici alle sfide della contemporaneità: un'esplorazione senza confini del pensiero che continua a plasmare il nostro presente.</p>
-        <a href="/articoli/#lista-articoli" class="btn"> 📖 Esplora Articoli 🧭</a>
+        <a href="/articoli/#lista-articoli" class="btn">📖 Esplora Articoli</a>
     </div>
     
     <!-- ✅ SOLO IL CONTAINER VUOTO - JavaScript popolerà le citazioni -->
