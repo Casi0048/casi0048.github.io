@@ -59,14 +59,14 @@
 
   <!-- ===== RICERCA E CONFIGURAZIONE ===== -->
   <link rel="prefetch"
-        href="/search-index.json?v=20251106"
+        href="/search-index.json?v=20251116"
         as="fetch"
         type="application/json"
         crossorigin="anonymous">
 
   <script id="search-config-root">
     (function () {
-      const VERSION = '20251106';
+      const VERSION = '20251116';
       window.SEARCH_INDEX_URLS = [
         `/search-index.json?v=${VERSION}`,
         '/search-index.json',
@@ -4235,6 +4235,16 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('🎵 Audio player initialized');
 });
     </script>
+  <script>
+  // Forza ricarica se la pagina viene ripristinata dalla back/forward cache
+  window.addEventListener('pageshow', function (event) {
+    if (event.persisted) {
+      // La pagina è stata ripristinata da bfcache → ricarico per rifare il fetch dell'indice
+      window.location.reload();
+    }
+  });
+</script>
+
     <script>
 // ===== GESTIONE PANNELLO 4 FILOSOFI (HOVER SEMPLICE) =====
 document.addEventListener('DOMContentLoaded', function() {
