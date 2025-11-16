@@ -1986,6 +1986,110 @@
         height: 380px;
     }
 }
+ /* === CSS PER BOX TRADUCI === */
+ .translate-box{
+  display:inline-flex;
+  align-items:center;
+  gap:.45rem;
+  padding:.35rem .7rem;
+  border-radius:999px;
+  background:
+    radial-gradient(140% 180% at 10% 0%, rgba(255,255,255,.08), rgba(255,255,255,.01)),
+    rgba(10,10,30,.90);
+  border:1px solid rgba(255,215,0,.32);
+  box-shadow:
+    0 8px 18px rgba(0,0,0,.55),
+    0 0 0 1px rgba(0,0,0,.6),
+    0 0 14px rgba(154,208,255,.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color:#ffeb9a;
+  font-size:.9rem;
+}
+
+.translate-icon{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:26px;
+  height:26px;
+  border-radius:999px;
+  background:radial-gradient(circle at 30% 20%, #ffd86a, #9ad0ff);
+  box-shadow:0 0 10px rgba(255,216,106,.65);
+  font-size:1.1rem;
+}
+
+.translate-select{
+  appearance:none;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+  border:none;
+  background:transparent;
+  color:#e9eef5;
+  font:inherit;
+  padding:.2rem 1.5rem .2rem .1rem;
+  cursor:pointer;
+  position:relative;
+}
+.translate-select option {
+  background: rgba(10,10,25,.95);
+  color: #e9eef5;
+  padding: .4rem;
+}
+
+/* Hover su opzione — Firefox solamente */
+.translate-select option:hover {
+  background: linear-gradient(90deg, rgba(255,216,106,.2), rgba(154,208,255,.2));
+  color: #fff;
+}
+/* freccia custom (usa pseudo-elemento sul box) */
+.translate-box{
+  position:relative;
+}
+.translate-box::after{
+  content:"\f107"; /* caret-down */
+  font-family:"Font Awesome 6 Free";
+  font-weight:900;
+  position:absolute;
+  right:.8rem;
+  pointer-events:none;
+  font-size:.75rem;
+  color:#9ad0ff;
+  opacity:.9;
+}
+
+/* stato hover / focus */
+.translate-box:hover{
+  border-color:rgba(255,215,0,.75);
+  box-shadow:
+    0 10px 22px rgba(0,0,0,.65),
+    0 0 18px rgba(154,208,255,.45);
+}
+
+.translate-select:focus-visible{
+  outline:none;
+}
+
+.translate-box:focus-within{
+  border-color:#9ad0ff;
+  box-shadow:
+    0 0 0 1px rgba(154,208,255,.65),
+    0 0 20px rgba(154,208,255,.6);
+}
+
+/* Mobile: rendilo un po' più compatto */
+@media (max-width:480px){
+  .translate-box{
+    padding:.25rem .55rem;
+    font-size:.85rem;
+  }
+  .translate-icon{
+    width:24px;
+    height:24px;
+    font-size:1rem;
+  }
+}
+
     </style>
 <body>
     <!-- Header -->
@@ -2112,19 +2216,21 @@
 
                     <div id="google_translate_element" style="display: none;"></div>
                     <div class="translate-box">
-<span>🌐</span>
-<select aria-label="Traduci pagina" class="translate-select" id="customTranslate">
-<option value="it">Italiano</option>
-<option value="en">English</option>
-<option value="fr">Français</option>
-<option value="de">Deutsch</option>
-<option value="es">Español</option>
-<option value="pl">Polski</option>
-</select>
-<div aria-hidden="true" id="google_translate_element" style="position:fixed;bottom:0;right:0;width:1px;height:1px;opacity:0;pointer-events:none;overflow:hidden"></div>
-                </div>
-            </div>
-        </div>
+  <span class="translate-icon" aria-hidden="true">🌐</span>
+  <select aria-label="Traduci pagina" class="translate-select" id="customTranslate">
+    <option value="it">Italiano</option>
+    <option value="en">English</option>
+    <option value="fr">Français</option>
+    <option value="de">Deutsch</option>
+    <option value="es">Español</option>
+    <option value="pl">Polski</option>
+  </select>
+</div>
+
+<!-- UN SOLO contenitore nascosto per Google -->
+<div id="google_translate_element"
+     style="position:fixed;bottom:0;right:0;width:1px;height:1px;opacity:0;
+            pointer-events:none;overflow:hidden;"></div>
         
         <!-- Menu Container -->
         <div class="menu-container">
