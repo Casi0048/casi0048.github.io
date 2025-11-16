@@ -1271,217 +1271,325 @@
         }
 
         /* Testo filosofico scorrevole */
-        .hero-quote {
-            position: absolute;
-            bottom: 20px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            font-style: italic;
-            font-weight: 700;
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.9rem;
-            animation: scrollQuote 15s linear infinite;
-            white-space: nowrap;
+     /* ===== SISTEMA CITAZIONI EROICHE ===== */
+.hero-quotes-container {
+    position: absolute;
+    bottom: 5px;
+    left: 0;
+    right: 0;
+    height: 45px;
+    overflow: hidden;
+    cursor: pointer;
+    /* Nessun background - massima pulizia */
+}
+
+.hero-quote {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-style: italic;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 1.25rem;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
+    padding: 10px 25px;
+    font-family: 'Cormorant Garamond', serif;
+    letter-spacing: 0.3px;
+}
+
+.hero-quote.active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    animation: 
+        philosophicalEntrance 0.8s ease-out forwards,
+        philosophicalGlow 6s ease-in-out infinite 0.8s,
+        gentleFloat 15s ease-in-out infinite 1s;
+}
+
+/* Animazione di ingresso */
+@keyframes philosophicalEntrance {
+    0% {
+        opacity: 0;
+        transform: translateY(30px) scale(0.9);
+        filter: blur(5px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+}
+
+/* Effetto glow sofisticato */
+@keyframes philosophicalGlow {
+    0%, 100% {
+        text-shadow: 
+            0 2px 8px rgba(0, 0, 0, 0.8),
+            0 0 0px rgba(255, 215, 0, 0),
+            0 0 0px rgba(154, 208, 255, 0);
+    }
+    25% {
+        text-shadow: 
+            0 2px 12px rgba(0, 0, 0, 0.9),
+            0 0 8px rgba(255, 215, 0, 0.2),
+            0 0 12px rgba(154, 208, 255, 0.1);
+    }
+    50% {
+        text-shadow: 
+            0 2px 15px rgba(0, 0, 0, 0.9),
+            0 0 12px rgba(255, 215, 0, 0.25),
+            0 0 18px rgba(154, 208, 255, 0.15);
+    }
+    75% {
+        text-shadow: 
+            0 2px 12px rgba(0, 0, 0, 0.9),
+            0 0 8px rgba(255, 215, 0, 0.2),
+            0 0 12px rgba(154, 208, 255, 0.1);
+    }
+}
+
+/* Leggero movimento fluttuante */
+@keyframes gentleFloat {
+    0%, 100% {
+        transform: translateY(0) scale(1);
+    }
+    50% {
+        transform: translateY(-2px) scale(1.01);
+    }
+}
+
+/* Effetto di uscita */
+.hero-quote.exiting {
+    opacity: 0;
+    transform: translateY(-25px) scale(0.95);
+    filter: blur(3px);
+    transition: all 0.5s cubic-bezier(0.55, 0.085, 0.68, 0.53);
+}
+
+/* Indicatore di progresso (opzionale) */
+.hero-quotes-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #ffd700, #ffed4e, #ffd700);
+    width: 0%;
+    transition: width 8s linear;
+}
+
+.hero-quotes-container:hover .hero-quotes-progress {
+    animation-play-state: paused;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 1200px) {
+    .mega-menu {
+        width: 800px;
+    }
+}
+
+@media (max-width: 992px) {
+    .mega-menu {
+        width: 700px;
+    }
+    
+    .columns-4 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .main-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    /* Citazioni tablet */
+    .hero-quotes-container {
+        height: 40px;
+        bottom: 15px;
+    }
+    
+    .hero-quote {
+        font-size: 0.9rem;
+        padding: 8px 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-top {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .search-box input {
+        width: 200px;
+    }
+    
+    .mega-menu {
+        width: 500px;
+        left: 50%;
+        transform: translateX(-50%) translateY(10px);
+    }
+    
+    .anchor-right {
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%) translateY(10px);
+    }
+    
+    .dropdown:hover .mega-menu {
+        transform: translateX(-50%) translateY(0);
+    }
+    
+    .columns-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .articles-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr;
+    }
+
+    .logo h1 {
+        font-size: 1.8rem;
+    }
+    
+    .subtitle {
+        font-size: 0.8rem;
+        letter-spacing: 1px;
+    }
+    
+    .logo i {
+        font-size: 1.8rem;
+    }
+
+    .hero h2::after {
+        animation: lineExpandHero 3s ease-in-out 1.5s infinite;
+    }
+    
+    @keyframes lineExpandHero {
+        0%, 100% {
+            width: 0;
+            opacity: 0;
         }
-
-        /* === KEYFRAMES HERO === */
-        @keyframes gradientShift {
-            0%, 100% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
+        50% {
+            width: 150px;
+            opacity: 1;
         }
+    }
+    
+    /* Citazioni mobile */
+    .hero-quotes-container {
+        height: 35px;
+        bottom: 10px;
+        background: linear-gradient(90deg, 
+            transparent 0%, 
+            rgba(255, 215, 0, 0.05) 10%, 
+            rgba(255, 215, 0, 0.05) 90%, 
+            transparent 100%);
+    }
+    
+    .hero-quote {
+        font-size: 0.8rem;
+        padding: 6px 15px;
+        transform: translateY(20px) scale(0.92);
+    }
+    
+    .hero-quote.active {
+        transform: translateY(0) scale(1);
+    }
+    
+    .particle {
+        display: none;
+    }
+}
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+@media (max-width: 576px) {
+    .menu-desktop ul {
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    .mega-menu {
+        width: 300px;
+        position: static;
+        display: none;
+        transform: none;
+    }
+    
+    .dropdown:hover .mega-menu {
+        display: block;
+        transform: none;
+    }
+    
+    .columns-4 {
+        grid-template-columns: 1fr;
+    }
+
+    .logo h1 {
+        font-size: 1.5rem;
+    }
+    
+    .subtitle {
+        font-size: 0.7rem;
+    }
+    
+    .logo i {
+        font-size: 1.5rem;
+    }
+
+    .hero h2 {
+        font-size: 2rem;
+    }
+    
+    .hero p {
+        font-size: 1rem;
+    }
+    
+    @keyframes lineExpandHero {
+        0%, 100% {
+            width: 0;
+            opacity: 0;
         }
-
-        @keyframes lineExpandHero {
-            0%, 100% {
-                width: 0;
-                opacity: 0;
-            }
-            50% {
-                width: 200px;
-                opacity: 1;
-            }
+        50% {
+            width: 100px;
+            opacity: 1;
         }
-
-        @keyframes btnPulse {
-            0%, 100% {
-                transform: scale(1);
-                box-shadow: 0 4px 15px rgba(138, 109, 59, 0.3);
-            }
-            50% {
-                transform: scale(1.05);
-                box-shadow: 0 6px 20px rgba(138, 109, 59, 0.5);
-            }
+    }
+    
+    /* Citazioni mobile piccolo */
+    .hero-quotes-container {
+        height: 30px;
+        bottom: 8px;
+    }
+    
+    .hero-quote {
+        font-size: 0.75rem;
+        padding: 4px 10px;
+        font-weight: 600;
+    }
+    
+    /* Riduci animazioni su dispositivi lenti */
+    @media (prefers-reduced-motion: reduce) {
+        .hero-quote,
+        .hero-quote.active,
+        .hero-quote.exiting {
+            animation: none;
+            transition: opacity 0.3s ease;
         }
-
-        @keyframes btnShimmer {
-            0% {
-                left: -100%;
-            }
-            50% {
-                left: 100%;
-            }
-            100% {
-                left: 100%;
-            }
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0) translateX(0) rotate(0deg);
-                opacity: 0.7;
-            }
-            25% {
-                transform: translateY(-20px) translateX(10px) rotate(90deg);
-                opacity: 1;
-            }
-            50% {
-                transform: translateY(-10px) translateX(20px) rotate(180deg);
-                opacity: 0.8;
-            }
-            75% {
-                transform: translateY(-15px) translateX(-10px) rotate(270deg);
-                opacity: 0.9;
-            }
-        }
-
-        @keyframes scrollQuote {
-            0% {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateX(-100%);
-                opacity: 0;
-            }
-        }
-
-        /* Responsive */
-        @media (max-width: 1200px) {
-            .mega-menu {
-                width: 800px;
-            }
-        }
-
-        @media (max-width: 992px) {
-            .mega-menu {
-                width: 700px;
-            }
-            
-            .columns-4 {
-                grid-template-columns: repeat(3, 1fr);
-            }
-            
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .footer-content {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .header-top {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .search-box input {
-                width: 200px;
-            }
-            
-            .mega-menu {
-                width: 500px;
-                left: 50%;
-                transform: translateX(-50%) translateY(10px);
-            }
-            
-            .anchor-right {
-                left: 50%;
-                right: auto;
-                transform: translateX(-50%) translateY(10px);
-            }
-            
-            .dropdown:hover .mega-menu {
-                transform: translateX(-50%) translateY(0);
-            }
-            
-            .columns-4 {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .articles-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .footer-content {
-                grid-template-columns: 1fr;
-            }
-
-            .logo h1 {
-                font-size: 1.8rem;
-            }
-            
-            .subtitle {
-                font-size: 0.8rem;
-                letter-spacing: 1px;
-            }
-            
-            .logo i {
-                font-size: 1.8rem;
-            }
-
-            .hero h2::after {
-                animation: lineExpandHero 3s ease-in-out 1.5s infinite;
-            }
-            
-            @keyframes lineExpandHero {
-                0%, 100% {
-                    width: 0;
-                    opacity: 0;
-                }
-                50% {
-                    width: 150px;
-                    opacity: 1;
-                }
-            }
-            
-            .hero-quote {
-                font-size: 0.8rem;
-                bottom: 15px;
-            }
-            
-            .particle {
-                display: none;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .menu-desktop ul {
-                flex-direction: column;
-                gap: 0;
-            }
+    }
+}
             
             .mega-menu {
                 width: 300px;
@@ -2640,7 +2748,7 @@
     </header>
 
     
-    <!-- Hero Section -->
+  <!-- Hero Section -->
 <section class="hero">
     <!-- Particelle fluttuanti -->
     <div class="floating-particles">
@@ -2657,10 +2765,8 @@
         <a href="/articoli/#lista-articoli" class="btn"> 📖 Esplora Articoli 🧭</a>
     </div>
     
-    <!-- Citazione scorrevole -->
-    <div class="hero-quote">
-        "Conosci te stesso - Γνῶθι σεαυτόν"
-    </div>
+    <!-- ✅ SOLO IL CONTAINER VUOTO - JavaScript popolerà le citazioni -->
+    <div class="hero-quotes-container"></div>
 </section>
 
     <!-- Main Content -->
@@ -4391,6 +4497,126 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     console.log('🎭 Pannello 4 filosofi (hover semplice) inizializzato');
+});
+</script>
+<script>
+// Sistema citazioni avanzato con effetti
+document.addEventListener('DOMContentLoaded', function() {
+    const quotes = [
+    "Conosci te stesso - Γνῶθι σεαυτόν - Socrate",
+    "Penso, dunque sono - Cogito, ergo sum - Cartesio",
+    "Tutto scorre - Πάντα ῥεῖ - Eraclito",
+    "L'uomo è la misura di tutte le cose - Protagora",
+    "So di non sapere - Socrate", 
+    "Nulla di troppo - Μηδὲν ἄγαν - Chilone di Sparta",
+    "L'essere è, il non-essere non è - Parmenide",
+    "Vivi nascosto - Λάθε βιώσας - Epicuro",
+    "Il tempo è un'immagine mobile dell'eternità - Platone",
+    "La filosofia è la medicina dell'anima - Cicerone",
+    "Dio è morto! E noi lo abbiamo ucciso! - Nietzsche",
+    "L'uomo è condannato ad essere libero - Sartre",
+    "L'universo è cambiamento; la vita è opinione - Marco Aurelio",
+    "La verità risplende da sé - Tommaso d'Aquino",
+    "La vita senza esame non è degna di essere vissuta - Socrate",
+    "L'uomo è un animale politico - Aristotele",
+    "La paura è il dolore che nascente dall'attesa del male - Aristotele",
+    "Non possiamo discendere due volte nello stesso fiume - Eraclito",
+    "La natura ha paura del vuoto - Aristotele",
+    "La speranza è un sogno da svegli - Aristotele",
+    "La bellezza splende più dell'oro - Platone",
+    "La parte più importante dell'educazione è l'educazione stessa - Aristotele",
+    "La radice di tutte le passioni è la gioia - Spinoza",
+    "L'ordine è il piacere della ragione - Simone Weil",
+    "La libertà è il diritto di fare ciò che le leggi permettono - Montesquieu",
+    "Il segreto della felicità è la libertà - Tucidide",
+    "La pazienza è amara, ma il suo frutto è dolce - Rousseau",
+    "L'uomo nasce libero, ma ovunque è in catene - Rousseau",
+    "La coscienza è la voce dell'anima - Rousseau",
+    "Il dubbio è l'inizio della saggezza - Aristotele",
+    "La storia è la filosofia ispirata dagli esempi - Dionigi di Alicarnasso",
+    "La filosofia sta scritta in questo grandissimo libro dell'universo - Galileo",
+    "La semplicità è l'ultima sofisticazione - Leonardo da Vinci",
+    "La vera saggezza sta nel sapere di non sapere - Platone",
+    "La mente è come un paracadute: funziona solo se si apre - Einstein",
+    "La vita deve essere compresa all'indietro, ma vissuta in avanti - Kierkegaard",
+    "L'angoscia è la vertigine della libertà - Kierkegaard",
+    "Ciò che non mi distrugge mi rende più forte - Nietzsche",
+    "Diventa ciò che sei - Nietzsche",
+    "Dove c'è amore per le lettere, c'è anche amore per l'umanità - Goethe",
+    "La ragione è, e non può essere che schiava delle passioni - Hume",
+    "L'abitudine è la grande guida della vita umana - Hume",
+    "L'uomo è ciò che mangie - Feuerbach",
+    "I filosofi hanno solo interpretato il mondo in modi diversi; si tratta però di mutarlo - Marx",
+    "La religione è l'oppio dei popoli - Marx",
+    "L'etica è la filosofia della vita - Schopenhauer",
+    "La compassione è la base di ogni moralità - Schopenhauer",
+    "L'architettura è musica solidificata - Schelling",
+    "L'arte è la rivelazione della verità - Hegel",
+    "Ciò che è razionale è reale, e ciò che è reale è razionale - Hegel",
+    "Il mondo è tutto ciò che accade - Wittgenstein",
+    "I limiti del mio linguaggio significano i limiti del mio mondo - Wittgenstein",
+    "L'uomo è una canna pensante - Pascal",
+    "Il cuore ha le sue ragioni che la ragione non conosce - Pascal",
+    "Tutto ciò che so è che non so nulla - Socrate",
+    "La virtù sta nel giusto mezzo - Aristotele",
+    "La felicità dipende da noi stessi - Aristotele",
+    "La filosofia comincia con la meraviglia - Platone",
+    "La mente vuota è la mente pericolosa - Confucio",
+    "Chi non conosce la verità è uno sciocco, ma chi la conosce e la chiama bugia è un delinquente - Brecht"
+];
+    
+    const container = document.querySelector('.hero-quotes-container');
+    let currentIndex = 0;
+    
+    function createQuoteElement(text, index) {
+        const quote = document.createElement('div');
+        quote.className = 'hero-quote';
+        quote.textContent = `"${text}"`;
+        quote.style.setProperty('--quote-index', index);
+        return quote;
+    }
+    
+    // Popola il container
+    quotes.forEach((quote, index) => {
+        container.appendChild(createQuoteElement(quote, index));
+    });
+    
+    const quoteElements = document.querySelectorAll('.hero-quote');
+    
+    function showQuote(index) {
+        quoteElements.forEach((quote, i) => {
+            quote.classList.toggle('active', i === index);
+        });
+    }
+    
+    // Rotazione automatica
+    function rotateQuotes() {
+        showQuote(currentIndex);
+        currentIndex = (currentIndex + 1) % quotes.length;
+    }
+    
+    // Mostra prima citazione
+    rotateQuotes();
+    
+    // Avvia rotazione ogni 8 secondi (più veloce per mostrare più citazioni)
+    const rotationInterval = setInterval(rotateQuotes, 8000);
+    
+    // Pausa rotazione al hover
+    container.addEventListener('mouseenter', () => {
+        clearInterval(rotationInterval);
+    });
+    
+    container.addEventListener('mouseleave', () => {
+        clearInterval(rotationInterval);
+        rotationInterval = setInterval(rotateQuotes, 8000);
+    });
+    
+    // Navigazione manuale con click
+    container.addEventListener('click', () => {
+        rotateQuotes();
+    });
+    
+    console.log('🎭 Sistema citazioni avanzato attivato:', quotes.length, 'citazioni filosofiche');
 });
 </script>
 </body>
