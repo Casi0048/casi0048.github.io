@@ -7735,6 +7735,39 @@ document.addEventListener('DOMContentLoaded', function() {
   })();
   
 </script>
+  <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const btn = document.getElementById('paradigma-btn');
+    const overlay = document.getElementById('filosofi-overlay');
+    
+    if (!btn || !overlay) return;
+    
+    let hideTimeout;
+    
+    function showOverlay() {
+        clearTimeout(hideTimeout);
+        overlay.classList.add('show');
+    }
+    
+    function hideOverlay() {
+        hideTimeout = setTimeout(() => {
+            overlay.classList.remove('show');
+        }, 300);
+    }
+    
+    btn.addEventListener('mouseenter', showOverlay);
+    btn.addEventListener('mouseleave', hideOverlay);
+    overlay.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
+    overlay.addEventListener('mouseleave', hideOverlay);
+    
+    // Chiudi con ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            overlay.classList.remove('show');
+        }
+    });
+});
+</script>
 </body>
 </html>
 
