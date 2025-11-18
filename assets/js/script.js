@@ -818,3 +818,163 @@ document.addEventListener('DOMContentLoaded', function() {
         transform: translateY(0);
     }
 }
+/* === js slider verticale ============================================ */
+class VerticalSlider {
+    constructor(containerSelector) {
+        this.container = document.querySelector(containerSelector);
+        this.track = this.container.querySelector('.slider-track');
+        this.slides = this.container.querySelectorAll('.slide');
+        this.prevBtn = this.container.querySelector('.slider-prev');
+        this.nextBtn = this.container.querySelector('.slider-next');
+        this.dotsContainer = this.container.querySelector('.slider-dots');
+        
+        this.currentSlide = 0;
+        this.slideHeight = this.container.offsetHeight;
+        this.autoPlayInterval = null;
+        this.autoPlayDelay = 5000; // 5 secondi
+        
+        this.init();
+    }
+    
+    init() {
+        // Imposta altezza slides
+        this.slides.forEach(slide => {
+            slide.style.height = `${this.slideHeight}px`;
+        });
+        
+        // Crea dots
+        this.createDots();
+        
+        // Event listeners
+        this.prevBtn.addEventListener('click', () => this.prevSlide());
+        this.nextBtn.addEventListener('click', () => this.nextSlide());
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowUp') this.prevSlide();
+            if (e.key === 'ArrowDown') this.nextSlide();
+        });
+        
+        // Touch/swipe per mobile
+        this.addTouchEvents();
+        
+        // Autoplay
+        this.startAutoPlay();
+        
+        // Pause autoplay on hover
+        this.container.addEventListener('mouseenter', () => this.stopAutoPlay());
+        this.container.addEventListener('mouseleave', () => this.startAutoPlay());
+        
+        // Resize handler
+        window.addEventListener('resize', () => this.handleResize());
+    }
+    
+    createDots() {
+        this.slides.forEach((_, index) => {
+            const dot = document.createElement('button');
+            dot.className = `slider-dot ${index === 0 ? 'active' : ''}`;
+            dot.addEventListener('click', () => this.goToSlide(index));
+            this.dotsContainer.appendChild(dot);
+        });
+    }
+    
+    goToSlide(slideIndex) {
+        // Loop infinito
+        if (slideIndex < 0) {
+            slideIndex = this.slides.length - 1;
+        } else if (slideIndex >= this.slides.length) {
+            slideIndex = 0;
+        }
+        
+        this.currentSlide = slideIndex;
+        const translateY = -slideIndex * this.slideHeight;
+        this.track.style.transform = `translateY(${translateY}px)`;
+        
+        // Aggiorna dots
+        this.updateDots();
+        
+        // Evento personalizzato
+        this.container.dispatchEvent(new CustomEvent('slideChange', {
+            detail: { currentSlide: this.currentSlide }
+        }));
+    }
+    
+    nextSlide() {
+        this.goToSlide(this.currentSlide + 1);
+    }
+    
+    prevSlide() {
+        this.goToSlide(this.currentSlide - 1);
+    }
+    
+    updateDots() {
+        const dots = this.dotsContainer.querySelectorAll('.slider-dot');
+        dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === this.currentSlide);
+        });
+    }
+    
+    addTouchEvents() {
+        let startY = 0;
+        let currentY = 0;
+        
+        this.container.addEventListener('touchstart', (e) => {
+            startY = e.touches[0].clientY;
+        });
+        
+        this.container.addEventListener('touchmove', (e) => {
+            currentY = e.touches[0].clientY;
+        });
+        
+        this.container.addEventListener('touchend', () => {
+            const diff = startY - currentY;
+            
+            // Soglia per swipe
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) {
+                    this.nextSlide(); // Swipe up
+                } else {
+                    this.prevSlide(); // Swipe down
+                }
+            }
+        });
+    }
+    
+    startAutoPlay() {
+        this.stopAutoPlay();
+        this.autoPlayInterval = setInterval(() => {
+            this.nextSlide();
+        }, this.autoPlayDelay);
+    }
+    
+    stopAutoPlay() {
+        if (this.autoPlayInterval) {
+            clearInterval(this.autoPlayInterval);
+            this.autoPlayInterval = null;
+        }
+    }
+    
+    handleResize() {
+        this.slideHeight = this.container.offsetHeight;
+        this.slides.forEach(slide => {
+            slide.style.height = `${this.slideHeight}px`;
+        });
+        this.goToSlide(this.currentSlide); // Riposiziona
+    }
+    
+    // Metodi pubblici
+    destroy() {
+        this.stopAutoPlay();
+        // Rimuovi event listeners...
+    }
+}
+
+// Inizializzazione
+document.addEventListener('DOMContentLoaded', function() {
+    const slider = new VerticalSlider('.vertical-slider');
+    
+    // Esempio: ascolta evento cambio slide
+    document.querySelector('.vertical-slider').addEventListener('slideChange', function(e) {
+        console.log('Slide cambiata:', e.detail.currentSlide);
+    });
+});
