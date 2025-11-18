@@ -4254,6 +4254,15 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
             border: 1px solid rgba(255, 215, 0, 0.3);
             z-index: 9999;
             backdrop-filter: blur(10px);">
+  #filosofi-overlay,
+#newsletterModal {
+    transition: opacity 0.3s ease;
+}
+
+#newsletterModal {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
 <h3 style="color: #ffd86a; margin-bottom: 20px; font-family: 'Cinzel', serif; text-align: center;">
                 I Filosofi che hanno cambiato il paradigma
                 <span style="font-size: 1.5em; color: #00ccff;">▾</span>
@@ -7187,60 +7196,116 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 <script>
+// Maestri del Pensiero - Overlay
+document.addEventListener('DOMContentLoaded', function() {
     const btn = document.getElementById('paradigma-btn');
     const overlay = document.getElementById('filosofi-overlay');
+    
+    // ✅ CONTROLLO ESISTENZA ELEMENTI
+    if (!btn || !overlay) {
+        console.warn('Elementi paradigma non trovati');
+        return;
+    }
     
     let hideTimeout;
     
     function showOverlay() {
         clearTimeout(hideTimeout);
         overlay.style.display = 'block';
+        overlay.style.opacity = '1';
     }
     
     function hideOverlay() {
         hideTimeout = setTimeout(() => {
-            overlay.style.display = 'none';
+            overlay.style.opacity = '0';
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 200);
         }, 300);
     }
     
-    // Apri overlay al passaggio mouse sul bottone
+    // Event listeners con controllo robustezza
     btn.addEventListener('mouseenter', showOverlay);
-    
-    // Chiudi overlay dopo uscita mouse dal bottone
     btn.addEventListener('mouseleave', hideOverlay);
-    
-    // Se il mouse entra nell'overlay cancella la chiusura
     overlay.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
-    
-    // Se il mouse esce dall'overlay, avvia chiusura
     overlay.addEventListener('mouseleave', hideOverlay);
-</script>
-<script>
-// Funzioni per il modale
-function showNewsletterModal() {
-  document.getElementById('newsletterModal').style.display = 'flex';
-}
-
-function closeNewsletterModal() {
-  document.getElementById('newsletterModal').style.display = 'none';
-}
-
-// Chiudi modale cliccando fuori
-document.getElementById('newsletterModal').addEventListener('click', function(e) {
-  if (e.target === this) closeNewsletterModal();
+    
+    // ✅ Chiudi overlay con ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && overlay.style.display === 'block') {
+            hideOverlay();
+        }
+    });
 });
 
-// Gestione form (base)
-document.getElementById('newsletterForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-  const email = this.querySelector('input[type="email"]').value;
-  alert('Grazie per esserti iscritto! Controlla la tua email: ' + email);
-  closeNewsletterModal();
-});
-
-// Chiudi con ESC
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') closeNewsletterModal();
+// Newsletter Modal - Versione Migliorata
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('newsletterModal');
+    const form = document.getElementById('newsletterForm');
+    
+    // ✅ CONTROLLO ESISTENZA ELEMENTI
+    if (!modal || !form) {
+        console.warn('Elementi newsletter non trovati');
+        return;
+    }
+    
+    function showNewsletterModal() {
+        modal.style.display = 'flex';
+        setTimeout(() => modal.style.opacity = '1', 10);
+    }
+    
+    function closeNewsletterModal() {
+        modal.style.opacity = '0';
+        setTimeout(() => modal.style.display = 'none', 300);
+    }
+    
+    // ✅ Chiudi modale cliccando fuori (DELEGAZIONE)
+    modal.addEventListener('click', function(e) {
+        if (e.target === this) closeNewsletterModal();
+    });
+    
+    // ✅ Gestione form con validazione base
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const emailInput = this.querySelector('input[type="email"]');
+        const email = emailInput.value.trim();
+        
+        if (!email || !isValidEmail(email)) {
+            alert('Per favore inserisci un indirizzo email valido.');
+            emailInput.focus();
+            return;
+        }
+        
+        // Simula invio
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Iscrivendo...';
+        submitBtn.disabled = true;
+        
+        setTimeout(() => {
+            alert('Grazie per esserti iscritto! Controlla la tua email: ' + email);
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+            form.reset();
+            closeNewsletterModal();
+        }, 1500);
+    });
+    
+    // ✅ Validazione email semplice
+    function isValidEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+    
+    // ✅ Chiudi con ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.style.display === 'flex') {
+            closeNewsletterModal();
+        }
+    });
+    
+    // ✅ ESPORTA FUNZIONI PER USO GLOBALE (se necessario)
+    window.showNewsletterModal = showNewsletterModal;
+    window.closeNewsletterModal = closeNewsletterModal;
 });
 </script>
 <script>
