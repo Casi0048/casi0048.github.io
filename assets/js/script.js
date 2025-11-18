@@ -830,8 +830,14 @@ class VerticalSlider {
         
         this.currentSlide = 0;
         this.slideHeight = this.container.offsetHeight;
+        
+        // SISTEMA VELOCITÀ
+        this.speed = 500; // Velocità base in ms
+        this.speedDisplay = this.createSpeedDisplay();
+        this.speedControl = this.createSpeedControl();
+        
         this.autoPlayInterval = null;
-        this.autoPlayDelay = 5000; // 5 secondi
+        this.autoPlayDelay = 3000; // 3 secondi base
         
         this.init();
     }
@@ -841,6 +847,9 @@ class VerticalSlider {
         this.slides.forEach(slide => {
             slide.style.height = `${this.slideHeight}px`;
         });
+        
+        // Transizione base
+        this.track.style.transition = `transform ${this.speed}ms ease-in-out`;
         
         // Crea dots
         this.createDots();
@@ -867,19 +876,123 @@ class VerticalSlider {
         
         // Resize handler
         window.addEventListener('resize', () => this.handleResize());
+        
+        console.log(`🎚️ Slider inizializzato - Velocità: ${this.speed}ms`);
+    }
+    
+    // CREA DISPLAY VELOCITÀ
+    createSpeedDisplay() {
+        const display = document.createElement('div');
+        display.className = 'speed-display';
+        display.innerHTML = `
+            <div class="speed-info">
+                <span class="speed-label">Velocità:</span>
+                <span class="speed-value">${this.speed}ms</span>
+            </div>
+        `;
+        this.container.appendChild(display);
+        return display;
+    }
+    
+    // CREA CONTROLLO VELOCITÀ
+    createSpeedControl() {
+        const control = document.createElement('div');
+        control.className = 'speed-control';
+        control.innerHTML = `
+            <div class="speed-slider-container">
+                <label for="speedSlider">Regola velocità:</label>
+                <input type="range" id="speedSlider" min="100" max="2000" step="100" value="${this.speed}">
+                <span class="speed-current">${this.speed}ms</span>
+            </div>
+            <div class="speed-presets">
+                <button class="speed-btn" data-speed="200">🚀 Veloce (200ms)</button>
+                <button class="speed-btn" data-speed="500">🐢 Normale (500ms)</button>
+                <button class="speed-btn" data-speed="1000">🐌 Lento (1000ms)</button>
+                <button class="speed-btn" data-speed="1500">🧘‍♂️ Molto lento (1500ms)</button>
+            </div>
+        `;
+        
+        this.container.appendChild(control);
+        
+        // Event listeners per controlli velocità
+        const slider = control.querySelector('#speedSlider');
+        const currentDisplay = control.querySelector('.speed-current');
+        const presetBtns = control.querySelectorAll('.speed-btn');
+        
+        slider.addEventListener('input', (e) => {
+            const newSpeed = parseInt(e.target.value);
+            this.setSpeed(newSpeed);
+            currentDisplay.textContent = `${newSpeed}ms`;
+        });
+        
+        presetBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const speed = parseInt(btn.dataset.speed);
+                slider.value = speed;
+                this.setSpeed(speed);
+                currentDisplay.textContent = `${speed}ms`;
+            });
+        });
+        
+        return control;
+    }
+    
+    // IMPOSTA VELOCITÀ
+    setSpeed(newSpeed) {
+        this.speed = newSpeed;
+        
+        // Aggiorna transizione CSS
+        this.track.style.transition = `transform ${this.speed}ms ease-in-out`;
+        
+        // Aggiorna autoplay delay (proporzionale alla velocità)
+        this.autoPlayDelay = this.speed + 2000; // Autoplay più lento della transizione
+        
+        // Aggiorna display
+        const speedValue = this.speedDisplay.querySelector('.speed-value');
+        speedValue.textContent = `${this.speed}ms`;
+        speedValue.style.color = this.getSpeedColor();
+        
+        // Riavvia autoplay con nuova velocità
+        this.stopAutoPlay();
+        this.startAutoPlay();
+        
+        console.log(`⚡ Velocità aggiornata: ${this.speed}ms | Autoplay: ${this.autoPlayDelay}ms`);
+        
+        // Effetto visivo
+        this.showSpeedFeedback();
+    }
+    
+    // COLORE IN BASE ALLA VELOCITÀ
+    getSpeedColor() {
+        if (this.speed <= 300) return '#00ff00'; // Verde - veloce
+        if (this.speed <= 700) return '#ffff00'; // Giallo - normale
+        if (this.speed <= 1200) return '#ffa500'; // Arancione - lento
+        return '#ff0000'; // Rosso - molto lento
+    }
+    
+    // FEEDBACK VISIVO CAMBIO VELOCITÀ
+    showSpeedFeedback() {
+        const speedValue = this.speedDisplay.querySelector('.speed-value');
+        speedValue.style.transform = 'scale(1.2)';
+        speedValue.style.transition = 'transform 0.3s ease';
+        
+        setTimeout(() => {
+            speedValue.style.transform = 'scale(1)';
+        }, 300);
     }
     
     createDots() {
         this.slides.forEach((_, index) => {
             const dot = document.createElement('button');
             dot.className = `slider-dot ${index === 0 ? 'active' : ''}`;
+            dot.innerHTML = `${index + 1}`; // Mostra numero slide
+            dot.setAttribute('title', `Vai alla slide ${index + 1} (${this.speed}ms)`);
             dot.addEventListener('click', () => this.goToSlide(index));
             this.dotsContainer.appendChild(dot);
         });
     }
     
     goToSlide(slideIndex) {
-        // Loop infinito
         if (slideIndex < 0) {
             slideIndex = this.slides.length - 1;
         } else if (slideIndex >= this.slides.length) {
@@ -890,20 +1003,19 @@ class VerticalSlider {
         const translateY = -slideIndex * this.slideHeight;
         this.track.style.transform = `translateY(${translateY}px)`;
         
-        // Aggiorna dots
         this.updateDots();
         
-        // Evento personalizzato
-        this.container.dispatchEvent(new CustomEvent('slideChange', {
-            detail: { currentSlide: this.currentSlide }
-        }));
+        // Log con info velocità
+        console.log(`▶️ Slide ${slideIndex + 1} | Velocità: ${this.speed}ms`);
     }
     
     nextSlide() {
+        console.log(`⏩ Next slide (${this.speed}ms)`);
         this.goToSlide(this.currentSlide + 1);
     }
     
     prevSlide() {
+        console.log(`⏪ Prev slide (${this.speed}ms)`);
         this.goToSlide(this.currentSlide - 1);
     }
     
@@ -911,30 +1023,32 @@ class VerticalSlider {
         const dots = this.dotsContainer.querySelectorAll('.slider-dot');
         dots.forEach((dot, index) => {
             dot.classList.toggle('active', index === this.currentSlide);
+            // Aggiorna tooltip con velocità corrente
+            dot.setAttribute('title', `Vai alla slide ${index + 1} (${this.speed}ms)`);
         });
     }
     
     addTouchEvents() {
         let startY = 0;
-        let currentY = 0;
         
         this.container.addEventListener('touchstart', (e) => {
             startY = e.touches[0].clientY;
+            // Disabilita transizione durante swipe per fluidità
+            this.track.style.transition = 'none';
         });
         
-        this.container.addEventListener('touchmove', (e) => {
-            currentY = e.touches[0].clientY;
-        });
-        
-        this.container.addEventListener('touchend', () => {
-            const diff = startY - currentY;
+        this.container.addEventListener('touchend', (e) => {
+            const endY = e.changedTouches[0].clientY;
+            const diff = startY - endY;
             
-            // Soglia per swipe
+            // Riabilita transizione
+            this.track.style.transition = `transform ${this.speed}ms ease-in-out`;
+            
             if (Math.abs(diff) > 50) {
                 if (diff > 0) {
-                    this.nextSlide(); // Swipe up
+                    this.nextSlide();
                 } else {
-                    this.prevSlide(); // Swipe down
+                    this.prevSlide();
                 }
             }
         });
@@ -942,6 +1056,8 @@ class VerticalSlider {
     
     startAutoPlay() {
         this.stopAutoPlay();
+        console.log(`🔁 Autoplay avviato: ${this.autoPlayDelay}ms`);
+        
         this.autoPlayInterval = setInterval(() => {
             this.nextSlide();
         }, this.autoPlayDelay);
@@ -951,6 +1067,7 @@ class VerticalSlider {
         if (this.autoPlayInterval) {
             clearInterval(this.autoPlayInterval);
             this.autoPlayInterval = null;
+            console.log('⏸️ Autoplay fermato');
         }
     }
     
@@ -959,22 +1076,45 @@ class VerticalSlider {
         this.slides.forEach(slide => {
             slide.style.height = `${this.slideHeight}px`;
         });
-        this.goToSlide(this.currentSlide); // Riposiziona
+        this.goToSlide(this.currentSlide);
     }
     
-    // Metodi pubblici
-    destroy() {
-        this.stopAutoPlay();
-        // Rimuovi event listeners...
+    // METODI PUBBLICI PER CONTROLLO VELOCITÀ
+    setSpeedFast() { this.setSpeed(200); }
+    setSpeedNormal() { this.setSpeed(500); }
+    setSpeedSlow() { this.setSpeed(1000); }
+    setSpeedVerySlow() { this.setSpeed(1500); }
+    
+    getCurrentSpeed() {
+        return this.speed;
+    }
+    
+    getSpeedInfo() {
+        return {
+            speed: this.speed,
+            autoplayDelay: this.autoPlayDelay,
+            currentSlide: this.currentSlide + 1,
+            totalSlides: this.slides.length
+        };
     }
 }
 
-// Inizializzazione
+// INIZIALIZZAZIONE E USO
 document.addEventListener('DOMContentLoaded', function() {
     const slider = new VerticalSlider('.vertical-slider');
     
-    // Esempio: ascolta evento cambio slide
+    // Esempio: log info velocità ogni cambio slide
     document.querySelector('.vertical-slider').addEventListener('slideChange', function(e) {
-        console.log('Slide cambiata:', e.detail.currentSlide);
+        const info = slider.getSpeedInfo();
+        console.log('📊 Info slider:', info);
     });
+    
+    // Esporta per controllo esterno
+    window.verticalSlider = slider;
 });
+
+// USO DA CONSOLE:
+// verticalSlider.setSpeed(300)       → Imposta velocità 300ms
+// verticalSlider.setSpeedFast()      → Velocità rapida
+// verticalSlider.getCurrentSpeed()   → Ottieni velocità corrente
+// verticalSlider.getSpeedInfo()      → Tutte le info
