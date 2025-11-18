@@ -1275,7 +1275,936 @@ window.googleTranslateElementInit = function(){
   #russell-box.ping{ transform: none; }
 }
 </style>
+<style id="hard-overrides-right-left">
+/* === HARD OVERRIDES: Alternanza sinistra/destra === */
+.timeline{ position: relative; width: 100%; }
+.timeline > .timeline-item{ width:50% !important; display:block !important; position:relative; float:none !important; }
+.timeline > .timeline-item.left{ margin-left:0 !important; padding-right:60px; text-align:right; }
+.timeline > .timeline-item.right{ margin-left:50% !important; left:auto !important; padding-left:60px; text-align:left; }
 
+/* Assicurati che nessun reset successivo rompa l'allineamento */
+.timeline > .timeline-item.right[style]{ left:auto !important; }
+
+/* Tenere visibili dot & connector e agganciarli al centro */
+.timeline > .timeline-item .tl-dot{ left:50% !important; transform: translate(-50%, -50%) !important; }
+.timeline > .timeline-item.left .tl-connector{ left: calc(50% + 12px) !important; right:auto !important; }
+.timeline > .timeline-item.right .tl-connector{ right: calc(50% + 12px) !important; left:auto !important; }
+
+/* Evita overflow che potrebbe nascondere le card destre */
+.timeline-container{ overflow: visible !important; }
+
+
+/* Mobile: una colonna */
+@media (max-width: 900px){
+  .timeline > .timeline-item{ width:100% !important; margin-left:0 !important; text-align:left; }
+  .timeline > .timeline-item.left{ padding-right:20px; padding-left:70px; }
+  .timeline > .timeline-item.right{ padding-left:70px; }
+}
+@media (max-width: 768px) {
+  .timeline-item.left::after,
+  .timeline-item.right::after {
+    width: 30px; /* Connettori più corti su mobile */
+    left: 40px; /* Allineamento con la linea mobile */
+  }
+}
+</style>
+<style id="center-dot-and-widen-cards">
+/* === Center rainbow dot over each card & widen cards by ~3cm === */
+:root{ --card-widen: 114px; } /* ~3cm at 96dpi */
+
+.timeline-item{ position: relative; }
+.timeline-content{ position: relative; margin-top: 2rem; } /* align with tl-dot top */
+
+.timeline > .timeline-item .tl-dot{
+  left: 50% !important;           /* center relative to the item/card */
+  top: 2rem !important;           /* same as .timeline-content margin-top */
+  transform: translate(-50%, -50%) !important;
+}
+
+/* Widen cards outward from the center line */
+.timeline > .timeline-item .timeline-content{
+  width: calc(100% + var(--card-widen));
+}
+.timeline > .timeline-item.left .timeline-content{
+  margin-left: calc(-1 * var(--card-widen));
+}
+.timeline > .timeline-item.right .timeline-content{
+  margin-right: calc(-1 * var(--card-widen));
+}
+
+/* Keep connectors attached to the center line */
+.timeline > .timeline-item.left .tl-connector{
+  left: calc(50% + 12px) !important;
+  right: auto !important;
+}
+.timeline > .timeline-item.right .tl-connector{
+  right: calc(50% + 12px) !important;
+  left: auto !important;
+}
+
+/* Ensure overflow is visible so wider cards aren't clipped */
+.timeline-container{ overflow: visible !important; }
+</style>
+<style>
+.timeline-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.timeline-title {
+    color: var(--gold);
+    text-align: center;
+    margin-bottom: var(--space-xl);
+    font-size: clamp(var(--text-3xl), 5vw, var(--text-4xl));
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+}
+
+.timeline {
+    position: relative;
+    padding: var(--space-lg) 0;
+}
+
+/* Linea centrale */
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    transform: translateX(-50%);
+    background: linear-gradient(180deg, 
+        var(--purple) 0%,
+        var(--cyan) 30%,
+        var(--gold) 70%,
+        var(--purple) 100%);
+    box-shadow: 0 0 20px rgba(185, 103, 255, 0.6);
+    z-index: 1;
+}
+
+.timeline-item {
+    position: relative;
+    width: 45%;
+    margin: var(--space-xl) 0;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.8s ease;
+    will-change: transform, opacity;
+}
+
+/* Posizionamento alternato */
+.timeline-item.left {
+    left: 0;
+    margin-right: auto;
+    padding-right: 60px;
+    text-align: right;
+}
+
+.timeline-item.right {
+    left: 55%;
+    margin-left: auto;
+    padding-left: 60px;
+    text-align: left;
+}
+
+.timeline-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Card styling */
+.timeline-content {
+    background: linear-gradient(145deg, 
+        var(--card-bg) 0%,
+        rgba(20, 20, 50, 0.8) 50%,
+        var(--card-bg) 100%);
+    border: 1px solid var(--card-border);
+    border-radius: 15px;
+    padding: var(--space-lg);
+    backdrop-filter: blur(10px);
+    box-shadow: 
+        0 15px 35px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(255, 215, 0, 0.2);
+    transition: all 0.4s ease;
+    position: relative;
+    z-index: 3;
+}
+
+.timeline-content:hover {
+    transform: translateY(-5px);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(255, 215, 0, 0.4);
+}
+
+.timeline-content h3 {
+    color: var(--gold);
+    margin-bottom: var(--space-sm);
+    font-size: var(--text-xl);
+}
+
+.period {
+    color: var(--cyan);
+    font-style: italic;
+    margin-bottom: var(--space-sm);
+    display: inline-block;
+    padding: var(--space-xs) var(--space-md);
+    background: rgba(0, 204, 255, 0.15);
+    border-radius: 20px;
+    border: 1px solid rgba(0, 204, 255, 0.4);
+}
+
+/* Punto timeline */
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    top: 2rem;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, 
+        #ffffff 0%, 
+        var(--gold) 30%,
+        var(--cyan) 70%,
+        var(--purple) 100%);
+    box-shadow: 
+        0 0 0 6px rgba(255, 215, 0, 0.3),
+        0 0 0 12px rgba(0, 204, 255, 0.2),
+        0 0 20px 8px rgba(255, 215, 0, 0.5);
+    z-index: 4;
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.6s ease 0.3s;
+}
+
+.timeline-item.left::before {
+    right: -10px;
+}
+
+.timeline-item.right::before {
+    left: -10px;
+}
+
+.timeline-item.visible::before {
+    opacity: 1;
+    transform: scale(1);
+    animation: pulse 2s ease-in-out infinite 1s;
+}
+
+@keyframes pulse {
+    0%, 100% { 
+        box-shadow: 
+            0 0 0 6px rgba(255, 215, 0, 0.3),
+            0 0 0 12px rgba(0, 204, 255, 0.2),
+            0 0 20px 8px rgba(255, 215, 0, 0.5);
+    }
+    50% { 
+        box-shadow: 
+            0 0 0 8px rgba(255, 215, 0, 0.5),
+            0 0 0 16px rgba(0, 204, 255, 0.3),
+            0 0 30px 12px rgba(255, 215, 0, 0.7);
+    }
+}
+
+/* Connettori */
+.timeline-item::after {
+    content: '';
+    position: absolute;
+    top: 2rem;
+    height: 2px;
+    width: 50px;
+    background: linear-gradient(90deg, 
+        var(--gold),
+        var(--cyan),
+        var(--purple));
+    opacity: 0;
+    transform: scaleX(0);
+    transition: all 0.6s ease 0.5s;
+    z-index: 3;
+    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6));
+}
+
+.timeline-item.left::after {
+    right: -50px;
+    transform-origin: right center;
+    background: linear-gradient(270deg, 
+        var(--gold),
+        var(--cyan),
+        var(--purple));
+}
+
+.timeline-item.right::after {
+    left: -50px;
+    transform-origin: left center;
+    background: linear-gradient(90deg, 
+        var(--gold),
+        var(--cyan),
+        var(--purple));
+}
+
+.timeline-item.visible::after {
+    opacity: 1;
+    transform: scaleX(1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .timeline::before {
+        left: 30px;
+    }
+    
+    .timeline-item {
+        width: calc(100% - 70px);
+        margin: var(--space-lg) 0;
+        margin-left: 70px;
+    }
+    
+    .timeline-item.left,
+    .timeline-item.right {
+        left: 0;
+        padding: 0 0 0 var(--space-sm);
+        text-align: left;
+    }
+    
+    .timeline-item.left::before,
+    .timeline-item.right::before {
+        left: -40px;
+        right: auto;
+    }
+    
+    .timeline-item.left::after,
+    .timeline-item.right::after {
+        left: -30px;
+        right: auto;
+        width: 30px;
+        transform-origin: left center;
+        background: linear-gradient(90deg, 
+            var(--gold),
+            var(--cyan),
+            var(--purple));
+    }
+}
+
+/* Accessibilità */
+@media (prefers-reduced-motion: reduce) {
+    .timeline-item,
+    .timeline-content,
+    .timeline-item::before,
+    .timeline-item::after {
+        transition: none;
+        animation: none;
+    }
+    
+    .timeline-item {
+        opacity: 1;
+        transform: none;
+    }
+}
+</style>
+<style>
+/* === TIMELINE SPETTACOLARE ULTIMATE - CARDS A DOPPIA LARGHEZZA 1586=== */
+.timeline-container {
+  --accent-gold: #ffd86a;
+  --accent-cyan: #00ccff;
+  --accent-purple: #b967ff;
+  perspective: 1200px;
+  margin: 4rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.timeline-title {
+  font-family: 'Cinzel', serif;
+  color: var(--accent-gold);
+  text-align: center;
+  margin-bottom: 0rem;
+  font-size: 3.5rem;
+  text-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+  position: relative;
+}
+
+.timeline-title::after {
+  content: '';
+  display: block;
+  width: 200px;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+  margin: 1rem auto;
+  border-radius: 2px;
+  animation: titleGlow 3s ease-in-out infinite;
+}
+
+@keyframes titleGlow {
+  0%, 100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.4); }
+  50% { box-shadow: 0 0 40px rgba(255, 215, 0, 0.8); }
+}
+
+.timeline {
+  position: relative;
+  max-width: 1400px; /* Aumentata per accomodare cards più larghe */
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+/* Linea temporale cosmica */
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, 
+    var(--accent-purple) 0%,
+    var(--accent-cyan) 30%,
+    var(--accent-gold) 70%,
+    var(--accent-purple) 100%);
+  box-shadow: 
+    0 0 30px rgba(185, 103, 255, 0.6),
+    0 0 60px rgba(0, 204, 255, 0.3);
+  filter: blur(0.5px);
+  z-index: 1;
+}
+
+/* Effetto particelle sulla linea */
+.timeline::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, 
+    transparent 0%,
+    rgba(255, 255, 255, 0.8) 10%,
+    rgba(255, 255, 255, 0.4) 20%,
+    transparent 30%,
+    transparent 70%,
+    rgba(255, 255, 255, 0.4) 80%,
+    rgba(255, 255, 255, 0.8) 90%,
+    transparent 100%);
+  background-size: 100% 200%;
+  animation: particleFlow 4s linear infinite;
+  z-index: 2;
+}
+
+@keyframes particleFlow {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 200%; }
+}
+
+.timeline-item {
+  position: relative;
+  width: calc(90% - 60px); /* RADDOPPIATA: da 50% a 90% */
+  margin: 4rem 0;
+  opacity: 0;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+}
+
+.timeline-item.left {
+  margin-right: auto;
+  padding-right: 80px;
+  text-align: right;
+  transform: 
+    translateX(-400px) 
+    rotateY(25deg) 
+    scale(0.7)
+    skew(-8deg, -5deg);
+  filter: blur(12px) brightness(0.8);
+}
+
+.timeline-item.right {
+  margin-left: auto;
+  padding-left: 80px;
+  text-align: left;
+  transform: 
+    translateX(400px) 
+    rotateY(-25deg) 
+    scale(0.7)
+    skew(8deg, 5deg);
+  filter: blur(12px) brightness(0.8);
+}
+ /* Card spettacolare con effetto vetro cosmico */
+.timeline-content {
+  position: relative;
+  background: linear-gradient(145deg, 
+    rgba(10, 10, 30, 0.9) 0%,
+    rgba(20, 20, 50, 0.8) 50%,
+    rgba(10, 10, 30, 0.9) 100%);
+  border: 1px solid transparent;
+  border-radius: 20px;
+  padding: 2rem 2.5rem;
+  backdrop-filter: blur(20px);
+  transform: translateZ(50px);
+  box-shadow: 
+    0 25px 50px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 215, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Effetto bordo luminoso animato */
+.timeline-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 20px;
+  padding: 2px;
+  background: linear-gradient(45deg, 
+    var(--accent-purple), 
+    var(--accent-cyan), 
+    var(--accent-gold), 
+    var(--accent-purple));
+  background-size: 300% 300%;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  animation: borderGlow 3s ease infinite;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.timeline-item.visible .timeline-content::before {
+  opacity: 1;
+}
+
+@keyframes borderGlow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Punto temporale con effetto pulsante */
+
+
+/* Connettori energetici */
+.tl-connector {
+  position: absolute;
+  top: 2rem;
+  height: 3px;
+  width: calc(50% - 72px);
+  background: linear-gradient(90deg, 
+    transparent,
+    var(--accent-gold),
+    var(--accent-cyan),
+    var(--accent-purple),
+    transparent);
+  transform-origin: var(--origin);
+  transform: scaleX(0);
+  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8));
+  opacity: 0;
+  z-index: 5;
+}
+
+.timeline-item.left .tl-connector {
+  left: auto;
+  right: calc(50% + 36px);
+  background: linear-gradient(270deg, 
+    transparent,
+    var(--accent-gold),
+    var(--accent-cyan),
+    var(--accent-purple),
+    transparent);
+}
+/* ANIMAZIONI DI ENTRATA SPETTACOLARI */
+.timeline-item.visible {
+  opacity: 1;
+  filter: blur(0) brightness(1);
+  animation-duration: 1.2s;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.timeline-item.visible.left {
+  animation-name: cosmicSlideInLeft;
+}
+
+.timeline-item.visible.right {
+  animation-name: cosmicSlideInRight;
+}
+
+@keyframes cosmicSlideInLeft {
+  0% {
+    transform: translateX(-400px) rotateY(25deg) scale(0.7) skew(-8deg, -5deg);
+    opacity: 0;
+    filter: blur(12px) brightness(0.8);
+  }
+  20% {
+    transform: translateX(-200px) rotateY(15deg) scale(0.8) skew(-4deg, -2deg);
+    opacity: 0.5;
+    filter: blur(6px) brightness(0.9);
+  }
+  50% {
+    transform: translateX(50px) rotateY(-10deg) scale(1.1) skew(2deg, 1deg);
+    opacity: 1;
+    filter: blur(0) brightness(1.1);
+  }
+  70% {
+    transform: translateX(-20px) rotateY(5deg) scale(1.02) skew(-1deg, -0.5deg);
+    opacity: 1;
+    filter: blur(0) brightness(1);
+  }
+  100% {
+    transform: translateX(0) rotateY(0deg) scale(1) skew(0deg, 0deg);
+    opacity: 1;
+    filter: blur(0) brightness(1);
+  }
+}
+
+@keyframes cosmicSlideInRight {
+  0% {
+    transform: translateX(400px) rotateY(-25deg) scale(0.7) skew(8deg, 5deg);
+    opacity: 0;
+    filter: blur(12px) brightness(0.8);
+  }
+  20% {
+    transform: translateX(200px) rotateY(-15deg) scale(0.8) skew(4deg, 2deg);
+    opacity: 0.5;
+    filter: blur(6px) brightness(0.9);
+  }
+  50% {
+    transform: translateX(-50px) rotateY(10deg) scale(1.1) skew(-2deg, -1deg);
+    opacity: 1;
+    filter: blur(0) brightness(1.1);
+  }
+  70% {
+    transform: translateX(20px) rotateY(-5deg) scale(1.02) skew(1deg, 0.5deg);
+    opacity: 1;
+    filter: blur(0) brightness(1);
+  }
+  100% {
+    transform: translateX(0) rotateY(0deg) scale(1) skew(0deg, 0deg);
+    opacity: 1;
+    filter: blur(0) brightness(1);
+  }
+}
+
+/* Animazioni coordinate per punti e connettori */
+.timeline-item.visible .tl-dot {
+  animation: 
+    dotPop 0.6s cubic-bezier(0.2, 0.9, 0.2, 1) forwards 0.3s,
+    dotPulse 2s ease-in-out infinite 1s;
+}
+
+.timeline-item.visible .tl-connector {
+  animation: connectorDraw 0.8s cubic-bezier(0.2, 0.9, 0.2, 1) forwards 0.5s;
+}
+
+@keyframes dotPop {
+  0% { transform: translate(-50%, -50%) scale(0); }
+  60% { transform: translate(-50%, -50%) scale(1.4); }
+  80% { transform: translate(-50%, -50%) scale(0.9); }
+  100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes dotPulse {
+  0%, 100% { 
+    box-shadow: 
+      0 0 0 8px rgba(255, 215, 0, 0.4),
+      0 0 0 16px rgba(0, 204, 255, 0.3),
+      0 0 0 24px rgba(185, 103, 255, 0.2),
+      0 0 30px 12px rgba(255, 215, 0, 0.6);
+  }
+  50% { 
+    box-shadow: 
+      0 0 0 12px rgba(255, 215, 0, 0.6),
+      0 0 0 24px rgba(0, 204, 255, 0.4),
+      0 0 0 36px rgba(185, 103, 255, 0.3),
+      0 0 50px 20px rgba(255, 215, 0, 0.8);
+  }
+}
+
+@keyframes connectorDraw {
+  from { 
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  to { 
+    transform: scaleX(1);
+    opacity: 1;
+  }
+
+/* Effetti hover spettacolari */
+.timeline-content:hover {
+  transform: translateZ(80px) scale(1.05) rotateX(5deg);
+  box-shadow: 
+    0 35px 70px rgba(0, 0, 0, 0.6),
+    0 0 0 2px rgba(255, 215, 0, 0.5),
+    inset 0 2px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.3);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Styling del contenuto */
+.timeline-content h3 {
+  color: var(--accent-gold);
+  margin-bottom: 1rem;
+  font-size: 1.8rem;
+  font-family: 'Cinzel', serif;
+  text-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+  position: relative;
+}
+
+.period {
+  color: var(--accent-cyan);
+  font-style: italic;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  display: inline-block;
+  padding: 0.5rem 1.2rem;
+  background: rgba(0, 204, 255, 0.15);
+  border-radius: 15px;
+  border: 1px solid rgba(0, 204, 255, 0.3);
+  box-shadow: 0 0 20px rgba(0, 204, 255, 0.2);
+}
+
+.timeline-content p {
+  line-height: 1.7;
+  margin-bottom: 1rem;
+  color: #e9eef5;
+  font-size: 1.05rem;
+}
+
+.timeline-content strong {
+   color: #ffd700 !important; /* Oro */
+  text-shadow: 0 0 10px rgba(255, 235, 154, 0.3);
+}
+
+/* Responsive per mobile */
+@media (max-width: 900px) {
+  .timeline::before,
+  .timeline::after {
+    left: 30px;
+  }
+  
+  .timeline-item {
+    width: auto;
+    margin: 3rem 0;
+  }
+  
+  .timeline-item.left,
+  .timeline-item.right {
+    padding-left: 70px;
+    padding-right: 20px;
+    text-align: left;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  
+  .timeline-item.visible.left,
+  .timeline-item.visible.right {
+    animation: mobileSlideIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  }
+  
+  .tl-connector {
+    left: 38px;
+    right: auto;
+    width: calc(100% - 70px);
+  }
+  
+  .timeline-title {
+    font-size: 2.5rem;
+  }
+}
+
+@keyframes mobileSlideIn {
+  0% {
+    transform: translateX(-100px) scale(0.9);
+    opacity: 0;
+    filter: blur(8px);
+  }
+  100% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+/* Riduzione motion per accessibilità */
+@media (prefers-reduced-motion: reduce) {
+  .timeline-item,
+  .timeline-content,
+  .tl-dot,
+  .tl-connector {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+  
+  .timeline::after {
+    animation: none;
+  }
+}
+</style>
+
+<style id="timeline-rail-bridge">
+/* === TIMELINE ITEMS: Connectors aligned properly === */
+
+/* Common styles for both sides */
+.timeline .timeline-item {
+  position: relative;
+}
+
+/* Dots - positioned at card edges */
+.timeline .timeline-item.right::before {
+  left: 0;
+  transform: translate(-50%, -50%);
+}
+
+.timeline .timeline-item.left::before {
+  right: 0;
+  transform: translate(50%, -50%);
+}
+
+/* Connectors - positioned inside cards */
+.timeline .timeline-item.right::after {
+  left: 6px !important;
+  right: auto !important;
+  width: 54px !important;
+  transform-origin: left center !important;
+}
+
+.timeline .timeline-item.left::after {
+  right: 6px !important;
+  left: auto !important;
+  width: 54px !important;
+  transform-origin: right center !important;
+  pointer-events: none;
+}
+
+/* Optional mobile adjustments */
+@media (max-width: 900px) {
+  .timeline .timeline-item.right::before {
+    left: 45px;
+    transform: translate(-50%, -50%);
+  }
+  
+  .timeline .timeline-item.right::after {
+    left: calc(45px + 6px) !important;
+    width: 54px !important;
+  }
+  
+  .timeline .timeline-item.left::before {
+    right: 45px;
+    transform: translate(50%, -50%);
+  }
+  
+  .timeline .timeline-item.left::after {
+    right: calc(45px + 6px) !important;
+    width: 54px !important;
+  }
+}
+  /* INIZIO AGGIUTA */
+.timeline {
+    /* Colori di base per tutta la timeline */
+}
+
+.timeline-item {
+    margin-bottom: 30px;
+}
+
+.timeline-content {
+    background: linear-gradient(135deg, rgba(30, 30, 60, 0.95), rgba(20, 20, 50, 0.95));
+    border: 1px solid rgba(255, 215, 0, 0.4);
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Effetto hover sulle card */
+.timeline-content:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255, 215, 0, 0.7);
+    box-shadow: 
+        0 15px 35px rgba(255, 215, 0, 0.2),
+        0 0 0 1px rgba(255, 215, 0, 0.3);
+}
+
+/* Titoli delle card */
+.timeline-content h3 {
+    color: #ffd700 !important; /* Oro */
+    font-family: 'Cinzel', serif;
+    margin-bottom: 15px;
+    font-size: 1.4rem;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+/* Periodo/date */
+.timeline-content .period {
+    color: #9ad0ff !important; /* Azzurro */
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 12px;
+    font-style: italic;
+}
+
+/* Testo normale */
+.timeline-content p {
+    color: #e0e0e0 !important; /* Grigio chiaro */
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+/* ===== TESTI STRONG - MULTIPLE OPZIONI ===== */
+
+/* OPZIONE 1: Oro classico (consigliato) */
+.timeline-content strong {
+    color: #ffd700 !important; /* Oro */
+    font-weight: 700;
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
+}
+  /* Effetti speciali per le card */
+.timeline-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+    transition: left 0.6s ease;
+}
+
+.timeline-content:hover::before {
+    left: 100%;
+}
+
+/* Glow animato per i strong */
+.timeline-content strong {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.timeline-content strong:hover {
+    text-shadow: 0 0 15px currentColor !important;
+    transform: scale(1.05);
+}
+
+/* Indicatore temporale animato */
+.period::after {
+    content: '⏳';
+    margin-left: 8px;
+    animation: timePulse 2s infinite;
+}
+
+@keyframes timePulse {
+    0%, 100% { opacity: 0.7; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.1); }
+}
+  /* FINE AGGIUNTA */
+</style>
 
 
 <style>
@@ -2771,8 +3700,7 @@ exploding-text {
 }
 
 </style>
-
-<style id="accent-theme-vars">
+</link></link></link></meta></meta></meta></meta><style id="accent-theme-vars">
 /* ===== ACCENT THEME VARIABLES (default: GOLD) ===== */
 :root{
   --accent:        #ffd700;   /* gold */
@@ -2904,8 +3832,7 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
   box-shadow: 0 0 0 2px color-mix(in oklab, var(--accent) 30%, transparent);
 }
 
-</style>
-<style id="topbar-switcher-inline-css">
+</style><style id="topbar-switcher-inline-css">
 /* Compact switcher inside top-bar */
 .topbar-switcher .btn-ghost{ 
   padding: .35rem .6rem;
@@ -2921,6 +3848,8 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 }
  </style>
 
+
+</head>
 <body>
   <div hidden="True" id="search-backdrop"></div>
   <div class="search-panel" id="search-panel">
