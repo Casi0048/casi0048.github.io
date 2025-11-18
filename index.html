@@ -45,11 +45,11 @@
   <!-- CSS BASE -->
   <link rel="stylesheet" href="/accent-layer.css">
   <link rel="stylesheet" href="/accent-layer-plus.css">
-  <link rel="stylesheet" href="/assets/css/stile.css?v=20251106">
+  <link rel="stylesheet" href="/assets/css/stile.css?v=20251116"> <!-- ✅ Versione aggiornata -->
   
- <!-- FONTS (VERSIONE UNICA OTTIMIZZATA) -->
+  <!-- FONTS (OTTIMIZZATO) -->
   <link rel="preload" as="style" 
-        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400;600&display=swap&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400;600&display=swap"
         crossorigin="anonymous"
         onload="this.onload=null;this.rel='stylesheet'">
   <noscript>
@@ -70,12 +70,11 @@
   </noscript>
 
   <!-- Preload immagini critiche -->
-  <link rel="preload" as="image" href="/foto/socrate.webp?v=20251106">
-<!-- CORREGGI IL PRELOAD ESISTENTE -->
-<!-- MULTIPLE PRELOAD PER COPRIRE TUTTI I CASI -->
-<link rel="preload" href="/search-index.json?v=20251116" as="fetch" type="application/json" crossorigin="use-credentials">
-<link rel="preload" href="/search-index.json?v=20251116" as="fetch" type="application/json" crossorigin="anonymous">
-<link rel="prefetch" href="/search-index.json?v=20251116" as="fetch" type="application/json" crossorigin="anonymous">
+  <link rel="preload" as="image" href="/foto/socrate.webp?v=20251116"> <!-- ✅ Versione aggiornata -->
+
+  <!-- Preload search index (UNICO) -->
+  <link rel="preload" href="/search-index.json?v=20251116" as="fetch" type="application/json" crossorigin="anonymous">
+
   <!-- Schema.org -->
   <script type="application/ld+json">
   {
@@ -96,33 +95,29 @@
     }
   }
   </script>
-  <!-- Preload dell'indice di ricerca -->
-<link rel="preload"
-      href="/search-index.json?v=20251116"
-      as="fetch"
-      type="application/json">
 
-<!-- Configurazione UNICA della ricerca -->
-<script id="search-config-root">
-  (function () {
-    const ts = Date.now(); // forza sempre una versione “fresca” del JSON
-
-    window.SEARCH_INDEX_URLS = [
-      '/search-index.json?v=' + ts,  // prima prova: no cache
-      '/search-index.json'           // fallback
-    ];
-
-    window.SEARCH_CONFIG = {
-      indexUrls: window.SEARCH_INDEX_URLS,
-      debounceTime: 300,
-      minQueryLength: 2,
-      version: '20251116'
-    };
-
-    console.log('🔍 SEARCH_INDEX_URLS impostate:', window.SEARCH_INDEX_URLS);
-  })();
-</script>
-
+  <!-- Configurazione UNICA della ricerca -->
+  <script id="search-config-root">
+    (function() {
+      const version = '20251116';
+      
+      window.SEARCH_INDEX_URLS = [
+        `/search-index.json?v=${version}`,
+        '/search-index.json',
+        './search-index.json', 
+        '/articoli/search-index.json'
+      ];
+      
+      window.SEARCH_CONFIG = {
+        indexUrls: window.SEARCH_INDEX_URLS,
+        debounceTime: 300,
+        minQueryLength: 2,
+        version: version
+      };
+      
+      console.log('🔍 SEARCH_CONFIG loaded:', window.SEARCH_CONFIG);
+    })();
+  </script>
 </head>
 <style>
   /* Versione compatta */
