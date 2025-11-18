@@ -2050,6 +2050,264 @@ footer {
     background-color: #0f1020 !important;
     color: #e9eef5 !important;
 }
+/* Stelle cadenti nel background */
+.stars-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.star {
+    position: absolute;
+    background: rgba(255, 215, 0, 0.8);
+    border-radius: 50%;
+    animation: fallingStar linear infinite;
+}
+
+@keyframes fallingStar {
+    0% {
+        transform: translateY(-100px) translateX(0) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) translateX(100px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+
+/* Particelle che reagiscono al mouse */
+.wisdom-particle {
+    position: fixed;
+    width: 4px;
+    height: 4px;
+    background: radial-gradient(circle, #ffd700, transparent);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: floatParticle 8s ease-in-out infinite;
+}
+
+.wisdom-particle:hover {
+    transform: scale(3);
+    background: radial-gradient(circle, #ff6b6b, #ffd700);
+}
+
+@keyframes floatParticle {
+    0%, 100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+    25% {
+        transform: translate(100px, -50px) rotate(90deg);
+    }
+    50% {
+        transform: translate(50px, -100px) rotate(180deg);
+    }
+    75% {
+        transform: translate(-50px, -50px) rotate(270deg);
+    }
+}
+
+/* Animazione per le card articoli */
+.article-card {
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+.article-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+    transition: left 0.6s ease;
+    z-index: 1;
+}
+
+.article-card:hover::before {
+    left: 100%;
+}
+
+.article-card:hover {
+    transform: translateY(-10px) rotateX(5deg);
+    box-shadow: 
+        0 15px 30px rgba(138, 109, 59, 0.4),
+        0 0 0 1px rgba(255, 215, 0, 0.2);
+}
+/* Onde concentriche che partono dal logo - Versione migliorata */
+.waves-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.wave {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid rgba(255, 215, 0, 0.6);
+    border-radius: 50%;
+    animation: waveExpand 4s ease-out infinite;
+    opacity: 0;
+}
+
+.wave:nth-child(1) { 
+    animation-delay: 0s; 
+    border-color: rgba(255, 215, 0, 0.8);
+}
+.wave:nth-child(2) { 
+    animation-delay: 1s; 
+    border-color: rgba(138, 109, 59, 0.6);
+}
+.wave:nth-child(3) { 
+    animation-delay: 2s; 
+    border-color: rgba(176, 141, 87, 0.5);
+}
+.wave:nth-child(4) { 
+    animation-delay: 3s; 
+    border-color: rgba(255, 215, 0, 0.4);
+}
+
+/* Animazione principale delle onde */
+@keyframes waveExpand {
+    0% {
+        width: 20px;
+        height: 20px;
+        opacity: 1;
+        border-width: 3px;
+    }
+    50% {
+        opacity: 0.7;
+        border-width: 2px;
+    }
+    100% {
+        width: 400px;
+        height: 400px;
+        opacity: 0;
+        border-width: 1px;
+    }
+}
+
+/* Effetto glow per le onde */
+@keyframes waveGlow {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
+    }
+    50% {
+        box-shadow: 
+            0 0 20px rgba(255, 215, 0, 0.6),
+            0 0 40px rgba(255, 215, 0, 0.3);
+    }
+}
+
+.wave {
+    animation: waveExpand 4s ease-out infinite, waveGlow 4s ease-in-out infinite;
+}
+
+/* Varianti di animazione per diversità */
+.wave.variant-1 {
+    animation: waveExpand1 5s ease-out infinite;
+}
+
+@keyframes waveExpand1 {
+    0% {
+        width: 10px;
+        height: 10px;
+        opacity: 1;
+        border-color: rgba(156, 39, 176, 0.8);
+    }
+    100% {
+        width: 350px;
+        height: 350px;
+        opacity: 0;
+        border-color: rgba(156, 39, 176, 0.1);
+    }
+}
+
+.wave.variant-2 {
+    animation: waveExpand2 6s ease-in-out infinite;
+}
+
+@keyframes waveExpand2 {
+    0% {
+        width: 30px;
+        height: 30px;
+        opacity: 1;
+        transform: translate(-50%, -50%) rotate(0deg);
+        border-color: rgba(33, 150, 243, 0.7);
+    }
+    100% {
+        width: 450px;
+        height: 450px;
+        opacity: 0;
+        transform: translate(-50%, -50%) rotate(180deg);
+        border-color: rgba(33, 150, 243, 0.1);
+    }
+}
+
+/* Onde ellittiche per effetto più organico */
+.wave.elliptical {
+    border-radius: 40%;
+    animation: waveExpandElliptical 4s ease-out infinite;
+}
+
+@keyframes waveExpandElliptical {
+    0% {
+        width: 20px;
+        height: 20px;
+        opacity: 1;
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    100% {
+        width: 380px;
+        height: 420px;
+        opacity: 0;
+        transform: translate(-50%, -50%) rotate(45deg);
+    }
+}
+
+/* Container per onde multiple */
+.multiple-waves {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+}
+
+/* Effetto risonanza quando si hover sul logo */
+.logo:hover ~ .waves-container .wave,
+.logo:focus ~ .waves-container .wave {
+    animation-duration: 2s;
+    border-color: rgba(255, 215, 0, 1);
+}
+
+/* Onde interattive al click */
+.waves-container.interactive .wave {
+    cursor: pointer;
+}
+
+.waves-container.interactive .wave:active {
+    animation: waveExpand 1s ease-out;
+}
 </style>
 <body>
   <!-- Header -->
@@ -2618,7 +2876,7 @@ footer {
     <div class="main-content">
       <!-- Articles Section -->
       <section class="articles-section">
-        <h2 class="section-title">Ultimi Articoli</h2>
+        <h2 class="section-title"></h2>
         <div class="articles-grid">
           <article class="article-card">
             <div class="article-img" style="background-image: url('https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/cariatide.webp');"></div>
@@ -3195,7 +3453,8 @@ footer {
         <h4>🌐 📧  </h4>
         <ul>
           <li><a href="https://casi0048.github.io/pagine/benvenuti.html">🗝️ INCIPIT</a></li>
-          <li><a href="https://casi0048.github.io/pagine/pagina-contatti.html">📧 Contatti</a></li>
+         <li><a href="https://casi0048.github.io/pagine/pagina-contatti.html">📧 Contatti</a></li>
+         <li><a href="https://casi0048.github.io/pagine/credits.html">🎭 Riconoscimenti</a></li>
         </ul>
       </div>
       </div>
@@ -4415,6 +4674,300 @@ footer {
         
         console.log('🎭 Sistema citazioni avanzato attivato:', quotes.length, 'citazioni filosofiche');
     });
+// Inizializza stelle cadenti
+function createFallingStars() {
+    const starsContainer = document.createElement('div');
+    starsContainer.className = 'stars-background';
+    document.body.appendChild(starsContainer);
+    
+    for (let i = 0; i < 20; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        
+        // Posizione e dimensione casuali
+        const size = Math.random() * 3 + 1;
+        const left = Math.random() * 100;
+        const duration = Math.random() * 10 + 5;
+        const delay = Math.random() * 5;
+        
+        star.style.cssText = `
+            width: ${size}px;
+            height: ${size}px;
+            left: ${left}vw;
+            animation-duration: ${duration}s;
+            animation-delay: ${delay}s;
+        `;
+        
+        starsContainer.appendChild(star);
+    }
+}
+
+// Inizializza pensieri fluttuanti
+function createFloatingThoughts() {
+    const thoughts = [
+        
+    ];
+    
+    thoughts.forEach((thought, index) => {
+        const element = document.createElement('div');
+        element.className = 'floating-thoughts';
+        element.textContent = thought;
+        
+        const left = Math.random() * 80 + 10;
+        const duration = Math.random() * 10 + 15;
+        const delay = Math.random() * 10;
+        
+        element.style.cssText = `
+            left: ${left}%;
+            animation-duration: ${duration}s;
+            animation-delay: ${delay}s;
+        `;
+        
+        document.body.appendChild(element);
+    });
+}
+
+// Avvia tutte le animazioni al caricamento
+document.addEventListener('DOMContentLoaded', function() {
+    createFallingStars();
+    createFloatingThoughts();
+    
+    // Aggiungi effetto typewriter ai titoli
+    document.querySelectorAll('.section-title').forEach(title => {
+        title.classList.add('typewriter');
+    });
+});
+// Sistema onde concentriche dal logo
+function createLogoWaves() {
+    // Trova il logo
+    const logo = document.querySelector('.logo');
+    if (!logo) {
+        console.warn('🎯 Logo non trovato per le onde concentriche');
+        return;
+    }
+
+    // Crea container per le onde
+    const wavesContainer = document.createElement('div');
+    wavesContainer.className = 'waves-container';
+    wavesContainer.id = 'logo-waves-container';
+    
+    // Posiziona il container relativo al logo
+    logo.style.position = 'relative';
+    logo.appendChild(wavesContainer);
+
+    // Crea le onde
+    function createWaves() {
+        // Pulisci onde esistenti
+        wavesContainer.innerHTML = '';
+
+        // Crea 4 onde concentriche
+        for (let i = 0; i < 4; i++) {
+            const wave = document.createElement('div');
+            wave.className = 'wave';
+            
+            // Varianti casuali per effetto più organico
+            if (i % 3 === 0) {
+                wave.classList.add('elliptical');
+            } else if (i % 3 === 1) {
+                wave.classList.add('variant-1');
+            } else {
+                wave.classList.add('variant-2');
+            }
+            
+            // Delay progressivo
+            wave.style.animationDelay = `${i * 1}s`;
+            
+            wavesContainer.appendChild(wave);
+        }
+    }
+
+    // Crea onde iniziali
+    createWaves();
+
+    // Rigenera onde periodicamente per sincronizzazione
+    setInterval(createWaves, 16000); // 16 secondi (4 onde × 4 secondi)
+
+    // Effetto speciale al hover sul logo
+    logo.addEventListener('mouseenter', function() {
+        const waves = wavesContainer.querySelectorAll('.wave');
+        waves.forEach(wave => {
+            wave.style.animationDuration = '2s';
+            wave.style.borderColor = 'rgba(255, 215, 0, 0.9)';
+        });
+    });
+
+    logo.addEventListener('mouseleave', function() {
+        const waves = wavesContainer.querySelectorAll('.wave');
+        waves.forEach(wave => {
+            wave.style.animationDuration = '';
+            wave.style.borderColor = '';
+        });
+    });
+
+    console.log('🌊 Onde concentriche del logo attivate');
+}
+
+// Sistema onde multiple per tutta la pagina
+function createBackgroundWaves() {
+    const backgroundWaves = document.createElement('div');
+    backgroundWaves.className = 'multiple-waves';
+    backgroundWaves.id = 'background-waves';
+    backgroundWaves.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: -1;
+    `;
+    
+    document.body.appendChild(backgroundWaves);
+
+    // Crea onde di background sparse
+    function createBackgroundWave() {
+        const wave = document.createElement('div');
+        wave.className = 'wave variant-2';
+        
+        // Posizione casuale
+        const top = Math.random() * 100;
+        const left = Math.random() * 100;
+        
+        // Dimensione e durata casuali
+        const size = Math.random() * 300 + 200;
+        const duration = Math.random() * 5 + 5;
+        
+        wave.style.cssText = `
+            position: absolute;
+            top: ${top}%;
+            left: ${left}%;
+            animation-duration: ${duration}s;
+            border-color: rgba(255, 215, 0, ${Math.random() * 0.3 + 0.2});
+        `;
+        
+        // Modifica keyframes per questa onda
+        const keyframes = `
+            @keyframes backgroundWave-${Date.now()} {
+                0% {
+                    width: 10px;
+                    height: 10px;
+                    opacity: 0.5;
+                }
+                100% {
+                    width: ${size}px;
+                    height: ${size}px;
+                    opacity: 0;
+                }
+            }
+        `;
+        
+        // Aggiungi keyframes dinamici
+        const style = document.createElement('style');
+        style.textContent = keyframes;
+        document.head.appendChild(style);
+        
+        wave.style.animationName = `backgroundWave-${Date.now()}`;
+        
+        backgroundWaves.appendChild(wave);
+        
+        // Rimuovi dopo l'animazione
+        setTimeout(() => {
+            if (wave.parentNode) {
+                wave.parentNode.removeChild(wave);
+            }
+        }, duration * 1000);
+    }
+
+    // Crea onde di background periodicamente
+    setInterval(createBackgroundWave, 2000);
+}
+
+// Onde interattive al click
+function createInteractiveWaves() {
+    document.addEventListener('click', function(e) {
+        const interactiveWave = document.createElement('div');
+        interactiveWave.className = 'wave';
+        
+        interactiveWave.style.cssText = `
+            position: fixed;
+            top: ${e.clientY}px;
+            left: ${e.clientX}px;
+            border-color: rgba(33, 150, 243, 0.8);
+            animation: waveExpand 2s ease-out;
+            z-index: 10000;
+        `;
+        
+        document.body.appendChild(interactiveWave);
+        
+        // Rimuovi dopo l'animazione
+        setTimeout(() => {
+            if (interactiveWave.parentNode) {
+                interactiveWave.parentNode.removeChild(interactiveWave);
+            }
+        }, 2000);
+    });
+}
+
+// Inizializza tutto
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(() => {
+        createLogoWaves();
+        createBackgroundWaves();
+        createInteractiveWaves();
+    }, 1000);
+});
+
+// TEST IMMEDIATO - Incolla nella console:
+/*
+createLogoWaves();
+*/
+
+// Versione semplificata per debug
+function createSimpleWaves() {
+    const logo = document.querySelector('.logo');
+    if (!logo) {
+        // Crea un logo temporaneo per test
+        const tempLogo = document.createElement('div');
+        tempLogo.className = 'logo';
+        tempLogo.style.cssText = `
+            position: fixed;
+            top: 50px;
+            left: 50px;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 215, 0, 0.3);
+            border-radius: 50%;
+            z-index: 10000;
+        `;
+        tempLogo.innerHTML = '<div style="text-align: center; padding-top: 40px;">🎭</div>';
+        document.body.appendChild(tempLogo);
+        
+        const wavesContainer = document.createElement('div');
+        wavesContainer.className = 'waves-container';
+        wavesContainer.style.cssText = `
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 100px;
+        `;
+        
+        tempLogo.appendChild(wavesContainer);
+        
+        // Crea onde
+        for (let i = 0; i < 4; i++) {
+            const wave = document.createElement('div');
+            wave.className = 'wave';
+            wave.style.animationDelay = `${i * 1}s`;
+            wavesContainer.appendChild(wave);
+        }
+        
+        console.log('🌊 Onde di test create');
+    } else {
+        createLogoWaves();
+    }
+}
   </script>
 </body>
 </html>
