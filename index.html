@@ -2932,17 +2932,12 @@ html {
 </style>
 <style>
   /* === PULSANTE TORNA SU — Versione Ottimizzata === */
-  :root {
-      --gold: #d4af37;
-      --gold-light: #ffeb3b;
-      --gold-glow: rgba(255, 215, 0, 0.4);
-      --dark-bg: #0a0a1a;
-  }
+ 
 
   #backToTop {
       position: fixed;
       bottom: 20px;
-      left: 160px; /* ✅ POSIZIONE SINISTRA PRIMARIA */
+      left: 160px;
       width: 50px;
       height: 50px;
       border-radius: 50%;
@@ -2963,53 +2958,39 @@ html {
       display: flex;
       align-items: center;
       justify-content: center;
-      /* Animazione più performante */
       animation: float-gentle 3s ease-in-out infinite;
-      /* Miglioramenti prestazioni */
       will-change: transform, opacity;
       backface-visibility: hidden;
   }
 
-  /* Stato visibile */
   #backToTop.is-visible {
       opacity: 1;
       pointer-events: auto;
   }
 
-  /* Hover state */
   #backToTop:hover {
       transform: translateY(-3px);
       box-shadow: 0 8px 25px var(--gold-glow);
       background: linear-gradient(135deg, var(--gold-light), var(--gold));
   }
 
-  /* Focus per accessibilità */
   #backToTop:focus {
       outline: 2px solid var(--gold);
       outline-offset: 2px;
   }
 
-  /* Stato attivo */
   #backToTop:active {
       transform: translateY(-1px);
   }
 
-  /* Animazione ottimizzata */
   @keyframes float-gentle {
-      0%, 100% { 
-          transform: translateY(0); 
-      }
-      50% { 
-          transform: translateY(-5px); 
-      }
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
   }
 
-  /* Varianti tematiche */
   #backToTop.glow {
       background: radial-gradient(circle at 30% 30%, var(--gold-light), var(--gold));
-      box-shadow: 
-          0 4px 20px var(--gold-glow),
-          0 0 30px rgba(255, 215, 0, 0.3);
+      box-shadow: 0 4px 20px var(--gold-glow), 0 0 30px rgba(255, 215, 0, 0.3);
   }
 
   #backToTop.glass {
@@ -3017,9 +2998,7 @@ html {
       backdrop-filter: blur(15px);
       border: 1px solid rgba(255, 215, 0, 0.4);
       color: var(--gold);
-      box-shadow: 
-          0 4px 20px rgba(0, 0, 0, 0.2),
-          inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
 
   #backToTop.glass:hover {
@@ -3027,54 +3006,45 @@ html {
       color: var(--dark-bg);
   }
 
-  /* Media Query Mobile */
   @media (max-width: 768px) {
       #backToTop {
           bottom: 15px;
-          left: 15px; /* ✅ MOBILE: sempre a sinistra */
-          right: auto; /* ✅ Disabilita right */
+          left: 15px;
+          right: auto;
           width: 44px;
           height: 44px;
           font-size: 1.3rem;
+          animation: float-gentle-mobile 4s ease-in-out infinite;
       }
       
-      /* Animazione mobile più leggera */
       @keyframes float-gentle-mobile {
           0%, 100% { transform: translateY(0); }
           50% { transform: translateY(-3px); }
       }
-      
-      #backToTop {
-          animation: float-gentle-mobile 4s ease-in-out infinite;
-      }
   }
 
-  /* Media Query per schermi molto piccoli */
   @media (max-width: 480px) {
       #backToTop {
           bottom: 10px;
-          left: 10px; /* ✅ MOBILE PICCOLO: sempre a sinistra */
+          left: 10px;
           width: 40px;
           height: 40px;
           font-size: 1.2rem;
       }
   }
 
-  /* Media Query per schermi medi (tablet) */
   @media (max-width: 1024px) and (min-width: 769px) {
       #backToTop {
-          left: 80px; /* ✅ TABLET: posizione intermedia a sinistra */
-          right: auto; /* ✅ Disabilita right */
+          left: 80px;
+          right: auto;
       }
   }
 
-  /* Accessibilità: riduzione movimento */
   @media (prefers-reduced-motion: reduce) {
       #backToTop {
           animation: none;
           transition: opacity 0.3s ease;
       }
-      
       #backToTop:hover {
           transform: none;
       }
