@@ -5997,14 +5997,19 @@ if(dir === 'rtl') {
 <!-- Biscottino (riapri preferenze) -->
 <button aria-label="Preferenze cookie" id="cookie-fab" title="Preferenze cookie">🍪 Cookie</button>
 <script>
+
 // ========== GESTIONE ERRORI GLOBALE - VERSIONE PULITA ==========
 window.addEventListener('error', function(e) {
-    console.log('⚠️ Errore catturato (silenziato)');
-    
-    // Previeni il crash della pagina
-    e.preventDefault();
-    
-    return true;
+  console.error('⚠️ Errore globale catturato:', {
+    message: e.message,
+    file: e.filename,
+    line: e.lineno,
+    column: e.colno,
+    error: e.error
+  });
+
+  // ❌ Niente preventDefault, niente "return true"
+  // Lasciamo che il browser mostri comunque l'errore completo in console
 });
 
 
