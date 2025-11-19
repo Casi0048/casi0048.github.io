@@ -41,20 +41,15 @@
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
   <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
   <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
-<!-- CSS base -->
-<link rel="stylesheet" href="/assets/css/stile.css?v=20251116">
-<link rel="stylesheet" href="/assets/css/timeline.css?v=20251116">
 
-<!-- CSS temi / accenti -->
-<link rel="stylesheet" href="/accent-layer.css?v=20251116">
-<link rel="stylesheet" href="/accent-layer-plus.css?v=20251116">
-
-<!-- JavaScript principale -->
-<script src="/assets/js/script.js?v=20251116" defer></script>
-
-  <!-- FONTS (OTTIMIZZATO) -->
+  <!-- CSS BASE -->
+  <link rel="stylesheet" href="/accent-layer.css">
+  <link rel="stylesheet" href="/accent-layer-plus.css">
+  <link rel="stylesheet" href="/assets/css/stile.css?v=20251106">
+  
+ <!-- FONTS (VERSIONE UNICA OTTIMIZZATA) -->
   <link rel="preload" as="style" 
-        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400;600&display=swap&display=swap"
         crossorigin="anonymous"
         onload="this.onload=null;this.rel='stylesheet'">
   <noscript>
@@ -75,10 +70,8 @@
   </noscript>
 
   <!-- Preload immagini critiche -->
-  <link rel="preload" as="image" href="/foto/socrate.webp?v=20251116"> <!-- ✅ Versione aggiornata -->
+  <link rel="preload" as="image" href="/foto/socrate.webp?v=20251106">
 
-  <!-- Preload search index (UNICO) -->
-  <link rel="preload" href="/search-index.json?v=20251116" as="fetch" type="application/json" crossorigin="anonymous">
 
   <!-- Schema.org -->
   <script type="application/ld+json">
@@ -100,29 +93,33 @@
     }
   }
   </script>
+  <!-- Preload dell'indice di ricerca -->
+<link rel="preload"
+      href="/search-index.json?v=20251106"
+      as="fetch"
+      type="application/json">
 
-  <!-- Configurazione UNICA della ricerca -->
-  <script id="search-config-root">
-    (function() {
-      const version = '20251116';
-      
-      window.SEARCH_INDEX_URLS = [
-        `/search-index.json?v=${version}`,
-        '/search-index.json',
-        './search-index.json', 
-        '/articoli/search-index.json'
-      ];
-      
-      window.SEARCH_CONFIG = {
-        indexUrls: window.SEARCH_INDEX_URLS,
-        debounceTime: 300,
-        minQueryLength: 2,
-        version: version
-      };
-      
-      console.log('🔍 SEARCH_CONFIG loaded:', window.SEARCH_CONFIG);
-    })();
-  </script>
+<!-- Configurazione UNICA della ricerca -->
+<script id="search-config-root">
+  (function () {
+    const ts = Date.now(); // forza sempre una versione “fresca” del JSON
+
+    window.SEARCH_INDEX_URLS = [
+      '/search-index.json?v=' + ts,  // prima prova: no cache
+      '/search-index.json'           // fallback
+    ];
+
+    window.SEARCH_CONFIG = {
+      indexUrls: window.SEARCH_INDEX_URLS,
+      debounceTime: 300,
+      minQueryLength: 2,
+      version: '20251106'
+    };
+
+    console.log('🔍 SEARCH_INDEX_URLS impostate:', window.SEARCH_INDEX_URLS);
+  })();
+</script>
+
 </head>
 <style>
   /* Versione compatta */
@@ -518,7 +515,7 @@ body {
       margin-left: 0; /* neutralizza eventuali margini precedenti */
       }
     </style>
-
+<!-- -->
 <style id="audio-player-stack">
       /* forza il box audio a prendersi tutta la riga sotto */
       #audio-player{
@@ -1731,7 +1728,8 @@ window.googleTranslateElementInit = function(){
     skew(8deg, 5deg);
   filter: blur(12px) brightness(0.8);
 }
- /* Card spettacolare con effetto vetro cosmico */
+
+/* Card spettacolare con effetto vetro cosmico */
 .timeline-content {
   position: relative;
   background: linear-gradient(145deg, 
@@ -1976,7 +1974,7 @@ window.googleTranslateElementInit = function(){
 }
 
 .timeline-content strong {
-   color: #ffd700 !important; /* Oro */
+  color: #ffeb9a;
   text-shadow: 0 0 10px rgba(255, 235, 154, 0.3);
 }
 
@@ -2106,107 +2104,6 @@ window.googleTranslateElementInit = function(){
     width: 54px !important;
   }
 }
-  /* INIZIO AGGIUTA */
-.timeline {
-    /* Colori di base per tutta la timeline */
-}
-
-.timeline-item {
-    margin-bottom: 30px;
-}
-
-.timeline-content {
-    background: linear-gradient(135deg, rgba(30, 30, 60, 0.95), rgba(20, 20, 50, 0.95));
-    border: 1px solid rgba(255, 215, 0, 0.4);
-    border-radius: 12px;
-    padding: 25px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-/* Effetto hover sulle card */
-.timeline-content:hover {
-    transform: translateY(-5px);
-    border-color: rgba(255, 215, 0, 0.7);
-    box-shadow: 
-        0 15px 35px rgba(255, 215, 0, 0.2),
-        0 0 0 1px rgba(255, 215, 0, 0.3);
-}
-
-/* Titoli delle card */
-.timeline-content h3 {
-    color: #ffd700 !important; /* Oro */
-    font-family: 'Cinzel', serif;
-    margin-bottom: 15px;
-    font-size: 1.4rem;
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
-}
-
-/* Periodo/date */
-.timeline-content .period {
-    color: #9ad0ff !important; /* Azzurro */
-    font-weight: 600;
-    font-size: 1rem;
-    margin-bottom: 12px;
-    font-style: italic;
-}
-
-/* Testo normale */
-.timeline-content p {
-    color: #e0e0e0 !important; /* Grigio chiaro */
-    line-height: 1.6;
-    margin-bottom: 10px;
-}
-
-/* ===== TESTI STRONG - MULTIPLE OPZIONI ===== */
-
-/* OPZIONE 1: Oro classico (consigliato) */
-.timeline-content strong {
-    color: #ffd700 !important; /* Oro */
-    font-weight: 700;
-    text-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
-}
-  /* Effetti speciali per le card */
-.timeline-content::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.1), transparent);
-    transition: left 0.6s ease;
-}
-
-.timeline-content:hover::before {
-    left: 100%;
-}
-
-/* Glow animato per i strong */
-.timeline-content strong {
-    position: relative;
-    transition: all 0.3s ease;
-}
-
-.timeline-content strong:hover {
-    text-shadow: 0 0 15px currentColor !important;
-    transform: scale(1.05);
-}
-
-/* Indicatore temporale animato */
-.period::after {
-    content: '⏳';
-    margin-left: 8px;
-    animation: timePulse 2s infinite;
-}
-
-@keyframes timePulse {
-    0%, 100% { opacity: 0.7; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.1); }
-}
-  /* FINE AGGIUNTA */
 </style>
 
 
@@ -3261,7 +3158,7 @@ exploding-text {
   white-space:nowrap;
   contain:inline-size;
   line-height:1;
-  --motto-ch: 52; /* aggiorna se cambi testo */
+  --motto-ch: 36; /* aggiorna se cambi testo */
   min-width: calc(var(--motto-ch) * 1ch);
 }
 .motto .m-text{
@@ -3887,12 +3784,12 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 
     <div class="slide-vertical">
       <img src="/foto/livia.webp?v=20251105" alt="Livia" width="260" height="340" decoding="async" loading="lazy">
-      <p>👑🦌Livia🦅DEA egizia - 'Folle splendore'🔱</p>
+      <p>👑🦌Livia🦅DEA egizia🔱</p>
     </div>
 
     <div class="slide-vertical">
       <img src="/foto/polpetta.webp?v=20251105" alt="Polpetta" width="260" height="340" decoding="async" loading="lazy">
-      <p>🏹 Polpetta🦸: guerriera celtica - 'Tempesta Perfetta'</p>
+      <p>🏹 Polpetta🦸: guerriera celtica</p>
     </div>
 
     <div class="slide-vertical">
@@ -4247,8 +4144,7 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
             display: none;
             position: absolute;
             top: 100%;
-             left: 50%;
-    transform: translateX(-50%);
+            left: 0;
             margin-top: 10px;
             background: linear-gradient(to bottom, rgba(10, 10, 30, 0.95), rgba(10, 10, 30, 0.9));
             border-radius: 10px;
@@ -4282,7 +4178,7 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 <div style="text-align: center;">
 <img alt="Nietzsche" decoding="async" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/immagini%20per%20sito/friedrich-nietzsche.jpg" style="width: 100%; max-width: 80px; border-radius: 50%; border: 3px solid #d4af37;"/>
 <p style="margin-top: 10px; color: #e9eef5; font-weight: bold; font-family: 'Cormorant Garamond', serif;">Nietzsche</p>
-<p style="font-style: italic; color: #9ad0ff; font-size: 0.85rem;font-weight: 700;">"Dio è morto! Dio resta morto! E noi lo abbiamo ucciso!"</p>
+<p style="font-style: italic; color: #9ad0ff; font-size: 0.85rem;font-weight: 700;">"Dio è morto! Dio resta morto! E noi lo abbiamo ucciso! Come ci consoleremo noi, gli assassini di tutti gli assassini? Quanto di piú sacro e di piú possente il mondo possedeva fino ad oggi, si è dissanguato sotto i nostri coltelli; chi detergerà da noi questo sangue?"</p>
 </div>
 </div>
 </div>
@@ -4887,181 +4783,15 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 </section>
 </main>
 <!-- Citazioni filosofiche fluttuanti -->
-<div class="floating-quotes">
-    <div class="quote-bubble">
-        <div class="quote-text">“Conosci te stesso”</div>
-        <div class="quote-author">— Socrate</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“So di non sapere”</div>
-        <div class="quote-author">— Socrate</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“Una vita senza ricerca non è degna di essere vissuta”</div>
-        <div class="quote-author">— Socrate</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“La filosofia comincia con la meraviglia”</div>
-        <div class="quote-author">— Platone</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“La bellezza è lo splendore del vero”</div>
-        <div class="quote-author">— Platone</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“Siamo ciò che facciamo ripetutamente. L'eccellenza non è un atto ma un'abitudine”</div>
-        <div class="quote-author">— Aristotele</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“La felicità dipende da noi stessi”</div>
-        <div class="quote-author">— Aristotele</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“Nulla è nell'intelletto che prima non sia passato dai sensi”</div>
-        <div class="quote-author">— Aristotele</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“Tutto scorre”</div>
-        <div class="quote-author">— Eraclito</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“Il carattere è destino”</div>
-        <div class="quote-author">— Eraclito</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“L'uomo è misura di tutte le cose”</div>
-        <div class="quote-author">— Protagora</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“Vivere secondo natura”</div>
-        <div class="quote-author">— Zenone di Cizio</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“Non sono le cose che ci turbano, ma le opinioni che abbiamo su di esse”</div>
-        <div class="quote-author">— Epitteto</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“Non è la morte che dobbiamo temere, ma il non cominciare mai a vivere”</div>
-        <div class="quote-author">— Marco Aurelio</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“La vita è opinione”</div>
-        <div class="quote-author">— Marco Aurelio</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“La felicità consiste nel desiderare ciò che si ha”</div>
-        <div class="quote-author">— Seneca</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“Non esiste vento favorevole per il marinaio che non sa dove andare”</div>
-        <div class="quote-author">— Seneca</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“Il destino guida chi lo segue e trascina chi si oppone”</div>
-        <div class="quote-author">— Seneca</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“Vivi nascosto”</div>
-        <div class="quote-author">— Epicuro</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“Ama e fa' ciò che vuoi”</div>
-        <div class="quote-author">— Sant'Agostino</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“La fede cerca l'intelligenza”</div>
-        <div class="quote-author">— Anselmo d'Aosta</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“Contemplata aliis tradere”</div>
-        <div class="quote-author">— Tommaso d'Aquino</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“Non moltiplicare gli enti senza necessità”</div>
-        <div class="quote-author">— Guglielmo di Ockham</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“È meglio essere temuti che amati, se non si può essere entrambi”</div>
-        <div class="quote-author">— Niccolò Machiavelli</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“Cogito, ergo sum”</div>
-        <div class="quote-author">— Cartesio</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“Il cuore ha le sue ragioni che la ragione non conosce”</div>
-        <div class="quote-author">— Blaise Pascal</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“La mente è una tabula rasa”</div>
-        <div class="quote-author">— John Locke</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“Esse est percipi”</div>
-        <div class="quote-author">— George Berkeley</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“La bellezza delle cose esiste nella mente di chi le contempla”</div>
-        <div class="quote-author">— David Hume</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“Due cose riempiono l'animo: il cielo stellato sopra di me e la legge morale dentro di me”</div>
-        <div class="quote-author">— Immanuel Kant</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“Agisci in modo da trattare l'umanità sempre come fine e mai semplicemente come mezzo”</div>
-        <div class="quote-author">— Immanuel Kant</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“Quel che è reale è razionale”</div>
-        <div class="quote-author">— G.W.F. Hegel</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“La vita oscilla tra la noia e il dolore”</div>
-        <div class="quote-author">— Arthur Schopenhauer</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“La vita dev'essere compresa all'indietro, ma va vissuta in avanti”</div>
-        <div class="quote-author">— Søren Kierkegaard</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“Chi ha un perché per vivere può sopportare quasi ogni come”</div>
-        <div class="quote-author">— Friedrich Nietzsche</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“Diventa ciò che sei”</div>
-        <div class="quote-author">— Friedrich Nietzsche</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“Non esistono fatti, solo interpretazioni”</div>
-        <div class="quote-author">— Friedrich Nietzsche</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“Di ciò di cui non si può parlare si deve tacere”</div>
-        <div class="quote-author">— Ludwig Wittgenstein</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“Il significato è l'uso”</div>
-        <div class="quote-author">— Ludwig Wittgenstein</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“Il linguaggio è la casa dell'essere”</div>
-        <div class="quote-author">— Martin Heidegger</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“L'esistenza precede l'essenza”</div>
-        <div class="quote-author">— Jean-Paul Sartre</div>
-    </div>
-    <div class="quote-bubble">
-        <div class="quote-text">“Bisogna immaginare Sisifo felice”</div>
-        <div class="quote-author">— Albert Camus</div>
-    </div>
-</div>
+<div class="floating-quotes"><div class="quote-bubble"><div class="quote-text">“Conosci te stesso”</div><div class="quote-author">— Socrate</div></div><div class="quote-bubble"><div class="quote-text">“So di non sapere”</div><div class="quote-author">— Socrate</div></div><div class="quote-bubble"><div class="quote-text">“Una vita senza ricerca non è degna di essere vissuta”</div><div class="quote-author">— Socrate</div></div><div class="quote-bubble"><div class="quote-text">“La filosofia comincia con la meraviglia”</div><div class="quote-author">— Platone</div></div><div class="quote-bubble"><div class="quote-text">“La bellezza è lo splendore del vero”</div><div class="quote-author">— Platone</div></div><div class="quote-bubble"><div class="quote-text">“Siamo ciò che facciamo ripetutamente. L'eccellenza non è un atto ma un'abitudine”</div><div class="quote-author">— Aristotele</div></div><div class="quote-bubble"><div class="quote-text">“La felicità dipende da noi stessi”</div><div class="quote-author">— Aristotele</div></div><div class="quote-bubble"><div class="quote-text">“Nulla è nell'intelletto che prima non sia passato dai sensi”</div><div class="quote-author">— Aristotele</div></div><div class="quote-bubble"><div class="quote-text">“Tutto scorre”</div><div class="quote-author">— Eraclito</div></div><div class="quote-bubble"><div class="quote-text">“Il carattere è destino”</div><div class="quote-author">— Eraclito</div></div><div class="quote-bubble"><div class="quote-text">“L'uomo è misura di tutte le cose”</div><div class="quote-author">— Protagora</div></div><div class="quote-bubble"><div class="quote-text">“Vivere secondo natura”</div><div class="quote-author">— Zenone di Cizio</div></div><div class="quote-bubble"><div class="quote-text">“Non sono le cose che ci turbano, ma le opinioni che abbiamo su di esse”</div><div class="quote-author">— Epitteto</div></div><div class="quote-bubble"><div class="quote-text">“Non è la morte che dobbiamo temere, ma il non cominciare mai a vivere”</div><div class="quote-author">— Marco Aurelio</div></div><div class="quote-bubble"><div class="quote-text">“La vita è opinione”</div><div class="quote-author">— Marco Aurelio</div></div><div class="quote-bubble"><div class="quote-text">“La felicità consiste nel desiderare ciò che si ha”</div><div class="quote-author">— Seneca</div></div><div class="quote-bubble"><div class="quote-text">“Non esiste vento favorevole per il marinaio che non sa dove andare”</div><div class="quote-author">— Seneca</div></div><div class="quote-bubble"><div class="quote-text">“Il destino guida chi lo segue e trascina chi si oppone”</div><div class="quote-author">— Seneca</div></div><div class="quote-bubble"><div class="quote-text">“Vivi nascosto”</div><div class="quote-author">— Epicuro</div></div><div class="quote-bubble"><div class="quote-text">“Ama e fa' ciò che vuoi”</div><div class="quote-author">— Sant'Agostino</div></div><div class="quote-bubble"><div class="quote-text">“La fede cerca l'intelligenza”</div><div class="quote-author">— Anselmo d'Aosta</div></div><div class="quote-bubble"><div class="quote-text">“Contemplata aliis tradere”</div><div class="quote-author">— Tommaso d'Aquino</div></div><div class="quote-bubble"><div class="quote-text">“Non moltiplicare gli enti senza necessità”</div><div class="quote-author">— Guglielmo di Ockham</div></div><div class="quote-bubble"><div class="quote-text">“È meglio essere temuti che amati, se non si può essere entrambi”</div><div class="quote-author">— Niccolò Machiavelli</div></div><div class="quote-bubble"><div class="quote-text">“Cogito, ergo sum”</div><div class="quote-author">— Cartesio</div></div><div class="quote-bubble"><div class="quote-text">“Il cuore ha le sue ragioni che la ragione non conosce”</div><div class="quote-author">— Blaise Pascal</div></div><div class="quote-bubble"><div class="quote-text">“La mente è una tabula rasa”</div><div class="quote-author">— John Locke</div></div><div class="quote-bubble"><div class="quote-text">“Esse est percipi”</div><div class="quote-author">— George Berkeley</div></div><div class="quote-bubble"><div class="quote-text">“La bellezza delle cose esiste nella mente di chi le contempla”</div><div class="quote-author">— David Hume</div></div><div class="quote-bubble"><div class="quote-text">“Due cose riempiono l’animo: il cielo stellato sopra di me e la legge morale dentro di me”</div><div class="quote-author">— Immanuel Kant</div></div><div class="quote-bubble"><div class="quote-text">“Agisci in modo da trattare l’umanità sempre come fine e mai semplicemente come mezzo”</div><div class="quote-author">— Immanuel Kant</div></div><div class="quote-bubble"><div class="quote-text">“Quel che è reale è razionale”</div><div class="quote-author">— G.W.F. Hegel</div></div><div class="quote-bubble"><div class="quote-text">“La vita oscilla tra la noia e il dolore”</div><div class="quote-author">— Arthur Schopenhauer</div></div><div class="quote-bubble"><div class="quote-text">“La vita dev’essere compresa all’indietro, ma va vissuta in avanti”</div><div class="quote-author">— Søren Kierkegaard</div></div><div class="quote-bubble"><div class="quote-text">“Chi ha un perché per vivere può sopportare quasi ogni come”</div><div class="quote-author">— Friedrich Nietzsche</div></div><div class="quote-bubble"><div class="quote-text">“Diventa ciò che sei”</div><div class="quote-author">— Friedrich Nietzsche</div></div><div class="quote-bubble"><div class="quote-text">“Non esistono fatti, solo interpretazioni”</div><div class="quote-author">— Friedrich Nietzsche</div></div><div class="quote-bubble"><div class="quote-text">“Di ciò di cui non si può parlare si deve tacere”</div><div class="quote-author">— Ludwig Wittgenstein</div></div><div class="quote-bubble"><div class="quote-text">“Il significato è l’uso”</div><div class="quote-author">— Ludwig Wittgenstein</div></div><div class="quote-bubble"><div class="quote-text">“Il linguaggio è la casa dell’essere”</div><div class="quote-author">— Martin Heidegger</div></div><div class="quote-bubble"><div class="quote-text">“L’esistenza precede l’essenza”</div><div class="quote-author">— Jean‑Paul Sartre</div></div><div class="quote-bubble"><div class="quote-text">“Bisogna immaginare Sisifo felice”</div><div class="quote-author">— Albert Camus</div></div></div>
 <!-- Footer -->
 <footer>
 <div class="footer-wrap">
 <div class="footer-columns">
-
+<div class="col about">
+<h3>Pensieri Filosofici</h3>
+<p>Tra pensiero e stelle: un percorso tra scuole, autori<br/> e temi della filosofia, dalla classicità al contemporaneo.</p>
+</div>
 <div class="search-sections">
 <h4>Sezioni</h4>
 <ul>
@@ -5073,34 +4803,6 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 <li><a href="articoli/scetticismo.html">Scetticismo</a></li>
 <li><a href="articoli/stoicismo.html">Stoicismo</a></li>
 </ul>
-</div>
-  <!--------------------INIZIO aggiunta-->
-<div class="footer-column">
-        <h4>🔍 Studio e Ricerca</h4>
-        <ul>
-          <li><a href="https://philarchive.org/" target="_blank" rel="noopener">Bibliografia Filosofica</a></li>
-          <li><a href="articoli/fonti_primarie.html">Fonti Primarie</a></li>
-          <li><a href="https://mondodomani.org/dialegesthai/" target="_blank" rel="noopener">Articoli Accademici</a></li>
-          <li><a href="articoli/mappa_concettuale.html">Mappa Concettuale</a></li>
-          <li><a href="https://latelier91.wordpress.com/2020/05/11/le-scuole-filosofiche/" target="_blank" rel="noopener">Scuole Filosofiche</a></li>
-          <li><a href="https://philpapers.org/" target="_blank" rel="noopener">PhilPapers – Ricerche</a></li>
-          <li><a href="https://it.wikibooks.org/wiki/Glossario_di_filosofia">Glossario Filosofico</a></li>
-        </ul>
-      </div>
-      <div class="footer-column">
-        <h4>🏛️ Enciclopedie e Risorse</h4>
-        <ul>
-        <li><a href="https://www.treccani.it/" target="_blank" rel="noopener">Treccani – Enciclopedia</a></li>
-        <li><a href="https://iep.utm.edu/" target="_blank" rel="noopener">Internet Encyclopedia (IEP)</a></li>
-        <li><a href="https://plato.stanford.edu/" target="_blank" rel="noopener">Stanford Encyclopedia</a></li>
-        <li><a href="https://www.rifanalitica.it/" target="_blank" rel="noopener">Rivista Filosofia Analitica</a></li>
-        <li><a href="https://www.raicultura.it/filosofia/" target="_blank" rel="noopener">Rai Cultura Filosofia</a></li>
-        <li><a href="https://www.rep.routledge.com/" target="_blank" rel="noopener">Routledge Encyclopedia of Philosophy</a></li>  
-      </div>
-  <!--FINE AGGIUTA-->
-  <div class="col about">
-<h3>Pensieri Filosofici</h3>
-<p>Tra pensiero e stelle: un percorso tra scuole, autori<br/> e temi della filosofia, dalla classicità al contemporaneo.</p>
 </div>
 <div class="col contact">
 <h4>Contatti</h4>
@@ -7837,35 +7539,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 })();
 </script>
-
-  
-<script id="search-config-root">
-  (function () {
-    const ts = Date.now();
-
-    window.SEARCH_INDEX_URLS = [
-      '/search-index.json?v=' + ts,
-      '/search-index.json'
-    ];
-
-    window.SEARCH_CONFIG = {
-      indexUrls: window.SEARCH_INDEX_URLS,
-      debounceTime: 300,
-      minQueryLength: 2,
-      version: '20251106',
-      // Aggiungi configurazione CORS
-      fetchOptions: {
-        credentials: 'same-origin',
-        mode: 'cors',
-        cache: 'no-store'
-      }
-    };
-
-    console.log('🔍 SEARCH_INDEX_URLS impostate:', window.SEARCH_INDEX_URLS);
-  })();
-  
-</script>
- 
+<script src="/assets/js/script.js?v=20251106" defer></script>
 </body>
 </html>
 
