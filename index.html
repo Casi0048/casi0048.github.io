@@ -4509,41 +4509,52 @@ document.addEventListener('DOMContentLoaded', function() {
     const filosofiOverlay = document.getElementById('filosofi-overlay');
     const arrow = paradigmaBtn.querySelector('span');
     
-    // Toggle overlay
-    paradigmaBtn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        const isVisible = filosofiOverlay.style.display === 'block';
+    let closeTimeout;
+    
+    // Apri overlay al passaggio del mouse
+    paradigmaBtn.addEventListener('mouseenter', function() {
+        clearTimeout(closeTimeout); // Cancella eventuali timeout di chiusura
         
-        if (isVisible) {
-            // Nascondi
+        // Mostra overlay con animazione
+        filosofiOverlay.style.display = 'block';
+        setTimeout(() => {
+            filosofiOverlay.style.opacity = '1';
+        }, 10);
+        arrow.style.transform = 'rotate(180deg)';
+    });
+    
+    // Chiudi overlay quando il mouse esce dal bottone O dall'overlay
+    paradigmaBtn.addEventListener('mouseleave', function(e) {
+        // Controlla se il mouse sta andando verso l'overlay
+        const relatedTarget = e.relatedTarget;
+        if (!filosofiOverlay.contains(relatedTarget)) {
+            startCloseTimeout();
+        }
+    });
+    
+    // Gestisci mouse enter sull'overlay
+    filosofiOverlay.addEventListener('mouseenter', function() {
+        clearTimeout(closeTimeout); // Mantieni aperto
+    });
+    
+    // Gestisci mouse leave dall'overlay
+    filosofiOverlay.addEventListener('mouseleave', function(e) {
+        const relatedTarget = e.relatedTarget;
+        if (!paradigmaBtn.contains(relatedTarget)) {
+            startCloseTimeout();
+        }
+    });
+    
+    // Funzione per chiudere con delay
+    function startCloseTimeout() {
+        closeTimeout = setTimeout(() => {
             filosofiOverlay.style.opacity = '0';
             setTimeout(() => {
                 filosofiOverlay.style.display = 'none';
             }, 300);
             arrow.style.transform = 'rotate(0deg)';
-        } else {
-            // Mostra
-            filosofiOverlay.style.display = 'block';
-            setTimeout(() => {
-                filosofiOverlay.style.opacity = '1';
-            }, 10);
-            arrow.style.transform = 'rotate(180deg)';
-        }
-    });
-    
-    // Chiudi overlay cliccando fuori
-    document.addEventListener('click', function() {
-        filosofiOverlay.style.opacity = '0';
-        setTimeout(() => {
-            filosofiOverlay.style.display = 'none';
-            arrow.style.transform = 'rotate(0deg)';
-        }, 300);
-    });
-    
-    // Previeni chiusura quando clicchi sull'overlay
-    filosofiOverlay.addEventListener('click', function(e) {
-        e.stopPropagation();
-    });
+        }, 300); // 300ms di delay prima della chiusura
+    }
     
     // Effetti hover sulle immagini
     const filosofiImages = filosofiOverlay.querySelectorAll('img');
@@ -4554,6 +4565,37 @@ document.addEventListener('DOMContentLoaded', function() {
         img.addEventListener('mouseleave', function() {
             this.style.transform = 'scale(1)';
         });
+    });
+    
+    // Click sul bottone (opzionale - per compatibilità mobile)
+    paradigmaBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const isVisible = filosofiOverlay.style.display === 'block';
+        
+        if (isVisible) {
+            filosofiOverlay.style.opacity = '0';
+            setTimeout(() => {
+                filosofiOverlay.style.display = 'none';
+            }, 300);
+            arrow.style.transform = 'rotate(0deg)';
+        } else {
+            filosofiOverlay.style.display = 'block';
+            setTimeout(() => {
+                filosofiOverlay.style.opacity = '1';
+            }, 10);
+            arrow.style.transform = 'rotate(180deg)';
+        }
+    });
+    
+    // Chiudi overlay cliccando fuori (per mobile)
+    document.addEventListener('click', function(e) {
+        if (!paradigmaBtn.contains(e.target) && !filosofiOverlay.contains(e.target)) {
+            filosofiOverlay.style.opacity = '0';
+            setTimeout(() => {
+                filosofiOverlay.style.display = 'none';
+            }, 300);
+            arrow.style.transform = 'rotate(0deg)';
+        }
     });
 });
 </script>
