@@ -2939,7 +2939,7 @@ html {
   #backToTop {
       position: fixed;
       bottom: 20px;
-      right: 160px; /* ✅ CORRETTO - mantenuto a destra */
+      left: 160px; /* ✅ CORRETTO - mantenuto a destra */
       width: 50px;
       height: 50px;
       border-radius: 50%;
@@ -3938,7 +3938,253 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
   .topbar-switcher .btn-ghost{ padding:.3rem .5rem; font-size:.92rem; }
 }
  </style>
+<style>
+/* === EFFETTO ESPLOSIONE SPETTACOLARE === */
+.exploding-text {
+    position: relative;
+    font-family: 'Cinzel', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #ffd86a;
+    text-align: center;
+    padding: 2rem;
+    margin: 2rem auto;
+    cursor: pointer;
+    background: linear-gradient(135deg, rgba(20, 20, 40, 0.9), rgba(10, 10, 30, 0.8));
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    max-width: 600px;
+    overflow: hidden;
+}
 
+.exploding-text::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, transparent 30%, rgba(255, 215, 0, 0.1) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.exploding-text:hover::before {
+    opacity: 1;
+}
+
+.exploding-text:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2),
+                0 0 0 1px rgba(255, 215, 0, 0.4);
+}
+
+/* Caratteri individuali */
+.char {
+    display: inline-block;
+    transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    position: relative;
+    text-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+}
+
+/* Bottone Esplodi */
+#btn-explode {
+    background: linear-gradient(135deg, #ff6b6b, #ff8e53);
+    border: 2px solid rgba(255, 107, 107, 0.5);
+    border-radius: 50px;
+    padding: 1rem 2rem;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+    position: relative;
+    overflow: hidden;
+    margin: 1rem auto;
+    display: block;
+}
+
+#btn-explode::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s ease;
+}
+
+#btn-explode:hover::before {
+    left: 100%;
+}
+
+#btn-explode:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 30px rgba(255, 107, 107, 0.6),
+                0 0 0 3px rgba(255, 255, 255, 0.1);
+    background: linear-gradient(135deg, #ff8e53, #ff6b6b);
+}
+
+#btn-explode:active {
+    transform: translateY(-1px) scale(1.02);
+}
+
+/* Effetti di esplosione */
+.explosion-particle {
+    position: absolute;
+    pointer-events: none;
+    border-radius: 50%;
+    background: radial-gradient(circle, #ffeb3b, #ff9800, #ff5722);
+    box-shadow: 0 0 20px #ffeb3b,
+                0 0 40px #ff9800,
+                0 0 60px #ff5722;
+    animation: particle-explode 1.5s ease-out forwards;
+}
+
+.shockwave {
+    position: absolute;
+    border-radius: 50%;
+    border: 3px solid #ffeb3b;
+    animation: shockwave 1s ease-out forwards;
+    pointer-events: none;
+}
+
+.lightning {
+    position: absolute;
+    background: linear-gradient(90deg, transparent, #ffeb3b, transparent);
+    animation: lightning 0.3s ease-out;
+    pointer-events: none;
+}
+
+/* Animazioni */
+@keyframes particle-explode {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(0);
+        opacity: 0;
+    }
+}
+
+@keyframes shockwave {
+    0% {
+        transform: scale(0.1);
+        opacity: 1;
+        border-width: 3px;
+    }
+    100% {
+        transform: scale(4);
+        opacity: 0;
+        border-width: 1px;
+    }
+}
+
+@keyframes lightning {
+    0% {
+        opacity: 1;
+        transform: scaleX(0.1);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scaleX(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scaleX(0.1);
+    }
+}
+
+@keyframes char-explode {
+    0% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+        opacity: 1;
+        color: #ffd86a;
+    }
+    25% {
+        color: #ffeb3b;
+        text-shadow: 0 0 20px #ffeb3b;
+    }
+    100% {
+        transform: translate(var(--explode-x), var(--explode-y)) rotate(var(--rotate)) scale(0);
+        opacity: 0;
+        color: #ff5722;
+    }
+}
+
+@keyframes char-return {
+    0% {
+        transform: translate(var(--explode-x), var(--explode-y)) rotate(var(--rotate)) scale(0);
+        opacity: 0;
+    }
+    60% {
+        opacity: 1;
+        transform: translate(0, 0) rotate(0deg) scale(1.2);
+        color: #4caf50;
+    }
+    100% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+        opacity: 1;
+        color: #ffd86a;
+    }
+}
+
+/* Stato esploso */
+.exploding-text.exploded .char {
+    animation: char-explode 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+.exploding-text.reassembling .char {
+    animation: char-return 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Effetto scossa */
+@keyframes shake {
+    0%, 100% { transform: translateX(0) rotate(0deg); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px) rotate(-1deg); }
+    20%, 40%, 60%, 80% { transform: translateX(5px) rotate(1deg); }
+}
+
+.shaking {
+    animation: shake 0.5s ease-in-out;
+}
+
+/* Icone */
+.m-icon, .m-sep {
+    transition: all 0.5s ease;
+    display: inline-block;
+}
+
+.exploding-text.exploded .m-icon,
+.exploding-text.exploded .m-sep {
+    animation: char-explode 1s ease-out forwards;
+}
+
+.exploding-text.reassembling .m-icon,
+.exploding-text.reassembling .m-sep {
+    animation: char-return 1.2s ease-out forwards;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .exploding-text {
+        font-size: 2rem;
+        padding: 1.5rem;
+        margin: 1rem auto;
+    }
+    
+    #btn-explode {
+        padding: 0.8rem 1.5rem;
+        font-size: 1.1rem;
+    }
+}
+</style>
 
 </head>
 <body>
@@ -8093,6 +8339,201 @@ document.addEventListener('DOMContentLoaded', function() {
     <button id="backToTop" aria-label="Torna all'inizio della pagina">
         ↑
     </button>
+  <script>
+class TextExploder {
+    constructor(elementId) {
+        this.element = document.getElementById(elementId);
+        this.chars = this.element.querySelectorAll('.char');
+        this.isExploded = false;
+        this.init();
+    }
+
+    init() {
+        // Prepara le variabili CSS per ogni carattere
+        this.chars.forEach((char, index) => {
+            const angle = (index / this.chars.length) * 2 * Math.PI;
+            const distance = 100 + Math.random() * 200;
+            const explodeX = Math.cos(angle) * distance;
+            const explodeY = Math.sin(angle) * distance;
+            const rotate = (Math.random() - 0.5) * 720; // -360 to +360 degrees
+            
+            char.style.setProperty('--explode-x', `${explodeX}px`);
+            char.style.setProperty('--explode-y', `${explodeY}px`);
+            char.style.setProperty('--rotate', `${rotate}deg`);
+        });
+    }
+
+    explode() {
+        if (this.isExploded) return;
+        
+        this.isExploded = true;
+        this.element.classList.add('exploded');
+        this.element.classList.remove('reassembling');
+
+        // Effetto scossa
+        this.element.classList.add('shaking');
+        setTimeout(() => {
+            this.element.classList.remove('shaking');
+        }, 500);
+
+        // Creazione particelle esplosive
+        this.createExplosionParticles();
+        
+        // Creazione shockwave
+        this.createShockwave();
+        
+        // Creazione fulmini
+        this.createLightningEffects();
+
+        // Suono esplosione (simulato con vibrazione)
+        this.vibrate(500);
+    }
+
+    reassemble() {
+        if (!this.isExploded) return;
+        
+        this.element.classList.remove('exploded');
+        this.element.classList.add('reassembling');
+        
+        setTimeout(() => {
+            this.element.classList.remove('reassembling');
+            this.isExploded = false;
+        }, 1500);
+    }
+
+    createExplosionParticles() {
+        const rect = this.element.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        for (let i = 0; i < 30; i++) {
+            setTimeout(() => {
+                const particle = document.createElement('div');
+                particle.className = 'explosion-particle';
+                
+                const angle = Math.random() * 2 * Math.PI;
+                const distance = 50 + Math.random() * 150;
+                const size = 5 + Math.random() * 15;
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance;
+                
+                particle.style.setProperty('--tx', `${tx}px`);
+                particle.style.setProperty('--ty', `${ty}px`);
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${centerX}px`;
+                particle.style.top = `${centerY}px`;
+                
+                document.body.appendChild(particle);
+                
+                // Rimuovi particella dopo l'animazione
+                setTimeout(() => {
+                    if (particle.parentNode) {
+                        particle.parentNode.removeChild(particle);
+                    }
+                }, 1500);
+            }, i * 50);
+        }
+    }
+
+    createShockwave() {
+        const rect = this.element.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        const shockwave = document.createElement('div');
+        shockwave.className = 'shockwave';
+        shockwave.style.left = `${centerX}px`;
+        shockwave.style.top = `${centerY}px`;
+        
+        document.body.appendChild(shockwave);
+        
+        setTimeout(() => {
+            if (shockwave.parentNode) {
+                shockwave.parentNode.removeChild(shockwave);
+            }
+        }, 1000);
+    }
+
+    createLightningEffects() {
+        const rect = this.element.getBoundingClientRect();
+        
+        for (let i = 0; i < 5; i++) {
+            setTimeout(() => {
+                const lightning = document.createElement('div');
+                lightning.className = 'lightning';
+                
+                const startX = rect.left + Math.random() * rect.width;
+                const startY = rect.top;
+                const height = 100 + Math.random() * 200;
+                
+                lightning.style.left = `${startX}px`;
+                lightning.style.top = `${startY}px`;
+                lightning.style.height = `${height}px`;
+                lightning.style.transform = `rotate(${Math.random() * 30 - 15}deg)`;
+                
+                document.body.appendChild(lightning);
+                
+                setTimeout(() => {
+                    if (lightning.parentNode) {
+                        lightning.parentNode.removeChild(lightning);
+                    }
+                }, 300);
+            }, i * 100);
+        }
+    }
+
+    vibrate(duration) {
+        if (navigator.vibrate) {
+            navigator.vibrate(duration);
+        }
+    }
+
+    toggle() {
+        if (this.isExploded) {
+            this.reassemble();
+        } else {
+            this.explode();
+        }
+    }
+}
+
+// Inizializzazione
+document.addEventListener('DOMContentLoaded', function() {
+    const exploder = new TextExploder('exploding');
+    
+    // Gestione click sul testo
+    document.getElementById('exploding').addEventListener('click', function() {
+        exploder.toggle();
+    });
+    
+    // Gestione click sul bottone Esplodi
+    document.getElementById('btn-explode').addEventListener('click', function() {
+        exploder.explode();
+        
+        // Riassegnazione automatica dopo 3 secondi
+        setTimeout(() => {
+            exploder.reassemble();
+        }, 3000);
+    });
+    
+    // Effetto hover avanzato
+    const explodingText = document.getElementById('exploding');
+    explodingText.addEventListener('mouseenter', function() {
+        if (!exploder.isExploded) {
+            this.style.transform = 'translateY(-5px) scale(1.05)';
+            this.style.boxShadow = '0 15px 40px rgba(255, 215, 0, 0.3)';
+        }
+    });
+    
+    explodingText.addEventListener('mouseleave', function() {
+        if (!exploder.isExploded) {
+            this.style.transform = 'translateY(0) scale(1)';
+            this.style.boxShadow = '0 10px 30px rgba(255, 215, 0, 0.2)';
+        }
+    });
+});
+</script>
 </body>
 </html>
 
