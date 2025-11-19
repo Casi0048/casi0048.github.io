@@ -1141,3 +1141,29 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 30000);
     });
 });
+/* === script paradigmma ========================================================= */
+// Versione semplice ma efficace
+document.addEventListener('DOMContentLoaded', function() {
+    const btn = document.getElementById('paradigma-btn');
+    const overlay = document.getElementById('filosofi-overlay');
+    
+    if (!btn || !overlay) return;
+    
+    let hideTimeout;
+    
+    function showOverlay() {
+        clearTimeout(hideTimeout);
+        overlay.classList.add('show');
+    }
+    
+    function hideOverlay() {
+        hideTimeout = setTimeout(() => {
+            overlay.classList.remove('show');
+        }, 300);
+    }
+    
+    btn.addEventListener('mouseenter', showOverlay);
+    btn.addEventListener('mouseleave', hideOverlay);
+    overlay.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
+    overlay.addEventListener('mouseleave', hideOverlay);
+});
