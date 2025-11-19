@@ -1118,3 +1118,26 @@ document.addEventListener('DOMContentLoaded', function() {
 // verticalSlider.setSpeedFast()      → Velocità rapida
 // verticalSlider.getCurrentSpeed()   → Ottieni velocità corrente
 // verticalSlider.getSpeedInfo()      → Tutte le info
+
+// Aggiungi al tuo script.js
+document.addEventListener('DOMContentLoaded', function() {
+    const quotes = document.querySelectorAll('.quote-bubble');
+    
+    quotes.forEach(quote => {
+        // Click per rimuovere
+        quote.addEventListener('click', function() {
+            this.classList.add('fade-out');
+            setTimeout(() => {
+                this.style.display = 'none';
+            }, 500);
+        });
+        
+        // Ricomparsa dopo 30 secondi
+        setTimeout(() => {
+            if (quote.style.display === 'none') {
+                quote.style.display = 'block';
+                quote.classList.remove('fade-out');
+            }
+        }, 30000);
+    });
+});
