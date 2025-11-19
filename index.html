@@ -2928,98 +2928,176 @@ html {
 }
 </style>
 <style>
-/* === PULSANTE TORNA SU — versione pulita === */
-#backToTop{
-  position: fixed;
-  bottom: 20px;           /* richiesto */
-  left: 155px;           /* spostato a sinistra */
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  border: 2px solid rgba(255,215,0,.3);
-  background: linear-gradient(135deg, var(--gold, #d4af37), #ffeb3b);
-  color: #0a0a1a;
-  font-size: 1.5rem;
-  line-height: 50px;
-  text-align: center;
-  cursor: pointer;
-  z-index: 9999;          /* sotto CTA 10000, alza se serve */
-  box-shadow: 0 4px 15px rgba(255,215,0,.4), 0 0 0 2px rgba(10,10,30,.1);
-  backdrop-filter: blur(10px);
-  transition: transform .25s cubic-bezier(.4,0,.2,1), opacity .2s ease, box-shadow .25s;
-  opacity: 0;             /* nascosto di default */
-  pointer-events: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: float-gentle 3s ease-in-out infinite;
-}
+  /* === PULSANTE TORNA SU — Versione Ottimizzata === */
+        :root {
+            --gold: #d4af37;
+            --gold-light: #ffeb3b;
+            --gold-glow: rgba(255, 215, 0, 0.4);
+            --dark-bg: #0a0a1a;
+        }
 
-/* visibile: solo opacità/pointer (più affidabile su Safari) */
-#backToTop.is-visible{
-  opacity: 1;
-  pointer-events: auto;
-}
+        #backToTop {
+            position: fixed;
+            bottom: 20px;
+            right: 20px; /* Cambiato a destra per maggiore compatibilità */
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            color: var(--dark-bg);
+            font-size: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            z-index: 1000; /* Valore più ragionevole */
+            box-shadow: 0 4px 15px var(--gold-glow);
+            transition: 
+                opacity 0.3s ease,
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+            opacity: 0;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Animazione più performante */
+            animation: float-gentle 3s ease-in-out infinite;
+            /* Miglioramenti prestazioni */
+            will-change: transform, opacity;
+            backface-visibility: hidden;
+        }
 
-#backToTop:hover{
-  transform: translateY(-3px) scale(1.1);
-  box-shadow: 0 8px 25px rgba(255,215,0,.6), 0 0 0 2px rgba(255,215,0,.2);
-  background: linear-gradient(135deg, #ffeb3b, var(--gold, #d4af37));
-  animation: none; /* pausa effetto fluttuante durante hover */
-}
+        /* Stato visibile */
+        #backToTop.is-visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
 
-#backToTop:active{
-  transform: translateY(-1px) scale(1.05);
-}
+        /* Hover state */
+        #backToTop:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px var(--gold-glow);
+            background: linear-gradient(135deg, var(--gold-light), var(--gold));
+        }
 
-/* variante “glow” opzionale */
-#backToTop.glow{
-  background: radial-gradient(circle at 30% 30%, #ffeb3b, var(--gold, #d4af37));
-  box-shadow: 0 4px 20px rgba(255,215,0,.5), 0 0 30px rgba(255,215,0,.3), inset 0 1px 0 rgba(255,255,255,.4);
-}
+        /* Focus per accessibilità */
+        #backToTop:focus {
+            outline: 2px solid var(--gold);
+            outline-offset: 2px;
+        }
 
-/* variante “glass” opzionale */
-#backToTop.glass{
-  background: rgba(212,175,55,.15);
-  backdrop-filter: blur(15px);
-  border: 1px solid rgba(255,215,0,.4);
-  color: var(--gold, #d4af37);
-  box-shadow: 0 4px 20px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.1);
-}
-#backToTop.glass:hover{
-  background: rgba(212,175,55,.25);
-  color: #0a0a1a;
-}
+        /* Stato attivo */
+        #backToTop:active {
+            transform: translateY(-1px);
+        }
 
-/* animazione fluttuante */
-@keyframes float-gentle{
-  0%,100%{ transform: translateY(0); }
-  50%    { transform: translateY(-5px); }
-}
+        /* Animazione ottimizzata */
+        @keyframes float-gentle {
+            0%, 100% { 
+                transform: translateY(0); 
+            }
+            50% { 
+                transform: translateY(-5px); 
+            }
+        }
 
-/* mobile: dimensioni leggermente ridotte */
-@media (max-width: 768px){
-  #backToTop{
-    left: 20px;
-    width: 45px; height: 45px; line-height: 45px; font-size: 1.3rem;
-    animation: float-gentle-mobile 4s ease-in-out infinite;
-  }
-  @keyframes float-gentle-mobile{
-    0%,100%{ transform: translateY(0); }
-    50%    { transform: translateY(-3px); }
-  }
-}
+        /* Varianti tematiche */
+        #backToTop.glow {
+            background: radial-gradient(circle at 30% 30%, var(--gold-light), var(--gold));
+            box-shadow: 
+                0 4px 20px var(--gold-glow),
+                0 0 30px rgba(255, 215, 0, 0.3);
+        }
 
-/* accessibilità: riduci movimento */
-@media (prefers-reduced-motion: reduce){
-  #backToTop{ animation: none; transition: none; }
-  #backToTop:hover{ transform: none; }
-}
+        #backToTop.glass {
+            background: rgba(212, 175, 55, 0.15);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            color: var(--gold);
+            box-shadow: 
+                0 4px 20px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
 
-/* debug: mostralo comunque per 10s all’avvio */
-@keyframes backtotop-debug{ from{opacity:1} to{opacity:1} }
-html[data-btt-debug="1"] #backToTop{ opacity:1; pointer-events:auto; animation: backtotop-debug 10s; }
+        #backToTop.glass:hover {
+            background: rgba(212, 175, 55, 0.25);
+            color: var(--dark-bg);
+        }
 
+        /* Media Query Mobile */
+        @media (max-width: 768px) {
+            #backToTop {
+                bottom: 15px;
+                right: 15px;
+                width: 44px;
+                height: 44px;
+                font-size: 1.3rem;
+            }
+            
+            /* Animazione mobile più leggera */
+            @keyframes float-gentle-mobile {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-3px); }
+            }
+            
+            #backToTop {
+                animation: float-gentle-mobile 4s ease-in-out infinite;
+            }
+        }
+
+        /* Media Query per schermi molto piccoli */
+        @media (max-width: 480px) {
+            #backToTop {
+                bottom: 10px;
+                right: 10px;
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Accessibilità: riduzione movimento */
+        @media (prefers-reduced-motion: reduce) {
+            #backToTop {
+                animation: none;
+                transition: opacity 0.3s ease;
+            }
+            
+            #backToTop:hover {
+                transform: none;
+            }
+        }
+
+        /* Stili demo per test */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #0b0f19, #1a1f2e);
+            color: #fff;
+            min-height: 200vh;
+            padding: 2rem;
+            margin: 0;
+        }
+        
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #d4af37;
+            font-family: 'Cinzel', serif;
+        }
+        
+        .demo-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            border-left: 3px solid #d4af37;
+        }
 </style>
 <style>
     /* Stili per le cometine variopinte */
@@ -7671,7 +7749,6 @@ document.addEventListener('DOMContentLoaded', function() {
 })();
 </script>
 
-  // AGGIORNA LA CONFIGURAZIONE INIZIALE
 <script id="search-config-root">
   (function () {
     const ts = Date.now();
@@ -7698,6 +7775,32 @@ document.addEventListener('DOMContentLoaded', function() {
   })();
   
 </script>
+  <script>
+        // JavaScript per il funzionamento del pulsante
+        document.addEventListener('DOMContentLoaded', function() {
+            const backToTopButton = document.getElementById('backToTop');
+            
+            // Mostra/nascondi il pulsante in base allo scroll
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopButton.classList.add('is-visible');
+                } else {
+                    backToTopButton.classList.remove('is-visible');
+                }
+            });
+            
+            // Scroll fluido verso l'alto
+            backToTopButton.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Aggiungi variante glass al pulsante (opzionale)
+            backToTopButton.classList.add('glass');
+        });
+    </script>
 </body>
 </html>
 
