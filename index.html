@@ -45,11 +45,11 @@
   <!-- CSS BASE -->
   <link rel="stylesheet" href="/accent-layer.css">
   <link rel="stylesheet" href="/accent-layer-plus.css">
-  <link rel="stylesheet" href="/assets/css/stile.css?v=20251106">
+  <link rel="stylesheet" href="/assets/css/stile.css?v=20251116"> <!-- ✅ Versione aggiornata -->
   
- <!-- FONTS (VERSIONE UNICA OTTIMIZZATA) -->
+  <!-- FONTS (OTTIMIZZATO) -->
   <link rel="preload" as="style" 
-        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400;600&display=swap&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400;600&display=swap"
         crossorigin="anonymous"
         onload="this.onload=null;this.rel='stylesheet'">
   <noscript>
@@ -70,8 +70,10 @@
   </noscript>
 
   <!-- Preload immagini critiche -->
-  <link rel="preload" as="image" href="/foto/socrate.webp?v=20251106">
+  <link rel="preload" as="image" href="/foto/socrate.webp?v=20251116"> <!-- ✅ Versione aggiornata -->
 
+  <!-- Preload search index (UNICO) -->
+  <link rel="preload" href="/search-index.json?v=20251116" as="fetch" type="application/json" crossorigin="anonymous">
 
   <!-- Schema.org -->
   <script type="application/ld+json">
@@ -93,33 +95,29 @@
     }
   }
   </script>
-  <!-- Preload dell'indice di ricerca -->
-<link rel="preload"
-      href="/search-index.json?v=20251106"
-      as="fetch"
-      type="application/json">
 
-<!-- Configurazione UNICA della ricerca -->
-<script id="search-config-root">
-  (function () {
-    const ts = Date.now(); // forza sempre una versione “fresca” del JSON
-
-    window.SEARCH_INDEX_URLS = [
-      '/search-index.json?v=' + ts,  // prima prova: no cache
-      '/search-index.json'           // fallback
-    ];
-
-    window.SEARCH_CONFIG = {
-      indexUrls: window.SEARCH_INDEX_URLS,
-      debounceTime: 300,
-      minQueryLength: 2,
-      version: '20251106'
-    };
-
-    console.log('🔍 SEARCH_INDEX_URLS impostate:', window.SEARCH_INDEX_URLS);
-  })();
-</script>
-
+  <!-- Configurazione UNICA della ricerca -->
+  <script id="search-config-root">
+    (function() {
+      const version = '20251116';
+      
+      window.SEARCH_INDEX_URLS = [
+        `/search-index.json?v=${version}`,
+        '/search-index.json',
+        './search-index.json', 
+        '/articoli/search-index.json'
+      ];
+      
+      window.SEARCH_CONFIG = {
+        indexUrls: window.SEARCH_INDEX_URLS,
+        debounceTime: 300,
+        minQueryLength: 2,
+        version: version
+      };
+      
+      console.log('🔍 SEARCH_CONFIG loaded:', window.SEARCH_CONFIG);
+    })();
+  </script>
 </head>
 <style>
   /* Versione compatta */
@@ -515,7 +513,7 @@ body {
       margin-left: 0; /* neutralizza eventuali margini precedenti */
       }
     </style>
-<!-- -->
+
 <style id="audio-player-stack">
       /* forza il box audio a prendersi tutta la riga sotto */
       #audio-player{
@@ -1728,8 +1726,7 @@ window.googleTranslateElementInit = function(){
     skew(8deg, 5deg);
   filter: blur(12px) brightness(0.8);
 }
-
-/* Card spettacolare con effetto vetro cosmico */
+ /* Card spettacolare con effetto vetro cosmico */
 .timeline-content {
   position: relative;
   background: linear-gradient(145deg, 
@@ -1974,7 +1971,7 @@ window.googleTranslateElementInit = function(){
 }
 
 .timeline-content strong {
-  color: #ffeb9a;
+   color: #ffd700 !important; /* Oro */
   text-shadow: 0 0 10px rgba(255, 235, 154, 0.3);
 }
 
@@ -2104,6 +2101,107 @@ window.googleTranslateElementInit = function(){
     width: 54px !important;
   }
 }
+  /* INIZIO AGGIUTA */
+.timeline {
+    /* Colori di base per tutta la timeline */
+}
+
+.timeline-item {
+    margin-bottom: 30px;
+}
+
+.timeline-content {
+    background: linear-gradient(135deg, rgba(30, 30, 60, 0.95), rgba(20, 20, 50, 0.95));
+    border: 1px solid rgba(255, 215, 0, 0.4);
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Effetto hover sulle card */
+.timeline-content:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255, 215, 0, 0.7);
+    box-shadow: 
+        0 15px 35px rgba(255, 215, 0, 0.2),
+        0 0 0 1px rgba(255, 215, 0, 0.3);
+}
+
+/* Titoli delle card */
+.timeline-content h3 {
+    color: #ffd700 !important; /* Oro */
+    font-family: 'Cinzel', serif;
+    margin-bottom: 15px;
+    font-size: 1.4rem;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+/* Periodo/date */
+.timeline-content .period {
+    color: #9ad0ff !important; /* Azzurro */
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 12px;
+    font-style: italic;
+}
+
+/* Testo normale */
+.timeline-content p {
+    color: #e0e0e0 !important; /* Grigio chiaro */
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+/* ===== TESTI STRONG - MULTIPLE OPZIONI ===== */
+
+/* OPZIONE 1: Oro classico (consigliato) */
+.timeline-content strong {
+    color: #ffd700 !important; /* Oro */
+    font-weight: 700;
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
+}
+  /* Effetti speciali per le card */
+.timeline-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+    transition: left 0.6s ease;
+}
+
+.timeline-content:hover::before {
+    left: 100%;
+}
+
+/* Glow animato per i strong */
+.timeline-content strong {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.timeline-content strong:hover {
+    text-shadow: 0 0 15px currentColor !important;
+    transform: scale(1.05);
+}
+
+/* Indicatore temporale animato */
+.period::after {
+    content: '⏳';
+    margin-left: 8px;
+    animation: timePulse 2s infinite;
+}
+
+@keyframes timePulse {
+    0%, 100% { opacity: 0.7; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.1); }
+}
+  /* FINE AGGIUNTA */
 </style>
 
 
@@ -3784,12 +3882,12 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 
     <div class="slide-vertical">
       <img src="/foto/livia.webp?v=20251105" alt="Livia" width="260" height="340" decoding="async" loading="lazy">
-      <p>👑🦌Livia🦅DEA egizia🔱</p>
+      <p>👑🦌Livia🦅DEA egizia - 'Folle splendore'🔱</p>
     </div>
 
     <div class="slide-vertical">
       <img src="/foto/polpetta.webp?v=20251105" alt="Polpetta" width="260" height="340" decoding="async" loading="lazy">
-      <p>🏹 Polpetta🦸: guerriera celtica</p>
+      <p>🏹 Polpetta🦸: guerriera celtica - 'Tempesta Perfetta'</p>
     </div>
 
     <div class="slide-vertical">
@@ -4178,7 +4276,7 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 <div style="text-align: center;">
 <img alt="Nietzsche" decoding="async" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/immagini%20per%20sito/friedrich-nietzsche.jpg" style="width: 100%; max-width: 80px; border-radius: 50%; border: 3px solid #d4af37;"/>
 <p style="margin-top: 10px; color: #e9eef5; font-weight: bold; font-family: 'Cormorant Garamond', serif;">Nietzsche</p>
-<p style="font-style: italic; color: #9ad0ff; font-size: 0.85rem;font-weight: 700;">"Dio è morto! Dio resta morto! E noi lo abbiamo ucciso! Come ci consoleremo noi, gli assassini di tutti gli assassini? Quanto di piú sacro e di piú possente il mondo possedeva fino ad oggi, si è dissanguato sotto i nostri coltelli; chi detergerà da noi questo sangue?"</p>
+<p style="font-style: italic; color: #9ad0ff; font-size: 0.85rem;font-weight: 700;">"Dio è morto! Dio resta morto! E noi lo abbiamo ucciso!"</p>
 </div>
 </div>
 </div>
@@ -4788,10 +4886,7 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 <footer>
 <div class="footer-wrap">
 <div class="footer-columns">
-<div class="col about">
-<h3>Pensieri Filosofici</h3>
-<p>Tra pensiero e stelle: un percorso tra scuole, autori<br/> e temi della filosofia, dalla classicità al contemporaneo.</p>
-</div>
+
 <div class="search-sections">
 <h4>Sezioni</h4>
 <ul>
@@ -4803,6 +4898,34 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 <li><a href="articoli/scetticismo.html">Scetticismo</a></li>
 <li><a href="articoli/stoicismo.html">Stoicismo</a></li>
 </ul>
+</div>
+  <!--------------------INIZIO aggiunta-->
+<div class="footer-column">
+        <h4>🔍 Studio e Ricerca</h4>
+        <ul>
+          <li><a href="https://philarchive.org/" target="_blank" rel="noopener">Bibliografia Filosofica</a></li>
+          <li><a href="articoli/fonti_primarie.html">Fonti Primarie</a></li>
+          <li><a href="https://mondodomani.org/dialegesthai/" target="_blank" rel="noopener">Articoli Accademici</a></li>
+          <li><a href="articoli/mappa_concettuale.html">Mappa Concettuale</a></li>
+          <li><a href="https://latelier91.wordpress.com/2020/05/11/le-scuole-filosofiche/" target="_blank" rel="noopener">Scuole Filosofiche</a></li>
+          <li><a href="https://philpapers.org/" target="_blank" rel="noopener">PhilPapers – Ricerche</a></li>
+          <li><a href="https://it.wikibooks.org/wiki/Glossario_di_filosofia">Glossario Filosofico</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>🏛️ Enciclopedie e Risorse</h4>
+        <ul>
+        <li><a href="https://www.treccani.it/" target="_blank" rel="noopener">Treccani – Enciclopedia</a></li>
+        <li><a href="https://iep.utm.edu/" target="_blank" rel="noopener">Internet Encyclopedia (IEP)</a></li>
+        <li><a href="https://plato.stanford.edu/" target="_blank" rel="noopener">Stanford Encyclopedia</a></li>
+        <li><a href="https://www.rifanalitica.it/" target="_blank" rel="noopener">Rivista Filosofia Analitica</a></li>
+        <li><a href="https://www.raicultura.it/filosofia/" target="_blank" rel="noopener">Rai Cultura Filosofia</a></li>
+        <li><a href="https://www.rep.routledge.com/" target="_blank" rel="noopener">Routledge Encyclopedia of Philosophy</a></li>  
+      </div>
+  <!--FINE AGGIUTA-->
+  <div class="col about">
+<h3>Pensieri Filosofici</h3>
+<p>Tra pensiero e stelle: un percorso tra scuole, autori<br/> e temi della filosofia, dalla classicità al contemporaneo.</p>
 </div>
 <div class="col contact">
 <h4>Contatti</h4>
@@ -7540,6 +7663,33 @@ document.addEventListener('DOMContentLoaded', function() {
 })();
 </script>
 <script src="/assets/js/script.js?v=20251106" defer></script>
+  // AGGIORNA LA CONFIGURAZIONE INIZIALE
+<script id="search-config-root">
+  (function () {
+    const ts = Date.now();
+
+    window.SEARCH_INDEX_URLS = [
+      '/search-index.json?v=' + ts,
+      '/search-index.json'
+    ];
+
+    window.SEARCH_CONFIG = {
+      indexUrls: window.SEARCH_INDEX_URLS,
+      debounceTime: 300,
+      minQueryLength: 2,
+      version: '20251106',
+      // Aggiungi configurazione CORS
+      fetchOptions: {
+        credentials: 'same-origin',
+        mode: 'cors',
+        cache: 'no-store'
+      }
+    };
+
+    console.log('🔍 SEARCH_INDEX_URLS impostate:', window.SEARCH_INDEX_URLS);
+  })();
+  
+</script>
 </body>
 </html>
 
