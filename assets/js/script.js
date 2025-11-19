@@ -808,16 +808,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+
 /* === js slider verticale ============================================ */
 class VerticalSlider {
     constructor(containerSelector) {
