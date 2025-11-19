@@ -1671,6 +1671,7 @@ footer {
   gap: 10px;
 }
 /* Maestri del Pensiero - Styles */
+/* Maestri del Pensiero - Centrato sul bottone */
 .paradigma-container {
     position: relative;
     display: inline-block;
@@ -1707,7 +1708,8 @@ footer {
     display: none;
     position: absolute;
     top: 100%;
-    left: 0;
+    left: 50%; /* ✅ CENTRATO ORIZZONTALMENTE */
+    transform: translateX(-50%); /* ✅ CENTRATO PERFETTO */
     margin-top: 10px;
     background: linear-gradient(to bottom, rgba(10, 10, 30, 0.95), rgba(10, 10, 30, 0.9));
     border-radius: 10px;
@@ -1776,4 +1778,24 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+/* ✅ CENTRATURA INTELLIGENTE per bordi schermo */
+@media (min-width: 1200px) {
+    .filosofi-overlay {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+/* Se il bottone è troppo a destra, adatta la posizione */
+.paradigma-btn.right-aligned + .filosofi-overlay {
+    left: auto;
+    right: 0;
+    transform: none;
+}
+
+.paradigma-btn.left-aligned + .filosofi-overlay {
+    left: 0;
+    transform: none;
 }
