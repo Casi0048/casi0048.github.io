@@ -7865,6 +7865,71 @@ document.addEventListener('DOMContentLoaded', function() {
   })();
   
 </script>
+  <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const btn = document.getElementById('paradigma-btn');
+    const overlay = document.getElementById('filosofi-overlay');
+    
+    if (!btn || !overlay) return;
+    
+    let hideTimeout;
+    
+    function showOverlay() {
+        clearTimeout(hideTimeout);
+        
+        // ✅ CALCOLO CENTRATURA DINAMICA INTELLIGENTE
+        const btnRect = btn.getBoundingClientRect();
+        const overlayWidth = overlay.offsetWidth;
+        const viewportWidth = window.innerWidth;
+        
+        // Calcola la posizione ideale per centrare
+        let leftPosition = btnRect.left + (btnRect.width / 2) - (overlayWidth / 2);
+        
+        // ✅ CONTROLLO BORDI SCHERMO
+        // Se l'overlay esce a sinistra
+        if (leftPosition < 20) {
+            leftPosition = 20;
+        }
+        // Se l'overlay esce a destra
+        if (leftPosition + overlayWidth > viewportWidth - 20) {
+            leftPosition = viewportWidth - overlayWidth - 20;
+        }
+        
+        // Applica la posizione calcolata
+        overlay.style.left = leftPosition + 'px';
+        overlay.style.transform = 'none'; // Rimuovi transform per posizionamento assoluto
+        
+        overlay.classList.add('show');
+    }
+    
+    function hideOverlay() {
+        hideTimeout = setTimeout(() => {
+            overlay.classList.remove('show');
+        }, 300);
+    }
+    
+    // Event listeners
+    btn.addEventListener('mouseenter', showOverlay);
+    btn.addEventListener('mouseleave', hideOverlay);
+    overlay.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
+    overlay.addEventListener('mouseleave', hideOverlay);
+    
+    // ✅ RICALCOLA POSIZIONE AL RESIZE
+    window.addEventListener('resize', function() {
+        if (overlay.classList.contains('show')) {
+            showOverlay(); // Ricalcola la posizione
+        }
+    });
+    
+    // Chiudi con ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && overlay.classList.contains('show')) {
+            hideOverlay();
+        }
+    });
+});
+  </script>
+  </script>
 </body>
 </html>
 
