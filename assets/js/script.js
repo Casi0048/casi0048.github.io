@@ -550,43 +550,7 @@ function wikipediaURL(term) {
   return `https://it.wikipedia.org/wiki/${encodeURIComponent(term.trim().replace(/\s+/g, '_'))}`;
 }
 
-// === PULSANTE TORNA SU ===
-(function(){
-    const backToTop = document.getElementById('backToTop');
-    if (!backToTop) return;
-    
-    // Mostra/nascondi il pulsante durante lo scroll
-    function toggleBackToTop() {
-        if (window.scrollY > 300) {
-            backToTop.style.display = 'flex';
-        } else {
-            backToTop.style.display = 'none';
-        }
-    }
-    
-    // Scroll fluido verso l'alto
-    function scrollToTop() {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    }
-    
-    // Event listeners
-    window.addEventListener('scroll', toggleBackToTop);
-    backToTop.addEventListener('click', scrollToTop);
 
-    // Anche con tasto Enter per accessibilità
-    backToTop.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            scrollToTop();
-        }
-    });
-
-    // Inizializza
-    toggleBackToTop();
-})();
 
 /* ===== ESPLOSIONE TEATRALE - VERSIONE MIGLIORATA ===== */
 (function(){
@@ -691,67 +655,7 @@ function wikipediaURL(term) {
     console.log('✅ Sistema esplosione teatrale caricato');
 })();
 
-/* ===== PULSANTE TORNA SU (compat Safari) ===== */
-(() => {
-  'use strict';
 
-  const ready = (fn) => {
-    if (document.readyState !== 'loading') fn();
-    else document.addEventListener('DOMContentLoaded', fn, { once: true });
-  };
-
-  ready(() => {
-    const btn = document.getElementById('backToTop');
-    if (!btn) {
-      console.warn('❌ backToTop non trovato');
-      return;
-    }
-
-    const se = document.scrollingElement || document.documentElement;
-    const getScrollTop = () =>
-      se.scrollTop || window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-
-    const toggle = () => {
-      if (getScrollTop() > 300) {
-        btn.classList.add('is-visible');
-      } else {
-        btn.classList.remove('is-visible');
-      }
-    };
-
-    const scrollToTop = () => {
-      if (se.scrollTo) {
-        se.scrollTo({ top: 0, behavior: 'smooth' });
-      } else {
-        se.scrollTop = 0;
-      }
-    };
-
-    let ticking = false;
-    const onScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          toggle();
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    // SOLO QUESTI EVENT LISTENER - NIENTE ALTRO!
-    window.addEventListener('scroll', onScroll, { passive: true });
-    btn.addEventListener('click', scrollToTop);
-    btn.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        scrollToTop();
-      }
-    });
-
-    // Inizializza
-    toggle();
-  });
-})();
 
 /* ===== TIMELINE COSMICA - VERSIONE SICURA ===== */
 function initCosmicTimeline() {
@@ -842,69 +746,7 @@ function initTimelineInteractions() {
   });
 }
 
-/* === SCRIPT PARADIGMA ========================================================= */
-document.addEventListener('DOMContentLoaded', function() {
-    const btn = document.getElementById('paradigma-btn');
-    const overlay = document.getElementById('filosofi-overlay');
-    
-    if (!btn || !overlay) return;
-    
-    let hideTimeout;
-    
-    function showOverlay() {
-        clearTimeout(hideTimeout);
-        
-        // ✅ CALCOLO CENTRATURA DINAMICA INTELLIGENTE
-        const btnRect = btn.getBoundingClientRect();
-        const overlayWidth = overlay.offsetWidth;
-        const viewportWidth = window.innerWidth;
-        
-        // Calcola la posizione ideale per centrare
-        let leftPosition = btnRect.left + (btnRect.width / 2) - (overlayWidth / 2);
-        
-        // ✅ CONTROLLO BORDI SCHERMO
-        // Se l'overlay esce a sinistra
-        if (leftPosition < 20) {
-            leftPosition = 20;
-        }
-        // Se l'overlay esce a destra
-        if (leftPosition + overlayWidth > viewportWidth - 20) {
-            leftPosition = viewportWidth - overlayWidth - 20;
-        }
-        
-        // Applica la posizione calcolata
-        overlay.style.left = leftPosition + 'px';
-        overlay.style.transform = 'none'; // Rimuovi transform per posizionamento assoluto
-        
-        overlay.classList.add('show');
-    }
-    
-    function hideOverlay() {
-        hideTimeout = setTimeout(() => {
-            overlay.classList.remove('show');
-        }, 300);
-    }
-    
-    // Event listeners
-    btn.addEventListener('mouseenter', showOverlay);
-    btn.addEventListener('mouseleave', hideOverlay);
-    overlay.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
-    overlay.addEventListener('mouseleave', hideOverlay);
-    
-    // ✅ RICALCOLA POSIZIONE AL RESIZE
-    window.addEventListener('resize', function() {
-        if (overlay.classList.contains('show')) {
-            showOverlay(); // Ricalcola la posizione
-        }
-    });
-    
-    // Chiudi con ESC
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && overlay.classList.contains('show')) {
-            hideOverlay();
-        }
-    });
-});
+
 
 // QUOTE BUBBLE MANAGEMENT
 document.addEventListener('DOMContentLoaded', function() {
