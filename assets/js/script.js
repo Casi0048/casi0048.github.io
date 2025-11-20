@@ -815,17 +815,15 @@ function getSpeedColor(speed) {
     if (speed <= 1200) return '#ffa500';
     return '#ff0000';
 }
-    
-    // FEEDBACK VISIVO CAMBIO VELOCITÀ
     showSpeedFeedback() {
-        const speedValue = this.speedDisplay.querySelector('.speed-value');
-        speedValue.style.transform = 'scale(1.2)';
-        speedValue.style.transition = 'transform 0.3s ease';
-        
-        setTimeout(() => {
-            speedValue.style.transform = 'scale(1)';
-        }, 300);
-    }
+    const speedValue = this.speedDisplay.querySelector('.speed-value');
+    speedValue.style.transform = 'scale(1.2)';
+    speedValue.style.transition = 'transform 0.3s ease';
+    
+    setTimeout(() => {
+        speedValue.style.transform = 'scale(1)';
+    }, 300);
+}
     
     createDots() {
         this.slides.forEach((_, index) => {
