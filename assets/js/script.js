@@ -794,100 +794,20 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Effetto scroll reveal
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
-            }
-        });
-    }, { threshold: 0.1 });
-    
-    document.querySelectorAll('.timeline-item').forEach(item => {
-        observer.observe(item);
+   // Effetto scroll reveal
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
+        }
     });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.timeline-item').forEach(item => {
+    observer.observe(item);
 });
-    createSpeedDisplay() {
-        const display = document.createElement('div');
-        display.className = 'speed-display';
-        display.innerHTML = `
-            <div class="speed-info">
-                <span class="speed-label">Velocità:</span>
-                <span class="speed-value">${this.speed}ms</span>
-            </div>
-        `;
-        this.container.appendChild(display);
-        return display;
-    }
-    
-    // CREA CONTROLLO VELOCITÀ
-    createSpeedControl() {
-        const control = document.createElement('div');
-        control.className = 'speed-control';
-        control.innerHTML = `
-            <div class="speed-slider-container">
-                <label for="speedSlider">Regola velocità:</label>
-                <input type="range" id="speedSlider" min="100" max="2000" step="100" value="${this.speed}">
-                <span class="speed-current">${this.speed}ms</span>
-            </div>
-            <div class="speed-presets">
-                <button class="speed-btn" data-speed="200">🚀 Veloce (200ms)</button>
-                <button class="speed-btn" data-speed="500">🐢 Normale (500ms)</button>
-                <button class="speed-btn" data-speed="1000">🐌 Lento (1000ms)</button>
-                <button class="speed-btn" data-speed="1500">🧘‍♂️ Molto lento (1500ms)</button>
-            </div>
-        `;
-        
-        this.container.appendChild(control);
-        
-        // Event listeners per controlli velocità
-        const slider = control.querySelector('#speedSlider');
-        const currentDisplay = control.querySelector('.speed-current');
-        const presetBtns = control.querySelectorAll('.speed-btn');
-        
-        slider.addEventListener('input', (e) => {
-            const newSpeed = parseInt(e.target.value);
-            this.setSpeed(newSpeed);
-            currentDisplay.textContent = `${newSpeed}ms`;
-        });
-        
-        presetBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const speed = parseInt(btn.dataset.speed);
-                slider.value = speed;
-                this.setSpeed(speed);
-                currentDisplay.textContent = `${speed}ms`;
-            });
-        });
-        
-        return control;
-    }
-    
-    // IMPOSTA VELOCITÀ
-    setSpeed(newSpeed) {
-        this.speed = newSpeed;
-        
-        // Aggiorna transizione CSS
-        this.track.style.transition = `transform ${this.speed}ms ease-in-out`;
-        
-        // Aggiorna autoplay delay (proporzionale alla velocità)
-        this.autoPlayDelay = this.speed + 2000; // Autoplay più lento della transizione
-        
-        // Aggiorna display
-        const speedValue = this.speedDisplay.querySelector('.speed-value');
-        speedValue.textContent = `${this.speed}ms`;
-        speedValue.style.color = this.getSpeedColor();
-        
-        // Riavvia autoplay con nuova velocità
-        this.stopAutoPlay();
-        this.startAutoPlay();
-        
-        console.log(`⚡ Velocità aggiornata: ${this.speed}ms | Autoplay: ${this.autoPlayDelay}ms`);
-        
-        // Effetto visivo
-        this.showSpeedFeedback();
-    }
-    
+
+
     // COLORE IN BASE ALLA VELOCITÀ
     getSpeedColor() {
         if (this.speed <= 300) return '#00ff00'; // Verde - veloce
