@@ -745,32 +745,6 @@ function initTimelineInteractions() {
     observer.observe(item);
   });
 }
-
-
-
-// QUOTE BUBBLE MANAGEMENT
-document.addEventListener('DOMContentLoaded', function() {
-    const quotes = document.querySelectorAll('.quote-bubble');
-    
-    quotes.forEach(quote => {
-        // Click per rimuovere
-        quote.addEventListener('click', function() {
-            this.classList.add('fade-out');
-            setTimeout(() => {
-                this.style.display = 'none';
-            }, 500);
-        });
-        
-        // Ricomparsa dopo 30 secondi
-        setTimeout(() => {
-            if (quote.style.display === 'none') {
-                quote.style.display = 'block';
-                quote.classList.remove('fade-out');
-            }
-        }, 30000);
-    });
-});
-
 /* === SISTEMA DI ESPLOSIONE CORRETTO === */
 document.addEventListener('DOMContentLoaded', function() {
   let explodingText = document.getElementById('exploding');
@@ -1312,94 +1286,7 @@ function slugifyIT(term) {
   });
 })();
 
-/* ===== TIMELINE COSMICA - VERSIONE SICURA ===== */
-function initCosmicTimeline() {
-  try {
-    const timelineItems = document.querySelectorAll('.timeline-item');
-    console.log('🎯 Timeline items trovati:', timelineItems.length);
 
-    if (!timelineItems.length) {
-      console.warn('❌ Nessun .timeline-item trovato!');
-      return;
-    }
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const item = entry.target;
-          const index = Array.from(timelineItems).indexOf(item);
-          
-          console.log('🚀 Animando item:', index);
-          
-          item.style.setProperty('--item-index', index);
-          void item.offsetWidth; // Reflow
-          item.classList.add('visible');
-          
-          console.log('✅ Classe "visible" aggiunta a item', index);
-          observer.unobserve(item);
-        }
-      });
-    }, {
-      threshold: 0.05,
-      rootMargin: '0px 0px -10% 0px'
-    });
-
-    timelineItems.forEach(item => observer.observe(item));
-    
-  } catch (error) {
-    console.error('❌ Errore in initCosmicTimeline:', error);
-  }
-}
-
-// INIZIALIZZAZIONE PRINCIPALE
-document.addEventListener('DOMContentLoaded', function () {
-  console.log('🎬 Inizializzazione applicazione');
-
-  // Timeline con delay (animazioni "cosmiche")
-  setTimeout(initCosmicTimeline, 1000);
-
-  // Effetti extra sulla timeline (click + reveal)
-  initTimelineInteractions();
-});
-
-// Re-init al resize
-window.addEventListener('resize', initCosmicTimeline);
-
-// Gestione errori globale - SOLO LOG, NON silenzia
-window.addEventListener('error', function (e) {
-  console.error('❌ Errore globale:', {
-    message: e.message,
-    file: e.filename,
-    line: e.lineno,
-    column: e.colno,
-    error: e.error
-  });
-});
-
-// Aggiunge effetti interattivi alla timeline
-function initTimelineInteractions() {
-  const timelineContents = document.querySelectorAll('.timeline-content');
-
-  // Click per espandere/comprimere i contenuti
-  timelineContents.forEach(item => {
-    item.addEventListener('click', function () {
-      this.classList.toggle('expanded');
-    });
-  });
-
-  // Effetto scroll reveal (fadeInUp)
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
-      }
-    });
-  }, { threshold: 0.1 });
-
-  document.querySelectorAll('.timeline-item').forEach(item => {
-    observer.observe(item);
-  });
-}
 
 /* === SCRIPT PARADIGMA ========================================================= */
 document.addEventListener('DOMContentLoaded', function() {
