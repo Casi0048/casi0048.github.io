@@ -6926,7 +6926,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // [RESTANTE CODICE IDENTICO...]
     // 3. SISTEMA STELLARE CON VERIFICHE COMPLETE
     function initializeStars() {
         return safeDOMOperation(() => {
@@ -7041,169 +7040,107 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-   // 6. INIZIALIZZAZIONE SICURA EFFETTI STELLARI
-function initializeStarEffects() {
-    safeDOMOperation(
-        () => {
-            const starsContainer = document.getElementById('starsContainer');
-            if (starsContainer && typeof initStars === 'function') {
-                initStars();
-                console.log('✅ Effetti stelle avanzati attivati');
-            } else if (starsContainer) {
-                createBasicStars();
-            }
-        },
-        () => {
-            console.log('ℹ️ Effetti stelle disabilitati per problemi di performance');
-            const starsContainer = document.getElementById('starsContainer');
-            if (starsContainer) {
-                starsContainer.style.display = 'none';
-            }
-        }
-    );
-} // 
-
-// 7. CSS PER STATI SPECIALI
-function injectPerformanceCSS() {
-    return safeDOMOperation(() => {
-        if (!document.head) return false;
-        
-        const performanceCSS = `
-            .fade-in {
-                animation: fadeIn 0.5s ease-in;
-            }
-            
-            .offline {
-                opacity: 0.8;
-                filter: grayscale(0.3);
-            }
-            
-            @keyframes fadeIn {
-                from { opacity: 0; }
-                to { opacity: 1; }
-            }
-            
-            @media (prefers-reduced-motion: reduce) {
-                .fade-in, .star {
-                    animation: none !important;
+    // 6. INIZIALIZZAZIONE SICURA EFFETTI STELLARI
+    function initializeStarEffects() {
+        safeDOMOperation(
+            () => {
+                const starsContainer = document.getElementById('starsContainer');
+                if (starsContainer && typeof initStars === 'function') {
+                    initStars();
+                    console.log('✅ Effetti stelle avanzati attivati');
+                } else if (starsContainer) {
+                    createBasicStars();
+                }
+            },
+            () => {
+                console.log('ℹ️ Effetti stelle disabilitati per problemi di performance');
+                const starsContainer = document.getElementById('starsContainer');
+                if (starsContainer) {
+                    starsContainer.style.display = 'none';
                 }
             }
-        `;
+        );
+    } // ← ✅ AGGIUNTA LA PARENTESI DI CHIUSURA QUI!
 
-        const style = document.createElement('style');
-        style.textContent = performanceCSS;
-        document.head.appendChild(style);
-        console.log('✅ CSS performance injectato');
-        return true;
+    // 7. CSS PER STATI SPECIALI
+    function injectPerformanceCSS() {
+        return safeDOMOperation(() => {
+            if (!document.head) return false;
+            
+            const performanceCSS = `
+                .fade-in {
+                    animation: fadeIn 0.5s ease-in;
+                }
+                
+                .offline {
+                    opacity: 0.8;
+                    filter: grayscale(0.3);
+                }
+                
+                @keyframes fadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+                
+                @media (prefers-reduced-motion: reduce) {
+                    .fade-in, .star {
+                        animation: none !important;
+                    }
+                }
+            `;
+
+            const style = document.createElement('style');
+            style.textContent = performanceCSS;
+            document.head.appendChild(style);
+            console.log('✅ CSS performance injectato');
+            return true;
+        });
+    }
+
+    // 8. INIZIALIZZAZIONE PRINCIPALE
+    console.log('🚀 Inizializzazione sistema stellare...');
+
+    injectPerformanceCSS();
+    initializeStars();
+    initializeLazyLoading();
+    initializeStarEffects();
+
+    console.log('✅ Sistema completamente inizializzato');
+
+    // 9. GESTIONE ERRORI GLOBALE (SOLO LOG, NON SILENZIA)
+    window.addEventListener('error', (event) => {
+      console.error('❌ Errore globale catturato:', event.error || event.message);
     });
-}
 
-// 8. INIZIALIZZAZIONE PRINCIPALE
-console.log('🚀 Inizializzazione sistema stellare...');
-
-injectPerformanceCSS();
-initializeStars();
-initializeLazyLoading();
-initializeStarEffects();
-
-console.log('✅ Sistema completamente inizializzato');
-
-// 9. GESTIONE ERRORI GLOBALE (SOLO LOG, NON SILENZIA)
-window.addEventListener('error', (event) => {
-  console.error('❌ Errore globale catturato:', event.error || event.message);
-});
-
-// 10. GESTIONE STATO CONNESSIONE
-window.addEventListener('online', () => {
-  console.log('📶 Connessione ripristinata');
-  safeDOMOperation(() => {
-    document.body.classList.remove('offline');
-  });
-});
-
-window.addEventListener('offline', () => {
-    console.warn('📶 Connessione persa');
-    safeDOMOperation(() => {
-        document.body.classList.add('offline');
+    // 10. GESTIONE STATO CONNESSIONE
+    window.addEventListener('online', () => {
+      console.log('📶 Connessione ripristinata');
+      safeDOMOperation(() => {
+        document.body.classList.remove('offline');
+      });
     });
-});
 
-// 11. SAFE ELEMENT SELECTOR
-window.getElementSafe = function(selector) {
-    try {
-        const element = typeof selector === 'string' ? 
-            document.querySelector(selector) : selector;
-        return element && document.body.contains(element) ? element : null;
-    } catch (error) {
-        console.warn('getElementSafe error:', error);
-        return null;
-    }
-};
+    window.addEventListener('offline', () => {
+        console.warn('📶 Connessione persa');
+        safeDOMOperation(() => {
+            document.body.classList.add('offline');
+        });
+    });
 
-console.log('⭐ Sistema stellare caricato e pronto');
-</script>
-<script id="range-dynamic-script">
-(function(){
-  function setFill(el){
-    if(!el || !el.style) return;
-    try {
-      var min = parseFloat(el.min) || 0;
-      var max = parseFloat(el.max) || 100;
-      var val = parseFloat(el.value) || 0;
-      var pct = Math.max(0, Math.min(100, ((val - min) * 100) / (max - min)));
-      el.style.setProperty('--fill', pct + '%');
-    } catch(error) {
-      console.warn('Errore in setFill:', error);
-    }
-  }
-  
-  function bind(el){
-    if(!el) {
-      console.warn('Elemento slider non trovato');
-      return;
-    }
-    setFill(el);
-    el.addEventListener('input', function(){ setFill(el); });
-    el.addEventListener('change', function(){ setFill(el); });
-  }
-  
-  function initRangeSliders() {
-    console.log('🎚️ Inizializzazione slider...');
-    
-    // Volume slider (dentro audio-player)
-    var audioPlayer = document.getElementById('audio-player');
-    if(audioPlayer) {
-      var volumeSlider = audioPlayer.querySelector('#volume');
-      if(volumeSlider) {
-        bind(volumeSlider);
-        console.log('✅ Volume slider inizializzato');
-      } else {
-        console.warn('❌ #volume non trovato in audio-player');
-      }
-    } else {
-      console.warn('❌ #audio-player non trovato');
-    }
-    
-    // Speed slider
-    var speedSlider = document.getElementById('slider-speed');
-    if(speedSlider) {
-      bind(speedSlider);
-      console.log('✅ Speed slider inizializzato');
-    } else {
-      console.warn('❌ #slider-speed non trovato');
-    }
-  }
-  
-  // INIZIALIZZA CON RITARDO PER ASSICURARSI CHE GLI ELEMENTI ESISTANO
-  setTimeout(function(){
-    if(document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initRangeSliders);
-    } else {
-      initRangeSliders();
-    }
-  }, 100);
-  
-})();
+    // 11. SAFE ELEMENT SELECTOR
+    window.getElementSafe = function(selector) {
+        try {
+            const element = typeof selector === 'string' ? 
+                document.querySelector(selector) : selector;
+            return element && document.body.contains(element) ? element : null;
+        } catch (error) {
+            console.warn('getElementSafe error:', error);
+            return null;
+        }
+    };
+
+    console.log('⭐ Sistema stellare caricato e pronto');
+}); // ← ✅ CHIUSURA DEL DOMContentLoaded
 </script>
 <script id="speed-readout-js">
 (function(){
