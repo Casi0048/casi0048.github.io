@@ -809,69 +809,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-/* === js slider verticale ============================================ */
-class VerticalSlider {
-    constructor(containerSelector) {
-        this.container = document.querySelector(containerSelector);
-        this.track = this.container.querySelector('.slider-track');
-        this.slides = this.container.querySelectorAll('.slide');
-        this.prevBtn = this.container.querySelector('.slider-prev');
-        this.nextBtn = this.container.querySelector('.slider-next');
-        this.dotsContainer = this.container.querySelector('.slider-dots');
-        
-        this.currentSlide = 0;
-        this.slideHeight = this.container.offsetHeight;
-        
-        // SISTEMA VELOCITÀ
-        this.speed = 500; // Velocità base in ms
-        this.speedDisplay = this.createSpeedDisplay();
-        this.speedControl = this.createSpeedControl();
-        
-        this.autoPlayInterval = null;
-        this.autoPlayDelay = 3000; // 3 secondi base
-        
-        this.init();
-    }
-    
-    init() {
-        // Imposta altezza slides
-        this.slides.forEach(slide => {
-            slide.style.height = `${this.slideHeight}px`;
-        });
-        
-        // Transizione base
-        this.track.style.transition = `transform ${this.speed}ms ease-in-out`;
-        
-        // Crea dots
-        this.createDots();
-        
-        // Event listeners
-        this.prevBtn.addEventListener('click', () => this.prevSlide());
-        this.nextBtn.addEventListener('click', () => this.nextSlide());
-        
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowUp') this.prevSlide();
-            if (e.key === 'ArrowDown') this.nextSlide();
-        });
-        
-        // Touch/swipe per mobile
-        this.addTouchEvents();
-        
-        // Autoplay
-        this.startAutoPlay();
-        
-        // Pause autoplay on hover
-        this.container.addEventListener('mouseenter', () => this.stopAutoPlay());
-        this.container.addEventListener('mouseleave', () => this.startAutoPlay());
-        
-        // Resize handler
-        window.addEventListener('resize', () => this.handleResize());
-        
-        console.log(`🎚️ Slider inizializzato - Velocità: ${this.speed}ms`);
-    }
-    
-    // CREA DISPLAY VELOCITÀ
+
     createSpeedDisplay() {
         const display = document.createElement('div');
         display.className = 'speed-display';
