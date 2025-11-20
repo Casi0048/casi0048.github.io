@@ -1704,7 +1704,6 @@ sp?.addEventListener('input', () => {
   const readout = document.getElementById('speed-readout');
   if(readout) readout.textContent = v;
 });
-  
   // AGGIORNA NUMERETTO
   const readout = document.getElementById('speed-readout');
   if(readout) readout.textContent = v;
