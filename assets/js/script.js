@@ -197,6 +197,42 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, 100);
 });
+// === Slider velocità: colore barra + numeretto =========================
+document.addEventListener('DOMContentLoaded', () => {
+  const speed = document.getElementById('slider-speed');
+  if (!speed) {
+    console.warn('⚠️ #slider-speed non trovato');
+    return;
+  }
+
+  // Crea / recupera il numeretto sotto
+  let readout = document.getElementById('speed-readout');
+  if (!readout) {
+    readout = document.createElement('div');
+    readout.id = 'speed-readout';
+    speed.insertAdjacentElement('afterend', readout);
+  }
+
+  const min = parseInt(speed.min, 10) || 1;
+  const max = parseInt(speed.max, 10) || 20;
+
+  function updateSpeedUI() {
+    const val = parseInt(speed.value, 10) || min;
+    const percent = ((val - min) / (max - min)) * 100;
+
+    // riempimento barra – usa i CSS con var(--fill)
+    speed.style.setProperty('--fill', `${percent}%`);
+
+    // numeretto
+    readout.textContent = `Velocità: ${val} / ${max}`;
+  }
+
+  // aggiorna quando muovi la barretta
+  speed.addEventListener('input', updateSpeedUI);
+
+  // iniziale (alla load)
+  updateSpeedUI();
+});
 
 
 
