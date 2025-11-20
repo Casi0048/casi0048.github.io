@@ -807,7 +807,13 @@ document.querySelectorAll('.timeline-item').forEach(item => {
     observer.observe(item);
 });
 
-
+// COLORE IN BASE ALLA VELOCITÀ
+    getSpeedColor() {
+        if (this.speed <= 300) return '#00ff00'; // Verde - veloce
+        if (this.speed <= 700) return '#ffff00'; // Giallo - normale
+        if (this.speed <= 1200) return '#ffa500'; // Arancione - lento
+        return '#ff0000'; // Rosso - molto lento
+    }
 
     
     // FEEDBACK VISIVO CAMBIO VELOCITÀ
