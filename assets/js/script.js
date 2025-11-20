@@ -768,160 +768,191 @@ function initCosmicTimeline() {
 }
 
 // INIZIALIZZAZIONE PRINCIPALE
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   console.log('🎬 Inizializzazione applicazione');
-  
-  // Timeline con delay
+
+  // Timeline con delay (animazioni "cosmiche")
   setTimeout(initCosmicTimeline, 1000);
+
+  // Effetti extra sulla timeline (click + reveal)
+  initTimelineInteractions();
 });
 
 // Re-init al resize
 window.addEventListener('resize', initCosmicTimeline);
 
-// Gestione errori globale (aggiungi in cima se non ce l'hai)
-window.addEventListener('error', function(e) {
-  console.error('❌ Errore globale:', e.error);
-  e.preventDefault();
-  return true;
+// Gestione errori globale - SOLO LOG, NON silenzia
+window.addEventListener('error', function (e) {
+  console.error('❌ Errore globale:', {
+    message: e.message,
+    file: e.filename,
+    line: e.lineno,
+    column: e.colno,
+    error: e.error
+  });
 });
+
 // Aggiunge effetti interattivi alla timeline
-document.addEventListener('DOMContentLoaded', function() {
-    const timelineItems = document.querySelectorAll('.timeline-content');
-    
-    timelineItems.forEach(item => {
-        item.addEventListener('click', function() {
-            this.classList.toggle('expanded');
-        });
+function initTimelineInteractions() {
+  const timelineContents = document.querySelectorAll('.timeline-content');
+
+  // Click per espandere/comprimere i contenuti
+  timelineContents.forEach(item => {
+    item.addEventListener('click', function () {
+      this.classList.toggle('expanded');
     });
-    
-   // Effetto scroll reveal
-const observer = new IntersectionObserver((entries) => {
+  });
+
+  // Effetto scroll reveal (fadeInUp)
+  const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
-        }
+      if (entry.isIntersecting) {
+        entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
+      }
     });
-}, { threshold: 0.1 });
+  }, { threshold: 0.1 });
 
-document.querySelectorAll('.timeline-item').forEach(item => {
+  document.querySelectorAll('.timeline-item').forEach(item => {
     observer.observe(item);
-});
+  });
+}
 
-// COLORE IN BASE ALLA VELOCITÀ
- // ✅ TRASFORMA in funzione normale
-function getSpeedColor(speed) {
-    if (speed <= 300) return '#00ff00';
-    if (speed <= 700) return '#ffff00';
-    if (speed <= 1200) return '#ffa500';
-    return '#ff0000';
-}
+    // COLORE IN BASE ALLA VELOCITÀ
+    getSpeedColor() {
+      if (this.speed <= 300) return '#00ff00';     // Verde - veloce
+      if (this.speed <= 700) return '#ffff00';     // Giallo - normale
+      if (this.speed <= 1200) return '#ffa500';    // Arancione - lento
+      return '#ff0000';                            // Rosso - molto lento
+    }
+
+    // FEEDBACK VISIVO CAMBIO VELOCITÀ
     showSpeedFeedback() {
-    const speedValue = this.speedDisplay.querySelector('.speed-value');
-    speedValue.style.transform = 'scale(1.2)';
-    speedValue.style.transition = 'transform 0.3s ease';
-    
-    setTimeout(() => {
+      const speedValue = this.speedDisplay.querySelector('.speed-value');
+      speedValue.style.transform = 'scale(1.2)';
+      speedValue.style.transition = 'transform 0.3s ease';
+
+      setTimeout(() => {
         speedValue.style.transform = 'scale(1)';
-    }, 300);
-}
-    
+      }, 300);
+    }
+
     createDots() {
-        this.slides.forEach((_, index) => {
-            const dot = document.createElement('button');
-            dot.className = `slider-dot ${index === 0 ? 'active' : ''}`;
-            dot.innerHTML = `${index + 1}`; // Mostra numero slide
-            dot.setAttribute('title', `Vai alla slide ${index + 1} (${this.speed}ms)`);
-            dot.addEventListener('click', () => this.goToSlide(index));
-            this.dotsContainer.appendChild(dot);
-        });
+      this.slides.forEach((_, index) => {
+        const dot = document.createElement('button');
+        dot.className = `slider-dot ${index === 0 ? 'active' : ''}`;
+        dot.innerHTML = `${index + 1}`; // Mostra numero slide
+        dot.setAttribute('title', `Vai alla slide ${index + 1} (${this.speed}ms)`);
+        dot.addEventListener('click', () => this.goToSlide(index));
+        this.dotsContainer.appendChild(dot);
+      });
     }
-    
+
     goToSlide(slideIndex) {
-        if (slideIndex < 0) {
-            slideIndex = this.slides.length - 1;
-        } else if (slideIndex >= this.slides.length) {
-            slideIndex = 0;
-        }
-        
-        this.currentSlide = slideIndex;
-        const translateY = -slideIndex * this.slideHeight;
-        this.track.style.transform = `translateY(${translateY}px)`;
-        
-        this.updateDots();
-        
-        // Log con info velocità
-        console.log(`▶️ Slide ${slideIndex + 1} | Velocità: ${this.speed}ms`);
+      if (slideIndex < 0) {
+        slideIndex = this.slides.length - 1;
+      } else if (slideIndex >= this.slides.length) {
+        slideIndex = 0;
+      }
+
+      this.currentSlide = slideIndex;
+      const translateY = -slideIndex * this.slideHeight;
+      this.track.style.transform = `translateY(${translateY}px)`;
+
+      this.updateDots();
+
+      // Log con info velocità
+      console.log(`▶️ Slide ${slideIndex + 1} | Velocità: ${this.speed}ms`);
     }
-    
+
     nextSlide() {
-        console.log(`⏩ Next slide (${this.speed}ms)`);
-        this.goToSlide(this.currentSlide + 1);
+      console.log(`⏩ Next slide (${this.speed}ms)`);
+      this.goToSlide(this.currentSlide + 1);
     }
-    
+
     prevSlide() {
-        console.log(`⏪ Prev slide (${this.speed}ms)`);
-        this.goToSlide(this.currentSlide - 1);
+      console.log(`⏪ Prev slide (${this.speed}ms)`);
+      this.goToSlide(this.currentSlide - 1);
     }
-    
+
     updateDots() {
-        const dots = this.dotsContainer.querySelectorAll('.slider-dot');
-        dots.forEach((dot, index) => {
-            dot.classList.toggle('active', index === this.currentSlide);
-            // Aggiorna tooltip con velocità corrente
-            dot.setAttribute('title', `Vai alla slide ${index + 1} (${this.speed}ms)`);
-        });
+      const dots = this.dotsContainer.querySelectorAll('.slider-dot');
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === this.currentSlide);
+        // Aggiorna tooltip con velocità corrente
+        dot.setAttribute('title', `Vai alla slide ${index + 1} (${this.speed}ms)`);
+      });
     }
-    
+
     addTouchEvents() {
-        let startY = 0;
-        
-        this.container.addEventListener('touchstart', (e) => {
-            startY = e.touches[0].clientY;
-            // Disabilita transizione durante swipe per fluidità
-            this.track.style.transition = 'none';
-        });
-        
-        this.container.addEventListener('touchend', (e) => {
-            const endY = e.changedTouches[0].clientY;
-            const diff = startY - endY;
-            
-            // Riabilita transizione
-            this.track.style.transition = `transform ${this.speed}ms ease-in-out`;
-            
-            if (Math.abs(diff) > 50) {
-                if (diff > 0) {
-                    this.nextSlide();
-                } else {
-                    this.prevSlide();
-                }
-            }
-        });
-    }
-    
-    startAutoPlay() {
-        this.stopAutoPlay();
-        console.log(`🔁 Autoplay avviato: ${this.autoPlayDelay}ms`);
-        
-        this.autoPlayInterval = setInterval(() => {
+      let startY = 0;
+
+      this.container.addEventListener('touchstart', (e) => {
+        startY = e.touches[0].clientY;
+        // Disabilita transizione durante swipe per fluidità
+        this.track.style.transition = 'none';
+      });
+
+      this.container.addEventListener('touchend', (e) => {
+        const endY = e.changedTouches[0].clientY;
+        const diff = startY - endY;
+
+        // Riabilita transizione
+        this.track.style.transition = `transform ${this.speed}ms ease-in-out`;
+
+        if (Math.abs(diff) > 50) {
+          if (diff > 0) {
             this.nextSlide();
-        }, this.autoPlayDelay);
-    }
-    
-    stopAutoPlay() {
-        if (this.autoPlayInterval) {
-            clearInterval(this.autoPlayInterval);
-            this.autoPlayInterval = null;
-            console.log('⏸️ Autoplay fermato');
+          } else {
+            this.prevSlide();
+          }
         }
+      });
     }
-    
+
+    startAutoPlay() {
+      this.stopAutoPlay();
+      console.log(`🔁 Autoplay avviato: ${this.autoPlayDelay}ms`);
+
+      this.autoPlayInterval = setInterval(() => {
+        this.nextSlide();
+      }, this.autoPlayDelay);
+    }
+
+    stopAutoPlay() {
+      if (this.autoPlayInterval) {
+        clearInterval(this.autoPlayInterval);
+        this.autoPlayInterval = null;
+        console.log('⏸️ Autoplay fermato');
+      }
+    }
+
     handleResize() {
-        this.slideHeight = this.container.offsetHeight;
-        this.slides.forEach(slide => {
-            slide.style.height = `${this.slideHeight}px`;
-        });
-        this.goToSlide(this.currentSlide);
+      this.slideHeight = this.container.offsetHeight;
+      this.slides.forEach(slide => {
+        slide.style.height = `${this.slideHeight}px`;
+      });
+      this.goToSlide(this.currentSlide);
     }
+
+    // METODI PUBBLICI PER CONTROLLO VELOCITÀ
+    setSpeedFast() { this.setSpeed(200); }
+    setSpeedNormal() { this.setSpeed(500); }
+    setSpeedSlow() { this.setSpeed(1000); }
+    setSpeedVerySlow() { this.setSpeed(1500); }
+
+    getCurrentSpeed() {
+      return this.speed;
+    }
+
+    getSpeedInfo() {
+      return {
+        speed: this.speed,
+        autoplayDelay: this.autoPlayDelay,
+        currentSlide: this.currentSlide + 1,
+        totalSlides: this.slides.length
+      };
+    }
+
     
     // METODI PUBBLICI PER CONTROLLO VELOCITÀ
     setSpeedFast() { this.setSpeed(200); }
