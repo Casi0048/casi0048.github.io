@@ -618,7 +618,7 @@ main {
 }
 /* === TYPING EFFECT - VERSIONE DEFINITIVA (zero sobbalzi) === */
 .typing-wrap {
-  margin: .15rem 0 ;
+  margin: 0.15rem 0;
   display: flex;
   justify-content: center;
   min-height: 4.4em;
@@ -636,14 +636,9 @@ main {
   font-weight: 700;
   display: inline-block;
   min-width: 60ch;
+  margin-top: 15px; /* ✅ CORRETTO: punto e virgola e valore ridotto */
   text-align: center;
   white-space: nowrap;
-  
-  /* Zero trasformazioni che influenzano il layout */
-  /* RIMOSSO: transform: translateZ(0); */
-  /* RIMOSSO: backface-visibility: hidden; */
-  /* RIMOSSO: perspective: 1000px; */
-  /* RIMOSSO: will-change: contents; */
 }
 
 .cursor {
@@ -667,12 +662,13 @@ main {
 @media (max-width: 768px) {
   .typing-effect {
     font-size: 1.1rem;
-    min-width: 40ch;
-    white-space: normal;
+    min-width: 35ch; /* ✅ Ridotto per mobile */
+    white-space: normal; /* ✅ Permette wrap su mobile */
+    margin-top: 10px; /* ✅ Ridotto per mobile */
   }
   
   .typing-wrap {
-    min-height: 2.8em;
+    min-height: 3.5em; /* ✅ Adattato */
   }
 }
 
@@ -680,7 +676,12 @@ main {
 @media (max-width: 480px) {
   .typing-effect {
     font-size: 1rem;
-    min-width: 30ch;
+    min-width: 25ch; /* ✅ Ancora più piccolo */
+    margin-top: 8px; /* ✅ Minimo margine */
+  }
+  
+  .typing-wrap {
+    min-height: 3em;
   }
 }
 
