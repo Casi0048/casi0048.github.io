@@ -1154,86 +1154,82 @@ window.googleTranslateElementInit = function(){
   box-shadow: 0 0 10px rgba(255,215,0,.6);
 }
 </style>
-<style id="range-dynamic-fill">
-/* === Dynamic fill base (applies to both #volume and #slider-speed) === */
-#volume, #slider-speed{
+<style>
+/* === Range dinamico per #volume e #slider-speed ====================== */
+#volume,
+#slider-speed {
   -webkit-appearance: none;
+  appearance: none;
+  width: 160px; /* puoi variare qui la larghezza */
+  height: 6px;
+  cursor: pointer;
+  border-radius: 999px;
+
+  /* Due layer: filled + track base */
   background:
-    linear-gradient(90deg, rgba(255,215,0,.85), rgba(0,204,255,.85)) no-repeat,
-    linear-gradient(90deg, rgba(255,255,255,.14), rgba(255,255,255,.14)) no-repeat;
+    linear-gradient(90deg, rgba(255,215,0,.85), rgba(0,204,255,.85)) no-repeat,  /* parte piena */
+    linear-gradient(90deg, rgba(255,255,255,.14), rgba(255,255,255,.14)) no-repeat; /* barra di base */
   background-size: var(--fill, 0%) 6px, 100% 6px;
   background-position: left center, left center;
   background-repeat: no-repeat;
-  border-radius: 999px;
 }
-#volume::-webkit-slider-runnable-track,
-#slider-speed::-webkit-slider-runnable-track{ background: transparent; height: 6px; }
-#volume::-moz-range-track,
-#slider-speed::-moz-range-track{ background: transparent; height: 6px; }
-#volume::-ms-track,
-#slider-speed::-ms-track{ background: transparent; height: 6px; color: transparent; border-color: transparent; }
 
+/* Track trasparente, così si vede il nostro background */
+#volume::-webkit-slider-runnable-track,
+#slider-speed::-webkit-slider-runnable-track {
+  background: transparent;
+  height: 6px;
+}
+#volume::-moz-range-track,
+#slider-speed::-moz-range-track {
+  background: transparent;
+  height: 6px;
+}
+#volume::-ms-track,
+#slider-speed::-ms-track {
+  background: transparent;
+  height: 6px;
+  color: transparent;
+  border-color: transparent;
+}
+
+/* Thumb (pallino) – uguale per volume e speed */
 #volume::-webkit-slider-thumb,
-#slider-speed::-webkit-slider-thumb{
+#slider-speed::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 14px; height: 14px; border-radius: 50%;
-  background: #fff; border: 2px solid var(--gold, #d4af37);
-  margin-top: -4px; box-shadow: 0 0 6px rgba(255,215,0,.4);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--gold, #d4af37);
+  margin-top: -4px; /* centrato sulla track da 6px */
+  box-shadow: 0 0 6px rgba(255,215,0,.4);
 }
 #volume::-moz-range-thumb,
-#slider-speed::-moz-range-thumb{
-  width: 14px; height: 14px; border-radius: 50%;
-  background: #fff; border: 2px solid var(--gold, #d4af37);
+#slider-speed::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--gold, #d4af37);
   box-shadow: 0 0 6px rgba(255,215,0,.4);
 }
 #volume::-ms-thumb,
-#slider-speed::-ms-thumb{
-  width: 14px; height: 14px; border-radius: 50%;
-  background: #fff; border: 2px solid var(--gold, #d4af37);
+#slider-speed::-ms-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--gold, #d4af37);
   box-shadow: 0 0 6px rgba(255,215,0,.4);
-}
-</style>
-<style id="speed-horizontal-color">
-/* === Speed slider: horizontal, same dynamic fill as volume === */
-#slider-speed{
-  -webkit-appearance: none;
-  width: 160px;               /* same width as volume */
-  background:
-    linear-gradient(90deg, rgba(255,215,0,.85), rgba(0,204,255,.85)) no-repeat,  /* filled */
-    linear-gradient(90deg, rgba(255,255,255,.14), rgba(255,255,255,.14)) no-repeat; /* empty track */
-  background-size: var(--fill, 0%) 6px, 100% 6px;
-  background-position: left center, left center;
-  background-repeat: no-repeat;
-  border-radius: 999px;
 }
 
-/* Transparent native track so our background shows */
-#slider-speed::-webkit-slider-runnable-track{ background: transparent; height: 6px; }
-#slider-speed::-moz-range-track{ background: transparent; height: 6px; }
-#slider-speed::-ms-track{ background: transparent; height: 6px; color: transparent; border-color: transparent; }
+/* Readout numerico affianco allo slider-speed */
+#slider-speed {
+  vertical-align: middle;
+}
 
-/* Thumb styling like volume */
-#slider-speed::-webkit-slider-thumb{
-  -webkit-appearance: none;
-  width: 14px; height: 14px; border-radius: 50%;
-  background: #fff; border: 2px solid var(--gold, #d4af37);
-  margin-top: -4px; /* center thumb on 6px track */
-  box-shadow: 0 0 6px rgba(255,215,0,.4);
-}
-#slider-speed::-moz-range-thumb{
-  width: 14px; height: 14px; border-radius: 50%;
-  background: #fff; border: 2px solid var(--gold, #d4af37);
-  box-shadow: 0 0 6px rgba(255,215,0,.4);
-}
-#slider-speed::-ms-thumb{
-  width: 14px; height: 14px; border-radius: 50%;
-  background: #fff; border: 2px solid var(--gold, #d4af37);
-  box-shadow: 0 0 6px rgba(255,215,0,.4);
-}
-</style>
-<style id="speed-readout-css">
-#slider-speed{ vertical-align: middle; }
-#speed-readout{
+#speed-readout {
   display: inline-block;
   min-width: 3.5ch;
   margin-left: .6rem;
@@ -1246,7 +1242,8 @@ window.googleTranslateElementInit = function(){
   border: 1px solid rgba(212,175,55,.55);
   box-shadow: 0 0 6px rgba(255,215,0,.25);
 }
-</style>
+
+  </style>
 <style id="russell-conservative-anim">
 /* Conservative micro‑interaction for Russell box — stronger & robust */
 #russell-box{
