@@ -1107,16 +1107,7 @@ function slugifyIT(term) {
     .replace(/[^a-z00\s-]/g, '')
     .trim();
 }
-function treccaniURL(term, section = 'vocabolario') {
-  const base = 'https://www.treccani.it';
-  const simple = slugifyIT(term).replace(/\s+/g, ''); // "causa prima" -> "causaprima"
-  return section === 'enciclopedia'
-    ? `${base}/enciclopedia/${simple}/`
-    : `${base}/vocabolario/${simple}/`;
-}
-function wikipediaURL(term) {
-  return `https://it.wikipedia.org/wiki/${encodeURIComponent(term.trim().replace(/\s+/g, '_'))}`;
-}
+
 
 // === PULSANTE TORNA SU ===
 (function(){
