@@ -1,18 +1,18 @@
-// SLIDER VERTICALE - Velocità iniziale 5
-// SLIDER VERTICALE - Velocità iniziale 5
+// === SLIDER VERTICALE - Velocità 1–20 con barra colorata ===
 class VerticalSlider {
     constructor() {
         this.sliderInner = document.getElementById('sliderInner');
-        this.toggleBtn = document.getElementById('slider-toggle');
-        this.invertBtn = document.getElementById('slider-invert');
+        this.toggleBtn   = document.getElementById('slider-toggle');
+        this.invertBtn   = document.getElementById('slider-invert');
         this.speedSlider = document.getElementById('slider-speed');
         
-        this.isPlaying = true;
-        this.direction = 1;
-        this.speed = 5;
+        this.isPlaying   = true;
+        this.direction   = 1;
+        this.speed       = 5;
+        this.position    = 0;
         this.animationId = null;
-        this.position = 0;
-        
+        this.animationSpeed = 120; // valore logico iniziale
+
         this.init();
     }
     
@@ -33,73 +33,91 @@ class VerticalSlider {
             border: 1px solid rgba(212,175,55,.55);
             box-shadow: 0 0 6px rgba(255,215,0,.25);
         `;
-        this.speedSlider.parentNode.appendChild(readout);
+        if (this.speedSlider && this.speedSlider.parentNode) {
+            this.speedSlider.parentNode.appendChild(readout);
+        }
         return readout;
     }
     
     init() {
         if (!this.sliderInner) {
-            console.warn('Slider elements not found');
+            console.warn('VerticalSlider: #sliderInner non trovato, slider disattivato');
             return;
         }
-        
+
+        // Readout numerico a fianco dello slider
         this.speedReadout = document.getElementById('speed-readout') || this.createSpeedReadout();
         
-        // Event listeners
-        this.toggleBtn.addEventListener('click', () => this.toggle());
-        this.invertBtn.addEventListener('click', () => this.invert());
-        this.speedSlider.addEventListener('input', (e) => this.setSpeed(e.target.value));
-        
-        // Espandi range velocità a 1-20
-        this.speedSlider.min = 1;
-        this.speedSlider.max = 20;
-        this.speedSlider.value = 5;
-        
-        // Imposta velocità iniziale
+        // Controlli
+        if (this.speedSlider) {
+            // range velocità 1–20
+            this.speedSlider.min   = 1;
+            this.speedSlider.max   = 20;
+            this.speedSlider.value = 5;
+
+            this.speedSlider.addEventListener('input', (e) => {
+                this.setSpeed(e.target.value);
+            });
+        }
+
+        if (this.toggleBtn) {
+            this.toggleBtn.addEventListener('click', () => this.toggle());
+        }
+
+        if (this.invertBtn) {
+            this.invertBtn.addEventListener('click', () => this.invert());
+        }
+
+        // Imposta velocità iniziale (aggiorna anche barra)
         this.setSpeed(5);
-        
+
+        // Avvia animazione
         this.startAnimation();
     }
     
     setSpeed(value) {
-        this.speed = parseInt(value);
-        this.speedReadout.textContent = value;
+        this.speed = parseInt(value, 10) || 5;
+        if (this.speedReadout) {
+            this.speedReadout.textContent = this.speed;
+        }
         
-        // Mappa valori a intervalli di tempo (più granulare)
+        // Mappa valori a “velocità logica” (più alto = più veloce)
         const speedMap = {
-            1: 200,   // Molto lento
-            2: 180,   // Molto lento
-            3: 160,   // Lento
-            4: 140,   // Lento
-            5: 120,   // Lento-Medio ⭐ VELOCITÀ INIZIALE
-            6: 100,   // Lento-Medio
-            7: 80,    // Medio
-            8: 60,    // Medio
-            9: 50,    // Medio-Veloce
-            10: 40,   // Medio-Veloce
-            11: 35,   // Veloce
-            12: 30,   // Veloce
-            13: 25,   // Veloce
-            14: 20,   // Molto veloce
-            15: 15,   // Molto veloce
-            16: 12,   // Estremamente veloce
-            17: 10,   // Estremamente veloce
-            18: 8,    // Massima velocità
-            19: 6,    // Massima velocità
-            20: 4     // Massima velocità
+            1: 200,   2: 180,   3: 160,   4: 140,
+            5: 120,   6: 100,   7: 80,    8: 60,
+            9: 50,   10: 40,   11: 35,   12: 30,
+           13: 25,   14: 20,   15: 15,   16: 12,
+           17: 10,   18: 8,    19: 6,    20: 4
         };
         
         this.animationSpeed = speedMap[this.speed] || 50;
+
+        // Aggiorna riempimento barra (usa var(--fill) nei CSS)
+        this.updateSpeedBar();
         
         if (this.isPlaying) {
             this.restartAnimation();
         }
     }
+
+    updateSpeedBar() {
+        if (!this.speedSlider) return;
+
+        const min = parseInt(this.speedSlider.min, 10) || 1;
+        const max = parseInt(this.speedSlider.max, 10) || 20;
+        const val = this.speed;
+        const percent = ((val - min) / (max - min)) * 100;
+
+        this.speedSlider.style.setProperty('--fill', `${percent}%`);
+    }
     
     toggle() {
         this.isPlaying = !this.isPlaying;
-        this.toggleBtn.textContent = this.isPlaying ? '⏸️ Ferma' : '▶️ Avvia';
-        this.toggleBtn.title = this.isPlaying ? 'Ferma slider' : 'Avvia slider';
+
+        if (this.toggleBtn) {
+            this.toggleBtn.textContent = this.isPlaying ? '⏸️ Ferma' : '▶️ Avvia';
+            this.toggleBtn.title       = this.isPlaying ? 'Ferma slider' : 'Avvia slider';
+        }
         
         if (this.isPlaying) {
             this.startAnimation();
@@ -110,23 +128,28 @@ class VerticalSlider {
     
     invert() {
         this.direction *= -1;
-        this.invertBtn.textContent = this.direction === 1 ? '🔄 Inverti' : '🔄 Normale';
-        this.invertBtn.title = this.direction === 1 ? 'Inverti direzione' : 'Direzione normale';
+
+        if (this.invertBtn) {
+            this.invertBtn.textContent = this.direction === 1 ? '🔄 Inverti' : '🔄 Normale';
+            this.invertBtn.title       = this.direction === 1 ? 'Inverti direzione' : 'Direzione normale';
+        }
     }
     
     startAnimation() {
         if (this.animationId) return;
         
         const animate = () => {
-            // Movimento basato sulla velocità (più fluido)
+            // spostamento proporzionale alla velocità scelta
             this.position += this.direction * (this.speed / 3);
             
-            // Calcola dimensioni per il loop
-            const containerHeight = this.sliderInner.parentElement.clientHeight;
-            const contentHeight = this.sliderInner.scrollHeight;
-            const maxScroll = Math.max(0, contentHeight - containerHeight);
+            const container = this.sliderInner.parentElement;
+            if (!container) return;
+
+            const containerHeight = container.clientHeight;
+            const contentHeight   = this.sliderInner.scrollHeight;
+            const maxScroll       = Math.max(0, contentHeight - containerHeight);
             
-            // Gestisci loop continuo
+            // loop continuo
             if (this.position >= maxScroll) {
                 this.position = 0;
             } else if (this.position < 0) {
@@ -152,7 +175,7 @@ class VerticalSlider {
         this.startAnimation();
     }
     
-    // Metodo per debug
+    // Metodo di debug (puoi usarlo da console: window.verticalSlider.getStatus())
     getStatus() {
         return {
             playing: this.isPlaying,
@@ -164,18 +187,19 @@ class VerticalSlider {
     }
 }
 
-// Inizializza slider quando DOM è pronto
+// Inizializza slider quando il DOM è pronto
 document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         try {
             const slider = new VerticalSlider();
             console.log('✅ Vertical Slider initialized - Speed: 5');
-            window.verticalSlider = slider; // Per debug
+            window.verticalSlider = slider; // per debug da console
         } catch (error) {
             console.error('❌ Slider initialization failed:', error);
         }
     }, 100);
 });
+
 
 /* === SISTEMA DI ESPLOSIONE CORRETTO === */
 document.addEventListener('DOMContentLoaded', function() {
