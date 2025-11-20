@@ -1690,3 +1690,27 @@ document.addEventListener('DOMContentLoaded', () => {
   // iniziale (alla load)
   updateSpeedUI();
 });
+sp?.addEventListener('input', () => {
+  const v = parseInt(sp.value, 10) || 5;
+  
+  // FORMULA MIGLIORATA: progressione più sensibile
+  if(v <= 6) {
+    speed = 0.2 + (v - 1) * 0.15;
+  } else {
+    speed = 0.2 + (v - 1) * 0.25;
+  }
+});
+sp?.addEventListener('input', () => {
+  const v = parseInt(sp.value, 10) || 5;
+  
+  // FORMULA MIGLIORATA: progressione più sensibile
+  if(v <= 6) {
+    speed = 0.2 + (v - 1) * 0.15;
+  } else {
+    speed = 0.2 + (v - 1) * 0.25;
+  }
+  
+  // AGGIORNA NUMERETTO
+  const readout = document.getElementById('speed-readout');
+  if(readout) readout.textContent = v;
+});
