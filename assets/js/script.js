@@ -807,9 +807,6 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(item);
     });
 });
-
-
-
     createSpeedDisplay() {
         const display = document.createElement('div');
         display.className = 'speed-display';
