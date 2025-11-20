@@ -5847,7 +5847,150 @@ function safeQueryAll(selector, context = document) {
 
 console.log('✅ Gestione errori attivata');
 </script>
+<script id="cookie-consent-js">
+(function(){
+  const LS_KEY = 'cookieConsent.v1';
+  const $ = (s,c=document)=>c.querySelector(s);
 
+  const banner = $('#cookie-banner');
+  const modal  = $('#cookie-modal');
+  const fab    = $('#cookie-fab');
+
+  const pref   = $('#cc-pref');
+  const anal   = $('#cc-analytics');
+  const mark   = $('#cc-marketing');
+
+  const btnAccept  = $('#cc-accept');
+  const btnDecline = $('#cc-decline');
+  const btnCustom  = $('#cc-customize');
+  const btnSave    = $('#cc-save');
+  const btnCancel  = $('#cc-cancel');
+  const btnRejectAll = $('#cc-reject-all');
+
+  function getStored(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY)) || null; }catch(e){ return null; }
+  }
+  function store(consent){
+    localStorage.setItem(LS_KEY, JSON.stringify({ ts: Date.now(), consent }));
+  }
+
+  // Iniettabile: qui caricherai librerie solo se consentito
+  function apply(consent){
+    // Esempio: se analytics true, carica GA (placeholder)
+    if (consent.analytics){
+      // loadAnalytics(); // <- qui il tuo script reale
+    }
+    // Se marketing false, puoi nascondere/“offuscare” embed terzi
+    // …
+  }
+
+  function openBanner(){ banner.classList.add('open'); }
+  function closeBanner(){ banner.classList.remove('open'); }
+  function openModal(){ modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); }
+  function closeModal(){ modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); }
+
+  // Prime impostazioni dall’archivio
+  const stored = getStored();
+  if (!stored){ openBanner(); }  // mostra il banner solo se manca consenso
+  else { apply(stored.consent); }
+
+  // Pulsanti banner
+  btnAccept.addEventListener('click', ()=>{
+    const consent = { preferences:true, analytics:true, marketing:true };
+    store(consent); apply(consent); closeBanner();
+  });
+  btnDecline.addEventListener('click', ()=>{
+    const consent = { preferences:false, analytics:false, marketing:false };
+    store(consent); apply(consent); closeBanner();
+  });
+  btnCustom.addEventListener('click', ()=>{
+    // precompila gli switch dalla memoria
+    const s = getStored();
+    pref.checked = !!(s && s.consent.preferences);
+    anal.checked = !!(s && s.consent.analytics);
+    mark.checked = !!(s && s.consent.marketing);
+    openModal();
+  });
+
+  // Pulsanti modale
+  btnSave.addEventListener('click', ()=>{
+    const consent = { preferences:pref.checked, analytics:anal.checked, marketing:mark.checked };
+    store(consent); apply(consent); closeModal(); closeBanner();
+  });
+  btnCancel.addEventListener('click', ()=> closeModal());
+  btnRejectAll.addEventListener('click', ()=>{
+    pref.checked = anal.checked = mark.checked = false;
+  });
+
+  // Biscottino: riapre la modale in ogni momento
+  fab.addEventListener('click', ()=>{
+    const s = getStored();
+    pref.checked = !!(s && s.consent.preferences);
+    anal.checked = !!(s && s.consent.analytics);
+    mark.checked = !!(s && s.consent.marketing);
+    openModal();
+  });
+
+  // Evita sovrapposizione con il box di Russell: se collide, sposta a destra
+  function avoidOverlap(){
+    const rb = document.getElementById('russell-box'); /* presente nel tuo file */ 
+    if(!rb) return;
+    const r1 = fab.getBoundingClientRect();
+    const r2 = rb.getBoundingClientRect();
+    const overlap = !(r1.right < r2.left || r1.left > r2.right || r1.bottom < r2.top || r1.top > r2.bottom);
+    if(overlap){
+      fab.style.left = 'auto';
+      fab.style.right = '1.25rem';
+    }else{
+      fab.style.right = 'auto';
+      fab.style.left  = '1.25rem';
+    }
+  }
+  avoidOverlap();
+  window.addEventListener('resize', avoidOverlap);
+  window.addEventListener('scroll', avoidOverlap);
+
+  // ESC chiude la modale
+  document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeModal(); });
+})();
+</script>
+<script>
+/* === Floating Quotes Controller v2 === */
+(function(){
+  var timer = null, idx = 0, paused = false;
+  function qs(a){ return document.querySelector(a); }
+  function qsa(a){ return Array.prototype.slice.call(document.querySelectorAll(a)); }
+  function step(bubbles){
+    if(!bubbles.length) return;
+     document.querySelector('.floating-quotes').style.zIndex = '20';
+    // Remove show from all
+    bubbles.forEach(function(b){ b.classList.remove("show"); });
+    // Add to current
+    bubbles[idx].classList.add("show");
+    idx = (idx + 1) % bubbles.length;
+  }
+  function start(){
+    var bubbles = qsa(".floating-quotes .quote-bubble");
+    if(!bubbles.length) return;
+     document.querySelector('.floating-quotes').style.zIndex = '20';
+    // Sanitize initial: ensure only one .show
+    var any = bubbles.some(function(b){ return b.classList.contains("show"); });
+    if(!any){ idx = 0; }
+    else { idx = (bubbles.findIndex(function(b){ return b.classList.contains("show"); }) + 1) % bubbles.length; }
+    step(bubbles);
+    clearInterval(timer);
+    timer = setInterval(function(){ if(!paused) step(bubbles); }, 8000);
+    // Pause on hover
+    var box = qs(".floating-quotes");
+    if(box){
+      box.addEventListener("mouseenter", function(){ paused = true; });
+      box.addEventListener("mouseleave", function(){ paused = false; });
+    }
+  }
+  // Re-init safe on DOM ready and after 1s (in case of late inserts)
+  if(document.readyState!=="loading") start(); else document.addEventListener("DOMContentLoaded", start);
+  setTimeout(start, 1000);
+})();</script>
 <script>
 /* === Typing Controller v4 - FLUIDO === */
 (function(){
