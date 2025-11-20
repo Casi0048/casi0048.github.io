@@ -1,4 +1,4 @@
-// === SLIDER VERTICALE - Velocità 1–20 con barra colorata ===
+// === SLIDER VERTICALE - Velocità 1–20, barra colorata + numeretto ===
 class VerticalSlider {
     constructor() {
         this.sliderInner = document.getElementById('sliderInner');
@@ -11,28 +11,15 @@ class VerticalSlider {
         this.speed       = 5;
         this.position    = 0;
         this.animationId = null;
-        this.animationSpeed = 120; // valore logico iniziale
+        this.animationSpeed = 120;
 
         this.init();
     }
     
     createSpeedReadout() {
-        const readout = document.createElement('span');
+        const readout = document.createElement('div');
         readout.id = 'speed-readout';
-        readout.textContent = '5';
-        readout.style.cssText = `
-            display: inline-block;
-            min-width: 3.5ch;
-            margin-left: .6rem;
-            padding: .15rem .4rem;
-            border-radius: .5rem;
-            font-variant-numeric: tabular-nums;
-            font-size: .9rem;
-            line-height: 1.1;
-            background: rgba(255,255,255,.15);
-            border: 1px solid rgba(212,175,55,.55);
-            box-shadow: 0 0 6px rgba(255,215,0,.25);
-        `;
+        readout.textContent = 'Velocità: 5 / 20';
         if (this.speedSlider && this.speedSlider.parentNode) {
             this.speedSlider.parentNode.appendChild(readout);
         }
@@ -45,12 +32,9 @@ class VerticalSlider {
             return;
         }
 
-        // Readout numerico a fianco dello slider
         this.speedReadout = document.getElementById('speed-readout') || this.createSpeedReadout();
         
-        // Controlli
         if (this.speedSlider) {
-            // range velocità 1–20
             this.speedSlider.min   = 1;
             this.speedSlider.max   = 20;
             this.speedSlider.value = 5;
@@ -68,20 +52,19 @@ class VerticalSlider {
             this.invertBtn.addEventListener('click', () => this.invert());
         }
 
-        // Imposta velocità iniziale (aggiorna anche barra)
+        // Velocità iniziale (aggiorna anche barra + numeretto)
         this.setSpeed(5);
 
-        // Avvia animazione
         this.startAnimation();
     }
     
     setSpeed(value) {
         this.speed = parseInt(value, 10) || 5;
+
         if (this.speedReadout) {
-            this.speedReadout.textContent = this.speed;
+            this.speedReadout.textContent = `Velocità: ${this.speed} / 20`;
         }
         
-        // Mappa valori a “velocità logica” (più alto = più veloce)
         const speedMap = {
             1: 200,   2: 180,   3: 160,   4: 140,
             5: 120,   6: 100,   7: 80,    8: 60,
@@ -92,12 +75,20 @@ class VerticalSlider {
         
         this.animationSpeed = speedMap[this.speed] || 50;
 
-        // Aggiorna riempimento barra (usa var(--fill) nei CSS)
+        // aggiorna barra
         this.updateSpeedBar();
         
         if (this.isPlaying) {
             this.restartAnimation();
         }
+    }
+
+    // Colore in base alla velocità (opzionale: puoi cambiarli)
+    getSpeedColor() {
+        if (this.speed <= 5)  return '#00ff7f';   // verde
+        if (this.speed <= 10) return '#ffd700';   // giallo
+        if (this.speed <= 15) return '#ffa500';   // arancione
+        return '#ff4500';                         // rosso
     }
 
     updateSpeedBar() {
@@ -107,8 +98,18 @@ class VerticalSlider {
         const max = parseInt(this.speedSlider.max, 10) || 20;
         const val = this.speed;
         const percent = ((val - min) / (max - min)) * 100;
+        const color = this.getSpeedColor();
 
-        this.speedSlider.style.setProperty('--fill', `${percent}%`);
+        // Un solo gradient: parte piena colorata, poi barra neutra
+        this.speedSlider.style.background = `
+          linear-gradient(
+            90deg,
+            ${color} 0%,
+            ${color} ${percent}%,
+            rgba(255,255,255,0.15) ${percent}%,
+            rgba(255,255,255,0.15) 100%
+          )
+        `;
     }
     
     toggle() {
@@ -139,7 +140,6 @@ class VerticalSlider {
         if (this.animationId) return;
         
         const animate = () => {
-            // spostamento proporzionale alla velocità scelta
             this.position += this.direction * (this.speed / 3);
             
             const container = this.sliderInner.parentElement;
@@ -149,7 +149,6 @@ class VerticalSlider {
             const contentHeight   = this.sliderInner.scrollHeight;
             const maxScroll       = Math.max(0, contentHeight - containerHeight);
             
-            // loop continuo
             if (this.position >= maxScroll) {
                 this.position = 0;
             } else if (this.position < 0) {
@@ -175,7 +174,6 @@ class VerticalSlider {
         this.startAnimation();
     }
     
-    // Metodo di debug (puoi usarlo da console: window.verticalSlider.getStatus())
     getStatus() {
         return {
             playing: this.isPlaying,
@@ -187,18 +185,19 @@ class VerticalSlider {
     }
 }
 
-// Inizializza slider quando il DOM è pronto
+// Inizializza slider quando DOM è pronto
 document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         try {
             const slider = new VerticalSlider();
             console.log('✅ Vertical Slider initialized - Speed: 5');
-            window.verticalSlider = slider; // per debug da console
+            window.verticalSlider = slider;
         } catch (error) {
             console.error('❌ Slider initialization failed:', error);
         }
     }, 100);
 });
+
 
 
 /* === SISTEMA DI ESPLOSIONE CORRETTO === */
