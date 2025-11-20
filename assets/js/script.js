@@ -1,4 +1,3 @@
-
 // SLIDER VERTICALE - Velocità iniziale 5
 class VerticalSlider {
     constructor() {
@@ -44,7 +43,6 @@ class VerticalSlider {
         }
         
         this.speedReadout = document.getElementById('speed-readout') || this.createSpeedReadout();
-        
         
         // Event listeners
         this.toggleBtn.addEventListener('click', () => this.toggle());
@@ -177,6 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, 100);
 });
+
 /* === SISTEMA DI ESPLOSIONE CORRETTO === */
 document.addEventListener('DOMContentLoaded', function() {
   let explodingText = document.getElementById('exploding');
@@ -459,6 +458,7 @@ function topRelated(query, exclude, limit = 3) {
     
     return scored;
 }
+
 /*! Dizionario filosofico – handler unico */
 document.addEventListener('DOMContentLoaded', () => {
   const form  = document.getElementById('dict-form');
@@ -509,7 +509,7 @@ function slugifyIT(term) {
   return term
     .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // virtù -> virtu
     .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/[^a-z00\s-]/g, '')
     .trim();
 }
 function treccaniURL(term, section = 'vocabolario') {
@@ -630,8 +630,6 @@ function wikipediaURL(term) {
     const prefersReduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     let animating = false;
 
-    // ... resto del codice invariato ...
-
     function explode(){
         if(prefersReduce || animating) {
             console.log('🚫 Animazione disabilitata (reduced motion o già in corso)');
@@ -665,7 +663,7 @@ function wikipediaURL(term) {
     
     console.log('✅ Sistema esplosione teatrale caricato');
 })();
-/* ===== FINE ESPLOSIONE TEATRALE ===== */
+
 /* ===== PULSANTE TORNA SU (compat Safari) ===== */
 (() => {
   'use strict';
@@ -817,206 +815,7 @@ function initTimelineInteractions() {
   });
 }
 
-    // COLORE IN BASE ALLA VELOCITÀ
-    getSpeedColor() {
-      if (this.speed <= 300) return '#00ff00';     // Verde - veloce
-      if (this.speed <= 700) return '#ffff00';     // Giallo - normale
-      if (this.speed <= 1200) return '#ffa500';    // Arancione - lento
-      return '#ff0000';                            // Rosso - molto lento
-    }
-
-    // FEEDBACK VISIVO CAMBIO VELOCITÀ
-    showSpeedFeedback() {
-      const speedValue = this.speedDisplay.querySelector('.speed-value');
-      speedValue.style.transform = 'scale(1.2)';
-      speedValue.style.transition = 'transform 0.3s ease';
-
-      setTimeout(() => {
-        speedValue.style.transform = 'scale(1)';
-      }, 300);
-    }
-
-    createDots() {
-      this.slides.forEach((_, index) => {
-        const dot = document.createElement('button');
-        dot.className = `slider-dot ${index === 0 ? 'active' : ''}`;
-        dot.innerHTML = `${index + 1}`; // Mostra numero slide
-        dot.setAttribute('title', `Vai alla slide ${index + 1} (${this.speed}ms)`);
-        dot.addEventListener('click', () => this.goToSlide(index));
-        this.dotsContainer.appendChild(dot);
-      });
-    }
-
-    goToSlide(slideIndex) {
-      if (slideIndex < 0) {
-        slideIndex = this.slides.length - 1;
-      } else if (slideIndex >= this.slides.length) {
-        slideIndex = 0;
-      }
-
-      this.currentSlide = slideIndex;
-      const translateY = -slideIndex * this.slideHeight;
-      this.track.style.transform = `translateY(${translateY}px)`;
-
-      this.updateDots();
-
-      // Log con info velocità
-      console.log(`▶️ Slide ${slideIndex + 1} | Velocità: ${this.speed}ms`);
-    }
-
-    nextSlide() {
-      console.log(`⏩ Next slide (${this.speed}ms)`);
-      this.goToSlide(this.currentSlide + 1);
-    }
-
-    prevSlide() {
-      console.log(`⏪ Prev slide (${this.speed}ms)`);
-      this.goToSlide(this.currentSlide - 1);
-    }
-
-    updateDots() {
-      const dots = this.dotsContainer.querySelectorAll('.slider-dot');
-      dots.forEach((dot, index) => {
-        dot.classList.toggle('active', index === this.currentSlide);
-        // Aggiorna tooltip con velocità corrente
-        dot.setAttribute('title', `Vai alla slide ${index + 1} (${this.speed}ms)`);
-      });
-    }
-
-    addTouchEvents() {
-      let startY = 0;
-
-      this.container.addEventListener('touchstart', (e) => {
-        startY = e.touches[0].clientY;
-        // Disabilita transizione durante swipe per fluidità
-        this.track.style.transition = 'none';
-      });
-
-      this.container.addEventListener('touchend', (e) => {
-        const endY = e.changedTouches[0].clientY;
-        const diff = startY - endY;
-
-        // Riabilita transizione
-        this.track.style.transition = `transform ${this.speed}ms ease-in-out`;
-
-        if (Math.abs(diff) > 50) {
-          if (diff > 0) {
-            this.nextSlide();
-          } else {
-            this.prevSlide();
-          }
-        }
-      });
-    }
-
-    startAutoPlay() {
-      this.stopAutoPlay();
-      console.log(`🔁 Autoplay avviato: ${this.autoPlayDelay}ms`);
-
-      this.autoPlayInterval = setInterval(() => {
-        this.nextSlide();
-      }, this.autoPlayDelay);
-    }
-
-    stopAutoPlay() {
-      if (this.autoPlayInterval) {
-        clearInterval(this.autoPlayInterval);
-        this.autoPlayInterval = null;
-        console.log('⏸️ Autoplay fermato');
-      }
-    }
-
-    handleResize() {
-      this.slideHeight = this.container.offsetHeight;
-      this.slides.forEach(slide => {
-        slide.style.height = `${this.slideHeight}px`;
-      });
-      this.goToSlide(this.currentSlide);
-    }
-
-    // METODI PUBBLICI PER CONTROLLO VELOCITÀ
-    setSpeedFast() { this.setSpeed(200); }
-    setSpeedNormal() { this.setSpeed(500); }
-    setSpeedSlow() { this.setSpeed(1000); }
-    setSpeedVerySlow() { this.setSpeed(1500); }
-
-    getCurrentSpeed() {
-      return this.speed;
-    }
-
-    getSpeedInfo() {
-      return {
-        speed: this.speed,
-        autoplayDelay: this.autoPlayDelay,
-        currentSlide: this.currentSlide + 1,
-        totalSlides: this.slides.length
-      };
-    }
-
-    
-    // METODI PUBBLICI PER CONTROLLO VELOCITÀ
-    setSpeedFast() { this.setSpeed(200); }
-    setSpeedNormal() { this.setSpeed(500); }
-    setSpeedSlow() { this.setSpeed(1000); }
-    setSpeedVerySlow() { this.setSpeed(1500); }
-    
-    getCurrentSpeed() {
-        return this.speed;
-    }
-    
-    getSpeedInfo() {
-        return {
-            speed: this.speed,
-            autoplayDelay: this.autoPlayDelay,
-            currentSlide: this.currentSlide + 1,
-            totalSlides: this.slides.length
-        };
-    }
-}
-
-// INIZIALIZZAZIONE E USO
-document.addEventListener('DOMContentLoaded', function() {
-    const slider = new VerticalSlider('.vertical-slider');
-    
-    // Esempio: log info velocità ogni cambio slide
-    document.querySelector('.vertical-slider').addEventListener('slideChange', function(e) {
-        const info = slider.getSpeedInfo();
-        console.log('📊 Info slider:', info);
-    });
-    
-    // Esporta per controllo esterno
-    window.verticalSlider = slider;
-});
-
-// USO DA CONSOLE:
-// verticalSlider.setSpeed(300)       → Imposta velocità 300ms
-// verticalSlider.setSpeedFast()      → Velocità rapida
-// verticalSlider.getCurrentSpeed()   → Ottieni velocità corrente
-// verticalSlider.getSpeedInfo()      → Tutte le info
-
-// Aggiungi al tuo script.js
-document.addEventListener('DOMContentLoaded', function() {
-    const quotes = document.querySelectorAll('.quote-bubble');
-    
-    quotes.forEach(quote => {
-        // Click per rimuovere
-        quote.addEventListener('click', function() {
-            this.classList.add('fade-out');
-            setTimeout(() => {
-                this.style.display = 'none';
-            }, 500);
-        });
-        
-        // Ricomparsa dopo 30 secondi
-        setTimeout(() => {
-            if (quote.style.display === 'none') {
-                quote.style.display = 'block';
-                quote.classList.remove('fade-out');
-            }
-        }, 30000);
-    });
-});
-/* === script paradigmma ========================================================= */
+/* === SCRIPT PARADIGMA ========================================================= */
 document.addEventListener('DOMContentLoaded', function() {
     const btn = document.getElementById('paradigma-btn');
     const overlay = document.getElementById('filosofi-overlay');
@@ -1077,5 +876,28 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.key === 'Escape' && overlay.classList.contains('show')) {
             hideOverlay();
         }
+    });
+});
+
+// QUOTE BUBBLE MANAGEMENT
+document.addEventListener('DOMContentLoaded', function() {
+    const quotes = document.querySelectorAll('.quote-bubble');
+    
+    quotes.forEach(quote => {
+        // Click per rimuovere
+        quote.addEventListener('click', function() {
+            this.classList.add('fade-out');
+            setTimeout(() => {
+                this.style.display = 'none';
+            }, 500);
+        });
+        
+        // Ricomparsa dopo 30 secondi
+        setTimeout(() => {
+            if (quote.style.display === 'none') {
+                quote.style.display = 'block';
+                quote.classList.remove('fade-out');
+            }
+        }, 30000);
     });
 });
