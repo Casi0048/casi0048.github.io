@@ -16,15 +16,18 @@ class VerticalSlider {
         this.init();
     }
     
-    createSpeedReadout() {
-        const readout = document.createElement('div');
-        readout.id = 'speed-readout';
-        readout.textContent = 'Velocità: 5 / 20';
-        if (this.speedSlider && this.speedSlider.parentNode) {
-            this.speedSlider.parentNode.appendChild(readout);
-        }
-        return readout;
+   createSpeedReadout() {
+    const readout = document.createElement('div');
+    readout.id = 'speed-readout';
+    readout.textContent = `Velocità: ${this.speed} / 20`;
+    
+    // ✅ POSIZIONAMENTO CORRETTO - DOPO la barra
+    if (this.speedSlider && this.speedSlider.parentNode) {
+        this.speedSlider.parentNode.appendChild(readout);
     }
+    
+    return readout;
+}
     
     init() {
         if (!this.sliderInner) {
