@@ -897,7 +897,7 @@
     }catch(e){ console.warn('GT init error', e); }
   };
 </script>
-  <script defer="True" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+ <script defer src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 <style id="motto-style-2">
   /* Elegant motto styling with typographic separators */
   .motto { letter-spacing:.105em; }
@@ -2308,204 +2308,270 @@
 <style id="ultimate-explosion-effect">
   /* === ESPLOSIONE ULTIMATE - VERSIONE SPETTACOLARE === */
   .exploding-text {
-  position: relative;
-  cursor: pointer;
-  user-select: none;
-  padding: 0.4rem 1rem;
-  font-weight: 700;
-  border-radius: 15px;
-  background: linear-gradient(145deg, 
-  rgba(255, 215, 0, 0.1), 
-  rgba(0, 204, 255, 0.05),
-  rgba(185, 103, 255, 0.08));
-  border: 1px solid rgba(255, 215, 0, 0.3);
-  color: #3DDC84;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-  display: inline-block;
-  /* Miglioramenti aggiuntivi */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+    padding: 0.4rem 1rem;
+    font-weight: 700;
+    border-radius: 15px;
+    background: linear-gradient(145deg, 
+      rgba(255, 215, 0, 0.1), 
+      rgba(0, 204, 255, 0.05),
+      rgba(185, 103, 255, 0.08));
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    color: #3DDC84;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    display: inline-block;
+    /* Miglioramenti aggiuntivi */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
   }
+  
   .exploding-text:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  border-color: rgba(255, 215, 0, 0.5);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-color: rgba(255, 215, 0, 0.5);
   }
+  
   .exploding-text:active {
-  transform: translateY(0);
-  transition-duration: 0.1s;
+    transform: translateY(0);
+    transition-duration: 0.1s;
   }
+  
   .exploding-text .m-text { 
-  display: inline-block;
-  position: relative;
+    display: inline-block;
+    position: relative;
   }
+  
   .exploding-text.boom-active .m-text {
-  /* effetti di esplosione applicati al testo intero */
-  transform: scale(1.5);
-  opacity: 0;
-  transition: all 0.5s ease;
+    /* effetti di esplosione applicati al testo intero */
+    transform: scale(1.5);
+    opacity: 0;
+    transition: all 0.5s ease;
   }
-  /* STATO ESPLOSIONE - VOLO ESTREMO */
+  
+  /* STATO ESPLOSIONE - VOLO ESTREMO (valori base) */
   .exploding-text.boom-active .char {
-  --dx: calc((var(--index) - 7) * 220px + (Math.random() * 80 - 40));
-  --dy: calc((Math.random() * 200 - 250) * 1px);
-  --dz: calc(Math.random() * 200 - 100px);
-  --rx: calc(Math.random() * 720 - 360deg);
-  --ry: calc(Math.random() * 720 - 360deg);
-  --rz: calc(Math.random() * 720 - 360deg);
-  --scale: calc(0.3 + Math.random() * 0.7);
-  --blur: calc(2px + Math.random() * 4px);
-  --glow: calc(10px + Math.random() * 20px);
-  transform: 
-  translate3d(var(--dx), var(--dy), var(--dz))
-  rotateX(var(--rx)) 
-  rotateY(var(--ry)) 
-  rotateZ(var(--rz)) 
-  scale(var(--scale));
-  opacity: 0;
-  filter: blur(var(--blur)) 
-  drop-shadow(0 0 var(--glow) rgba(255, 215, 0, 0.8));
+    /* I valori casuali verranno applicati via JavaScript */
+    --dx: 0px;
+    --dy: -200px;
+    --dz: 0px;
+    --rx: 0deg;
+    --ry: 0deg;
+    --rz: 0deg;
+    --scale: 0.5;
+    --blur: 3px;
+    --glow: 15px;
+    transform: 
+      translate3d(var(--dx), var(--dy), var(--dz))
+      rotateX(var(--rx)) 
+      rotateY(var(--ry)) 
+      rotateZ(var(--rz)) 
+      scale(var(--scale));
+    opacity: 0;
+    filter: blur(var(--blur)) 
+      drop-shadow(0 0 var(--glow) rgba(255, 215, 0, 0.8));
   }
+  
   /* RICOMPOSIZIONE SPETTACOLARE */
   .exploding-text.boom-recomposing .char {
-  animation: spectacularRecompose 1.8s cubic-bezier(0.2, 1.2, 0.1, 1) both;
-  animation-delay: calc(var(--index) * 0.08s);
+    animation: spectacularRecompose 1.8s cubic-bezier(0.2, 1.2, 0.1, 1) both;
+    animation-delay: calc(var(--index) * 0.08s);
   }
+  
   @keyframes spectacularRecompose {
-  0% {
-  transform: 
-  translate3d(var(--dx, 0), var(--dy, -100px), var(--dz, 0))
-  rotateX(var(--rx, 180deg)) 
-  rotateY(var(--ry, 180deg)) 
-  rotateZ(var(--rz, 180deg)) 
-  scale(0.1);
-  opacity: 0;
-  filter: blur(8px) 
-  drop-shadow(0 0 30px rgba(255, 215, 0, 0.8));
+    0% {
+      transform: 
+        translate3d(var(--dx, 0), var(--dy, -100px), var(--dz, 0))
+        rotateX(var(--rx, 180deg)) 
+        rotateY(var(--ry, 180deg)) 
+        rotateZ(var(--rz, 180deg)) 
+        scale(0.1);
+      opacity: 0;
+      filter: blur(8px) 
+        drop-shadow(0 0 30px rgba(255, 215, 0, 0.8));
+    }
+    20% {
+      opacity: 1;
+      filter: blur(4px) 
+        drop-shadow(0 0 40px rgba(0, 204, 255, 0.9));
+      transform: 
+        translate3d(calc(var(--dx, 0) * 0.3), 
+        calc(var(--dy, -100px) * 0.2), 
+        calc(var(--dz, 0) * 0.3))
+        rotateX(calc(var(--rx, 180deg) * 0.2)) 
+        rotateY(calc(var(--ry, 180deg) * 0.2)) 
+        rotateZ(calc(var(--rz, 180deg) * 0.2)) 
+        scale(1.3);
+    }
+    40% {
+      transform: 
+        translate3d(calc(var(--dx, 0) * 0.1), 
+        calc(var(--dy, -100px) * 0.05), 
+        calc(var(--dz, 0) * 0.1))
+        rotateX(calc(var(--rx, 180deg) * 0.05)) 
+        rotateY(calc(var(--ry, 180deg) * 0.05)) 
+        rotateZ(calc(var(--rz, 180deg) * 0.05)) 
+        scale(1.1);
+      filter: blur(2px) 
+        drop-shadow(0 0 25px rgba(185, 103, 255, 0.8));
+    }
+    60% {
+      transform: 
+        translate3d(0, 0, 0)
+        rotateX(0) 
+        rotateY(0) 
+        rotateZ(0) 
+        scale(1.05);
+      filter: blur(1px) 
+        drop-shadow(0 0 15px rgba(255, 215, 0, 0.6));
+    }
+    80% {
+      transform: scale(0.98);
+      filter: blur(0) 
+        drop-shadow(0 0 8px rgba(0, 204, 255, 0.4));
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+      filter: blur(0) 
+        drop-shadow(0 0 0 transparent);
+    }
   }
-  20% {
-  opacity: 1;
-  filter: blur(4px) 
-  drop-shadow(0 0 40px rgba(0, 204, 255, 0.9));
-  transform: 
-  translate3d(calc(var(--dx, 0) * 0.3), 
-  calc(var(--dy, -100px) * 0.2), 
-  calc(var(--dz, 0) * 0.3))
-  rotateX(calc(var(--rx, 180deg) * 0.2)) 
-  rotateY(calc(var(--ry, 180deg) * 0.2)) 
-  rotateZ(calc(var(--rz, 180deg) * 0.2)) 
-  scale(1.3);
-  }
-  40% {
-  transform: 
-  translate3d(calc(var(--dx, 0) * 0.1), 
-  calc(var(--dy, -100px) * 0.05), 
-  calc(var(--dz, 0) * 0.1))
-  rotateX(calc(var(--rx, 180deg) * 0.05)) 
-  rotateY(calc(var(--ry, 180deg) * 0.05)) 
-  rotateZ(calc(var(--rz, 180deg) * 0.05)) 
-  scale(1.1);
-  filter: blur(2px) 
-  drop-shadow(0 0 25px rgba(185, 103, 255, 0.8));
-  }
-  60% {
-  transform: 
-  translate3d(0, 0, 0)
-  rotateX(0) 
-  rotateY(0) 
-  rotateZ(0) 
-  scale(1.05);
-  filter: blur(1px) 
-  drop-shadow(0 0 15px rgba(255, 215, 0, 0.6));
-  }
-  80% {
-  transform: scale(0.98);
-  filter: blur(0) 
-  drop-shadow(0 0 8px rgba(0, 204, 255, 0.4));
-  }
-  100% {
-  transform: scale(1);
-  opacity: 1;
-  filter: blur(0) 
-  drop-shadow(0 0 0 transparent);
-  }
-  }
+  
   /* EFFETTI SPECIALI AGGIUNTIVI */
   .explosion-shockwave {
-  position: fixed;
-  left: var(--x);
-  top: var(--y);
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: radial-gradient(circle, 
-  rgba(255, 255, 255, 1) 0%,
-  rgba(255, 215, 0, 0.8) 20%,
-  rgba(0, 204, 255, 0.6) 40%,
-  rgba(185, 103, 255, 0.4) 60%,
-  transparent 80%);
-  mix-blend-mode: screen;
-  pointer-events: none;
-  z-index: 2147483602;
-  animation: megaShockwave 1.5s cubic-bezier(0.2, 0.8, 0.1, 1) forwards;
+    position: fixed;
+    left: var(--x);
+    top: var(--y);
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: radial-gradient(circle, 
+      rgba(255, 255, 255, 1) 0%,
+      rgba(255, 215, 0, 0.8) 20%,
+      rgba(0, 204, 255, 0.6) 40%,
+      rgba(185, 103, 255, 0.4) 60%,
+      transparent 80%);
+    mix-blend-mode: screen;
+    pointer-events: none;
+    z-index: 2147483602;
+    animation: megaShockwave 1.5s cubic-bezier(0.2, 0.8, 0.1, 1) forwards;
   }
+  
   @keyframes megaShockwave {
-  0% {
-  transform: translate(-50%, -50%) scale(1);
-  opacity: 1;
+    0% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(150);
+      opacity: 0;
+    }
   }
-  100% {
-  transform: translate(-50%, -50%) scale(150);
-  opacity: 0;
-  }
-  }
+  
   .explosion-particles {
-  position: fixed;
-  left: var(--x);
-  top: var(--y);
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: radial-gradient(circle, 
-  #ffffff, 
-  var(--particle-color, #ffd700));
-  pointer-events: none;
-  z-index: 2147483603;
-  animation: particleFly 2s ease-out forwards;
+    position: fixed;
+    left: var(--x);
+    top: var(--y);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: radial-gradient(circle, 
+      #ffffff, 
+      var(--particle-color, #ffd700));
+    pointer-events: none;
+    z-index: 2147483603;
+    animation: particleFly 2s ease-out forwards;
   }
+  
   @keyframes particleFly {
-  0% {
-  transform: translate(0, 0) scale(1);
-  opacity: 1;
+    0% {
+      transform: translate(0, 0) scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: 
+        translate(var(--p-dx, 200px), var(--p-dy, -200px)) 
+        scale(0);
+      opacity: 0;
+    }
   }
-  100% {
-  transform: 
-  translate(var(--p-dx, 200px), var(--p-dy, -200px)) 
-  scale(0);
-  opacity: 0;
-  }
-  }
+  
   /* SUPPORTO MOBILE MIGLIORATO */
   @media (max-width: 768px) {
+    .exploding-text {
+      padding: 0.8rem 1rem;
+      font-size: 1.1rem;
+    }
+    
+    .exploding-text.boom-active .char {
+      --dx: 0px;
+      --dy: -150px;
+    }
+  }
+  
   .exploding-text {
-  padding: 0.8rem 1rem;
-  font-size: 1.1rem;
-  }
-  .exploding-text.boom-active .char {
-  --dx: calc((var(--index) - 7) * 60px + (Math.random() * 40 - 20));
-  --dy: calc((Math.random() * 150 - 180) * 1px);
-  }
-  }
-  exploding-text {
-  border: 1px solid rgba(255, 215, 0, 0.6) !important;
-  box-shadow: 
-  0 0 0 4px rgba(0, 204, 255, 0.3),
-  inset 0 0 0 1px rgba(255, 215, 0, 0.4) !important;
-  padding: 0.8rem 1rem !important;
-  border-radius: 15px !important;
+    border: 1px solid rgba(255, 215, 0, 0.6) !important;
+    box-shadow: 
+      0 0 0 4px rgba(0, 204, 255, 0.3),
+      inset 0 0 0 1px rgba(255, 215, 0, 0.4) !important;
+    padding: 0.8rem 1rem !important;
+    border-radius: 15px !important;
   }
 </style>
+  <script>
+// JavaScript per l'esplosione
+function applyRandomExplosion() {
+  document.querySelectorAll('.exploding-text.boom-active .char').forEach(char => {
+    const randomDX = (Math.random() * 80 - 40);
+    const randomDY = (Math.random() * 200 - 250);
+    const randomDZ = (Math.random() * 200 - 100);
+    const randomRX = (Math.random() * 720 - 360);
+    const randomRY = (Math.random() * 720 - 360);
+    const randomRZ = (Math.random() * 720 - 360);
+    const randomScale = (0.3 + Math.random() * 0.7);
+    const randomBlur = (2 + Math.random() * 4);
+    const randomGlow = (10 + Math.random() * 20);
+    
+    char.style.setProperty('--dx', `calc((var(--index) - 7) * 220px + ${randomDX}px)`);
+    char.style.setProperty('--dy', `${randomDY}px`);
+    char.style.setProperty('--dz', `${randomDZ}px`);
+    char.style.setProperty('--rx', `${randomRX}deg`);
+    char.style.setProperty('--ry', `${randomRY}deg`);
+    char.style.setProperty('--rz', `${randomRZ}deg`);
+    char.style.setProperty('--scale', randomScale);
+    char.style.setProperty('--blur', `${randomBlur}px`);
+    char.style.setProperty('--glow', `${randomGlow}px`);
+  });
+}
+
+// Funzione per attivare l'esplosione
+function activateExplosion(element) {
+  element.classList.add('boom-active');
+  applyRandomExplosion();
+  
+  setTimeout(() => {
+    element.classList.remove('boom-active');
+    element.classList.add('boom-recomposing');
+    
+    setTimeout(() => {
+      element.classList.remove('boom-recomposing');
+    }, 1800);
+  }, 500);
+}
+
+// Event listener per il click
+document.addEventListener('DOMContentLoaded', function() {
+  const explodingTexts = document.querySelectorAll('.exploding-text');
+  explodingTexts.forEach(text => {
+    text.addEventListener('click', function() {
+      activateExplosion(this);
+    });
+  });
+});
+</script>
 <style id="explosion-theater-css">
   /* === EXPLOSION THEATER (conservative, layered) === */
   /* Stabilizza il box motto per evitare "respiro" al caricamento */
