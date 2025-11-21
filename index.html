@@ -3,6 +3,304 @@
 <head>
   <meta charset="utf-8" />
   <title>Echi di Sofia — Portale di Filosofia</title>
+   <script>
+    // ========== UTILITY SICURE AGGIUNTE ==========
+    // Safe DOM manipulation utility
+    function safeDOMOperation(operation) {
+        try {
+            if (typeof operation === 'function') {
+                return operation();
+            }
+        } catch (error) {
+            console.warn('DOM operation failed:', error.message);
+            return null;
+        }
+    }
+    
+    // Safe element selector
+    function getElementSafe(selector) {
+        return safeDOMOperation(() => {
+            const element = typeof selector === 'string' ? 
+                document.querySelector(selector) : selector;
+            return element && document.body.contains(element) ? element : null;
+        });
+    }
+    
+    // Safe audio play
+    function softPlay(audio, volume, delay) {
+        try {
+            if (!audio) return;
+            audio.volume = volume || 1.0;
+            setTimeout(() => {
+                audio.play().catch(() => {});
+            }, delay || 0);
+        } catch (_) {}
+    }
+    
+    // === GESTIONE EFFECTS CONTROL ===
+    document.addEventListener('DOMContentLoaded', () => {
+        const effects = document.getElementById('effects-ctrl');
+        if (!effects || !document.body.contains(effects)) return;
+        
+        const host = document.querySelector('.topbar, .top-bar, header .menu-desktop, header nav, header, .navbar');
+        if (host && document.body.contains(host)) { 
+            try { 
+                host.appendChild(effects); 
+                effects.style.position = ''; 
+                effects.style.top = ''; 
+                effects.style.right = ''; 
+            } catch (_) {} 
+        }
+    });
+    
+    // === SLIDER VERTICALE - VERSIONE VELOCITÀ MIGLIORATA ===
+    (function(){
+        const inner = document.getElementById('sliderInner');
+        if (!inner) return;
+        
+        let pos = 0;
+        let speed = 0.8; // VELOCITÀ BASE PIÙ ALTA
+        let dir = 1;
+        let running = true;
+        let animationId = null;
+        
+        function step() {
+            if (!running) {
+                animationId = requestAnimationFrame(step);
+                return;
+            }
+            pos += dir * speed;
+            inner.style.transform = `translateY(${-pos}px)`;
+            const total = inner.scrollHeight - inner.clientHeight;
+            if (pos >= total) pos = 0;
+            if (pos < 0) pos = total;
+            animationId = requestAnimationFrame(step);
+        }
+        animationId = requestAnimationFrame(step);
+        
+        const t = document.getElementById('slider-toggle'),
+              i = document.getElementById('slider-invert'),
+              sp = document.getElementById('slider-speed'); // Slider per VELOCITÀ scorrimento
+        
+        t?.addEventListener('click', () => {
+            running = !running;
+            if (running && !animationId) {
+                animationId = requestAnimationFrame(step);
+            }
+        });
+        
+        i?.addEventListener('click', () => dir *= -1);
+        
+        // 🚀 REGOLAZIONE VELOCITÀ SCORRIMENTO (SOLO per lo slider verticale)
+        sp?.addEventListener('input', () => {
+            const v = parseInt(sp.value, 10) || 5;
+            
+            // FORMULA MIGLIORATA: progressione più sensibile per VELOCITÀ SCORRIMENTO
+            if (v <= 6) {
+                speed = 0.2 + (v - 1) * 0.15;
+            } else {
+                speed = 0.2 + (v - 1) * 0.25;
+            }
+            
+            // Aggiorna numeretto velocità SCORRIMENTO se esiste
+            const readout = document.getElementById('speed-readout');
+            if (readout) readout.textContent = `Velocità: ${v} / 20`;
+        });
+        
+        // Inizializza con velocità media SCORRIMENTO
+        if (sp) {
+            sp.value = 8;
+            sp.dispatchEvent(new Event('input'));
+        }
+    })();
+    
+    // === AUDIO PLAYER (VOLUME SEPARATO) ===
+    window.addEventListener('load', () => {
+        const a = document.getElementById('myAudio'),
+              btn = document.getElementById('playPause'),
+              tm = document.getElementById('time'),
+              v = document.getElementById('volume'); // Slider per VOLUME audio
+        
+        if (!a || !btn) return;
+        
+        function formatTime(seconds) {
+            if (!isFinite(seconds)) return '0:00';
+            const m = Math.floor(seconds / 60),
+                  c = Math.floor(seconds % 60);
+            return m + ':' + (c < 10 ? '0' + c : c);
+        }
+        
+        function updateTime() {
+            tm.textContent = `${formatTime(a.currentTime)} / ${formatTime(a.duration)}`;
+        }
+        
+        // INIZIALIZZA VOLUME (separato dalla velocità scorrimento)
+        v.value = 0.8;
+        a.volume = parseFloat(v.value);
+        
+        // CONTROLLO VOLUME AUDIO (solo per l'audio player)
+        v.addEventListener('input', () => {
+            a.volume = parseFloat(v.value);
+            
+            // Aggiorna numeretto volume se esiste
+            const volumeReadout = document.getElementById('volume-readout');
+            if (volumeReadout) {
+                const volumePercent = Math.round(v.value * 100);
+                volumeReadout.textContent = `Volume: ${volumePercent}%`;
+            }
+        });
+        
+        btn.addEventListener('click', () => {
+            if (a.paused) {
+                a.play().catch(() => {});
+                btn.textContent = '⏸️';
+            } else {
+                a.pause();
+                btn.textContent = '▶️';
+            }
+        });
+        
+        a.addEventListener('timeupdate', updateTime);
+        a.addEventListener('loadedmetadata', updateTime);
+        a.addEventListener('ended', () => { btn.textContent = '▶️'; });
+    });
+    
+    // === RUSSELL AUDIO UNLOCK ===
+    (function(){
+        const b = document.getElementById('russell-btn'),
+              h = document.getElementById('russell-hint'),
+              a = document.getElementById('russell-audio');
+        
+        if (!b || !a) return;
+        
+        let unlocked = false;
+        
+        function unlockAudio() {
+            if (unlocked) return;
+            unlocked = true;
+            a.muted = false;
+            a.play().then(() => {
+                a.pause();
+                a.currentTime = 0;
+            }).catch(() => {});
+            
+            window.removeEventListener('pointerdown', unlockAudio, { capture: true });
+            window.removeEventListener('keydown', unlockAudio, { capture: true });
+        }
+        
+        window.addEventListener('pointerdown', unlockAudio, { once: true, capture: true, passive: true });
+        window.addEventListener('keydown', unlockAudio, { once: true, capture: true });
+        
+        b.addEventListener('click', () => {
+            try {
+                a.currentTime = 0;
+                a.play().catch(() => {});
+            } catch (_) {}
+        });
+    })();
+    
+    // === THUNDER EFFECT ===
+    (function(){
+        const btn = document.getElementById('btn-thunder'),
+              th = document.getElementById('thunder-sound'),
+              ex = document.getElementById('explosionSound'),
+              ov = document.getElementById('lightning'),
+              bo = document.getElementById('bolt');
+        
+        if (!btn || !th || !ov || !bo) return;
+        
+        let unlocked = false;
+        
+        async function unlockOnce() {
+            if (unlocked) return;
+            unlocked = true;
+            for (const s of [th, ex]) {
+                try {
+                    s.muted = false;
+                    await s.play();
+                    s.pause();
+                    s.currentTime = 0;
+                } catch (_) {}
+            }
+        }
+        
+        window.addEventListener('pointerdown', unlockOnce, { once: true, passive: true, capture: true });
+        window.addEventListener('keydown', unlockOnce, { once: true, capture: true });
+        
+        let thunderOn = false;
+        
+        function updateButton() {
+            btn.classList.toggle('active', thunderOn);
+            btn.setAttribute('aria-pressed', thunderOn ? 'true' : 'false');
+            btn.textContent = thunderOn ? '⚡ Tuono: ON' : '⚡ Tuono';
+        }
+        
+        btn.addEventListener('click', e => {
+            e.preventDefault();
+            thunderOn = !thunderOn;
+            if (thunderOn) {
+                try {
+                    th.currentTime = 0;
+                    softPlay(th, 1.0, 140);
+                } catch (_) {}
+            } else {
+                try {
+                    th.pause();
+                    th.currentTime = 0;
+                } catch (_) {}
+            }
+            updateButton();
+        });
+        
+        updateButton();
+        
+        function flash() {
+            const x = 15 + Math.random() * 70,
+                  y = 10 + Math.random() * 65,
+                  ang = -25 + Math.random() * 50,
+                  sy = 0.8 + Math.random() * 1.2;
+            
+            ov.style.transition = 'none';
+            ov.offsetHeight; // Trigger reflow
+            ov.style.background = `radial-gradient(circle at ${x}% ${y}%, rgba(255,255,255,.95), rgba(255,255,255,.22) 40%, transparent 65%)`;
+            ov.style.opacity = '1';
+            ov.style.transition = 'opacity 80ms ease-out';
+            setTimeout(() => ov.style.opacity = '0', 140);
+            
+            bo.style.left = x + '%';
+            bo.style.top = y + '%';
+            bo.style.transform = `translate(-50%,-50%) rotate(${ang}deg) scaleY(${sy})`;
+            bo.style.transition = 'transform 90ms ease-out, opacity 280ms ease-out';
+            bo.style.opacity = '1';
+            setTimeout(() => bo.style.opacity = '0', 180);
+            
+            if (thunderOn) {
+                try {
+                    th.currentTime = 0;
+                    softPlay(th, 1.0, 140);
+                } catch (_) {}
+            }
+        }
+        
+        function scheduleFlash() {
+            setTimeout(() => {
+                flash();
+                scheduleFlash();
+            }, 10000 + Math.random() * 5000);
+        }
+        
+        scheduleFlash();
+        
+        document.getElementById('explode-btn')?.addEventListener('click', () => {
+            try {
+                ex.muted = false;
+                ex.volume = 1.0;
+                ex.currentTime = 0;
+                softPlay(ex, 1.0, 140);
+            } catch (_) {}
+        });
+    })();
+</script>
   <!-- ESSENZIALI -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Esplora il pensiero filosofico attraverso i secoli. Autori, correnti, timeline interattiva e risorse per approfondire." />
@@ -7874,304 +8172,7 @@ border: 1px solid color-mix(in srgb, var(--accent) 70%, #000 30%)
 });
 
   </script>
-  <script>
-    // ========== UTILITY SICURE AGGIUNTE ==========
-    // Safe DOM manipulation utility
-    function safeDOMOperation(operation) {
-        try {
-            if (typeof operation === 'function') {
-                return operation();
-            }
-        } catch (error) {
-            console.warn('DOM operation failed:', error.message);
-            return null;
-        }
-    }
-    
-    // Safe element selector
-    function getElementSafe(selector) {
-        return safeDOMOperation(() => {
-            const element = typeof selector === 'string' ? 
-                document.querySelector(selector) : selector;
-            return element && document.body.contains(element) ? element : null;
-        });
-    }
-    
-    // Safe audio play
-    function softPlay(audio, volume, delay) {
-        try {
-            if (!audio) return;
-            audio.volume = volume || 1.0;
-            setTimeout(() => {
-                audio.play().catch(() => {});
-            }, delay || 0);
-        } catch (_) {}
-    }
-    
-    // === GESTIONE EFFECTS CONTROL ===
-    document.addEventListener('DOMContentLoaded', () => {
-        const effects = document.getElementById('effects-ctrl');
-        if (!effects || !document.body.contains(effects)) return;
-        
-        const host = document.querySelector('.topbar, .top-bar, header .menu-desktop, header nav, header, .navbar');
-        if (host && document.body.contains(host)) { 
-            try { 
-                host.appendChild(effects); 
-                effects.style.position = ''; 
-                effects.style.top = ''; 
-                effects.style.right = ''; 
-            } catch (_) {} 
-        }
-    });
-    
-    // === SLIDER VERTICALE - VERSIONE VELOCITÀ MIGLIORATA ===
-    (function(){
-        const inner = document.getElementById('sliderInner');
-        if (!inner) return;
-        
-        let pos = 0;
-        let speed = 0.8; // VELOCITÀ BASE PIÙ ALTA
-        let dir = 1;
-        let running = true;
-        let animationId = null;
-        
-        function step() {
-            if (!running) {
-                animationId = requestAnimationFrame(step);
-                return;
-            }
-            pos += dir * speed;
-            inner.style.transform = `translateY(${-pos}px)`;
-            const total = inner.scrollHeight - inner.clientHeight;
-            if (pos >= total) pos = 0;
-            if (pos < 0) pos = total;
-            animationId = requestAnimationFrame(step);
-        }
-        animationId = requestAnimationFrame(step);
-        
-        const t = document.getElementById('slider-toggle'),
-              i = document.getElementById('slider-invert'),
-              sp = document.getElementById('slider-speed'); // Slider per VELOCITÀ scorrimento
-        
-        t?.addEventListener('click', () => {
-            running = !running;
-            if (running && !animationId) {
-                animationId = requestAnimationFrame(step);
-            }
-        });
-        
-        i?.addEventListener('click', () => dir *= -1);
-        
-        // 🚀 REGOLAZIONE VELOCITÀ SCORRIMENTO (SOLO per lo slider verticale)
-        sp?.addEventListener('input', () => {
-            const v = parseInt(sp.value, 10) || 5;
-            
-            // FORMULA MIGLIORATA: progressione più sensibile per VELOCITÀ SCORRIMENTO
-            if (v <= 6) {
-                speed = 0.2 + (v - 1) * 0.15;
-            } else {
-                speed = 0.2 + (v - 1) * 0.25;
-            }
-            
-            // Aggiorna numeretto velocità SCORRIMENTO se esiste
-            const readout = document.getElementById('speed-readout');
-            if (readout) readout.textContent = `Velocità: ${v} / 20`;
-        });
-        
-        // Inizializza con velocità media SCORRIMENTO
-        if (sp) {
-            sp.value = 8;
-            sp.dispatchEvent(new Event('input'));
-        }
-    })();
-    
-    // === AUDIO PLAYER (VOLUME SEPARATO) ===
-    window.addEventListener('load', () => {
-        const a = document.getElementById('myAudio'),
-              btn = document.getElementById('playPause'),
-              tm = document.getElementById('time'),
-              v = document.getElementById('volume'); // Slider per VOLUME audio
-        
-        if (!a || !btn) return;
-        
-        function formatTime(seconds) {
-            if (!isFinite(seconds)) return '0:00';
-            const m = Math.floor(seconds / 60),
-                  c = Math.floor(seconds % 60);
-            return m + ':' + (c < 10 ? '0' + c : c);
-        }
-        
-        function updateTime() {
-            tm.textContent = `${formatTime(a.currentTime)} / ${formatTime(a.duration)}`;
-        }
-        
-        // INIZIALIZZA VOLUME (separato dalla velocità scorrimento)
-        v.value = 0.8;
-        a.volume = parseFloat(v.value);
-        
-        // CONTROLLO VOLUME AUDIO (solo per l'audio player)
-        v.addEventListener('input', () => {
-            a.volume = parseFloat(v.value);
-            
-            // Aggiorna numeretto volume se esiste
-            const volumeReadout = document.getElementById('volume-readout');
-            if (volumeReadout) {
-                const volumePercent = Math.round(v.value * 100);
-                volumeReadout.textContent = `Volume: ${volumePercent}%`;
-            }
-        });
-        
-        btn.addEventListener('click', () => {
-            if (a.paused) {
-                a.play().catch(() => {});
-                btn.textContent = '⏸️';
-            } else {
-                a.pause();
-                btn.textContent = '▶️';
-            }
-        });
-        
-        a.addEventListener('timeupdate', updateTime);
-        a.addEventListener('loadedmetadata', updateTime);
-        a.addEventListener('ended', () => { btn.textContent = '▶️'; });
-    });
-    
-    // === RUSSELL AUDIO UNLOCK ===
-    (function(){
-        const b = document.getElementById('russell-btn'),
-              h = document.getElementById('russell-hint'),
-              a = document.getElementById('russell-audio');
-        
-        if (!b || !a) return;
-        
-        let unlocked = false;
-        
-        function unlockAudio() {
-            if (unlocked) return;
-            unlocked = true;
-            a.muted = false;
-            a.play().then(() => {
-                a.pause();
-                a.currentTime = 0;
-            }).catch(() => {});
-            
-            window.removeEventListener('pointerdown', unlockAudio, { capture: true });
-            window.removeEventListener('keydown', unlockAudio, { capture: true });
-        }
-        
-        window.addEventListener('pointerdown', unlockAudio, { once: true, capture: true, passive: true });
-        window.addEventListener('keydown', unlockAudio, { once: true, capture: true });
-        
-        b.addEventListener('click', () => {
-            try {
-                a.currentTime = 0;
-                a.play().catch(() => {});
-            } catch (_) {}
-        });
-    })();
-    
-    // === THUNDER EFFECT ===
-    (function(){
-        const btn = document.getElementById('btn-thunder'),
-              th = document.getElementById('thunder-sound'),
-              ex = document.getElementById('explosionSound'),
-              ov = document.getElementById('lightning'),
-              bo = document.getElementById('bolt');
-        
-        if (!btn || !th || !ov || !bo) return;
-        
-        let unlocked = false;
-        
-        async function unlockOnce() {
-            if (unlocked) return;
-            unlocked = true;
-            for (const s of [th, ex]) {
-                try {
-                    s.muted = false;
-                    await s.play();
-                    s.pause();
-                    s.currentTime = 0;
-                } catch (_) {}
-            }
-        }
-        
-        window.addEventListener('pointerdown', unlockOnce, { once: true, passive: true, capture: true });
-        window.addEventListener('keydown', unlockOnce, { once: true, capture: true });
-        
-        let thunderOn = false;
-        
-        function updateButton() {
-            btn.classList.toggle('active', thunderOn);
-            btn.setAttribute('aria-pressed', thunderOn ? 'true' : 'false');
-            btn.textContent = thunderOn ? '⚡ Tuono: ON' : '⚡ Tuono';
-        }
-        
-        btn.addEventListener('click', e => {
-            e.preventDefault();
-            thunderOn = !thunderOn;
-            if (thunderOn) {
-                try {
-                    th.currentTime = 0;
-                    softPlay(th, 1.0, 140);
-                } catch (_) {}
-            } else {
-                try {
-                    th.pause();
-                    th.currentTime = 0;
-                } catch (_) {}
-            }
-            updateButton();
-        });
-        
-        updateButton();
-        
-        function flash() {
-            const x = 15 + Math.random() * 70,
-                  y = 10 + Math.random() * 65,
-                  ang = -25 + Math.random() * 50,
-                  sy = 0.8 + Math.random() * 1.2;
-            
-            ov.style.transition = 'none';
-            ov.offsetHeight; // Trigger reflow
-            ov.style.background = `radial-gradient(circle at ${x}% ${y}%, rgba(255,255,255,.95), rgba(255,255,255,.22) 40%, transparent 65%)`;
-            ov.style.opacity = '1';
-            ov.style.transition = 'opacity 80ms ease-out';
-            setTimeout(() => ov.style.opacity = '0', 140);
-            
-            bo.style.left = x + '%';
-            bo.style.top = y + '%';
-            bo.style.transform = `translate(-50%,-50%) rotate(${ang}deg) scaleY(${sy})`;
-            bo.style.transition = 'transform 90ms ease-out, opacity 280ms ease-out';
-            bo.style.opacity = '1';
-            setTimeout(() => bo.style.opacity = '0', 180);
-            
-            if (thunderOn) {
-                try {
-                    th.currentTime = 0;
-                    softPlay(th, 1.0, 140);
-                } catch (_) {}
-            }
-        }
-        
-        function scheduleFlash() {
-            setTimeout(() => {
-                flash();
-                scheduleFlash();
-            }, 10000 + Math.random() * 5000);
-        }
-        
-        scheduleFlash();
-        
-        document.getElementById('explode-btn')?.addEventListener('click', () => {
-            try {
-                ex.muted = false;
-                ex.volume = 1.0;
-                ex.currentTime = 0;
-                softPlay(ex, 1.0, 140);
-            } catch (_) {}
-        });
-    })();
-</script>
+ 
 </body>
 </html>
 
