@@ -2306,7 +2306,7 @@
   }
 </style>
 <style id="ultimate-explosion-effect">
-  /* === ESPLOSIONE ULTIMATE - VERSIONE SPETTACOLARE === */
+  /* === ESPLOSIONE ULTIMATE - VERSIONE SPETTACOLARE (VALIDA) === */
   .exploding-text {
     position: relative;
     cursor: pointer;
@@ -2314,10 +2314,12 @@
     padding: 0.4rem 1rem;
     font-weight: 700;
     border-radius: 15px;
-    background: linear-gradient(145deg, 
-      rgba(255, 215, 0, 0.1), 
+    background: linear-gradient(
+      145deg,
+      rgba(255, 215, 0, 0.1),
       rgba(0, 204, 255, 0.05),
-      rgba(185, 103, 255, 0.08));
+      rgba(185, 103, 255, 0.08)
+    );
     border: 1px solid rgba(255, 215, 0, 0.3);
     color: #3DDC84;
     backdrop-filter: blur(10px);
@@ -2327,119 +2329,131 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
   }
-  
+
   .exploding-text:hover {
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     border-color: rgba(255, 215, 0, 0.5);
   }
-  
+
   .exploding-text:active {
     transform: translateY(0);
     transition-duration: 0.1s;
   }
-  
+
   .exploding-text .m-text { 
     display: inline-block;
     position: relative;
   }
-  
+
   .exploding-text.boom-active .m-text {
     /* effetti di esplosione applicati al testo intero */
     transform: scale(1.5);
     opacity: 0;
     transition: all 0.5s ease;
   }
-  
-  /* STATO ESPLOSIONE - VOLO ESTREMO (valori base) */
+
+  /* STATO ESPLOSIONE - VOLO ESTREMO (SENZA Math.random) */
   .exploding-text.boom-active .char {
-    /* I valori casuali verranno applicati via JavaScript */
-    --dx: 0px;
-    --dy: -200px;
+    /* distribuiamo i caratteri nello spazio in base all'indice */
+    --dx: calc((var(--index, 0) - 7) * 26px);
+    --dy: calc((7 - var(--index, 0)) * 10px);
     --dz: 0px;
-    --rx: 0deg;
-    --ry: 0deg;
-    --rz: 0deg;
-    --scale: 0.5;
-    --blur: 3px;
-    --glow: 15px;
-    transform: 
+    --rx: calc((var(--index, 0) - 7) * 8deg);
+    --ry: calc((7 - var(--index, 0)) * 6deg);
+    --rz: calc((var(--index, 0) - 7) * 10deg);
+    --scale: 0.7;
+    --blur: 4px;
+    --glow: 24px;
+
+    transform:
       translate3d(var(--dx), var(--dy), var(--dz))
-      rotateX(var(--rx)) 
-      rotateY(var(--ry)) 
-      rotateZ(var(--rz)) 
+      rotateX(var(--rx))
+      rotateY(var(--ry))
+      rotateZ(var(--rz))
       scale(var(--scale));
     opacity: 0;
-    filter: blur(var(--blur)) 
+    filter:
+      blur(var(--blur))
       drop-shadow(0 0 var(--glow) rgba(255, 215, 0, 0.8));
   }
-  
+
   /* RICOMPOSIZIONE SPETTACOLARE */
   .exploding-text.boom-recomposing .char {
     animation: spectacularRecompose 1.8s cubic-bezier(0.2, 1.2, 0.1, 1) both;
-    animation-delay: calc(var(--index) * 0.08s);
+    animation-delay: calc(var(--index, 0) * 0.08s);
   }
-  
+
   @keyframes spectacularRecompose {
     0% {
-      transform: 
+      transform:
         translate3d(var(--dx, 0), var(--dy, -100px), var(--dz, 0))
-        rotateX(var(--rx, 180deg)) 
-        rotateY(var(--ry, 180deg)) 
-        rotateZ(var(--rz, 180deg)) 
+        rotateX(var(--rx, 180deg))
+        rotateY(var(--ry, 180deg))
+        rotateZ(var(--rz, 180deg))
         scale(0.1);
       opacity: 0;
-      filter: blur(8px) 
+      filter:
+        blur(8px)
         drop-shadow(0 0 30px rgba(255, 215, 0, 0.8));
     }
     20% {
       opacity: 1;
-      filter: blur(4px) 
+      filter:
+        blur(4px)
         drop-shadow(0 0 40px rgba(0, 204, 255, 0.9));
-      transform: 
-        translate3d(calc(var(--dx, 0) * 0.3), 
-        calc(var(--dy, -100px) * 0.2), 
-        calc(var(--dz, 0) * 0.3))
-        rotateX(calc(var(--rx, 180deg) * 0.2)) 
-        rotateY(calc(var(--ry, 180deg) * 0.2)) 
-        rotateZ(calc(var(--rz, 180deg) * 0.2)) 
+      transform:
+        translate3d(
+          calc(var(--dx, 0) * 0.3),
+          calc(var(--dy, -100px) * 0.2),
+          calc(var(--dz, 0) * 0.3)
+        )
+        rotateX(calc(var(--rx, 180deg) * 0.2))
+        rotateY(calc(var(--ry, 180deg) * 0.2))
+        rotateZ(calc(var(--rz, 180deg) * 0.2))
         scale(1.3);
     }
     40% {
-      transform: 
-        translate3d(calc(var(--dx, 0) * 0.1), 
-        calc(var(--dy, -100px) * 0.05), 
-        calc(var(--dz, 0) * 0.1))
-        rotateX(calc(var(--rx, 180deg) * 0.05)) 
-        rotateY(calc(var(--ry, 180deg) * 0.05)) 
-        rotateZ(calc(var(--rz, 180deg) * 0.05)) 
+      transform:
+        translate3d(
+          calc(var(--dx, 0) * 0.1),
+          calc(var(--dy, -100px) * 0.05),
+          calc(var(--dz, 0) * 0.1)
+        )
+        rotateX(calc(var(--rx, 180deg) * 0.05))
+        rotateY(calc(var(--ry, 180deg) * 0.05))
+        rotateZ(calc(var(--rz, 180deg) * 0.05))
         scale(1.1);
-      filter: blur(2px) 
+      filter:
+        blur(2px)
         drop-shadow(0 0 25px rgba(185, 103, 255, 0.8));
     }
     60% {
-      transform: 
+      transform:
         translate3d(0, 0, 0)
-        rotateX(0) 
-        rotateY(0) 
-        rotateZ(0) 
+        rotateX(0)
+        rotateY(0)
+        rotateZ(0)
         scale(1.05);
-      filter: blur(1px) 
+      filter:
+        blur(1px)
         drop-shadow(0 0 15px rgba(255, 215, 0, 0.6));
     }
     80% {
       transform: scale(0.98);
-      filter: blur(0) 
+      filter:
+        blur(0)
         drop-shadow(0 0 8px rgba(0, 204, 255, 0.4));
     }
     100% {
       transform: scale(1);
       opacity: 1;
-      filter: blur(0) 
+      filter:
+        blur(0)
         drop-shadow(0 0 0 transparent);
     }
   }
-  
+
   /* EFFETTI SPECIALI AGGIUNTIVI */
   .explosion-shockwave {
     position: fixed;
@@ -2448,18 +2462,20 @@
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    background: radial-gradient(circle, 
+    background: radial-gradient(
+      circle,
       rgba(255, 255, 255, 1) 0%,
       rgba(255, 215, 0, 0.8) 20%,
       rgba(0, 204, 255, 0.6) 40%,
       rgba(185, 103, 255, 0.4) 60%,
-      transparent 80%);
+      transparent 80%
+    );
     mix-blend-mode: screen;
     pointer-events: none;
     z-index: 2147483602;
     animation: megaShockwave 1.5s cubic-bezier(0.2, 0.8, 0.1, 1) forwards;
   }
-  
+
   @keyframes megaShockwave {
     0% {
       transform: translate(-50%, -50%) scale(1);
@@ -2470,7 +2486,7 @@
       opacity: 0;
     }
   }
-  
+
   .explosion-particles {
     position: fixed;
     left: var(--x);
@@ -2478,40 +2494,50 @@
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: radial-gradient(circle, 
-      #ffffff, 
-      var(--particle-color, #ffd700));
+    background: radial-gradient(circle, #ffffff, var(--particle-color, #ffd700));
     pointer-events: none;
     z-index: 2147483603;
     animation: particleFly 2s ease-out forwards;
   }
-  
+
   @keyframes particleFly {
     0% {
       transform: translate(0, 0) scale(1);
       opacity: 1;
     }
     100% {
-      transform: 
-        translate(var(--p-dx, 200px), var(--p-dy, -200px)) 
+      transform:
+        translate(var(--p-dx, 200px), var(--p-dy, -200px))
         scale(0);
       opacity: 0;
     }
   }
-  
+
   /* SUPPORTO MOBILE MIGLIORATO */
   @media (max-width: 768px) {
     .exploding-text {
       padding: 0.8rem 1rem;
       font-size: 1.1rem;
     }
-    
+
+    /* su mobile amplitudine minore, ma SEMPRE senza Math.random */
     .exploding-text.boom-active .char {
-      --dx: 0px;
-      --dy: -150px;
+      --dx: calc((var(--index, 0) - 7) * 18px);
+      --dy: -60px;
     }
   }
-  
+
+  /* stile extra per il box principale */
+  .exploding-text {
+    border: 1px solid rgba(255, 215, 0, 0.6) !important;
+    box-shadow:
+      0 0 0 4px rgba(0, 204, 255, 0.3),
+      inset 0 0 0 1px rgba(255, 215, 0, 0.4) !important;
+    padding: 0.8rem 1rem !important;
+    border-radius: 15px !important;
+  }
+</style>
+
   .exploding-text {
     border: 1px solid rgba(255, 215, 0, 0.6) !important;
     box-shadow: 
