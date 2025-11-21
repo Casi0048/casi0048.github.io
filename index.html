@@ -641,65 +641,89 @@
 <script id="search-config">
   // prova prima l’URL del tuo dominio, poi i fallback relativi
   window.SEARCH_INDEX_URLS = [
-    'https://www.echidisofia.org/search-index.json?v=20251106',
+    'https://www.echidisofia.org/search-index.json?v=20251116',
     'search-index.json?v=20251116',
     '/assets/search-index.json?v=20251116'
   ];
 </script>
 <style id="search-clear-btn">
   /* Assicura il contesto */
-  .search-container{ position:relative; z-index:3001; }
+  .search-container{ 
+    position:relative; 
+    z-index:3001; 
+  }
+  
   /* Lascia spazio a lente + bottone clear */
   #site-search{
-  padding-right: 3.8rem;   /*  X a destra + lente un po' più a sinistra */
-  position: relative; z-index:3002;
+    padding-right: 3.8rem;   /*  X a destra + lente un po' più a sinistra */
+    position: relative; 
+    z-index:3002;
   }
-  /* Lente: decorativa, dentro il box (se la usi) */
+  
+  /* Lente: decorativa, dentro il box */
   .search-container .search-icon{
-  position:absolute; right:2.2rem; top:50%; transform:translateY(-50%);
-  font-size:1.05rem; line-height:1; color:var(--gold,#d4af37);
-  opacity:.95; pointer-events:none; z-index:3003;
+    position:absolute; 
+    right:2.2rem; 
+    top:50%; 
+    transform:translateY(-50%);
+    font-size:1.05rem; 
+    line-height:1; 
+    color:var(--gold,#d4af37);
+    opacity:.95; 
+    pointer-events:none; 
+    z-index:3003;
   }
-  /* Nascondi la ❌ nativa (così non fa confusione) */
+  
+  /* Nascondi la ❌ nativa */
   #site-search::-webkit-search-cancel-button{
-  -webkit-appearance:none; display:none !important;
+    -webkit-appearance:none; 
+    display:none !important;
   }
-  /* Bottone CLEAR custom (oro) */
+  
+  /* Bottone CLEAR custom (cerchietto) */
   .clear-search{
-  position:absolute; right:.6rem; top:50%; transform:translateY(-50%);
-  width:22px; height:22px; border-radius:50%;
-  background: var(--gold,#d4af37) !important;
-  border:none; padding:0; margin:0;
-  display:none; align-items:center; justify-content:center;
-  cursor:pointer; z-index:3004;
+    position:absolute; 
+    right:.6rem; 
+    top:50%; 
+    transform:translateY(-50%);
+    width:22px; 
+    height:22px; 
+    border-radius:50%;
+    background: var(--gold,#d4af37);
+    border:none; 
+    padding:0; 
+    margin:0;
+    display:none; 
+    align-items:center; 
+    justify-content:center;
+    cursor:pointer; 
+    z-index:3004;
   }
-  /* Icona con mask SVG (bordo morbido) */
+  
+  /* Icona X semplice, niente mask */
   .clear-search::before{
-  content:""; display:block; width:14px; height:14px;
-  background:#0b1022;
-  -webkit-mask: url('data:image/svg+xml;utf8,\
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-    \
-    <path d="M6 6L18 18M6 18L18 6" stroke="white" stroke-width="3" stroke-linecap="round"/>
-    \
-  </svg>
-  ') no-repeat center / 100% 100%;
-  mask: url('data:image/svg+xml;utf8,\
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-    \
-    <path d="M6 6L18 18M6 18L18 6" stroke="white" stroke-width="3" stroke-linecap="round"/>
-    \
-  </svg>
-  ') no-repeat center / 100% 100%;
+    content:"×";
+    display:block;
+    font-size:14px;
+    line-height:1;
+    font-weight:700;
+    color:#0b1022;  /* dentro il cerchietto oro */
   }
-  /* Mostra il bottone se c’è testo (CSS-only sui browser che supportano :has) */
-  .search-container:has(#site-search:not(:placeholder-shown)) .clear-search{ display:flex; }
-  .search-container:has(#site-search[value]:not([value=""])) .clear-search{ display:flex; }
-  /* Mobile: tutto ok anche a tutta larghezza */
+  
+  /* Mostra il bottone se c’è testo (browser con :has) */
+  .search-container:has(#site-search:not(:placeholder-shown)) .clear-search{ 
+    display:flex; 
+  }
+  .search-container:has(#site-search[value]:not([value=""])) .clear-search{ 
+    display:flex; 
+  }
+  
+  /* Mobile */
   @media (max-width:900px){
-  #site-search{ padding-right:3.8rem; }
+    #site-search{ padding-right:3.8rem; }
   }
 </style>
+
 <style id="cookie-consent-css">
   :root{
   --cc-bg: rgba(10,10,30,.96);
@@ -3729,9 +3753,12 @@
     placeholder="Cerca nel sito..."
     aria-label="Cerca"
   >
-  <!-- Bottone per pulire il campo -->
-  <button type="button" class="clear-search" aria-label="Pulisci ricerca">×</button>
   
+  <!-- Bottone per pulire -->
+  <button type="button" class="clear-search" aria-label="Pulisci ricerca">
+    &times;
+  </button>
+
   <i class="fa-solid fa-magnifying-glass search-icon" aria-hidden="true"></i>
 </div>
       <button aria-label="Cambia tema" class="ctrl-btn theme-btn" id="theme-toggle" title="Tema chiaro/scuro">
