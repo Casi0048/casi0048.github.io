@@ -1,3 +1,6 @@
+
+
+
 // === SLIDER VERTICALE - Velocità 1–20, barra colorata + numeretto ===
 class VerticalSlider {
     constructor() {
@@ -1070,7 +1073,17 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+/* ---- Config rapida ---- */
+const TRECCANI_SECTION = 'vocabolario'; // oppure 'enciclopedia'
 
+/* ---- Helpers ---- */
+function slugifyIT(term) {
+  return term
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // virtù -> virtu
+    .toLowerCase()
+    .replace(/[^a-z00\s-]/g, '')
+    .trim();
+}
 
 
 // === PULSANTE TORNA SU ===
@@ -1409,6 +1422,7 @@ sp?.addEventListener('input', () => {
   } else {
     speed = 0.2 + (v - 1) * 0.25;
   }
+  
   // AGGIORNA NUMERETTO
   const readout = document.getElementById('speed-readout');
   if(readout) readout.textContent = v;
@@ -1417,3 +1431,9 @@ sp?.addEventListener('input', () => {
   const readout = document.getElementById('speed-readout');
   if(readout) readout.textContent = v;
 });
+  // AGGIORNA NUMERETTO
+  const readout = document.getElementById('speed-readout');
+  if(readout) readout.textContent = v;
+});
+
+  
