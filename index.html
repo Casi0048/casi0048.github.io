@@ -679,49 +679,59 @@
     -webkit-appearance:none; 
     display:none !important;
   }
-  
-  /* Bottone CLEAR custom (cerchietto) */
-  .clear-search{
-    position:absolute; 
-    right:.6rem; 
-    top:50%; 
-    transform:translateY(-50%);
-    width:22px; 
-    height:22px; 
-    border-radius:50%;
-    background: var(--gold,#d4af37);
-    border:none; 
-    padding:0; 
-    margin:0;
-    display:none; 
-    align-items:center; 
-    justify-content:center;
-    cursor:pointer; 
-    z-index:3004;
-  }
-  
-  /* Icona X semplice, niente mask */
-  .clear-search::before{
-    content:"×";
-    display:block;
-    font-size:14px;
-    line-height:1;
-    font-weight:700;
-    color:#0b1022;  /* dentro il cerchietto oro */
-  }
-  
-  /* Mostra il bottone se c’è testo (browser con :has) */
-  .search-container:has(#site-search:not(:placeholder-shown)) .clear-search{ 
-    display:flex; 
-  }
-  .search-container:has(#site-search[value]:not([value=""])) .clear-search{ 
-    display:flex; 
-  }
-  
-  /* Mobile */
-  @media (max-width:900px){
-    #site-search{ padding-right:3.8rem; }
-  }
+ /* Bottone CLEAR custom (cerchietto) */
+.clear-search{
+  position:absolute; 
+  right:.6rem; 
+  top:50%; 
+  transform:translateY(-50%);
+  width:22px; 
+  height:22px; 
+  border-radius:50%;
+  background: var(--gold,#d4af37);
+  border:none; 
+  padding:0; 
+  margin:0;
+  display:none; 
+  align-items:center; 
+  justify-content:center;
+  cursor:pointer; 
+  z-index:3004;
+  box-sizing: border-box;
+  line-height: 1;         /* niente “rimbalzi” verticali */
+}
+
+/* Icona X semplice, niente mask */
+.clear-search::before{
+  content:"×";
+  display:block;
+  font-size:14px;
+  line-height:1;
+  font-weight:700;
+  color:#0b1022;  /* dentro il cerchietto oro */
+}
+
+/* Hover: cambia solo colore / ombra, NON la posizione */
+.clear-search:hover{
+  background: rgba(255,255,255,0.9);
+  box-shadow: 0 0 6px rgba(255,215,0,.4);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Mostra il bottone se c’è testo (browser con :has) */
+.search-container:has(#site-search:not(:placeholder-shown)) .clear-search{ 
+  display:flex; 
+}
+.search-container:has(#site-search[value]:not([value=""])) .clear-search{ 
+  display:flex; 
+}
+
+/* Mobile */
+@media (max-width:900px){
+  #site-search{ padding-right:3.8rem; }
+}
+
 </style>
 
 </style>
