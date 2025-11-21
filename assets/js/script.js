@@ -1,6 +1,3 @@
-
-
-
 // === SLIDER VERTICALE - Velocità 1–20, barra colorata + numeretto ===
 class VerticalSlider {
     constructor() {
