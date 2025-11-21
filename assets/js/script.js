@@ -1070,17 +1070,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-/* ---- Config rapida ---- */
-const TRECCANI_SECTION = 'vocabolario'; // oppure 'enciclopedia'
 
-/* ---- Helpers ---- */
-function slugifyIT(term) {
-  return term
-    .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // virtù -> virtu
-    .toLowerCase()
-    .replace(/[^a-z00\s-]/g, '')
-    .trim();
-}
 
 
 // === PULSANTE TORNA SU ===
