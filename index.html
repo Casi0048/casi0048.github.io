@@ -8058,6 +8058,32 @@
         term.trim().replace(/\s+/g, '_')
       )}`;
     }
+    /* ===== PULISCI IN BOX CERCA ===== */
+    document.addEventListener('DOMContentLoaded', () => {
+  const search = document.getElementById('site-search');
+  const clear  = document.querySelector('.search-container .clear-search');
+  if (!search || !clear) return;
+
+  function updateClearVisibility() {
+    if (search.value.trim()) {
+      clear.style.display = 'flex';  // mostra il cerchietto con la X
+    } else {
+      clear.style.display = 'none';  // lo nasconde
+    }
+  }
+
+  search.addEventListener('input', updateClearVisibility);
+
+  clear.addEventListener('click', () => {
+    search.value = '';
+    search.focus();
+    updateClearVisibility();
+  });
+
+  // stato iniziale
+  updateClearVisibility();
+});
+
   </script>
 </body>
 </html>
