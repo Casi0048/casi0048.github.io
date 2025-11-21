@@ -20,6 +20,9 @@ class VerticalSlider {
         const readout = document.createElement('div');
         readout.id = 'speed-readout';
         readout.textContent = `Velocità: ${this.speed} / 20`;
+        readout.style.marginTop = '.25rem';
+        readout.style.fontSize = '.8rem';
+        readout.style.opacity = '.8';
         
         if (this.speedSlider && this.speedSlider.parentNode) {
             this.speedSlider.parentNode.appendChild(readout);
@@ -44,6 +47,9 @@ class VerticalSlider {
             this.speedSlider.addEventListener('input', (e) => {
                 this.setSpeed(e.target.value);
             });
+
+            // inizializza riempimento barra
+            this.updateSpeedBar();
         }
 
         if (this.toggleBtn) {
@@ -54,7 +60,9 @@ class VerticalSlider {
             this.invertBtn.addEventListener('click', () => this.invert());
         }
 
+        // Velocità iniziale (aggiorna anche barra + numeretto)
         this.setSpeed(5);
+
         this.startAnimation();
     }
     
@@ -66,14 +74,15 @@ class VerticalSlider {
         }
         
         const speedMap = {
-            1: 200,   2: 180,   3: 160,   4: 140,
-            5: 120,   6: 100,   7: 80,    8: 60,
-            9: 50,   10: 40,   11: 35,   12: 30,
-           13: 25,   14: 20,   15: 15,   16: 12,
-           17: 10,   18: 8,    19: 6,    20: 4
+             1: 200,  2: 180,  3: 160,  4: 140,
+             5: 120,  6: 100,  7: 80,   8: 60,
+             9: 50,  10: 40,  11: 35,  12: 30,
+            13: 25,  14: 20,  15: 15,  16: 12,
+            17: 10,  18: 8,   19: 6,   20: 4
         };
         
         this.animationSpeed = speedMap[this.speed] || 50;
+
         this.updateSpeedBar();
         
         if (this.isPlaying) {
@@ -81,39 +90,24 @@ class VerticalSlider {
         }
     }
 
-    getSpeedColor() {
-        if (this.speed <= 5)  return '#00ff7f';
-        if (this.speed <= 10) return '#ffd700';
-        if (this.speed <= 15) return '#ffa500';
-        return '#ff4500';
-    }
-
+    // Colore / riempimento barra in base alla velocità
     updateSpeedBar() {
         if (!this.speedSlider) return;
-
-        const min = parseInt(this.speedSlider.min, 10) || 1;
-        const max = parseInt(this.speedSlider.max, 10) || 20;
+        
+        const min = parseInt(this.speedSlider.min || '1', 10);
+        const max = parseInt(this.speedSlider.max || '20', 10);
         const val = this.speed;
-        const percent = ((val - min) / (max - min)) * 100;
-        const color = this.getSpeedColor();
+        const perc = ((val - min) / (max - min)) * 100;
 
-        this.speedSlider.style.background = `
-          linear-gradient(
-            90deg,
-            ${color} 0%,
-            ${color} ${percent}%,
-            rgba(255,255,255,0.15) ${percent}%,
-            rgba(255,255,255,0.15) 100%
-          )
-        `;
+        // usa una variabile CSS per il riempimento
+        this.speedSlider.style.setProperty('--fill', `${perc}%`);
     }
     
     toggle() {
         this.isPlaying = !this.isPlaying;
-
         if (this.toggleBtn) {
             this.toggleBtn.textContent = this.isPlaying ? '⏸️ Ferma' : '▶️ Avvia';
-            this.toggleBtn.title       = this.isPlaying ? 'Ferma slider' : 'Avvia slider';
+            this.toggleBtn.title = this.isPlaying ? 'Ferma slider' : 'Avvia slider';
         }
         
         if (this.isPlaying) {
@@ -125,10 +119,9 @@ class VerticalSlider {
     
     invert() {
         this.direction *= -1;
-
         if (this.invertBtn) {
             this.invertBtn.textContent = this.direction === 1 ? '🔄 Inverti' : '🔄 Normale';
-            this.invertBtn.title       = this.direction === 1 ? 'Inverti direzione' : 'Direzione normale';
+            this.invertBtn.title = this.direction === 1 ? 'Inverti direzione' : 'Direzione normale';
         }
     }
     
@@ -138,10 +131,7 @@ class VerticalSlider {
         const animate = () => {
             this.position += this.direction * (this.speed / 3);
             
-            const container = this.sliderInner.parentElement;
-            if (!container) return;
-
-            const containerHeight = container.clientHeight;
+            const containerHeight = this.sliderInner.parentElement.clientHeight;
             const contentHeight   = this.sliderInner.scrollHeight;
             const maxScroll       = Math.max(0, contentHeight - containerHeight);
             
@@ -169,7 +159,31 @@ class VerticalSlider {
         this.stopAnimation();
         this.startAnimation();
     }
+    
+    getStatus() {
+        return {
+            playing: this.isPlaying,
+            direction: this.direction,
+            speed: this.speed,
+            position: Math.round(this.position),
+            animationSpeed: this.animationSpeed + 'ms'
+        };
+    }
 }
+
+// Inizializza slider quando DOM è pronto
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        try {
+            const slider = new VerticalSlider();
+            console.log('✅ Vertical Slider initialized - Speed:', slider.speed);
+            window.verticalSlider = slider; // per debug da console
+        } catch (error) {
+            console.error('❌ Slider initialization failed:', error);
+        }
+    }, 100);
+});
+
 
 // === SISTEMA DI ESPLOSIONE UNIFICATO ===
 document.addEventListener('DOMContentLoaded', function() {
