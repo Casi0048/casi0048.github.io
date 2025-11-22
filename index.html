@@ -1,315 +1,21 @@
 <!DOCTYPE html>
 <html lang="it">
-<head>
+
+  
   <meta charset="utf-8" />
   <title>Echi di Sofia — Portale di Filosofia</title>
-   <script>
-    // ========== UTILITY SICURE AGGIUNTE ==========
-    // Safe DOM manipulation utility
-    function safeDOMOperation(operation) {
-        try {
-            if (typeof operation === 'function') {
-                return operation();
-            }
-        } catch (error) {
-            console.warn('DOM operation failed:', error.message);
-            return null;
-        }
-    }
-    
-    // Safe element selector
-    function getElementSafe(selector) {
-        return safeDOMOperation(() => {
-            const element = typeof selector === 'string' ? 
-                document.querySelector(selector) : selector;
-            return element && document.body.contains(element) ? element : null;
-        });
-    }
-    
-    // Safe audio play
-    function softPlay(audio, volume, delay) {
-        try {
-            if (!audio) return;
-            audio.volume = volume || 1.0;
-            setTimeout(() => {
-                audio.play().catch(() => {});
-            }, delay || 0);
-        } catch (_) {}
-    }
-    
-    // === GESTIONE EFFECTS CONTROL ===
-    document.addEventListener('DOMContentLoaded', () => {
-        const effects = document.getElementById('effects-ctrl');
-        if (!effects || !document.body.contains(effects)) return;
-        
-        const host = document.querySelector('.topbar, .top-bar, header .menu-desktop, header nav, header, .navbar');
-        if (host && document.body.contains(host)) { 
-            try { 
-                host.appendChild(effects); 
-                effects.style.position = ''; 
-                effects.style.top = ''; 
-                effects.style.right = ''; 
-            } catch (_) {} 
-        }
-    });
-    
-    // === SLIDER VERTICALE - VERSIONE VELOCITÀ MIGLIORATA ===
-    (function(){
-        const inner = document.getElementById('sliderInner');
-        if (!inner) return;
-        
-        let pos = 0;
-        let speed = 0.8; // VELOCITÀ BASE PIÙ ALTA
-        let dir = 1;
-        let running = true;
-        let animationId = null;
-        
-        function step() {
-            if (!running) {
-                animationId = requestAnimationFrame(step);
-                return;
-            }
-            pos += dir * speed;
-            inner.style.transform = `translateY(${-pos}px)`;
-            const total = inner.scrollHeight - inner.clientHeight;
-            if (pos >= total) pos = 0;
-            if (pos < 0) pos = total;
-            animationId = requestAnimationFrame(step);
-        }
-        animationId = requestAnimationFrame(step);
-        
-        const t = document.getElementById('slider-toggle'),
-              i = document.getElementById('slider-invert'),
-              sp = document.getElementById('slider-speed'); // Slider per VELOCITÀ scorrimento
-        
-        t?.addEventListener('click', () => {
-            running = !running;
-            if (running && !animationId) {
-                animationId = requestAnimationFrame(step);
-            }
-        });
-        
-        i?.addEventListener('click', () => dir *= -1);
-        
-        // 🚀 REGOLAZIONE VELOCITÀ SCORRIMENTO (SOLO per lo slider verticale)
-        sp?.addEventListener('input', () => {
-            const v = parseInt(sp.value, 10) || 5;
-            
-            // FORMULA MIGLIORATA: progressione più sensibile per VELOCITÀ SCORRIMENTO
-            if (v <= 6) {
-                speed = 0.2 + (v - 1) * 0.15;
-            } else {
-                speed = 0.2 + (v - 1) * 0.25;
-            }
-            
-            // Aggiorna numeretto velocità SCORRIMENTO se esiste
-            const readout = document.getElementById('speed-readout');
-            if (readout) readout.textContent = `Velocità: ${v} / 20`;
-        });
-        
-        // Inizializza con velocità media SCORRIMENTO
-        if (sp) {
-            sp.value = 8;
-            sp.dispatchEvent(new Event('input'));
-        }
-    })();
-    
-    // === AUDIO PLAYER (VOLUME SEPARATO) ===
-    window.addEventListener('load', () => {
-        const a = document.getElementById('myAudio'),
-              btn = document.getElementById('playPause'),
-              tm = document.getElementById('time'),
-              v = document.getElementById('volume'); // Slider per VOLUME audio
-        
-        if (!a || !btn) return;
-        
-        function formatTime(seconds) {
-            if (!isFinite(seconds)) return '0:00';
-            const m = Math.floor(seconds / 60),
-                  c = Math.floor(seconds % 60);
-            return m + ':' + (c < 10 ? '0' + c : c);
-        }
-        
-        function updateTime() {
-            tm.textContent = `${formatTime(a.currentTime)} / ${formatTime(a.duration)}`;
-        }
-        
-        // INIZIALIZZA VOLUME (separato dalla velocità scorrimento)
-        v.value = 0.8;
-        a.volume = parseFloat(v.value);
-        
-        // CONTROLLO VOLUME AUDIO (solo per l'audio player)
-        v.addEventListener('input', () => {
-            a.volume = parseFloat(v.value);
-            
-            // Aggiorna numeretto volume se esiste
-            const volumeReadout = document.getElementById('volume-readout');
-            if (volumeReadout) {
-                const volumePercent = Math.round(v.value * 100);
-                volumeReadout.textContent = `Volume: ${volumePercent}%`;
-            }
-        });
-        
-        btn.addEventListener('click', () => {
-            if (a.paused) {
-                a.play().catch(() => {});
-                btn.textContent = '⏸️';
-            } else {
-                a.pause();
-                btn.textContent = '▶️';
-            }
-        });
-        
-        a.addEventListener('timeupdate', updateTime);
-        a.addEventListener('loadedmetadata', updateTime);
-        a.addEventListener('ended', () => { btn.textContent = '▶️'; });
-    });
-    
-    // === RUSSELL AUDIO UNLOCK ===
-    (function(){
-        const b = document.getElementById('russell-btn'),
-              h = document.getElementById('russell-hint'),
-              a = document.getElementById('russell-audio');
-        
-        if (!b || !a) return;
-        
-        let unlocked = false;
-        
-        function unlockAudio() {
-            if (unlocked) return;
-            unlocked = true;
-            a.muted = false;
-            a.play().then(() => {
-                a.pause();
-                a.currentTime = 0;
-            }).catch(() => {});
-            
-            window.removeEventListener('pointerdown', unlockAudio, { capture: true });
-            window.removeEventListener('keydown', unlockAudio, { capture: true });
-        }
-        
-        window.addEventListener('pointerdown', unlockAudio, { once: true, capture: true, passive: true });
-        window.addEventListener('keydown', unlockAudio, { once: true, capture: true });
-        
-        b.addEventListener('click', () => {
-            try {
-                a.currentTime = 0;
-                a.play().catch(() => {});
-            } catch (_) {}
-        });
-    })();
-    
-    // === THUNDER EFFECT ===
-    (function(){
-        const btn = document.getElementById('btn-thunder'),
-              th = document.getElementById('thunder-sound'),
-              ex = document.getElementById('explosionSound'),
-              ov = document.getElementById('lightning'),
-              bo = document.getElementById('bolt');
-        
-        if (!btn || !th || !ov || !bo) return;
-        
-        let unlocked = false;
-        
-        async function unlockOnce() {
-            if (unlocked) return;
-            unlocked = true;
-            for (const s of [th, ex]) {
-                try {
-                    s.muted = false;
-                    await s.play();
-                    s.pause();
-                    s.currentTime = 0;
-                } catch (_) {}
-            }
-        }
-        
-        window.addEventListener('pointerdown', unlockOnce, { once: true, passive: true, capture: true });
-        window.addEventListener('keydown', unlockOnce, { once: true, capture: true });
-        
-        let thunderOn = false;
-        
-        function updateButton() {
-            btn.classList.toggle('active', thunderOn);
-            btn.setAttribute('aria-pressed', thunderOn ? 'true' : 'false');
-            btn.textContent = thunderOn ? '⚡ Tuono: ON' : '⚡ Tuono';
-        }
-        
-        btn.addEventListener('click', e => {
-            e.preventDefault();
-            thunderOn = !thunderOn;
-            if (thunderOn) {
-                try {
-                    th.currentTime = 0;
-                    softPlay(th, 1.0, 140);
-                } catch (_) {}
-            } else {
-                try {
-                    th.pause();
-                    th.currentTime = 0;
-                } catch (_) {}
-            }
-            updateButton();
-        });
-        
-        updateButton();
-        
-        function flash() {
-            const x = 15 + Math.random() * 70,
-                  y = 10 + Math.random() * 65,
-                  ang = -25 + Math.random() * 50,
-                  sy = 0.8 + Math.random() * 1.2;
-            
-            ov.style.transition = 'none';
-            ov.offsetHeight; // Trigger reflow
-            ov.style.background = `radial-gradient(circle at ${x}% ${y}%, rgba(255,255,255,.95), rgba(255,255,255,.22) 40%, transparent 65%)`;
-            ov.style.opacity = '1';
-            ov.style.transition = 'opacity 80ms ease-out';
-            setTimeout(() => ov.style.opacity = '0', 140);
-            
-            bo.style.left = x + '%';
-            bo.style.top = y + '%';
-            bo.style.transform = `translate(-50%,-50%) rotate(${ang}deg) scaleY(${sy})`;
-            bo.style.transition = 'transform 90ms ease-out, opacity 280ms ease-out';
-            bo.style.opacity = '1';
-            setTimeout(() => bo.style.opacity = '0', 180);
-            
-            if (thunderOn) {
-                try {
-                    th.currentTime = 0;
-                    softPlay(th, 1.0, 140);
-                } catch (_) {}
-            }
-        }
-        
-        function scheduleFlash() {
-            setTimeout(() => {
-                flash();
-                scheduleFlash();
-            }, 10000 + Math.random() * 5000);
-        }
-        
-        scheduleFlash();
-        
-        document.getElementById('explode-btn')?.addEventListener('click', () => {
-            try {
-                ex.muted = false;
-                ex.volume = 1.0;
-                ex.currentTime = 0;
-                softPlay(ex, 1.0, 140);
-            } catch (_) {}
-        });
-    })();
-</script>
+
   <!-- ESSENZIALI -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Esplora il pensiero filosofico attraverso i secoli. Autori, correnti, timeline interattiva e risorse per approfondire." />
   <meta name="author" content="Echi di Sofia" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://www.echidisofia.org/" />
+
   <!-- Mobile -->
   <meta name="format-detection" content="telephone=no" />
   <meta name="mobile-web-app-capable" content="yes" />
+
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.echidisofia.org/" />
@@ -317,11 +23,13 @@
   <meta property="og:description" content="Esplora il pensiero filosofico attraverso i secoli. Autori, correnti, timeline interattiva e risorse per approfondire." />
   <meta property="og:image" content="https://www.echidisofia.org/foto/socrate.webp" />
   <meta property="og:site_name" content="Echi di Sofia" />
+
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Echi di Sofia - Portale di Filosofia" />
   <meta name="twitter:description" content="Scopri la filosofia attraverso autori, correnti e pensieri. Risorse gratuite per appassionati." />
   <meta name="twitter:image" content="https://www.echidisofia.org/foto/socrate.webp" />
+
   <!-- Favicons & manifest -->
   <link rel="icon" type="image/svg+xml" href="/favicon_io/favicon.svg">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon_io/favicon-32x32.png">
@@ -329,80 +37,77 @@
   <link rel="apple-touch-icon" href="/favicon_io/apple-touch-icon.png">
   <link rel="manifest" href="/favicon_io/site.webmanifest">
   <meta name="theme-color" content="#0b0f19">
+
   <!-- PRECONNECT / DNS-PREFETCH -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
   <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
   <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
- <!-- CSS base -->
-<link rel="stylesheet" href="/assets/css/stile.css?v=20251116">
-<link rel="stylesheet" href="/assets/css/timeline.css?v=20251116">
-<link rel="stylesheet" href="assets/css/sliders.css?v=20251121">
-<link rel="stylesheet" href="/assets/css/cosmic-background.css?v=20251116">
 
-<!-- CSS temi / accenti -->
-<link rel="stylesheet" href="/accent-layer.css?v=20251116">
-<link rel="stylesheet" href="/accent-layer-plus.css?v=20251116">
-
-<!-- JS: effetti grafici -->
-<script src="/assets/js/cosmic-background.js?v=20251116" defer></script>
-<script src="/assets/js/exploding.js?v=20251116" defer></script>
-
-<!-- JS principale -->
-<script src="/assets/js/script.js?v=20251116" defer></script>
-
-<!-- FONTS (OTTIMIZZATO) -->
-
-
-<!-- FONTS (OTTIMIZZATO) -->
+  <!-- CSS BASE -->
+  <link rel="stylesheet" href="/accent-layer.css">
+  <link rel="stylesheet" href="/accent-layer-plus.css">
+  <link rel="stylesheet" href="/assets/css/stile.css?v=20251106">
+  
+ <!-- FONTS (VERSIONE UNICA OTTIMIZZATA) -->
   <link rel="preload" as="style" 
-    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400;600&display=swap"
-    crossorigin="anonymous"
-    onload="this.onload=null;this.rel='stylesheet'">
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400;600&display=swap&display=swap"
+        crossorigin="anonymous"
+        onload="this.onload=null;this.rel='stylesheet'">
   <noscript>
     <link rel="stylesheet" 
-      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400;600&display=swap"
-      crossorigin="anonymous">
+          href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400;600&display=swap"
+          crossorigin="anonymous">
   </noscript>
+
   <!-- ICONS (Font Awesome) -->
   <link rel="preload" as="style"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    crossorigin="anonymous"
-    onload="this.onload=null;this.rel='stylesheet'">
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        crossorigin="anonymous"
+        onload="this.onload=null;this.rel='stylesheet'">
   <noscript>
     <link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-      crossorigin="anonymous">
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+          crossorigin="anonymous">
   </noscript>
+
   <!-- Preload immagini critiche -->
-  <link rel="preload" as="image" href="/foto/socrate.webp?v=20251116">
-  <!-- Preload search index (UNICO) -->
-  <link rel="preload" href="/search-index.json?v=20251116" as="fetch" type="application/json" crossorigin="anonymous">
+  <link rel="preload" as="image" href="/foto/socrate.webp?v=20251106">
+
+  <!-- Search config -->
+  <link rel="prefetch" href="/search-index.json?v=20251031" as="fetch" type="application/json" crossorigin>
+  <script id="search-config-root">
+    window.SEARCH_INDEX_URLS = [
+      '/search-index.json?v=20251031',
+      '/search-index.json'
+    ];
+  </script>
+
   <!-- Schema.org -->
   <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Echi di Sofia",
+    "description": "Portale completo di filosofia antica, moderna e contemporanea",
+    "url": "https://www.echidisofia.org/",
+    "publisher": {
+      "@type": "Organization",
       "name": "Echi di Sofia",
-      "description": "Portale completo di filosofia antica, moderna e contemporanea",
-      "url": "https://www.echidisofia.org/",
-      "publisher": {
-        "@type": "Organization",
-        "name": "Echi di Sofia",
-        "logo": "https://www.echidisofia.org/favicon_io/favicon-32x32.png"
-      },
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://www.echidisofia.org/?q={search_term_string}",
-        "query-input": "required name=search_term_string"
-      }
+      "logo": "https://www.echidisofia.org/favicon_io/favicon-32x32.png"
+    },
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://www.echidisofia.org/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
     }
-  
-
+  }
+  </script>
+</head>
 <style>
   /* Versione compatta */
-  .color-dot {
+.color-dot {
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -415,61 +120,70 @@
   cursor: pointer;
   transition: all 0.2s ease;
   padding: 0;
-  }
-  .dot {
+}
+
+.dot {
   width: 16px;
   height: 16px;
   border-radius: 50%;
   display: block;
-  }
-  .gold-dot { background: #ffd700; }
-  .blue-dot { background: #3b82f6; }
-  .green-dot { background: #10b981; }
-  .red-dot { background: #ef4444; }
-  .color-dot:hover {
+}
+
+.gold-dot { background: #ffd700; }
+.blue-dot { background: #3b82f6; }
+.green-dot { background: #10b981; }
+.red-dot { background: #ef4444; }
+
+.color-dot:hover {
   border-color: rgba(255,255,255,0.6);
   transform: scale(1.1);
-  }
+}
 </style>
 <style id="menu-fix-overrides">
-  /* RIMUOVI LA TRANSITION DAI MEGA-MENU PER APERTURA ISTANTANEA */
-  nav.menu-desktop .mega-menu {
+/* RIMUOVI LA TRANSITION DAI MEGA-MENU PER APERTURA ISTANTANEA */
+nav.menu-desktop .mega-menu {
   transition: none !important;
-  }
-  nav.menu-desktop li.dropdown > .mega-menu.anchor-left {
+}
+
+nav.menu-desktop li.dropdown > .mega-menu.anchor-left {
   left: 0 !important;
   right: auto !important;
   transform: translateY(0.62rem) !important;
-  }
-  nav.menu-desktop li.dropdown:hover > .mega-menu.anchor-left,
-  nav.menu-desktop li.dropdown:focus-within > .mega-menu.anchor-left,
-  nav.menu-desktop .mega-menu.anchor-left:hover {
+}
+
+nav.menu-desktop li.dropdown:hover > .mega-menu.anchor-left,
+nav.menu-desktop li.dropdown:focus-within > .mega-menu.anchor-left,
+nav.menu-desktop .mega-menu.anchor-left:hover {
   transform: translateY(0) !important;
-  }
-  nav.menu-desktop li.dropdown > .mega-menu.right-align {
+}
+
+nav.menu-desktop li.dropdown > .mega-menu.right-align {
   left: auto !important;
   right: 0 !important;
   transform: translateY(0.62rem) !important;
-  }
-  nav.menu-desktop li.dropdown:hover > .mega-menu.right-align,
-  nav.menu-desktop li.dropdown:focus-within > .mega-menu.right-align,
-  nav.menu-desktop .mega-menu.right-align:hover {
+}
+
+nav.menu-desktop li.dropdown:hover > .mega-menu.right-align,
+nav.menu-desktop li.dropdown:focus-within > .mega-menu.right-align,
+nav.menu-desktop .mega-menu.right-align:hover {
   transform: translateY(0) !important;
-  }
-  @media (max-width: 768px) {
+}
+
+@media (max-width: 768px) {
   nav.menu-desktop .mega-menu {
-  left: 0 !important;
-  right: 0 !important;
-  transform: translateY(0.62rem) !important;
-  width: 100vw !important;
-  max-width: 100vw !important;
+    left: 0 !important;
+    right: 0 !important;
+    transform: translateY(0.62rem) !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
   }
+  
   nav.menu-desktop li.dropdown:hover > .mega-menu,
   nav.menu-desktop li.dropdown:focus-within > .mega-menu,
   nav.menu-desktop .mega-menu:hover {
-  transform: translateY(0) !important;
+    transform: translateY(0) !important;
   }
-  }
+}
 </style>
 <style id="patch-ui">
 /* CSS for reliability and UI patches */
@@ -732,91 +446,95 @@ body {
 }
 </style>
 <style id="right-links-css">
-  .right-box{
-  position:fixed; right:1.25rem; width:20rem; z-index:25;
-  background: rgba(10,10,30,.86); border:1px solid rgba(255,215,0,.25);
-  border-radius:.75rem; padding:.62rem .75rem; box-shadow:0 .9rem 1.8rem rgba(0,0,0,.34)
-  }
-  .right-box h3{margin:.1rem 0 .4rem; font-family:'Cinzel',serif; color:#ffd86a; font-size:1rem}
-  .right-box .mini{color:#bcd7ff; font-size:.8rem; opacity:.85;}
-  .right-box .row{display:flex; align-items:center; gap:.5rem; margin:.38rem 0;}
-  .right-box input[type="search"]{
-  width:100%; height:2rem; padding:0 .6rem; border-radius:.5rem;
-  background:rgba(20,20,40,.75); border:1px solid rgba(255,215,0,.28); color:#e9eef5
-  }
-  .right-box .sources{display:flex; flex-wrap:wrap; gap:.4rem .6rem; margin:.35rem 0 .5rem}
-  .right-box .sources label{font-size:.8rem; color:#d9e7ff}
-  .right-box .btn{display:inline-flex; align-items:center; justify-content:center;
-  padding:.38rem .6rem; border-radius:.5rem; border:1px solid rgba(255,215,0,.25);
-  background:rgba(20,20,40,.78); color:#ffd86a; font-weight:700; cursor:pointer
-  }      
-  #dict-compact{ top: 22.5rem; }
-  #iep-linkbox{ top: 35.2rem; }
-  @media (min-width: 1200px){
-  .right-embed{ top: 42.5rem; }
-  }
-  @media (max-width: 980px){
-  #dict-compact, #iep-linkbox { position: static; width:100%; margin: .75rem 0; }
-  }
-  /* Assicurati che l'enciclopedia abbia un z-index più alto */
-</style>
+      .right-box{
+      position:fixed; right:1.25rem; width:20rem; z-index:25;
+      background: rgba(10,10,30,.86); border:1px solid rgba(255,215,0,.25);
+      border-radius:.75rem; padding:.62rem .75rem; box-shadow:0 .9rem 1.8rem rgba(0,0,0,.34)
+      }
+      .right-box h3{margin:.1rem 0 .4rem; font-family:'Cinzel',serif; color:#ffd86a; font-size:1rem}
+      .right-box .mini{color:#bcd7ff; font-size:.8rem; opacity:.85;}
+      .right-box .row{display:flex; align-items:center; gap:.5rem; margin:.38rem 0;}
+      .right-box input[type="search"]{
+      width:100%; height:2rem; padding:0 .6rem; border-radius:.5rem;
+      background:rgba(20,20,40,.75); border:1px solid rgba(255,215,0,.28); color:#e9eef5
+      }
+      .right-box .sources{display:flex; flex-wrap:wrap; gap:.4rem .6rem; margin:.35rem 0 .5rem}
+      .right-box .sources label{font-size:.8rem; color:#d9e7ff}
+      .right-box .btn{display:inline-flex; align-items:center; justify-content:center;
+      padding:.38rem .6rem; border-radius:.5rem; border:1px solid rgba(255,215,0,.25);
+      background:rgba(20,20,40,.78); color:#ffd86a; font-weight:700; cursor:pointer
+      }      
+      #dict-compact{ top: 22.5rem; }
+      #iep-linkbox{ top: 35.2rem; }
+      @media (min-width: 1200px){
+      .right-embed{ top: 42.5rem; }
+      }
+      @media (max-width: 980px){
+      #dict-compact, #iep-linkbox { position: static; width:100%; margin: .75rem 0; }
+      }
+      /* Assicurati che l'enciclopedia abbia un z-index più alto */
+
+    </style>
 <style id="effects-right-edge">
-  /* 🎯 Tieni qui i “knob” da regolare */
-  :root{
-  --effects-right: -0.6rem;  /* ↓ Porta a 0 o anche -4px per incollare al bordo */
-  --effects-top:   0.9rem;   /* ↑ se vuoi abbassarli/alzarli un po' */
-  }
-  /* Caso A: fallback fisso (quando NON vengono appesi dentro l'header) */
-  #effects-ctrl{
-  position: fixed;
-  top: var(--effects-top) !important;
-  right: var(--effects-right) !important;
-  z-index: 2147483603;
-  }
-  /* Caso B: quando li appendiamo dentro header/topbar/navbar */
-  header, .topbar, .navbar{ position: relative; overflow: visible; }
-  header #effects-ctrl,
-  .topbar #effects-ctrl,
-  .navbar #effects-ctrl{
-  position: absolute !important;
-  top: var(--effects-top);
-  right: var(--effects-right);
-  margin-left: 0; /* neutralizza eventuali margini precedenti */
-  }
-</style>
+      /* 🎯 Tieni qui i “knob” da regolare */
+      :root{
+      --effects-right: -0.6rem;  /* ↓ Porta a 0 o anche -4px per incollare al bordo */
+      --effects-top:   0.9rem;   /* ↑ se vuoi abbassarli/alzarli un po' */
+      }
+      /* Caso A: fallback fisso (quando NON vengono appesi dentro l'header) */
+      #effects-ctrl{
+      position: fixed;
+      top: var(--effects-top) !important;
+      right: var(--effects-right) !important;
+      z-index: 2147483603;
+      }
+      /* Caso B: quando li appendiamo dentro header/topbar/navbar */
+      header, .topbar, .navbar{ position: relative; overflow: visible; }
+      header #effects-ctrl,
+      .topbar #effects-ctrl,
+      .navbar #effects-ctrl{
+      position: absolute !important;
+      top: var(--effects-top);
+      right: var(--effects-right);
+      margin-left: 0; /* neutralizza eventuali margini precedenti */
+      }
+    </style>
+<!-- -->
 <style id="audio-player-stack">
-  /* forza il box audio a prendersi tutta la riga sotto */
-  #audio-player{
-  display: grid;              /* titolo riga 1, controlli riga 2 */
-  grid-template-columns: 1fr;
-  gap: .35rem;
-  flex: 1 1 100% !important;  /* se il genitore è flex, occupa 100% e va a capo */
-  width: 15% !important;
-  margin-top: 0.5rem;
-  }
-  #audio-player{ margin-top: 600px; top: 0; }
-  #audio-player .audio-title{
-  margin: 0; font-weight: 700;
-  }
-  #audio-player .controls{
-  display: flex;
-  flex-wrap: wrap;            /* se serve, i controlli vanno a capo */
-  gap: .5rem .6rem;
-  align-items: center;
-  }
-  #audio-player #time{ 
-  font-variant-numeric: tabular-nums; 
-  min-width: 7.2rem;          /* evita salti di layout */
-  }
-  #audio-player #volume{
-  width: 160px;               /* regola pure: 120–220px */
-  }
-</style>
+      /* forza il box audio a prendersi tutta la riga sotto */
+      #audio-player{
+      display: grid;              /* titolo riga 1, controlli riga 2 */
+      grid-template-columns: 1fr;
+      gap: .35rem;
+      flex: 1 1 100% !important;  /* se il genitore è flex, occupa 100% e va a capo */
+      width: 15% !important;
+      margin-top: 0.5rem;
+      }
+      #audio-player{ margin-top: 595px; top: 0; }
+
+
+      #audio-player .audio-title{
+      margin: 0; font-weight: 700;
+      }
+      #audio-player .controls{
+      display: flex;
+      flex-wrap: wrap;            /* se serve, i controlli vanno a capo */
+      gap: .5rem .6rem;
+      align-items: center;
+      }
+      #audio-player #time{ 
+      font-variant-numeric: tabular-nums; 
+      min-width: 7.2rem;          /* evita salti di layout */
+      }
+      #audio-player #volume{
+      width: 160px;               /* regola pure: 120–220px */
+      }
+    </style>
 <style>
-  @media (max-width: 900px){
-  #audio-player{ width: 100%; max-width: 520px; }
-  }
-</style>
+      @media (max-width: 900px){
+      #audio-player{ width: 100%; max-width: 520px; }
+      }
+    </style>
 <style id="search-related-css">
   .related-results{
   margin-top:.6rem; padding-top:.6rem;
