@@ -90,35 +90,146 @@ body {
     color: #ffd86a;
 }
 
+/* === AUDIO PLAYER – MUSICA PER LO STUDIO ======================= */
+
 .audio-player {
-    position: fixed;
-    left: 3.25rem;
-    top: 40.38rem;
-    z-index: 80;
-    display: flex;
-    align-items: center;
-    gap: 0.62rem;
-    padding: 0.5rem 0.62rem;
-    background: rgba(10, 10, 30, 0.8);
-    border: 1px solid rgba(255, 215, 0, 0.25);
-    border-radius: 0.62rem;
-    opacity: 1;
-    transform: none;
+  position: relative;
+  margin: 1.5rem auto 2rem;
+  max-width: 520px;
+  padding: 1.1rem 1.4rem;
+  border-radius: 18px;
+  background: radial-gradient(circle at 0 0,
+              rgba(0, 204, 255, 0.12),
+              transparent 55%)
+              ,rgba(4, 8, 20, 0.92);
+  border: 1px solid rgba(212, 175, 55, 0.45);
+  box-shadow:
+    0 0 18px rgba(0, 0, 0, 0.6),
+    0 0 25px rgba(0, 204, 255, 0.25);
+  backdrop-filter: blur(10px);
+  color: #f5f5f5;
+  z-index: 10;
 }
 
+.audio-player::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* Titolo "Musica per lo studio" */
 .audio-title {
-    font-weight: 600;
+  font-family: "Cinzel", "Cormorant Garamond", serif;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--gold, #d4af37);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
 }
 
+.audio-title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  margin-left: 0.35rem;
+  background: linear-gradient(90deg,
+              rgba(212, 175, 55, 0.8),
+              rgba(0, 204, 255, 0.2),
+              transparent);
+}
+
+/* Riga dei controlli */
 .audio-player .controls {
-    display: flex;
-    align-items: center;
-    gap: 0.62rem;
+  margin-top: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
-.audio-player input[type="range"] {
-    width: 7.5rem;
+/* Bottone play/pause */
+.audio-player #playPause {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 1px solid rgba(212, 175, 55, 0.7);
+  background: radial-gradient(circle at 30% 10%,
+              rgba(255, 255, 255, 0.18),
+              rgba(11, 16, 34, 0.95));
+  color: var(--gold, #f7e8a4);
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow:
+    0 0 6px rgba(255, 215, 0, 0.35),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.55);
+  transition: transform 0.15s ease,
+              box-shadow 0.15s ease,
+              background 0.15s ease;
 }
+
+.audio-player #playPause:hover {
+  transform: translateY(-1px) scale(1.03);
+  box-shadow:
+    0 0 9px rgba(255, 215, 0, 0.55),
+    0 0 18px rgba(0, 204, 255, 0.35);
+  background: radial-gradient(circle at 30% 10%,
+              rgba(255, 255, 255, 0.22),
+              rgba(11, 16, 34, 0.95));
+}
+
+.audio-player #playPause:active {
+  transform: translateY(0) scale(0.97);
+  box-shadow:
+    0 0 4px rgba(255, 215, 0, 0.35),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.75);
+}
+
+/* Tempo brano */
+.audio-player #time {
+  font-family: "Montserrat", system-ui, -apple-system, sans-serif;
+  font-size: 0.82rem;
+  opacity: 0.9;
+  white-space: nowrap;
+}
+
+/* Slider volume – solo layout, non tocchiamo i colori globali */
+.audio-player input#volume[type="range"] {
+  flex: 1;
+  max-width: 180px;
+  margin-left: 0.4rem;
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .audio-player {
+    padding: 0.9rem 1rem;
+    margin-inline: 0.5rem;
+  }
+
+  .audio-player .controls {
+    flex-wrap: wrap;
+    row-gap: 0.4rem;
+  }
+
+  .audio-player input#volume[type="range"] {
+    flex-basis: 100%;
+    max-width: 100%;
+    margin-left: 0;
+  }
+
+  .audio-player #time {
+    font-size: 0.78rem;
+  }
+}
+
 
 .articles-blob {
     position: fixed;
