@@ -3681,26 +3681,29 @@ border: 1px solid color-mix(in srgb, var(--accent) 70%, #000 30%)
 <div aria-label="Lettore audio" class="audio-player" id="audio-player">
   <div class="audio-title">🎧 Musica per lo studio</div>
   <br/>
+
   <div class="controls">
     <button aria-label="Riproduci/Pausa" id="playPause">▶️</button>
     <span aria-live="polite" id="time">0:00 / 0:00</span>
-    <!-- 👉 questo è l'unico slider del VOLUME -->
-    <input 
-      id="volume" 
-      type="range" 
-      min="0" 
-      max="1" 
-      step="0.01" 
+
+    <!-- 👉 unico slider volume -->
+    <input
+      id="volume"
+      type="range"
+      min="0"
+      max="1"
+      step="0.01"
       value="0.8">
   </div>
 
   <audio
     id="myAudio"
-    playsinline="True"
     preload="auto"
+    playsinline
     src="https://casi0048.github.io/suoni/Strauss.mp3">
   </audio>
 </div>
+
 
   <aside aria-label="Ultimi articoli" class="articles-blob">
     <h3>📰 Ultimi articoli</h3>
@@ -8177,6 +8180,73 @@ border: 1px solid color-mix(in srgb, var(--accent) 70%, #000 30%)
 });
 
   </script>
+ <script>
+document.addEventListener('DOMContentLoaded', () => {
+  const audio   = document.getElementById('myAudio');
+  const btn     = document.getElementById('playPause');
+  const timeEl  = document.getElementById('time');
+  const vol     = document.getElementById('volume');
+
+  // Se manca qualcosa, non facciamo nulla
+  if (!audio || !btn || !timeEl || !vol) {
+    console.warn('Player audio: elementi mancanti', { audio, btn, timeEl, vol });
+    return;
+  }
+
+  // Format tempo mm:ss
+  function fmt(s) {
+    if (!isFinite(s)) return '0:00';
+    const m = Math.floor(s / 60);
+    const c = Math.floor(s % 60);
+    return m + ':' + (c < 10 ? '0' + c : c);
+  }
+
+  function updateTime() {
+    timeEl.textContent = `${fmt(audio.currentTime)} / ${fmt(audio.duration)}`;
+  }
+
+  // Volume iniziale
+  vol.value  = '0.8';
+  audio.volume = parseFloat(vol.value);
+
+  // Play / pausa
+  btn.addEventListener('click', () => {
+    if (audio.paused) {
+      audio.play().then(() => {
+        btn.textContent = '⏸️';
+      }).catch((err) => {
+        console.warn('Impossibile riprodurre l’audio:', err);
+      });
+    } else {
+      audio.pause();
+      btn.textContent = '▶️';
+    }
+  });
+
+  // Slider volume → cambia volume solo da #volume
+  vol.addEventListener('input', () => {
+    audio.volume = parseFloat(vol.value);
+  });
+
+  // Aggiorna tempo
+  audio.addEventListener('timeupdate', updateTime);
+  audio.addEventListener('loadedmetadata', updateTime);
+  audio.addEventListener('ended', () => {
+    btn.textContent = '▶️';
+  });
+
+  // Sblocco “gentile” per Safari / mobile (opzionale)
+  const unlock = () => {
+    audio.play().then(() => {
+      audio.pause();
+      audio.currentTime = 0;
+    }).catch(() => {});
+    window.removeEventListener('pointerdown', unlock, { capture: true });
+  };
+  window.addEventListener('pointerdown', unlock, { once: true, capture: true, passive: true });
+});
+
+ </script>
  
 </body>
 </html>
