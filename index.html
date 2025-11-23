@@ -7535,6 +7535,50 @@ document.addEventListener('DOMContentLoaded', function() {
       .forEach(b => b.setAttribute('aria-pressed', b.dataset.variant===variant ? 'true':'false'));
   }
 })();
+  // ===== GESTIONE BOTTONE PARADIGMA CON HOVER =====
+document.addEventListener('DOMContentLoaded', function() {
+    const paradigmaBtn = document.getElementById('paradigma-btn');
+    const filosofiOverlay = document.getElementById('filosofi-overlay');
+    const container = paradigmaBtn.parentElement;
+    
+    if (!paradigmaBtn || !filosofiOverlay) return;
+    
+    let closeTimeout;
+    
+    function openPanel() {
+        clearTimeout(closeTimeout);
+        filosofiOverlay.style.display = 'block';
+        paradigmaBtn.classList.add('active');
+        
+        setTimeout(() => {
+            filosofiOverlay.style.opacity = '1';
+            filosofiOverlay.style.transform = 'translateY(0)';
+        }, 10);
+    }
+    
+    function closePanel() {
+        filosofiOverlay.style.opacity = '0';
+        filosofiOverlay.style.transform = 'translateY(-10px)';
+        paradigmaBtn.classList.remove('active');
+        
+        closeTimeout = setTimeout(() => {
+            filosofiOverlay.style.display = 'none';
+        }, 300);
+    }
+    
+    // Hover sul bottone
+    paradigmaBtn.addEventListener('mouseenter', openPanel);
+    
+    // Hover sul container
+    container.addEventListener('mouseenter', openPanel);
+    container.addEventListener('mouseleave', function() {
+        closeTimeout = setTimeout(closePanel, 200);
+    });
+    
+    // Previeni chiusura accidentale
+    filosofiOverlay.addEventListener('mouseenter', () => clearTimeout(closeTimeout));
+    filosofiOverlay.addEventListener('mouseleave', () => closeTimeout = setTimeout(closePanel, 150));
+});
 </script>
 <script src="/assets/js/script.js?v=20251122" defer></script>
 </body>
