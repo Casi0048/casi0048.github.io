@@ -349,3 +349,219 @@ document.addEventListener('DOMContentLoaded', function() {
 window.addEventListener('error', (event) => {
     console.error('❌ Errore globale catturato:', event.error);
 });
+
+    (function() {
+        const canvas = document.getElementById("tiny-comets");
+        if (!canvas) {
+            console.warn('Canvas "tiny-comets" non trovato');
+            return;
+        }
+        
+        const ctx = canvas.getContext("2d");
+        let w, h;
+        const comets = [];
+        
+        // COLORI PIÙ LUMINOSI E SATURI
+        const colors = [
+            '#FF4444', '#00FFFF', '#44B7D1', '#88FF88', '#FFFF00',
+            '#FF88FF', '#88D8FF', '#FFFF88', '#DD88FF', '#88C1FF',
+            '#FFB844', '#88FFAA', '#FF8888', '#88AAFF', '#FF88DD',
+            '#FFAA00', '#00FFAA', '#AA00FF', '#FF0088', '#88FF00'
+        ];
+        
+        function resizeCanvas() {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+        }
+        
+        class TinyComet {
+            constructor() {
+                this.reset();
+            }
+            
+            reset() {
+                // Posizione iniziale casuale su tutti i bordi
+                const side = Math.floor(Math.random() * 4);
+                const margin = 20;
+                
+                switch(side) {
+                    case 0: // Alto
+                        this.x = Math.random() * w;
+                        this.y = -margin;
+                        break;
+                    case 1: // Destra
+                        this.x = w + margin;
+                        this.y = Math.random() * h;
+                        break;
+                    case 2: // Basso
+                        this.x = Math.random() * w;
+                        this.y = h + margin;
+                        break;
+                    case 3: // Sinistra
+                        this.x = -margin;
+                        this.y = Math.random() * h;
+                        break;
+                }
+                
+                // Angolo verso il centro dello schermo
+                const centerX = w / 2;
+                const centerY = h / 2;
+                this.angle = Math.atan2(centerY - this.y, centerX - this.x);
+                
+                // Velocità e dimensioni aumentate
+                this.speed = Math.random() * 3 + 1.5;
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+                this.size = Math.random() * 4 + 2; // Da 2 a 6 px
+                this.trailLength = Math.floor(Math.random() * 12) + 6; // Scia più lunga
+                this.trail = [];
+                this.life = 0;
+                this.maxLife = 300 + Math.random() * 400;
+                
+                // Effetti speciali casuali
+                this.hasGlow = Math.random() > 0.3;
+                this.isFast = Math.random() > 0.7;
+                if (this.isFast) this.speed *= 1.5;
+            }
+            
+            update() {
+                this.life++;
+                
+                // Movimento basato sull'angolo
+                this.x += Math.cos(this.angle) * this.speed;
+                this.y += Math.sin(this.angle) * this.speed;
+                
+                // Aggiungi punto alla scia con posizione precisa
+                this.trail.push({
+                    x: this.x, 
+                    y: this.y,
+                    size: this.size,
+                    alpha: 1.0
+                });
+                
+                // Aggiorna alpha della scia esistente
+                this.trail.forEach(point => {
+                    point.alpha *= 0.85; // Fade più lento
+                    point.size *= 0.95;
+                });
+                
+                // Rimuovi punti troppo trasparenti
+                if (this.trail.length > this.trailLength) {
+                    this.trail.shift();
+                }
+                
+                // Reset se esce dallo schermo o vita terminata
+                const margin = 100;
+                if (this.x < -margin || this.x > w + margin || 
+                    this.y < -margin || this.y > h + margin ||
+                    this.life > this.maxLife) {
+                    this.reset();
+                }
+            }
+            
+            draw() {
+                // Disegna la scia - VERSIONE MIGLIORATA
+                for (let i = 0; i < this.trail.length; i++) {
+                    const point = this.trail[i];
+                    const progress = i / this.trail.length;
+                    const alpha = point.alpha * progress * 0.9;
+                    
+                    ctx.beginPath();
+                    ctx.arc(point.x, point.y, point.size, 0, Math.PI * 2);
+                    
+                    // Colore della scia con fade
+                    const trailColor = this.color.replace(')', `, ${alpha})`).replace('rgb', 'rgba');
+                    ctx.fillStyle = trailColor;
+                    ctx.fill();
+                    
+                    // Aggiungi un bordo glow alla scia
+                    if (this.hasGlow) {
+                        ctx.beginPath();
+                        ctx.arc(point.x, point.y, point.size * 1.8, 0, Math.PI * 2);
+                        const glowColor = this.color.replace(')', `, ${alpha * 0.3})`).replace('rgb', 'rgba');
+                        ctx.fillStyle = glowColor;
+                        ctx.fill();
+                    }
+                }
+                
+                // Disegna la testa della cometa - PIÙ LUMINOSA
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                
+                // Bagliore principale - MOLTO PIÙ LUMINOSO
+                if (this.hasGlow) {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size * 2.5, 0, Math.PI * 2);
+                    const gradient = ctx.createRadialGradient(
+                        this.x, this.y, 0,
+                        this.x, this.y, this.size * 2.5
+                    );
+                    gradient.addColorStop(0, this.color.replace(')', ', 0.9)').replace('rgb', 'rgba'));
+                    gradient.addColorStop(0.5, this.color.replace(')', ', 0.4)').replace('rgb', 'rgba'));
+                    gradient.addColorStop(1, this.color.replace(')', ', 0)').replace('rgb', 'rgba'));
+                    ctx.fillStyle = gradient;
+                    ctx.fill();
+                }
+                
+                // Effetto stella brillante per le comete veloci
+                if (this.isFast) {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size * 0.5, 0, Math.PI * 2);
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.fill();
+                }
+            }
+        }
+        
+        function init() {
+            resizeCanvas();
+            
+            // Crea più cometine (40 invece di 30)
+            for (let i = 0; i < 40; i++) {
+                comets.push(new TinyComet());
+                // Distribuisci l'inizio nel tempo più uniformemente
+                comets[i].life = Math.random() * 200;
+            }
+            
+            console.log('✅ Comete inizializzate:', comets.length);
+            animate();
+        }
+        
+        function animate() {
+            // Sfumo più leggero per non scurire troppo
+            ctx.fillStyle = 'rgba(10, 10, 26, 0.05)';
+            ctx.fillRect(0, 0, w, h);
+            
+            // Aggiorna e disegna tutte le comete
+            comets.forEach(comet => {
+                comet.update();
+                comet.draw();
+            });
+            
+            requestAnimationFrame(animate);
+        }
+        
+        // Gestione resize ottimizzata
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                resizeCanvas();
+                // Ricrea le comete per adattarsi alle nuove dimensioni
+                comets.length = 0;
+                for (let i = 0; i < 40; i++) {
+                    comets.push(new TinyComet());
+                }
+            }, 250);
+        });
+        
+        // Avvia quando la pagina è caricata
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+        
+    })();
+
