@@ -6404,7 +6404,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // SISTEMA STELLARE COMPLETO CON VERIFICHE DI SICUREZZA - VERSIONE CORRETTA
 document.addEventListener('DOMContentLoaded', function() {
     
-    // 1. PRELOAD RISORSE CRITICHE - CORRETTO
+    // 1. PRELOAD RISORSE CRITICHE - CORRETTO E SEMPLIFICATO
     const criticalResources = [
         'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css'
     ];
@@ -6428,34 +6428,31 @@ document.addEventListener('DOMContentLoaded', function() {
         return null;
     }
 
-    // 2. PRELOAD CORRETTO CON CROSSORIGIN
+    // 2. PRELOAD CORRETTO - SOLO SE NON ESISTE GIÀ
     criticalResources.forEach(resource => {
         if (resource.includes('font-awesome')) {
             safeDOMOperation(() => {
+                // Verifica se Font Awesome è già caricato
+                const existingFA = document.querySelector('link[href*="font-awesome"]');
+                if (existingFA) {
+                    console.log('✅ Font Awesome già presente');
+                    return;
+                }
+                
                 const preload = document.createElement('link');
                 preload.rel = 'preload';
                 preload.href = resource;
                 preload.as = 'style';
-                preload.crossOrigin = 'anonymous'; // 👈 AGGIUNTO QUESTO
+                preload.crossOrigin = 'anonymous';
                 
                 if (document.head) {
                     document.head.appendChild(preload);
                     console.log('✅ Preload risorsa con crossorigin:', resource);
-                    
-                    // 👈 AGGIUNGI ANCHE IL LINK NORMALE PER EVITARE L'AVVISO
-                    const normalLink = document.createElement('link');
-                    normalLink.rel = 'stylesheet';
-                    normalLink.href = resource;
-                    normalLink.crossOrigin = 'anonymous';
-                    document.head.appendChild(normalLink);
                 }
-            }, () => {
-                console.warn('❌ Fallback preload per:', resource);
             });
         }
     });
 
-    // [RESTANTE CODICE IDENTICO...]
     // 3. SISTEMA STELLARE CON VERIFICHE COMPLETE
     function initializeStars() {
         return safeDOMOperation(() => {
@@ -6570,95 +6567,95 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-   // 6. INIZIALIZZAZIONE SICURA EFFETTI STELLARI
-function initializeStarEffects() {
-    safeDOMOperation(
-        () => {
-            const starsContainer = document.getElementById('starsContainer');
-            if (starsContainer && typeof initStars === 'function') {
-                initStars();
-                console.log('✅ Effetti stelle avanzati attivati');
-            } else if (starsContainer) {
-                createBasicStars();
-            }
-        },
-        () => {
-            console.log('ℹ️ Effetti stelle disabilitati per problemi di performance');
-            const starsContainer = document.getElementById('starsContainer');
-            if (starsContainer) {
-                starsContainer.style.display = 'none';
-            }
-        }
-    );
-} // 
-
-// 7. CSS PER STATI SPECIALI
-function injectPerformanceCSS() {
-    return safeDOMOperation(() => {
-        if (!document.head) return false;
-        
-        const performanceCSS = `
-            .fade-in {
-                animation: fadeIn 0.5s ease-in;
-            }
-            
-            .offline {
-                opacity: 0.8;
-                filter: grayscale(0.3);
-            }
-            
-            @keyframes fadeIn {
-                from { opacity: 0; }
-                to { opacity: 1; }
-            }
-            
-            @media (prefers-reduced-motion: reduce) {
-                .fade-in, .star {
-                    animation: none !important;
+    // 6. INIZIALIZZAZIONE SICURA EFFETTI STELLARI - CORRETTA
+    function initializeStarEffects() {
+        safeDOMOperation(
+            () => {
+                const starsContainer = document.getElementById('starsContainer');
+                if (starsContainer) {
+                    // Se non esiste initStars, usa initializeStars
+                    if (typeof initStars === 'function') {
+                        initStars();
+                        console.log('✅ Effetti stelle avanzati attivati');
+                    } else {
+                        initializeStars(); // Usa la funzione che esiste
+                        console.log('✅ Effetti stelle base attivati');
+                    }
+                }
+            },
+            () => {
+                console.log('ℹ️ Effetti stelle disabilitati per problemi di performance');
+                const starsContainer = document.getElementById('starsContainer');
+                if (starsContainer) {
+                    starsContainer.style.display = 'none';
                 }
             }
-        `;
+        );
+    }
 
-        const style = document.createElement('style');
-        style.textContent = performanceCSS;
-        document.head.appendChild(style);
-        console.log('✅ CSS performance injectato');
-        return true;
-    });
-}
+    // 7. CSS PER STATI SPECIALI
+    function injectPerformanceCSS() {
+        return safeDOMOperation(() => {
+            if (!document.head) return false;
+            
+            const performanceCSS = `
+                .fade-in {
+                    animation: fadeIn 0.5s ease-in;
+                }
+                
+                .offline {
+                    opacity: 0.8;
+                    filter: grayscale(0.3);
+                }
+                
+                @keyframes fadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+                
+                @media (prefers-reduced-motion: reduce) {
+                    .fade-in, .star {
+                        animation: none !important;
+                    }
+                }
+            `;
 
-// 8. INIZIALIZZAZIONE PRINCIPALE
-console.log('🚀 Inizializzazione sistema stellare...');
+            const style = document.createElement('style');
+            style.textContent = performanceCSS;
+            document.head.appendChild(style);
+            console.log('✅ CSS performance injectato');
+            return true;
+        });
+    }
 
-injectPerformanceCSS();
-initializeStars();
-initializeLazyLoading();
-initializeStarEffects();
+    // 8. INIZIALIZZAZIONE PRINCIPALE
+    console.log('🚀 Inizializzazione sistema stellare...');
 
-console.log('✅ Sistema completamente inizializzato');
-//}); // <-- SE C'È QUESTA, RIMUOVILA!
+    injectPerformanceCSS();
+    initializeStars();
+    initializeLazyLoading();
+    initializeStarEffects();
 
-// 9. GESTIONE ERRORI GLOBALE
+    console.log('✅ Sistema completamente inizializzato');
+});
+
+// 9. GESTIONE ERRORI GLOBALE (FUORI DAL DOMContentLoaded)
 window.addEventListener('error', (event) => {
     console.error('❌ Errore globale catturato:', event.error);
 }); 
 
-// 10. GESTIONE STATO CONNESSIONE
+// 10. GESTIONE STATO CONNESSIONE (FUORI DAL DOMContentLoaded)
 window.addEventListener('online', () => {
     console.log('📶 Connessione ripristinata');
-    safeDOMOperation(() => {
-        document.body.classList.remove('offline');
-    });
+    document.body?.classList?.remove('offline');
 });
 
 window.addEventListener('offline', () => {
     console.warn('📶 Connessione persa');
-    safeDOMOperation(() => {
-        document.body.classList.add('offline');
-    });
+    document.body?.classList?.add('offline');
 });
 
-// 11. SAFE ELEMENT SELECTOR
+// 11. SAFE ELEMENT SELECTOR (FUORI DAL DOMContentLoaded)
 window.getElementSafe = function(selector) {
     try {
         const element = typeof selector === 'string' ? 
