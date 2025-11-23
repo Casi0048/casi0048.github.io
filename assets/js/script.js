@@ -563,59 +563,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 })();
 
-// === PARADIGMA OVERLAY ===
-document.addEventListener('DOMContentLoaded', function() {
-    const btn = document.getElementById('paradigma-btn');
-    const overlay = document.getElementById('filosofi-overlay');
-    
-    if (!btn || !overlay) return;
-    
-    let hideTimeout;
-    
-    function showOverlay() {
-        clearTimeout(hideTimeout);
-        
-        const btnRect = btn.getBoundingClientRect();
-        const overlayWidth = overlay.offsetWidth;
-        const viewportWidth = window.innerWidth;
-        
-        let leftPosition = btnRect.left + (btnRect.width / 2) - (overlayWidth / 2);
-        
-        if (leftPosition < 20) {
-            leftPosition = 20;
-        }
-        if (leftPosition + overlayWidth > viewportWidth - 20) {
-            leftPosition = viewportWidth - overlayWidth - 20;
-        }
-        
-        overlay.style.left = leftPosition + 'px';
-        overlay.style.transform = 'none';
-        overlay.classList.add('show');
-    }
-    
-    function hideOverlay() {
-        hideTimeout = setTimeout(() => {
-            overlay.classList.remove('show');
-        }, 300);
-    }
-    
-    btn.addEventListener('mouseenter', showOverlay);
-    btn.addEventListener('mouseleave', hideOverlay);
-    overlay.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
-    overlay.addEventListener('mouseleave', hideOverlay);
-    
-    window.addEventListener('resize', function() {
-        if (overlay.classList.contains('show')) {
-            showOverlay();
-        }
-    });
-    
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && overlay.classList.contains('show')) {
-            hideOverlay();
-        }
-    });
-});
 
 // === QUOTE BUBBLE ===
 document.addEventListener('DOMContentLoaded', function() {
