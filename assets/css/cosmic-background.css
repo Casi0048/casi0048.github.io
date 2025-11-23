@@ -1,4 +1,4 @@
-/* === SFONDO STELLARE COMPLETO - VERSIONE ULTRA VISIBILE === */
+/* === SFONDO STELLARE COMPLETO - VERSIONE DEFINITIVA === */
 .stars-container {
     position: fixed;
     top: 0;
@@ -6,164 +6,168 @@
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 5;
+    z-index: -1; /* ← DIETRO A TUTTO IL CONTENUTO */
     overflow: hidden;
-    background: linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 50%, #16213e 100%);
+    background: transparent !important; /* ← NO SFONDO GRADIENT */
 }
 
-/* STELLE NORMALI - VERSIONE SUPER LUMINOSA */
+/* STELLE NORMALI - VERSIONE IPER LUMINOSA */
 .star {
     position: absolute;
     background-color: #ffffff;
     border-radius: 50%;
-    animation: superTwinkle var(--duration) ease-in-out infinite;
+    animation: hyperTwinkle var(--duration) ease-in-out infinite;
     animation-delay: var(--delay);
-    box-shadow: 0 0 10px #ffffff;
+    z-index: -1; /* ← STESSE STELLE DIETRO */
 }
 
-/* DIMENSIONI AUMENTATE E OPACITÀ MASSIMA */
+/* DIMENSIONI MASSIME E OPACITÀ TOTALE */
 .star.small { 
-    width: 3px; 
-    height: 3px; 
-    opacity: 0.8; 
+    width: 6px; 
+    height: 6px; 
+    opacity: 0.9; 
     --duration: 4s; 
     --delay: 0s; 
-    box-shadow: 0 0 8px #ffffff, 0 0 12px #ffffff;
+    box-shadow: 
+        0 0 10px #ffffff,
+        0 0 20px #ffffff,
+        0 0 30px #ffffff !important;
 }
 
 .star.medium { 
-    width: 4px; 
-    height: 4px; 
-    opacity: 0.9; 
+    width: 8px; 
+    height: 8px; 
+    opacity: 0.95; 
     --duration: 5s; 
     --delay: 1s; 
-    box-shadow: 0 0 12px #ffffff, 0 0 18px #ffffff;
+    box-shadow: 
+        0 0 15px #ffffff,
+        0 0 25px #ffffff,
+        0 0 35px #ffffff !important;
 }
 
 .star.large { 
-    width: 6px; 
-    height: 6px; 
+    width: 10px; 
+    height: 10px; 
     opacity: 1; 
     --duration: 6s; 
     --delay: 2s; 
-    box-shadow: 0 0 16px #ffffff, 0 0 24px #ffffff;
+    box-shadow: 
+        0 0 20px #ffffff,
+        0 0 30px #ffffff,
+        0 0 40px #ffffff !important;
 }
 
 .star.xlarge { 
-    width: 8px; 
-    height: 8px; 
+    width: 12px; 
+    height: 12px; 
     opacity: 1; 
     --duration: 7s; 
     --delay: 3s; 
-    box-shadow: 0 0 20px #ffffff, 0 0 30px #ffffff;
+    box-shadow: 
+        0 0 25px #ffffff,
+        0 0 35px #ffffff,
+        0 0 45px #ffffff !important;
 }
 
-/* STELLE COLORATE SUPER LUMINOSE */
+/* STELLE COLORATE IPER-LUMINOSE */
 .star.color-blue {
     background: #00ffff !important;
     box-shadow: 
-        0 0 10px #00ffff,
-        0 0 20px #00ffff,
-        0 0 30px #00ffff !important;
+        0 0 15px #00ffff,
+        0 0 30px #00ffff,
+        0 0 45px #00ffff,
+        0 0 60px #00ffff !important;
 }
 
 .star.color-gold {
     background: #ffd700 !important;
     box-shadow: 
-        0 0 10px #ffd700,
-        0 0 20px #ffd700,
-        0 0 30px #ffd700 !important;
+        0 0 15px #ffd700,
+        0 0 30px #ffd700,
+        0 0 45px #ffd700,
+        0 0 60px #ffd700 !important;
 }
 
 .star.color-purple {
-    background: #d870ff !important;
+    background: #ff00ff !important;
     box-shadow: 
-        0 0 10px #d870ff,
-        0 0 20px #d870ff,
-        0 0 30px #d870ff !important;
+        0 0 15px #ff00ff,
+        0 0 30px #ff00ff,
+        0 0 45px #ff00ff,
+        0 0 60px #ff00ff !important;
 }
 
-/* ANIMAZIONE DI SCINTILLIO MOLTO PIÙ EVIDENTE */
-@keyframes superTwinkle {
+/* ANIMAZIONE DI SCINTILLIO IPER-EVIDENTE */
+@keyframes hyperTwinkle {
     0%, 100% {
-        opacity: 0.7;
+        opacity: 0.8;
         transform: scale(1);
-        box-shadow: 0 0 10px currentColor;
+        filter: brightness(1.2);
     }
     25% {
-        opacity: 0.9;
-        transform: scale(1.2);
-        box-shadow: 0 0 20px currentColor;
+        opacity: 1;
+        transform: scale(1.4);
+        filter: brightness(1.8);
     }
     50% {
         opacity: 1;
-        transform: scale(1.4);
-        box-shadow: 0 0 30px currentColor, 0 0 40px currentColor;
+        transform: scale(1.8);
+        filter: brightness(2.5) drop-shadow(0 0 40px currentColor);
     }
     75% {
-        opacity: 0.8;
-        transform: scale(1.3);
-        box-shadow: 0 0 25px currentColor;
+        opacity: 0.9;
+        transform: scale(1.5);
+        filter: brightness(2.0);
     }
 }
 
 /* === COMETE SUPER LUMINOSE === */
 .shooting-star {
     position: absolute;
-    --trail: 120px;             /* lunghezza scia aumentata */
-    --thick: 3px;               /* spessore scia aumentato */
-    --tail: rgba(255, 255, 255, 0.9); /* coda più luminosa */
+    --trail: 150px;             /* lunghezza scia aumentata */
+    --thick: 4px;               /* spessore scia aumentato */
+    --tail: rgba(255, 255, 255, 0.95); /* coda più luminosa */
     width: var(--trail);
     height: var(--thick);
     
-    /* Testa SUPER luminosa */
+    /* Testa IPER luminosa */
     background:
         radial-gradient(circle at 100% 50%,
-            #ffffff 0 5px,
-            #ffffff 6px,
-            rgba(255, 255, 255, 0.8) 8px,
-            transparent 15px),
+            #ffffff 0 8px,
+            #ffffff 9px,
+            rgba(255, 255, 255, 0.9) 11px,
+            transparent 20px),
         linear-gradient(to left,
             var(--tail) 0%,
-            rgba(255, 255, 255, 0.6) 25%,
-            rgba(255, 255, 255, 0.3) 50%,
+            rgba(255, 255, 255, 0.7) 20%,
+            rgba(255, 255, 255, 0.4) 40%,
+            rgba(255, 255, 255, 0.2) 60%,
             transparent 100%);
     background-repeat: no-repeat, no-repeat;
-    background-size: 15px 15px, 100% 100%;
+    background-size: 20px 20px, 100% 100%;
     border-radius: 999px;
-    filter: drop-shadow(0 0 15px #ffffff) blur(0.5px);
+    filter: drop-shadow(0 0 20px #ffffff) blur(0.3px);
     opacity: 0;
-    z-index: 10;
+    z-index: -1; /* ← COMETE DIETRO AL CONTENUTO */
     transform-origin: 100% 50%;
 }
 
-/* VARIANTI COMETE PIÙ LUMINOSE */
+/* VARIANTI COMETE IPER-LUMINOSE */
 .shooting-star.micro { 
-    --trail: 150px;  
-    --thick: 2px; 
-    filter: drop-shadow(0 0 12px #ffffff) blur(0.3px); 
+    --trail: 180px;  
+    --thick: 3px; 
+    filter: drop-shadow(0 0 15px #ffffff) blur(0.2px); 
 }
 
 .shooting-star.fast  { 
-    animation-duration: 3s;  
-    filter: drop-shadow(0 0 20px #ffd700) blur(0.5px);
-    background: linear-gradient(90deg, 
-        transparent,
-        #ffd700 20%,
-        #ffffff 40%,
-        #ffd700 60%,
-        transparent 100%) !important;
+    animation-duration: 2.5s;  
+    filter: drop-shadow(0 0 25px #ffd700) blur(0.3px);
 }
 
 .shooting-star.slow  { 
-    animation-duration: 8s; 
-    filter: drop-shadow(0 0 25px #b967ff) blur(0.5px);
-    background: linear-gradient(90deg, 
-        transparent,
-        #b967ff 20%,
-        #ffffff 40%,
-        #b967ff 60%,
-        transparent 100%) !important;
+    animation-duration: 7s; 
+    filter: drop-shadow(0 0 30px #b967ff) blur(0.3px);
 }
 
 /* DIREZIONI */
@@ -175,63 +179,63 @@
 /* ANIMAZIONI COMETE PIÙ LENTE PER MAGGIORE VISIBILITÀ */
 @keyframes fly-horizontal {
     0%   { 
-        transform: rotate(0deg) translateX(-200px);
+        transform: rotate(0deg) translateX(-250px);
         opacity: 0; 
     }
-    5%  { opacity: 1; }
-    85%  { opacity: 1; }
+    3%  { opacity: 1; }
+    90%  { opacity: 1; }
     100% { 
-        transform: rotate(0deg) translateX(calc(100vw + 200px));
+        transform: rotate(0deg) translateX(calc(100vw + 250px));
         opacity: 0; 
     }
 }
 
 @keyframes fly-vertical {
     0%   { 
-        transform: translateY(-200px) rotate(90deg);   
+        transform: translateY(-250px) rotate(90deg);   
         opacity: 0; 
     }
-    5%  { opacity: 1; }
-    85%  { opacity: 1; }
+    3%  { opacity: 1; }
+    90%  { opacity: 1; }
     100% { 
-        transform: translateY(calc(100vh + 200px)) rotate(90deg); 
+        transform: translateY(calc(100vh + 250px)) rotate(90deg); 
         opacity: 0; 
     }
 }
 
 @keyframes fly-diagonal {
     0%   { 
-        transform: translate(-200px, -200px) rotate(45deg); 
+        transform: translate(-250px, -250px) rotate(45deg); 
         opacity: 0; 
     }
-    5%  { opacity: 1; }
-    85%  { opacity: 1; }
+    3%  { opacity: 1; }
+    90%  { opacity: 1; }
     100% { 
-        transform: translate(calc(100vw + 200px), calc(100vh + 200px)) rotate(45deg); 
+        transform: translate(calc(100vw + 250px), calc(100vh + 250px)) rotate(45deg); 
         opacity: 0; 
     }
 }
 
 @keyframes fly-reverse {
     0%   { 
-        transform: translate(calc(100vw + 200px), -200px) rotate(180deg); 
+        transform: translate(calc(100vw + 250px), -250px) rotate(180deg); 
         opacity: 0; 
     }
-    5%  { opacity: 1; }
-    85%  { opacity: 1; }
+    3%  { opacity: 1; }
+    90%  { opacity: 1; }
     100% { 
-        transform: translate(-200px, calc(100vh + 200px)) rotate(180deg); 
+        transform: translate(-250px, calc(100vh + 250px)) rotate(180deg); 
         opacity: 0; 
     }
 }
 
 /* COLLEGA ANIMAZIONI */
-.shooting-star.horizontal { animation: fly-horizontal 5s ease-out infinite; }
-.shooting-star.vertical   { animation: fly-vertical   7s ease-out infinite; }
-.shooting-star.diagonal   { animation: fly-diagonal   6s ease-out infinite; }
-.shooting-star.reverse    { animation: fly-reverse    6s ease-out infinite; }
+.shooting-star.horizontal { animation: fly-horizontal 4s ease-out infinite; }
+.shooting-star.vertical   { animation: fly-vertical   6s ease-out infinite; }
+.shooting-star.diagonal   { animation: fly-diagonal   5s ease-out infinite; }
+.shooting-star.reverse    { animation: fly-reverse    5s ease-out infinite; }
 
-/* COMETINE CANVAS - PIÙ VISIBILI */
+/* COMETINE CANVAS */
 .tiny-comets-canvas {
     position: fixed;
     top: 0;
@@ -239,38 +243,46 @@
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 2;
+    z-index: -1; /* ← DIETRO AL CONTENUTO */
 }
 
 /* EFFETTO BAGLIORE AGGIUNTIVO PER LE STELLE */
 .star::after {
     content: '';
     position: absolute;
-    top: -50%;
-    left: -50%;
-    right: -50%;
-    bottom: -50%;
-    background: radial-gradient(circle, currentColor 0%, transparent 70%);
-    opacity: 0.3;
+    top: -100%;
+    left: -100%;
+    right: -100%;
+    bottom: -100%;
+    background: radial-gradient(circle, currentColor 0%, transparent 60%);
+    opacity: 0.4;
     border-radius: 50%;
-    animation: pulseGlow 3s infinite alternate;
+    animation: hyperPulse 2s infinite alternate;
+    z-index: -2;
 }
 
-@keyframes pulseGlow {
-    0% { opacity: 0.2; transform: scale(0.8); }
-    100% { opacity: 0.4; transform: scale(1.2); }
+@keyframes hyperPulse {
+    0% { 
+        opacity: 0.3; 
+        transform: scale(0.7); 
+    }
+    100% { 
+        opacity: 0.6; 
+        transform: scale(1.5); 
+    }
 }
 
-/* MIGLIORA CONTRASTO SU SCHERMI LUMINOSI */
+/* MIGLIORA CONTRASTO SU SCHERMI GRANDI */
 @media (min-width: 1200px) {
     .star {
         box-shadow: 
-            0 0 15px currentColor,
-            0 0 30px currentColor !important;
+            0 0 20px currentColor,
+            0 0 40px currentColor,
+            0 0 60px currentColor !important;
     }
     
     .shooting-star {
-        filter: drop-shadow(0 0 25px #ffffff) blur(0.3px);
+        filter: drop-shadow(0 0 30px #ffffff) blur(0.2px);
     }
 }
 
@@ -278,6 +290,13 @@
 @media (prefers-reduced-motion: reduce) {
     .star, .shooting-star {
         animation: none !important;
-        opacity: 0.8 !important;
+        opacity: 0.9 !important;
+        filter: brightness(1.5) !important;
     }
+}
+
+/* GARANTISCI CHE IL CONTENUTO SIA SOPRA LE STELLE */
+body > *:not(.stars-container):not(.tiny-comets-canvas) {
+    position: relative;
+    z-index: 1;
 }
