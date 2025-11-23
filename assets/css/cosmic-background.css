@@ -1,128 +1,5 @@
-/* === SFONDO STELLARE COMPLETO - VERSIONE DEFINITIVA === */
-  .stars-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 1;
-  overflow: hidden;
-  }
-  /* STELLE NORMALI - VERSIONE MIGLIORATA PER LAMPEGGIAMENTO */
-  .star {
-  position: absolute;
-  background-color: #ffffff;
-  border-radius: 50%;
-  animation: twinkle var(--duration) ease-in-out infinite;
-  animation-delay: var(--delay);
-  }
-  /* DURATE PIÙ LUNGHE PER LAMPEGGIAMENTO PIÙ LENTO */
-  .star.small { width: 1px; height: 1px; opacity: 0.3; --duration: 6s; --delay: 0s; }
-  .star.medium { width: 2px; height: 2px; opacity: 0.6; --duration: 8s; --delay: 1s; }
-  .star.large { width: 3px; height: 3px; opacity: 0.8; --duration: 10s; --delay: 2s; }
-  .star.xlarge { width: 4px; height: 4px; opacity: 1; --duration: 12s; --delay: 3s; }
-  /* LAMPEGGIAMENTO PIÙ EVIDENTE */
-  @keyframes twinkle {
-  0% { opacity: 0.2; transform: scale(1); }
-  20% { opacity: 1; transform: scale(1.4); }    /* Picco più rapido */
-  40% { opacity: 0.3; transform: scale(1); }
-  60% { opacity: 1; transform: scale(1.3); }    /* Secondo picco */
-  80% { opacity: 0.4; transform: scale(1); }
-  100% { opacity: 0.2; transform: scale(1); }
-  }
-  /* === COMETE — testa sempre avanti, coda dietro (fix) === */
-  /* === COMETE — testa sempre avanti, coda dietro (definitivo) === */
-  .shooting-star {
-  position: absolute;
-  /* lunghezza coda e spessore (personalizzabili) */
-  --trail: 20px;             /* lunghezza scia */
-  --thick: 2px;               /* spessore scia */
-  --tail: rgba(174,233,255,.85); /* colore coda (puoi cambiare) */
-  width: var(--trail);
-  height: var(--thick);
-  /* Testa luminosa ANCORATA a DESTRA + coda verso SINISTRA */
-  background:
-  radial-gradient(circle at 100% 50%,
-  #ffffff 0 3px,
-  #aee9ff 4px,
-  transparent 10px),
-  linear-gradient(to left,
-  var(--tail) 0%,
-  rgba(174,233,255,.35) 35%,
-  rgba(174,233,255,.10) 70%,
-  transparent 100%);
-  background-repeat: no-repeat, no-repeat;
-  background-size: 10px 10px, 100% 100%;
-  border-radius: 999px;
-  filter: drop-shadow(0 0 8px #aee9ff);
-  opacity: 0;
-  z-index: 10;
-  /* Ruota attorno alla TESTA: la coda resta dietro in ogni direzione */
-  transform-origin: 100% 50%;
-  }
-  /* Varianti (NO background qui!) */
-  .shooting-star.micro { --trail: 90px;  --thick: 1px; filter: blur(0.1px); }
-  .shooting-star.fast  { animation-duration: 4s;  filter: drop-shadow(0 0 10px #ffd700); }
-  .shooting-star.slow  { animation-duration: 10s; filter: drop-shadow(0 0 8px  #b967ff); }
-  /* Direzioni — ruota l’elemento, NON i gradienti */
-  .shooting-star.horizontal { transform: rotate(0deg); }
-  .shooting-star.vertical   { transform: rotate(90deg); }
-  .shooting-star.diagonal   { transform: rotate(45deg); }
-  .shooting-star.reverse    { transform: rotate(180deg); } /* destra → sinistra */
-  /* Solo traslazione nei keyframes (niente rotate dentro) */
-  @keyframes fly-horizontal {
-  0%   { 
-  transform: rotate(0deg) translateX(-150px);
-  opacity: 0; 
-  }
-  10%  { opacity: 1; }
-  80%  { opacity: 1; }
-  100% { 
-  transform: rotate(0deg) translateX(calc(100vw + 150px));
-  opacity: 0; 
-  }
-  }
-  @keyframes fly-vertical {
-  0%   { transform: translateY(-150px) rotate(90deg);   opacity: 0; }
-  10%  { opacity: 1; }
-  80%  { opacity: 1; }
-  100% { transform: translateY(calc(100vh + 150px)) rotate(90deg); opacity: 0; }
-  }
-  @keyframes fly-diagonal {
-  0%   { transform: translate(-150px, -150px) rotate(45deg); opacity: 0; }
-  10%  { opacity: 1; }
-  80%  { opacity: 1; }
-  100% { transform: translate(calc(100vw + 150px), calc(100vh + 150px)) rotate(45deg); opacity: 0; }
-  }
-  @keyframes fly-reverse {
-  0%   { transform: translate(calc(100vw + 150px), -150px) rotate(180deg); opacity: 0; }
-  10%  { opacity: 1; }
-  80%  { opacity: 1; }
-  100% { transform: translate(-150px, calc(100vh + 150px)) rotate(180deg); opacity: 0; }
-  }
-  /* Collega classi → animazioni */
-  .shooting-star.horizontal { animation: fly-horizontal 6s ease-out infinite; }
-  .shooting-star.vertical   { animation: fly-vertical   8s ease-out infinite; }
-  .shooting-star.diagonal   { animation: fly-diagonal   7s ease-out infinite; }
-  .shooting-star.reverse    { animation: fly-reverse    7s ease-out infinite; }
-  /* Tema chiaro / accessibilità (una sola volta) */
-  [data-theme="light"] .shooting-star { opacity: 0.35; }
-  @media (prefers-reduced-motion: reduce) {
-  .shooting-star { animation: none !important; opacity: 0.5; }
-  }
-/* Stili per le cometine variopinte */
-  .tiny-comets-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 2;
-  }
-/* STELLE ULTRA VISIBILI - COPIA QUESTO */
-#starsContainer {
+/* === SFONDO STELLARE COMPLETO - VERSIONE ULTRA VISIBILE === */
+.stars-container {
     position: fixed;
     top: 0;
     left: 0;
@@ -130,77 +7,277 @@
     height: 100%;
     pointer-events: none;
     z-index: 1;
-    background: linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 100%);
+    overflow: hidden;
+    background: linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 50%, #16213e 100%);
 }
 
+/* STELLE NORMALI - VERSIONE SUPER LUMINOSA */
 .star {
     position: absolute;
+    background-color: #ffffff;
     border-radius: 50%;
-    animation: superTwinkle 4s infinite ease-in-out;
-    background: #ffffff;
+    animation: superTwinkle var(--duration) ease-in-out infinite;
+    animation-delay: var(--delay);
+    box-shadow: 0 0 10px #ffffff;
 }
 
-.star.small {
-    width: 2px;
-    height: 2px;
-    box-shadow: 0 0 8px #ffffff;
+/* DIMENSIONI AUMENTATE E OPACITÀ MASSIMA */
+.star.small { 
+    width: 3px; 
+    height: 3px; 
+    opacity: 0.8; 
+    --duration: 4s; 
+    --delay: 0s; 
+    box-shadow: 0 0 8px #ffffff, 0 0 12px #ffffff;
 }
 
-.star.medium {
-    width: 3px;
-    height: 3px;
-    box-shadow: 0 0 12px #ffffff;
+.star.medium { 
+    width: 4px; 
+    height: 4px; 
+    opacity: 0.9; 
+    --duration: 5s; 
+    --delay: 1s; 
+    box-shadow: 0 0 12px #ffffff, 0 0 18px #ffffff;
 }
 
-.star.large {
-    width: 4px;
-    height: 4px;
-    box-shadow: 0 0 16px #ffffff;
+.star.large { 
+    width: 6px; 
+    height: 6px; 
+    opacity: 1; 
+    --duration: 6s; 
+    --delay: 2s; 
+    box-shadow: 0 0 16px #ffffff, 0 0 24px #ffffff;
 }
 
-.star.xlarge {
-    width: 6px;
-    height: 6px;
-    box-shadow: 0 0 20px #ffffff;
+.star.xlarge { 
+    width: 8px; 
+    height: 8px; 
+    opacity: 1; 
+    --duration: 7s; 
+    --delay: 3s; 
+    box-shadow: 0 0 20px #ffffff, 0 0 30px #ffffff;
 }
 
-/* Stelle colorate ultra luminose */
+/* STELLE COLORATE SUPER LUMINOSE */
 .star.color-blue {
     background: #00ffff !important;
-    box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff !important;
+    box-shadow: 
+        0 0 10px #00ffff,
+        0 0 20px #00ffff,
+        0 0 30px #00ffff !important;
 }
 
 .star.color-gold {
     background: #ffd700 !important;
-    box-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700 !important;
+    box-shadow: 
+        0 0 10px #ffd700,
+        0 0 20px #ffd700,
+        0 0 30px #ffd700 !important;
 }
 
 .star.color-purple {
     background: #d870ff !important;
-    box-shadow: 0 0 10px #d870ff, 0 0 20px #d870ff !important;
+    box-shadow: 
+        0 0 10px #d870ff,
+        0 0 20px #d870ff,
+        0 0 30px #d870ff !important;
 }
 
+/* ANIMAZIONE DI SCINTILLIO MOLTO PIÙ EVIDENTE */
 @keyframes superTwinkle {
     0%, 100% {
-        opacity: 0.6;
+        opacity: 0.7;
         transform: scale(1);
+        box-shadow: 0 0 10px currentColor;
     }
     25% {
-        opacity: 0.8;
-        transform: scale(1.1);
+        opacity: 0.9;
+        transform: scale(1.2);
+        box-shadow: 0 0 20px currentColor;
     }
     50% {
         opacity: 1;
-        transform: scale(1.3);
+        transform: scale(1.4);
+        box-shadow: 0 0 30px currentColor, 0 0 40px currentColor;
     }
     75% {
-        opacity: 0.9;
-        transform: scale(1.2);
+        opacity: 0.8;
+        transform: scale(1.3);
+        box-shadow: 0 0 25px currentColor;
     }
 }
 
-/* Stelle cadenti più visibili */
+/* === COMETE SUPER LUMINOSE === */
 .shooting-star {
-    background: linear-gradient(90deg, transparent, #ffffff) !important;
-    box-shadow: 0 0 20px #ffffff !important;
+    position: absolute;
+    --trail: 120px;             /* lunghezza scia aumentata */
+    --thick: 3px;               /* spessore scia aumentato */
+    --tail: rgba(255, 255, 255, 0.9); /* coda più luminosa */
+    width: var(--trail);
+    height: var(--thick);
+    
+    /* Testa SUPER luminosa */
+    background:
+        radial-gradient(circle at 100% 50%,
+            #ffffff 0 5px,
+            #ffffff 6px,
+            rgba(255, 255, 255, 0.8) 8px,
+            transparent 15px),
+        linear-gradient(to left,
+            var(--tail) 0%,
+            rgba(255, 255, 255, 0.6) 25%,
+            rgba(255, 255, 255, 0.3) 50%,
+            transparent 100%);
+    background-repeat: no-repeat, no-repeat;
+    background-size: 15px 15px, 100% 100%;
+    border-radius: 999px;
+    filter: drop-shadow(0 0 15px #ffffff) blur(0.5px);
+    opacity: 0;
+    z-index: 10;
+    transform-origin: 100% 50%;
+}
+
+/* VARIANTI COMETE PIÙ LUMINOSE */
+.shooting-star.micro { 
+    --trail: 150px;  
+    --thick: 2px; 
+    filter: drop-shadow(0 0 12px #ffffff) blur(0.3px); 
+}
+
+.shooting-star.fast  { 
+    animation-duration: 3s;  
+    filter: drop-shadow(0 0 20px #ffd700) blur(0.5px);
+    background: linear-gradient(90deg, 
+        transparent,
+        #ffd700 20%,
+        #ffffff 40%,
+        #ffd700 60%,
+        transparent 100%) !important;
+}
+
+.shooting-star.slow  { 
+    animation-duration: 8s; 
+    filter: drop-shadow(0 0 25px #b967ff) blur(0.5px);
+    background: linear-gradient(90deg, 
+        transparent,
+        #b967ff 20%,
+        #ffffff 40%,
+        #b967ff 60%,
+        transparent 100%) !important;
+}
+
+/* DIREZIONI */
+.shooting-star.horizontal { transform: rotate(0deg); }
+.shooting-star.vertical   { transform: rotate(90deg); }
+.shooting-star.diagonal   { transform: rotate(45deg); }
+.shooting-star.reverse    { transform: rotate(180deg); }
+
+/* ANIMAZIONI COMETE PIÙ LENTE PER MAGGIORE VISIBILITÀ */
+@keyframes fly-horizontal {
+    0%   { 
+        transform: rotate(0deg) translateX(-200px);
+        opacity: 0; 
+    }
+    5%  { opacity: 1; }
+    85%  { opacity: 1; }
+    100% { 
+        transform: rotate(0deg) translateX(calc(100vw + 200px));
+        opacity: 0; 
+    }
+}
+
+@keyframes fly-vertical {
+    0%   { 
+        transform: translateY(-200px) rotate(90deg);   
+        opacity: 0; 
+    }
+    5%  { opacity: 1; }
+    85%  { opacity: 1; }
+    100% { 
+        transform: translateY(calc(100vh + 200px)) rotate(90deg); 
+        opacity: 0; 
+    }
+}
+
+@keyframes fly-diagonal {
+    0%   { 
+        transform: translate(-200px, -200px) rotate(45deg); 
+        opacity: 0; 
+    }
+    5%  { opacity: 1; }
+    85%  { opacity: 1; }
+    100% { 
+        transform: translate(calc(100vw + 200px), calc(100vh + 200px)) rotate(45deg); 
+        opacity: 0; 
+    }
+}
+
+@keyframes fly-reverse {
+    0%   { 
+        transform: translate(calc(100vw + 200px), -200px) rotate(180deg); 
+        opacity: 0; 
+    }
+    5%  { opacity: 1; }
+    85%  { opacity: 1; }
+    100% { 
+        transform: translate(-200px, calc(100vh + 200px)) rotate(180deg); 
+        opacity: 0; 
+    }
+}
+
+/* COLLEGA ANIMAZIONI */
+.shooting-star.horizontal { animation: fly-horizontal 5s ease-out infinite; }
+.shooting-star.vertical   { animation: fly-vertical   7s ease-out infinite; }
+.shooting-star.diagonal   { animation: fly-diagonal   6s ease-out infinite; }
+.shooting-star.reverse    { animation: fly-reverse    6s ease-out infinite; }
+
+/* COMETINE CANVAS - PIÙ VISIBILI */
+.tiny-comets-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* EFFETTO BAGLIORE AGGIUNTIVO PER LE STELLE */
+.star::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    right: -50%;
+    bottom: -50%;
+    background: radial-gradient(circle, currentColor 0%, transparent 70%);
+    opacity: 0.3;
+    border-radius: 50%;
+    animation: pulseGlow 3s infinite alternate;
+}
+
+@keyframes pulseGlow {
+    0% { opacity: 0.2; transform: scale(0.8); }
+    100% { opacity: 0.4; transform: scale(1.2); }
+}
+
+/* MIGLIORA CONTRASTO SU SCHERMI LUMINOSI */
+@media (min-width: 1200px) {
+    .star {
+        box-shadow: 
+            0 0 15px currentColor,
+            0 0 30px currentColor !important;
+    }
+    
+    .shooting-star {
+        filter: drop-shadow(0 0 25px #ffffff) blur(0.3px);
+    }
+}
+
+/* ACCESSIBILITÀ - RIDUZIONE ANIMAZIONI */
+@media (prefers-reduced-motion: reduce) {
+    .star, .shooting-star {
+        animation: none !important;
+        opacity: 0.8 !important;
+    }
 }
