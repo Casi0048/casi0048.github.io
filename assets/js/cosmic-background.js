@@ -1,270 +1,55 @@
 // SISTEMA STELLARE COMPLETO CON VERIFICHE DI SICUREZZA - VERSIONE CORRETTA
-document.addEventListener('DOMContentLoaded', function() {
-    
-    // 1. PRELOAD RISORSE CRITICHE - CORRETTO E SEMPLIFICATO
-    const criticalResources = [
-        'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css'
-    ];
-
-    // Funzione helper per operazioni DOM sicure
-    function safeDOMOperation(operation, fallback = null) {
-        try {
-            if (typeof operation === 'function') {
-                return operation();
-            }
-        } catch (error) {
-            console.warn('DOM operation failed:', error.message);
-            if (fallback && typeof fallback === 'function') {
-                try {
-                    return fallback();
-                } catch (fallbackError) {
-                    console.error('Fallback also failed:', fallbackError);
-                }
-            }
+function initializeStars() {
+    return safeDOMOperation(() => {
+        const starsContainer = document.getElementById('starsContainer') || document.getElementById('stars');
+        
+        if (!starsContainer) {
+            console.warn('❌ Container stelle non trovato nel DOM');
+            return false;
         }
-        return null;
-    }
-
-    // 2. PRELOAD CORRETTO - SOLO SE NON ESISTE GIÀ
-    criticalResources.forEach(resource => {
-        if (resource.includes('font-awesome')) {
-            safeDOMOperation(() => {
-                // Verifica se Font Awesome è già caricato
-                const existingFA = document.querySelector('link[href*="font-awesome"]');
-                if (existingFA) {
-                    console.log('✅ Font Awesome già presente');
-                    return;
-                }
-                
-                const preload = document.createElement('link');
-                preload.rel = 'preload';
-                preload.href = resource;
-                preload.as = 'style';
-                preload.crossOrigin = 'anonymous';
-                
-                if (document.head) {
-                    document.head.appendChild(preload);
-                    console.log('✅ Preload risorsa con crossorigin:', resource);
-                }
-            });
+        
+        if (!document.body.contains(starsContainer)) {
+            console.warn('❌ Container stelle non presente nel document.body');
+            return false;
         }
-    });
 
-    // 3. SISTEMA STELLARE CON VERIFICHE COMPLETE
-    function initializeStars() {
-        return safeDOMOperation(() => {
-            const starsContainer = document.getElementById('starsContainer') || document.getElementById('stars');
-            
-            if (!starsContainer) {
-                console.warn('❌ Container stelle non trovato nel DOM');
-                return false;
-            }
-            
-            if (!document.body.contains(starsContainer)) {
-                console.warn('❌ Container stelle non presente nel document.body');
-                return false;
-            }
+        // ★ MODIFICA QUESTO NUMERO ★
+        const starCount = 600; // ← IMPOSTA QUI IL NUMERO DI STELLE
+        let starsCreated = 0;
+        let errors = 0;
 
-            const starCount = 800;
-            let starsCreated = 0;
-            let errors = 0;
+        for (let i = 0; i < starCount; i++) {
+            const success = safeDOMOperation(() => {
+                if (i % 50 === 0 && !document.body.contains(starsContainer)) {
+                    console.warn('❌ Container stelle rimosso durante la creazione');
+                    return false;
+                }
 
-            for (let i = 0; i < starCount; i++) {
-                const success = safeDOMOperation(() => {
-                    if (i % 50 === 0 && !document.body.contains(starsContainer)) {
-                        console.warn('❌ Container stelle rimosso durante la creazione');
-                        return false;
-                    }
-
-                    const star = document.createElement('div');
-                    star.className = 'star';
-                    
-                    const size = Math.random() * 3;
-                    star.style.width = `${size}px`;
-                    star.style.height = `${size}px`;
-                    star.style.left = `${Math.random() * 100}%`;
-                    star.style.top = `${Math.random() * 100}%`;
-                    star.style.opacity = Math.random() * 0.7 + 0.1;
-                    star.style.animationDuration = `${3 + Math.random() * 7}s`;
-                    star.style.animationDelay = `${Math.random() * 5}s`;
-                    
-                    starsContainer.appendChild(star);
-                    starsCreated++;
-                    return true;
-                });
-
-                if (!success) errors++;
-                if (errors > 10) break;
-            }
-
-            console.log(`✅ ${starsCreated} stelle create, ${errors} errori`);
-            return starsCreated > 0;
-        });
-    }
-
-    // 4. LAZY LOADING IMMAGINI SICURO
-    function initializeLazyLoading() {
-        return safeDOMOperation(() => {
-            const lazyImages = document.querySelectorAll('.timeline-content img[data-src]');
-            
-            if (lazyImages.length === 0) {
-                console.log('ℹ️ Nessuna immagine per lazy loading');
-                return false;
-            }
-
-            if ('IntersectionObserver' in window) {
-                const imageObserver = new IntersectionObserver((entries, observer) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            const img = entry.target;
-                            safeDOMOperation(() => {
-                                img.src = img.dataset.src;
-                                img.removeAttribute('data-src');
-                                img.classList.add('fade-in');
-                                observer.unobserve(img);
-                            });
-                        }
-                    });
-                }, { 
-                    rootMargin: '50px 0px',
-                    threshold: 0.1
-                });
-
-                lazyImages.forEach(img => imageObserver.observe(img));
-                console.log(`✅ Lazy loading attivo per ${lazyImages.length} immagini`);
-            } else {
-                lazyImages.forEach(img => {
-                    safeDOMOperation(() => {
-                        img.src = img.dataset.src;
-                        img.removeAttribute('data-src');
-                    });
-                });
-                console.log('ℹ️ Lazy loading fallback attivato');
-            }
-            return true;
-        });
-    }
-
-    // 5. FALLBACK STELLE SEMPLIFICATO
-    function createBasicStars() {
-        return safeDOMOperation(() => {
-            const container = document.getElementById('starsContainer');
-            if (!container) return false;
-            
-            for (let i = 0; i < 50; i++) {
                 const star = document.createElement('div');
-                star.className = 'star small';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.animationDelay = Math.random() * 5 + 's';
-                container.appendChild(star);
-            }
-            console.log('✅ Stelle basic create');
-            return true;
-        });
-    }
-
-    // 6. INIZIALIZZAZIONE SICURA EFFETTI STELLARI - CORRETTA
-    function initializeStarEffects() {
-        safeDOMOperation(
-            () => {
-                const starsContainer = document.getElementById('starsContainer');
-                if (starsContainer) {
-                    // Se non esiste initStars, usa initializeStars
-                    if (typeof initStars === 'function') {
-                        initStars();
-                        console.log('✅ Effetti stelle avanzati attivati');
-                    } else {
-                        initializeStars(); // Usa la funzione che esiste
-                        console.log('✅ Effetti stelle base attivati');
-                    }
-                }
-            },
-            () => {
-                console.log('ℹ️ Effetti stelle disabilitati per problemi di performance');
-                const starsContainer = document.getElementById('starsContainer');
-                if (starsContainer) {
-                    starsContainer.style.display = 'none';
-                }
-            }
-        );
-    }
-
-    // 7. CSS PER STATI SPECIALI
-    function injectPerformanceCSS() {
-        return safeDOMOperation(() => {
-            if (!document.head) return false;
-            
-            const performanceCSS = `
-                .fade-in {
-                    animation: fadeIn 0.5s ease-in;
-                }
+                star.className = 'star';
                 
-                .offline {
-                    opacity: 0.8;
-                    filter: grayscale(0.3);
-                }
+                const size = Math.random() * 3;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.opacity = Math.random() * 0.7 + 0.1;
+                star.style.animationDuration = `${3 + Math.random() * 7}s`;
+                star.style.animationDelay = `${Math.random() * 5}s`;
                 
-                @keyframes fadeIn {
-                    from { opacity: 0; }
-                    to { opacity: 1; }
-                }
-                
-                @media (prefers-reduced-motion: reduce) {
-                    .fade-in, .star {
-                        animation: none !important;
-                    }
-                }
-            `;
+                starsContainer.appendChild(star);
+                starsCreated++;
+                return true;
+            });
 
-            const style = document.createElement('style');
-            style.textContent = performanceCSS;
-            document.head.appendChild(style);
-            console.log('✅ CSS performance injectato');
-            return true;
-        });
-    }
+            if (!success) errors++;
+            if (errors > 10) break;
+        }
 
-    // 8. INIZIALIZZAZIONE PRINCIPALE
-    console.log('🚀 Inizializzazione sistema stellare...');
-
-    injectPerformanceCSS();
-    initializeStars();
-    initializeLazyLoading();
-    initializeStarEffects();
-
-    console.log('✅ Sistema completamente inizializzato');
-});
-
-// 9. GESTIONE ERRORI GLOBALE (FUORI DAL DOMContentLoaded)
-window.addEventListener('error', (event) => {
-    console.error('❌ Errore globale catturato:', event.error);
-}); 
-
-// 10. GESTIONE STATO CONNESSIONE (FUORI DAL DOMContentLoaded)
-window.addEventListener('online', () => {
-    console.log('📶 Connessione ripristinata');
-    document.body?.classList?.remove('offline');
-});
-
-window.addEventListener('offline', () => {
-    console.warn('📶 Connessione persa');
-    document.body?.classList?.add('offline');
-});
-
-// 11. SAFE ELEMENT SELECTOR (FUORI DAL DOMContentLoaded)
-window.getElementSafe = function(selector) {
-    try {
-        const element = typeof selector === 'string' ? 
-            document.querySelector(selector) : selector;
-        return element && document.body.contains(element) ? element : null;
-    } catch (error) {
-        console.warn('getElementSafe error:', error);
-        return null;
-    }
-};
-
-console.log('⭐ Sistema stellare caricato e pronto');
+        console.log(`✅ ${starsCreated} stelle create, ${errors} errori`);
+        return starsCreated > 0;
+    });
+}
 
 /* ===== AGGIUTO ===== */
 
