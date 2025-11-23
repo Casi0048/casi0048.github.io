@@ -605,3 +605,82 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Re-init al resize
 window.addEventListener('resize', initCosmicTimeline);
+  
+// ===== GESTIONE BOTTONE PARADIGMA CON HOVER =====
+document.addEventListener('DOMContentLoaded', function() {
+    const paradigmaBtn = document.getElementById('paradigma-btn');
+    const filosofiOverlay = document.getElementById('filosofi-overlay');
+    const container = paradigmaBtn.parentElement;
+    const triangle = paradigmaBtn.querySelector('span'); // Seleziona il triangolino
+    
+    if (!paradigmaBtn || !filosofiOverlay) return;
+    
+    let closeTimeout;
+    let isOpen = false;
+    
+    function openPanel() {
+        clearTimeout(closeTimeout);
+        filosofiOverlay.style.display = 'block';
+        paradigmaBtn.classList.add('active');
+        isOpen = true;
+        
+        // Ruota il triangolino
+        if (triangle) {
+            triangle.style.transform = 'rotate(180deg)';
+        }
+        
+        setTimeout(() => {
+            filosofiOverlay.style.opacity = '1';
+            filosofiOverlay.style.transform = 'translateY(0)';
+        }, 10);
+    }
+    
+    function closePanel() {
+        filosofiOverlay.style.opacity = '0';
+        filosofiOverlay.style.transform = 'translateY(-10px)';
+        paradigmaBtn.classList.remove('active');
+        isOpen = false;
+        
+        // Riporta il triangolino alla posizione originale
+        if (triangle) {
+            triangle.style.transform = 'rotate(0deg)';
+        }
+        
+        closeTimeout = setTimeout(() => {
+            filosofiOverlay.style.display = 'none';
+        }, 300);
+    }
+    
+    // Hover sul bottone
+    paradigmaBtn.addEventListener('mouseenter', openPanel);
+    
+    // Hover sul container
+    container.addEventListener('mouseenter', openPanel);
+    container.addEventListener('mouseleave', function() {
+        closeTimeout = setTimeout(closePanel, 200);
+    });
+    
+    // Previeni chiusura accidentale
+    filosofiOverlay.addEventListener('mouseenter', () => clearTimeout(closeTimeout));
+    filosofiOverlay.addEventListener('mouseleave', () => closeTimeout = setTimeout(closePanel, 150));
+    
+    // Click sul bottone (backup per mobile)
+    paradigmaBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (isOpen) {
+            closePanel();
+        } else {
+            openPanel();
+        }
+    });
+    
+    // Chiudi con ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && isOpen) {
+            closePanel();
+        }
+    });
+    
+    console.log('🎭 Bottone Paradigma con triangolino inizializzato');
+});
+
