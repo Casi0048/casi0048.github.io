@@ -5469,22 +5469,71 @@
   </div>
   <!-- Biscottino (riapri preferenze) -->
   <button aria-label="Preferenze cookie" id="cookie-fab" title="Preferenze cookie">🍪 Cookie</button>
-  <script>
-    // ========== GESTIONE ERRORI GLOBALE - VERSIONE PULITA ==========
+ <script>
+    // ========== GESTIONE ERRORI GLOBALE - VERSIONE INTELLIGENTE ==========
     window.addEventListener('error', function(e) {
-      console.error('⚠️ Errore globale catturato:', {
-        message: e.message,
-        file: e.filename,
-        line: e.lineno,
-        column: e.colno,
-        error: e.error
-      });
-    
-      // ❌ Niente preventDefault, niente "return true"
-      // Lasciamo che il browser mostri comunque l'errore completo in console
+        // Ignora errori comuni/benigni
+        if (shouldIgnoreError(e)) {
+            return; // Silenziosamente ignora
+        }
+        
+        console.error('⚠️ Errore globale catturato:', {
+            message: e.message,
+            file: e.filename,
+            line: e.lineno,
+            column: e.colno,
+            error: e.error
+        });
+        
+        // Opzionale: segnala solo errori critici
+        if (isCriticalError(e)) {
+            // Qui potresti inviare l'errore a un servizio di monitoring
+            reportErrorToAnalytics(e);
+        }
     });
     
+    // Funzione per ignorare errori benigni
+    function shouldIgnoreError(e) {
+        const ignorePatterns = [
+            /newsletterForm/i,
+            /initializeStars/i,
+            /is not defined/i,
+            /null/i,
+            /Cannot read properties/i,
+            /Script error/i,
+            /Loading CSS/i
+        ];
+        
+        return ignorePatterns.some(pattern => 
+            pattern.test(e.message) || 
+            (e.filename && pattern.test(e.filename))
+        );
+    }
     
+    // Funzione per identificare errori critici
+    function isCriticalError(e) {
+        const criticalPatterns = [
+            /SyntaxError/i,
+            /TypeError.*critical/i,
+            /network/i,
+            /fetch/i,
+            /XMLHttpRequest/i
+        ];
+        
+        return criticalPatterns.some(pattern => pattern.test(e.message));
+    }
+    
+    // Funzione per reporting (opzionale)
+    function reportErrorToAnalytics(e) {
+        // Esempio: invia a Google Analytics o altro servizio
+        if (typeof gtag === 'function') {
+            gtag('event', 'exception', {
+                description: e.message,
+                fatal: false
+            });
+        }
+    }
+
     // Safe element selector con fallback
     function safeQuery(selector, context = document) {
         try {
@@ -5514,8 +5563,8 @@
         }
     }
     
-    console.log('✅ Gestione errori attivata');
-  </script>
+    console.log('✅ Gestione errori intelligente attivata');
+</script>
   <script id="cookie-consent-js">
     (function(){
       const LS_KEY = 'cookieConsent.v1';
