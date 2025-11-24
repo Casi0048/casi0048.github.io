@@ -1,4 +1,564 @@
-   .menu-container {
+
+     :root {
+  /* === COLORI FONDAMENTALI === */
+  --bg: #0a0a1a;
+  --text-light: #e9eef5;
+  --text-accent: #9ad0ff;
+  
+  /* === COLORI ACCENT PRINCIPALI === */
+  --gold: #ffd86a;
+  --cyan: #00ccff;
+  --purple: #b967ff;
+  
+  /* === COLORI SECONDARI === */
+  --gold-secondary: #d4af37;
+  --cyan-dark: #0099cc;
+  --purple-dark: #8a4dcc;
+  
+  /* === SPACING SYSTEM === */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+  
+  /* === BREAKPOINTS SYSTEM === */
+  --bp-mobile: 768px;
+  --bp-tablet: 1024px;
+  --bp-desktop: 1200px;
+  
+  /* === TYPOGRAPHY SCALE === */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 2rem;
+  --text-4xl: 3rem;
+  
+  /* === COMPONENT VARIABLES === */
+  --menu-bg: rgba(10, 10, 30, .98);
+  --menu-border: rgba(255, 215, 0, .22);
+  --glass: rgba(0, 0, 0, .35);
+  --card-bg: rgba(10,10,30,0.9);
+  --card-border: rgba(255,215,0,0.3);
+}
+    * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Ripristina padding per elementi che ne hanno bisogno */
+button, input, select, textarea {
+  padding: 0.25rem 0.5rem;
+}
+
+/* Ripristina margini per alcuni elementi testuali */
+p, h1, h2, h3, h4, h5, h6 {
+  margin-bottom: 1rem;
+}
+      body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--bg);
+      color: var(--text-light);
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      }
+      /* Effetto particelle cosmiche di sfondo */
+      #cosmic-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+      }
+      .cosmic-particle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.6);
+      box-shadow: 0 0 10px rgba(255,255,255,0.8);
+      animation: float 15s infinite linear;
+      }
+      @keyframes float {
+      0% {
+      transform: translateY(100vh) rotate(0deg);
+      opacity: 0;
+      }
+      10% {
+      opacity: 0.7;
+      }
+      90% {
+      opacity: 0.7;
+      }
+      100% {
+      transform: translateY(-100px) rotate(360deg);
+      opacity: 0;
+      }
+      }
+      a {
+      color: var(--text-accent);
+      text-decoration: none;
+      transition: color 0.3s, text-shadow 0.3s;
+      }
+      a:hover {
+      color: #fff;
+      text-shadow: 0 0 0.38rem #33ccff;
+      }
+      /* Header e Top Bar */
+      .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 1.2rem;
+      background: var(--menu-bg);
+      backdrop-filter: blur(0.6rem);
+      -webkit-backdrop-filter: blur(0.6rem);
+      border-bottom: 1px solid var(--menu-border);
+      z-index: 2000;
+      transition: transform 0.3s ease;
+      }
+      .top-bar.hidden {
+      transform: translateY(-100%);
+      }
+      .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.62rem;
+      text-decoration: none;
+      margin-left: 150px;
+      }
+      .brand svg {
+      width: 2.12rem;
+      height: 2.12rem;
+      filter: drop-shadow(0 0 0.38rem rgba(255, 215, 0, .5));
+      }
+      .brand span {
+      font-family: 'Cinzel Decorative', cursive;
+      font-weight: 700;
+      letter-spacing: 0.1rem;
+      background: linear-gradient(90deg, #ffd700, #fff7b0, #ffd700);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 0.62rem rgba(255, 215, 0, .35);
+      font-size: 1.5rem;
+      }
+      .bar-right {
+      display: flex;
+      align-items: center;
+      gap: 0.62rem;
+      }
+      .translate-box {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      }
+      .translate-select {
+      appearance: none;
+      padding: 0.45rem 0.8rem;
+      border: 1px solid var(--menu-border);
+      border-radius: 0.62rem;
+      background: rgba(20, 20, 40, .78);
+      color: var(--text-light);
+      font-size: 0.95rem;
+      cursor: pointer;
+      }
+     /* === SEARCH: lente a sinistra, X a destra (solo CSS) === */
+.search-container{
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  overflow: visible;
+  z-index: 3001;
+}
+
+/* Input con spazio per lente (sx) e X (dx) */
+.search-container input[type="search"],
+.search-container input[type="text"]{
+  width: 16.25rem;
+  height: 2.5rem;
+  padding-left: 2.4rem;   /* spazio lente a sinistra */
+  padding-right: 2.6rem;  /* spazio X a destra */
+  background: rgba(20,20,40,.78);
+  border: 1px solid var(--menu-border);
+  border-radius: 0.38rem;
+  color: var(--text-light);
+  font: 300 .95rem/2.5rem 'Montserrat', sans-serif;
+  outline: none;
+  transition: border-color .25s, box-shadow .25s;
+  box-sizing: border-box;
+}
+.search-container input:focus{
+  border-color: rgba(255,215,0,.5);
+  box-shadow: 0 0 .75rem rgba(255,215,0,.18);
+}
+
+/* Lente: incollata al bordo sinistro allineata verticalmente */
+.search-container .search-icon{
+  position: absolute;
+  left: .8rem;   
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.05rem;
+  line-height: 1;
+  color: rgba(255,215,0,.90);
+  opacity: .95;
+  pointer-events: none;    /* decorativa: non blocca i clic sull'input */
+  z-index: 3003;
+}
+/* Fallback se la <i> è vuota (niente FA) */
+.search-container .search-icon:empty::before{
+  content: "🔎";
+  display: inline-block;
+  transform: translateY(1px);
+}
+
+/* X nativa di Safari: resa visibile e “oro” */
+.search-container input[type="search"]::-webkit-search-cancel-button{
+  -webkit-appearance: none;
+  height: 18px; width: 18px; opacity: 1;
+  background-color: var(--gold, #d4af37);
+  border-radius: 50%;
+  -webkit-mask: url('data:image/svg+xml;utf8,\
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">\
+  <path d="M6 6L18 18M6 18L18 6" stroke="white" stroke-width="3" stroke-linecap="round"/>\
+</svg>') no-repeat center / 100% 100%;
+}
+
+/* (Se nel markup c’è anche un bottone .clear-search) – stesso allineamento della X nativa */
+.search-container .clear-search{
+  position: absolute;
+  right: 1.95rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px; height: 22px;
+  display: none;                 /* mostralo con la tua logica o tienilo sempre visibile */
+  align-items: center; justify-content: center;
+  border: 0; border-radius: 50%;
+  background: rgba(255,255,255,.12);
+  box-shadow: inset 0 0 0 1px rgba(255,215,0,.25);
+  color: var(--gold, #d4af37);
+  font-weight: 700; cursor: pointer;
+  z-index: 3004;
+}
+
+/* Se vuoi farlo apparire senza JS quando c’è testo (richiede l’HTML: input prima, poi .clear-search) */
+.search-container input:not(:placeholder-shown) ~ .clear-search,
+.search-container input:focus ~ .clear-search{
+  display: flex;
+}
+
+   
+
+
+
+nav.menu-desktop li.dropdown > .mega-menu.anchor-left {
+  left: 0 !important;
+  right: auto !important;
+  transform: translateY(0.62rem) !important;
+}
+
+nav.menu-desktop li.dropdown:hover > .mega-menu.anchor-left,
+nav.menu-desktop li.dropdown:focus-within > .mega-menu.anchor-left,
+nav.menu-desktop .mega-menu.anchor-left:hover {
+  transform: translateY(0) !important;
+}
+
+nav.menu-desktop li.dropdown > .mega-menu.right-align {
+  left: auto !important;
+  right: 0 !important;
+  transform: translateY(0.62rem) !important;
+}
+
+nav.menu-desktop li.dropdown:hover > .mega-menu.right-align,
+nav.menu-desktop li.dropdown:focus-within > .mega-menu.right-align,
+nav.menu-desktop .mega-menu.right-align:hover {
+  transform: translateY(0) !important;
+}
+
+@media (max-width: 768px) {
+  nav.menu-desktop .mega-menu {
+    left: 0 !important;
+    right: 0 !important;
+    transform: translateY(0.62rem) !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+  }
+  
+  nav.menu-desktop li.dropdown:hover > .mega-menu,
+  nav.menu-desktop li.dropdown:focus-within > .mega-menu,
+  nav.menu-desktop .mega-menu:hover {
+    transform: translateY(0) !important;
+  }
+}
+
+      body{overflow:visible!important}
+      .slider-vertical{position:fixed;left:3.25rem;top:7.5rem;width:11.25rem;height:20rem;z-index:80;overflow:hidden;border:1px solid rgba(255,215,0,.18);border-radius:.75rem;background:rgba(10,10,25,.45);backdrop-filter:blur(.38rem);box-shadow:0 .5rem 1.5rem rgba(0,0,0,.35)}
+      .slider-vertical .slider-inner{position:absolute;inset:0;will-change:transform}
+      .slide-vertical{width:100%;padding:.62rem .62rem .88rem;display:flex;flex-direction:column;align-items:center;gap:.5rem}
+      .slide-vertical img{width:100%;height:8.75rem;object-fit:contain;display:block;background:rgba(0,0,0,.25);border-radius:.62rem;border:1px solid rgba(255,255,255,.1);box-shadow:0 .38rem .88rem rgba(0,0,0,.25)}
+      
+      /* --- Didascalia base: 1 riga/clamp 2 righe --- */
+      .slide-vertical p{
+        margin:.25rem 0 0;
+        font-family:'Cormorant Garamond',serif;
+        font-size:.92rem;
+        font-weight:700;
+        line-height:1.3;
+        text-align:center;
+        color:#ffe9b8;
+        text-shadow:0 0 .5rem rgba(255,215,0,.25);
+        white-space:normal;               /* consenti l'andata a capo */
+        overflow:hidden;
+        display:-webkit-box;
+        -webkit-box-orient:vertical;
+        -webkit-line-clamp:2;             /* max 2 righe */
+        min-height:calc(1.3em * 2);       /* riserva spazio per 2 righe */
+        overflow-wrap:anywhere;
+word-break:normal;
+hyphens:auto;
+      }
+
+      /* --- Variante B: titolo + sottotitolo controllati --- */
+      .slide-vertical .cap-sub{
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;  /* era 1 */
+  overflow:hidden;
+  font-size:.86rem;
+  line-height:1.2;
+  opacity:.95;
+  margin-top:.1rem;
+}
+
+      .slide-vertical p.cap{
+        margin:.25rem 0 0;
+        text-align:center;
+        color:#ffe9b8;
+        font-family:'Cormorant Garamond',serif;
+        text-shadow:0 0 .5rem rgba(255,215,0,.25);
+      }
+
+      .slide-vertical .cap-main{
+        display:block;
+        font-size:.95rem;
+        line-height:1.25;
+        font-weight:600;
+        overflow:hidden;
+        text-overflow:ellipsis;
+        white-space:nowrap;               /* titolo sempre su 1 riga */
+      }
+
+      /* sottotitolo: una riga clampata (se troppo lungo viene tagliato) */
+      .slide-vertical .cap-sub{
+        display:-webkit-box;
+        -webkit-box-orient:vertical;
+        -webkit-line-clamp:1;             /* max 1 riga per il sottotitolo */
+        overflow:hidden;
+        font-size:.86rem;
+        line-height:1.2;
+        opacity:.95;
+        margin-top:.1rem;
+      }
+      .slider-controls{position:fixed;left:3.25rem;top:27.81rem;width:11.25rem;display:flex;flex-direction:column;gap:.5rem;background:rgba(10,10,25,.55);border:1px solid rgba(255,215,0,.22);border-radius:.62rem;padding:.5rem;z-index:80}
+      .ctrl-btn{display:inline-flex;align-items:center;justify-content:center;min-height:2rem;margin-bottom:2px;padding:.38rem .62rem;font-weight:600;cursor:pointer;border-radius:.5rem;border:1px solid rgba(255,215,0,.25);background:rgba(20,20,40,.7);color:#ffd86a}
+      .audio-player{ margin-top:.5rem;  max-width:520px; position:fixed;left:3.25rem;top:40.38rem;z-index:80;display:flex;align-items:center;gap:.62rem;padding:.5rem .62rem;background:rgba(10,10,30,.8);border:1px solid rgba(255,215,0,.25);border-radius:.62rem;opacity:1;transform:none}
+      .audio-title{font-weight:600}.audio-player .controls{display:flex;align-items:center;gap:.62rem}.audio-player input[type=range]{width:7.5rem}
+      .articles-blob{position:fixed;right:1.25rem;top:9.5rem;width:20rem;z-index:90;background:radial-gradient(120% 150% at 100% 0%,rgba(50,120,255,.16),rgba(10,10,30,.82));border:1px solid rgba(255,255,255,.08);border-radius:1rem;padding:.88rem 1rem;box-shadow:0 .94rem 1.88rem rgba(0,0,0,.35)}
+      .articles-blob h3{margin:0 0 .5rem;font-family:'Cinzel',serif;color:#ffd86a}.articles-blob ul{list-style:none;margin:0;padding:0}.articles-blob li{margin:.25rem 0}.articles-blob a{color:#cfe8ff;text-decoration:none;font-weight:700}.articles-blob a:hover{color:#fff;text-decoration:underline}
+      .right-embed{position:fixed;right:1.25rem;top:40rem;width:20rem;z-index:25;background:rgba(10,10,30,.8);border:1px solid rgba(255,215,0,.25);border-radius:.75rem;padding:.5rem}
+      .right-embed iframe{width:100%;height:264px;display:block;border:0}
+      #russell-box{position:fixed;bottom:8vh;left:2rem;z-index:10;background:rgba(10,10,30,.8);border:1px solid rgba(255,215,0,.25);border-radius:.62rem;padding:.62rem .75rem;max-width:24rem;box-shadow:0 .5rem 1.12rem rgba(0,0,0,.35)}
+      #russell-btn{all:unset;cursor:pointer;display:block;color:#ffd86a;}#russell-hint{position:fixed;bottom:19vh;left:3.5rem;z-index:2;color:#cfe8ff;opacity:.85;font-style:italic;font-weight:700}
+      #lightning,#bolt{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:0}
+      #lightning{background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.9),rgba(255,255,255,.2) 40%,transparent 65%);transition:opacity .18s ease-out}
+      #bolt{width:160px;height:400px;left:50%;top:50%;background:linear-gradient(to bottom,rgba(255,255,255,1),rgba(255,255,255,0));clip-path:polygon(48% 0,52% 0,60% 25%,45% 25%,55% 55%,40% 55%,48% 100%,42% 100%,35% 60%,50% 60%,38% 28%,58% 28%);filter:drop-shadow(0 0 12px rgba(255,255,255,.8));transition:opacity .28s ease-out,transform .09s ease-out}
+      #effects-ctrl{position:fixed;top:.9rem;right:1.25rem;width:auto;z-index:2147483603;display:flex;gap:.5rem;justify-content:flex-end}
+      #effects-ctrl .ctrl-btn{min-width:6.5rem}
+      @media (min-width:1200px){ main{padding-left:16rem;padding-right:22rem} }
+
+      .right-box{
+      position:fixed; right:1.25rem; width:20rem; z-index:25;
+      background: rgba(10,10,30,.86); border:1px solid rgba(255,215,0,.25);
+      border-radius:.75rem; padding:.62rem .75rem; box-shadow:0 .9rem 1.8rem rgba(0,0,0,.34)
+      }
+      .right-box h3{margin:.1rem 0 .4rem; font-family:'Cinzel',serif; color:#ffd86a; font-size:1rem}
+      .right-box .mini{color:#bcd7ff; font-size:.8rem; opacity:.85;}
+      .right-box .row{display:flex; align-items:center; gap:.5rem; margin:.38rem 0;}
+      .right-box input[type="search"]{
+      width:100%; height:2rem; padding:0 .6rem; border-radius:.5rem;
+      background:rgba(20,20,40,.75); border:1px solid rgba(255,215,0,.28); color:#e9eef5
+      }
+      .right-box .sources{display:flex; flex-wrap:wrap; gap:.4rem .6rem; margin:.35rem 0 .5rem}
+      .right-box .sources label{font-size:.8rem; color:#d9e7ff}
+      .right-box .btn{display:inline-flex; align-items:center; justify-content:center;
+      padding:.38rem .6rem; border-radius:.5rem; border:1px solid rgba(255,215,0,.25);
+      background:rgba(20,20,40,.78); color:#ffd86a; font-weight:700; cursor:pointer
+      }      
+      #dict-compact{ top: 22.5rem; }
+      #iep-linkbox{ top: 35.2rem; }
+      @media (min-width: 1200px){
+      .right-embed{ top: 42.5rem; }
+      }
+      @media (max-width: 980px){
+      #dict-compact, #iep-linkbox { position: static; width:100%; margin: .75rem 0; }
+      }
+      /* Assicurati che l'enciclopedia abbia un z-index più alto */
+
+
+      /* 🎯 Tieni qui i “knob” da regolare */
+      :root{
+      --effects-right: -0.6rem;  /* ↓ Porta a 0 o anche -4px per incollare al bordo */
+      --effects-top:   0.9rem;   /* ↑ se vuoi abbassarli/alzarli un po' */
+      }
+      /* Caso A: fallback fisso (quando NON vengono appesi dentro l'header) */
+      #effects-ctrl{
+      position: fixed;
+      top: var(--effects-top) !important;
+      right: var(--effects-right) !important;
+      z-index: 214;
+      }
+      /* Caso B: quando li appendiamo dentro header/topbar/navbar */
+      header, .topbar, .navbar{ position: relative; overflow: visible; }
+      header #effects-ctrl,
+      .topbar #effects-ctrl,
+      .navbar #effects-ctrl{
+      position: absolute !important;
+      top: var(--effects-top);
+      right: var(--effects-right);
+      margin-left: 0; /* neutralizza eventuali margini precedenti */
+      }
+
+
+
+  /* forza il box audio a prendersi tutta la riga sotto */
+  #audio-player{
+    display: grid;              /* titolo riga 1, controlli riga 2 */
+    grid-template-columns: 1fr;
+    gap: .35rem;
+    flex: 1 1 100% !important;  /* se il genitore è flex, occupa 100% e va a capo */
+    width: 15% !important;
+    margin-top: 0.5rem;
+  }
+  #audio-player{ margin-top: 595px; top: 0; }
+
+  #audio-player .audio-title{
+    margin: 0; font-weight: 700;
+  }
+  #audio-player .controls{
+    display: flex;
+    flex-wrap: wrap;            /* se serve, i controlli vanno a capo */
+    gap: .5rem .6rem;
+    align-items: center;
+  }
+  #audio-player #time{
+    font-variant-numeric: tabular-nums;
+    min-width: 7.2rem;          /* evita salti di layout */
+  }
+  #audio-player #volume{
+    width: 160px;               /* regola pure: 120–220px */
+  }
+
+
+      .related-results{
+      margin-top:.6rem; padding-top:.6rem;
+      border-top:1px solid rgba(255,215,0,.22);
+      }
+      .related-header{
+      margin:0 0 .35rem; font-weight:700; font-size:1rem; color:#ffeb9a;
+      }
+      .related-list{ list-style:none; margin:0; padding:0; display:grid; gap:.4rem; }
+      .related-item{ padding:.45rem .55rem; border:1px solid rgba(255,215,0,.16); border-radius:10px; background:rgba(10,10,30,.78); }
+      .related-item a{ color:#ffeb9a; text-decoration:none; }
+      .related-item a:hover{ text-decoration:underline; }
+      .related-item .meta{ font-size:.86rem; opacity:.9; margin-top:.15rem; }
+
+  :root{
+    --search-panel-w: 600px;  /* Larghezza finestra risultati */
+    --search-panel-maxh: 72vh;/* Altezza massima con scroll interno */
+  }
+
+  /* Pannello */
+  #search-panel, #searchPanel, .search-panel, .results-panel{
+    position: fixed;
+    left: 50%; top: clamp(72px, 8vh, 120px);
+    transform: translateX(-50%);
+    width: min(94vw, var(--search-panel-w));
+    max-height: var(--search-panel-maxh);
+    border-radius: 12px;
+    overflow: hidden; /* scorre solo il body interno */
+    z-index: 200;
+  }
+
+  /* Header del pannello: titolo + chiudi */
+  .search-header, #search-header, .results-header{
+    display: flex; align-items: center; justify-content: space-between;
+    padding: .65rem .9rem;
+    border-bottom: 1px solid rgba(255,215,0,.22);
+  }
+  .search-title, .results-title{
+    margin:0; font-weight: 700; font-size: 1.05rem;
+  }
+  .search-close, #search-close, [data-role="search-close"]{
+    margin: 0; padding: .35rem .55rem; border-radius: .5rem; line-height:1;
+    cursor: pointer; border: 1px solid rgba(255,215,0,.25);
+    background: rgba(20,20,40,.78); color:#ffd86a; font-weight:700;
+  }
+
+  /* Corpo scorrevole */
+  #search-results, #searchResults, .search-results, .results-scroll{
+    max-height: calc(var(--search-panel-maxh) - 3.2rem); /* togli header */
+    overflow: auto;
+    padding: .6rem .8rem .8rem;
+    display: grid; gap: .55rem;
+  }
+
+  /* Singolo risultato (flessibile: li, div, ecc.) */
+  #search-results > *, .search-results > *{
+    padding: .55rem .65rem;
+    border: 1px solid rgba(255,215,0,.16);
+    border-radius: 10px;
+    background: rgba(10,10,30,.78);
+  }
+
+  /* Titolo risultato */
+  #search-results h4, .search-results h4, .result-title{
+    margin: 0 0 .2rem; font-size: 1rem; font-weight: 700; color:#ffeb9a;
+  }
+
+  /* Tag/meta (es. Idealismo) come “chip” */
+  .result-meta, .result-tag, .tag{
+    display:inline-block; margin: 0 0 .25rem; padding:.1rem .45rem;
+    font-size:.8rem; border-radius:999px; color:#0b1022;
+    background: linear-gradient(90deg,#ffd86a,#ffeb9a);
+  }
+
+  /* Descrizione + sorgente */
+  .result-desc{ margin:.1rem 0 .15rem; font-size:.9rem; color:#cfe2ff; line-height:1.25; }
+  .result-source{ font-size:.8rem; opacity:.85; }
+
+  /* Evidenziazione (se usi <mark> o aggiungi classe) */
+  mark, .hl{ background: #ffe08a; color:#141414; padding:0 .15rem; border-radius:.2rem; }
+
+  /* Mobile piena larghezza e un po’ più alto */
+  @media (max-width: 900px){
+    :root{ --search-panel-w: 100vw; --search-panel-maxh: 82vh; }
+    #search-panel, #searchPanel, .search-panel, .results-panel{
+      left:50%; transform:translateX(-50%); width:100vw; border-radius:10px;
+    }
+  }
+
+.menu-container {
       position: fixed;
       top: 4.5rem;
       left: 0;
