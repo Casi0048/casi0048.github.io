@@ -6096,43 +6096,7 @@ function safeQuery(selector, context = document) {
   document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeModal(); });
 })();
 </script>
-<script>
-/* === Floating Quotes Controller v2 === */
-(function(){
-  var timer = null, idx = 0, paused = false;
-  function qs(a){ return document.querySelector(a); }
-  function qsa(a){ return Array.prototype.slice.call(document.querySelectorAll(a)); }
-  function step(bubbles){
-    if(!bubbles.length) return;
-     document.querySelector('.floating-quotes').style.zIndex = '20';
-    // Remove show from all
-    bubbles.forEach(function(b){ b.classList.remove("show"); });
-    // Add to current
-    bubbles[idx].classList.add("show");
-    idx = (idx + 1) % bubbles.length;
-  }
-  function start(){
-    var bubbles = qsa(".floating-quotes .quote-bubble");
-    if(!bubbles.length) return;
-     document.querySelector('.floating-quotes').style.zIndex = '20';
-    // Sanitize initial: ensure only one .show
-    var any = bubbles.some(function(b){ return b.classList.contains("show"); });
-    if(!any){ idx = 0; }
-    else { idx = (bubbles.findIndex(function(b){ return b.classList.contains("show"); }) + 1) % bubbles.length; }
-    step(bubbles);
-    clearInterval(timer);
-    timer = setInterval(function(){ if(!paused) step(bubbles); }, 8000);
-    // Pause on hover
-    var box = qs(".floating-quotes");
-    if(box){
-      box.addEventListener("mouseenter", function(){ paused = true; });
-      box.addEventListener("mouseleave", function(){ paused = false; });
-    }
-  }
-  // Re-init safe on DOM ready and after 1s (in case of late inserts)
-  if(document.readyState!=="loading") start(); else document.addEventListener("DOMContentLoaded", start);
-  setTimeout(start, 1000);
-})();</script>
+
 <script>
 /* === Typing Controller v4 - FLUIDO === */
 (function(){
