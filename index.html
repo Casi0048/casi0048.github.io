@@ -7859,7 +7859,27 @@ if (newsletterForm) {
   // stato iniziale
   updateClearVisibility();
 });
+// Critical performance optimizations for Safari
+document.addEventListener('DOMContentLoaded', function() {
+    // Defer non-critical images
+    const lazyImages = [].slice.call(document.querySelectorAll('img[loading="lazy"]'));
+    
+    if ('IntersectionObserver' in window) {
+        let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    let lazyImage = entry.target;
+                    lazyImage.src = lazyImage.dataset.src;
+                    lazyImageObserver.unobserve(lazyImage);
+                }
+            });
+        });
 
+        lazyImages.forEach(function(lazyImage) {
+            lazyImageObserver.observe(lazyImage);
+        });
+    }
+});
   </script>
 </body>
 </html>
