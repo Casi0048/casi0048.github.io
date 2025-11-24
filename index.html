@@ -6776,14 +6776,22 @@
       if (e.target === this) closeNewsletterModal();
     });
     
-    // Gestione form (base)
-    document.getElementById('newsletterForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const email = this.querySelector('input[type="email"]').value;
-      alert('Grazie per esserti iscritto! Controlla la tua email: ' + email);
-      closeNewsletterModal();
+    // Gestione form (base) - VERSIONE CORRETTA
+const newsletterForm = document.getElementById('newsletterForm');
+if (newsletterForm) {
+    newsletterForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = this.querySelector('input[type="email"]').value;
+        alert('Grazie per esserti iscritto! Controlla la tua email: ' + email);
+        
+        // Controlla se la funzione closeNewsletterModal esiste
+        if (typeof closeNewsletterModal === 'function') {
+            closeNewsletterModal();
+        }
     });
-    
+} else {
+    console.log('ℹ️ Newsletter form non presente in questa pagina');
+}
     // Chiudi con ESC
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Escape') closeNewsletterModal();
