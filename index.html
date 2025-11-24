@@ -32,19 +32,17 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon_io/favicon-32x32.png">
   <link rel="apple-touch-icon" href="/favicon_io/apple-touch-icon.png">
 
-  <!-- Preconnect (corretti) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <!-- Preconnect essenziali -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
 
-  <!-- Preload immagine critica -->
-  <link rel="preload" as="image" href="/foto/socrate.webp">
+  <!-- RIMOSSO: Preload immagine che causa warning -->
+  <!-- <link rel="preload" as="image" href="/foto/socrate.webp"> -->
 
-  <!-- Google Fonts (senza preload: evita warning Safari) -->
+  <!-- Google Fonts -->
   <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&family=UnifrakturMaguntia&family=Cormorant+Garamond:wght@400;600&display=swap">
 
-  <!-- Font Awesome (singolo, senza preload) -->
+  <!-- Font Awesome -->
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         crossorigin="anonymous">
@@ -65,6 +63,17 @@
   }
   </script>
 
+  <!-- Script performance Safari -->
+  <script>
+    // Ottimizzazione Safari - elimina preload problematico
+    (function(){
+      if (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome')) {
+        // Preload immagini critiche via JavaScript
+        const img = new Image();
+        img.src = '/foto/socrate.webp';
+      }
+    })();
+  </script>
 
 <style>
      :root {
