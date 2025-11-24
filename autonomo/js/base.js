@@ -1103,7 +1103,7 @@ document.head.appendChild(style);
     setTimeout(createMultipleShootingStars, 500);
 })();
 
-/* ===== AGGI   <script>
+
 /* === Timeline scroll reveal (IO) v2 === */
 document.addEventListener("DOMContentLoaded", function(){
   var items = Array.prototype.slice.call(document.querySelectorAll(".timeline-item"));
@@ -1156,7 +1156,7 @@ document.addEventListener("DOMContentLoaded", function(){
   window.addEventListener('resize', scrollFallback);
 });
 
-<script id="quote-runner-js-solid-2025-10-08">
+
 (function(){
   function ready(fn){ 
     if(document.readyState!=='loading') fn(); 
@@ -1577,7 +1577,7 @@ console.log('⭐ Sistema stellare caricato e pronto');
   });
 })();
 
-<script id="speed-readout-js">
+
 (function(){
   function clamp(n,min,max){ return Math.max(min, Math.min(max, n)); }
   function formatFactor(x){
@@ -1602,7 +1602,7 @@ console.log('⭐ Sistema stellare caricato e pronto');
   });
 })();
 
-<script id="russell-conservative-anim-js">
+
 (function(){
   function pingOnce(){
     var box = document.getElementById('russell-box');
@@ -1652,8 +1652,8 @@ console.log('⭐ Sistema stellare caricato e pronto');
   }
 })();
 
-<!-- removed duplicate script#speed-readout-js -->
-<script id="sfx-unlock-silent">
+
+
 (function(){
   var boom = document.getElementById('explosionSound');
   var thunder = document.getElementById('thunder-sound');
@@ -1677,7 +1677,7 @@ console.log('⭐ Sistema stellare caricato e pronto');
   window.addEventListener('click', unlockSilent, { once:true, passive:true, capture:true });
 })();
 
-<script id="sfx-soft-play">
+
 function softPlay(el, targetVol, ms){
   targetVol = (typeof targetVol === 'number') ? targetVol : 1.0;
   ms = (typeof ms === 'number') ? ms : 140;
@@ -2046,3 +2046,39 @@ document.addEventListener('DOMContentLoaded', function() {
   document.addEventListener('keydown', (e)=>{ if (e.key === 'Escape') forceClose(); });
 })();
 
+/* === Floating Quotes Controller v2 === */
+(function(){
+  var timer = null, idx = 0, paused = false;
+  function qs(a){ return document.querySelector(a); }
+  function qsa(a){ return Array.prototype.slice.call(document.querySelectorAll(a)); }
+  function step(bubbles){
+    if(!bubbles.length) return;
+     document.querySelector('.floating-quotes').style.zIndex = '20';
+    // Remove show from all
+    bubbles.forEach(function(b){ b.classList.remove("show"); });
+    // Add to current
+    bubbles[idx].classList.add("show");
+    idx = (idx + 1) % bubbles.length;
+  }
+  function start(){
+    var bubbles = qsa(".floating-quotes .quote-bubble");
+    if(!bubbles.length) return;
+     document.querySelector('.floating-quotes').style.zIndex = '20';
+    // Sanitize initial: ensure only one .show
+    var any = bubbles.some(function(b){ return b.classList.contains("show"); });
+    if(!any){ idx = 0; }
+    else { idx = (bubbles.findIndex(function(b){ return b.classList.contains("show"); }) + 1) % bubbles.length; }
+    step(bubbles);
+    clearInterval(timer);
+    timer = setInterval(function(){ if(!paused) step(bubbles); }, 8000);
+    // Pause on hover
+    var box = qs(".floating-quotes");
+    if(box){
+      box.addEventListener("mouseenter", function(){ paused = true; });
+      box.addEventListener("mouseleave", function(){ paused = false; });
+    }
+  }
+  // Re-init safe on DOM ready and after 1s (in case of late inserts)
+  if(document.readyState!=="loading") start(); else document.addEventListener("DOMContentLoaded", start);
+  setTimeout(start, 1000);
+})();
