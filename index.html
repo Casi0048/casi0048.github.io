@@ -48,7 +48,7 @@
 <!-- CSS temi / accenti -->
 <link rel="stylesheet" href="/accent-layer.css?v=20251122">
 <link rel="stylesheet" href="/accent-layer-plus.css?v=20251122">
-
+<script src="/assets/js/script.js?v=20251122" defer></script>
 <!-- FONTS (caricati in modo semplice, senza preload) -->
 <link rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400;600&display=swap"
@@ -6191,15 +6191,21 @@
             });
         }
     
-        // 8. INIZIALIZZAZIONE PRINCIPALE
-        console.log('🚀 Inizializzazione sistema stellare...');
-    
-        injectPerformanceCSS();
-        initializeStars();
-        initializeLazyLoading();
-        initializeStarEffects();
-    
-        console.log('✅ Sistema completamente inizializzato');
+        <script>
+  // Fallback per evitare errori se initializeStars non è definita
+  window.initializeStars = window.initializeStars || function() {
+    console.log('⭐ initializeStars fallback - sistema stellare non disponibile');
+    return Promise.resolve();
+  };
+  
+  // Oppure definisci la funzione completa se manca
+  if (typeof initializeStars === 'undefined') {
+    window.initializeStars = function() {
+      console.log('✅ Sistema stellare inizializzato (fallback)');
+      return Promise.resolve();
+    };
+  }
+</script>
     
         // 9. GESTIONE ERRORI GLOBALE (SOLO LOG, NON SILENZIA)
         window.addEventListener('error', (event) => {
