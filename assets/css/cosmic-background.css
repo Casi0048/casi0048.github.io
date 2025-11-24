@@ -1,1 +1,113 @@
-
+ /* === SFONDO STELLARE COMPLETO - VERSIONE DEFINITIVA === */
+  .stars-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+  }
+  /* STELLE NORMALI - VERSIONE MIGLIORATA PER LAMPEGGIAMENTO */
+  .star {
+  position: absolute;
+  background-color: #ffffff;
+  border-radius: 50%;
+  animation: twinkle var(--duration) ease-in-out infinite;
+  animation-delay: var(--delay);
+  }
+  /* DURATE PIÙ LUNGHE PER LAMPEGGIAMENTO PIÙ LENTO */
+  .star.small { width: 1px; height: 1px; opacity: 0.3; --duration: 6s; --delay: 0s; }
+  .star.medium { width: 2px; height: 2px; opacity: 0.6; --duration: 8s; --delay: 1s; }
+  .star.large { width: 3px; height: 3px; opacity: 0.8; --duration: 10s; --delay: 2s; }
+  .star.xlarge { width: 4px; height: 4px; opacity: 1; --duration: 12s; --delay: 3s; }
+  /* LAMPEGGIAMENTO PIÙ EVIDENTE */
+  @keyframes twinkle {
+  0% { opacity: 0.2; transform: scale(1); }
+  20% { opacity: 1; transform: scale(1.4); }    /* Picco più rapido */
+  40% { opacity: 0.3; transform: scale(1); }
+  60% { opacity: 1; transform: scale(1.3); }    /* Secondo picco */
+  80% { opacity: 0.4; transform: scale(1); }
+  100% { opacity: 0.2; transform: scale(1); }
+  }
+  /* === COMETE — testa sempre avanti, coda dietro (fix) === */
+  /* === COMETE — testa sempre avanti, coda dietro (definitivo) === */
+  .shooting-star {
+  position: absolute;
+  /* lunghezza coda e spessore (personalizzabili) */
+  --trail: 20px;             /* lunghezza scia */
+  --thick: 2px;               /* spessore scia */
+  --tail: rgba(174,233,255,.85); /* colore coda (puoi cambiare) */
+  width: var(--trail);
+  height: var(--thick);
+  /* Testa luminosa ANCORATA a DESTRA + coda verso SINISTRA */
+  background:
+  radial-gradient(circle at 100% 50%,
+  #ffffff 0 3px,
+  #aee9ff 4px,
+  transparent 10px),
+  linear-gradient(to left,
+  var(--tail) 0%,
+  rgba(174,233,255,.35) 35%,
+  rgba(174,233,255,.10) 70%,
+  transparent 100%);
+  background-repeat: no-repeat, no-repeat;
+  background-size: 10px 10px, 100% 100%;
+  border-radius: 999px;
+  filter: drop-shadow(0 0 8px #aee9ff);
+  opacity: 0;
+  z-index: 10;
+  /* Ruota attorno alla TESTA: la coda resta dietro in ogni direzione */
+  transform-origin: 100% 50%;
+  }
+  /* Varianti (NO background qui!) */
+  .shooting-star.micro { --trail: 90px;  --thick: 1px; filter: blur(0.1px); }
+  .shooting-star.fast  { animation-duration: 4s;  filter: drop-shadow(0 0 10px #ffd700); }
+  .shooting-star.slow  { animation-duration: 10s; filter: drop-shadow(0 0 8px  #b967ff); }
+  /* Direzioni — ruota l’elemento, NON i gradienti */
+  .shooting-star.horizontal { transform: rotate(0deg); }
+  .shooting-star.vertical   { transform: rotate(90deg); }
+  .shooting-star.diagonal   { transform: rotate(45deg); }
+  .shooting-star.reverse    { transform: rotate(180deg); } /* destra → sinistra */
+  /* Solo traslazione nei keyframes (niente rotate dentro) */
+  @keyframes fly-horizontal {
+  0%   { 
+  transform: rotate(0deg) translateX(-150px);
+  opacity: 0; 
+  }
+  10%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { 
+  transform: rotate(0deg) translateX(calc(100vw + 150px));
+  opacity: 0; 
+  }
+  }
+  @keyframes fly-vertical {
+  0%   { transform: translateY(-150px) rotate(90deg);   opacity: 0; }
+  10%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { transform: translateY(calc(100vh + 150px)) rotate(90deg); opacity: 0; }
+  }
+  @keyframes fly-diagonal {
+  0%   { transform: translate(-150px, -150px) rotate(45deg); opacity: 0; }
+  10%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { transform: translate(calc(100vw + 150px), calc(100vh + 150px)) rotate(45deg); opacity: 0; }
+  }
+  @keyframes fly-reverse {
+  0%   { transform: translate(calc(100vw + 150px), -150px) rotate(180deg); opacity: 0; }
+  10%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { transform: translate(-150px, calc(100vh + 150px)) rotate(180deg); opacity: 0; }
+  }
+  /* Collega classi → animazioni */
+  .shooting-star.horizontal { animation: fly-horizontal 6s ease-out infinite; }
+  .shooting-star.vertical   { animation: fly-vertical   8s ease-out infinite; }
+  .shooting-star.diagonal   { animation: fly-diagonal   7s ease-out infinite; }
+  .shooting-star.reverse    { animation: fly-reverse    7s ease-out infinite; }
+  /* Tema chiaro / accessibilità (una sola volta) */
+  [data-theme="light"] .shooting-star { opacity: 0.35; }
+  @media (prefers-reduced-motion: reduce) {
+  .shooting-star { animation: none !important; opacity: 0.5; }
+  }
