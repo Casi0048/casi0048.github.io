@@ -1,1414 +1,5 @@
-
-
-// ===== Next Block =====
-
-
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "Echi di Sofia",
-    "description": "Portale completo di filosofia antica, moderna e contemporanea",
-    "url": "https://www.echidisofia.org/",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": "https://www.echidisofia.org/?q={search_term_string}",
-      "query-input": "required name=search_term_string"
-    }
-  }
-  
-
-// ===== Next Block =====
-
-
-    // Ottimizzazione Safari - elimina preload problematico
-    (function(){
-      if (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome')) {
-        // Preload immagini critiche via JavaScript
-        const img = new Image();
-        img.src = '/foto/socrate.webp';
-      }
-    })();
-  
-
-// ===== Next Block =====
-
-
-  // prova prima l’URL assoluto del dominio, poi il fallback root-relative
-  window.SEARCH_INDEX_URLS = [
-    'https://www.echidisofia.org/search-index.json?v=20251122',
-    '/search-index.json?v=20251122'
-    // Aggiungi SOLO se hai aggiornato ANCHE questo file:
-    // '/assets/search-index.json?v=20251122'
-  ];
-
-
-// ===== Next Block =====
-
-{
-  "@context":"https://schema.org",
-  "@type":"CollectionPage",
-  "name":"Timeline filosofica",
-  "isPartOf":{"@type":"WebSite","name":"Echi di Sofia"}
-}
-
-// ===== Next Block =====
-
-
-window.googleTranslateElementInit = function(){
-  try{
-    new google.translate.TranslateElement({
-      pageLanguage: 'it',
-      includedLanguages: 'en,fr,de,es,pl',
-      autoDisplay: false
-    }, 'google_translate_element');
-    document.documentElement.removeAttribute('data-gt-error');
-  }catch(e){ console.warn('GT init error', e); }
-};
-
-
-// ===== Next Block =====
-
-
-
-// ===== Next Block =====
-
-// TIMELINE (ACCESSIBILITÀ)
-// - Scopo: aggiunge role='region' e aria-label alla sezione della timeline, se mancanti.
-// - Non modifica stili/animazioni; migliora la fruibilità con tecnologie assistive.
-
-document.addEventListener('DOMContentLoaded', function(){
-  var sec = document.querySelector('section.timeline-container');
-  if (sec){
-    if (!sec.hasAttribute('role')) sec.setAttribute('role','region');
-    if (!sec.hasAttribute('aria-label')) sec.setAttribute('aria-label','Linea del tempo filosofica');
-  }
-});
-
-
-// ===== Next Block =====
-
-// FALLBACK NO-JS (FLAG)
-// - Scopo: aggiunge '.no-js' all'elemento <html> prima del DOMContentLoaded.
-// - Serve a mostrare la timeline se JS è disattivato (vedi CSS relativo).
-(function(){ document.documentElement.classList.add('no-js'); })();
-
-// ===== Next Block =====
-
-// FALLBACK NO-JS (REMOVE FLAG)
-// - Scopo: rimuove la classe '.no-js' al DOMContentLoaded (JS attivo).
-// - Assicura che, con JS attivo, la timeline torni ad animarsi normalmente.
-
-document.addEventListener('DOMContentLoaded', function(){
-  document.documentElement.classList.remove('no-js');
-});
-
-
-// ===== Next Block =====
-
-// TIMELINE (MICRO-STAGGER NON INVASIVO)
-// - Scopo: sfalsa leggermente i tempi d'ingresso delle card per migliorare la lettura visiva.
-// - Usa IntersectionObserver. Ritardo = index*70ms (+120ms per card a destra), max 600ms.
-// - Per disattivare: rimuovere questo script o impostare delayMs=0.
-// - Rispetto accessibilità: si può aggiungere controllo di prefers-reduced-motion.
-
-document.addEventListener('DOMContentLoaded', function(){
-  var items = Array.prototype.slice.call(document.querySelectorAll('.timeline .timeline-item'));
-  if (!items.length) return;
-
-  var seen = new WeakSet();
-  var io = new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      if (e.isIntersecting && !seen.has(e.target)){
-        var idx = items.indexOf(e.target);
-        var sideRight = e.target.classList.contains('right') ? 120 : 0;  // piccolo offset lato destro
-        var delayMs = Math.min(idx*70 + sideRight, 600);
-        e.target.style.transitionDelay = (delayMs/1000)+'s';
-        e.target.classList.add('visible');
-        seen.add(e.target);
-        io.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.08, rootMargin: '0px 0px -10% 0px' });
-
-  items.forEach(function(el){ io.observe(el); });
-
-  // Primo pass: se già in viewport
-  requestAnimationFrame(function(){
-    items.forEach(function(el){
-      var r = el.getBoundingClientRect();
-      if (r.top < (innerHeight*0.9) && r.bottom > 0){
-        var idx = items.indexOf(el);
-        var sideRight = el.classList.contains('right') ? 120 : 0;
-        var delayMs = Math.min(idx*70 + sideRight, 600);
-        el.style.transitionDelay = (delayMs/1000)+'s';
-        el.classList.add('visible');
-        seen.add(el);
-        io.unobserve(el);
-      }
-    });
-  });
-});
-
-
-// ===== Next Block =====
-
-
-// === PERFORMANCE & ERROR HANDLING - VERSIONE PULITA ===
-
-document.addEventListener('DOMContentLoaded', function() {
-  
-  // 1. CARICAMENTO FONT AWESOME SEMPLIFICATO (senza preload problematico)
-  const fontAwesomeCSS = document.createElement('link');
-  fontAwesomeCSS.rel = 'stylesheet';
-  fontAwesomeCSS.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css';
-  fontAwesomeCSS.crossOrigin = 'anonymous';
-  document.head.appendChild(fontAwesomeCSS);
-  console.log('✅ Font Awesome caricato');
-
-  // 2. LAZY LOADING IMMAGINI TIMELINE
-  const lazyImages = document.querySelectorAll('.timeline-content img[data-src]');
-  
-  if ('IntersectionObserver' in window) {
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const img = entry.target;
-          safeEffect(() => {
-            img.src = img.dataset.src;
-            img.removeAttribute('data-src');
-            img.classList.add('fade-in');
-          }, () => {
-            // Fallback: carica immediatamente
-            img.src = img.dataset.src;
-          });
-          observer.unobserve(img);
-        }
-      });
-    }, { 
-      rootMargin: '50px 0px',
-      threshold: 0.1
-    });
-
-    lazyImages.forEach(img => imageObserver.observe(img));
-  } else {
-    // Fallback per browser senza IntersectionObserver
-    lazyImages.forEach(img => {
-      img.src = img.dataset.src;
-      img.removeAttribute('data-src');
-    });
-  }
-
-  // 3. GESTIONE ERRORI ROBUSTA
-  function safeEffect(callback, fallback = null) {
-    try {
-      if (typeof callback === 'function') {
-        callback();
-      }
-    } catch (error) {
-      console.warn('Effect failed:', error.message);
-      if (fallback && typeof fallback === 'function') {
-        try {
-          fallback();
-        } catch (fallbackError) {
-          console.error('Fallback also failed:', fallbackError);
-        }
-      }
-    }
-  }
-
-  // 4. INIZIALIZZAZIONE SICURA EFFETTI STELLARI
-  safeEffect(
-    () => {
-      // Qui va il tuo initStars() esistente
-      if (typeof initStars === 'function') {
-        initStars();
-      } else {
-        // Se initStars non esiste, fallback base
-        createBasicStars();
-      }
-    },
-    () => {
-      console.log('Stars effect disabled due to performance issues');
-      const starsContainer = document.getElementById('starsContainer');
-      if (starsContainer) {
-        starsContainer.style.display = 'none';
-      }
-    }
-  );
-
-  // 5. FALLBACK STELLE SEMPLIFICATO
-  function createBasicStars() {
-    const container = document.getElementById('starsContainer');
-    if (!container) return;
-    
-    // Versione semplificata per performance
-    for (let i = 0; i < 50; i++) {
-      const star = document.createElement('div');
-      star.className = 'star small';
-      star.style.left = Math.random() * 100 + '%';
-      star.style.top = Math.random() * 100 + '%';
-      star.style.animationDelay = Math.random() * 5 + 's';
-      container.appendChild(star);
-    }
-  }
-
-  // 6. MONITORAGGIO PERFORMANCE - Versione sicura
-  if ('performance' in window) {
-    window.addEventListener('load', () => {
-      safeDOMOperation(() => {
-        // Usa l'API moderna se disponibile
-        if (performance.getEntriesByType) {
-          const navEntries = performance.getEntriesByType('navigation');
-          if (navEntries.length > 0) {
-            const navEntry = navEntries[0];
-            const loadTime = navEntry.loadEventEnd - navEntry.startTime;
-            if (loadTime > 0) {
-              console.log(`Page loaded in ${Math.round(loadTime)}ms`);
-            }
-          }
-        }
-        // Fallback per browser più vecchi
-        else if (performance.timing) {
-          const timing = performance.timing;
-          if (timing.loadEventEnd > 0 && timing.navigationStart > 0) {
-            const loadTime = timing.loadEventEnd - timing.navigationStart;
-            if (loadTime > 0) {
-              console.log(`Page loaded in ${loadTime}ms`);
-            }
-          }
-        }
-      });
-    });
-  }
-
-  // 7. GESTIONE ERRORI GLOBALE
-  window.addEventListener('error', (event) => {
-    console.error('Global error caught:', event.error);
-    // Non bloccare l'esperienza utente per errori minori
-  });
-
-  // 8. GESTIONE OFFLINE
-  window.addEventListener('online', () => {
-    console.log('Connection restored');
-    document.body.classList.remove('offline');
-  });
-
-  window.addEventListener('offline', () => {
-    console.log('Connection lost');
-    document.body.classList.add('offline');
-  });
-
-  // 9. CSS PER STATI SPECIALI
-  const performanceCSS = `
-    .fade-in {
-      animation: fadeIn 0.5s ease-in;
-    }
-    
-    .offline {
-      opacity: 0.8;
-      filter: grayscale(0.3);
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    
-    @media (prefers-reduced-motion: reduce) {
-      .fade-in {
-        animation: none;
-      }
-    }
-  `;
-
- // Inietta CSS performance
-const style = document.createElement('style');
-style.textContent = performanceCSS;
-document.head.appendChild(style);
-
-console.log('✅ Sistema performance inizializzato');
-
-});
-
-// FUNZIONE safeDOMOperation - SOLO UNA VOLTA!
-function safeDOMOperation(operation, fallback = null) {
-  try {
-    if (typeof operation === 'function') {
-      return operation();
-    }
-  } catch (error) {
-    console.warn('DOM operation failed:', error.message);
-    if (fallback && typeof fallback === 'function') {
-      try {
-        return fallback();
-      } catch (fallbackError) {
-        console.error('Fallback also failed:', fallbackError);
-      }
-    }
-  }
-  return null;
-}
-
-// Crea particelle esplosive che si diffondono sullo schermo
-function createExplosionParticles() {
-    const colors = ['#FFD700', '#FF6B00', '#FF0000', '#FFFFFF', '#00CCFF'];
-    const particleCount = 30;
-    
-    for (let i = 0; i < particleCount; i++) {
-        safeDOMOperation(() => {
-            const particle = document.createElement('div');
-            const size = Math.random() * 15 + 5;
-            const color = colors[Math.floor(Math.random() * colors.length)];
-            
-            particle.style.cssText = `
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                width: ${size}px;
-                height: ${size}px;
-                background: ${color};
-                border-radius: 50%;
-                pointer-events: none;
-                z-index: 101;
-                opacity: 0.8;
-                box-shadow: 0 0 10px ${color};
-            `;
-            
-            document.body.appendChild(particle);
-            
-            // Animazione casuale per ogni particella
-            const angle = Math.random() * Math.PI * 2;
-            const distance = 100 + Math.random() * 200;
-            const duration = 0.5 + Math.random() * 0.5;
-            
-            const animation = particle.animate([
-                {
-                    transform: 'translate(-50%, -50%) scale(1)',
-                    opacity: 0.8
-                },
-                {
-                    transform: `translate(${Math.cos(angle) * distance - 50}%, ${Math.sin(angle) * distance - 50}%) scale(0)`,
-                    opacity: 0
-                }
-            ], {
-                duration: duration * 1000,
-                easing: 'ease-out',
-                fill: 'forwards'
-            });
-            
-            // Rimuovi la particella dopo l'animazione
-            animation.onfinish = () => {
-                safeDOMOperation(() => {
-                    if (particle.parentNode) {
-                        particle.parentNode.removeChild(particle);
-                    }
-                });
-            };
-        });
-    }
-}
-
-
-// ===== Next Block =====
-
-
-// ========== UTILITY SICURE AGGIUNTE ==========
-// Safe DOM manipulation utility
-function safeDOMOperation(operation) {
-  try {
-    if (typeof operation === 'function') {
-      return operation();
-    }
-  } catch (error) {
-    console.warn('DOM operation failed:', error.message);
-    return null;
-  }
-}
-
-// Safe element selector
-function getElementSafe(selector) {
-  return safeDOMOperation(() => {
-    const element = typeof selector === 'string' ? 
-      document.querySelector(selector) : selector;
-    return element && document.body.contains(element) ? element : null;
-  });
-}
-
-// Safe audio play
-function softPlay(audio, volume, delay) {
-  try {
-    audio.volume = volume || 1.0;
-    setTimeout(() => audio.play().catch(() => {}), delay || 0);
-  } catch (_) {}
-}
-
-      document.addEventListener('DOMContentLoaded', ()=>{
-        const effects = document.getElementById('effects-ctrl');
-        if(effects && document.body.contains(effects)){
-          const host = document.querySelector('.topbar, .top-bar, header .menu-desktop, header nav, header, .navbar');
-          if(host && document.body.contains(host)){ 
-            try{ 
-              host.appendChild(effects); 
-              effects.style.position=''; 
-              effects.style.top=''; 
-              effects.style.right=''; 
-            }catch(_){ } 
-          }
-        }
-      });
-
-      // === SLIDER VERTICALE - VERSIONE VELOCITÀ OTTIMIZZATA ===
-(function(){
-  const inner = document.getElementById('sliderInner');
-  if(!inner) {
-    console.warn('Slider inner element not found');
-    return;
-  }
-  
-  let pos = 0;
-  let speed = 0.5; // VELOCITÀ INIZIALE x3.0
-  let dir = 1;
-  let running = true;
-  let animationId = null;
-  
-  function step(){
-    if(!running){
-      animationId = requestAnimationFrame(step);
-      return;
-    }
-    pos += dir * speed;
-    inner.style.transform = `translateY(${-pos}px)`;
-    const total = inner.scrollHeight - inner.clientHeight;
-    if(pos >= total) pos = 0;
-    if(pos < 0) pos = total;
-    animationId = requestAnimationFrame(step);
-  }
-  animationId = requestAnimationFrame(step);
-  
-  const t = document.getElementById('slider-toggle'),
-        i = document.getElementById('slider-invert'),
-        sp = document.getElementById('slider-speed'),
-        speedReadout = document.getElementById('speed-readout');
-  
-  // Gestione toggle
-  t?.addEventListener('click', () => {
-    running = !running;
-    t.textContent = running ? '⏸️ Ferma' : '▶️ Avvia';
-  });
-  
-  // Inversione direzione
-  i?.addEventListener('click', () => {
-    dir *= -1;
-    i.textContent = dir > 0 ? '🔄 Inverti' : '🔄 Normale';
-  });
-  
-  // 🚀 REGOLAZIONE VELOCITÀ MIGLIORATA
-  sp?.addEventListener('input', () => {
-    const v = parseInt(sp.value, 10) || 5;
-    
-    // FORMULA PER VELOCITÀ x3.0 INIZIALE
-    if(v <= 6) {
-      speed = 0.15 + (v - 1) * 0.12;
-    } else {
-      speed = 0.15 + (v - 1) * 0.20;
-    }
-    
-    // Aggiorna display velocità
-    if(speedReadout) {
-      speedReadout.textContent = Math.round(speed * 30) + ' px/s';
-    }
-  });
-  
-  // ⭐⭐ INIZIALIZZA CON VELOCITÀ x3.0 ⭐⭐
-  if(sp) {
-    sp.value = 6; // Posizione per velocità x3.0
-    sp.dispatchEvent(new Event('input'));
-  }
-})();2
-// === PLAYER AUDIO PRINCIPALE ===
-window.addEventListener('load',()=>{
-  const a = document.getElementById('myAudio'),
-        btn = document.getElementById('playPause'),
-        tm = document.getElementById('time'),
-        v = document.getElementById('volume');
-  
-  if(!a || !btn) return;
-  
-  // Formattazione tempo
-  function f(s){
-    if(!isFinite(s)) return '0:00';
-    const m = Math.floor(s/60),
-          c = Math.floor(s % 60);
-    return m + ':' + (c < 10 ? '0' + c : c);
-  }
-  
-  // Aggiornamento display
-  function u(){
-    if(tm) tm.textContent = `${f(a.currentTime)} / ${f(a.duration)}`;
-  }
-  
-  // Configurazione iniziale
-  v.value = 0.8;
-  a.volume = parseFloat(v.value);
-  
-  // Gestione play/pause
-  btn.addEventListener('click', () => {
-    if(a.paused){
-      a.play().catch(() => {});
-      btn.textContent = '⏸️';
-    } else {
-      a.pause();
-      btn.textContent = '▶️';
-    }
-  });
-  
-  // Event listeners
-  v.addEventListener('input', () => a.volume = parseFloat(v.value));
-  a.addEventListener('timeupdate', u);
-  a.addEventListener('loadedmetadata', u);
-  a.addEventListener('ended', () => { 
-    btn.textContent = '▶️';
-    a.currentTime = 0;
-  });
-});
-
-// === AUDIO RUSSELL (CHITARRA) ===
-(function(){
-  const b = document.getElementById('russell-btn'),
-        h = document.getElementById('russell-hint'),
-        a = document.getElementById('russell-audio');
-  
-  if(!b || !a) return;
-  
-  let unlocked = false;
-  
-  function unlockAudio(){
-    if(unlocked) return;
-    unlocked = true;
-    a.muted = false;
-    a.play().then(() => {
-      a.pause();
-      a.currentTime = 0;
-    }).catch(() => {});
-    
-    // Rimuovi listeners di unlock
-    window.removeEventListener('pointerdown', unlockAudio, { capture: true });
-    window.removeEventListener('keydown', unlockAudio, { capture: true });
-    
-    // Nascondi hint dopo unlock
-    if(h) h.style.display = 'none';
-  }
-  
-  // Setup unlock
-  window.addEventListener('pointerdown', unlockAudio, { once: true, capture: true, passive: true });
-  window.addEventListener('keydown', unlockAudio, { once: true, capture: true });
-  
-  // Play chitarra al click
-  b.addEventListener('click', () => {
-    try {
-      a.currentTime = 0;
-      a.play().catch(() => {});
-    } catch(_) {}
-  });
-})();
-
-// === EFFETTI TUONO E LAMP ===
-(function(){
-  const btn = document.getElementById('btn-thunder'),
-        th = document.getElementById('thunder-sound'),
-        ex = document.getElementById('explosionSound'),
-        ov = document.getElementById('lightning'),
-        bo = document.getElementById('bolt');
-  
-  if(!btn || !th || !ov || !bo) return;
-  
-  let unlocked = false;
-  let on = false;
-  
-  // Unlock audio effetti
-  async function unlockOnce(){
-    if(unlocked) return;
-    unlocked = true;
-    for(const s of [th, ex]){
-      try {
-        s.muted = false;
-        await s.play();
-        s.pause();
-        s.currentTime = 0;
-      } catch(_) {}
-    }
-  }
-  
-  window.addEventListener('pointerdown', unlockOnce, { once: true, passive: true, capture: true });
-  window.addEventListener('keydown', unlockOnce, { once: true, capture: true });
-  
-  // Aggiornamento stato pulsante
-  function updateButtonState(){
-    btn.classList.toggle('active', on);
-    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
-    btn.textContent = on ? '⚡ Tuono: ON' : '⚡ Tuono';
-  }
-  
-  // Toggle tuono
-  btn.addEventListener('click', e => {
-    e.preventDefault();
-    on = !on;
-    updateButtonState();
-  });
-  
-  updateButtonState();
-  
-  // Effetto lampo
-  function flash(){
-    const x = 15 + Math.random() * 70,
-          y = 10 + Math.random() * 65,
-          ang = -25 + Math.random() * 50,
-          sy = 0.8 + Math.random() * 1.2;
-    
-    // Reset transizioni
-    ov.style.transition = 'none';
-    ov.offsetHeight; // Forza reflow
-    
-    // Animazione overlay
-    ov.style.background = `radial-gradient(circle at ${x}% ${y}%, rgba(255,255,255,.95), rgba(255,255,255,.22) 40%, transparent 65%)`;
-    ov.style.opacity = '1';
-    ov.style.transition = 'opacity 80ms ease-out';
-    setTimeout(() => ov.style.opacity = '0', 140);
-    
-    // Animazione bolt
-    bo.style.left = x + '%';
-    bo.style.top = y + '%';
-    bo.style.transform = `translate(-50%, -50%) rotate(${ang}deg) scaleY(${sy})`;
-    bo.style.transition = 'transform 90ms ease-out, opacity 280ms ease-out';
-    bo.style.opacity = '1';
-    setTimeout(() => bo.style.opacity = '0', 180);
-    
-    // Riproduci tuono se attivo
-    if(on){
-      try {
-        th.currentTime = 0;
-        softPlay(th, 1.0, 140);
-      } catch(_) {}
-    }
-  }
-  
-  // Schedulazione lampi
-  const LAMPO_MIN_MS = 5000;
-  const LAMPO_JITTER_MS = 3000;
-  
-  (function schedule(){
-    setTimeout(() => {
-      flash();
-      schedule();
-    }, LAMPO_MIN_MS + Math.random() * LAMPO_JITTER_MS);
-  })();
-  
-  // Gestione esplosione
-  document.getElementById('btn-explode')?.addEventListener('click', () => {
-    try {
-      ex.muted = false;
-      ex.volume = 1.0;
-      ex.currentTime = 0;
-      softPlay(ex, 1.0, 140);
-    } catch(_) {}
-  });
-})();
-
-
-
-
-
-
-
-
-
-
-// ===== Next Block =====
-
-
-      (function(){
-        // Disattiva eventuale vecchio init (se presente)
-        document.querySelectorAll('#search-init-robust').forEach(n => n.remove());
-      
-        const LIMIT = 20; // quante righe mostrare
-        const input = document.getElementById('site-search');
-        if (!input) return;
-      
-        // Pannello risultati: usa il tuo se c'è, altrimenti lo crea
-        function ensurePanel(){
-          let panel = document.querySelector('#search-panel, #searchPanel, .search-panel, .results-panel');
-          if (!panel) {
-            panel = document.createElement('div');
-            panel.id = 'search-panel';
-            panel.innerHTML = `
-              <div class="search-header">
-                <h4 class="search-title">Risultati della ricerca</h4>
-                <button class="search-close" type="button" aria-label="Chiudi">Chiudi ✖</button>
-              </div>
-              <div id="search-results" class="search-results"></div>
-            `;
-            document.body.appendChild(panel);
-          }
-          // chiudi/ESC
-          const closeBtn = panel.querySelector('.search-close, #search-close, [data-role="search-close"]');
-          const close = ()=> panel.style.display='none';
-          closeBtn && closeBtn.addEventListener('click', close);
-          window.addEventListener('keydown', e=>{ if(e.key==='Escape') close(); });
-          return panel;
-        }
-        const panel = ensurePanel();
-        const resultsWrap = panel.querySelector('#search-results, .search-results, #searchResults');
-      
-        // ---------- caricamento indice ----------
-        let INDEX = [];
-        function haveIndex(){ return Array.isArray(INDEX) && INDEX.length; }
-      
-        function norm(s){
-          const NORM_MAP = {'ł':'l','Ł':'l','ß':'ss','ø':'o','æ':'ae','œ':'oe'};
-          return (s||'').toString().toLowerCase()
-            .replace(/[łŁßøæœ]/g, m=>NORM_MAP[m]||m)
-            .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
-            .replace(/\s+/g,' ').trim();
-        }
-        function escapeHTML(s){ return (s||'').replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
-        function hi(hay, q){ // evidenzia la query (semplice)
-          if(!q) return escapeHTML(hay||'');
-          const a = escapeHTML(hay||''); const n = norm(hay); const nq = norm(q);
-          if(!nq) return a;
-          // trova pos (prima occorrenza)
-          const pos = n.indexOf(nq);
-          if(pos<0) return a;
-          // ricostruisci evidenziando il range (approssimando con lunghezze uguali: ok per ASCII)
-          const pre  = escapeHTML((hay||'').slice(0,pos));
-          const mid  = escapeHTML((hay||'').slice(pos, pos+nq.length));
-          const post = escapeHTML((hay||'').slice(pos+nq.length));
-          return `${pre}<mark>${mid}</mark>${post}`;
-        }
-      
-        function score(query, item){
-          const q = norm(query); if(!q) return 0;
-          const t = norm(item.title), d = norm(item.desc), u = norm(item.url);
-          // parziali: includes su titolo/desc/url
-          let s = 0;
-          if (t.includes(q)) s += 40;
-          if (d.includes(q)) s += 20;
-          if (u.includes(q)) s += 10;
-          // piccoli bonus per token (migliora ordinamento)
-          for (const tok of q.split(' ').filter(Boolean)){
-            if (t.startsWith(tok+' ')||t.endsWith(' '+tok)||t.includes(' '+tok+' ')) s+=12;
-            if (d.includes(tok)) s+=6;
-          }
-          return s;
-        }
-      
-        async function loadIndex(){
-          if (Array.isArray(window.SEARCH_INDEX) && window.SEARCH_INDEX.length){
-            INDEX = window.SEARCH_INDEX;
-            return;
-          }
-          const candidates = (window.SEARCH_INDEX_URLS && window.SEARCH_INDEX_URLS.length)
-            ? window.SEARCH_INDEX_URLS
-            : ['search-index.json','/search-index.json','/assets/search-index.json'];
-          for (const url of candidates){
-            try{
-              const r = await fetch(url, {cache:'no-store'});
-              if (r.ok) { INDEX = await r.json(); return; }
-            }catch(e){}
-          }
-        }
-      
-        function render(results, q){
-          resultsWrap.innerHTML = '';
-          if (!results.length){
-            resultsWrap.innerHTML = `<div class="result"><em>Nessun risultato</em></div>`;
-            return;
-          }
-          for (const it of results.slice(0, LIMIT)){
-            const title = hi(it.title, q);
-            const desc  = hi(it.desc||'', q);
-            const url   = escapeHTML(it.url||'#');
-            const row = document.createElement('div');
-            row.className = 'result';
-            row.innerHTML = `
-              <h4 class="result-title"><a href="${url}">${title}</a></h4>
-              ${desc ? `<div class="result-desc">${desc}</div>` : ``}
-              <div class="result-source">${escapeHTML((new URL(url, location.href)).hostname || '')}</div>
-            `;
-            resultsWrap.appendChild(row);
-          }
-        }
-      
-        function search(q){
-          if(!haveIndex() || !q.trim()){
-            panel.style.display = 'none';
-            resultsWrap.innerHTML = '';
-            return;
-          }
-          const ranked = INDEX
-            .map(it => ({ it, s: score(q, it) }))
-            .filter(x => x.s > 0)
-            .sort((a,b)=> b.s - a.s)
-            .map(x => x.it);
-          panel.style.display = 'block';
-          render(ranked, q);
-        }
-      
-        // bind input (debounce leggero)
-        let t = 0;
-        input.addEventListener('input', ()=>{
-          clearTimeout(t);
-          const q = input.value;
-          t = setTimeout(()=> search(q), 90);
-        });
-      
-        // bootstrap: carica indice e se c'è testo in input, cerca subito
-        loadIndex().then(()=>{ if (input.value.trim()) search(input.value); });
-      })();
-    
-
-// ===== Next Block =====
-
-
-(function(){
-  const form = document.getElementById('dict-form');
-  const input = document.getElementById('dict-q');
-  if(!form || !input) return;
-  
-  form.addEventListener('submit', function(e){
-    e.preventDefault();
-    const q = (input.value || '').trim();
-    if(!q) { 
-      input.focus(); 
-      return; 
-    }
-    
-    const checks = form.querySelectorAll('.sources input[type="checkbox"]:checked');
-    let opened = 0;
-    
-    checks.forEach(ch => {
-      const tmpl = ch.getAttribute('data-url');
-      if(!tmpl) return;
-      const url = tmpl.replace('{q}', encodeURIComponent(q));
-      const w = window.open(url, '_blank', 'noopener');
-      if(w) opened++;
-    });
-    
-    if(!opened){
-      window.open('https://duckduckgo.com/?q=site%3Aiep.utm.edu+' + encodeURIComponent(q), '_blank', 'noopener');
-    }
-  });
-})();
-
-
-// ===== Next Block =====
-
-
-      (function(){
-        const btn = document.getElementById('btn-thunder');
-        const audio = document.getElementById('thunder-sound');
-        const overlay = document.getElementById('lightning');
-        const bolt = document.getElementById('bolt');
-        if(!btn || !audio) return;
-      
-        // evita doppie bind: clona e rimpiazza
-        const newBtn = btn.cloneNode(true);
-        btn.parentNode.replaceChild(newBtn, btn);
-      
-        // assicura che non vada in loop
-        audio.loop = false;
-      
-        let playing = false;
-        function ui() {
-          newBtn.setAttribute('aria-pressed', playing ? 'true' : 'false');
-          newBtn.textContent = playing ? '⚡ Tuono: ON' : '⚡ Tuono';
-        }
-        function flashOnce(){
-          if(!(overlay && bolt)) return;
-          overlay.style.opacity='1';
-          setTimeout(()=> overlay.style.opacity='0', 140);
-          bolt.style.left='70%'; bolt.style.top='20%';
-          bolt.style.transform='translate(-50%,-50%) rotate(5deg) scaleY(1.1)';
-          bolt.style.opacity='1';
-          setTimeout(()=> bolt.style.opacity='0', 180);
-        }
-        function stop(){
-          playing = false;
-          try { audio.pause(); audio.currentTime = 0; } catch(_) {}
-          ui();
-        }
-        function start(){
-          playing = true;
-          try { audio.currentTime = 0; audio.play().catch(()=>{}); } catch(_) {}
-          flashOnce();
-          ui();
-          // 👇 se vuoi che si fermi da solo dopo 1.5s, decommenta:
-          // setTimeout(stop, 1500);
-        }
-      
-        newBtn.addEventListener('click', (e)=>{
-          e.preventDefault();
-          if (playing) stop(); else start();
-        });
-      
-        // Esc per fermare
-        window.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') stop(); });
-      
-        // quando finisce naturalmente, aggiorna UI
-        audio.addEventListener('ended', stop);
-      
-        ui();
-      })();
-    
-
-// ===== Next Block =====
-
-
-      // Se il genitore è un flex-row senza wrap, abilita il wrap così il player va sotto
-      (function(){
-        const ap = document.getElementById('audio-player');
-        if(!ap) return;
-        const parent = ap.parentElement;
-        const cs = parent && getComputedStyle(parent);
-        if (cs && cs.display.includes('flex') && cs.flexWrap === 'nowrap') {
-          parent.style.flexWrap = 'wrap';
-          // opzionale: distanza tra la riga dei controlli slider e il player
-          parent.style.rowGap = parent.style.rowGap || '.5rem';
-        }
-      })();
-    
-
-// ===== Next Block =====
-
-
-      (function(){
-        const input       = document.getElementById('site-search');
-        const resultsWrap = document.querySelector('#search-results, .search-results, #searchResults');
-        const INDEX       = Array.isArray(window.SEARCH_INDEX) ? window.SEARCH_INDEX : null;
-        if(!input || !resultsWrap || !INDEX) return;
-      
-        // normalizza (accent-fold: it/pl ecc.)
-        const NORM_MAP = {'ł':'l','Ł':'l','ß':'ss','ø':'o','æ':'ae','œ':'oe'};
-        function norm(s){
-          return (s||'').toString().toLowerCase()
-            .replace(/[łŁßøæœ]/g, m=>NORM_MAP[m]||m)
-            .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
-            .replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim();
-        }
-      
-        // scoring semplice: titolo >> descrizione > url + bonus per token match
-        function score(query, item){
-          const q = norm(query); if(!q) return 0;
-          const t = norm(item.title), d = norm(item.desc), u = norm(item.url);
-          let s=0;
-          if(t===q) s+=100;
-          if(t.includes(q)) s+=40;
-          if(d.includes(q)) s+=20;
-          if(u.includes(q)) s+=10;
-          const toks = q.split(' ').filter(Boolean);
-          for(const tok of toks){
-            if(t.startsWith(tok+' ')||t.endsWith(' '+tok)||t.includes(' '+tok+' ')) s+=12;
-            if(d.includes(tok)) s+=6;
-            if(u.includes(tok)) s+=3;
-          }
-          return s;
-        }
-      
-        function grabShownUrls(){
-          const set = new Set();
-          resultsWrap.querySelectorAll('a[href]').forEach(a=> set.add(a.getAttribute('href')));
-          return set;
-        }
-      
-        function topRelated(query, exclude, limit=6){
-          return INDEX.map(it=>({it, s:score(query,it)}))
-            .filter(x=>x.s>0 && !exclude.has(x.it.url))
-            .sort((a,b)=>b.s-a.s)
-            .slice(0, limit)
-            .map(x=>x.it);
-        }
-      
-        function ensureBox(){
-          let box = document.getElementById('related-results');
-          if(!box){
-            box = document.createElement('div');
-            box.id = 'related-results';
-            box.className = 'related-results';
-            box.innerHTML = '<h4 class="related-header">Risultati correlati (ricerca ampliata)</h4><ul class="related-list"></ul>';
-            resultsWrap.appendChild(box);
-          }
-          return box;
-        }
-      
-        function renderRelated(list){
-          const box = ensureBox();
-          const ul  = box.querySelector('.related-list');
-          ul.innerHTML = '';
-          list.forEach(it=>{
-            const li = document.createElement('li');
-            li.className = 'related-item';
-            li.innerHTML = `<a href="${it.url}"><strong>${it.title}</strong></a>` +
-                           (it.desc ? `<div class="meta">${it.desc}</div>` : '');
-            ul.appendChild(li);
-          });
-          box.style.display = list.length ? 'block' : 'none';
-        }
-      
-        function updateRelated(){
-          const q = input.value || '';
-          if(!q.trim()){ renderRelated([]); return; }
-          const shown = grabShownUrls();
-          // Se il pannello mostra *pochissimi* risultati (es. 0–1), proponi correlati
-          const visibleItems = resultsWrap.querySelectorAll(':scope > *'); // fallback generico
-          if(visibleItems.length <= 1){
-            renderRelated(topRelated(q, shown, 6));
-          }else{
-            renderRelated([]);
-          }
-        }
-      
-        // osserva cambi al pannello + input
-        const mo = new MutationObserver(()=> updateRelated());
-        mo.observe(resultsWrap, {childList:true, subtree:true});
-        input.addEventListener('input', ()=> setTimeout(updateRelated, 80));
-        document.addEventListener('DOMContentLoaded', updateRelated);
-      })();
-    
-
-// ===== Next Block =====
-
-
-document.addEventListener('DOMContentLoaded', ()=>{
-  const input = document.getElementById('site-search');
-  const box   = document.querySelector('.search-container');
-  if(!input || !box) return;
-
-  // crea il bottone solo se non esiste già
-  let btn = box.querySelector('.clear-search');
-  if(!btn){
-    btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'clear-search';
-    btn.setAttribute('aria-label','Cancella');
-    box.appendChild(btn);
-  }
-
-  // fallback: mostra/nascondi anche dove :has non c'è
-  function sync(){
-    btn.style.display = input.value ? 'flex' : 'none';
-  }
-  input.addEventListener('input', sync);
-  input.addEventListener('change', sync);
-
-  // click: svuota, aggiorna risultati e rimetti focus
-  btn.addEventListener('click', ()=>{
-    input.value = '';
-    input.dispatchEvent(new Event('input', {bubbles:true}));
-    input.focus();
-    sync();
-  });
-
-  // Esc cancella (comodo da tastiera)
-  input.addEventListener('keydown', (e)=>{
-    if(e.key === 'Escape'){
-      e.preventDefault();
-      btn.click();
-    }
-  });
-
-  sync();
-});
-
-
-// ===== Next Block =====
-
-
-// ========== GESTIONE ERRORI GLOBALE ==========
-window.addEventListener('error', function(e) {
-  console.error('Errore globale:', e.error);
-});
-
-// Safe element selector con fallback
-function safeQuery(selector, context = document) {
-  try {
-    return context.querySelector(selector);
-  } catch (error) {
-    console.warn(`Elemento ${selector} non trovato:`, error);
-    return null;
-  }
-}
-
-
-// ===== Next Block =====
-
-
-(function(){
-  const LS_KEY = 'cookieConsent.v1';
-  const $ = (s,c=document)=>c.querySelector(s);
-
-  const banner = $('#cookie-banner');
-  const modal  = $('#cookie-modal');
-  const fab    = $('#cookie-fab');
-
-  const pref   = $('#cc-pref');
-  const anal   = $('#cc-analytics');
-  const mark   = $('#cc-marketing');
-
-  const btnAccept  = $('#cc-accept');
-  const btnDecline = $('#cc-decline');
-  const btnCustom  = $('#cc-customize');
-  const btnSave    = $('#cc-save');
-  const btnCancel  = $('#cc-cancel');
-  const btnRejectAll = $('#cc-reject-all');
-
-  function getStored(){
-    try{ return JSON.parse(localStorage.getItem(LS_KEY)) || null; }catch(e){ return null; }
-  }
-  function store(consent){
-    localStorage.setItem(LS_KEY, JSON.stringify({ ts: Date.now(), consent }));
-  }
-
-  // Iniettabile: qui caricherai librerie solo se consentito
-  function apply(consent){
-    // Esempio: se analytics true, carica GA (placeholder)
-    if (consent.analytics){
-      // loadAnalytics(); // <- qui il tuo script reale
-    }
-    // Se marketing false, puoi nascondere/“offuscare” embed terzi
-    // …
-  }
-
-  function openBanner(){ banner.classList.add('open'); }
-  function closeBanner(){ banner.classList.remove('open'); }
-  function openModal(){ modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); }
-  function closeModal(){ modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); }
-
-  // Prime impostazioni dall’archivio
-  const stored = getStored();
-  if (!stored){ openBanner(); }  // mostra il banner solo se manca consenso
-  else { apply(stored.consent); }
-
-  // Pulsanti banner
-  btnAccept.addEventListener('click', ()=>{
-    const consent = { preferences:true, analytics:true, marketing:true };
-    store(consent); apply(consent); closeBanner();
-  });
-  btnDecline.addEventListener('click', ()=>{
-    const consent = { preferences:false, analytics:false, marketing:false };
-    store(consent); apply(consent); closeBanner();
-  });
-  btnCustom.addEventListener('click', ()=>{
-    // precompila gli switch dalla memoria
-    const s = getStored();
-    pref.checked = !!(s && s.consent.preferences);
-    anal.checked = !!(s && s.consent.analytics);
-    mark.checked = !!(s && s.consent.marketing);
-    openModal();
-  });
-
-  // Pulsanti modale
-  btnSave.addEventListener('click', ()=>{
-    const consent = { preferences:pref.checked, analytics:anal.checked, marketing:mark.checked };
-    store(consent); apply(consent); closeModal(); closeBanner();
-  });
-  btnCancel.addEventListener('click', ()=> closeModal());
-  btnRejectAll.addEventListener('click', ()=>{
-    pref.checked = anal.checked = mark.checked = false;
-  });
-
-  // Biscottino: riapre la modale in ogni momento
-  fab.addEventListener('click', ()=>{
-    const s = getStored();
-    pref.checked = !!(s && s.consent.preferences);
-    anal.checked = !!(s && s.consent.analytics);
-    mark.checked = !!(s && s.consent.marketing);
-    openModal();
-  });
-
-  // Evita sovrapposizione con il box di Russell: se collide, sposta a destra
-  function avoidOverlap(){
-    const rb = document.getElementById('russell-box'); /* presente nel tuo file */ 
-    if(!rb) return;
-    const r1 = fab.getBoundingClientRect();
-    const r2 = rb.getBoundingClientRect();
-    const overlap = !(r1.right < r2.left || r1.left > r2.right || r1.bottom < r2.top || r1.top > r2.bottom);
-    if(overlap){
-      fab.style.left = 'auto';
-      fab.style.right = '1.25rem';
-    }else{
-      fab.style.right = 'auto';
-      fab.style.left  = '1.25rem';
-    }
-  }
-  avoidOverlap();
-  window.addEventListener('resize', avoidOverlap);
-  window.addEventListener('scroll', avoidOverlap);
-
-  // ESC chiude la modale
-  document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeModal(); });
-})();
-
-
-// ===== Next Block =====
-
-
-/* === Floating Quotes Controller v2 === */
-(function(){
-  var timer = null, idx = 0, paused = false;
-  function qs(a){ return document.querySelector(a); }
-  function qsa(a){ return Array.prototype.slice.call(document.querySelectorAll(a)); }
-  function step(bubbles){
-    if(!bubbles.length) return;
-     document.querySelector('.floating-quotes').style.zIndex = '20';
-    // Remove show from all
-    bubbles.forEach(function(b){ b.classList.remove("show"); });
-    // Add to current
-    bubbles[idx].classList.add("show");
-    idx = (idx + 1) % bubbles.length;
-  }
-  function start(){
-    var bubbles = qsa(".floating-quotes .quote-bubble");
-    if(!bubbles.length) return;
-     document.querySelector('.floating-quotes').style.zIndex = '20';
-    // Sanitize initial: ensure only one .show
-    var any = bubbles.some(function(b){ return b.classList.contains("show"); });
-    if(!any){ idx = 0; }
-    else { idx = (bubbles.findIndex(function(b){ return b.classList.contains("show"); }) + 1) % bubbles.length; }
-    step(bubbles);
-    clearInterval(timer);
-    timer = setInterval(function(){ if(!paused) step(bubbles); }, 8000);
-    // Pause on hover
-    var box = qs(".floating-quotes");
-    if(box){
-      box.addEventListener("mouseenter", function(){ paused = true; });
-      box.addEventListener("mouseleave", function(){ paused = false; });
-    }
-  }
-  // Re-init safe on DOM ready and after 1s (in case of late inserts)
-  if(document.readyState!=="loading") start(); else document.addEventListener("DOMContentLoaded", start);
-  setTimeout(start, 1000);
-})();
-
-// ===== Next Block =====
-
-
-/* === Typing Controller v4 - FLUIDO === */
-(function(){
-  function ready(fn){ 
-    if(document.readyState!=="loading") fn(); 
-    else document.addEventListener("DOMContentLoaded", fn); 
-  }
-  
-  ready(function(){
-    var el = document.querySelector(".typing-effect");
-    if(!el) return;
-    
-    // Aggiungi cursor se non esiste
-    if(!el.querySelector('.cursor')) {
-      el.innerHTML += '<span class="cursor">|</span>';
-    }
-    
-    var phrases = [
-      "“La filosofia comincia con la meraviglia.” — Platone",
-      "“Sapere di non sapere è il principio della saggezza.” — Socrate",
-      "“La misura dell’uomo è l’uomo.” — Protagora",
-      "“La conoscenza è potere.” — Francis Bacon",
-      "“L'uomo è un lupo per l'uomo.” — Thomas Hobbes",
-      "“La mente è una tabula rasa.” — John Locke",
-      "“Esse est percipi (essere è essere percepito).” — George Berkeley",
-      "“La ragione è schiava delle passioni.” — David Hume",
-      "“Il cielo stellato sopra di me e la legge morale in me.” — Immanuel Kant",
-      "“Viviamo nel migliore dei mondi possibili.” — Gottfried Wilhelm Leibniz",
-      "“Il cuore ha le sue ragioni che la ragione non conosce.” — Blaise Pascal",
-      "“La libertà è il riconoscimento della necessità.” — G.W.F. Hegel",
-      "“Dio è morto.” — Friedrich Nietzsche",
-      "“Diventa ciò che sei.” — Friedrich Nietzsche",
-      "“Il mondo è la mia rappresentazione.” — Arthur Schopenhauer",
-      "“La vita può essere compresa solo all'indietro, ma va vissuta in avanti.” — Søren Kierkegaard",
-      "“L'esistenza precede l'essenza.” — Jean-Paul Sartre",
-      "“L'inferno sono gli altri.” — Jean-Paul Sartre",
-      "“Bisogna immaginare Sisifo felice.” — Albert Camus",
-      "“Donna non si nasce, lo si diventa.” — Simone de Beauvoir",
-      "“La banalità del male.” — Hannah Arendt",
-      "“La scienza avanza per congetture e confutazioni.” — Karl Popper",
-      "“Il problema dell'umanità è che gli stupidi sono sicurissimi, mentre gli intelligenti sono pieni di dubbi.” — Bertrand Russell",
-      "“La mente e il corpo sono una sola e medesima cosa.” — Baruch Spinoza",
-      "“Non si scende due volte nello stesso fiume.” — Eraclito",
-      "“L'essere è, il non-essere non è.” — Parmenide",
-      "“Il piacere è il principio e il fine della vita felice.” — Epicuro",
-      "“Non sono le cose a turbare gli uomini, ma i giudizi che essi formulano sulle cose.” — Epitteto",
-      "“La felicità della tua vita dipende dalla qualità dei tuoi pensieri.” — Marco Aurelio",
-      "“Non esiste vento favorevole per il marinaio che non sa dove andare.” — Seneca",
-      "“Ama e fa' ciò che vuoi.” — Agostino d'Ippona",
-      "“Temo l'uomo di un solo libro.” — Tommaso d'Aquino",
-      "“Credo per comprendere.” — Anselmo d'Aosta",
-      "“È meglio essere temuti che amati, se non si può essere entrambi.” — Niccolò Machiavelli",
-      "“L'uomo nasce libero, ma ovunque è in catene.” — Jean-Jacques Rousseau",
-      "“Se Dio non esistesse, bisognerebbe inventarlo.” — Voltaire",
-      "“Il linguaggio è la casa dell'Essere.” — Martin Heidegger",
-      "“Su ciò di cui non si può parlare si deve tacere.” — Ludwig Wittgenstein",
-      "“Dove c'è potere, c'è resistenza.” — Michel Foucault",
-      "“Essere che può essere compreso è linguaggio.” — Hans-Georg Gadamer",
-      "“Un viaggio di mille miglia comincia con un solo passo.” — Laozi",
-      "“Ciò che sappiamo è una goccia, ciò che ignoriamo è un oceano.” — Isaac Newton",
-      "“Cogito, ergo sum.” — Cartesio"
-    ];
-    
-    var i = 0, j = 0, isDeleting = false, pauseCount = 0;
-    var baseSpeed = 60; // Velocità base più lenta per fluidità
-    var pauseThreshold = 60; // Pausa più lunga
-    
-    function typeCharacter() {
-      var currentPhrase = phrases[i];
-      var cursor = '<span class="cursor">|</span>';
-      
-      if (!isDeleting) {
-        // SCRITTURA - più fluida
-        if (j <= currentPhrase.length) {
-          el.innerHTML = currentPhrase.slice(0, j) + cursor;
-          j++;
-          
-          // Velocità variabile per effetto più naturale
-          var speed = baseSpeed + (Math.random() * 30 - 15); // ±15ms di variazione
-          setTimeout(typeCharacter, speed);
-        } else {
-          // Fine scrittura - pausa
-          pauseCount++;
-          if (pauseCount > pauseThreshold) {
-            isDeleting = true;
-            pauseCount = 0;
-            setTimeout(typeCharacter, 100);
-          } else {
-            setTimeout(typeCharacter, 50);
-          }
-        }
-      } else {
-        // CANCELLAZIONE - più fluida
-        if (j >= 0) {
-          el.innerHTML = currentPhrase.slice(0, j) + cursor;
-          j--;
-          
-          // Cancellazione leggermente più veloce ma fluida
-          var deleteSpeed = baseSpeed * 0.7 + (Math.random() * 20 - 10);
-          setTimeout(typeCharacter, deleteSpeed);
-        } else {
-          // Fine cancellazione - passa alla frase successiva
-          isDeleting = false;
-          i = (i + 1) % phrases.length;
-          j = 0;
-          setTimeout(typeCharacter, 300); // Breve pausa tra le frasi
-        }
-      }
-    }
-    
-    // Inizia dopo un breve delay
-    setTimeout(typeCharacter, 1000);
-  });
-})();
-
-
-// ===== Next Block =====
-
-
+<div aria-live="polite" id="quote-runner"></div>
+ 
 /* === quote-runner (center slider) === */
 (function(){
   function ready(fn){ if(document.readyState!=="loading") fn(); else document.addEventListener("DOMContentLoaded", fn); }
@@ -1431,10 +22,6 @@ function safeQuery(selector, context = document) {
     setInterval(showNext, 9000);
   });
 })();
-
-
-// ===== Next Block =====
-
 
 /* === Timeline scroll reveal (IO) v2 === */
 document.addEventListener("DOMContentLoaded", function(){
@@ -1487,9 +74,7 @@ document.addEventListener("DOMContentLoaded", function(){
   window.addEventListener('scroll', scrollFallback, {passive:true});
   window.addEventListener('resize', scrollFallback);
 });
-
-
-// ===== Next Block =====
+/* ===== quote-runner-js-solid-2025-10-08" ===== */
 
 
 (function(){
@@ -1557,15 +142,150 @@ document.addEventListener("DOMContentLoaded", function(){
     setInterval(next, PERIOD);
   });
 })();
+/* ===== id="boomfx-js-2025-10-09 ===== */
 
 
-// ===== Next Block =====
-
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
-}
-
-// ===== Next Block =====
+  (function(){
+  function byId(id){ return document.getElementById(id); }
+  var exploding = byId('exploding');
+  if(!exploding) return;
+  if(!exploding.__wrapped){
+    var wrap = document.createElement('span');
+    wrap.className = 'exploding-stage';
+    exploding.parentNode.insertBefore(wrap, exploding);
+    wrap.appendChild(exploding);
+    exploding.__wrapped = true;
+  }
+  function buildChars(target){
+    if(target.__charsBuilt) return;
+    var nodes = Array.from(target.childNodes);
+    target.innerHTML = '';
+    nodes.forEach(function(n){
+      if(n.nodeType === 3){ // text
+        var txt = n.nodeValue;
+        for(var i=0;i<txt.length;i++){
+          var span = document.createElement('span');
+          span.className = 'char';
+          span.textContent = txt[i];
+          target.appendChild(span);
+        }
+      }else{
+        target.appendChild(n); // keep tags like <b> etc.
+      }
+    });
+    target.__charsBuilt = true;
+  }
+  function rand(min,max){ return Math.random()*(max-min)+min; }
+  function spawnShockFlash(x,y){
+    var root = document.body;
+    var ring = document.createElement('div');
+    ring.className = 'boom-shockwave';
+    ring.style.setProperty('--x', x+'px');
+    ring.style.setProperty('--y', y+'px');
+    var flash = document.createElement('div');
+    flash.className = 'boom-flash';
+    flash.style.setProperty('--x', x+'px');
+    flash.style.setProperty('--y', y+'px');
+    root.appendChild(ring); root.appendChild(flash);
+    setTimeout(function(){ ring.remove(); flash.remove(); }, 1200);
+  }
+  function spawnSparks(x,y){
+    var root = document.body;
+    var isMobile = (window.matchMedia && window.matchMedia('(max-width: 768px)').matches);
+    var N = isMobile ? 50 : 110;
+    for (var i=0;i<N;i++){
+      var s = document.createElement('div');
+      s.className = 'boom-spark';
+      s.style.setProperty('--x', x+'px'); s.style.setProperty('--y', y+'px');
+      var ang = Math.random()*Math.PI*2;
+      var spd = rand(120, isMobile? 360 : 520);
+      var dx = Math.cos(ang)*spd;
+      var dy = Math.sin(ang)*spd + rand(40,120);
+      var rot = rand(-540,540);
+      var dur = rand(900,1400);
+      var fade = dur + rand(0,200);
+      var b0 = rand(0,.6), b1 = rand(.6,2.2);
+      var size = rand(3,7);
+      s.style.setProperty('--dx', dx.toFixed(1)+'px');
+      s.style.setProperty('--dy', dy.toFixed(1)+'px');
+      s.style.setProperty('--rot', rot.toFixed(1)+'deg');
+      s.style.setProperty('--dur', Math.round(dur)+'ms');
+      s.style.setProperty('--fade', Math.round(fade)+'ms');
+      s.style.setProperty('--b0', b0.toFixed(2)+'px');
+      s.style.setProperty('--b1', b1.toFixed(2)+'px');
+      s.style.setProperty('--w', size.toFixed(1)+'px');
+      s.style.setProperty('--h', size.toFixed(1)+'px');
+      root.appendChild(s);
+      setTimeout((function(el){ return function(){ el.remove(); }; })(s), fade+80);
+    }
+  }
+  function explodeAt(target, x, y){
+    buildChars(target);
+    document.body.classList.add('boom-shake');
+    setTimeout(function(){ document.body.classList.remove('boom-shake'); }, 560);
+    target.classList.add('boom-primed');
+    setTimeout(function(){
+      target.classList.remove('boom-primed');
+      target.classList.add('boom-active');
+      var rect = target.getBoundingClientRect();
+      var cx = rect.left + rect.width/2, cy = rect.top + rect.height/2;
+      var chars = target.querySelectorAll('.char');
+      for (var i=0;i<chars.length;i++){
+        var el = chars[i];
+        var bb = el.getBoundingClientRect();
+        var vx = (bb.left + bb.width/2) - cx;
+        var vy = (bb.top + bb.height/2) - cy;
+        var dist = Math.max(1, Math.sqrt(vx*vx + vy*vy));
+        var mult = rand(120, 300);
+        var dx = (vx/dist) * mult + rand(-60,60);
+        var dy = (vy/dist) * mult + rand(-60,60);
+        var dz = rand(-140,140);
+        el.style.setProperty('--dx', dx.toFixed(1)+'px');
+        el.style.setProperty('--dy', dy.toFixed(1)+'px');
+        el.style.setProperty('--dz', dz.toFixed(1)+'px');
+        el.style.setProperty('--rx', rand(-40,40).toFixed(1)+'deg');
+        el.style.setProperty('--ry', rand(-60,60).toFixed(1)+'deg');
+        el.style.setProperty('--rz', rand(-120,120).toFixed(1)+'deg');
+        el.style.setProperty('--blur', rand(.2,1.4).toFixed(2)+'px');
+        el.style.setProperty('--td', Math.round(rand(820,1150))+'ms');
+      }
+      spawnShockFlash(x,y);
+      spawnSparks(x,y);
+      var boom = document.getElementById('explosionSound');
+      try{ if(boom){ boom.currentTime=0; boom.volume=1.0; boom.muted=false; softPlay(boom, 1.0, 140).catch(function(){}); } }catch(_){}
+      setTimeout(function(){
+        target.classList.remove('boom-active');
+        var chars2 = target.querySelectorAll('.char');
+        for (var j=0;j<chars2.length;j++){
+          (function(el,k){
+            setTimeout(function(){
+              el.style.setProperty('--dx','0px');
+              el.style.setProperty('--dy','0px');
+              el.style.setProperty('--dz','0px');
+              el.style.setProperty('--rx','0deg');
+              el.style.setProperty('--ry','0deg');
+              el.style.setProperty('--rz','0deg');
+              el.style.setProperty('--blur','0px');
+              el.style.setProperty('--td', Math.round(rand(400,700))+'ms');
+              el.style.opacity='1'; el.style.transform='translate3d(0,0,0)';
+            }, k*8);
+          })(chars2[j], j);
+        }
+      }, 1200);
+    }, 120);
+  }
+  function onClick(e){
+    var x = (e && 'clientX' in e) ? e.clientX : (window.innerWidth/2);
+    var y = (e && 'clientY' in e) ? e.clientY : (window.innerHeight/2);
+    explodeAt(exploding, x, y);
+    setTimeout(function(){ explodeAt(exploding, x, y); }, 260); // boom–boom
+  }
+  exploding.style.cursor='pointer';
+  exploding.addEventListener('click', onClick, true);
+  var btn = document.getElementById('btn-explode') || document.getElementById('explode-btn');
+  if(btn){ btn.addEventListener('click', function(ev){ ev.preventDefault(); onClick(ev); }, true); }
+})();
+/* ===== <script id="gt-wire"> ===== */
 
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -1627,10 +347,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }catch(_){ translateSelect.value='it'; }
   }
 });
-
-
-// ===== Next Block =====
-
 
 // SISTEMA STELLARE COMPLETO CON VERIFICHE DI SICUREZZA - VERSIONE CORRETTA
 document.addEventListener('DOMContentLoaded', function() {
@@ -1904,8 +620,7 @@ window.getElementSafe = function(selector) {
 console.log('⭐ Sistema stellare caricato e pronto');
 
 
-// ===== Next Block =====
-
+  /* =====  ===== */
 
 (function(){
   function setFill(el){
@@ -1927,9 +642,7 @@ console.log('⭐ Sistema stellare caricato e pronto');
     bind(document.querySelector('#slider-speed'));
   });
 })();
-
-
-// ===== Next Block =====
+/* ===== <script id="speed-readout-js"> ===== */
 
 
 (function(){
@@ -1955,9 +668,7 @@ console.log('⭐ Sistema stellare caricato e pronto');
     }
   });
 })();
-
-
-// ===== Next Block =====
+/* ===== <script id="russell-conservative-anim-js"> ===== */
 
 
 (function(){
@@ -2009,9 +720,7 @@ console.log('⭐ Sistema stellare caricato e pronto');
   }
 })();
 
-
-// ===== Next Block =====
-
+<!-- removed duplicate script#speed-readout-js -->
 
 (function(){
   var boom = document.getElementById('explosionSound');
@@ -2035,10 +744,8 @@ console.log('⭐ Sistema stellare caricato e pronto');
   window.addEventListener('pointerdown', unlockSilent, { once:true, passive:true, capture:true });
   window.addEventListener('click', unlockSilent, { once:true, passive:true, capture:true });
 })();
-
-
-// ===== Next Block =====
-
+/* ===== 
+<script id="sfx-soft-play"> ===== */
 
 function softPlay(el, targetVol, ms){
   targetVol = (typeof targetVol === 'number') ? targetVol : 1.0;
@@ -2058,9 +765,7 @@ function softPlay(el, targetVol, ms){
     }).catch(function(){});
   }catch(_){}
 }
-
-
-// ===== Next Block =====
+/* ===== <script id="timeline-bidirectional-scroll"> ===== */
 
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -2190,10 +895,6 @@ function setupTimelineAnimations() {
 // Avvia le animazioni
 document.addEventListener('DOMContentLoaded', setupTimelineAnimations);
 
-
-// ===== Next Block =====
-
-
 // Animazione delay progressivo per voci menu
 document.addEventListener('DOMContentLoaded', function() {
     const megaMenus = document.querySelectorAll('.mega-menu');
@@ -2206,10 +907,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-
-// ===== Next Block =====
-
-
 // Aggiungi questo script
 document.addEventListener('DOMContentLoaded', function() {
   const progressBar = document.querySelector('.scroll-progress-bar');
@@ -2220,10 +917,6 @@ document.addEventListener('DOMContentLoaded', function() {
     progressBar.style.width = scrolled + '%';
   });
 });
-
-
-// ===== Next Block =====
-
 
 /* === THEME TOGGLE FUNCTIONALITY === */
 document.addEventListener('DOMContentLoaded', function() {
@@ -2280,10 +973,6 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
-
-// ===== Next Block =====
-
-
     const btn = document.getElementById('paradigma-btn');
     const overlay = document.getElementById('filosofi-overlay');
     
@@ -2312,10 +1001,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Se il mouse esce dall'overlay, avvia chiusura
     overlay.addEventListener('mouseleave', hideOverlay);
 
-
-// ===== Next Block =====
-
-
 // Funzioni per il modale
 function showNewsletterModal() {
   document.getElementById('newsletterModal').style.display = 'flex';
@@ -2343,10 +1028,6 @@ document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') closeNewsletterModal();
 });
 
-
-// ===== Next Block =====
-
-
 document.addEventListener('click', function(e){
   const link = e.target.closest('a[href="#lista-articoli"]');
   if(!link) return;
@@ -2357,15 +1038,7 @@ document.addEventListener('click', function(e){
   catch(_){ location.hash = '#lista-articoli'; }
 });
 
-
-// ===== Next Block =====
-
-
   /* removed duplicate window.SEARCH_INDEX_URLS assignment */
-
-
-// ===== Next Block =====
-
 
   // Aggiungi questo script per ottimizzare le animazioni
 document.addEventListener('DOMContentLoaded', function() {
@@ -2378,10 +1051,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   optimizeAnimations();
 });
-
-
-// ===== Next Block =====
-
 
     (function(){
       const panel = document.querySelector('#search-panel');
@@ -2401,11 +1070,8 @@ document.addEventListener('DOMContentLoaded', function() {
         window.animateSearchResults && window.animateSearchResults();
       };
     })();
-    
 
-// ===== Next Block =====
-
-
+   
 // === Auto-open search panel when real results are injected ===
 (function(){
   const panel    = document.querySelector('#search-panel, #searchPanel, .search-panel, .results-panel');
@@ -2452,10 +1118,6 @@ document.addEventListener('DOMContentLoaded', function() {
   // ESC to close
   document.addEventListener('keydown', (e)=>{ if (e.key === 'Escape') forceClose(); });
 })();
-
-
-// ===== Next Block =====
-
 
 // === GENERATORE DI STELLE - VERSIONE CORRETTA ===
 (function() {
@@ -2569,10 +1231,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // AVVIA SUBITO
     setTimeout(createMultipleShootingStars, 500);
 })();
-
-
-// ===== Next Block =====
-
 
     (function() {
         const canvas = document.getElementById("tiny-comets");
@@ -2692,8 +1350,8 @@ document.addEventListener('DOMContentLoaded', function() {
         function init() {
             resizeCanvas();
             
-            // Crea 80 cometine
-            for (let i = 0; i < 60; i++) {
+            // Crea 50 cometine
+            for (let i = 0; i < 30; i++) {
                 comets.push(new TinyComet());
                 // Distribuisci l'inizio nel tempo
                 comets[i].life = Math.random() * 100;
@@ -2727,317 +1385,423 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     })();
 
-
-// ===== Next Block =====
-
-
-// === ESPLOSIONE + SCIAME PARTICELLE - VERSIONE SPETTACOLARE ===
+/* === SISTEMA DI ESPLOSIONE CORRETTO === */
 document.addEventListener('DOMContentLoaded', function() {
-  const explodingText = document.getElementById('exploding');
-  const explodeBtn = document.getElementById('btn-explode');
+  let explodingText = document.getElementById('exploding');
+  if (!explodingText) {
+    explodingText = Array.from(document.querySelectorAll('h1,h2,h3,p,span,.hero-title,.headline,.motto'))
+      .find(el => el.textContent && el.textContent.includes('Sustine et abstine'));
+  }
+  const explodeBtn = document.querySelector('#btn-explode');
   const explosionSound = document.getElementById('explosionSound');
-  
   if (!explodingText) return;
 
-  // CSS PER ESPLOSIONE E PARTICELLE
-  const explosionCSS = `
-    @keyframes letterExplode {
-      0% {
-        transform: translate(0, 0) rotate(0deg) scale(1);
-        opacity: 1;
-        filter: blur(0px);
-      }
-      50% {
-        transform: translate(var(--explode-dx), var(--explode-dy)) rotate(var(--explode-rotate)) scale(1.2);
-        opacity: 0.8;
-        filter: blur(2px);
-      }
-      100% {
-        transform: translate(0, 0) rotate(0deg) scale(1);
-        opacity: 1;
-        filter: blur(0px);
-      }
-    }
-    
-    @keyframes pageShake {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-5px) rotate(-0.5deg); }
-      50% { transform: translateX(5px) rotate(0.5deg); }
-      75% { transform: translateX(-3px) rotate(-0.3deg); }
-    }
-    
-    .char {
+  // AGGIUNGI CSS FISSO PRIMA DI TUTTO
+  const explosionStyles = `
+    .explosion-char {
       display: inline-block;
-      transition: all 0.3s ease;
+      will-change: transform, opacity, filter;
     }
     
-    .exploding-active {
-      animation: pageShake 0.8s ease-in-out;
+    .exploding-text.boom-active .explosion-char {
+      animation: none !important; /* Disabilita animazioni CSS conflittuali */
     }
     
-    /* STILE PARTICELLE */
-    .explosion-particle {
+   .mega-shockwave {
+    position: fixed;
+    border-radius: 50%;
+    background: radial-gradient(circle, 
+        rgba(255,255,255,1) 0%, 
+        rgba(255,215,0,0.9) 15%, 
+        rgba(255,100,0,0.7) 30%, 
+        rgba(0,204,255,0.5) 50%,
+        transparent 70%
+    );
+    animation: megaShockwave 1.5s ease-out forwards;
+    z-index: 2147483601;
+    pointer-events: none;
+}
+
+@keyframes megaShockwave {
+    0% { 
+        transform: translate(-50%, -50%) scale(0.1); 
+        opacity: 1; 
+    }
+    100% { 
+        transform: translate(-50%, -50%) scale(25);  /* AUMENTA QUESTO VALORE! */
+        opacity: 0; 
+    }
+}
+    
+    .mega-particle {
       position: fixed;
-      pointer-events: none;
-      z-index: 214;
       border-radius: 50%;
-      animation: particleFly 1.5s ease-out forwards;
+      animation: megaParticleFly 2s ease-out forwards;
+      z-index: 2147483600;
+      pointer-events: none;
     }
     
-    @keyframes particleFly {
-      0% {
-        transform: translate(0, 0) scale(1) rotate(0deg);
-        opacity: 1;
-      }
-      80% {
-        opacity: 0.8;
-      }
-      100% {
-        transform: translate(var(--particle-dx), var(--particle-dy)) scale(0) rotate(360deg);
-        opacity: 0;
-      }
-    }
-    
-    .particle-glow {
-      box-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+    @keyframes megaParticleFly {
+      0% { transform: translate(0, 0) scale(1); opacity: 1; }
+      100% { transform: translate(var(--p-dx), var(--p-dy)) scale(0); opacity: 0; }
     }
   `;
   
-  // AGGIUNGI CSS AL DOCUMENTO
-  const style = document.createElement('style');
-  style.textContent = explosionCSS;
-  document.head.appendChild(style);
+  const styleSheet = document.createElement('style');
+  styleSheet.textContent = explosionStyles;
+  document.head.appendChild(styleSheet);
 
-  // FUNZIONE COLORI CASUALI
-  function getRandomColor() {
-    const colors = [
-      '#FF6B00', '#FF0000', '#00CCFF', '#B967FF', 
-      '#FFD700', '#00FF88', '#FF00FF', '#FFFFFF',
-      '#FF4500', '#00FFFF', '#FF1493', '#7CFC00'
-    ];
-    return colors[Math.floor(Math.random() * colors.length)];
+  const clean = s => (s||'')
+    .normalize('NFC')
+    .replace(/[\uFEFF\u200B-\u200D\u2060]/g, '')
+    .replace(/\uFFFD/g, '');
+
+  // PREPARAZIONE SEMPLIFICATA
+  function prepareExplosion() {
+    if (explodingText.__split) return;
+    const text = clean(explodingText.textContent);
+    explodingText.__originalText = text;
+    explodingText.classList.add('exploding-text');
+    explodingText.innerHTML = '';
+    
+    for (let i = 0; i < text.length; i++) {
+      const charSpan = document.createElement('span');
+      charSpan.className = 'explosion-char';
+      charSpan.textContent = text[i];
+      charSpan.style.setProperty('--index', i);
+      explodingText.appendChild(charSpan);
+    }
+    explodingText.__split = true;
   }
 
-  // CREA SCIAME DI PARTICELLE
-  function createParticleSwarm(element, particleCount = 50) {
+  // EFFETTI VISIVI SEMPLIFICATI
+  function createShockwave(element) {
+    const rect = element.getBoundingClientRect();
+    const shockwave = document.createElement('div');
+    shockwave.className = 'mega-shockwave';
+    shockwave.style.left = (rect.left + rect.width / 2) + 'px';
+    shockwave.style.top = (rect.top + rect.height / 2) + 'px';
+    shockwave.style.width = '90px';
+    shockwave.style.height = '90px';
+    document.body.appendChild(shockwave);
+    setTimeout(() => shockwave.remove(), 1500);
+  }
+
+  function createParticles(element) {
     const rect = element.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
     
-    for (let i = 0; i < particleCount; i++) {
+    for (let i = 0; i < 20; i++) {
       const particle = document.createElement('div');
-      particle.className = 'explosion-particle';
-      
-      // POSIZIONE INIZIALE
+      particle.className = 'mega-particle';
       particle.style.left = centerX + 'px';
       particle.style.top = centerY + 'px';
+      particle.style.setProperty('--p-dx', (Math.random() * 600 - 300) + 'px');
+      particle.style.setProperty('--p-dy', (Math.random() * 400 - 300) + 'px');
       
-      // DIREZIONE CASUALE
-      const angle = Math.random() * Math.PI * 2;
-      const distance = 50 + Math.random() * 200;
-      const dx = Math.cos(angle) * distance;
-      const dy = Math.sin(angle) * distance;
-      
-      particle.style.setProperty('--particle-dx', dx + 'px');
-      particle.style.setProperty('--particle-dy', dy + 'px');
-      
-      // DIMENSIONE E COLORE
-      const size = 2 + Math.random() * 8;
+      const size = 4 + Math.random() * 8;
       particle.style.width = size + 'px';
       particle.style.height = size + 'px';
-      particle.style.background = getRandomColor();
+      particle.style.background = ['#ff0000', '#ffd700', '#00ccff', '#b967ff'][i % 4];
       
-      // EFFETTO GLOW PER METÀ DELLE PARTICELLE
-      if (Math.random() > 0.5) {
-        particle.classList.add('particle-glow');
-      }
-      
-      // DURATA ANIMAZIONE VARIABILE
-      const duration = 1000 + Math.random() * 1000;
-      particle.style.animationDuration = duration + 'ms';
-      
-      // AGGIUNGI AL DOCUMENTO
       document.body.appendChild(particle);
-      
-      // RIMUOVI DOPO L'ANIMAZIONE
-      setTimeout(() => {
-        if (particle.parentNode) {
-          particle.parentNode.removeChild(particle);
-        }
-      }, duration + 100);
+      setTimeout(() => particle.remove(), 2000);
     }
   }
 
-  // CREA PARTICELLE A FORMA DI STELLA
-  function createStarParticles(element, count = 20) {
-    const rect = element.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    
-    for (let i = 0; i < count; i++) {
-      const star = document.createElement('div');
-      star.className = 'explosion-particle';
-      star.textContent = '✦';
-      star.style.fontSize = (10 + Math.random() * 20) + 'px';
-      star.style.color = getRandomColor();
-      star.style.background = 'transparent';
-      star.style.left = centerX + 'px';
-      star.style.top = centerY + 'px';
-      
-      const angle = (i / count) * Math.PI * 2;
-      const distance = 80 + Math.random() * 150;
-      const dx = Math.cos(angle) * distance;
-      const dy = Math.sin(angle) * distance;
-      
-      star.style.setProperty('--particle-dx', dx + 'px');
-      star.style.setProperty('--particle-dy', dy + 'px');
-      star.style.animationDuration = (1200 + Math.random() * 800) + 'ms';
-      
-      document.body.appendChild(star);
-      setTimeout(() => {
-        if (star.parentNode) star.parentNode.removeChild(star);
-      }, 2500);
-    }
-  }
+  // ANIMAZIONE PRINCIPALE CORRETTA
+  function explodeTarget(element) {
+    if (!element || element.__exploding) return;
+    element.__exploding = true;
 
-// FUNZIONE PRINCIPALE DI ESPLOSIONE
-
-  function triggerExplosion() {
-    if (explodingText.classList.contains('exploding')) return;
-
-    // SUONO ESPLOSIONE
+    // Audio
     if (explosionSound) {
       try {
         explosionSound.currentTime = 0;
         explosionSound.volume = 0.7;
-        explosionSound.play().catch(e => console.log('Audio non riprodotto'));
-      } catch(e) {}
+        explosionSound.play().catch(() => {});
+      } catch(_) {}
     }
 
-    // SCUOTI LA PAGINA
-    document.body.classList.add('exploding-active');
-    setTimeout(() => {
-      document.body.classList.remove('exploding-active');
-    }, 800);
+    // Reset stato visivo
+    element.classList.remove('boom-recomposing');
+    element.classList.add('boom-active');
+    element.style.border = '2px solid rgba(255,215,0,0.5)';
 
-    // 🔥 CREA SCIAME DI PARTICELLE
-    createParticleSwarm(explodingText, 60); // 60 particelle normali
-    createStarParticles(explodingText, 15); // 15 particelle a stella
+    // Effetti
+    createShockwave(element);
+    createParticles(element);
+
+    const spans = Array.from(element.querySelectorAll('.explosion-char'));
+    if (!spans.length) {
+      prepareExplosion();
+      return setTimeout(() => explodeTarget(element), 100);
+    }
+
+    let finished = 0;
     
-    // PARTICELLE ADDIZIONALI RITARDATE
-    setTimeout(() => {
-      createParticleSwarm(explodingText, 30); // Altro sciame dopo un po'
-    }, 200);
+    spans.forEach((span, index) => {
+      // RESET PREVENTIVO
+      span.style.transform = 'translate(0px, 0px) rotate(0deg)';
+      span.style.opacity = '1';
+      span.style.filter = 'blur(0px)';
+      
+      const dx = (Math.random() * 400 - 200);
+      const dy = (Math.random() * 300 - 250);
+      const rotation = (Math.random() * 360 - 180);
+      const delay = index * 15;
+      const duration = 800 + Math.random() * 400;
 
-    // ESPLODI OGNI CARATTERE
-    const chars = explodingText.querySelectorAll('.char');
-    let completed = 0;
-
-    chars.forEach((char, index) => {
-      const distance = 30 + Math.random() * 70;
-      const angle = Math.random() * Math.PI * 2;
-      const dx = Math.cos(angle) * distance;
-      const dy = Math.sin(angle) * distance;
-      const rotation = (Math.random() - 0.5) * 360;
-      
-      char.style.setProperty('--explode-dx', dx + 'px');
-      char.style.setProperty('--explode-dy', dy + 'px');
-      char.style.setProperty('--explode-rotate', rotation + 'deg');
-      
-      const delay = index * 40;
-      
-      const animation = char.animate([
-        {
-          transform: 'translate(0, 0) rotate(0deg) scale(1)',
+      // ANIMAZIONE USCITA - USA Web Animations API
+      const exitKeyframes = [
+        { 
+          transform: 'translate(0px, 0px) rotate(0deg)',
           opacity: 1,
-          filter: 'blur(0px)',
-          color: 'currentColor'
+          filter: 'blur(0px)'
         },
-        {
-          transform: `translate(${dx}px, ${dy}px) rotate(${rotation}deg) scale(1.3)`,
-          opacity: 0.7,
-          filter: 'blur(3px)',
-          color: getRandomColor()
-        },
-        {
-          transform: `translate(${dx * 0.3}px, ${dy * 0.3}px) rotate(${rotation * 0.3}deg) scale(1.1)`,
-          opacity: 0.9,
-          filter: 'blur(1px)',
-          color: 'currentColor'
-        },
-        {
-          transform: 'translate(0, 0) rotate(0deg) scale(1)',
-          opacity: 1,
-          filter: 'blur(0px)',
-          color: 'currentColor'
+        { 
+          transform: `translate(${dx}px, ${dy}px) rotate(${rotation}deg)`,
+          opacity: 0,
+          filter: 'blur(8px)'
         }
-      ], {
-        duration: 800,
+      ];
+
+      const exitAnimation = span.animate(exitKeyframes, {
+        duration: duration,
         delay: delay,
         easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
         fill: 'forwards'
       });
 
-      animation.onfinish = () => {
-        completed++;
-        char.style.transform = '';
-        char.style.opacity = '';
-        char.style.filter = '';
-        char.style.color = '';
-        
-        if (completed === chars.length) {
-          explodingText.classList.remove('exploding');
-          
-          // PARTICELLE FINALI DI CHIUSURA
-          setTimeout(() => {
-            createParticleSwarm(explodingText, 20);
-          }, 100);
-        }
+      // ANIMAZIONE RIENTRO - ATTESA ESPLICITA
+      exitAnimation.onfinish = () => {
+        setTimeout(() => {
+          const returnKeyframes = [
+            { 
+              transform: `translate(${dx}px, ${dy}px) rotate(${rotation}deg)`,
+              opacity: 0,
+              filter: 'blur(8px)'
+            },
+            { 
+              transform: 'translate(0px, 0px) rotate(0deg)',
+              opacity: 1,
+              filter: 'blur(0px)'
+            }
+          ];
+
+          const returnAnimation = span.animate(returnKeyframes, {
+            duration: duration * 0.8,
+            easing: 'cubic-bezier(0.2, 0.8, 0.4, 1.2)',
+            fill: 'forwards'
+          });
+
+          returnAnimation.onfinish = () => {
+            // RESET FINALE ESPLICITO
+            span.style.transform = 'translate(0px, 0px) rotate(0deg)';
+            span.style.opacity = '1';
+            span.style.filter = 'blur(0px)';
+            
+            finished++;
+            
+            if (finished === spans.length) {
+              // PULIZIA FINALE
+              element.classList.remove('boom-active');
+              element.classList.add('boom-recomposing');
+              
+              setTimeout(() => {
+                element.classList.remove('boom-recomposing');
+                element.style.border = '';
+                element.__exploding = false;
+              }, 300);
+            }
+          };
+        }, 300); // Ritardo fisso per il rientro
       };
     });
-
-    explodingText.classList.add('exploding');
-    explodingText.style.transition = 'all 0.3s ease';
-    explodingText.style.transform = 'scale(1.05)';
-    explodingText.style.filter = 'brightness(1.3)';
-    
-    setTimeout(() => {
-      explodingText.style.transform = '';
-      explodingText.style.filter = '';
-    }, 500);
   }
+
+  // INIZIALIZZAZIONE
+  prepareExplosion();
 
   // EVENT LISTENERS
   if (explodeBtn) {
-    explodeBtn.addEventListener('click', function(e) {
+    explodeBtn.addEventListener('click', function(e){
       e.preventDefault();
-      triggerExplosion();
+      explodeTarget(explodingText);
     });
   }
 
-  explodingText.addEventListener('click', function(e) {
-    e.preventDefault();
-    triggerExplosion();
+  explodingText.addEventListener('click', function(){
+    explodeTarget(this);
   });
 
-  console.log('💥💫 Sistema esplosione + particelle pronto!');
+  console.log('✅ Sistema esplosione caricato - Lettere si ricomporranno!');
 });
 
-// TEST AUTOMATICO
-setTimeout(() => {
-  console.log('🔍 Test sistema particelle...');
-  const testChars = document.querySelectorAll('.char');
-  console.log('Caratteri pronti:', testChars.length);
-  
-  // Test visivo particelle
-  setTimeout(() => {
-    console.log('✅ Sistema particelle caricato - Pronto per esplodere!');
-  }, 500);
-}, 1000);
+// Helper semplificato
+function softPlay(audio, volume, delay) {
+  if (!audio) return Promise.reject('Audio element not found');
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      try {
+        audio.volume = volume || 1.0;
+        audio.muted = false;
+        audio.play().then(resolve).catch(resolve);
+      } catch (e) { resolve(); }
+    }, delay || 0);
+  });
+}
 
+// FUNZIONE TOPRELATED COMPLETATA
+function topRelated(query, exclude, limit = 3) {
+    const q = norm(query);
+    if (!q) return [];
+    
+    const scored = INDEX
+        .map(it => ({ it, s: score(q, it) }))
+        .filter(x => x.s > 0 && !exclude.has(x.it.url))
+        .sort((a, b) => b.s - a.s)
+        .slice(0, limit)
+        .map(x => x.it);
+    
+    return scored;
+}
 
-// ===== Next Block =====
+(function(){
+  const motto = document.getElementById('exploding');
+  if(!motto) return;
+  let textEl = motto.querySelector('.m-text') || motto;
+  if(!textEl.querySelector('.char')){
+    const txt = textEl.textContent;
+    textEl.textContent = '';
+    for(const ch of [...txt]){
+      const s = document.createElement('span');
+      s.className = 'char';
+      s.textContent = ch === ' ' ? ' ' : ch;
+      textEl.appendChild(s);
+    }
+  }
 
+  if(!document.querySelector('.fx-layer')){
+    const layer = document.createElement('div');
+    layer.className = 'fx-layer';
+    layer.innerHTML = '<div class="fx-flash"></div><div class="fx-shock"></div><div class="fx-smoke"></div><canvas class="fx-embers"></canvas>';
+    document.body.appendChild(layer);
+  }
+  const layer = document.querySelector('.fx-layer');
+  const flash = layer.querySelector('.fx-flash');
+  const shock = layer.querySelector('.fx-shock');
+  const smoke = layer.querySelector('.fx-smoke');
+  const canvas = layer.querySelector('.fx-embers');
+  const ctx = canvas.getContext('2d');
+  function resize(){ canvas.width = innerWidth; canvas.height = innerHeight; }
+  resize(); addEventListener('resize', resize);
+
+  const prefersReduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let animating = false;
+
+  function centerOf(el){
+    const r = el.getBoundingClientRect();
+    return { x: r.left + r.width/2, y: r.top + r.height/2 };
+  }
+
+  let sparks = [];
+  function seedSparks(x,y,count){
+    for(let i=0;i<count;i++){
+      const a = Math.random()*Math.PI*2;
+      const sp = 2 + Math.random()*6;
+      sparks.push({ x,y, vx: Math.cos(a)*sp, vy: Math.sin(a)*sp - (Math.random()*2), life: 40+Math.random()*50, age: 0, r: 1+Math.random()*2 });
+    }
+  }
+  function tick(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    for(let i=sparks.length-1;i>=0;i--){
+      const s=sparks[i];
+      s.age++;
+      s.vy += 0.06; s.vx *= 0.99; s.vy *= 0.995;
+      s.x += s.vx; s.y += s.vy;
+      const t = 1 - (s.age/s.life);
+      if(t<=0){ sparks.splice(i,1); continue; }
+      ctx.globalAlpha = Math.max(0,t);
+      const g = ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r*3);
+      g.addColorStop(0,'rgba(255,240,180,1)');
+      g.addColorStop(1,'rgba(255,120,0,0)');
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fill();
+    }
+    if(animating) requestAnimationFrame(tick);
+  }
+
+  function shake(intensity, duration){
+    const start = performance.now();
+    (function step(now){
+      const t = (now-start)/duration;
+      if(t>=1){ document.body.style.transform=''; return; }
+      const n = 1 - t;
+      const dx = (Math.random()*2-1)*intensity*n;
+      const dy = (Math.random()*2-1)*intensity*n;
+      document.body.style.transform = 'translate('+dx+'px,'+dy+'px)';
+      requestAnimationFrame(step);
+    })(start);
+  }
+
+  function explode(){
+    if(prefersReduce || animating) return;
+    animating = true;
+
+    const chars = [...textEl.querySelectorAll('.char')];
+    motto.classList.add('preglow');
+    flash.style.opacity = 1;
+    setTimeout(()=> flash.style.opacity = 0, 120);
+
+    shock.style.opacity = 1; shock.style.transform = 'translate(-50%,-50%) scale(.25)';
+    smoke.style.opacity = .25; smoke.style.transform = 'translate(-50%,-50%) scale(.4)';
+    const start = performance.now(), DUR=680;
+    (function loop(now){
+      const t = Math.min(1,(now-start)/DUR);
+      const ease = t<.5 ? 2*t*t : -1+(4-2*t)*t;
+      shock.style.transform = 'translate(-50%,-50%) scale('+(.25 + ease*2.0)+')';
+      shock.style.opacity = String(1 - t);
+      smoke.style.transform = 'translate(-50%,-50%) scale('+(.4 + ease*1.4)+')';
+      smoke.style.opacity = String(.25 * (1 - t));
+      if(t<1) requestAnimationFrame(loop);
+    })(start);
+
+    const {x:cx,y:cy}=centerOf(textEl);
+    chars.forEach((ch)=>{
+      const b = ch.getBoundingClientRect();
+      const ox=b.left+b.width/2, oy=b.top+b.height/2;
+      const dx=ox-cx, dy=oy-cy;
+      const dist=Math.hypot(dx,dy)||1;
+      const dirx=dx/dist, diry=dy/dist;
+      const power = 90 + Math.random()*160;
+      const rot = (Math.random()*720-360);
+      const delay = (dist/600)*180;
+      ch.style.willChange='transform,opacity';
+      setTimeout(()=>{
+        ch.animate([
+          { transform:'translate3d(0,0,0) rotate(0deg)', opacity:1 },
+          { transform:'translate3d('+(dirx*power)+'px,'+(diry*power)+'px,0) rotate('+rot+'deg)', opacity:0 }
+        ], { duration: 620 + Math.random()*320, easing:'cubic-bezier(.2,.9,.2,1)', fill:'forwards' });
+      }, delay);
+    });
+
+    const c = centerOf(textEl);
+    seedSparks(c.x,c.y,110);
+    tick();
+    shake(4,380);
+
+    setTimeout(()=>{ motto.classList.remove('preglow'); animating=false; }, 1200);
+  }
+
+  // Trigger: se esiste un bottone con id btn-explode
+  const btn = document.getElementById('btn-explode');
+  if(btn) btn.addEventListener('click', explode);
+
+  // Esporta API globale minimale:
+  window.EchiExplode = explode;
+})();
 
   // === PULSANTE TORNA SU ===
 (function(){
@@ -3077,10 +1841,6 @@ setTimeout(() => {
     toggleBackToTop();
 })();
 
-
-// ===== Next Block =====
-
-
 // RICERCA SICURA CON CONTROLLI
 document.addEventListener('DOMContentLoaded', function() {
     try {
@@ -3103,9 +1863,208 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+(function(){
+  try{
+    window.showSearchPanelOnResults = function(panelSel, items){
+      var panel = document.querySelector(panelSel || '#search-panel, #searchPanel, .search-panel');
+      if(!panel) return;
+      if(items && items.length){ panel.style.display = 'block'; panel.removeAttribute('aria-hidden'); }
+    };
+  }catch(_){}
+})();
 
-// ===== Next Block =====
 
+</body> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/ScrollMagic.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/plugins/animation.gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tippy.js/6.3.7/tippy-bundle.umd.min.js"></script>
+<script src="script.js"></script>
+<script>
+// === ESPLOSIONE CHE SCUOTE LA PAGINA ===
+function createPageShakingExplosion() {
+    // Crea l'effetto visivo dell'esplosione
+    const explosionOverlay = document.createElement('div');
+    explosionOverlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at center, 
+            rgba(255,255,255,0.8) 0%,
+            rgba(255,215,0,0.6) 20%,
+            rgba(255,100,0,0.4) 40%,
+            rgba(255,0,0,0.2) 60%,
+            transparent 80%
+        );
+        pointer-events: none;
+        z-index: 2147483600;
+        opacity: 0;
+        animation: explosionFlash 0.8s ease-out;
+    `;
+    
+    // Aggiungi i keyframes per l'esplosione
+    const explosionStyle = document.createElement('style');
+    explosionStyle.textContent = `
+        @keyframes explosionFlash {
+            0% { 
+                opacity: 0; 
+                transform: scale(0.1);
+            }
+            20% { 
+                opacity: 1; 
+                transform: scale(1.2);
+            }
+            40% { 
+                opacity: 0.8; 
+                transform: scale(1.5);
+            }
+            100% { 
+                opacity: 0; 
+                transform: scale(2);
+            }
+        }
+        
+        @keyframes shakePage {
+            0%, 100% { transform: translateX(0) translateY(0) rotate(0); }
+            10% { transform: translateX(-10px) translateY(-5px) rotate(-1deg); }
+            20% { transform: translateX(8px) translateY(4px) rotate(1deg); }
+            30% { transform: translateX(-6px) translateY(-3px) rotate(-0.5deg); }
+            40% { transform: translateX(4px) translateY(2px) rotate(0.5deg); }
+            50% { transform: translateX(-2px) translateY(-1px) rotate(-0.25deg); }
+            60% { transform: translateX(1px) translateY(0.5px) rotate(0.25deg); }
+        }
+        
+        .page-shake {
+            animation: shakePage 0.8s ease-out;
+        }
+    `;
+    
+    document.head.appendChild(explosionStyle);
+    document.body.appendChild(explosionOverlay);
+    
+    // Applica l'effetto di scuotimento a tutto il body
+    document.body.classList.add('page-shake');
+    
+    // Riproduci il suono dell'esplosione se disponibile
+    const explosionSound = document.getElementById('explosionSound');
+    if (explosionSound) {
+        explosionSound.currentTime = 0;
+        explosionSound.volume = 0.7;
+        explosionSound.play().catch(e => console.log('Audio non riprodotto:', e));
+    }
+    
+    // Crea particelle esplosive aggiuntive
+    createExplosionParticles();
+    
+    // Rimuovi gli effetti dopo l'animazione
+    setTimeout(() => {
+        if (explosionOverlay.parentNode) {
+            explosionOverlay.parentNode.removeChild(explosionOverlay);
+        }
+        document.body.classList.remove('page-shake');
+        if (explosionStyle.parentNode) {
+            explosionStyle.parentNode.removeChild(explosionStyle);
+        }
+    }, 800);
+}
+
+// Crea particelle esplosive che si diffondono sullo schermo
+function createExplosionParticles() {
+    const colors = ['#FFD700', '#FF6B00', '#FF0000', '#FFFFFF', '#00CCFF'];
+    const particleCount = 30;
+    
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        const size = Math.random() * 15 + 5;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        
+        particle.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: ${size}px;
+            height: ${size}px;
+            background: ${color};
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 2147483601;
+            opacity: 0.8;
+            box-shadow: 0 0 10px ${color};
+        `;
+        
+        document.body.appendChild(particle);
+        
+        // Animazione casuale per ogni particella
+        const angle = Math.random() * Math.PI * 2;
+        const distance = 100 + Math.random() * 200;
+        const duration = 0.5 + Math.random() * 0.5;
+        
+        particle.animate([
+            {
+                transform: 'translate(-50%, -50%) scale(1)',
+                opacity: 0.8
+            },
+            {
+                transform: `translate(${Math.cos(angle) * distance - 50}%, ${Math.sin(angle) * distance - 50}%) scale(0)`,
+                opacity: 0
+            }
+        ], {
+            duration: duration * 1000,
+            easing: 'ease-out',
+            fill: 'forwards'
+        });
+        
+        // Rimuovi la particella dopo l'animazione
+        setTimeout(() => {
+            if (particle.parentNode) {
+                particle.parentNode.removeChild(particle);
+            }
+        }, duration * 1000);
+    }
+}
+
+// === ATTIVA L'ESPLOSIONE CON IL PULSANTE ESISTENTE ===
+document.addEventListener('DOMContentLoaded', function() {
+    const explodeBtn = document.getElementById('btn-explode');
+    if (explodeBtn) {
+        explodeBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            createPageShakingExplosion();
+        });
+    }
+    
+    // Aggiungi anche l'esplosione al click sul motto
+    const explodingText = document.getElementById('exploding');
+    if (explodingText) {
+        explodingText.addEventListener('click', function() {
+            createPageShakingExplosion();
+        });
+    }
+});
+
+// === ESPLOSIONE AUTOMATICA AL CARICAMENTO (OPZIONALE) ===
+// Rimuovi il commento se vuoi l'esplosione automatica all'avvio
+/*
+window.addEventListener('load', function() {
+    setTimeout(() => {
+        createPageShakingExplosion();
+    }, 2000);
+});
+*/
+
+(function(){
+  try{
+    window.showSearchPanelOnResults = function(panelSel, items){
+      var panel = document.querySelector(panelSel || '#search-panel, #searchPanel, .search-panel');
+      if(!panel) return;
+      if(items && items.length){ panel.style.display = 'block'; panel.removeAttribute('aria-hidden'); }
+    };
+  }catch(_){}
+})();
 
 (function(){
   if (!('serviceWorker' in navigator)) return;
@@ -3116,478 +2075,36 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 })();
 
+(function () {
+  // 1) Se siamo su /index.html ⇒ sostituisci in barra con /
+  if (location.pathname.toLowerCase() === '/index.html') {
+    const clean = '/' + (location.search || '') + (location.hash || '');
+    history.replaceState(null, '', clean);
+  }
 
-// ===== Next Block =====
-
-
-// === FUNZIONE EFFETTO LAMPOSCOOP SPETTACOLARE ===
-function createFlashEffect(intensity = 'normal') {
-    // Crea o riutilizza l'overlay del flash
-    let flashOverlay = document.getElementById('flash-overlay');
-    if (!flashOverlay) {
-        flashOverlay = document.createElement('div');
-        flashOverlay.id = 'flash-overlay';
-        document.body.appendChild(flashOverlay);
+  // 2) Rewriter dei link: se un <a> punta a index.html, trasformalo in /
+  function rewriteAnchor(a) {
+    const href = a.getAttribute('href') || '';
+    if (/(^|\/)index\.html(\?|#|$)/i.test(href)) {
+      // conserva query e hash
+      const u = new URL(href, location.origin);
+      a.setAttribute('href', '/' + (u.search || '') + (u.hash || ''));
     }
-    
-    // Imposta l'intensità
-    if (intensity === 'intense') {
-        flashOverlay.classList.add('intense');
-    } else {
-        flashOverlay.classList.remove('intense');
+  }
+
+  // iniziale
+  document.querySelectorAll('a[href]').forEach(rewriteAnchor);
+
+  // 3) Intercetta i click (anche su link generati dinamicamente) e forza /
+  document.addEventListener('click', function (e) {
+    const a = e.target.closest('a[href]');
+    if (!a) return;
+    const href = a.getAttribute('href') || '';
+    if (/(^|\/)index\.html(\?|#|$)/i.test(href)) {
+      e.preventDefault();
+      const u = new URL(a.href, location.origin);
+      // naviga a "/" preservando query e hash
+      location.assign('/' + (u.search || '') + (u.hash || ''));
     }
-    
-    // Animazione del flash
-    flashOverlay.style.opacity = '1';
-    
-    // Rimuovi il flash dopo l'animazione
-    setTimeout(() => {
-        flashOverlay.style.opacity = '0';
-    }, 150);
-    
-    // Rimuovi completamente dopo la transizione
-    setTimeout(() => {
-        if (flashOverlay.parentNode && flashOverlay.style.opacity === '0') {
-            flashOverlay.remove();
-        }
-    }, 500);
-}
-
-// === FUNZIONE SCOSSA PAGINA ===
-function shakePage() {
-    document.documentElement.classList.add('page-shake');
-    setTimeout(() => {
-        document.documentElement.classList.remove('page-shake');
-    }, 800);
-}
-
-// === MODIFICA LA FUNZIONE ESPLOSIONE ESISTENTE ===
-function enhancedExplosion() {
-    // 1. FLASH LUMINOSO (prima di tutto)
-    createFlashEffect('intense');
-    
-    // 2. SCOSSA PAGINA 
-    shakePage();
-    
-    // 3. ESPLOSIONE PARTICELARE (la tua funzione esistente)
-    createExplosionParticles();
-    
-    // 4. SUONO ESPLOSIONE (se presente)
-    const explosionSound = document.getElementById('explosionSound');
-    if (explosionSound) {
-        try {
-            explosionSound.currentTime = 0;
-            explosionSound.volume = 0.7;
-            explosionSound.play().catch(() => {});
-        } catch (_) {}
-    }
-}
-
-// === AGGIORNA IL BOTTONE ESPLODI ===
-document.addEventListener('DOMContentLoaded', function() {
-    const explodeBtn = document.getElementById('btn-explode');
-    if (explodeBtn) {
-        // Sostituisci l'evento onclick esistente
-        explodeBtn.onclick = function(e) {
-            e.preventDefault();
-            enhancedExplosion();
-        };
-    }
-    
-    // Anche per il motto "Sustine et abstine"
-    const explodingText = document.getElementById('exploding');
-    if (explodingText) {
-        explodingText.addEventListener('click', function(e) {
-            e.preventDefault();
-            enhancedExplosion();
-        });
-    }
-});
-
-// === AGGIORNA LA TUA FUNZIONE createExplosionParticles PER COORDINAZIONE ===
-// (Mantieni la tua funzione esistente, ma assicurati che venga chiamata da enhancedExplosion)
-
-
-// ===== Next Block =====
-
-
-// === FUNZIONE EFFETTO LAMPOSCOOP ===
-function createFlashEffect(intensity = 'normal') {
-    let flashOverlay = document.getElementById('flash-overlay');
-    if (!flashOverlay) {
-        flashOverlay = document.createElement('div');
-        flashOverlay.id = 'flash-overlay';
-        document.body.appendChild(flashOverlay);
-    }
-    
-    if (intensity === 'intense') {
-        flashOverlay.classList.add('intense');
-    } else {
-        flashOverlay.classList.remove('intense');
-    }
-    
-    // Flash immediato
-    flashOverlay.style.opacity = '1';
-    
-    setTimeout(() => {
-        flashOverlay.style.opacity = '0';
-    }, 100);
-    
-    setTimeout(() => {
-        if (flashOverlay.parentNode && flashOverlay.style.opacity === '0') {
-            flashOverlay.remove();
-        }
-    }, 500);
-}
-
-// === FUNZIONE SCOSSA PAGINA ===
-function shakePage() {
-    document.documentElement.classList.add('page-shake');
-    setTimeout(() => {
-        document.documentElement.classList.remove('page-shake');
-    }, 600);
-}
-
-// === FUNZIONE RIPPLE MULTICOLORE ===
-function createRippleEffect() {
-    const colors = ['', 'ripple-color-1', 'ripple-color-2', 'ripple-color-3'];
-    const sizes = [50, 80, 120, 160];
-    
-    colors.forEach((colorClass, index) => {
-        setTimeout(() => {
-            const ripple = document.createElement('div');
-            ripple.className = `explosion-ripple ${colorClass}`;
-            ripple.style.width = `${sizes[index]}px`;
-            ripple.style.height = `${sizes[index]}px`;
-            document.body.appendChild(ripple);
-            
-            // Animazione ripple
-            const animation = ripple.animate([
-                { 
-                    transform: 'translate(-50%, -50%) scale(0.5)', 
-                    opacity: 0.9,
-                    borderWidth: '4px'
-                },
-                { 
-                    transform: 'translate(-50%, -50%) scale(3)', 
-                    opacity: 0,
-                    borderWidth: '1px'
-                }
-            ], {
-                duration: 1200,
-                easing: 'cubic-bezier(0.2, 0.8, 0.4, 1)',
-                fill: 'forwards'
-            });
-            
-            animation.onfinish = () => {
-                if (ripple.parentNode) {
-                    ripple.parentNode.removeChild(ripple);
-                }
-            };
-        }, index * 150); // Ripple sequenziali
-    });
-}
-
-// === FUNZIONE AURORA BOREALE ===
-function createAuroraEffect() {
-    const aurora = document.createElement('div');
-    aurora.id = 'aurora-effect';
-    document.body.appendChild(aurora);
-    
-    // Appare gradualmente
-    setTimeout(() => {
-        aurora.style.opacity = '0.8';
-    }, 50);
-    
-    // Scompare gradualmente con effetto onda
-    setTimeout(() => {
-        aurora.style.opacity = '0.4';
-    }, 300);
-    
-    setTimeout(() => {
-        aurora.style.opacity = '0.2';
-    }, 500);
-    
-    setTimeout(() => {
-        aurora.style.opacity = '0';
-        setTimeout(() => {
-            if (aurora.parentNode) {
-                aurora.parentNode.removeChild(aurora);
-            }
-        }, 800);
-    }, 700);
-}
-
-// === FUNZIONE ESPLOSIONE COMPLETA ===
-function enhancedExplosion() {
-    console.log('💥 Avvio esplosione spettacolare!');
-    
-    // SEQUENZA TIMING PERFETTA:
-    
-    // T+0ms: Flash principale + Scossa pagina
-    createFlashEffect('intense');
-    shakePage();
-    
-    // T+50ms: Primo ripple bianco
-    setTimeout(() => {
-        createRippleEffect();
-    }, 50);
-    
-    // T+100ms: Aurora boreale
-    setTimeout(() => {
-        createAuroraEffect();
-    }, 100);
-    
-    // T+200ms: Flash secondario più debole
-    setTimeout(() => {
-        createFlashEffect('normal');
-    }, 200);
-    
-    // T+300ms: Esplosione particelle (la tua funzione esistente)
-    setTimeout(() => {
-        if (typeof createExplosionParticles === 'function') {
-            createExplosionParticles();
-        }
-    }, 300);
-    
-    // SUONO ESPLOSIONE
-    const explosionSound = document.getElementById('explosionSound');
-    if (explosionSound) {
-        try {
-            explosionSound.currentTime = 0;
-            explosionSound.volume = 0.8;
-            explosionSound.play().catch(() => {});
-        } catch (_) {}
-    }
-}
-
-// === INIZIALIZZAZIONE ===
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('🎇 Sistema esplosione caricato!');
-    
-    // Bottone Esplodi
-    const explodeBtn = document.getElementById('btn-explode');
-    if (explodeBtn) {
-        explodeBtn.onclick = function(e) {
-            e.preventDefault();
-            enhancedExplosion();
-        };
-    }
-    
-    // Testo "Sustine et abstine"
-    const explodingText = document.getElementById('exploding');
-    if (explodingText) {
-        explodingText.addEventListener('click', function(e) {
-            e.preventDefault();
-            enhancedExplosion();
-        });
-    }
-});
-
-// === FUNZIONE DI DEBUG (opzionale) ===
-function debugExplosion() {
-    console.log('🔍 Debug esplosione:');
-    console.log('- Flash overlay:', document.getElementById('flash-overlay'));
-    console.log('- Ripple elements:', document.querySelectorAll('.explosion-ripple').length);
-    console.log('- Aurora effect:', document.getElementById('aurora-effect'));
-    console.log('- Page shake class:', document.documentElement.classList.contains('page-shake'));
-}
-
-// Per testare, puoi chiamare debugExplosion() nella console
-
-
-// ===== Next Block =====
-
-
-// === FUNZIONE RIPPLE SUPER INTENSA ===
-function createIntenseRippleEffect() {
-    const rippleConfigs = [
-        {
-            class: 'ripple-intense-1 ripple-animation-fast',
-            size: 60,
-            delay: 0
-        },
-        {
-            class: 'ripple-intense-2 ripple-animation-fast',
-            size: 100,
-            delay: 50
-        },
-        {
-            class: 'ripple-intense-3 ripple-animation-medium',
-            size: 150,
-            delay: 100
-        },
-        {
-            class: 'ripple-intense-4 ripple-animation-medium',
-            size: 200,
-            delay: 150
-        },
-        {
-            class: 'ripple-intense-5 ripple-animation-slow',
-            size: 250,
-            delay: 200
-        },
-        {
-            class: 'ripple-intense-1 ripple-animation-huge',
-            size: 300,
-            delay: 250
-        },
-        {
-            class: 'ripple-intense-2 ripple-animation-huge',
-            size: 400,
-            delay: 300
-        },
-        {
-            class: 'ripple-intense-3 ripple-animation-huge',
-            size: 500,
-            delay: 350
-        }
-    ];
-
-    rippleConfigs.forEach((config, index) => {
-        setTimeout(() => {
-            const ripple = document.createElement('div');
-            ripple.className = `explosion-ripple ${config.class}`;
-            ripple.style.width = `${config.size}px`;
-            ripple.style.height = `${config.size}px`;
-            
-            // Aggiungi un po' di variazione casuale alla posizione
-            const randomX = (Math.random() - 0.5) * 20;
-            const randomY = (Math.random() - 0.5) * 15;
-            ripple.style.transform = `translate(calc(-50% + ${randomX}px), calc(-50% + ${randomY}px))`;
-            
-            document.body.appendChild(ripple);
-
-            // Rimuovi dopo l'animazione
-            setTimeout(() => {
-                if (ripple.parentNode) {
-                    ripple.parentNode.removeChild(ripple);
-                }
-            }, 3000);
-
-        }, config.delay);
-    });
-}
-
-// === FUNZIONE ESPLOSIONE MEGA INTENSA ===
-function megaExplosion() {
-    console.log('💥💥💥 MEGA ESPLOSIONE ATTIVATA!');
-    
-    // SEQUENZA IPER-INTENSA:
-    
-    // T+0ms: Flash nucleare + Scossa pagina potente
-    createFlashEffect('intense');
-    shakePage();
-    
-    // T+20ms: Primi ripple esplosivi
-    setTimeout(() => {
-        createIntenseRippleEffect();
-    }, 20);
-    
-    // T+50ms: Aurora boreale super colorata
-    setTimeout(() => {
-        createAuroraEffect();
-    }, 50);
-    
-    // T+100ms: Secondo flash
-    setTimeout(() => {
-        createFlashEffect('normal');
-    }, 100);
-    
-    // T+200ms: Terzo flash (debole)
-    setTimeout(() => {
-        createFlashEffect('normal');
-    }, 200);
-    
-    // T+300ms: Ripple aggiuntivi casuali
-    setTimeout(() => {
-        createRandomRipples();
-    }, 300);
-    
-    // T+400ms: Esplosione particelle
-    setTimeout(() => {
-        if (typeof createExplosionParticles === 'function') {
-            createExplosionParticles();
-        }
-    }, 400);
-    
-    // SUONO ESPLOSIONE MASSIMA
-    const explosionSound = document.getElementById('explosionSound');
-    if (explosionSound) {
-        try {
-            explosionSound.currentTime = 0;
-            explosionSound.volume = 1.0;
-            explosionSound.play().catch(() => {});
-        } catch (_) {}
-    }
-}
-
-// === RIPPLE RANDOM AGGIUNTIVI ===
-function createRandomRipples() {
-    for (let i = 0; i < 6; i++) {
-        setTimeout(() => {
-            const randomX = 30 + Math.random() * 40;
-            const randomY = 30 + Math.random() * 40;
-            const randomSize = 30 + Math.random() * 100;
-            const randomColor = Math.floor(Math.random() * 5) + 1;
-            
-            const ripple = document.createElement('div');
-            ripple.className = `explosion-ripple ripple-intense-${randomColor} ripple-animation-fast`;
-            ripple.style.width = `${randomSize}px`;
-            ripple.style.height = `${randomSize}px`;
-            ripple.style.left = `${randomX}%`;
-            ripple.style.top = `${randomY}%`;
-            ripple.style.transform = 'translate(-50%, -50%)';
-            
-            document.body.appendChild(ripple);
-
-            setTimeout(() => {
-                if (ripple.parentNode) {
-                    ripple.parentNode.removeChild(ripple);
-                }
-            }, 2000);
-            
-        }, i * 80);
-    }
-}
-
-// === AGGIORNA LA FUNZIONE PRINCIPALE ===
-function enhancedExplosion() {
-    // Usa la versione MEGA per massima intensità
-    megaExplosion();
-}
-
-// === SCOSSA PAGINA PIÙ FORTE ===
-function shakePage() {
-    // Aggiungi una classe più intensa
-    document.documentElement.classList.add('page-shake');
-    
-    // Rimuovi dopo l'animazione
-    setTimeout(() => {
-        document.documentElement.classList.remove('page-shake');
-    }, 800);
-}
-
-// Aggiorna il CSS della scossa per renderla più intensa
-const intenseShakeCSS = `
-.page-shake {
-    animation: pageShake 0.8s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-}
-
-@keyframes pageShake {
-    0%, 100% { transform: translateX(0) translateY(0) rotate(0deg) scale(1); }
-    10% { transform: translateX(-15px) translateY(-8px) rotate(-1.5deg) scale(1.03); }
-    20% { transform: translateX(12px) translateY(6px) rotate(1.2deg) scale(0.97); }
-    30% { transform: translateX(-10px) translateY(-4px) rotate(-0.8deg) scale(1.02); }
-    40% { transform: translateX(8px) translateY(2px) rotate(0.6deg) scale(0.985); }
-    50% { transform: translateX(-6px) translateY(-1px) rotate(-0.3deg) scale(1.01); }
-    60% { transform: translateX(4px) translateY(0px) rotate(0.2deg) scale(0.995); }
-    70%, 100% { transform: translateX(0) translateY(0) rotate(0deg) scale(1); }
-}
-`;
-
-// Inietta il CSS della scossa intensa
-const style = document.createElement('style');
-style.textContent = intenseShakeCSS;
-document.head.appendChild(style);
-
+  }, { capture: true });
+})();
