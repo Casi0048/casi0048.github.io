@@ -1557,6 +1557,26 @@ window.googleTranslateElementInit = function(){
 #audio-player input[type="range"]:hover::-webkit-slider-thumb{
   box-shadow: 0 0 10px rgba(255,215,0,.6);
 }
+  /* Per il visualizzatore velocità */
+.speed-readout {
+    display: inline-block;
+    min-width: 3.5ch;
+    margin-left: .6rem;
+    padding: .15rem .4rem;
+    border-radius: .5rem;
+    font-variant-numeric: tabular-nums;
+    font-size: .9rem;
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(212,175,55,.55);
+}
+
+/* Per il fill dinamico dello slider */
+#slider-speed {
+    background: linear-gradient(90deg, 
+        rgba(255,215,0,.85) var(--fill, 0%), 
+        rgba(255,255,255,.14) var(--fill, 0%)
+    );
+}
 </style>
 <style id="range-dynamic-fill">
 /* === Dynamic fill base (applies to both #volume and #slider-speed) === */
@@ -8660,6 +8680,203 @@ window.addEventListener('load', function() {
   }, { capture: true });
 })();
 </script>
+<script>
+  // === SLIDER VERTICALE MIGLIORATO - VERSIONE OTTIMIZZATA ===
+(function(){
+    const sliderInner = document.getElementById('sliderInner');
+    const toggleBtn = document.getElementById('slider-toggle');
+    const invertBtn = document.getElementById('slider-invert');
+    const speedSlider = document.getElementById('slider-speed');
+    const speedReadout = document.getElementById('speed-readout');
 
+    if (!sliderInner) return;
+
+    // Configurazione
+    let config = {
+        position: 0,
+        speed: 0.8,
+        direction: 1,
+        isRunning: true,
+        maxSpeed: 2.5,
+        minSpeed: 0.1,
+        acceleration: 0.15,
+        smoothTransition: true
+    };
+
+    // Elementi dello slider
+    const slides = sliderInner.querySelectorAll('.slide-vertical');
+    const totalSlides = slides.length;
+    
+    if (totalSlides === 0) return;
+
+    // Calcola altezza totale
+    function calculateTotalHeight() {
+        return sliderInner.scrollHeight - sliderInner.clientHeight;
+    }
+
+    // Aggiorna posizione con transizione fluida
+    function updatePosition() {
+        if (config.smoothTransition) {
+            sliderInner.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+        }
+        sliderInner.style.transform = `translateY(${-config.position}px)`;
+    }
+
+    // Animazione principale
+    function animate() {
+        if (!config.isRunning) {
+            requestAnimationFrame(animate);
+            return;
+        }
+
+        config.position += config.direction * config.speed;
+        const totalHeight = calculateTotalHeight();
+
+        // Gestione loop continuo
+        if (config.position >= totalHeight) {
+            config.position = 0;
+        } else if (config.position < 0) {
+            config.position = totalHeight;
+        }
+
+        updatePosition();
+        requestAnimationFrame(animate);
+    }
+
+    // Controlli velocità migliorati
+    function updateSpeed(value) {
+        const normalizedValue = Math.max(1, Math.min(12, value));
+        
+        // Curva di accelerazione più naturale
+        if (normalizedValue <= 6) {
+            config.speed = config.minSpeed + (normalizedValue - 1) * 0.15;
+        } else {
+            config.speed = 0.95 + (normalizedValue - 6) * 0.25;
+        }
+
+        // Limita velocità massima
+        config.speed = Math.min(config.speed, config.maxSpeed);
+        
+        // Aggiorna visualizzazione velocità
+        if (speedReadout) {
+            speedReadout.textContent = `${normalizedValue}/12`;
+        }
+    }
+
+    // Gestione eventi
+    function setupEventListeners() {
+        // Play/Pause
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', () => {
+                config.isRunning = !config.isRunning;
+                toggleBtn.textContent = config.isRunning ? '⏸️ Pausa' : '▶️ Riprendi';
+                toggleBtn.setAttribute('aria-label', 
+                    config.isRunning ? 'Metti in pausa lo slider' : 'Riprendi lo slider');
+            });
+        }
+
+        // Inverti direzione
+        if (invertBtn) {
+            invertBtn.addEventListener('click', () => {
+                config.direction *= -1;
+                invertBtn.textContent = config.direction === 1 ? '🔄 Inverti' : '↩️ Normale';
+                invertBtn.setAttribute('aria-label', 
+                    config.direction === 1 ? 'Inverti direzione slider' : 'Ripristina direzione normale');
+            });
+        }
+
+        // Controllo velocità
+        if (speedSlider) {
+            speedSlider.addEventListener('input', (e) => {
+                const value = parseInt(e.target.value, 10);
+                updateSpeed(value);
+                
+                // Aggiorna fill visivo
+                const fillPercentage = (value / 12) * 100;
+                speedSlider.style.setProperty('--fill', `${fillPercentage}%`);
+            });
+
+            // Inizializza velocità
+            speedSlider.value = 8;
+            speedSlider.dispatchEvent(new Event('input'));
+        }
+
+        // Pausa automatica al hover (opzionale)
+        sliderInner.addEventListener('mouseenter', () => {
+            if (config.isRunning) {
+                config.isRunning = false;
+            }
+        });
+
+        sliderInner.addEventListener('mouseleave', () => {
+            if (!config.isRunning) {
+                config.isRunning = true;
+            }
+        });
+
+        // Gestione touch per dispositivi mobili
+        let touchStartY = 0;
+        let isScrolling = false;
+
+        sliderInner.addEventListener('touchstart', (e) => {
+            touchStartY = e.touches[0].clientY;
+            isScrolling = false;
+        }, { passive: true });
+
+        sliderInner.addEventListener('touchmove', (e) => {
+            if (!isScrolling) {
+                isScrolling = true;
+                config.isRunning = false; // Pausa durante scroll manuale
+            }
+        }, { passive: true });
+
+        sliderInner.addEventListener('touchend', () => {
+            if (isScrolling) {
+                setTimeout(() => {
+                    config.isRunning = true; // Riprendi dopo un delay
+                    isScrolling = false;
+                }, 2000);
+            }
+        }, { passive: true });
+    }
+
+    // Inizializzazione
+    function init() {
+        // Stili iniziali
+        sliderInner.style.willChange = 'transform';
+        sliderInner.style.backfaceVisibility = 'hidden';
+        
+        setupEventListeners();
+        animate();
+
+        // Gestione ridimensionamento finestra
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                config.position = Math.min(config.position, calculateTotalHeight());
+                updatePosition();
+            }, 250);
+        });
+
+        // Supporto per prefers-reduced-motion
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        if (reducedMotion.matches) {
+            config.isRunning = false;
+            config.smoothTransition = false;
+            if (toggleBtn) toggleBtn.textContent = '▶️ Avvia';
+        }
+
+        reducedMotion.addEventListener('change', (e) => {
+            config.isRunning = !e.matches;
+            config.smoothTransition = !e.matches;
+        });
+    }
+
+    // Avvia tutto
+    init();
+
+})();
+</script>
 </body>
 </html>
