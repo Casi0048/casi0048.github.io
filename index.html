@@ -7533,101 +7533,194 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 <script>
-      document.addEventListener('DOMContentLoaded', function() {
-          const paradigmaBtn = document.getElementById('paradigma-btn');
-          const filosofiOverlay = document.getElementById('filosofi-overlay');
-          const arrow = paradigmaBtn.querySelector('span');
-          
-          let closeTimeout;
-          
-          // Apri overlay al passaggio del mouse
-          paradigmaBtn.addEventListener('mouseenter', function() {
-              clearTimeout(closeTimeout); // Cancella eventuali timeout di chiusura
-              
-              // Mostra overlay con animazione
-              filosofiOverlay.style.display = 'block';
-              setTimeout(() => {
-                  filosofiOverlay.style.opacity = '1';
-              }, 10);
-              arrow.style.transform = 'rotate(180deg)';
-          });
-          
-          // Chiudi overlay quando il mouse esce dal bottone O dall'overlay
-          paradigmaBtn.addEventListener('mouseleave', function(e) {
-              // Controlla se il mouse sta andando verso l'overlay
-              const relatedTarget = e.relatedTarget;
-              if (!filosofiOverlay.contains(relatedTarget)) {
-                  startCloseTimeout();
-              }
-          });
-          
-          // Gestisci mouse enter sull'overlay
-          filosofiOverlay.addEventListener('mouseenter', function() {
-              clearTimeout(closeTimeout); // Mantieni aperto
-          });
-          
-          // Gestisci mouse leave dall'overlay
-          filosofiOverlay.addEventListener('mouseleave', function(e) {
-              const relatedTarget = e.relatedTarget;
-              if (!paradigmaBtn.contains(relatedTarget)) {
-                  startCloseTimeout();
-              }
-          });
-          
-          // Funzione per chiudere con delay
-          function startCloseTimeout() {
-              closeTimeout = setTimeout(() => {
-                  filosofiOverlay.style.opacity = '0';
-                  setTimeout(() => {
-                      filosofiOverlay.style.display = 'none';
-                  }, 300);
-                  arrow.style.transform = 'rotate(0deg)';
-              }, 300); // 300ms di delay prima della chiusura
-          }
-          
-          // Effetti hover sulle immagini
-          const filosofiImages = filosofiOverlay.querySelectorAll('img');
-          filosofiImages.forEach(img => {
-              img.addEventListener('mouseenter', function() {
-                  this.style.transform = 'scale(1.1)';
-              });
-              img.addEventListener('mouseleave', function() {
-                  this.style.transform = 'scale(1)';
-              });
-          });
-          
-          // Click sul bottone (opzionale - per compatibilità mobile)
-          paradigmaBtn.addEventListener('click', function(e) {
-              e.stopPropagation();
-              const isVisible = filosofiOverlay.style.display === 'block';
-              
-              if (isVisible) {
-                  filosofiOverlay.style.opacity = '0';
-                  setTimeout(() => {
-                      filosofiOverlay.style.display = 'none';
-                  }, 300);
-                  arrow.style.transform = 'rotate(0deg)';
-              } else {
-                  filosofiOverlay.style.display = 'block';
-                  setTimeout(() => {
-                      filosofiOverlay.style.opacity = '1';
-                  }, 10);
-                  arrow.style.transform = 'rotate(180deg)';
-              }
-          });
-          
-          // Chiudi overlay cliccando fuori (per mobile)
-          document.addEventListener('click', function(e) {
-              if (!paradigmaBtn.contains(e.target) && !filosofiOverlay.contains(e.target)) {
-                  filosofiOverlay.style.opacity = '0';
-                  setTimeout(() => {
-                      filosofiOverlay.style.display = 'none';
-                  }, 300);
-                  arrow.style.transform = 'rotate(0deg)';
-              }
-          });
-      });
-    </script>
+document.addEventListener('DOMContentLoaded', function() {
+    const paradigmaBtn = document.getElementById('paradigma-btn');
+    const filosofiOverlay = document.getElementById('filosofi-overlay');
+    const arrow = paradigmaBtn?.querySelector('span');
+    
+    // Exit early se elementi non esistono
+    if (!paradigmaBtn || !filosofiOverlay) {
+        console.log('Elementi paradigma non trovati');
+        return;
+    }
+
+    let closeTimeout;
+    let isOpen = false;
+    let isHovering = false;
+
+    // Configurazione animazioni
+    const config = {
+        openDelay: 50,        // Ridotto per risposta più immediata
+        closeDelay: 200,      // Delay chiusura aumentato per più stabilità
+        animationDuration: 300,
+        hoverScale: 1.08      // Scale più sottile per effetto hover
+    };
+
+    // Prepara l'overlay per le animazioni
+    function setupOverlay() {
+        filosofiOverlay.style.transition = `opacity ${config.animationDuration}ms cubic-bezier(0.4, 0, 0.2, 1), transform ${config.animationDuration}ms cubic-bezier(0.4, 0, 0.2, 1)`;
+        filosofiOverlay.style.willChange = 'opacity, transform';
+        filosofiOverlay.style.transform = 'translateY(-10px) scale(0.95)';
+        filosofiOverlay.style.opacity = '0';
+    }
+
+    // Apri overlay con animazione fluida
+    function openOverlay() {
+        clearTimeout(closeTimeout);
+        isOpen = true;
+        isHovering = true;
+
+        // Mostra overlay
+        filosofiOverlay.style.display = 'block';
+        
+        // Trigger reflow per forzare l'animazione
+        filosofiOverlay.offsetHeight;
+        
+        // Animazione di entrata
+        setTimeout(() => {
+            filosofiOverlay.style.opacity = '1';
+            filosofiOverlay.style.transform = 'translateY(0) scale(1)';
+        }, 10);
+
+        // Animazione freccia
+        if (arrow) {
+            arrow.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+            arrow.style.transform = 'rotate(180deg)';
+        }
+    }
+
+    // Chiudi overlay con animazione fluida
+    function closeOverlay() {
+        isOpen = false;
+        
+        // Animazione di uscita
+        filosofiOverlay.style.opacity = '0';
+        filosofiOverlay.style.transform = 'translateY(-10px) scale(0.95)';
+        
+        // Animazione freccia
+        if (arrow) {
+            arrow.style.transform = 'rotate(0deg)';
+        }
+        
+        // Nascondi dopo l'animazione
+        setTimeout(() => {
+            if (!isOpen) {
+                filosofiOverlay.style.display = 'none';
+            }
+        }, config.animationDuration);
+    }
+
+    // Gestione hover sul bottone
+    paradigmaBtn.addEventListener('mouseenter', function() {
+        clearTimeout(closeTimeout);
+        isHovering = true;
+        
+        if (!isOpen) {
+            setTimeout(openOverlay, config.openDelay);
+        }
+    });
+
+    paradigmaBtn.addEventListener('mouseleave', function(e) {
+        isHovering = false;
+        
+        const relatedTarget = e.relatedTarget;
+        if (!filosofiOverlay.contains(relatedTarget)) {
+            closeTimeout = setTimeout(() => {
+                if (!isHovering) closeOverlay();
+            }, config.closeDelay);
+        }
+    });
+
+    // Gestione hover sull'overlay
+    filosofiOverlay.addEventListener('mouseenter', function() {
+        clearTimeout(closeTimeout);
+        isHovering = true;
+    });
+
+    filosofiOverlay.addEventListener('mouseleave', function(e) {
+        isHovering = false;
+        
+        const relatedTarget = e.relatedTarget;
+        if (!paradigmaBtn.contains(relatedTarget)) {
+            closeTimeout = setTimeout(closeOverlay, config.closeDelay);
+        }
+    });
+
+    // Effetti hover avanzati sulle immagini
+    const filosofiImages = filosofiOverlay.querySelectorAll('img');
+    filosofiImages.forEach(img => {
+        img.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), filter 0.3s ease';
+        
+        img.addEventListener('mouseenter', function() {
+            this.style.transform = `scale(${config.hoverScale})`;
+            this.style.filter = 'brightness(1.1) drop-shadow(0 4px 12px rgba(255,215,0,0.3))';
+        });
+        
+        img.addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1)';
+            this.style.filter = 'brightness(1) drop-shadow(0 2px 6px rgba(255,215,0,0.2))';
+        });
+    });
+
+    // Click sul bottone (mobile e fallback)
+    paradigmaBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        
+        if (isOpen) {
+            closeOverlay();
+        } else {
+            openOverlay();
+        }
+    });
+
+    // Chiudi overlay cliccando fuori
+    document.addEventListener('click', function(e) {
+        if (isOpen && !paradigmaBtn.contains(e.target) && !filosofiOverlay.contains(e.target)) {
+            closeOverlay();
+        }
+    });
+
+    // Gestione touch per mobile
+    let touchStartTime = 0;
+    
+    paradigmaBtn.addEventListener('touchstart', function() {
+        touchStartTime = Date.now();
+    });
+
+    paradigmaBtn.addEventListener('touchend', function(e) {
+        const touchDuration = Date.now() - touchStartTime;
+        
+        // Solo se è un tap breve (non scroll)
+        if (touchDuration < 200) {
+            e.preventDefault();
+            if (isOpen) {
+                closeOverlay();
+            } else {
+                openOverlay();
+            }
+        }
+    });
+
+    // Supporto per prefers-reduced-motion
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (reducedMotion.matches) {
+        // Disabilita animazioni se l'utente preferisce movimento ridotto
+        filosofiOverlay.style.transition = 'none';
+        if (arrow) arrow.style.transition = 'none';
+        filosofiImages.forEach(img => img.style.transition = 'none');
+    }
+
+    // Inizializzazione
+    setupOverlay();
+    console.log('Paradigma overlay inizializzato con animazioni fluide');
+});
+  const config = {
+    openDelay: 50,        // Apertura più reattiva
+    closeDelay: 200,      // Chiusura più stabile
+    animationDuration: 300,
+    hoverScale: 1.08
+};
+</script>
 <script>
 // Funzioni per il modale
 function showNewsletterModal() {
