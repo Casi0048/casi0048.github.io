@@ -1,1 +1,184 @@
+/* ============================================================
+   ECHI DI SOFIA — BASE CSS
+   Sfondo, tipografia, layout, elementi comuni
+   ============================================================ */
+
+:root {
+    --bg: #0a0a1a;
+    --text: #e9eef5;
+    --text-accent: #9ad0ff;
+    --gold: #ffd86a;
+    --cyan: #9ad0ff;
+    --box-dark: rgba(255, 255, 255, 0.06);
+    --box-border: rgba(255, 255, 255, 0.12);
+    --transition: 0.25s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Montserrat", sans-serif;
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+}
+
+h1, h2, h3 {
+    font-family: "Cinzel", serif;
+}
+
+a {
+    color: var(--text-accent);
+    text-decoration: none;
+    transition: color var(--transition);
+}
+a:hover {
+    color: var(--gold);
+}
+
+/* ============================================================
+   STARFIELD (stelle di sfondo)
+   ============================================================ */
+#starsContainer,
+#stars {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.7;
+    animation: twinkle 4s infinite ease-in-out;
+}
+
+.star.small {
+    opacity: 0.4;
+    animation: twinkle 6s infinite ease-in-out;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 1; }
+}
+
+/* ============================================================
+   CONTAINER GENERALE
+   ============================================================ */
+
+.container {
+    width: min(1200px, 92%);
+    margin: auto;
+    padding-top: 40px;
+}
+
+/* ============================================================
+   CARD FILOSOFI — HOME
+   ============================================================ */
+
+.filosofi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
+    padding: 40px 0;
+}
+
+.filosofi-card {
+    background: var(--box-dark);
+    border: 1px solid var(--box-border);
+    padding: 16px;
+    border-radius: 14px;
+    transition: transform var(--transition), background var(--transition);
+}
+.filosofi-card:hover {
+    background: rgba(255,255,255,0.12);
+    transform: translateY(-5px);
+}
+
+.filosofi-card img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 12px;
+}
+
+/* ============================================================
+   MINI BOX LATERALI (dizionario / IEP box / info)
+   ============================================================ */
+
+.right-box {
+    background: var(--box-dark);
+    border: 1px solid var(--box-border);
+    padding: 18px;
+    border-radius: 12px;
+    margin: 20px 0;
+}
+
+.right-box h3 {
+    font-size: 1.2rem;
+    margin-bottom: 6px;
+}
+
+.right-box .mini {
+    opacity: 0.6;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.right-box input[type="search"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--box-border);
+    background: #111424;
+    color: var(--text);
+    border-radius: 8px;
+}
+
+.right-box .btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    background: var(--cyan);
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background var(--transition);
+}
+.right-box .btn:hover {
+    background: var(--gold);
+}
+
+/* ============================================================
+   ANIMAZIONI GLOBALI
+   ============================================================ */
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.offline {
+    opacity: 0.8;
+    filter: grayscale(0.3);
+}
+
+/* Riduzione movimento */
+@media (prefers-reduced-motion: reduce) {
+    .fade-in,
+    .star {
+        animation: none !important;
+    }
+}
 
