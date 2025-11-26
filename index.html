@@ -6939,63 +6939,106 @@ document.addEventListener("DOMContentLoaded", function(){
 
 <script id="gt-wire">
 document.addEventListener('DOMContentLoaded', function() {
-  var translateSelect = document.getElementById('customTranslate');
-  function clearCookie(){
-    var past='Thu, 01 Jan 1970 00:00:00 GMT';
-    document.cookie='googtrans=; expires='+past+'; path=/;';
-    document.cookie='googtrans=; expires='+past+'; path=/; domain='+location.hostname+';';
-  }
-  function openWebTranslate(lang){
-    var u = location.href; var sl='it';
-    var url='https://translate.google.com/translate?hl='+encodeURIComponent(lang)+'&sl='+encodeURIComponent(sl)+'&tl='+encodeURIComponent(lang)+'&u='+encodeURIComponent(u);
-    window.open(url, '_blank', 'noopener');
-  }
-  function setCombo(lang){
-    var combo = document.querySelector('.goog-te-combo');
-    if(combo){
-      combo.value = lang; combo.dispatchEvent(new Event('change')); return true;
+    var translateSelect = document.getElementById('customTranslate');
+    
+    function clearCookie() {
+        var past = 'Thu, 01 Jan 1970 00:00:00 GMT';
+        document.cookie = 'googtrans=; expires=' + past + '; path=/;';
+        document.cookie = 'googtrans=; expires=' + past + '; path=/; domain=' + location.hostname + ';';
     }
-    var frame = document.querySelector('.goog-te-menu-frame');
-    if(frame && frame.contentDocument){
-      var select = frame.contentDocument.querySelector('.goog-te-combo');
-      if(select){ select.value = lang; select.dispatchEvent(new Event('change')); return true; }
+    
+    function openWebTranslate(lang) {
+        var u = location.href;
+        var sl = 'it';
+        var url = 'https://translate.google.com/translate?hl=' + encodeURIComponent(lang) + '&sl=' + encodeURIComponent(sl) + '&tl=' + encodeURIComponent(lang) + '&u=' + encodeURIComponent(u);
+        window.open(url, '_blank', 'noopener');
     }
-    return false;
-  }
-  function loadGT(){
-    if(!(window.google && google.translate)){
-      var s=document.createElement('script');
-      s.src='https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-      s.async=true;
-      s.onerror=function(){ document.documentElement.setAttribute('data-gt-error','load-failed'); };
-      document.head.appendChild(s);
+    
+    function setCombo(lang) {
+        var combo = document.querySelector('.goog-te-combo');
+        if (combo) {
+            combo.value = lang;
+            combo.dispatchEvent(new Event('change'));
+            return true;
+        }
+        var frame = document.querySelector('.goog-te-menu-frame');
+        if (frame && frame.contentDocument) {
+            var select = frame.contentDocument.querySelector('.goog-te-combo');
+            if (select) {
+                select.value = lang;
+                select.dispatchEvent(new Event('change'));
+                return true;
+            }
+        }
+        return false;
     }
-  }
-  function translatePage(lang){
-    if(!lang) return;
-    if(lang==='it'){ clearCookie(); setTimeout(function(){ location.reload(); }, 50); return; }
-    loadGT();
-    var tries=0;
-    (function wait(){
-      if(window.google && google.translate){
-        try{ if(!document.querySelector('.goog-te-combo')) { window.googleTranslateElementInit(); } }catch(_){}
-        if(setCombo(lang)) return;
-      }
-      if(tries++ < 60){ setTimeout(wait, 150); }
-      else { document.documentElement.setAttribute('data-gt-error','load-failed'); openWebTranslate(lang); }
-    })();
-  }
-  if(translateSelect){
-    translateSelect.addEventListener('change', function(){ translatePage(this.value); }, {passive:true});
-    try{
-      var c=(document.cookie||'').split(';').map(function(s){return s.trim();}).find(function(s){return s.indexOf('googtrans=')===0;});
-      if(!c){ translateSelect.value='it'; }
-      else{
-        var val=decodeURIComponent(c.split('=')[1]||''); var parts=val.split('/'); var l=parts[2]||'it';
-        if(translateSelect.querySelector('option[value="'+l+'"]')) translateSelect.value=l;
-      }
-    }catch(_){ translateSelect.value='it'; }
-  }
+    
+    function loadGT() {
+        if (!(window.google && google.translate)) {
+            var s = document.createElement('script');
+            s.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+            s.defer = true;
+            s.onerror = function() {
+                document.documentElement.setAttribute('data-gt-error', 'load-failed');
+            };
+            document.head.appendChild(s);
+        }
+    }
+    
+    function translatePage(lang) {
+        if (!lang) return;
+        if (lang === 'it') {
+            clearCookie();
+            setTimeout(function() {
+                location.reload();
+            }, 50);
+            return;
+        }
+        loadGT();
+        var tries = 0;
+        (function wait() {
+            if (window.google && google.translate) {
+                try {
+                    if (!document.querySelector('.goog-te-combo')) {
+                        window.googleTranslateElementInit();
+                    }
+                } catch (_) {}
+                if (setCombo(lang)) return;
+            }
+            if (tries++ < 60) {
+                setTimeout(wait, 150);
+            } else {
+                document.documentElement.setAttribute('data-gt-error', 'load-failed');
+                openWebTranslate(lang);
+            }
+        })();
+    }
+    
+    if (translateSelect) {
+        translateSelect.addEventListener('change', function() {
+            translatePage(this.value);
+        }, { passive: true });
+        
+        try {
+            var c = (document.cookie || '').split(';').map(function(s) {
+                return s.trim();
+            }).find(function(s) {
+                return s.indexOf('googtrans=') === 0;
+            });
+            if (!c) {
+                translateSelect.value = 'it';
+            } else {
+                var val = decodeURIComponent(c.split('=')[1] || '');
+                var parts = val.split('/');
+                var l = parts[2] || 'it';
+                if (translateSelect.querySelector('option[value="' + l + '"]')) {
+                    translateSelect.value = l;
+                }
+            }
+        } catch (_) {
+            translateSelect.value = 'it';
+        }
+    }
 });
 </script>
 
@@ -7003,11 +7046,6 @@ document.addEventListener('DOMContentLoaded', function() {
 // SISTEMA STELLARE COMPLETO CON VERIFICHE DI SICUREZZA - VERSIONE CORRETTA
 document.addEventListener('DOMContentLoaded', function() {
     
-    // 1. PRELOAD RISORSE CRITICHE - CORRETTO
-    const criticalResources = [
-        'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css'
-    ];
-
     // Funzione helper per operazioni DOM sicure
     function safeDOMOperation(operation, fallback = null) {
         try {
@@ -7027,35 +7065,17 @@ document.addEventListener('DOMContentLoaded', function() {
         return null;
     }
 
-    // 2. PRELOAD CORRETTO CON CROSSORIGIN
-    criticalResources.forEach(resource => {
-        if (resource.includes('font-awesome')) {
-            safeDOMOperation(() => {
-                const preload = document.createElement('link');
-                preload.rel = 'preload';
-                preload.href = resource;
-                preload.as = 'style';
-                preload.crossOrigin = 'anonymous'; // 👈 AGGIUNTO QUESTO
-                
-                if (document.head) {
-                    document.head.appendChild(preload);
-                    console.log('✅ Preload risorsa con crossorigin:', resource);
-                    
-                    // 👈 AGGIUNGI ANCHE IL LINK NORMALE PER EVITARE L'AVVISO
-                    const normalLink = document.createElement('link');
-                    normalLink.rel = 'stylesheet';
-                    normalLink.href = resource;
-                    normalLink.crossOrigin = 'anonymous';
-                    document.head.appendChild(normalLink);
-                }
-            }, () => {
-                console.warn('❌ Fallback preload per:', resource);
-            });
-        }
+    // 1. PRELOAD FONT AWESOME CORRETTO
+    safeDOMOperation(() => {
+        const fontAwesomeCSS = document.createElement('link');
+        fontAwesomeCSS.rel = 'stylesheet';
+        fontAwesomeCSS.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css';
+        fontAwesomeCSS.crossOrigin = 'anonymous';
+        document.head.appendChild(fontAwesomeCSS);
+        console.log('✅ Font Awesome caricato');
     });
 
-    // [RESTANTE CODICE IDENTICO...]
-    // 3. SISTEMA STELLARE CON VERIFICHE COMPLETE
+    // 2. SISTEMA STELLARE CON VERIFICHE COMPLETE
     function initializeStars() {
         return safeDOMOperation(() => {
             const starsContainer = document.getElementById('starsContainer') || document.getElementById('stars');
@@ -7070,7 +7090,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return false;
             }
 
-            const starCount = 200;
+            const starCount = 150; // Ridotto per performance
             let starsCreated = 0;
             let errors = 0;
 
@@ -7084,7 +7104,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const star = document.createElement('div');
                     star.className = 'star';
                     
-                    const size = Math.random() * 3;
+                    const size = Math.random() * 2 + 1;
                     star.style.width = `${size}px`;
                     star.style.height = `${size}px`;
                     star.style.left = `${Math.random() * 100}%`;
@@ -7107,7 +7127,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // 4. LAZY LOADING IMMAGINI SICURO
+    // 3. LAZY LOADING IMMAGINI SICURO
     function initializeLazyLoading() {
         return safeDOMOperation(() => {
             const lazyImages = document.querySelectorAll('.timeline-content img[data-src]');
@@ -7138,6 +7158,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 lazyImages.forEach(img => imageObserver.observe(img));
                 console.log(`✅ Lazy loading attivo per ${lazyImages.length} immagini`);
             } else {
+                // Fallback: carica tutte le immagini
                 lazyImages.forEach(img => {
                     safeDOMOperation(() => {
                         img.src = img.dataset.src;
@@ -7150,132 +7171,81 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // 5. FALLBACK STELLE SEMPLIFICATO
-    function createBasicStars() {
+    // 4. CSS PER PERFORMANCE
+    function injectPerformanceCSS() {
         return safeDOMOperation(() => {
-            const container = document.getElementById('starsContainer');
-            if (!container) return false;
-            
-            for (let i = 0; i < 50; i++) {
-                const star = document.createElement('div');
-                star.className = 'star small';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.animationDelay = Math.random() * 5 + 's';
-                container.appendChild(star);
-            }
-            console.log('✅ Stelle basic create');
+            if (!document.head) return false;
+
+            const performanceCSS = `
+                .fade-in {
+                    animation: fadeIn 0.5s ease-in;
+                }
+                .offline {
+                    opacity: 0.8;
+                    filter: grayscale(0.3);
+                }
+                @keyframes fadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+                @media (prefers-reduced-motion: reduce) {
+                    .fade-in, .star {
+                        animation: none !important;
+                    }
+                }
+            `;
+
+            const style = document.createElement('style');
+            style.textContent = performanceCSS;
+            document.head.appendChild(style);
+            console.log('✅ CSS performance injectato');
             return true;
         });
     }
 
-    // 6. INIZIALIZZAZIONE SICURA EFFETTI STELLARI
-    function initializeStarEffects() {
-        safeDOMOperation(
-            () => {
-                const starsContainer = document.getElementById('starsContainer');
-                if (starsContainer && typeof initStars === 'function') {
-                    initStars();
-                    console.log('✅ Effetti stelle avanzati attivati');
-                } else if (starsContainer) {
-                    createBasicStars();
-                }
-            },
-            () => {
-                console.log('ℹ️ Effetti stelle disabilitati per problemi di performance');
-                const starsContainer = document.getElementById('starsContainer');
-                if (starsContainer) {
-                    starsContainer.style.display = 'none';
-                }
-            }
-        );
-    }
+    // 5. INIZIALIZZAZIONE PRINCIPALE
+    console.log('🚀 Inizializzazione sistema...');
+    
+    injectPerformanceCSS();
+    initializeStars();
+    initializeLazyLoading();
+    
+    console.log('✅ Sistema completamente inizializzato');
 
-    // 7. CSS PER STATI SPECIALI
-function injectPerformanceCSS() {
-    return safeDOMOperation(() => {
-        if (!document.head) return false;
-
-        const performanceCSS = `
-            .fade-in {
-                animation: fadeIn 0.5s ease-in;
-            }
-
-            .offline {
-                opacity: 0.8;
-                filter: grayscale(0.3);
-            }
-
-            @keyframes fadeIn {
-                from { opacity: 0; }
-                to { opacity: 1; }
-            }
-
-            @media (prefers-reduced-motion: reduce) {
-                .fade-in, .star {
-                    animation: none !important;
-                }
-            }
-        `;
-
-        const style = document.createElement('style');
-        style.textContent = performanceCSS;
-        document.head.appendChild(style);
-
-        console.log('✅ CSS performance injectato');
-        return true;
+    // 6. GESTIONE ERRORI GLOBALE
+    window.addEventListener('error', (event) => {
+        console.error('❌ Errore globale:', event.error);
     });
-}
 
-// 8. INIZIALIZZAZIONE PRINCIPALE
-console.log('🚀 Inizializzazione sistema stellare...');
-
-injectPerformanceCSS();
-initializeStars();
-initializeLazyLoading();
-initializeStarEffects();
-
-console.log('✅ Sistema completamente inizializzato');
-
-
-// 9. GESTIONE ERRORI GLOBALE
-window.addEventListener('error', (event) => {
-    console.error('❌ Errore globale catturato:', event.error);
-});
-
-// 10. GESTIONE STATO CONNESSIONE
-window.addEventListener('online', () => {
-    console.log('📶 Connessione ripristinata');
-    safeDOMOperation(() => {
-        document.body.classList.remove('offline');
+    // 7. GESTIONE STATO CONNESSIONE
+    window.addEventListener('online', () => {
+        console.log('📶 Connessione ripristinata');
+        safeDOMOperation(() => {
+            document.body.classList.remove('offline');
+        });
     });
-});
 
-window.addEventListener('offline', () => {
-    console.warn('📶 Connessione persa');
-    safeDOMOperation(() => {
-        document.body.classList.add('offline');
+    window.addEventListener('offline', () => {
+        console.warn('📶 Connessione persa');
+        safeDOMOperation(() => {
+            document.body.classList.add('offline');
+        });
     });
-});
 
-// 11. SAFE ELEMENT SELECTOR (utility)
-window.getElementSafe = function(selector) {
-    try {
-        const element = typeof selector === 'string'
-            ? document.querySelector(selector)
-            : selector;
-
-        return element && document.body.contains(element)
-            ? element
-            : null;
-
-    } catch (error) {
-        console.warn('getElementSafe error:', error);
-        return null;
-    }
-};
-
-console.log('⭐ Sistema stellare caricato e pronto');
+    // 8. UTILITY SAFE ELEMENT SELECTOR
+    window.getElementSafe = function(selector) {
+        try {
+            const element = typeof selector === 'string'
+                ? document.querySelector(selector)
+                : selector;
+            return element && document.body.contains(element)
+                ? element
+                : null;
+        } catch (error) {
+            console.warn('getElementSafe error:', error);
+            return null;
+        }
+    };
 });
 </script>
 <script id="range-dynamic-script">
