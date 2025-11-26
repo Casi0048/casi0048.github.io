@@ -1,5 +1,4 @@
 
-
 // === ESPLOSIONE CHE SCUOTE LA PAGINA ===
 function createPageShakingExplosion() {
     // Crea l'effetto visivo dell'esplosione
@@ -174,56 +173,3 @@ window.addEventListener('load', function() {
 });
 */
 
-(function(){
-  try{
-    window.showSearchPanelOnResults = function(panelSel, items){
-      var panel = document.querySelector(panelSel || '#search-panel, #searchPanel, .search-panel');
-      if(!panel) return;
-      if(items && items.length){ panel.style.display = 'block'; panel.removeAttribute('aria-hidden'); }
-    };
-  }catch(_){}
-})();
-</script>
-<script>
-(function(){
-  if (!('serviceWorker' in navigator)) return;
-  window.addEventListener('load', function(){
-    navigator.serviceWorker.register('/sw.js')
-      .then(reg => console.log('✅ SW registrato:', reg.scope))
-      .catch(err => console.error('❌ SW registration failed:', err));
-  });
-})();
-
-(function () {
-  // 1) Se siamo su /index.html ⇒ sostituisci in barra con /
-  if (location.pathname.toLowerCase() === '/index.html') {
-    const clean = '/' + (location.search || '') + (location.hash || '');
-    history.replaceState(null, '', clean);
-  }
-
-  // 2) Rewriter dei link: se un <a> punta a index.html, trasformalo in /
-  function rewriteAnchor(a) {
-    const href = a.getAttribute('href') || '';
-    if (/(^|\/)index\.html(\?|#|$)/i.test(href)) {
-      // conserva query e hash
-      const u = new URL(href, location.origin);
-      a.setAttribute('href', '/' + (u.search || '') + (u.hash || ''));
-    }
-  }
-
-  // iniziale
-  document.querySelectorAll('a[href]').forEach(rewriteAnchor);
-
-  // 3) Intercetta i click (anche su link generati dinamicamente) e forza /
-  document.addEventListener('click', function (e) {
-    const a = e.target.closest('a[href]');
-    if (!a) return;
-    const href = a.getAttribute('href') || '';
-    if (/(^|\/)index\.html(\?|#|$)/i.test(href)) {
-      e.preventDefault();
-      const u = new URL(a.href, location.origin);
-      // naviga a "/" preservando query e hash
-      location.assign('/' + (u.search || '') + (u.hash || ''));
-    }
-  }, { capture: true });
-})();
