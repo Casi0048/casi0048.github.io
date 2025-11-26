@@ -7192,50 +7192,51 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // 7. CSS PER STATI SPECIALI
-    function injectPerformanceCSS() {
-        return safeDOMOperation(() => {
-            if (!document.head) return false;
-            
-            const performanceCSS = `
-                .fade-in {
-                    animation: fadeIn 0.5s ease-in;
-                }
-                
-                .offline {
-                    opacity: 0.8;
-                    filter: grayscale(0.3);
-                }
-                
-                @keyframes fadeIn {
-                    from { opacity: 0; }
-                    to { opacity: 1; }
-                }
-                
-                @media (prefers-reduced-motion: reduce) {
-                    .fade-in, .star {
-                        animation: none !important;
-                    }
-                }
-            `;
+function injectPerformanceCSS() {
+    return safeDOMOperation(() => {
+        if (!document.head) return false;
 
-            const style = document.createElement('style');
-            style.textContent = performanceCSS;
-            document.head.appendChild(style);
-            console.log('✅ CSS performance injectato');
-            return true;
-        });
-    }
+        const performanceCSS = `
+            .fade-in {
+                animation: fadeIn 0.5s ease-in;
+            }
 
-    // 8. INIZIALIZZAZIONE PRINCIPALE
-    console.log('🚀 Inizializzazione sistema stellare...');
-    
-    injectPerformanceCSS();
-    initializeStars();
-    initializeLazyLoading();
-    initializeStarEffects();
+            .offline {
+                opacity: 0.8;
+                filter: grayscale(0.3);
+            }
 
-    console.log('✅ Sistema completamente inizializzato');
-});
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                .fade-in, .star {
+                    animation: none !important;
+                }
+            }
+        `;
+
+        const style = document.createElement('style');
+        style.textContent = performanceCSS;
+        document.head.appendChild(style);
+
+        console.log('✅ CSS performance injectato');
+        return true;
+    });
+}
+
+// 8. INIZIALIZZAZIONE PRINCIPALE
+console.log('🚀 Inizializzazione sistema stellare...');
+
+injectPerformanceCSS();
+initializeStars();
+initializeLazyLoading();
+initializeStarEffects();
+
+console.log('✅ Sistema completamente inizializzato');
+
 
 // 9. GESTIONE ERRORI GLOBALE
 window.addEventListener('error', (event) => {
@@ -7257,12 +7258,17 @@ window.addEventListener('offline', () => {
     });
 });
 
-// 11. SAFE ELEMENT SELECTOR
+// 11. SAFE ELEMENT SELECTOR (utility)
 window.getElementSafe = function(selector) {
     try {
-        const element = typeof selector === 'string' ? 
-            document.querySelector(selector) : selector;
-        return element && document.body.contains(element) ? element : null;
+        const element = typeof selector === 'string'
+            ? document.querySelector(selector)
+            : selector;
+
+        return element && document.body.contains(element)
+            ? element
+            : null;
+
     } catch (error) {
         console.warn('getElementSafe error:', error);
         return null;
@@ -7270,6 +7276,7 @@ window.getElementSafe = function(selector) {
 };
 
 console.log('⭐ Sistema stellare caricato e pronto');
+
 </script>
 <script id="range-dynamic-script">
 (function(){
