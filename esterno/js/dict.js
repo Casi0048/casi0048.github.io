@@ -3,98 +3,65 @@
 // ============================================================
 document.addEventListener("DOMContentLoaded", () => {
 
-    const openBtn   = document.getElementById("openDict");
-    const closeBtn  = document.getElementById("dict-close");
-    const overlay   = document.getElementById("dict-overlay");
-    const modal     = document.getElementById("dict-modal");
-    const input     = document.getElementById("dict-q");
-    const searchBtn = document.getElementById("dict-search");
-    const openAllBtn = document.getElementById("open-all");
+  console.log("📘 Dict.js caricato");
 
-    // Sicurezza: se manca qualcosa → stop
-    if (!openBtn || !closeBtn || !overlay || !modal) {
-        console.warn("❌ Dizionario: elementi mancanti nel DOM");
-        return;
-    }
+  // ===== Elementi =====
+  const btnOpen   = document.getElementById("openDict");
+  const btnClose  = document.getElementById("dict-close");
+  const modal     = document.getElementById("dict-modal");
+  const overlay   = document.getElementById("dict-overlay");
+  const input     = document.getElementById("dict-q");
+  const btnSearch = document.getElementById("dict-search");
+  const btnOpenAll = document.getElementById("open-all");
 
-    /* -----------------------------------
-       1) MOSTRA MODALE
-    ------------------------------------ */
-    function openModal() {
-        overlay.style.pointerEvents = "auto";
+  if (!btnOpen || !modal || !overlay) {
+    console.error("❌ Dizionario: elementi mancanti");
+    return;
+  }
 
-        gsap.to(overlay, {
-            opacity: 1,
-            duration: 0.25,
-            ease: "power2.out"
-        });
+  /* ========== Apertura modale ========== */
+  btnOpen.addEventListener("click", () => {
+    overlay.style.pointerEvents = "auto";
+    overlay.style.opacity = "1";
 
-        gsap.to(modal, {
-            x: 0,
-            duration: 0.35,
-            ease: "power3.out",
-            onComplete: () => input && input.focus()
-        });
-    }
+    modal.style.transform = "translateX(0)";
+    console.log("📘 Modale aperto");
+  });
 
-    /* -----------------------------------
-       2) NASCONDI MODALE
-    ------------------------------------ */
-    function closeModal() {
-        overlay.style.pointerEvents = "none";
+  /* ========== Chiusura modale ========== */
+  function closeDict() {
+    overlay.style.opacity = "0";
+    overlay.style.pointerEvents = "none";
+    modal.style.transform = "translateX(100%)";
+  }
 
-        gsap.to(overlay, {
-            opacity: 0,
-            duration: 0.25
-        });
+  btnClose.addEventListener("click", closeDict);
+  overlay.addEventListener("click", closeDict);
 
-        gsap.to(modal, {
-            x: "100%",
-            duration: 0.35,
-            ease: "power3.in"
-        });
-    }
+  /* ========== Ricerca singola ========== */
+  btnSearch.addEventListener("click", () => {
+    if (!input.value.trim()) return;
 
-    openBtn.addEventListener("click", openModal);
-    closeBtn.addEventListener("click", closeModal);
-    overlay.addEventListener("click", closeModal);
+    const q = encodeURIComponent(input.value.trim());
+    const checks = modal.querySelectorAll(".sources input:checked");
 
-    /* ESC per chiudere */
-    document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") closeModal();
+    checks.forEach(chk => {
+      const url = chk.dataset.url.replace("{q}", q);
+      window.open(url, "_blank");
     });
+  });
 
+  /* ========== Apri tutte ========== */
+  btnOpenAll.addEventListener("click", () => {
+    if (!input.value.trim()) return;
 
-    /* -----------------------------------
-       3) FUNZIONE DI RICERCA
-    ------------------------------------ */
-    function performSearch() {
-        const q = input.value.trim();
-        if (!q) return;
+    const q = encodeURIComponent(input.value.trim());
+    const checks = modal.querySelectorAll(".sources input");
 
-        const checks = modal.querySelectorAll(".sources input[type='checkbox']:checked");
-
-        checks.forEach((chk) => {
-            let tpl = chk.dataset.url || "";
-            let url = tpl.replace("{q}", encodeURIComponent(q));
-            window.open(url, "_blank", "noopener");
-        });
-    }
-
-    searchBtn.addEventListener("click", performSearch);
-
-    /* Enter lancia la ricerca */
-    input.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-            e.preventDefault();
-            performSearch();
-        }
+    checks.forEach(chk => {
+      const url = chk.dataset.url.replace("{q}", q);
+      window.open(url, "_blank");
     });
-
-
-    /* -----------------------------------
-       4) APRI TUTTE LE FONTI
-    ------------------------------------ */
-    openAllBtn.addEventListener("click", performSearch);
+  });
 
 });
