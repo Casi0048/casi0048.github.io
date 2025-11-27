@@ -6065,28 +6065,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     checks.forEach((chk) => {
-      const urlTpl = chk.dataset.url || '';
-      let finalURL;
+  const urlTpl = chk.dataset.url || '';
+  let finalURL;
 
-      // === TRECCANI -> usa direttamente la ricerca ===
-     if (/treccani\.it/i.test(urlTpl)) {
-  finalURL = "https://www.treccani.it/risultati?q=" + encodeURIComponent(q);
-}
+  // Treccani: costruzione diretta, infallibile
+  if (/treccani\.it/i.test(urlTpl)) {
+    finalURL = "https://www.treccani.it/risultati?q=" + encodeURIComponent(q);
+  }
 
-      // === WIKIPEDIA ===
-      else if (/wikipedia\.org/i.test(urlTpl)) {
-        finalURL = wikipediaURL(q);
-      }
+  // Wikipedia con format corretto
+  else if (/wikipedia\.org/i.test(urlTpl)) {
+    finalURL = "https://it.wikipedia.org/wiki/" + encodeURIComponent(q.replace(/\s+/g, "_"));
+  }
 
-      // === TUTTE LE ALTRE FONTI ===
-      else {
-        finalURL = urlTpl.replace('{q}', encodeURIComponent(q));
-      }
+  // Tutte le altre fonti
+  else {
+    finalURL = urlTpl.replace("{q}", encodeURIComponent(q));
+  }
 
-      window.open(finalURL, '_blank', 'noopener');
-    });
-  });
+  window.open(finalURL, "_blank", "noopener");
 });
+
 
 /* === FUNZIONI === */
 function wikipediaURL(term) {
