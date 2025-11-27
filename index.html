@@ -6064,15 +6064,22 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    checks.forEach((chk, i) => {
+    checks.forEach((chk) => {
       const urlTpl = chk.dataset.url || '';
       let finalURL;
 
+      // === TRECCANI -> usa direttamente la ricerca ===
       if (/treccani\.it/i.test(urlTpl)) {
-        finalURL = treccaniURL(q, TRECCANI_SECTION);
-      } else if (/wikipedia\.org/i.test(urlTpl)) {
+        finalURL = urlTpl.replace('{q}', encodeURIComponent(q));
+      }
+
+      // === WIKIPEDIA ===
+      else if (/wikipedia\.org/i.test(urlTpl)) {
         finalURL = wikipediaURL(q);
-      } else {
+      }
+
+      // === TUTTE LE ALTRE FONTI ===
+      else {
         finalURL = urlTpl.replace('{q}', encodeURIComponent(q));
       }
 
@@ -6081,53 +6088,14 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-/* === CONFIG === */
-const TRECCANI_SECTION = 'vocabolario';
-
 /* === FUNZIONI === */
-function slugifyIT(term) {
-  return term.normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, '')
-    .trim();
-}
-
-function treccaniURL(term, section = 'vocabolario') {
-  const base = 'https://www.treccani.it';
-  const simple = slugifyIT(term).replace(/\s+/g, '');
-  return section === 'enciclopedia'
-    ? `${base}/enciclopedia/${simple}/`
-    : `${base}/vocabolario/${simple}/`;
-}
-
 function wikipediaURL(term) {
   return `https://it.wikipedia.org/wiki/${encodeURIComponent(
     term.trim().replace(/\s+/g, '_')
   )}`;
 }
-
-/* === PULIZIA BOX CERCA === */
-document.addEventListener('DOMContentLoaded', () => {
-  const search = document.getElementById('site-search');
-  const clear  = document.querySelector('.search-container .clear-search');
-  if (!search || !clear) return;
-
-  function updateClearVisibility() {
-    clear.style.display = search.value.trim() ? 'flex' : 'none';
-  }
-
-  search.addEventListener('input', updateClearVisibility);
-
-  clear.addEventListener('click', () => {
-    search.value = '';
-    search.focus();
-    updateClearVisibility();
-  });
-
-  updateClearVisibility();
-});
 </script>
+
 <script id="thunder-toggle-fix">
       (function(){
         const btn = document.getElementById('btn-thunder');
