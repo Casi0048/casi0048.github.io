@@ -1,21 +1,24 @@
 // ============================================================
-//   DIZIONARIO FILOSOFICO — MODALE LATERALE CON GSAP
+//   DIZIONARIO FILOSOFICO — MODALE LATERALE
 // ============================================================
 document.addEventListener("DOMContentLoaded", () => {
 
   console.log("📘 Dict.js caricato");
 
   // ===== Elementi =====
-  const btnOpen   = document.getElementById("openDict");
-  const btnClose  = document.getElementById("dict-close");
-  const modal     = document.getElementById("dict-modal");
-  const overlay   = document.getElementById("dict-overlay");
-  const input     = document.getElementById("dict-q");
-  const btnSearch = document.getElementById("dict-search");
+  const btnOpen    = document.getElementById("openDict");
+  const btnClose   = document.getElementById("dict-close");
+  const modal      = document.getElementById("dict-modal");
+  const overlay    = document.getElementById("dict-overlay");
+  const input      = document.getElementById("dict-q");
+  const btnSearch  = document.getElementById("dict-search");
   const btnOpenAll = document.getElementById("open-all");
 
+  console.log("btnOpen =", btnOpen);
+  console.log("modal =", modal);
+
   if (!btnOpen || !modal || !overlay) {
-    console.error("❌ Dizionario: elementi mancanti");
+    console.error("❌ Errore: elementi del dizionario NON trovati!");
     return;
   }
 
@@ -40,27 +43,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ========== Ricerca singola ========== */
   btnSearch.addEventListener("click", () => {
-    if (!input.value.trim()) return;
+    const q = input.value.trim();
+    if (!q) return;
 
-    const q = encodeURIComponent(input.value.trim());
+    const encoded = encodeURIComponent(q);
     const checks = modal.querySelectorAll(".sources input:checked");
 
     checks.forEach(chk => {
-      const url = chk.dataset.url.replace("{q}", q);
-      window.open(url, "_blank");
+      const url = chk.dataset.url.replace("{q}", encoded);
+      window.open(url, "_blank", "noopener");
     });
   });
 
   /* ========== Apri tutte ========== */
   btnOpenAll.addEventListener("click", () => {
-    if (!input.value.trim()) return;
+    const q = input.value.trim();
+    if (!q) return;
 
-    const q = encodeURIComponent(input.value.trim());
+    const encoded = encodeURIComponent(q);
     const checks = modal.querySelectorAll(".sources input");
 
     checks.forEach(chk => {
-      const url = chk.dataset.url.replace("{q}", q);
-      window.open(url, "_blank");
+      const url = chk.dataset.url.replace("{q}", encoded);
+      window.open(url, "_blank", "noopener");
     });
   });
 
