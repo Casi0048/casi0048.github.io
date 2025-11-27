@@ -6049,56 +6049,46 @@ function softPlay(audio, volume, delay) {
       })();
     </script>
 <script>
-/* === DIZIONARIO FILOSOFICO — VERSIONE FUNZIONANTE === */
-document.addEventListener('DOMContentLoaded', () => {
+/* === DIZIONARIO FILOSOFICO — VERSIONE SICURA === */
+document.addEventListener("DOMContentLoaded", () => {
 
-  const form  = document.getElementById('dict-form');
-  const input = document.getElementById('dict-q');
+  const form  = document.getElementById("dict-form");
+  const input = document.getElementById("dict-q");
 
-  if (!form || !input) {
-    console.warn('EDS dizionario: form o input non trovati');
-    return;
-  }
+  if (!form || !input) return;
 
-  form.addEventListener('submit', (e) => {
+  form.addEventListener("submit", (e) => {
     e.preventDefault();
+
     const q = input.value.trim();
     if (!q) return;
 
-    const checks = form.querySelectorAll('.sources input[type="checkbox"]:checked');
-    if (!checks.length) {
-      console.warn('Nessuna fonte selezionata');
-      return;
-    }
+    const checks = form.querySelectorAll(".sources input[type='checkbox']:checked");
+    if (!checks.length) return;
 
     checks.forEach((chk) => {
-      const urlTpl = chk.dataset.url || '';
-      let finalURL;
+      const tpl = chk.dataset.url || "";
+      let finalURL = "";
 
-      /* === TRECCANI: URL diretto, affidabile === */
-      if (/treccani\.it/i.test(urlTpl)) {
-  finalURL = "https://www.treccani.it/ricerca/?q=" + encodeURIComponent(q);
-}
-
-      /* === WIKIPEDIA === */
-      else if (/wikipedia\.org/i.test(urlTpl)) {
-        finalURL = "https://it.wikipedia.org/wiki/" +
-                   encodeURIComponent(q.replace(/\s+/g, "_"));
+      if (/treccani\.it/.test(tpl)) {
+        finalURL = "https://www.treccani.it/ricerca/?q=" + encodeURIComponent(q);
       }
-
-      /* === TUTTE LE ALTRE FONTI === */
+      else if (/wikipedia\.org/.test(tpl)) {
+        finalURL = "https://it.wikipedia.org/wiki/" +
+                    encodeURIComponent(q.replace(/\s+/g, "_"));
+      }
       else {
-        finalURL = urlTpl.replace("{q}", encodeURIComponent(q));
+        finalURL = tpl.replace("{q}", encodeURIComponent(q));
       }
 
       window.open(finalURL, "_blank", "noopener");
-    });  // <-- CHIUSURA forEach
+    });
 
   }); // <-- CHIUSURA submit
 
 }); // <-- CHIUSURA DOMContentLoaded
-
 </script>
+
 
 
 <script id="thunder-toggle-fix">
