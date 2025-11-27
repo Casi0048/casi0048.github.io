@@ -6295,13 +6295,17 @@ document.addEventListener('DOMContentLoaded', ()=>{
     border-radius: 50%;
     background: rgba(255,255,255,.95);
     box-shadow: 0 0 10px rgba(255,255,255,.9), 0 0 18px rgba(255,255,255,.6);
-  }
+    
+    /* Usa la variabile CSS per la posizione */
+    left: var(--head-position, 0px);
+    right: auto;
+}
 
-  /* direzione sinistra → destra */
-  @keyframes comet-move-ltr {
-    from { transform: translateX(-10%) translateY(var(--startY)); opacity:.8; }
-    to   { transform: translateX(110vw) translateY(var(--endY)); opacity:0; }
-  }
+/* direzione sinistra → destra */
+.comet[data-direction="rtl"]::after {
+    left: auto;
+    right: var(--head-position, 0px);
+}
 
   /* direzione destra → sinistra */
   @keyframes comet-move-rtl {
