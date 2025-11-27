@@ -72,3 +72,92 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  const form   = document.getElementById("dict-form");
+  const input  = document.getElementById("dict-q");
+  const sugBox = document.getElementById("dict-suggestions");
+  const btnAll = document.getElementById("open-all");
+
+  if (!form || !input) return;
+
+  /* =============================
+     LISTA SUGGERIMENTI
+  ============================= */
+  const TERMI = [
+    "arché","anima","logos","ente","essere","entelechia","virtù","causa prima",
+    "ragion pratica","noumeno","libertà","tempo","sostanza","dovere",
+    "metafisica","trascendentale","giudizio","intelletto","cosmo","eudaimonia"
+  ];
+
+  function filterSuggestions(q) {
+    return TERMI.filter(t => t.toLowerCase().includes(q.toLowerCase())).slice(0,20);
+  }
+
+  /* Suggerimenti live */
+  function updateSug() {
+    const q = input.value.trim();
+    if (!q) { sugBox.innerHTML=""; sugBox.classList.remove("visible"); return; }
+
+    const list = filterSuggestions(q);
+    if (!list.length) { sugBox.classList.remove("visible"); return; }
+
+    sugBox.innerHTML = list.map(t => `<div data-val="${t}">${t}</div>`).join("");
+    sugBox.classList.add("visible");
+  }
+
+  input.addEventListener("input", updateSug);
+
+  sugBox.addEventListener("click", e => {
+    if (e.target.dataset.val) {
+      input.value = e.target.dataset.val;
+      sugBox.classList.remove("visible");
+    }
+  });
+
+
+  /* =============================
+     URL GENERATORI
+  ============================= */
+
+  const TRECCANI_URL = q =>
+    `https://www.treccani.it/enciclopedia/ricerca/${encodeURIComponent(q)}/`;
+
+  const WIKI_URL = q =>
+    `https://it.wikipedia.org/wiki/${encodeURIComponent(q.replace(/\s+/g,"_"))}`;
+
+
+  /* =============================
+     SUBMIT
+  ============================= */
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    const q = input.value.trim();
+    if (!q) return;
+
+    const selected = form.querySelectorAll(".sources input[type='checkbox']:checked");
+    if (!selected.length) return;
+
+    selected.forEach(chk => {
+      const tpl = chk.dataset.url || "";
+      let url = "";
+
+      if (/treccani\.it/.test(tpl)) url = TRECCANI_URL(q);
+      else if (/wikipedia\.org/.test(tpl)) url = WIKI_URL(q);
+      else url = tpl.replace("{q}", encodeURIComponent(q));
+
+      window.open(url, "_blank", "noopener");
+    });
+  });
+
+
+  /* =============================
+     APRI TUTTE LE FONTI
+  ============================= */
+  btnAll.addEventListener("click", () => {
+    document.querySelectorAll(".sources input").forEach(chk => chk.checked = true);
+    form.dispatchEvent(new Event("submit"));
+  });
+
+});
