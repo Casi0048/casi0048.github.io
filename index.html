@@ -148,6 +148,202 @@
 
 
 <style>
+  * === ACCENT TOKENS (default: gold) === */
+:root{
+  --accent:#ffd700;
+  --accent-2:#e5c200;
+  --accent-3:#ffe066;
+  --accent-5:#fff7b0;
+  --accent-contrast:#1a1400;
+  --ring: 0 0 0 3px color-mix(in oklab, var(--accent) 45%, transparent);
+  --accent-glow: drop-shadow(0 0 9px color-mix(in oklab, var(--accent) 70%, transparent));
+}
+body[data-accent="blue"]{
+  --accent:#55b6ff; --accent-2:#2f98e6; --accent-3:#9bd6ff; --accent-5:#d5ecff; --accent-contrast:#001321;
+}
+body[data-accent="green"]{
+  --accent:#3de07f; --accent-2:#27c16a; --accent-3:#89f0b4; --accent-5:#d6fae6; --accent-contrast:#00170a;
+}
+body[data-accent="red"]{
+  --accent:#ff5a6a; --accent-2:#e23f52; --accent-3:#ff9aa5; --accent-5:#ffd5da; --accent-contrast:#190004;
+}
+
+
+     :root {
+  /* === COLORI FONDAMENTALI === */
+  --bg: #0a0a1a;
+  --text-light: #e9eef5;
+  --text-accent: #9ad0ff;
+  
+  /* === COLORI ACCENT PRINCIPALI === */
+  --gold: #ffd86a;
+  --cyan: #00ccff;
+  --purple: #b967ff;
+  
+  /* === COLORI SECONDARI === */
+  --gold-secondary: #d4af37;
+  --cyan-dark: #0099cc;
+  --purple-dark: #8a4dcc;
+  
+  /* === SPACING SYSTEM === */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+  
+  /* === BREAKPOINTS SYSTEM === */
+  --bp-mobile: 768px;
+  --bp-tablet: 1024px;
+  --bp-desktop: 1200px;
+  
+  /* === TYPOGRAPHY SCALE === */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 2rem;
+  --text-4xl: 3rem;
+  
+  /* === COMPONENT VARIABLES === */
+  --menu-bg: rgba(10, 10, 30, .98);
+  --menu-border: rgba(255, 215, 0, .22);
+  --glass: rgba(0, 0, 0, .35);
+  --card-bg: rgba(10, 10, 30, 0.9);
+  --card-border: rgba(255, 215, 0, 0.3);
+}
+    * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Ripristina padding per elementi che ne hanno bisogno */
+button, input, select, textarea {
+  padding: 0.25rem 0.5rem;
+}
+
+/* Ripristina margini per alcuni elementi testuali */
+p, h1, h2, h3, h4, h5, h6 {
+  margin-bottom: 1rem;
+}
+      body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--bg);
+      color: var(--text-light);
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      }
+      /* Effetto particelle cosmiche di sfondo */
+      #cosmic-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+      }
+      .cosmic-particle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.6);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+      animation: float 15s infinite linear;
+      }
+      @keyframes float {
+      0% {
+      transform: translateY(100vh) rotate(0deg);
+      opacity: 0;
+      }
+      10% {
+      opacity: 0.7;
+      }
+      90% {
+      opacity: 0.7;
+      }
+      100% {
+      transform: translateY(-100px) rotate(360deg);
+      opacity: 0;
+      }
+      }
+      a {
+      color: var(--text-accent);
+      text-decoration: none;
+      transition: color 0.3s, text-shadow 0.3s;
+      }
+      a:hover {
+      color: #fff;
+      text-shadow: 0 0 0.38rem #33ccff;
+      }
+      /* Header e Top Bar */
+      .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 0.8rem 1.2rem;
+      background: var(--menu-bg);
+      backdrop-filter: blur(0.6rem);
+      -webkit-backdrop-filter: blur(0.6rem);
+      border-bottom: 1px solid var(--menu-border);
+      z-index: 2000;
+      transition: transform 0.3s ease;
+      }
+      .top-bar.hidden {
+      transform: translateY(-100%);
+      }
+      .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.62rem;
+      text-decoration: none;
+      margin-left: 30px;
+      }
+      .brand svg {
+      width: 2.12rem;
+      height: 2.12rem;
+      filter: drop-shadow(0 0 0.38rem rgba(255, 215, 0, .5));
+      }
+      .brand span {
+      font-family: 'Cinzel Decorative', cursive;
+      font-weight: 700;
+      letter-spacing: 0.1rem;
+      background: linear-gradient(90deg, var(--accent), var(--accent-5), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 0.62rem color-mix(in oklab, var(--accent) 35%, transparent);
+      font-size: 1.5rem;
+      }
+      .bar-right {
+  margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 0.62rem;
+      }
+      .translate-box {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      }
+      .translate-select {
+      appearance: none;
+      padding: 0.45rem 0.8rem;
+      border: 1px solid var(--menu-border);
+      border-radius: 0.62rem;
+      background: rgba(20, 20, 40, .78);
+      color: var(--text-light);
+      font-size: 0.95rem;
+      cursor: pointer;
+      }
   /* Versione compatta */
 .color-dot {
   width: 36px;
