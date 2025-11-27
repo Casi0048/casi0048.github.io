@@ -1065,7 +1065,7 @@ nav.menu-desktop .mega-menu.right-align:hover {
       .ctrl-btn{display:inline-flex;align-items:center;justify-content:center;min-height:2rem;margin-bottom:2px;padding:.38rem .62rem;font-weight:600;cursor:pointer;border-radius:.5rem;border:1px solid rgba(255,215,0,.25);background:rgba(20,20,40,.7);color:#ffd86a}
       .audio-player{position:fixed;left:3.25rem;top:40.38rem;z-index:80;display:flex;align-items:center;gap:.62rem;padding:.5rem .62rem;background:rgba(10,10,30,.8);border:1px solid rgba(255,215,0,.25);border-radius:.62rem;opacity:1;transform:none}
       .audio-title{font-weight:600}.audio-player .controls{display:flex;align-items:center;gap:.62rem}.audio-player input[type=range]{width:7.5rem}
-      .articles-blob{position:fixed;right:1.25rem;top:12.5rem;width:20rem;z-index:90;background:radial-gradient(120% 150% at 100% 0%,rgba(50,120,255,.16),rgba(10,10,30,.82));border:1px solid rgba(255,255,255,.08);border-radius:1rem;padding:.88rem 1rem;box-shadow:0 .94rem 1.88rem rgba(0,0,0,.35)}
+      .articles-blob{position:fixed;right:1.25rem;top:9.5rem;width:20rem;z-index:90;background:radial-gradient(120% 150% at 100% 0%,rgba(50,120,255,.16),rgba(10,10,30,.82));border:1px solid rgba(255,255,255,.08);border-radius:1rem;padding:.88rem 1rem;box-shadow:0 .94rem 1.88rem rgba(0,0,0,.35)}
       .articles-blob h3{margin:0 0 .5rem;font-family:'Cinzel',serif;color:#ffd86a}.articles-blob ul{list-style:none;margin:0;padding:0}.articles-blob li{margin:.25rem 0}.articles-blob a{color:#cfe8ff;text-decoration:none;font-weight:700}.articles-blob a:hover{color:#fff;text-decoration:underline}
       .right-embed{position:fixed;right:1.25rem;top:40rem;width:20rem;z-index:25;background:rgba(10,10,30,.8);border:1px solid rgba(255,215,0,.25);border-radius:.75rem;padding:.5rem}
       .right-embed iframe{width:100%;height:264px;display:block;border:0}
@@ -1098,7 +1098,7 @@ nav.menu-desktop .mega-menu.right-align:hover {
       background:rgba(20,20,40,.78); color:#ffd86a; font-weight:700; cursor:pointer
       }      
       #dict-compact{ top: 22.2rem; }
-      #iep-linkbox{ top: 35rem; }
+      #iep-linkbox{ top: 36rem; }
       @media (min-width: 1200px){
       .right-embed{ top: 42.5rem; }
       }
@@ -4680,29 +4680,32 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 <li><a href="articoli/battaglia_maratona.html">Battaglia di Maratona</a></li>
 </ul>
 </aside>
-<div class="right-icons">
+<!-- 📘 DIZIONARIO FILOSOFICO — MULTI-FONTE -->
+<!-- DIZIONARIO FILOSOFICO — multi-fonte potenziato -->
+<div class="right-box" id="dict-compact">
 
-    <!-- 🔍 Cerca -->
-    <div class="search-container">
-        <input type="search" id="searchBox" placeholder="Cerca...">
-        <button id="clearSearch" class="clear-search">×</button>
- 
+  <h3>📘 Dizionario filosofico</h3>
+  <div class="mini">Ricerca multi-fonte velocissima</div>
 
-    <!-- 📘 Dizionario -->
-    <button id="openDict" class="dict-icon-btn">📘</button>
+  <form id="dict-form">
 
-    <!-- 🌐 Traduttore -->
-    <div class="translate-box">
-        <span>🌐</span>
-        <select id="customTranslate" class="translate-select">
-            <option value="it">Italiano</option>
-            <option value="en">English</option>
-            <option value="fr">Français</option>
-            <option value="de">Deutsch</option>
-            <option value="es">Español</option>
-            <option value="pl">Polski</option>
-        </select>
-    </div>
+      <input id="dict-q" type="search" placeholder="Cerca un termine…">
+
+      <!-- Suggerimenti -->
+      <div id="dict-suggestions"></div>
+
+      <div class="sources">
+        <label><input type="checkbox" checked data-url="https://duckduckgo.com/?q=site%3Aplato.stanford.edu+{q}"> SEP</label>
+        <label><input type="checkbox" checked data-url="https://duckduckgo.com/?q=site%3Aiep.utm.edu+{q}"> IEP</label>
+        <label><input type="checkbox" checked data-url="https://www.treccani.it/enciclopedia/ricerca/{q}/"> Treccani</label>
+        <label><input type="checkbox" data-url="https://it.wikipedia.org/w/index.php?search={q}"> Wikipedia</label>
+        <label><input type="checkbox" data-url="https://www.britannica.com/search?query={q}"> Britannica</label>
+      </div>
+
+      <button class="btn" type="submit">Cerca</button>
+      <button type="button" id="open-all" class="btn small">Apri tutte</button>
+
+  </form>
 </div>
 
 <!-- Enciclopedia filosofica (IEP tradotta) -->
@@ -4719,6 +4722,7 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
       oppure <a href="https://iep.utm.edu/" target="_blank" rel="noopener">IEP originale</a>
   </div>
 </div>
+
 <div class="right-embed">
 <iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" src="https://www.youtube.com/embed/G_REgkOuQfw" title="Schopenhauer e Nietzsche (Hans-Georg Gadamer) - 3x4"></iframe>
 </div>
@@ -4764,7 +4768,7 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
             border: 1px solid rgba(255, 215, 0, 0.25);
             border-radius: 0.5rem;
             padding: 0.5rem 1rem;
-            margin-left: 10px;
+            margin-left: 300px;
             color: #ffd86a;
             font-weight: 700;
             cursor: pointer;
@@ -4812,14 +4816,12 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 <div style="text-align: center;">
 <img alt="Nietzsche" decoding="async" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/immagini%20per%20sito/friedrich-nietzsche.jpg" style="width: 100%; max-width: 80px; border-radius: 50%; border: 3px solid #d4af37;"/>
 <p style="margin-top: 10px; color: #e9eef5; font-weight: bold; font-family: 'Cormorant Garamond', serif;">Nietzsche</p>
-<p style="font-style: italic; color: #9ad0ff; font-size: 0.85rem;font-weight: 700;">"Dio è morto! Dio resta morto! E noi lo abbiamo ucciso!"</p>
+<p style="font-style: italic; color: #9ad0ff; font-size: 0.85rem;font-weight: 700;">"Dio è morto! Dio resta morto! E noi lo abbiamo ucciso! Come ci consoleremo noi, gli assassini di tutti gli assassini? Quanto di piú sacro e di piú possente il mondo possedeva fino ad oggi, si è dissanguato sotto i nostri coltelli; chi detergerà da noi questo sangue?"</p>
 </div>
 </div>
 </div>
 </div>
 <div class="bar-right">
-
-
 <div class="translate-box">
 <span>🌐</span>
 <select aria-label="Traduci pagina" class="translate-select" id="customTranslate">
@@ -5481,7 +5483,6 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 <p class="privacy-note"><small>Rispettiamo la tua privacy. Cancellazione sempre possibile.</small></p>
 </div>
 </div>
- 
 <script>
 // === PERFORMANCE & ERROR HANDLING - VERSIONE PULITA ===
 
@@ -8939,122 +8940,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 </script>
- <script>
-document.addEventListener("DOMContentLoaded", () => {
-
-  const openBtn = document.getElementById("openDict");
-  const modal = document.getElementById("dict-modal");
-  const overlay = document.getElementById("dict-overlay");
-  const closeBtn = document.getElementById("dict-close");
-
-  const input  = document.getElementById("dict-q");
-  const sugBox = document.getElementById("dict-suggestions");
-  const btnSearch = document.getElementById("dict-search");
-  const btnAll = document.getElementById("open-all");
-
-  /* === APERTURA e CHIUSURA === */
-  function openDict() {
-    modal.classList.add("open");
-    overlay.classList.add("visible");
-    setTimeout(() => input.focus(), 200);
-  }
-
-  function closeDict() {
-    modal.classList.remove("open");
-    overlay.classList.remove("visible");
-  }
-
-  openBtn.addEventListener("click", openDict);
-  closeBtn.addEventListener("click", closeDict);
-  overlay.addEventListener("click", closeDict);
-
-  /* === Suggerimenti === */
-  const TERMI = [
-    "arché","anima","logos","ente","essere","entelechia","virtù",
-    "causa prima","ragion pratica","noumeno","eudaimonia","metafisica",
-    "sostanza","etica","intelletto","cosmo"
-  ];
-
-  input.addEventListener("input", () => {
-    const q = input.value.trim().toLowerCase();
-    if (!q) { sugBox.classList.remove("visible"); return; }
-
-    const list = TERMI.filter(t => t.includes(q)).slice(0,20);
-    sugBox.innerHTML = list.map(t => `<div data-val="${t}">${t}</div>`).join("");
-    sugBox.classList.add("visible");
-  });
-
-  sugBox.addEventListener("click", e => {
-    if (e.target.dataset.val) {
-      input.value = e.target.dataset.val;
-      sugBox.classList.remove("visible");
-    }
-  });
-
-  /* === URL generatori === */
-  const TRECCANI = q =>
-    `https://www.treccani.it/enciclopedia/ricerca/${encodeURIComponent(q)}/`;
-  const WIKI = q =>
-    `https://it.wikipedia.org/wiki/${encodeURIComponent(q.replace(/\s+/g,"_"))}`;
-
-  /* === Ricerca === */
-  function performSearch() {
-    const q = input.value.trim();
-    if (!q) return;
-
-    const checked = modal.querySelectorAll(".sources input:checked");
-    checked.forEach(c => {
-      const tpl = c.dataset.url;
-      let url = "";
-
-      if (/treccani/.test(tpl)) url = TRECCANI(q);
-      else if (/wikipedia/.test(tpl)) url = WIKI(q);
-      else url = tpl.replace("{q}", encodeURIComponent(q));
-
-      window.open(url, "_blank", "noopener");
-    });
-  }
-
-  btnSearch.addEventListener("click", performSearch);
-
-  /* Apri tutte */
-  btnAll.addEventListener("click", () => {
-    modal.querySelectorAll(".sources input").forEach(c => c.checked = true);
-    performSearch();
-  });
-
-});
-</script>
-  <!-- ====== MODALE LATERALE — Dizionario ====== -->
-<div id="dict-overlay"></div>
-
-<div id="dict-modal">
-<button id="openDict" class="dict-icon-btn"></button>
-  <div class="dict-header">
-    <h2>📘 Dizionario Filosofico</h2>
-    <button id="dict-close">×</button>
-  </div>
-
-  <div class="dict-body">
-
-    <input id="dict-q" type="search" placeholder="Cerca un termine…">
-
-    <div id="dict-suggestions"></div>
-
-    <div class="sources">
-      <label><input type="checkbox" checked data-url="https://duckduckgo.com/?q=site%3Aplato.stanford.edu+{q}"> SEP</label>
-      <label><input type="checkbox" checked data-url="https://duckduckgo.com/?q=site%3Aiep.utm.edu+{q}"> IEP</label>
-      <label><input type="checkbox" checked data-url="https://www.google.com/search?q=site%3Atreccani.it+{q}"> Treccani</label>
-      <label><input type="checkbox" data-url="https://it.wikipedia.org/w/index.php?search={q}"> Wikipedia</label>
-      <label><input type="checkbox" data-url="https://www.britannica.com/search?query={q}"> Britannica</label>
-    </div>
-
-    <button class="btn" id="dict-search">Cerca</button>
-    <button class="btn small" id="open-all">Apri tutte</button>
-
-  </div>
-
-</div> 
-
+       
 </body>
 </html>
