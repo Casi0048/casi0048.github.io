@@ -6049,7 +6049,7 @@ function softPlay(audio, volume, delay) {
       })();
     </script>
 <script>
-/* === DIZIONARIO FILOSOFICO — VERSIONE PERFETTA === */
+/* === DIZIONARIO FILOSOFICO — VERSIONE DEFINITIVA === */
 document.addEventListener("DOMContentLoaded", () => {
 
   const form  = document.getElementById("dict-form");
@@ -6070,20 +6070,21 @@ document.addEventListener("DOMContentLoaded", () => {
       const tpl = chk.dataset.url || "";
       let finalURL = "";
 
-      /* ⭐ TRECCANI — NO encodeURIComponent (rompe gli accenti)
-         Usa solo sostituzione spazi → "+" */
+      /* ⭐ TRECCANI — FORMATO UFFICIALE FUNZIONANTE */
       if (/treccani\.it/i.test(tpl)) {
-        const qTreccani = q.replace(/\s+/g, "+");
-        finalURL = "https://www.treccani.it/ricerca/?q=" + qTreccani;
+        const enc = encodeURIComponent(q);
+        finalURL =
+          "https://www.treccani.it/enciclopedia/ricerca/" + enc + "/?search=" + enc;
       }
 
-      /* ⭐ WIKIPEDIA — corretto */
+      /* ⭐ Wikipedia */
       else if (/wikipedia\.org/i.test(tpl)) {
-        finalURL = "https://it.wikipedia.org/wiki/" +
-                   encodeURIComponent(q.replace(/\s+/g, "_"));
+        finalURL =
+          "https://it.wikipedia.org/wiki/" +
+          encodeURIComponent(q.replace(/\s+/g, "_"));
       }
 
-      /* ⭐ Tutte le altre fonti */
+      /* ⭐ Altri motori */
       else {
         finalURL = tpl.replace("{q}", encodeURIComponent(q));
       }
@@ -6091,13 +6092,10 @@ document.addEventListener("DOMContentLoaded", () => {
       window.open(finalURL, "_blank", "noopener");
     });
 
-  }); // chiusura submit
+  });
 
-}); // chiusura DOMContentLoaded
+});
 </script>
-
-
-
 
 <script id="thunder-toggle-fix">
       (function(){
