@@ -46,9 +46,6 @@
 
 <!-- Dizionario dopo -->
 
-
-
-
   <!-- FONTS (versione unificata) -->
   <link rel="preload" as="style"
         href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400;600&display=swap"
@@ -4713,9 +4710,6 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 </ul>
 </aside>
 
-<!-- 📘 Pulsante apertura dizionario (nuovo sistema modale) -->
-<button id="openDict" class="dict-icon-btn" aria-label="Apri dizionario">📘</button>
-
 
 <!-- Enciclopedia filosofica (IEP tradotta) -->
 <div class="right-box" id="iep-linkbox">
@@ -8998,6 +8992,124 @@ document.addEventListener("DOMContentLoaded", () => {
 <script src="/esterno/js/dict.js"></script>
   </div>
 </div>
-      
+   <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const openDictBtn = document.getElementById('openDict');
+    const openDictFloat = document.getElementById('openDictFloat'); // se lo mantieni
+    
+    function openDictionary() {
+        // Qui va la logica per aprire il dizionario
+        // Opzioni:
+        
+        // 1. Apri un URL esterno
+        // window.open('https://dizionario-filosofico.com', '_blank');
+        
+        // 2. Apri un modal interno
+        openDictionaryModal();
+        
+        // 3. Apri una pagina interna
+        // window.location.href = '/dizionario/';
+        
+        console.log('Apri dizionario - funzione da implementare');
+    }
+    
+    function openDictionaryModal() {
+        // Crea modal per il dizionario
+        const modal = document.createElement('div');
+        modal.innerHTML = `
+            <div style="
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.8);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10000;
+            ">
+                <div style="
+                    background: var(--bg);
+                    border: 2px solid var(--gold);
+                    border-radius: 15px;
+                    padding: 2rem;
+                    max-width: 90%;
+                    max-height: 90%;
+                    overflow: auto;
+                    position: relative;
+                ">
+                    <button onclick="this.parentElement.parentElement.remove()" style="
+                        position: absolute;
+                        top: 10px;
+                        right: 10px;
+                        background: none;
+                        border: none;
+                        color: var(--gold);
+                        font-size: 1.5rem;
+                        cursor: pointer;
+                    ">×</button>
+                    
+                    <h3 style="color: var(--gold); margin-bottom: 1rem;">📘 Dizionario Filosofico</h3>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <h4>🔍 Cerca termine</h4>
+                            <input type="text" placeholder="Inserisci termine..." style="
+                                width: 100%;
+                                padding: 0.5rem;
+                                border: 1px solid var(--gold);
+                                border-radius: 5px;
+                                background: rgba(20,20,40,0.8);
+                                color: white;
+                            ">
+                        </div>
+                        
+                        <div>
+                            <h4>📚 Categorie</h4>
+                            <select style="width: 100%; padding: 0.5rem; border-radius: 5px;">
+                                <option>Tutti i termini</option>
+                                <option>Metafisica</option>
+                                <option>Epistemologia</option>
+                                <option>Etica</option>
+                                <option>Logica</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 2rem;">
+                        <h4>📖 Termini recenti</h4>
+                        <ul style="list-style: none; padding: 0;">
+                            <li><a href="#" style="color: var(--text-accent);">A priori / A posteriori</a></li>
+                            <li><a href="#" style="color: var(--text-accent);">Dialettica</a></li>
+                            <li><a href="#" style="color: var(--text-accent);">Eudaimonia</a></li>
+                            <li><a href="#" style="color: var(--text-accent);">Fenomeno</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+    }
+    
+    // Event listeners
+    if (openDictBtn) {
+        openDictBtn.addEventListener('click', openDictionary);
+    }
+    
+    if (openDictFloat) {
+        openDictFloat.addEventListener('click', openDictionary);
+    }
+    
+    // Aggiungi anche tasto scorciatoia (Ctrl+D)
+    document.addEventListener('keydown', function(e) {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
+            e.preventDefault();
+            openDictionary();
+        }
+    });
+});
+</script>   
 </body>
 </html>
