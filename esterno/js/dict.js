@@ -69,4 +69,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+document.getElementById("dict-close").addEventListener("click", () => {
+    document.getElementById("dict-modal").style.transform = "translateX(100%)";
+    document.getElementById("dict-overlay").style.opacity = "0";
+    document.getElementById("dict-overlay").style.pointerEvents = "none";
+});
 
