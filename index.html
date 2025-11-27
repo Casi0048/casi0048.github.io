@@ -6043,8 +6043,9 @@ function softPlay(audio, volume, delay) {
       })();
     </script>
 <script>
-/* === DIZIONARIO FILOSOFICO === */
+/* === DIZIONARIO FILOSOFICO — VERSIONE FUNZIONANTE === */
 document.addEventListener('DOMContentLoaded', () => {
+
   const form  = document.getElementById('dict-form');
   const input = document.getElementById('dict-q');
 
@@ -6065,35 +6066,34 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     checks.forEach((chk) => {
-  const urlTpl = chk.dataset.url || '';
-  let finalURL;
+      const urlTpl = chk.dataset.url || '';
+      let finalURL;
 
-  // Treccani: costruzione diretta, infallibile
-  if (/treccani\.it/i.test(urlTpl)) {
-    finalURL = "https://www.treccani.it/risultati?q=" + encodeURIComponent(q);
-  }
+      /* === TRECCANI: URL diretto, affidabile === */
+      if (/treccani\.it/i.test(urlTpl)) {
+        finalURL = "https://www.treccani.it/risultati?q=" + encodeURIComponent(q);
+      }
 
-  // Wikipedia con format corretto
-  else if (/wikipedia\.org/i.test(urlTpl)) {
-    finalURL = "https://it.wikipedia.org/wiki/" + encodeURIComponent(q.replace(/\s+/g, "_"));
-  }
+      /* === WIKIPEDIA === */
+      else if (/wikipedia\.org/i.test(urlTpl)) {
+        finalURL = "https://it.wikipedia.org/wiki/" +
+                   encodeURIComponent(q.replace(/\s+/g, "_"));
+      }
 
-  // Tutte le altre fonti
-  else {
-    finalURL = urlTpl.replace("{q}", encodeURIComponent(q));
-  }
+      /* === TUTTE LE ALTRE FONTI === */
+      else {
+        finalURL = urlTpl.replace("{q}", encodeURIComponent(q));
+      }
 
-  window.open(finalURL, "_blank", "noopener");
-});
+      window.open(finalURL, "_blank", "noopener");
+    });  // <-- CHIUSURA forEach
 
+  }); // <-- CHIUSURA submit
 
-/* === FUNZIONI === */
-function wikipediaURL(term) {
-  return `https://it.wikipedia.org/wiki/${encodeURIComponent(
-    term.trim().replace(/\s+/g, '_')
-  )}`;
-}
+}); // <-- CHIUSURA DOMContentLoaded
+
 </script>
+
 
 <script id="thunder-toggle-fix">
       (function(){
