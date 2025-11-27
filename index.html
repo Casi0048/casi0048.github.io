@@ -4691,22 +4691,35 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
         <select id="customTranslate" class="translate-select"> … </select>
     </div>
 
-    <!-- NUOVO PULSANTE DIZIONARIO -->
-    <button id="openDict" class="dict-icon-btn">📘</button>
-</div>
-  <!-- Enciclopedia filosofica (IEP tradotta) -->
-<div class="right-box" id="iep-linkbox">
+    <!-- ====== MODALE LATERALE — Dizionario ====== -->
+<div id="dict-overlay"></div>
 
-  <h3>📚 Enciclopedia filosofica IEP</h3>
+<div id="dict-modal">
 
-  <a class="btn"
-     href="https://iep-utm-edu.translate.goog/a/?_x_tr_sl=auto&_x_tr_tl=it&_x_tr_hl=uk&_x_tr_pto=wapp"
-     target="_blank" rel="noopener">
-    Apri versione tradotta
-  </a>
-<div class="mini">
-      oppure <a href="https://iep.utm.edu/" target="_blank" rel="noopener">IEP originale</a>
+  <div class="dict-header">
+    <h2>📘 Dizionario Filosofico</h2>
+    <button id="dict-close">×</button>
   </div>
+
+  <div class="dict-body">
+
+    <input id="dict-q" type="search" placeholder="Cerca un termine…">
+
+    <div id="dict-suggestions"></div>
+
+    <div class="sources">
+      <label><input type="checkbox" checked data-url="https://duckduckgo.com/?q=site%3Aplato.stanford.edu+{q}"> SEP</label>
+      <label><input type="checkbox" checked data-url="https://duckduckgo.com/?q=site%3Aiep.utm.edu+{q}"> IEP</label>
+      <label><input type="checkbox" checked data-url="https://www.google.com/search?q=site%3Atreccani.it+{q}"> Treccani</label>
+      <label><input type="checkbox" data-url="https://it.wikipedia.org/w/index.php?search={q}"> Wikipedia</label>
+      <label><input type="checkbox" data-url="https://www.britannica.com/search?query={q}"> Britannica</label>
+    </div>
+
+    <button class="btn" id="dict-search">Cerca</button>
+    <button class="btn small" id="open-all">Apri tutte</button>
+
+  </div>
+
 </div>
 
 <div class="right-embed">
@@ -8928,41 +8941,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 </script>
-<!-- ====== MODALE LATERALE — Dizionario ====== -->
-<div id="dict-overlay"></div>
-
-<div id="dict-modal">
-
-  <div class="dict-header">
-    <h2>📘 Dizionario Filosofico</h2>
-    <button id="dict-close" class="dict-close-btn">×</button>
-  </div>
-
-  <div class="dict-body">
-
-    <input id="dict-q" type="search" placeholder="Cerca un termine…">
-
-    <div id="dict-suggestions"></div>
-
-    <div class="sources">
-      <label><input type="checkbox" checked data-url="https://duckduckgo.com/?q=site%3Aplato.stanford.edu+{q}"> SEP</label>
-
-      <label><input type="checkbox" checked data-url="https://duckduckgo.com/?q=site%3Aiep.utm.edu+{q}"> IEP</label>
-
-      <label><input type="checkbox" checked data-url="https://www.treccani.it/enciclopedia/ricerca/{q}/"> Treccani</label>
-
-      <label><input type="checkbox" data-url="https://it.wikipedia.org/w/index.php?search={q}"> Wikipedia</label>
-
-      <label><input type="checkbox" data-url="https://www.britannica.com/search?query={q}"> Britannica</label>
-    </div>
-
-    <button class="btn" id="dict-search">Cerca</button>
-    <button class="btn small" id="open-all">Apri tutte</button>
-  </div>
-
-</div>
-
-   <script>
+ <script>
 document.addEventListener("DOMContentLoaded", () => {
 
   const openBtn = document.getElementById("openDict");
