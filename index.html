@@ -86,7 +86,7 @@
   }
 }
 </script>
-</head>
+
 <style>
 
 /* === ACCENT TOKENS (default: gold) === */
@@ -1158,6 +1158,97 @@ nav.menu-desktop .mega-menu.right-align:hover {
       #audio-player{ width: 100%; max-width: 520px; }
       }
     </style>
+  <style>
+/* ============================================
+   DIZIONARIO FILOSOFICO — STILI COMPLETI
+   ============================================ */
+
+#dict-compact {
+  margin-top: 20px;
+  background: var(--box-dark, rgba(255,255,255,0.06));
+  padding: 18px;
+  border: 1px solid var(--box-border, rgba(255,255,255,0.12));
+  border-radius: 8px;
+}
+
+#dict-compact h3 {
+  margin-bottom: 6px;
+  font-family: "Cinzel", serif;
+}
+
+#dict-compact .mini {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  margin-bottom: 10px;
+}
+
+#dict-q {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--box-border, rgba(255,255,255,0.12));
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text, #e9eef5);
+}
+
+/* FONTI */
+.sources {
+  margin: 12px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.sources label {
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Bottone "Apri tutte le fonti" */
+#open-all.btn.small {
+  margin-top: 8px;
+  font-size: 0.8rem;
+  opacity: 0.85;
+  padding: 4px 8px;
+}
+
+/* ===== SUGGERIMENTI ===== */
+#dict-suggestions {
+  margin-top: 6px;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid var(--box-border, rgba(255,255,255,0.12));
+  border-radius: 6px;
+  display: none;
+  flex-direction: column;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+#dict-suggestions.visible {
+  display: flex;
+}
+
+#dict-suggestions div {
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-size: 0.9rem;
+}
+
+#dict-suggestions div:hover {
+  background: rgba(255,255,255,0.08);
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 720px) {
+  .sources {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+
 <style id="search-related-css">
       .related-results{
       margin-top:.6rem; padding-top:.6rem;
@@ -4668,29 +4759,29 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 <li><a href="articoli/battaglia_maratona.html">Battaglia di Maratona</a></li>
 </ul>
 </aside>
-<!-- Dizionario filosofico — multi-fonte, compatto -->
+<!-- 📘 DIZIONARIO FILOSOFICO — MULTI-FONTE -->
 <div class="right-box" id="dict-compact">
 
   <h3>📘 Dizionario filosofico</h3>
-  <div class="mini">multi-fonte, compatto</div>
+  <div class="mini">multi-fonte, con suggerimenti intelligenti</div>
 
-  <form id="dict-form">
+  <form id="dict-form" autocomplete="off">
+
+    <!-- Campo di ricerca -->
     <div class="row">
       <input id="dict-q" type="search" placeholder="Cerca un termine…">
     </div>
 
-    <div class="sources">
-      <label><input type="checkbox" checked data-url="https://duckduckgo.com/?q=site%3Aplato.stanford.edu+{q}"> SEP</label>
-      <label><input type="checkbox" checked data-url="https://duckduckgo.com/?q=site%3Aiep.utm.edu+{q}"> IEP</label>
-     <label>
-  <input type="checkbox"
-         checked
-         data-url="https://www.treccani.it/ricerca/?q={q}">
-  Treccani
-</label>
+    <!-- Contenitore suggerimenti -->
+    <div id="dict-suggestions" class="suggestions hidden"></div>
 
-      <label><input type="checkbox" data-url="https://it.wikipedia.org/w/index.php?search={q}"> Wikipedia</label>
-      <label><input type="checkbox" data-url="https://www.britannica.com/search?query={q}"> Britannica</label>
+    <!-- Fonti -->
+    <div class="sources">
+      <label><input type="checkbox" checked data-url="sep"> SEP</label>
+      <label><input type="checkbox" checked data-url="iep"> IEP</label>
+      <label><input type="checkbox" checked data-url="treccani"> Treccani</label>
+      <label><input type="checkbox" checked data-url="wiki"> Wikipedia</label>
+      <label><input type="checkbox" data-url="britannica"> Britannica</label>
     </div>
 
     <div class="row">
@@ -4698,11 +4789,11 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
     </div>
   </form>
 
-</div> <!-- ← CORRETTA CHIUSURA -->
+  <button id="open-all" class="btn small">Apri tutte le fonti</button>
+</div>
 
-<!-- Enciclopedia filosofica (IEP tradotta) -->
+<!-- 📚 Enciclopedia filosofica (IEP tradotta) -->
 <div class="right-box" id="iep-linkbox">
-
   <h3>📚 Enciclopedia filosofica (IEP)</h3>
 
   <div class="row">
@@ -4714,10 +4805,10 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
   </div>
 
   <div class="mini">
-    oppure <a href="https://iep.utm.edu/" rel="noopener" target="_blank">IEP originale</a>
+    oppure <a href="https://iep.utm.edu/" target="_blank" rel="noopener">IEP originale</a>
   </div>
-
 </div>
+
 
 
 <div class="right-embed">
@@ -8845,6 +8936,107 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('❌ Slider initialization failed:', error);
         }
     }, 100);
+});
+</script>
+              <script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const form   = document.getElementById("dict-form");
+  const input  = document.getElementById("dict-q");
+  const sugBox = document.getElementById("dict-suggestions");
+
+  if (!form || !input) return;
+
+  /* ====================================================
+     1) AUTOCOMPLETE DA dict-data.js
+     ==================================================== */
+  input.addEventListener("input", () => {
+    const q = input.value.trim().toLowerCase();
+    if (!q) { sugBox.classList.remove("visible"); return; }
+
+    const list = DICT_TERMS.filter(t => t.startsWith(q)).slice(0, 20);
+
+    sugBox.innerHTML = list.map(t => `<div>${t}</div>`).join("");
+    sugBox.classList.add("visible");
+
+    sugBox.querySelectorAll("div").forEach(el => {
+      el.addEventListener("click", () => {
+        input.value = el.textContent;
+        sugBox.classList.remove("visible");
+      });
+    });
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!sugBox.contains(e.target) && e.target !== input) {
+      sugBox.classList.remove("visible");
+    }
+  });
+
+  /* ====================================================
+     2) COSTRUTTORE URL DELLE FONTI
+     ==================================================== */
+  function buildURL(src, q) {
+
+    // ---- SEP ----
+    if (src === "sep") {
+      return `https://duckduckgo.com/?q=site%3Aplato.stanford.edu+${encodeURIComponent(q)}`;
+    }
+
+    // ---- IEP ----
+    if (src === "iep") {
+      return `https://duckduckgo.com/?q=site%3Aiep.utm.edu+${encodeURIComponent(q)}`;
+    }
+
+    // ---- WIKIPEDIA ----
+    if (src === "wiki") {
+      return `https://it.wikipedia.org/wiki/${encodeURIComponent(q.replace(/\s+/g, "_"))}`;
+    }
+
+    // ---- BRITANNICA ----
+    if (src === "britannica") {
+      return `https://www.britannica.com/search?query=${encodeURIComponent(q)}`;
+    }
+
+    // ---- TRECCANI — versione 100% funzionante ----
+    if (src === "treccani") {
+      const qEncoded = encodeURIComponent(q);
+      return `https://www.treccani.it/enciclopedia/ricerca/${qEncoded}/?search=${qEncoded}`;
+    }
+
+    return null;
+  }
+
+  /* ====================================================
+     3) SUBMIT FORM
+     ==================================================== */
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const q = input.value.trim();
+    if (!q) return;
+
+    const checks = form.querySelectorAll(".sources input[type='checkbox']:checked");
+    if (!checks.length) return;
+
+    checks.forEach(chk => {
+      const key = chk.dataset.url;
+      const finalURL = buildURL(key, q);
+      if (finalURL) window.open(finalURL, "_blank", "noopener");
+    });
+  });
+
+  /* ====================================================
+     4) APRI TUTTE LE FONTI
+     ==================================================== */
+  document.getElementById("open-all").addEventListener("click", () => {
+    const q = input.value.trim();
+    if (!q) return;
+    form.querySelectorAll(".sources input").forEach(chk => {
+      const url = buildURL(chk.dataset.url, q);
+      if (url) window.open(url, "_blank", "noopener");
+    });
+  });
+
 });
 </script>
 </body>
