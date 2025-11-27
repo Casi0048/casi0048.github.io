@@ -6049,7 +6049,7 @@ function softPlay(audio, volume, delay) {
       })();
     </script>
 <script>
-/* === DIZIONARIO FILOSOFICO — VERSIONE SICURA === */
+/* === DIZIONARIO FILOSOFICO — VERSIONE PERFETTA === */
 document.addEventListener("DOMContentLoaded", () => {
 
   const form  = document.getElementById("dict-form");
@@ -6070,13 +6070,20 @@ document.addEventListener("DOMContentLoaded", () => {
       const tpl = chk.dataset.url || "";
       let finalURL = "";
 
-      if (/treccani\.it/.test(tpl)) {
-        finalURL = "https://www.treccani.it/ricerca/?q=" + encodeURIComponent(q);
+      /* ⭐ TRECCANI — NO encodeURIComponent (rompe gli accenti)
+         Usa solo sostituzione spazi → "+" */
+      if (/treccani\.it/i.test(tpl)) {
+        const qTreccani = q.replace(/\s+/g, "+");
+        finalURL = "https://www.treccani.it/ricerca/?q=" + qTreccani;
       }
-      else if (/wikipedia\.org/.test(tpl)) {
+
+      /* ⭐ WIKIPEDIA — corretto */
+      else if (/wikipedia\.org/i.test(tpl)) {
         finalURL = "https://it.wikipedia.org/wiki/" +
-                    encodeURIComponent(q.replace(/\s+/g, "_"));
+                   encodeURIComponent(q.replace(/\s+/g, "_"));
       }
+
+      /* ⭐ Tutte le altre fonti */
       else {
         finalURL = tpl.replace("{q}", encodeURIComponent(q));
       }
@@ -6084,10 +6091,11 @@ document.addEventListener("DOMContentLoaded", () => {
       window.open(finalURL, "_blank", "noopener");
     });
 
-  }); // <-- CHIUSURA submit
+  }); // chiusura submit
 
-}); // <-- CHIUSURA DOMContentLoaded
+}); // chiusura DOMContentLoaded
 </script>
+
 
 
 
