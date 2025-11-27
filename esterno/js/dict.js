@@ -1,108 +1,63 @@
 // ============================================================
 //   DIZIONARIO FILOSOFICO — MODALE LATERALE CON GSAP
 // ============================================================
-
 document.addEventListener("DOMContentLoaded", () => {
 
-  const openBtn  = document.getElementById("openDict");
-  const modal    = document.getElementById("dict-modal");
-  const overlay  = document.getElementById("dict-overlay");
-  const closeBtn = document.getElementById("dict-close");
+    const openBtn = document.getElementById("openDict");
+    const closeBtn = document.getElementById("dict-close");
+    const overlay = document.getElementById("dict-overlay");
+    const modal = document.getElementById("dict-modal");
 
-  const input    = document.getElementById("dict-q");
-  const sugBox   = document.getElementById("dict-suggestions");
+    const input = document.getElementById("dict-q");
+    const searchBtn = document.getElementById("dict-search");
+    const openAllBtn = document.getElementById("open-all");
 
-  const btnSearch = document.getElementById("dict-search");
-  const btnAll    = document.getElementById("open-all");
+    /* ========= APERTURA ========= */
+    function openModal() {
+        if (!modal) return;
+        modal.classList.add("open");
+        overlay.style.opacity = "1";
+        overlay.style.pointerEvents = "auto";
+        input.focus();
 
-  if (!openBtn || !modal || !overlay) return;
-
-  // ======= GSAP TIMELINES =======
-  const tlOpen = gsap.timeline({ paused: true });
-  const tlClose = gsap.timeline({ paused: true });
-
-  tlOpen
-    .to(overlay, { opacity: 1, pointerEvents: "auto", duration: 0.25 })
-    .to(modal,   { x: 0, duration: 0.35, ease: "power3.out" }, "<");
-
-  tlClose
-    .to(modal,   { x: "100%", duration: 0.3, ease: "power3.in" })
-    .to(overlay, { opacity: 0, pointerEvents: "none", duration: 0.25 }, "<0.05");
-
-  function openDict() {
-    tlClose.pause(0);
-    tlOpen.play();
-    setTimeout(() => input.focus(), 300);
-  }
-
-  function closeDict() {
-    tlOpen.pause(0);
-    tlClose.play();
-    sugBox.classList.remove("visible");
-  }
-
-  openBtn .addEventListener("click", openDict);
-  closeBtn.addEventListener("click", closeDict);
-  overlay .addEventListener("click", closeDict);
-
-  // ======= Suggerimenti =======
-  const SUGGESTIONS = [
-    "arché","anima","logos","ente","virtù",
-    "entelechia","causa prima","ragion pratica",
-    "eudaimonia","metafisica","noumeno","intelletto"
-  ];
-
-  input.addEventListener("input", () => {
-    const q = input.value.trim().toLowerCase();
-    if (!q) { sugBox.classList.remove("visible"); return; }
-
-    const list = SUGGESTIONS.filter(t => t.includes(q)).slice(0,20);
-
-    sugBox.innerHTML =
-      list.map(t => `<div data-v="${t}">${t}</div>`).join("");
-
-    sugBox.classList.add("visible");
-  });
-
-  sugBox.addEventListener("click", e => {
-    if (e.target.dataset.v) {
-      input.value = e.target.dataset.v;
-      sugBox.classList.remove("visible");
+        gsap.fromTo(modal, {x: 360}, {x: 0, duration: .35, ease: "power3.out"});
     }
-  });
 
-  // ======= URL Costruite =======
-  const TRECCANI = q =>
-    `https://www.treccani.it/enciclopedia/ricerca/${encodeURIComponent(q)}/`;
+    /* ========= CHIUSURA ========= */
+    function closeModal() {
+        if (!modal) return;
+        modal.classList.remove("open");
+        overlay.style.opacity = "0";
+        overlay.style.pointerEvents = "none";
 
-  const WIKI = q =>
-    `https://it.wikipedia.org/wiki/${encodeURIComponent(q.replace(/\s+/g, "_"))}`;
+        gsap.to(modal, {x: 360, duration: .3, ease: "power2.in"});
+    }
 
-  // ======= Funzione ricerca =======
-  function performSearch() {
-    const q = input.value.trim();
-    if (!q) return;
+    /* ========= EVENTI ========= */
+    if (openBtn)   openBtn.addEventListener("click", openModal);
+    if (closeBtn)  closeBtn.addEventListener("click", closeModal);
+    if (overlay)   overlay.addEventListener("click", closeModal);
 
-    const checks = modal.querySelectorAll(".sources input:checked");
+    /* ========= RICERCA ========= */
+    function doSearch() {
+        const q = input.value.trim();
+        if (!q) return;
 
-    checks.forEach(chk => {
-      const tpl = chk.dataset.url;
-      let url = "";
+        const checks = modal.querySelectorAll(".sources input[type=checkbox]:checked");
+        if (!checks.length) return;
 
-      if (/treccani/.test(tpl)) url = TRECCANI(q);
-      else if (/wikipedia/.test(tpl)) url = WIKI(q);
-      else url = tpl.replace("{q}", encodeURIComponent(q));
+        checks.forEach(chk => {
+            const tpl = chk.dataset.url || "";
+            const url = tpl.replace("{q}", encodeURIComponent(q));
+            window.open(url, "_blank", "noopener");
+        });
+    }
 
-      window.open(url, "_blank", "noopener");
+    searchBtn.addEventListener("click", doSearch);
+    openAllBtn.addEventListener("click", doSearch);
+
+    input.addEventListener("keydown", e => {
+        if (e.key === "Enter") doSearch();
     });
-  }
-
-  btnSearch.addEventListener("click", performSearch);
-
-  btnAll.addEventListener("click", () => {
-    modal.querySelectorAll(".sources input").forEach(c => c.checked = true);
-    performSearch();
-  });
-
 });
 
