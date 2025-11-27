@@ -6042,36 +6042,91 @@ function softPlay(audio, volume, delay) {
         loadIndex().then(()=>{ if (input.value.trim()) search(input.value); });
       })();
     </script>
-<script id="dict-compact-js">
-(function(){
-  const form = document.getElementById('dict-form');
+<script>
+/* === DIZIONARIO FILOSOFICO === */
+document.addEventListener('DOMContentLoaded', () => {
+  const form  = document.getElementById('dict-form');
   const input = document.getElementById('dict-q');
-  if(!form || !input) return;
-  
-  form.addEventListener('submit', function(e){
+
+  if (!form || !input) {
+    console.warn('EDS dizionario: form o input non trovati');
+    return;
+  }
+
+  form.addEventListener('submit', (e) => {
     e.preventDefault();
-    const q = (input.value || '').trim();
-    if(!q) { 
-      input.focus(); 
-      return; 
-    }
-    
+    const q = input.value.trim();
+    if (!q) return;
+
     const checks = form.querySelectorAll('.sources input[type="checkbox"]:checked');
-    let opened = 0;
-    
-    checks.forEach(ch => {
-      const tmpl = ch.getAttribute('data-url');
-      if(!tmpl) return;
-      const url = tmpl.replace('{q}', encodeURIComponent(q));
-      const w = window.open(url, '_blank', 'noopener');
-      if(w) opened++;
-    });
-    
-    if(!opened){
-      window.open('https://duckduckgo.com/?q=site%3Aiep.utm.edu+' + encodeURIComponent(q), '_blank', 'noopener');
+    if (!checks.length) {
+      console.warn('Nessuna fonte selezionata');
+      return;
     }
+
+    checks.forEach((chk, i) => {
+      const urlTpl = chk.dataset.url || '';
+      let finalURL;
+
+      if (/treccani\.it/i.test(urlTpl)) {
+        finalURL = treccaniURL(q, TRECCANI_SECTION);
+      } else if (/wikipedia\.org/i.test(urlTpl)) {
+        finalURL = wikipediaURL(q);
+      } else {
+        finalURL = urlTpl.replace('{q}', encodeURIComponent(q));
+      }
+
+      window.open(finalURL, '_blank', 'noopener');
+    });
   });
-})();
+});
+
+/* === CONFIG === */
+const TRECCANI_SECTION = 'vocabolario';
+
+/* === FUNZIONI === */
+function slugifyIT(term) {
+  return term.normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim();
+}
+
+function treccaniURL(term, section = 'vocabolario') {
+  const base = 'https://www.treccani.it';
+  const simple = slugifyIT(term).replace(/\s+/g, '');
+  return section === 'enciclopedia'
+    ? `${base}/enciclopedia/${simple}/`
+    : `${base}/vocabolario/${simple}/`;
+}
+
+function wikipediaURL(term) {
+  return `https://it.wikipedia.org/wiki/${encodeURIComponent(
+    term.trim().replace(/\s+/g, '_')
+  )}`;
+}
+
+/* === PULIZIA BOX CERCA === */
+document.addEventListener('DOMContentLoaded', () => {
+  const search = document.getElementById('site-search');
+  const clear  = document.querySelector('.search-container .clear-search');
+  if (!search || !clear) return;
+
+  function updateClearVisibility() {
+    clear.style.display = search.value.trim() ? 'flex' : 'none';
+  }
+
+  search.addEventListener('input', updateClearVisibility);
+
+  clear.addEventListener('click', () => {
+    search.value = '';
+    search.focus();
+    updateClearVisibility();
+  });
+
+  updateClearVisibility();
+});
 </script>
 <script id="thunder-toggle-fix">
       (function(){
