@@ -6355,15 +6355,18 @@ document.addEventListener('DOMContentLoaded', ()=>{
       comet.style.setProperty('--head-pos', 'left');
     }
 
-    // sposta la testolina luminosa a seconda della direzione
-    comet.style.setProperty('--duration', `${duration}s`);
-    comet.style.animationDuration = `${duration}s`;
+   // sposta la testolina luminosa a seconda della direzione
+comet.style.setProperty('--duration', `${duration}s`);
+comet.style.animationDuration = `${duration}s`;
 
-    const head = comet::after;
-    if(dir === 'rtl') {
-      comet.style.setProperty('--head-side', 'left');
-    }
-
+// Controlla la direzione e imposta la posizione della testa
+if(dir === 'rtl') {
+    // Da destra a sinistra - testa a destra
+    comet.style.setProperty('--head-position', '0px'); // right: 0
+} else {
+    // Da sinistra a destra - testa a sinistra  
+    comet.style.setProperty('--head-position', '0px'); // left: 0
+}
     // aggiunta
     BODY.appendChild(comet);
     setTimeout(()=> comet.remove(), duration*1000);
