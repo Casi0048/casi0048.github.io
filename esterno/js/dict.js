@@ -1,67 +1,149 @@
 // ============================================================
-//   DIZIONARIO FILOSOFICO — MODALE LATERALE
+//   DIZIONARIO FILOSOFICO — VERSIONE CORRETTA
 // ============================================================
-document.addEventListener("DOMContentLoaded", () => {
-  console.log("📘 Dict.js caricato - CERCO ELEMENTI...");
+document.addEventListener("DOMContentLoaded", function() {
+    console.log("📘 Dict.js - Inizializzazione");
 
-  // ===== Cerca TUTTI i possibili ID =====
-  const possibleButtons = [
-    "openDict", "dict-open", "btn-dict", "dictionary-btn", 
-    "open-dictionary", "dict-button"
-  ];
+    const btnOpen = document.getElementById("openDict");
+    const modal = document.getElementById("dict-modal");
+    const overlay = document.getElementById("dict-overlay");
+    const btnClose = document.getElementById("dict-close");
+    const input = document.getElementById("dict-q");
+    const btnSearch = document.getElementById("dict-search");
+    const btnOpenAll = document.getElementById("open-all");
 
-  let btnOpen = null;
-  for (const id of possibleButtons) {
-    btnOpen = document.getElementById(id);
-    if (btnOpen) {
-      console.log(`✅ Trovato bottone con ID: ${id}`);
-      break;
+    // Verifica elementi
+    if (!btnOpen || !modal || !overlay) {
+        console.error("❌ Elementi mancanti");
+        return;
     }
-  }
 
-  // ===== Elementi principali =====
-  const modal = document.getElementById("dict-modal");
-  const overlay = document.getElementById("dict-overlay");
-  const btnClose = document.getElementById("dict-close");
-  const input = document.getElementById("dict-q");
-  const btnSearch = document.getElementById("dict-search");
-  const btnOpenAll = document.getElementById("open-all");
+    console.log("✅ Tutti gli elementi trovati");
 
-  // ===== DEBUG COMPLETO =====
-  console.log("=== DEBUG DIZIONARIO ===");
-  console.log("btnOpen:", btnOpen);
-  console.log("modal:", modal);
-  console.log("overlay:", overlay);
-  console.log("btnClose:", btnClose);
-  console.log("input:", input);
-  console.log("btnSearch:", btnSearch);
-  console.log("btnOpenAll:", btnOpenAll);
-  console.log("=========================");
+    // === APERTURA MODALE ===
+    function openDict() {
+        console.log("🎯 Apertura modale attivata");
+        overlay.style.display = 'block';
+        modal.style.display = 'block';
+        
+        // Trigger reflow
+        void overlay.offsetHeight;
+        void modal.offsetHeight;
+        
+        overlay.style.opacity = '1';
+        overlay.style.pointerEvents = 'auto';
+        modal.style.transform = 'translateX(0)';
+    }
 
-  if (!btnOpen) {
-    console.error("❌ Nessun bottone dizionario trovato! Cercato:", possibleButtons);
+    // === CHIUSURA MODALE ===
+    function closeDict() {
+        console.log("🔒 Chiusura modale");
+        overlay.style.opacity = '0';
+        overlay.style.pointerEvents = 'none';
+        modal.style.transform = 'translateX(100%)';
+        
+        // Nascondi dopo animazione
+        setTimeout(() => {
+            overlay.style.display = 'none';
+            modal.style.display = 'none';
+        }, 300);
+    }
+
+    // === EVENT LISTENERS ===
     
-    // Mostra tutti i bottoni nella pagina
-    const allButtons = document.querySelectorAll('button, [onclick]');
-    console.log("Tutti i bottoni nella pagina:", allButtons);
-    return;
-  }
-
-  if (!modal || !overlay) {
-    console.error("❌ Modale o overlay non trovati!");
-    return;
-  }
-
-  /* ========== Apertura modale ========== */
-  btnOpen.addEventListener("click", (e) => {
-    console.log("🎯 Click sul bottone dizionario!", e);
+    // 1. Click sul bottone - USARE CAPTURE
+    btnOpen.addEventListener("click", openDict, true);
     
-    overlay.style.pointerEvents = "auto";
-    overlay.style.opacity = "1";
-    modal.style.transform = "translateX(0)";
+    // 2. Anche con mousedown per sicurezza
+    btnOpen.addEventListener("mousedown", function(e) {
+        e.preventDefault();
+        openDict();
+    });
     
-    console.log("📘 Modale aperto");
-  });
+    // 3. Chiusura
+    btnClose.addEventListener("click", closeDict);
+    overlay.addEventListener("click", closeDict);
 
-  // [RESTANTE CODICE IDENTICO...]
+    // 4. Previeni chiusura quando clicchi nella modale
+    modal.addEventListener("click", function(e) {
+        e.stopPropagation();
+    });
+
+    // === RICERCA ===
+    function handleSearch(openAll = false) {
+        const q = input.value.trim();
+        if (!q) {
+            alert("Inserisci un termine da cercare");
+            return;
+        }
+
+        const encoded = encodeURIComponent(q);
+        const sources = [
+            { 
+                name: "SEP", 
+                url: `https://plato.stanford.edu/search/search.html?query=${encoded}`,
+                checked: true
+            },
+            { 
+                name: "IEP", 
+                url: `https://iep.utm.edu/search/?q=${encoded}`,
+                checked: true  
+            },
+            { 
+                name: "Treccani", 
+                url: `https://www.treccani.it/ricerca/?q=${encoded}`,
+                checked: true
+            }
+        ];
+
+        if (openAll) {
+            // Apri tutte le fonti checked
+            sources.forEach(source => {
+                if (source.checked) {
+                    window.open(source.url, "_blank", "noopener");
+                }
+            });
+        } else {
+            // Apri solo la prima
+            window.open(sources[0].url, "_blank", "noopener");
+        }
+    }
+
+    btnSearch.addEventListener("click", () => handleSearch(false));
+    btnOpenAll.addEventListener("click", () => handleSearch(true));
+
+    // Ricerca con Enter
+    input.addEventListener("keypress", function(e) {
+        if (e.key === "Enter") {
+            handleSearch(false);
+        }
+    });
+
+    console.log("✅ Dizionario inizializzato con successo");
+
+    // === DEBUG: Test immediato ===
+    console.log("🧪 Test: bottone cliccabile?", btnOpen);
+    console.log("🧪 Test: modale esistente?", modal);
+    
+    // Forza visibilità bottone
+    btnOpen.style.display = 'block';
+    btnOpen.style.visibility = 'visible';
+    btnOpen.style.opacity = '1';
+    btnOpen.style.pointerEvents = 'auto';
+    btnOpen.style.zIndex = '9999';
 });
+
+// === BACKUP: Se DOMContentLoaded è già passato ===
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    setTimeout(() => {
+        const btnOpen = document.getElementById("openDict");
+        if (btnOpen) {
+            console.log("🔧 Backup initialization");
+            btnOpen.addEventListener("click", function() {
+                document.getElementById('dict-overlay').style.opacity = '1';
+                document.getElementById('dict-overlay').style.pointerEvents = 'auto';
+                document.getElementById('dict-modal').style.transform = 'translateX(0)';
+            }, true);
+        }
+    }, 1000);
+}
