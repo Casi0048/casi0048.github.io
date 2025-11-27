@@ -4671,56 +4671,47 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 </ul>
 </aside>
 <!-- 📘 DIZIONARIO FILOSOFICO — MULTI-FONTE -->
+<!-- DIZIONARIO FILOSOFICO — multi-fonte potenziato -->
 <div class="right-box" id="dict-compact">
 
   <h3>📘 Dizionario filosofico</h3>
-  <div class="mini">multi-fonte, con suggerimenti intelligenti</div>
+  <div class="mini">Ricerca multi-fonte velocissima</div>
 
-  <form id="dict-form" autocomplete="off">
+  <form id="dict-form">
 
-    <!-- Campo di ricerca -->
-    <div class="row">
       <input id="dict-q" type="search" placeholder="Cerca un termine…">
-    </div>
 
-    <!-- Contenitore suggerimenti -->
-    <div id="dict-suggestions" class="suggestions hidden"></div>
+      <!-- Suggerimenti -->
+      <div id="dict-suggestions"></div>
 
-    <!-- Fonti -->
-    <div class="sources">
-      <label><input type="checkbox" checked data-url="sep"> SEP</label>
-      <label><input type="checkbox" checked data-url="iep"> IEP</label>
-      <label><input type="checkbox" checked data-url="treccani"> Treccani</label>
-      <label><input type="checkbox" checked data-url="wiki"> Wikipedia</label>
-      <label><input type="checkbox" data-url="britannica"> Britannica</label>
-    </div>
+      <div class="sources">
+        <label><input type="checkbox" checked data-url="https://duckduckgo.com/?q=site%3Aplato.stanford.edu+{q}"> SEP</label>
+        <label><input type="checkbox" checked data-url="https://duckduckgo.com/?q=site%3Aiep.utm.edu+{q}"> IEP</label>
+        <label><input type="checkbox" checked data-url="https://www.treccani.it/enciclopedia/ricerca/{q}/"> Treccani</label>
+        <label><input type="checkbox" data-url="https://it.wikipedia.org/w/index.php?search={q}"> Wikipedia</label>
+        <label><input type="checkbox" data-url="https://www.britannica.com/search?query={q}"> Britannica</label>
+      </div>
 
-    <div class="row">
       <button class="btn" type="submit">Cerca</button>
-    </div>
+      <button type="button" id="open-all" class="btn small">Apri tutte</button>
+
   </form>
-
-  <button id="open-all" class="btn small">Apri tutte le fonti</button>
 </div>
 
-<!-- 📚 Enciclopedia filosofica (IEP tradotta) -->
+<!-- Enciclopedia filosofica (IEP tradotta) -->
 <div class="right-box" id="iep-linkbox">
-  <h3>📚 Enciclopedia filosofica (IEP)</h3>
 
-  <div class="row">
-    <a class="btn"
-       href="https://iep-utm-edu.translate.goog/a/?_x_tr_sl=auto&_x_tr_tl=it&_x_tr_hl=uk&_x_tr_pto=wapp"
-       rel="noopener" target="_blank">
-      Apri versione tradotta
-    </a>
-  </div>
+  <h3>📚 Enciclopedia filosofica IEP</h3>
 
-  <div class="mini">
-    oppure <a href="https://iep.utm.edu/" target="_blank" rel="noopener">IEP originale</a>
+  <a class="btn"
+     href="https://iep-utm-edu.translate.goog/a/?_x_tr_sl=auto&_x_tr_tl=it&_x_tr_hl=uk&_x_tr_pto=wapp"
+     target="_blank" rel="noopener">
+    Apri versione tradotta
+  </a>
+<div class="mini">
+      oppure <a href="https://iep.utm.edu/" target="_blank" rel="noopener">IEP originale</a>
   </div>
 </div>
-
-
 
 <div class="right-embed">
 <iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" src="https://www.youtube.com/embed/G_REgkOuQfw" title="Schopenhauer e Nietzsche (Hans-Georg Gadamer) - 3x4"></iframe>
@@ -8849,106 +8840,96 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 100);
 });
 </script>
-              <script>
+    <script>
 document.addEventListener("DOMContentLoaded", () => {
 
   const form   = document.getElementById("dict-form");
   const input  = document.getElementById("dict-q");
   const sugBox = document.getElementById("dict-suggestions");
+  const btnAll = document.getElementById("open-all");
 
   if (!form || !input) return;
 
-  /* ====================================================
-     1) AUTOCOMPLETE DA dict-data.js
-     ==================================================== */
-  input.addEventListener("input", () => {
-    const q = input.value.trim().toLowerCase();
-    if (!q) { sugBox.classList.remove("visible"); return; }
+  /* =============================
+     LISTA SUGGERIMENTI
+  ============================= */
+  const TERMI = [
+    "arché","anima","logos","ente","essere","entelechia","virtù","causa prima",
+    "ragion pratica","noumeno","libertà","tempo","sostanza","dovere",
+    "metafisica","trascendentale","giudizio","intelletto","cosmo","eudaimonia"
+  ];
 
-    const list = DICT_TERMS.filter(t => t.startsWith(q)).slice(0, 20);
+  function filterSuggestions(q) {
+    return TERMI.filter(t => t.toLowerCase().includes(q.toLowerCase())).slice(0,20);
+  }
 
-    sugBox.innerHTML = list.map(t => `<div>${t}</div>`).join("");
+  /* Suggerimenti live */
+  function updateSug() {
+    const q = input.value.trim();
+    if (!q) { sugBox.innerHTML=""; sugBox.classList.remove("visible"); return; }
+
+    const list = filterSuggestions(q);
+    if (!list.length) { sugBox.classList.remove("visible"); return; }
+
+    sugBox.innerHTML = list.map(t => `<div data-val="${t}">${t}</div>`).join("");
     sugBox.classList.add("visible");
+  }
 
-    sugBox.querySelectorAll("div").forEach(el => {
-      el.addEventListener("click", () => {
-        input.value = el.textContent;
-        sugBox.classList.remove("visible");
-      });
-    });
-  });
+  input.addEventListener("input", updateSug);
 
-  document.addEventListener("click", (e) => {
-    if (!sugBox.contains(e.target) && e.target !== input) {
+  sugBox.addEventListener("click", e => {
+    if (e.target.dataset.val) {
+      input.value = e.target.dataset.val;
       sugBox.classList.remove("visible");
     }
   });
 
-  /* ====================================================
-     2) COSTRUTTORE URL DELLE FONTI
-     ==================================================== */
-  function buildURL(src, q) {
 
-    // ---- SEP ----
-    if (src === "sep") {
-      return `https://duckduckgo.com/?q=site%3Aplato.stanford.edu+${encodeURIComponent(q)}`;
-    }
+  /* =============================
+     URL GENERATORI
+  ============================= */
 
-    // ---- IEP ----
-    if (src === "iep") {
-      return `https://duckduckgo.com/?q=site%3Aiep.utm.edu+${encodeURIComponent(q)}`;
-    }
+  const TRECCANI_URL = q =>
+    `https://www.treccani.it/enciclopedia/ricerca/${encodeURIComponent(q)}/`;
 
-    // ---- WIKIPEDIA ----
-    if (src === "wiki") {
-      return `https://it.wikipedia.org/wiki/${encodeURIComponent(q.replace(/\s+/g, "_"))}`;
-    }
+  const WIKI_URL = q =>
+    `https://it.wikipedia.org/wiki/${encodeURIComponent(q.replace(/\s+/g,"_"))}`;
 
-    // ---- BRITANNICA ----
-    if (src === "britannica") {
-      return `https://www.britannica.com/search?query=${encodeURIComponent(q)}`;
-    }
 
-    // ---- TRECCANI — versione 100% funzionante ----
-    if (src === "treccani") {
-      const qEncoded = encodeURIComponent(q);
-      return `https://www.treccani.it/enciclopedia/ricerca/${qEncoded}/?search=${qEncoded}`;
-    }
-
-    return null;
-  }
-
-  /* ====================================================
-     3) SUBMIT FORM
-     ==================================================== */
-  form.addEventListener("submit", (e) => {
+  /* =============================
+     SUBMIT
+  ============================= */
+  form.addEventListener("submit", e => {
     e.preventDefault();
     const q = input.value.trim();
     if (!q) return;
 
-    const checks = form.querySelectorAll(".sources input[type='checkbox']:checked");
-    if (!checks.length) return;
+    const selected = form.querySelectorAll(".sources input[type='checkbox']:checked");
+    if (!selected.length) return;
 
-    checks.forEach(chk => {
-      const key = chk.dataset.url;
-      const finalURL = buildURL(key, q);
-      if (finalURL) window.open(finalURL, "_blank", "noopener");
+    selected.forEach(chk => {
+      const tpl = chk.dataset.url || "";
+      let url = "";
+
+      if (/treccani\.it/.test(tpl)) url = TRECCANI_URL(q);
+      else if (/wikipedia\.org/.test(tpl)) url = WIKI_URL(q);
+      else url = tpl.replace("{q}", encodeURIComponent(q));
+
+      window.open(url, "_blank", "noopener");
     });
   });
 
-  /* ====================================================
-     4) APRI TUTTE LE FONTI
-     ==================================================== */
-  document.getElementById("open-all").addEventListener("click", () => {
-    const q = input.value.trim();
-    if (!q) return;
-    form.querySelectorAll(".sources input").forEach(chk => {
-      const url = buildURL(chk.dataset.url, q);
-      if (url) window.open(url, "_blank", "noopener");
-    });
+
+  /* =============================
+     APRI TUTTE LE FONTI
+  ============================= */
+  btnAll.addEventListener("click", () => {
+    document.querySelectorAll(".sources input").forEach(chk => chk.checked = true);
+    form.dispatchEvent(new Event("submit"));
   });
 
 });
 </script>
+       
 </body>
 </html>
