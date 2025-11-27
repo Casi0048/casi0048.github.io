@@ -3,61 +3,98 @@
 // ============================================================
 document.addEventListener("DOMContentLoaded", () => {
 
-    const openBtn = document.getElementById("openDict");
-    const closeBtn = document.getElementById("dict-close");
-    const overlay = document.getElementById("dict-overlay");
-    const modal = document.getElementById("dict-modal");
-
-    const input = document.getElementById("dict-q");
+    const openBtn   = document.getElementById("openDict");
+    const closeBtn  = document.getElementById("dict-close");
+    const overlay   = document.getElementById("dict-overlay");
+    const modal     = document.getElementById("dict-modal");
+    const input     = document.getElementById("dict-q");
     const searchBtn = document.getElementById("dict-search");
     const openAllBtn = document.getElementById("open-all");
 
-    /* ========= APERTURA ========= */
-    function openModal() {
-        if (!modal) return;
-        modal.classList.add("open");
-        overlay.style.opacity = "1";
-        overlay.style.pointerEvents = "auto";
-        input.focus();
-
-        gsap.fromTo(modal, {x: 360}, {x: 0, duration: .35, ease: "power3.out"});
+    // Sicurezza: se manca qualcosa → stop
+    if (!openBtn || !closeBtn || !overlay || !modal) {
+        console.warn("❌ Dizionario: elementi mancanti nel DOM");
+        return;
     }
 
-    /* ========= CHIUSURA ========= */
+    /* -----------------------------------
+       1) MOSTRA MODALE
+    ------------------------------------ */
+    function openModal() {
+        overlay.style.pointerEvents = "auto";
+
+        gsap.to(overlay, {
+            opacity: 1,
+            duration: 0.25,
+            ease: "power2.out"
+        });
+
+        gsap.to(modal, {
+            x: 0,
+            duration: 0.35,
+            ease: "power3.out",
+            onComplete: () => input && input.focus()
+        });
+    }
+
+    /* -----------------------------------
+       2) NASCONDI MODALE
+    ------------------------------------ */
     function closeModal() {
-        if (!modal) return;
-        modal.classList.remove("open");
-        overlay.style.opacity = "0";
         overlay.style.pointerEvents = "none";
 
-        gsap.to(modal, {x: 360, duration: .3, ease: "power2.in"});
+        gsap.to(overlay, {
+            opacity: 0,
+            duration: 0.25
+        });
+
+        gsap.to(modal, {
+            x: "100%",
+            duration: 0.35,
+            ease: "power3.in"
+        });
     }
 
-    /* ========= EVENTI ========= */
-    if (openBtn)   openBtn.addEventListener("click", openModal);
-    if (closeBtn)  closeBtn.addEventListener("click", closeModal);
-    if (overlay)   overlay.addEventListener("click", closeModal);
+    openBtn.addEventListener("click", openModal);
+    closeBtn.addEventListener("click", closeModal);
+    overlay.addEventListener("click", closeModal);
 
-    /* ========= RICERCA ========= */
-    function doSearch() {
+    /* ESC per chiudere */
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeModal();
+    });
+
+
+    /* -----------------------------------
+       3) FUNZIONE DI RICERCA
+    ------------------------------------ */
+    function performSearch() {
         const q = input.value.trim();
         if (!q) return;
 
-        const checks = modal.querySelectorAll(".sources input[type=checkbox]:checked");
-        if (!checks.length) return;
+        const checks = modal.querySelectorAll(".sources input[type='checkbox']:checked");
 
-        checks.forEach(chk => {
-            const tpl = chk.dataset.url || "";
-            const url = tpl.replace("{q}", encodeURIComponent(q));
+        checks.forEach((chk) => {
+            let tpl = chk.dataset.url || "";
+            let url = tpl.replace("{q}", encodeURIComponent(q));
             window.open(url, "_blank", "noopener");
         });
     }
 
-    searchBtn.addEventListener("click", doSearch);
-    openAllBtn.addEventListener("click", doSearch);
+    searchBtn.addEventListener("click", performSearch);
 
-    input.addEventListener("keydown", e => {
-        if (e.key === "Enter") doSearch();
+    /* Enter lancia la ricerca */
+    input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            performSearch();
+        }
     });
-});
 
+
+    /* -----------------------------------
+       4) APRI TUTTE LE FONTI
+    ------------------------------------ */
+    openAllBtn.addEventListener("click", performSearch);
+
+});
