@@ -9324,42 +9324,69 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-  <script>
-/* FIX DEFINITIVO PER ATTIVARE IL DIZIONARIO */
+ <!-- ============================================================
+        JAVASCRIPT MODALE DIZIONARIO
+============================================================ -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
 
-    document.addEventListener("DOMContentLoaded", () => {
+    console.log("📘 Dizionario attivo");
 
-    const btnOpen  = document.getElementById("openDict");
-    const btnClose = document.getElementById("dict-close");
+    const openBtn  = document.getElementById("openDict");
+    const closeBtn = document.getElementById("dict-close");
     const modal    = document.getElementById("dict-modal");
     const overlay  = document.getElementById("dict-overlay");
 
-    console.log("Dizionario FIX:", {btnOpen, btnClose, modal, overlay});
+    const input    = document.getElementById("dict-q");
+    const btnSearch = document.getElementById("dict-search");
+    const btnOpenAll = document.getElementById("open-all");
 
-    if (!btnOpen || !btnClose || !modal || !overlay) {
-        console.error("❌ Elementi dizionario mancanti");
-        return;
-    }
-
-    // === APERTURA ===
-    btnOpen.addEventListener("click", () => {
-        modal.classList.add("open");
-        overlay.classList.add("active");
-        console.log("📘 Apertura modale OK!");
+    /* ====== APRI MODALE ====== */
+    openBtn.addEventListener("click", () => {
+        modal.style.transform = "translateX(0)";
+        overlay.style.opacity = "1";
+        overlay.style.pointerEvents = "auto";
+        console.log("📘 Modale aperto");
     });
 
-    // === CHIUSURA ===
+    /* ====== CHIUDI MODALE ====== */
     function closeDict() {
-        modal.classList.remove("open");
-        overlay.classList.remove("active");
-        console.log("📘 Modale chiusa");
+        modal.style.transform = "translateX(100%)";
+        overlay.style.opacity = "0";
+        overlay.style.pointerEvents = "none";
     }
-
-    btnClose.addEventListener("click", closeDict);
+    closeBtn.addEventListener("click", closeDict);
     overlay.addEventListener("click", closeDict);
 
-});
+    /* ====== Ricerca ====== */
+    btnSearch.addEventListener("click", () => {
+        const q = input.value.trim();
+        if (!q) return;
 
+        const enc = encodeURIComponent(q);
+        const list = document.querySelectorAll(".sources input:checked");
+
+        list.forEach(chk => {
+            const url = chk.dataset.url.replace("{q}", enc);
+            window.open(url, "_blank");
+        });
+    });
+
+    /* ====== Apri tutte ====== */
+    btnOpenAll.addEventListener("click", () => {
+        const q = input.value.trim();
+        if (!q) return;
+
+        const enc = encodeURIComponent(q);
+        const list = document.querySelectorAll(".sources input");
+
+        list.forEach(chk => {
+            const url = chk.dataset.url.replace("{q}", enc);
+            window.open(url, "_blank");
+        });
+    });
+
+});
 </script>
 
 
