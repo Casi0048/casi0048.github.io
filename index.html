@@ -9655,6 +9655,94 @@ if (document.readyState === 'complete') {
     setTimeout(initDictionary, 100);
 }
 </script>
+<script>
+// FIX EMERGENZA RICERCA DIZIONARIO
+console.log('🔧 Applicando fix emergenza per ricerca...');
 
+// Funzione di ricerca robusta
+function performSearch() {
+    console.log('🎯 ESECUZIONE RICERCA');
+    
+    const searchInput = document.getElementById('dict-q');
+    if (!searchInput) {
+        console.error('❌ Input di ricerca non trovato');
+        return;
+    }
+    
+    const query = searchInput.value.trim();
+    console.log('Query:', query);
+    
+    if (!query) {
+        alert('Inserisci un termine da cercare');
+        return;
+    }
+    
+    const sources = document.querySelectorAll('.sources input:checked');
+    console.log('Fonti selezionate:', sources.length);
+    
+    if (sources.length === 0) {
+        alert('Seleziona almeno una fonte');
+        return;
+    }
+    
+    const encoded = encodeURIComponent(query);
+    
+    // Apri le schede con logging
+    sources.forEach((source, index) => {
+        const url = source.dataset.url.replace('{q}', encoded);
+        console.log(`Apertura scheda ${index + 1}:`, url);
+        
+        setTimeout(() => {
+            window.open(url, '_blank');
+        }, index * 200);
+    });
+}
+
+// Funzione "Apri tutte"
+function openAllSources() {
+    console.log('🎯 APRI TUTTE LE FONTI');
+    
+    const searchInput = document.getElementById('dict-q');
+    if (!searchInput) return;
+    
+    const query = searchInput.value.trim();
+    if (!query) {
+        alert('Inserisci un termine da cercare');
+        return;
+    }
+    
+    const encoded = encodeURIComponent(query);
+    const sources = document.querySelectorAll('.sources input');
+    
+    sources.forEach((source, index) => {
+        const url = source.dataset.url.replace('{q}', encoded);
+        console.log(`Apertura scheda ${index + 1}:`, url);
+        
+        setTimeout(() => {
+            window.open(url, '_blank');
+        }, index * 200);
+    });
+}
+
+// Aggiungi event listener diretti
+document.addEventListener('DOMContentLoaded', function() {
+    const searchBtn = document.getElementById('dict-search');
+    const openAllBtn = document.getElementById('open-all');
+    
+    if (searchBtn) {
+        searchBtn.addEventListener('click', performSearch);
+        searchBtn.onclick = performSearch;
+        console.log('✅ Listener ricerca aggiunto');
+    }
+    
+    if (openAllBtn) {
+        openAllBtn.addEventListener('click', openAllSources);
+        openAllBtn.onclick = openAllSources;
+        console.log('✅ Listener "Apri tutte" aggiunto');
+    }
+});
+
+console.log('✅ Fix emergenza ricerca applicato');
+</script>
 </body>
 </html>
