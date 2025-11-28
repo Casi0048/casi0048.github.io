@@ -8939,7 +8939,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
 
 
-<!--
+
 <script>
 // DIZIONARIO FILOSOFICO
 document.addEventListener('DOMContentLoaded', function() {
@@ -9066,111 +9066,14 @@ document.addEventListener('DOMContentLoaded', function() {
                         </p>
                     </div>
                 </div>
-                
-                <!-- Categorie rapide -->
-                <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--menu-border);">
-                    <h4 style="color: var(--gold); margin-bottom: 0.5rem;">Categorie</h4>
-                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                        <button class="dict-category" data-cat="metafisica" style="
-                            padding: 0.5rem 1rem;
-                            background: rgba(255,215,0,0.1);
-                            border: 1px solid var(--gold);
-                            border-radius: 20px;
-                            color: var(--gold);
-                            cursor: pointer;
-                            font-size: 0.8rem;
-                        ">Metafisica</button>
-                        
-                        <button class="dict-category" data-cat="etica" style="
-                            padding: 0.5rem 1rem;
-                            background: rgba(0,204,255,0.1);
-                            border: 1px solid var(--cyan);
-                            border-radius: 20px;
-                            color: var(--cyan);
-                            cursor: pointer;
-                            font-size: 0.8rem;
-                        ">Etica</button>
-                        
-                        <button class="dict-category" data-cat="logica" style="
-                            padding: 0.5rem 1rem;
-                            background: rgba(185,103,255,0.1);
-                            border: 1px solid var(--purple);
-                            border-radius: 20px;
-                            color: var(--purple);
-                            cursor: pointer;
-                            font-size: 0.8rem;
-                        ">Logica</button>
-                    </div>
-                </div>
-            </div>
-        `;
+               
 
-        document.body.appendChild(modal);
-
-        // Aggiungi funzionalità di ricerca
-        const searchInput = document.getElementById('dict-search');
-        const results = document.getElementById('dict-results');
-        const terms = results.querySelectorAll('.dict-term');
-
-        searchInput.addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            
-            terms.forEach(term => {
-                const termText = term.getAttribute('data-term').toLowerCase();
-                if (termText.includes(searchTerm)) {
-                    term.style.display = 'block';
-                } else {
-                    term.style.display = 'none';
-                }
-            });
-        });
-
-        // Focus sulla ricerca
-        setTimeout(() => {
-            searchInput.focus();
-        }, 100);
-
-        // Chiudi modal
-        const closeBtn = document.getElementById('close-dict');
-        closeBtn.addEventListener('click', closeDictionaryModal);
-
-        // Chiudi cliccando fuori
-        modal.addEventListener('click', function(e) {
-            if (e.target === modal) {
-                closeDictionaryModal();
-            }
-        });
-
-        // Chiudi con ESC
-        document.addEventListener('keydown', function closeOnEsc(e) {
-            if (e.key === 'Escape') {
-                closeDictionaryModal();
-                document.removeEventListener('keydown', closeOnEsc);
-            }
-        });
-    }
-
-    function closeDictionaryModal() {
-        const modal = document.getElementById('dict-modal');
-        if (modal) {
-            modal.remove();
-        }
-    }
-
-    // Tasto scorciatoia Ctrl+D
-    document.addEventListener('keydown', function(e) {
-        if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
-            e.preventDefault();
-            openDictionaryModal();
-        }
-    });
-});
 </script>
- -->
+
 <!-- ============================================================
         JAVASCRIPT DIZIONARIO - VERSIONE DEFINITIVA
 ============================================================ -->
-  <!--
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
     console.log("📘 Dizionario filosofico - Inizializzazione");
@@ -9354,50 +9257,7 @@ document.addEventListener("DOMContentLoaded", () => {
         showMessage(`Apertura tutte le ${allSources.length} fonti per "${q}"`, "success");
     }
 
-    /* ============================
-       SUGGERIMENTI IN TEMPO REALE
-    ============================ */
-    
-    const commonTerms = [
-        "epistemologia", "ontologia", "metafisica", "etica", "logica",
-        "dialettica", "fenomenologia", "ermeneutica", "esistenzialismo",
-        "razionalismo", "empirismo", "idealismo", "materialismo"
-    ];
-
-    if (input && suggestions) {
-        input.addEventListener("input", function() {
-            const value = this.value.toLowerCase();
-            suggestions.innerHTML = "";
-
-            if (value.length < 2) return;
-
-            const matches = commonTerms.filter(term => 
-                term.toLowerCase().includes(value)
-            ).slice(0, 5);
-
-            if (matches.length > 0) {
-                matches.forEach(term => {
-                    const div = document.createElement("div");
-                    div.className = "suggestion-item";
-                    div.textContent = term;
-                    div.addEventListener("click", () => {
-                        input.value = term;
-                        suggestions.innerHTML = "";
-                        performSearch();
-                    });
-                    suggestions.appendChild(div);
-                });
-            }
-        });
-
-        // Nascondi suggerimenti quando perde il focus
-        input.addEventListener("blur", () => {
-            setTimeout(() => {
-                suggestions.innerHTML = "";
-            }, 200);
-        });
-    }
-
+   
     /* ============================
        UTILITIES
     ============================ */
@@ -9470,7 +9330,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 </script>
--->
+
 <!-- ============================================================
         DIZIONARIO - VERSIONE DEFINITIVA FUNZIONANTE
 ============================================================ -->
