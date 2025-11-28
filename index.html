@@ -4994,18 +4994,21 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 </div>
 </div>
 </div>
+<!-- ============================================================
+        TOPBAR CON DIZIONARIO
+============================================================ -->
 <div class="bar-right">
 
-    <!-- 📘 Dizionario -->
-    <button id="openDict" class="ctrl-btn dict-btn" aria-label="Apri dizionario">
-        <span class="dict-icona">📘</span>
-        <span class="dict-testo">Dizionario</span>
+    <!-- 📘 DIZIONARIO -->
+    <button id="openDict" class="dict-btn" aria-label="Apri dizionario">
+        <span>📘</span>
+        <span>Dizionario</span>
     </button>
 
     <!-- 🌐 Traduttore -->
     <div class="translate-box">
         <span>🌐</span>
-        <select aria-label="Traduci pagina" class="translate-select" id="customTranslate">
+        <select id="customTranslate" class="translate-select">
             <option value="it">Italiano</option>
             <option value="en">English</option>
             <option value="fr">Français</option>
@@ -5013,26 +5016,48 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
             <option value="es">Español</option>
             <option value="pl">Polski</option>
         </select>
-        <div aria-hidden="true" id="google_translate_element"
-             style="position:fixed;bottom:0;right:0;width:1px;height:1px;opacity:0;pointer-events:none;overflow:hidden">
-        </div>
     </div>
 
-    <!-- 🔍 Cerca -->
-    <div class="search-container" role="search">
-        <input aria-label="Cerca" id="site-search" placeholder="Cerca nel sito..." type="search"/>
-        <i aria-hidden="true" class="fa-solid fa-magnifying-glass search-icon"></i>
+    <!-- 🔍 Search -->
+    <div class="search-container">
+        <input id="site-search" type="search" placeholder="Cerca nel sito…">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
     </div>
-
-    <!-- 🌓 Tema -->
-    <button aria-label="Cambia tema" class="ctrl-btn theme-btn" id="theme-toggle" title="Tema chiaro/scuro">
-        🌙
-    </button>
-
-    <!-- ⚡ Tuono -->
-    <button class="ctrl-btn" id="btn-thunder" title="Riproduci tuono">⚡ Tuono</button>
 
 </div>
+
+
+<!-- ============================================================
+        OVERLAY + MODALE DIZIONARIO
+============================================================ -->
+<div id="dict-overlay"></div>
+
+<div id="dict-modal">
+
+    <div class="dict-header">
+        <h2>📘 Dizionario Filosofico</h2>
+        <button id="dict-close" aria-label="Chiudi">×</button>
+    </div>
+
+    <div class="dict-body">
+
+        <input id="dict-q" type="search" placeholder="Cerca un termine…">
+
+        <div id="dict-suggestions"></div>
+
+        <!-- FONTI -->
+        <div class="sources">
+            <label><input checked type="checkbox" data-url="https://duckduckgo.com/?q=site%3Aplato.stanford.edu+{q}"> SEP</label>
+            <label><input checked type="checkbox" data-url="https://duckduckgo.com/?q=site%3Aiep.utm.edu+{q}"> IEP</label>
+            <label><input checked type="checkbox" data-url="https://www.google.com/search?q=site%3Atreccani.it+{q}"> Treccani</label>
+            <label><input type="checkbox" data-url="https://it.wikipedia.org/w/index.php?search={q}"> Wikipedia</label>
+            <label><input type="checkbox" data-url="https://www.britannica.com/search?query={q}"> Britannica</label>
+        </div>
+
+        <button id="dict-search">Cerca</button>
+        <button id="open-all">Apri tutte</button>
+
+    </div>
 
 </div>
 <!-- Menu principale -->
