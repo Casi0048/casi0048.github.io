@@ -9168,55 +9168,7 @@ window.addEventListener("load", () => {
 
 });
 </script>
-<script>
-/* FIX COMPLETO DIZIONARIO: APRI + CHIUDI */
-window.addEventListener("load", () => {
 
-  const btnOpen  = document.getElementById("openDict");
-  const modal    = document.getElementById("dict-modal");
-  const overlay  = document.getElementById("dict-overlay");
-  const btnClose = document.getElementById("dict-close");
-
-  console.log("Dizionario FIX:", { btnOpen, modal, overlay, btnClose });
-
-  if (!btnOpen || !modal || !overlay) {
-      console.error("❌ Dizionario: elementi mancanti");
-      return;
-  }
-
-  /* === APRI === */
-  btnOpen.addEventListener("click", () => {
-      console.log("📘 Apertura modale OK!");
-      modal.style.transform = "translateX(0)";
-      overlay.style.opacity = "1";
-      overlay.style.pointerEvents = "auto";
-  });
-
-  /* === CHIUDI === */
-  function closeDict() {
-      console.log("📕 Chiusura modale");
-      modal.style.transform = "translateX(100%)";
-      overlay.style.opacity = "0";
-      overlay.style.pointerEvents = "none";
-  }
-
-  // Pulsante X
-  if (btnClose) {
-      btnClose.addEventListener("click", closeDict);
-  } else {
-      console.warn("⚠️ dict-close non trovato");
-  }
-
-  // Click sullo sfondo
-  overlay.addEventListener("click", closeDict);
-
-  // ESC da tastiera
-  document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") closeDict();
-  });
-
-});
-</script>
 
 </body>
 </html>
