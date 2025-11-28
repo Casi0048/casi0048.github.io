@@ -9131,5 +9131,43 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+  <script>
+/* FIX DEFINITIVO PER ATTIVARE IL DIZIONARIO */
+window.addEventListener("load", () => {
+
+  const openBtn  = document.getElementById("openDict");
+  const modal    = document.getElementById("dict-modal");
+  const overlay  = document.getElementById("dict-overlay");
+  const closeBtn = document.getElementById("dict-close");
+
+  console.log("Dizionario FIX:", { openBtn, modal, overlay });
+
+  // SE manca qualcosa → errore
+  if (!openBtn || !modal || !overlay) {
+      console.error("❌ Dizionario: elementi mancanti");
+      return;
+  }
+
+  // ⭐ APERTURA
+  openBtn.addEventListener("click", () => {
+      console.log("📘 Apertura modale OK!");
+      modal.style.transform = "translateX(0)";
+      overlay.style.opacity = "1";
+      overlay.style.pointerEvents = "auto";
+  });
+
+  // ⭐ CHIUSURA (pulsante + click su overlay)
+  function closeDict() {
+      modal.style.transform = "translateX(100%)";
+      overlay.style.opacity = "0";
+      overlay.style.pointerEvents = "none";
+  }
+
+  if (closeBtn) closeBtn.addEventListener("click", closeDict);
+  overlay.addEventListener("click", closeDict);
+
+});
+</script>
+
 </body>
 </html>
