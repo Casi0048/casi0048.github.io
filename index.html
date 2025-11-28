@@ -9133,40 +9133,40 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
   <script>
 /* FIX DEFINITIVO PER ATTIVARE IL DIZIONARIO */
-window.addEventListener("load", () => {
 
-  const openBtn  = document.getElementById("openDict");
-  const modal    = document.getElementById("dict-modal");
-  const overlay  = document.getElementById("dict-overlay");
-  const closeBtn = document.getElementById("dict-close");
+    document.addEventListener("DOMContentLoaded", () => {
 
-  console.log("Dizionario FIX:", { openBtn, modal, overlay });
+    const btnOpen  = document.getElementById("openDict");
+    const btnClose = document.getElementById("dict-close");
+    const modal    = document.getElementById("dict-modal");
+    const overlay  = document.getElementById("dict-overlay");
 
-  // SE manca qualcosa → errore
-  if (!openBtn || !modal || !overlay) {
-      console.error("❌ Dizionario: elementi mancanti");
-      return;
-  }
+    console.log("Dizionario FIX:", {btnOpen, btnClose, modal, overlay});
 
-  // ⭐ APERTURA
-  openBtn.addEventListener("click", () => {
-      console.log("📘 Apertura modale OK!");
-      modal.style.transform = "translateX(0)";
-      overlay.style.opacity = "1";
-      overlay.style.pointerEvents = "auto";
-  });
+    if (!btnOpen || !btnClose || !modal || !overlay) {
+        console.error("❌ Elementi dizionario mancanti");
+        return;
+    }
 
-  // ⭐ CHIUSURA (pulsante + click su overlay)
-  function closeDict() {
-      modal.style.transform = "translateX(100%)";
-      overlay.style.opacity = "0";
-      overlay.style.pointerEvents = "none";
-  }
+    // === APERTURA ===
+    btnOpen.addEventListener("click", () => {
+        modal.classList.add("open");
+        overlay.classList.add("active");
+        console.log("📘 Apertura modale OK!");
+    });
 
-  if (closeBtn) closeBtn.addEventListener("click", closeDict);
-  overlay.addEventListener("click", closeDict);
+    // === CHIUSURA ===
+    function closeDict() {
+        modal.classList.remove("open");
+        overlay.classList.remove("active");
+        console.log("📘 Modale chiusa");
+    }
+
+    btnClose.addEventListener("click", closeDict);
+    overlay.addEventListener("click", closeDict);
 
 });
+
 </script>
 
 
