@@ -1,128 +1,978 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8"/>
   <title>Echi di Sofia — Portale di Filosofia</title>
 
-  <!-- ESSENZIALI -->
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Esplora il pensiero filosofico attraverso i secoli. Autori, correnti, timeline interattiva e risorse per approfondire." />
-  <meta name="author" content="Echi di Sofia" />
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://www.echidisofia.org/" />
-
-  <!-- Mobile -->
-  <meta name="format-detection" content="telephone=no" />
-  <meta name="mobile-web-app-capable" content="yes" />
+  <!-- ESSENZIALI PER SEO E MOBILE -->
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="description" content="Esplora il pensiero filosofico attraverso i secoli. Autori, correnti, timeline interattiva e risorse per approfondire."/>
+  <meta name="keywords" content="filosofia, storia della filosofia, socrate, platone, aristotele, kant, nietzsche, pensiero filosofico"/>
+  <meta name="author" content="Echi di Sofia"/>
+  <meta name="robots" content="index, follow"/>
+  <link rel="canonical" href="https://www.echidisofia.org/"/>
 
   <!-- Open Graph -->
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://www.echidisofia.org/" />
-  <meta property="og:title" content="Echi di Sofia - Portale Completo di Filosofia" />
-  <meta property="og:description" content="Esplora il pensiero filosofico attraverso i secoli. Autori, correnti, timeline interattiva e risorse per approfondire." />
-  <meta property="og:image" content="https://www.echidisofia.org/foto/socrate.webp" />
-  <meta property="og:site_name" content="Echi di Sofia" />
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://www.echidisofia.org/"/>
+  <meta property="og:title" content="Echi di Sofia - Portale Completo di Filosofia"/>
+  <meta property="og:description" content="Esplora il pensiero filosofico attraverso i secoli. Autori, correnti, timeline interattiva e risorse per approfondire."/>
+  <meta property="og:image" content="https://www.echidisofia.org/foto/socrate.webp"/>
+  <meta property="og:site_name" content="Echi di Sofia"/>
 
   <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Echi di Sofia - Portale di Filosofia" />
-  <meta name="twitter:description" content="Scopri la filosofia attraverso autori, correnti e pensieri. Risorse gratuite per appassionati." />
-  <meta name="twitter:image" content="https://www.echidisofia.org/foto/socrate.webp" />
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Echi di Sofia - Portale di Filosofia">
+  <meta name="twitter:description" content="Scopri la filosofia attraverso autori, correnti e pensieri. Risorse gratuite per appassionati.">
+  <meta name="twitter:image" content="https://www.echidisofia.org/foto/socrate.webp">
 
-  <!-- Favicons & manifest -->
-  <link rel="icon" type="image/svg+xml" href="/favicon_io/favicon.svg">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon_io/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon_io/favicon-16x16.png">
-  <link rel="apple-touch-icon" href="/favicon_io/apple-touch-icon.png">
-  <link rel="manifest" href="/favicon_io/site.webmanifest">
-  <meta name="theme-color" content="#0b0f19">
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon_io/favicon-32x32.png"/>
+  <link rel="apple-touch-icon" href="favicon_io/apple-touch-icon.png">
 
-  <!-- PRECONNECT / DNS-PREFETCH -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
-  <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-  <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+  <!-- PRECONNECT -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
 
   <!-- CSS BASE -->
-  <link rel="stylesheet" href="/accent-layer.css">
-  <link rel="stylesheet" href="/accent-layer-plus.css">
-  <link rel="stylesheet" href="/assets/css/stile.css?v=20251106">
-  
- <!-- FONTS (VERSIONE UNICA OTTIMIZZATA) -->
-  <link rel="preload" as="style" 
-        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400;600&display=swap&display=swap"
-        crossorigin="anonymous"
+  <link rel="stylesheet" href="accent-layer.css">
+  <link rel="stylesheet" href="accent-layer-plus.css">
+  <!-- DIZIONARIO FLUTTUANTE -->
+<!-- Dizionario Filosofico (CSS + JS) -->
+<link rel="stylesheet" href="/esterno/css/dict.css">
+<script src="/esterno/js/dict.js" defer></script>
+
+<!-- GSAP prima -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+
+<!-- Dizionario dopo -->
+
+  <!-- FONTS (versione unificata) -->
+  <link rel="preload" as="style"
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400;600&display=swap"
         onload="this.onload=null;this.rel='stylesheet'">
   <noscript>
-    <link rel="stylesheet" 
-          href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400;600&display=swap"
-          crossorigin="anonymous">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400;600&display=swap">
   </noscript>
 
-  <!-- ICONS (Font Awesome) -->
+  <!-- ICONS (solo preload) -->
   <link rel="preload" as="style"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-        crossorigin="anonymous"
+        crossorigin
         onload="this.onload=null;this.rel='stylesheet'">
   <noscript>
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-          crossorigin="anonymous">
+          crossorigin>
   </noscript>
 
-  <!-- Preload immagini critiche -->
-  <link rel="preload" as="image" href="/foto/socrate.webp?v=20251106">
+  <!-- Preload immagine hero -->
+  <!--<link rel="preload" as="image" href="https://www.echidisofia.org/foto/socrate.webp"/>-->
 
 
-  <!-- Schema.org -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "Echi di Sofia",
-    "description": "Portale completo di filosofia antica, moderna e contemporanea",
-    "url": "https://www.echidisofia.org/",
-    "publisher": {
-      "@type": "Organization",
-      "name": "Echi di Sofia",
-      "logo": "https://www.echidisofia.org/favicon_io/favicon-32x32.png"
-    },
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": "https://www.echidisofia.org/?q={search_term_string}",
-      "query-input": "required name=search_term_string"
-    }
-  }
-  </script>
-  <!-- Preload dell'indice di ricerca -->
-<link rel="preload"
-      href="/search-index.json?v=20251106"
-      as="fetch"
-      type="application/json">
-
-<!-- Configurazione UNICA della ricerca -->
+<!-- Search config -->
 <script id="search-config-root">
-  (function () {
-    const ts = Date.now(); // forza sempre una versione “fresca” del JSON
-
-    window.SEARCH_INDEX_URLS = [
-      '/search-index.json?v=' + ts,  // prima prova: no cache
-      '/search-index.json'           // fallback
-    ];
-
-    window.SEARCH_CONFIG = {
-      indexUrls: window.SEARCH_INDEX_URLS,
-      debounceTime: 300,
-      minQueryLength: 2,
-      version: '20251106'
-    };
-
-    console.log('🔍 SEARCH_INDEX_URLS impostate:', window.SEARCH_INDEX_URLS);
-  })();
+  window.SEARCH_INDEX_URLS = [
+    '/search-index.json?v=20251122',
+    '/search-index.json'
+  ];
 </script>
 
+<!-- Schema.org -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Echi di Sofia",
+  "description": "Portale completo di filosofia antica, moderna e contemporanea",
+  "url": "https://www.echidisofia.org/",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://www.echidisofia.org/?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
 
+<style>
+
+/* === ACCENT TOKENS (default: gold) === */
+:root{
+  --accent:#ffd700;
+  --accent-2:#e5c200;
+  --accent-3:#ffe066;
+  --accent-5:#fff7b0;
+  --accent-contrast:#1a1400;
+  --ring: 0 0 0 3px color-mix(in oklab, var(--accent) 45%, transparent);
+  --accent-glow: drop-shadow(0 0 9px color-mix(in oklab, var(--accent) 70%, transparent));
+}
+body[data-accent="blue"]{
+  --accent:#55b6ff; --accent-2:#2f98e6; --accent-3:#9bd6ff; --accent-5:#d5ecff; --accent-contrast:#001321;
+}
+body[data-accent="green"]{
+  --accent:#3de07f; --accent-2:#27c16a; --accent-3:#89f0b4; --accent-5:#d6fae6; --accent-contrast:#00170a;
+}
+body[data-accent="red"]{
+  --accent:#ff5a6a; --accent-2:#e23f52; --accent-3:#ff9aa5; --accent-5:#ffd5da; --accent-contrast:#190004;
+}
+
+
+     :root {
+  /* === COLORI FONDAMENTALI === */
+  --bg: #0a0a1a;
+  --text-light: #e9eef5;
+  --text-accent: #9ad0ff;
+  
+  /* === COLORI ACCENT PRINCIPALI === */
+  --gold: #ffd86a;
+  --cyan: #00ccff;
+  --purple: #b967ff;
+  
+  /* === COLORI SECONDARI === */
+  --gold-secondary: #d4af37;
+  --cyan-dark: #0099cc;
+  --purple-dark: #8a4dcc;
+  
+  /* === SPACING SYSTEM === */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+  
+  /* === BREAKPOINTS SYSTEM === */
+  --bp-mobile: 768px;
+  --bp-tablet: 1024px;
+  --bp-desktop: 1200px;
+  
+  /* === TYPOGRAPHY SCALE === */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 2rem;
+  --text-4xl: 3rem;
+  
+  /* === COMPONENT VARIABLES === */
+  --menu-bg: rgba(10, 10, 30, .98);
+  --menu-border: rgba(255, 215, 0, .22);
+  --glass: rgba(0, 0, 0, .35);
+  --card-bg: rgba(10, 10, 30, 0.9);
+  --card-border: rgba(255, 215, 0, 0.3);
+}
+    * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Ripristina padding per elementi che ne hanno bisogno */
+button, input, select, textarea {
+  padding: 0.25rem 0.5rem;
+}
+
+/* Ripristina margini per alcuni elementi testuali */
+p, h1, h2, h3, h4, h5, h6 {
+  margin-bottom: 1rem;
+}
+      body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--bg);
+      color: var(--text-light);
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      }
+      /* Effetto particelle cosmiche di sfondo */
+      #cosmic-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+      }
+      .cosmic-particle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.6);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+      animation: float 15s infinite linear;
+      }
+      @keyframes float {
+      0% {
+      transform: translateY(100vh) rotate(0deg);
+      opacity: 0;
+      }
+      10% {
+      opacity: 0.7;
+      }
+      90% {
+      opacity: 0.7;
+      }
+      100% {
+      transform: translateY(-100px) rotate(360deg);
+      opacity: 0;
+      }
+      }
+      a {
+      color: var(--text-accent);
+      text-decoration: none;
+      transition: color 0.3s, text-shadow 0.3s;
+      }
+      a:hover {
+      color: #fff;
+      text-shadow: 0 0 0.38rem #33ccff;
+      }
+      /* Header e Top Bar */
+      .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 0.8rem 1.2rem;
+      background: var(--menu-bg);
+      backdrop-filter: blur(0.6rem);
+      -webkit-backdrop-filter: blur(0.6rem);
+      border-bottom: 1px solid var(--menu-border);
+      z-index: 2000;
+      transition: transform 0.3s ease;
+      }
+      .top-bar.hidden {
+      transform: translateY(-100%);
+      }
+      .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.62rem;
+      text-decoration: none;
+      margin-left: 30px;
+      }
+      .brand svg {
+      width: 2.12rem;
+      height: 2.12rem;
+      filter: drop-shadow(0 0 0.38rem rgba(255, 215, 0, .5));
+      }
+      .brand span {
+      font-family: 'Cinzel Decorative', cursive;
+      font-weight: 700;
+      letter-spacing: 0.1rem;
+      background: linear-gradient(90deg, var(--accent), var(--accent-5), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 0.62rem color-mix(in oklab, var(--accent) 35%, transparent);
+      font-size: 1.5rem;
+      }
+      .bar-right {
+  margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 0.62rem;
+      }
+      .translate-box {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      }
+      .translate-select {
+      appearance: none;
+      padding: 0.45rem 0.8rem;
+      border: 1px solid var(--menu-border);
+      border-radius: 0.62rem;
+      background: rgba(20, 20, 40, .78);
+      color: var(--text-light);
+      font-size: 0.95rem;
+      cursor: pointer;
+      }
+     /* === SEARCH: lente a sinistra, X a destra (solo CSS) === */
+.search-container{
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  overflow: visible;
+  z-index: 3001;
+}
+
+/* Input con spazio per lente (sx) e X (dx) */
+.search-container input[type="search"],
+.search-container input[type="text"]{
+  width: 16.25rem;
+  height: 2.5rem;
+  padding-left: 2.4rem;   /* spazio lente a sinistra */
+  padding-right: 2.6rem;  /* spazio X a destra */
+  background: rgba(20,20,40,.78);
+  border: 1px solid var(--menu-border);
+  border-radius: 0.38rem;
+  color: var(--text-light);
+  font: 300 .95rem/2.5rem 'Montserrat', sans-serif;
+  outline: none;
+  transition: border-color .25s, box-shadow .25s;
+  box-sizing: border-box;
+}
+.search-container input:focus{
+  border-color: rgba(255,215,0,.5);
+  box-shadow: 0 0 .75rem rgba(255,215,0,.18);
+}
+
+/* Lente: incollata al bordo sinistro allineata verticalmente */
+.search-container .search-icon{
+  position: absolute;
+  left: .8rem; right: 2.2rem;  
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.05rem;
+  line-height: 1;
+  color: rgba(255,215,0,.90);
+  opacity: .95;
+  pointer-events: none;    /* decorativa: non blocca i clic sull'input */
+  z-index: 3003;
+}
+/* Fallback se la <i> è vuota (niente FA) */
+.search-container .search-icon:empty::before{
+  content: "🔎";
+  display: inline-block;
+  transform: translateY(1px);
+}
+
+/* X nativa di Safari: resa visibile e “oro” */
+.search-container input[type="search"]::-webkit-search-cancel-button{
+  -webkit-appearance: none;
+  height: 18px; width: 18px; opacity: 1;
+  background-color: var(--gold, #d4af37);
+  border-radius: 50%;
+  -webkit-mask: url('data:image/svg+xml;utf8,\
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">\
+  <path d="M6 6L18 18M6 18L18 6" stroke="white" stroke-width="3" stroke-linecap="round"/>\
+</svg>') no-repeat center / 100% 100%;
+}
+
+/* (Se nel markup c’è anche un bottone .clear-search) – stesso allineamento della X nativa */
+.search-container .clear-search{
+  position: absolute;
+  right: 1.95rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px; height: 22px;
+  display: none;                 /* mostralo con la tua logica o tienilo sempre visibile */
+  align-items: center; justify-content: center;
+  border: 0; border-radius: 50%;
+  background: rgba(255,255,255,.12);
+  box-shadow: inset 0 0 0 1px rgba(255,215,0,.25);
+  color: var(--gold, #d4af37);
+  font-weight: 700; cursor: pointer;
+  z-index: 3004;
+}
+
+/* Se vuoi farlo apparire senza JS quando c’è testo (richiede l’HTML: input prima, poi .clear-search) */
+.search-container input:not(:placeholder-shown) ~ .clear-search,
+.search-container input:focus ~ .clear-search{
+  display: flex;
+}
+
+      .menu-container {
+      position: fixed;
+      top: 4.5rem;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      z-index: 1900;
+      padding: 0.5rem 0;
+      background: rgba(10, 10, 30, 0.9);
+      backdrop-filter: blur(0.5rem);
+      border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+      transition: transform 0.3s ease;
+      }
+      .menu-container.hidden {
+      transform: translateY(-100%);
+      }
+      nav.menu-desktop ul {
+      display: flex;
+      gap: 1px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      justify-content: center;
+      white-space: nowrap;
+      }
+      nav.menu-desktop li {
+      position: relative;
+      }
+      .menu-btn, nav.menu-desktop li>a {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-accent);
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+      padding: .45rem .7rem;
+      border-radius: 0.38rem;
+      transition: .25s;
+      text-decoration: none;
+      text-shadow: 0 0 0.38rem #33ccff99;
+      }
+      .menu-btn:hover, nav.menu-desktop li>a:hover {
+      color: #fff;
+      }
+      .arrow {
+      font-size: .75rem;
+      }
+      /* Mega Menu */
+.mega-menu {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-10px) scale(0.95);
+  width: 61.25rem;
+  max-width: 94vw;
+  background: rgba(10, 10, 30, 0.92);
+  border: 1px solid rgba(255, 215, 0, 0.25);
+  border-top: 0;
+  padding: 0.88rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.88rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(15px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 950;
+}
+
+li.dropdown:hover > .mega-menu,
+li.dropdown:focus-within > .mega-menu,
+.mega-menu:hover {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0) scale(1);
+}
+
+.mega-menu h4 {
+  margin: .2rem 0 .6rem;
+  font-size: 1rem;
+  color: var(--gold);
+  font-family: 'Cinzel', serif;
+  position: relative;
+  padding-bottom: 6px;
+}
+
+.mega-menu h4::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--gold);
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+li.dropdown:hover .mega-menu h4::after {
+  width: 100%;
+}
+
+.mega-menu > div {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: all 0.15s ease;
+}
+
+.mega-menu > div:nth-child(1) { transition-delay: 0.01s; }
+.mega-menu > div:nth-child(2) { transition-delay: 0.02s; }
+.mega-menu > div:nth-child(3) { transition-delay: 0.03s; }
+.mega-menu > div:nth-child(4) { transition-delay: 0.04s; }
+
+li.dropdown:hover .mega-menu > div,
+li.dropdown:focus-within .mega-menu > div {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.mega-menu a {
+  display: block;
+  color: var(--text-accent);
+  font-weight: 700;
+  font-size: .95rem;
+  padding: .12rem 0;
+  position: relative;
+  left: -5px;
+  opacity: 0;
+  transition: all 0.12s ease;
+  transition-delay: calc(var(--delay, 0) * 0.015s);
+  border-radius: 4px;
+  margin: 0.1rem 0;
+}
+
+li.dropdown:hover .mega-menu a,
+li.dropdown:focus-within .mega-menu a {
+  left: 0;
+  opacity: 1;
+}
+
+.mega-menu a:hover {
+  color: #fff;
+  transform: translateX(4px);
+  background: rgba(255, 215, 0, 0.1);
+  padding-left: 0.5rem;
+  text-shadow: 0 0 10px rgba(51, 204, 255, 0.5);
+  transition: all 0.08s ease;
+}
+/* Contenuto principale */
+main {
+  flex: 1;
+  margin-top: 9rem;
+  padding: 1rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+.welcome-section {
+  text-align: center;
+  padding: .8rem 0;
+  margin-bottom: 8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.welcome-title {
+  font-family: 'Cinzel Decorative', cursive;
+  font-weight: 700;
+  font-size: 3.5rem;
+  color: transparent;
+  background: linear-gradient(
+    125deg,
+    #FFF8DC 0%,
+    #FFD700 15%,
+    #DAA520 30%,
+    #FFD700 45%,
+    #FFEC8B 60%,
+    #FFF8DC 75%,
+    #FFD700 90%,
+    #DAA520 100%
+  );
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: sofiaSparkle 4s linear infinite;
+  text-align: center;
+  display: block;
+  width: 100%;
+  margin: 0 auto 1rem auto;
+}
+
+.welcome-subtitle {
+  color: var(--text-accent);
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  display: block;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@keyframes sofiaSparkle {
+  0% {
+    background-position: 0% 50%;
+    text-shadow: 
+      0 0 10px rgba(255, 215, 0, 0.6),
+      0 0 20px rgba(255, 215, 0, 0.4),
+      0 0 30px rgba(255, 255, 255, 0.2);
+  }
+  25% {
+    background-position: 100% 25%;
+    text-shadow: 
+      0 0 15px rgba(255, 215, 0, 0.8),
+      0 0 25px rgba(255, 215, 0, 0.6),
+      0 0 35px rgba(255, 255, 255, 0.3);
+  }
+  50% {
+    background-position: 50% 100%;
+    text-shadow: 
+      0 0 20px rgba(255, 215, 0, 1),
+      0 0 30px rgba(255, 215, 0, 0.8),
+      0 0 40px rgba(255, 255, 255, 0.4);
+  }
+  75% {
+    background-position: 0% 75%;
+    text-shadow: 
+      0 0 15px rgba(255, 215, 0, 0.8),
+      0 0 25px rgba(255, 215, 0, 0.6),
+      0 0 35px rgba(255, 255, 255, 0.3);
+  }
+  100% {
+    background-position: 0% 50%;
+    text-shadow: 
+      0 0 10px rgba(255, 215, 0, 0.6),
+      0 0 20px rgba(255, 215, 0, 0.4),
+      0 0 30px rgba(255, 255, 255, 0.2);
+  }
+}
+/* Effetto fisarmonica del sottotitolo*/
+.accordion-subtitle {
+    font-size: 1.1rem;
+    color: #9ad0ff;
+    font-weight: 600;
+    display: inline-block;
+    animation: accordionEffect 3s ease-in-out infinite;
+    text-align: center;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    background: rgba(10, 10, 30, 0.7);
+    box-shadow: 0 0 15px rgba(154, 208, 255, 0.3);
+    margin-bottom: 2rem;
+}
+
+@keyframes accordionEffect {
+    0%, 100% {
+        transform: scaleX(0.85);
+        letter-spacing: 0px;
+        opacity: 0.7;
+        background: rgba(10, 10, 30, 0.7);
+        box-shadow: 0 0 10px rgba(154, 208, 255, 0.2);
+    }
+    25% {
+        transform: scaleX(0.9);
+        letter-spacing: 1px;
+        opacity: 0.8;
+    }
+    50% {
+        transform: scaleX(1);
+        letter-spacing: 2px;
+        opacity: 1;
+        background: rgba(20, 20, 50, 0.8);
+        box-shadow: 0 0 20px rgba(154, 208, 255, 0.5);
+    }
+    75% {
+        transform: scaleX(0.9);
+        letter-spacing: 1px;
+        opacity: 0.8;
+    }
+}
+/* === TYPING EFFECT - VERSIONE UNIFICATA === */
+.typing-wrap {
+  margin: 1.25rem 0;
+  display: flex;
+  justify-content: center;
+  min-height: 3.2em;
+}
+
+.typing-effect {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem;
+  font-style: italic;
+  color: #00CFFF;
+  font-weight: 700;
+  display: inline-block;
+  min-width: 60ch;
+  text-align: center;
+  white-space: nowrap;
+  
+  /* Ottimizzazioni per performance */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: contents;
+}
+
+/* USA SOLO .cursor (rimuovi .caret) */
+.cursor {
+  display: inline-block;
+  animation: blink 1.2s ease-in-out infinite;
+  font-weight: 400;
+  margin-left: 2px;
+}
+
+/* UNA SOLA keyframes blink */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* === MEDIA QUERIES UNIFICATE === */
+@media (max-width: 768px) {
+  .typing-effect {
+    font-size: 1.1rem;
+    min-width: 40ch;
+    white-space: normal;
+  }
+  
+  .welcome-title {
+    font-size: 2.5rem;
+  }
+  
+  .welcome-subtitle {
+    font-size: 1.2rem;
+  }
+}
+
+/* Citazioni filosofiche fluttuanti */
+.floating-quotes {
+  position: fixed;
+  bottom: 0px;
+  right: 20px;
+  z-index: 20;
+  max-width: 300px;
+}
+
+.quote-bubble {
+  background: rgba(10, 10, 30, 0.9);
+  border: 1px solid var(--menu-border);
+  border-radius: 15px;
+  padding: 5px;
+  margin-bottom: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  transform: translateX(100%);
+  opacity: 0;
+  transition: transform 0.5s, opacity 0.5s;
+  backdrop-filter: blur(5px);
+}
+
+.quote-bubble.show {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.quote-text {
+  font-style: italic;
+  margin-bottom: 5px;
+  color: var(--text-light);
+}
+
+.quote-author {
+  text-align: right;
+  font-size: 0.9rem;
+  color: var(--gold);
+}
+
+/* Footer */
+footer {
+    margin-top: 120px; /* Spazio aggiuntivo */
+    position: relative;
+    z-index: 10;
+    background: #06060d;
+    /* resto del CSS */
+}
+    footer {
+      background: #06060d;
+      color: #e9eef5;
+      margin-top: auto;
+      padding: 1.5rem 0;
+     }
+      .footer-wrap {
+      max-width: 75rem;
+      margin: 0 auto;
+      padding: 0 1rem;
+     }
+      .footer-columns {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 1rem;
+      align-items: start;
+      text-align: left;
+     }
+      .footer-columns h3,
+      .footer-columns h4 {
+      margin: 0.1rem 0 0.3rem;
+      color: #ffd86a;
+      font-family: 'Cinzel', serif;
+      letter-spacing: 0.2px;
+      font-size: 0.9rem;
+      }
+      .footer-columns p {
+      margin: 1rem 0;
+      color: #00bb2d;
+      line-height: 1.3;
+      font-size: 0.85rem; 
+      }
+      .footer-columns ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      }
+      .footer-columns li {
+      margin: 0.1rem 0;
+      font-size: 0.85rem;
+      }
+      .footer-legal {
+      margin-top: 1rem;
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+      font-size: 0.8rem;
+      justify-content: center;
+      }
+      .social {
+      margin-top: 0.5rem;
+      display: flex;
+      gap: 0.5rem;
+      }
+      .social a {
+      width: 1.75rem;
+      height: 1.75rem;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      }
+      /* Responsive */
+      @media (max-width: 61.25rem) {
+      .footer-columns {
+      grid-template-columns: 1fr;
+      gap: 1rem;}
+
+      .mega-menu {
+      grid-template-columns: repeat(2, 1fr);
+      }
+      .search-container input {
+      width: 12rem;
+      }
+      .welcome-title {
+      font-size: 2.3rem;
+      }
+      .timeline::after {
+      left: 31px;
+      }
+      .timeline-item {
+      width: 100%;
+      padding-left: 70px;
+      padding-right: 25px;
+      }
+      .timeline-item:nth-child(even) {
+      left: 0;
+      }
+      .timeline-item:nth-child(odd)::after,
+      .timeline-item:nth-child(even)::after {
+      left: 21px;
+      }
+      }
+      @media (max-width: 37.5rem) {
+      .top-bar {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+      }
+      .bar-right {
+      flex-wrap: wrap;
+      justify-content: center;
+      }
+      .search-container input {
+      width: 100%;
+      max-width: 100%;
+      }
+      .menu-container {
+      overflow-x: auto;
+      }
+      nav.menu-desktop ul {
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      }
+      .floating-quotes {
+      display: none;
+      }
+      .menu-desktop > ul > li.dropdown:nth-child(2) .mega-menu {
+  left: auto !important;
+  right: 0 !important;
+  transform: translateX(0) translateY(0.62rem) !important;
+}
+      .menu-desktop > ul > li.dropdown:nth-child(2):hover > .mega-menu,
+      .menu-desktop > ul > li.dropdown:nth-child(2):focus-within > .mega-menu {
+      transform: translateX(0) translateY(0) !important;
+      }
+           /* Pannello risultati ricerca */
+      #search-panel { font-family: 'Montserrat', sans-serif; }
+      mark.search-hit {
+      background: rgba(255, 215, 0, 0.35);
+      padding: 0 .15em;
+      border-radius: .2em;
+      }
+       /* Pannello ricerca: pulsante chiudi */
+      #search-panel .search-close {
+      position: absolute;
+      top: 6px;
+      right: 8px;
+      background: transparent;
+      border: 1px solid rgba(255, 215, 0, .35);
+      color: #e9eef5;
+      border-radius: 6px;
+      padding: 2px 8px;
+      cursor: pointer;
+      font-size: .85rem;
+      }
+      #search-panel .search-close:hover {
+      background: rgba(255,255,255,0.06);
+      }
+      /* === v6: Varianti posizionamento mega-menu per singole voci === */
+      /* Default: resta centrato (stili già presenti) */
+      nav.menu-desktop .mega-menu.anchor-left {
+      left: 0 !important;
+      right: auto !important;
+      transform: translateY(0.62rem) !important;
+      }
+      nav.menu-desktop li.dropdown:hover > .mega-menu.anchor-left,
+      nav.menu-desktop li.dropdown:focus-within > .mega-menu.anchor-left,
+      nav.menu-desktop .mega-menu.anchor-left:hover {
+      transform: translateY(0) !important;
+      }
+      nav.menu-desktop .mega-menu.right-align {
+      left: auto !important;
+      right: 0 !important;
+      transform: translateY(0.62rem) !important;
+      }
+      nav.menu-desktop li.dropdown:hover > .mega-menu.right-align,
+      nav.menu-desktop li.dropdown:focus-within > .mega-menu.right-align,
+      nav.menu-desktop .mega-menu.right-align:hover {
+      transform: translateY(0) !important;
+      }
+      /* Pannello ricerca: chiudi */
+      #search-panel .search-close {
+      position: absolute;
+      top: 6px;
+      right: 8px;
+      background: transparent;
+      border: 1px solid rgba(255, 215, 0, .35);
+      color: #e9eef5;
+      border-radius: 6px;
+      padding: 2px 8px;
+      cursor: pointer;
+      font-size: .85rem;
+      }
+      #search-panel .search-close:hover {
+      background: rgba(255,255,255,0.06);
+      }
+    
+/* Switcher accanto al brand */
+.brand + .welcome-switcher{ display:inline-flex; gap:.4rem; margin-left:.75rem; align-items:center; }
+
+.btn-ghost:hover{ border-style: solid; background: color-mix(in oklab, var(--accent) 26%, transparent); filter: var(--accent-glow); }
+
+</style>
 <style>
   /* Versione compatta */
 .color-dot {
@@ -203,266 +1053,30 @@ nav.menu-desktop .mega-menu.right-align:hover {
   }
 }
 </style>
-<style id="patch-ui">
-/* CSS for reliability and UI patches */
-body {
-    overflow: visible !important;
-}
-.slider-vertical {
-    position: fixed;
-    left: 3.25rem;
-    top: 7.5rem;
-    width: 11.25rem;
-    height: 20rem;
-    z-index: 80;
-    overflow: hidden;
-    border: 1px solid rgba(255, 215, 0, 0.18);
-    border-radius: 0.75rem;
-    background: rgba(10, 10, 25, 0.45);
-    backdrop-filter: blur(0.38rem);
-    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.35);
-}
-
-.slider-vertical .slider-inner {
-    position: absolute;
-    inset: 0;
-    will-change: transform;
-}
-
-.slide-vertical {
-    width: 100%;
-    padding: 0.62rem 0.62rem 0.88rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.slide-vertical img {
-    width: 100%;
-    height: 8.75rem;
-    object-fit: contain;
-    display: block;
-    background: rgba(0, 0, 0, 0.25);
-    border-radius: 0.62rem;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0.38rem 0.88rem rgba(0, 0, 0, 0.25);
-}
-
-.slide-vertical p {
-    margin: 0.25rem 0 0;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 0.92rem;
-    font-weight:600;
-  text-shadow: 0 0 6px rgba(255, 215, 0, 0.35);
-    text-align: center;
-    color: #ffe9b8;
-    text-shadow: 0 0 0.5rem rgba(255, 215, 0, 0.25);
-    min-height: 2.6em;
-    line-height: 1.3;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-.slider-controls {
-    position: fixed;
-    left: 3.25rem;
-    top: 27.1rem;
-    width: 11.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    background: rgba(10, 10, 25, 0.55);
-    border: 1px solid rgba(255, 215, 0, 0.22);
-    border-radius: 0.62rem;
-    padding: 0.5rem;
-    z-index: 80;
-}
-
-.ctrl-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 2rem;
-    margin-bottom: 2px;
-    padding: 0.38rem 0.62rem;
-    font-weight: 600;
-    cursor: pointer;
-    border-radius: 0.5rem;
-    border: 1px solid rgba(255, 215, 0, 0.25);
-    background: rgba(20, 20, 40, 0.7);
-    color: #ffd86a;
-}
-
-.audio-player {
-    position: fixed;
-    left: 3.25rem;
-    top: 40.38rem;
-    z-index: 80;
-    display: flex;
-    align-items: center;
-    gap: 0.62rem;
-    padding: 0.5rem 0.62rem;
-    background: rgba(10, 10, 30, 0.8);
-    border: 1px solid rgba(255, 215, 0, 0.25);
-    border-radius: 0.62rem;
-    opacity: 1;
-    transform: none;
-}
-
-.audio-title {
-    font-weight: 600;
-}
-
-.audio-player .controls {
-    display: flex;
-    align-items: center;
-    gap: 0.62rem;
-}
-
-.audio-player input[type="range"] {
-    width: 7.5rem;
-}
-
-.articles-blob {
-    position: fixed;
-    right: 1.25rem;
-    top: 9.5rem;
-    width: 20rem;
-    z-index: 90;
-    background: radial-gradient(120% 150% at 100% 0%, rgba(50, 120, 255, 0.16), rgba(10, 10, 30, 0.82));
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 1rem;
-    padding: 0.88rem 1rem;
-    box-shadow: 0 0.94rem 1.88rem rgba(0, 0, 0, 0.35);
-}
-
-.articles-blob h3 {
-    margin: 0 0 0.5rem;
-    font-family: 'Cinzel', serif;
-    color: #ffd86a;
-}
-
-.articles-blob ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.articles-blob li {
-    margin: 0.25rem 0;
-}
-
-.articles-blob a {
-    color: #cfe8ff;
-    text-decoration: none;
-    font-weight: 700;
-}
-
-.articles-blob a:hover {
-    color: #fff;
-    text-decoration: underline;
-}
-
-.right-embed {
-    position: fixed;
-    right: 1.25rem;
-    top: 40rem;
-    width: 20rem;
-    z-index: 25;
-    background: rgba(10, 10, 30, 0.8);
-    border: 1px solid rgba(255, 215, 0, 0.25);
-    border-radius: 0.75rem;
-    padding: 0.5rem;
-}
-
-.right-embed iframe {
-    width: 100%;
-    height: 264px;
-    display: block;
-    border: 0;
-}
-
-#russell-box {
-    position: fixed;
-    bottom: 8vh;
-    left: 2rem;
-    z-index: 10;
-    background: rgba(10, 10, 30, 0.8);
-    border: 1px solid rgba(255, 215, 0, 0.25);
-    border-radius: 0.62rem;
-    padding: 0.62rem 0.75rem;
-    max-width: 24rem;
-    box-shadow: 0 0.5rem 1.12rem rgba(0, 0, 0, 0.35);
-}
-
-#russell-btn {
-    all: unset;
-    cursor: pointer;
-    display: block;
-    color: #ffd86a;
-}
-
-#russell-hint {
-    position: fixed;
-    bottom: 19vh;
-    left: 3.5rem;
-    z-index: 2;
-    color: #cfe8ff;
-    opacity: 0.85;
-    font-style: italic;
-    font-weight: 700;
-}
-
-#lightning,
-#bolt {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 1;
-    opacity: 0;
-}
-
-#lightning {
-    background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.2) 40%, transparent 65%);
-    transition: opacity 0.18s ease-out;
-}
-
-#bolt {
-    width: 160px;
-    height: 400px;
-    left: 50%;
-    top: 50%;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
-    clip-path: polygon(48% 0, 52% 0, 60% 25%, 45% 25%, 55% 55%, 40% 55%, 48% 100%, 42% 100%, 35% 60%, 50% 60%, 38% 28%, 58% 28%);
-    filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.8));
-    transition: opacity 0.28s ease-out, transform 0.09s ease-out;
-}
-
-#effects-ctrl {
-    position: fixed;
-    top: 0.9rem;
-    right: 1.25rem;
-    width: auto;
-    z-index: 2147483603;
-    display: flex;
-    gap: 0.5rem;
-    justify-content: flex-end;
-}
-
-#effects-ctrl .ctrl-btn {
-    min-width: 6.5rem;
-}
-
-@media (min-width: 1200px) {
-    main {
-        padding-left: 16rem;
-        padding-right: 22rem;
-    }
-}
-</style>
+<style id="patch-ui">/* CSS minimized for reliability */
+      body{overflow:visible!important}
+      .slider-vertical{position:fixed;left:3.25rem;top:7.5rem;width:11.25rem;height:20rem;z-index:80;overflow:hidden;border:1px solid rgba(255,215,0,.18);border-radius:.75rem;background:rgba(10,10,25,.45);backdrop-filter:blur(.38rem);box-shadow:0 .5rem 1.5rem rgba(0,0,0,.35)}
+      .slider-vertical .slider-inner{position:absolute;inset:0;will-change:transform}
+      .slide-vertical{width:100%;padding:.62rem .62rem .88rem;display:flex;flex-direction:column;align-items:center;gap:.5rem}
+      .slide-vertical img{width:100%;height:8.75rem;object-fit:contain;display:block;background:rgba(0,0,0,.25);border-radius:.62rem;border:1px solid rgba(255,255,255,.1);box-shadow:0 .38rem .88rem rgba(0,0,0,.25)}
+      .slide-vertical p{margin:.25rem 0 0;font-family:'Cormorant Garamond',serif;font-size:.92rem;font-weight:;text-align:center;color:#ffe9b8;text-shadow:0 0 .5rem rgba(255,215,0,.25);min-height:2.6em;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+      .slider-controls{position:fixed;left:3.25rem;top:27.81rem;width:11.25rem;display:flex;flex-direction:column;gap:.5rem;background:rgba(10,10,25,.55);border:1px solid rgba(255,215,0,.22);border-radius:.62rem;padding:.5rem;z-index:80}
+      .ctrl-btn{display:inline-flex;align-items:center;justify-content:center;min-height:2rem;margin-bottom:2px;padding:.38rem .62rem;font-weight:600;cursor:pointer;border-radius:.5rem;border:1px solid rgba(255,215,0,.25);background:rgba(20,20,40,.7);color:#ffd86a}
+      .audio-player{position:fixed;left:3.25rem;top:40.38rem;z-index:80;display:flex;align-items:center;gap:.62rem;padding:.5rem .62rem;background:rgba(10,10,30,.8);border:1px solid rgba(255,215,0,.25);border-radius:.62rem;opacity:1;transform:none}
+      .audio-title{font-weight:600}.audio-player .controls{display:flex;align-items:center;gap:.62rem}.audio-player input[type=range]{width:7.5rem}
+      .articles-blob{position:fixed;right:1.25rem;top:15.5rem;width:20rem;z-index:90;background:radial-gradient(120% 150% at 100% 0%,rgba(50,120,255,.16),rgba(10,10,30,.82));border:1px solid rgba(255,255,255,.08);border-radius:1rem;padding:.88rem 1rem;box-shadow:0 .94rem 1.88rem rgba(0,0,0,.35)}
+      .articles-blob h3{margin:0 0 .5rem;font-family:'Cinzel',serif;color:#ffd86a}.articles-blob ul{list-style:none;margin:0;padding:0}.articles-blob li{margin:.25rem 0}.articles-blob a{color:#cfe8ff;text-decoration:none;font-weight:700}.articles-blob a:hover{color:#fff;text-decoration:underline}
+      .right-embed{position:fixed;right:1.25rem;top:40rem;width:20rem;z-index:25;background:rgba(10,10,30,.8);border:1px solid rgba(255,215,0,.25);border-radius:.75rem;padding:.5rem}
+      .right-embed iframe{width:100%;height:264px;display:block;border:0}
+      #russell-box{position:fixed;bottom:8vh;left:2rem;z-index:10;background:rgba(10,10,30,.8);border:1px solid rgba(255,215,0,.25);border-radius:.62rem;padding:.62rem .75rem;max-width:24rem;box-shadow:0 .5rem 1.12rem rgba(0,0,0,.35)}
+      #russell-btn{all:unset;cursor:pointer;display:block;color:#ffd86a;}#russell-hint{position:fixed;bottom:19vh;left:3.5rem;z-index:2;color:#cfe8ff;opacity:.85;font-style:italic;font-weight:700}
+      #lightning,#bolt{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:0}
+      #lightning{background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.9),rgba(255,255,255,.2) 40%,transparent 65%);transition:opacity .18s ease-out}
+      #bolt{width:160px;height:400px;left:50%;top:50%;background:linear-gradient(to bottom,rgba(255,255,255,1),rgba(255,255,255,0));clip-path:polygon(48% 0,52% 0,60% 25%,45% 25%,55% 55%,40% 55%,48% 100%,42% 100%,35% 60%,50% 60%,38% 28%,58% 28%);filter:drop-shadow(0 0 12px rgba(255,255,255,.8));transition:opacity .28s ease-out,transform .09s ease-out}
+      #effects-ctrl{position:fixed;top:.9rem;right:1.25rem;width:auto;z-index:2147483603;display:flex;gap:.5rem;justify-content:flex-end}
+      #effects-ctrl .ctrl-btn{min-width:6.5rem}
+      @media (min-width:1200px){ main{padding-left:16rem;padding-right:22rem} }
+    </style>
 <style id="right-links-css">
       .right-box{
       position:fixed; right:1.25rem; width:20rem; z-index:25;
@@ -482,8 +1096,8 @@ body {
       padding:.38rem .6rem; border-radius:.5rem; border:1px solid rgba(255,215,0,.25);
       background:rgba(20,20,40,.78); color:#ffd86a; font-weight:700; cursor:pointer
       }      
-      #dict-compact{ top: 22.5rem; }
-      #iep-linkbox{ top: 35.2rem; }
+      #dict-compact{ top: 22.2rem; }
+      #iep-linkbox{ top: 36rem; }
       @media (min-width: 1200px){
       .right-embed{ top: 42.5rem; }
       }
@@ -553,6 +1167,8 @@ body {
       #audio-player{ width: 100%; max-width: 520px; }
       }
     </style>
+ 
+
 <style id="search-related-css">
       .related-results{
       margin-top:.6rem; padding-top:.6rem;
@@ -616,79 +1232,33 @@ body {
     background: rgba(10,10,30,.78);
   }
 
-/* Titolo risultato */
-#search-results h4, .search-results h4, .result-title {
-    margin: 0 0 .2rem; 
-    font-size: 1rem; 
-    font-weight: 700; 
-    color: #ffeb9a;
-    /* Aggiungi per sicurezza: */
-    line-height: 1.3;
-}
+  /* Titolo risultato */
+  #search-results h4, .search-results h4, .result-title{
+    margin: 0 0 .2rem; font-size: 1rem; font-weight: 700; color:#ffeb9a;
+  }
 
-/* Tag/meta (es. Idealismo) come "chip" */
-.result-meta, .result-tag, .tag {
-    display: inline-block; 
-    margin: 0 0 .25rem; 
-    padding: .1rem .45rem;
-    font-size: .8rem; 
-    border-radius: 999px; 
-    color: #0b1022;
-    background: linear-gradient(90deg, #ffd86a, #ffeb9a);
-    /* Miglioramenti accessibilità: */
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
+  /* Tag/meta (es. Idealismo) come “chip” */
+  .result-meta, .result-tag, .tag{
+    display:inline-block; margin: 0 0 .25rem; padding:.1rem .45rem;
+    font-size:.8rem; border-radius:999px; color:#0b1022;
+    background: linear-gradient(90deg,#ffd86a,#ffeb9a);
+  }
 
-/* Descrizione + sorgente */
-.result-desc { 
-    margin: .1rem 0 .15rem; 
-    font-size: .9rem; 
-    color: #cfe2ff; 
-    line-height: 1.25; 
-    /* Miglioramento leggibilità: */
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
+  /* Descrizione + sorgente */
+  .result-desc{ margin:.1rem 0 .15rem; font-size:.9rem; color:#cfe2ff; line-height:1.25; }
+  .result-source{ font-size:.8rem; opacity:.85; }
 
-.result-source { 
-    font-size: .8rem; 
-    opacity: .85; 
-    /* Aggiungi: */
-    font-style: italic;
-}
+  /* Evidenziazione (se usi <mark> o aggiungi classe) */
+  mark, .hl{ background: #ffe08a; color:#141414; padding:0 .15rem; border-radius:.2rem; }
 
-/* Evidenziazione (se usi <mark> o aggiungi classe) */
-mark, .hl { 
-    background: #ffe08a; 
-    color: #141414; 
-    padding: 0 .15rem; 
-    border-radius: .2rem; 
-    /* Miglioramento: */
-    font-weight: 600;
-}
-
-/* Mobile piena larghezza e un po' più alto */
-@media (max-width: 900px){
-    :root { 
-        --search-panel-w: 100vw; 
-        --search-panel-maxh: 82vh; 
+  /* Mobile piena larghezza e un po’ più alto */
+  @media (max-width: 900px){
+    :root{ --search-panel-w: 100vw; --search-panel-maxh: 82vh; }
+    #search-panel, #searchPanel, .search-panel, .results-panel{
+      left:50%; transform:translateX(-50%); width:100vw; border-radius:10px;
     }
-    #search-panel, #searchPanel, .search-panel, .results-panel {
-        left: 50%; 
-        transform: translateX(-50%); 
-        width: 100vw; 
-        border-radius: 10px;
-        /* Aggiungi per mobile: */
-        margin: 0;
-        max-width: none;
-    }
-}
+  }
 </style>
-
 <script>
   document.addEventListener('DOMContentLoaded', ()=>{
     const input = document.getElementById('site-search');
@@ -704,9 +1274,9 @@ mark, .hl {
 <script id="search-config">
   // prova prima l’URL del tuo dominio, poi i fallback relativi
   window.SEARCH_INDEX_URLS = [
-    'https://www.echidisofia.org/search-index.json?v=20251106',
-    'search-index.json?v=20251106',
-    '/assets/search-index.json?v=20251106'
+    'https://www.echidisofia.org/search-index.json?v=20251122',
+    'search-index.json?v=20251122',
+    '/assets/search-index.json?v=20251122'
   ];
 </script>
 <style id="search-clear-btn">
@@ -906,13 +1476,13 @@ nav.menu-desktop .mega-menu{ z-index: 2147483606 !important; pointer-events: aut
 </style><script type="application/ld+json">{
   "@context":"https://schema.org",
   "@type":"CollectionPage",
-  "name":" filosofica",
+  "name":"Timeline filosofica",
   "isPartOf":{"@type":"WebSite","name":"Echi di Sofia"}
 }</script><style id="responsive-extras">
 /* === Echi di Sofia: responsive extras (inlined) === */
 @media (max-width: 768px){
   .menu-btn, .ctrl-btn { min-width: 44px; min-height: 44px; }
-  .-content { padding: 15px; margin: 10px 5px; } /* opzionale, migliora leggibilità */
+  .timeline-content { padding: 15px; margin: 10px 5px; } /* opzionale, migliora leggibilità */
 }
 </style>
 <script id="gt-init">
@@ -974,97 +1544,116 @@ window.googleTranslateElementInit = function(){
     100% { opacity: 0.2; transform: scale(1); }
 }
 
-/* === COMETE — testa sempre avanti, coda dietro (fix) === */
-/* === COMETE — testa sempre avanti, coda dietro (definitivo) === */
+/* COMETE VOLANTI - DIMENSIONI RIDOTTE */
 .shooting-star {
-  position: absolute;
-
-  /* lunghezza coda e spessore (personalizzabili) */
-  --trail: 20px;             /* lunghezza scia */
-  --thick: 2px;               /* spessore scia */
-  --tail: rgba(174,233,255,.85); /* colore coda (puoi cambiare) */
-
-  width: var(--trail);
-  height: var(--thick);
-
-  /* Testa luminosa ANCORATA a DESTRA + coda verso SINISTRA */
-  background:
-    radial-gradient(circle at 100% 50%,
-      #ffffff 0 3px,
-      #aee9ff 4px,
-      transparent 10px),
-    linear-gradient(to left,
-      var(--tail) 0%,
-      rgba(174,233,255,.35) 35%,
-      rgba(174,233,255,.10) 70%,
-      transparent 100%);
-  background-repeat: no-repeat, no-repeat;
-  background-size: 10px 10px, 100% 100%;
-
-  border-radius: 999px;
-  filter: drop-shadow(0 0 8px #aee9ff);
-  opacity: 0;
-  z-index: 10;
-
-  /* Ruota attorno alla TESTA: la coda resta dietro in ogni direzione */
-  transform-origin: 100% 50%;
+    position: absolute;
+    width: 10px;
+    height: 2px; 
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        #ffffff 15%, 
+        #00ccff 40%, 
+        transparent 100%);
+    border-radius: 50%;
+    filter: blur(0.2px);
+    box-shadow: 0 0 4px #00ccff, 0 0 8px #ffffff;
+    opacity: 0;
+    z-index: 10;
 }
 
-/* Varianti (NO background qui!) */
-.shooting-star.micro { --trail: 90px;  --thick: 1px; filter: blur(0.1px); }
-.shooting-star.fast  { animation-duration: 4s;  filter: drop-shadow(0 0 10px #ffd700); }
-.shooting-star.slow  { animation-duration: 10s; filter: drop-shadow(0 0 8px  #b967ff); }
-
-/* Direzioni — ruota l’elemento, NON i gradienti */
-.shooting-star.horizontal { transform: rotate(0deg); }
-.shooting-star.vertical   { transform: rotate(90deg); }
-.shooting-star.diagonal   { transform: rotate(45deg); }
-.shooting-star.reverse    { transform: rotate(180deg); } /* destra → sinistra */
-
-/* Solo traslazione nei keyframes (niente rotate dentro) */
-@keyframes fly-horizontal {
-  0%   { 
-    transform: rotate(0deg) translateX(-150px);
-    opacity: 0; 
-  }
-  10%  { opacity: 1; }
-  80%  { opacity: 1; }
-  100% { 
-    transform: rotate(0deg) translateX(calc(100vw + 150px));
-    opacity: 0; 
-  }
-}
-@keyframes fly-vertical {
-  0%   { transform: translateY(-150px) rotate(90deg);   opacity: 0; }
-  10%  { opacity: 1; }
-  80%  { opacity: 1; }
-  100% { transform: translateY(calc(100vh + 150px)) rotate(90deg); opacity: 0; }
-}
-@keyframes fly-diagonal {
-  0%   { transform: translate(-150px, -150px) rotate(45deg); opacity: 0; }
-  10%  { opacity: 1; }
-  80%  { opacity: 1; }
-  100% { transform: translate(calc(100vw + 150px), calc(100vh + 150px)) rotate(45deg); opacity: 0; }
-}
-@keyframes fly-reverse {
-  0%   { transform: translate(calc(100vw + 150px), -150px) rotate(180deg); opacity: 0; }
-  10%  { opacity: 1; }
-  80%  { opacity: 1; }
-  100% { transform: translate(-150px, calc(100vh + 150px)) rotate(180deg); opacity: 0; }
+/* VARIANTI DI VELOCITÀ - COMETE PICCOLE */
+.shooting-star.fast {
+    animation-duration: 4s;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        #ffd700 15%, 
+        #ffffff 35%, 
+        transparent 100%);
+    box-shadow: 0 0 5px #ffd700, 0 0 10px #ffffff;
+    width: 5px;
 }
 
-/* Collega classi → animazioni */
-.shooting-star.horizontal { animation: fly-horizontal 6s ease-out infinite; }
-.shooting-star.vertical   { animation: fly-vertical   8s ease-out infinite; }
-.shooting-star.diagonal   { animation: fly-diagonal   7s ease-out infinite; }
-.shooting-star.reverse    { animation: fly-reverse    7s ease-out infinite; }
+.shooting-star.slow {
+    animation-duration: 10s;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        #b967ff 15%, 
+        #ffffff 35%, 
+        transparent 100%);
+    box-shadow: 0 0 4px #b967ff, 0 0 8px #ffffff;
+    width: 5px;
+}
 
-/* Tema chiaro / accessibilità (una sola volta) */
-[data-theme="light"] .shooting-star { opacity: 0.35; }
+/* ANIMAZIONI COMETE */
+.shooting-star.diagonal {
+    animation: shoot-diagonal 7s ease-out infinite;
+}
+
+.shooting-star.horizontal {
+    animation: shoot-horizontal 6s ease-out infinite;
+}
+
+.shooting-star.vertical {
+    animation: shoot-vertical 8s ease-out infinite;
+}
+
+.shooting-star.reverse {
+    animation: shoot-reverse 7s ease-out infinite;
+}
+
+/* STELLE COLORATE */
+.star.color-blue { background-color: #00ccff; box-shadow: 0 0 6px #00ccff; }
+.star.color-gold { background-color: #ffd700; box-shadow: 0 0 6px #ffd700; }
+.star.color-purple { background-color: #b967ff; box-shadow: 0 0 6px #b967ff; }
+.star.color-green { background-color: #00ff88; box-shadow: 0 0 6px #00ff88; }
+.star.color-pink { background-color: #ff66cc; box-shadow: 0 0 6px #ff66cc; }
+.star.color-orange { background-color: #ffaa00; box-shadow: 0 0 6px #ffaa00; }
+
+/* ANIMAZIONI KEYFRAMES COMETE */
+@keyframes shoot-diagonal {
+    0% { transform: translateX(-150px) translateY(-150px) rotate(45deg); opacity: 0; }
+    10% { opacity: 1; }
+    30% { opacity: 1; }
+    100% { transform: translateX(calc(100vw + 150px)) translateY(calc(100vh + 150px)) rotate(45deg); opacity: 0; }
+}
+
+@keyframes shoot-horizontal {
+    0% { transform: translateX(-150px) rotate(0deg); opacity: 0; }
+    15% { opacity: 1; }
+    40% { opacity: 1; }
+    100% { transform: translateX(calc(100vw + 150px)) rotate(0deg); opacity: 0; }
+}
+
+@keyframes shoot-vertical {
+    0% { transform: translateY(-150px) rotate(90deg); opacity: 0; }
+    15% { opacity: 1; }
+    35% { opacity: 1; }
+    100% { transform: translateY(calc(100vh + 150px)) rotate(90deg); opacity: 0; }
+}
+
+@keyframes shoot-reverse {
+    0% { transform: translateX(calc(100vw + 150px)) translateY(-150px) rotate(-45deg); opacity: 0; }
+    10% { opacity: 1; }
+    30% { opacity: 1; }
+    100% { transform: translateX(-150px) translateY(calc(100vh + 150px)) rotate(-45deg); opacity: 0; }
+}
+
+/* TEMA CHIARO */
+[data-theme="light"] .star { opacity: 0.1; background-color: #1a202c; }
+[data-theme="light"] .shooting-star { opacity: 0.3; }
+
+/* ACCESSIBILITÀ */
 @media (prefers-reduced-motion: reduce) {
-  .shooting-star { animation: none !important; opacity: 0.5; }
+    .star, .shooting-star { animation: none !important; opacity: 0.5; }
 }
 
+/* COMETE MICRO */
+.shooting-star.micro {
+    width: 3px !important;
+    height: 0.5px !important;
+    filter: blur(0.1px) !important;
+    box-shadow: 0 0 2px currentColor !important;
+}
 </style>
 <style id="lens-left-fix">
 /* --- Lens left & vertically centered (scoped, minimal) --- */
@@ -1605,7 +2194,7 @@ window.googleTranslateElementInit = function(){
 }
 </style>
 <style>
-/* === TIMELINE SPETTACOLARE ULTIMATE - CARDS A DOPPIA LARGHEZZA 1586=== */
+/* === TIMELINE SPETTACOLARE ULTIMATE - CARDS A DOPPIA LARGHEZZA === */
 .timeline-container {
   --accent-gold: #ffd86a;
   --accent-cyan: #00ccff;
@@ -1816,6 +2405,7 @@ window.googleTranslateElementInit = function(){
     var(--accent-purple),
     transparent);
 }
+
 /* ANIMAZIONI DI ENTRATA SPETTACOLARI */
 .timeline-item.visible {
   opacity: 1;
@@ -1933,6 +2523,7 @@ window.googleTranslateElementInit = function(){
     transform: scaleX(1);
     opacity: 1;
   }
+}
 
 /* Effetti hover spettacolari */
 .timeline-content:hover {
@@ -2049,66 +2640,114 @@ window.googleTranslateElementInit = function(){
 }
 </style>
 
-<style id="timeline-rail-bridge">
-/* === TIMELINE ITEMS: Connectors aligned properly === */
 
-/* Common styles for both sides */
-.timeline .timeline-item {
-  position: relative;
-}
-
-/* Dots - positioned at card edges */
-.timeline .timeline-item.right::before {
+<style id="timeline-right-rail-bridge">
+/* === TIMELINE RIGHT: dentino to the RIGHT of the rail === */
+.timeline .timeline-item.right{ position: relative; }
+/* Dot stays centered on the rail at the card's left edge */
+.timeline .timeline-item.right::before{
   left: 0;
   transform: translate(-50%, -50%);
 }
-
-.timeline .timeline-item.left::before {
-  right: 0;
-  transform: translate(50%, -50%);
-}
-
-/* Connectors - positioned inside cards */
-.timeline .timeline-item.right::after {
-  left: 6px !important;
+/* Connector segment entirely inside the card, starting just RIGHT of the rail
+   6px = half of 12px dot, so it begins under the dot's right edge */
+.timeline .timeline-item.right::after{
+  left: 6px !important;     /* start just to the right of the rail */
   right: auto !important;
-  width: 54px !important;
+  width: 54px !important;   /* 60px padding - 6px already covered by dot */
   transform-origin: left center !important;
 }
-
-.timeline .timeline-item.left::after {
-  right: 6px !important;
-  left: auto !important;
-  width: 54px !important;
-  transform-origin: right center !important;
-  pointer-events: none;
+/* Optional mobile rail alignment (uncomment and tune if your rail shifts to 45px)
+@media (max-width: 900px){
+  .timeline .timeline-item.right::before{ left: 45px; transform: translate(-50%, -50%); }
+  .timeline .timeline-item.right::after{ left: calc(45px + 6px) !important; width: 54px !important; }
 }
+*/
+</style>
+<style id="timeline-suggest-perf">/* TIMELINE (HINT PERFORMANCE) */
+/* - Scopo: applica 'will-change' solo quando gli elementi sono visibili per migliorare performance. */
+/* - Non altera il layout; sicuro rimuovere se non necessario. */
 
-/* Optional mobile adjustments */
-@media (max-width: 900px) {
-  .timeline .timeline-item.right::before {
-    left: 45px;
-    transform: translate(-50%, -50%);
-  }
-  
-  .timeline .timeline-item.right::after {
-    left: calc(45px + 6px) !important;
-    width: 54px !important;
-  }
-  
-  .timeline .timeline-item.left::before {
-    right: 45px;
-    transform: translate(50%, -50%);
-  }
-  
-  .timeline .timeline-item.left::after {
-    right: calc(45px + 6px) !important;
-    width: 54px !important;
-  }
+.timeline .timeline-item.visible,
+.timeline .timeline-item.visible::before,
+.timeline .timeline-item.visible::after{
+  will-change: transform, opacity;
 }
 </style>
+<script id="timeline-suggest-aria">// TIMELINE (ACCESSIBILITÀ)
+// - Scopo: aggiunge role='region' e aria-label alla sezione della timeline, se mancanti.
+// - Non modifica stili/animazioni; migliora la fruibilità con tecnologie assistive.
 
+document.addEventListener('DOMContentLoaded', function(){
+  var sec = document.querySelector('section.timeline-container');
+  if (sec){
+    if (!sec.hasAttribute('role')) sec.setAttribute('role','region');
+    if (!sec.hasAttribute('aria-label')) sec.setAttribute('aria-label','Linea del tempo filosofica');
+  }
+});
+</script><script id="timeline-suggest-nojs-flag">// FALLBACK NO-JS (FLAG)
+// - Scopo: aggiunge '.no-js' all'elemento <html> prima del DOMContentLoaded.
+// - Serve a mostrare la timeline se JS è disattivato (vedi CSS relativo).
+(function(){ document.documentElement.classList.add('no-js'); })();</script><style id="timeline-suggest-nojs-css">/* FALLBACK NO-JS (CSS) */
+/* - Scopo: se JS resta disattivato, mostra tutti gli elementi senza animazioni. */
+/* - Disattivabile rimuovendo questo blocco o la classe '.no-js' su <html>. */
 
+.no-js .timeline .timeline-item{
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+</style><script id="timeline-suggest-nojs-remove">// FALLBACK NO-JS (REMOVE FLAG)
+// - Scopo: rimuove la classe '.no-js' al DOMContentLoaded (JS attivo).
+// - Assicura che, con JS attivo, la timeline torni ad animarsi normalmente.
+
+document.addEventListener('DOMContentLoaded', function(){
+  document.documentElement.classList.remove('no-js');
+});
+</script><script defer="defer" id="timeline-suggest-io">// TIMELINE (MICRO-STAGGER NON INVASIVO)
+// - Scopo: sfalsa leggermente i tempi d'ingresso delle card per migliorare la lettura visiva.
+// - Usa IntersectionObserver. Ritardo = index*70ms (+120ms per card a destra), max 600ms.
+// - Per disattivare: rimuovere questo script o impostare delayMs=0.
+// - Rispetto accessibilità: si può aggiungere controllo di prefers-reduced-motion.
+
+document.addEventListener('DOMContentLoaded', function(){
+  var items = Array.prototype.slice.call(document.querySelectorAll('.timeline .timeline-item'));
+  if (!items.length) return;
+
+  var seen = new WeakSet();
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting && !seen.has(e.target)){
+        var idx = items.indexOf(e.target);
+        var sideRight = e.target.classList.contains('right') ? 120 : 0;  // piccolo offset lato destro
+        var delayMs = Math.min(idx*70 + sideRight, 600);
+        e.target.style.transitionDelay = (delayMs/1000)+'s';
+        e.target.classList.add('visible');
+        seen.add(e.target);
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -10% 0px' });
+
+  items.forEach(function(el){ io.observe(el); });
+
+  // Primo pass: se già in viewport
+  requestAnimationFrame(function(){
+    items.forEach(function(el){
+      var r = el.getBoundingClientRect();
+      if (r.top < (innerHeight*0.9) && r.bottom > 0){
+        var idx = items.indexOf(el);
+        var sideRight = el.classList.contains('right') ? 120 : 0;
+        var delayMs = Math.min(idx*70 + sideRight, 600);
+        el.style.transitionDelay = (delayMs/1000)+'s';
+        el.classList.add('visible');
+        seen.add(el);
+        io.unobserve(el);
+      }
+    });
+  });
+});
+</script>
 <style>
 /* === THEME TOGGLE STYLES === */
 .theme-btn {
@@ -2825,98 +3464,136 @@ html {
 }
 </style>
 <style>
-/* === PULSANTE TORNA SU — versione pulita === */
-#backToTop{
-  position: fixed;
-  bottom: 20px;           /* richiesto */
-  left: 155px;           /* spostato a sinistra */
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  border: 2px solid rgba(255,215,0,.3);
-  background: linear-gradient(135deg, var(--gold, #d4af37), #ffeb3b);
-  color: #0a0a1a;
-  font-size: 1.5rem;
-  line-height: 50px;
-  text-align: center;
-  cursor: pointer;
-  z-index: 9999;          /* sotto CTA 10000, alza se serve */
-  box-shadow: 0 4px 15px rgba(255,215,0,.4), 0 0 0 2px rgba(10,10,30,.1);
-  backdrop-filter: blur(10px);
-  transition: transform .25s cubic-bezier(.4,0,.2,1), opacity .2s ease, box-shadow .25s;
-  opacity: 0;             /* nascosto di default */
-  pointer-events: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: float-gentle 3s ease-in-out infinite;
+/* === PULSANTE TORNA SU - VERSIONE FLUTTUANTE === */
+.back-to-top.floating {
+    position: fixed;
+    bottom: 20px; /* Posizionato sopra il CTA fluttuante */
+    left: 155px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), #ffeb3b);
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    color: #0a0a1a;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999; /* Leggermente sotto il CTA (10000) */
+    box-shadow: 
+        0 4px 15px rgba(255, 215, 0, 0.4),
+        0 0 0 2px rgba(10, 10, 30, 0.1); /* Bordo esterno per contrasto */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+    animation: float-gentle 3s ease-in-out infinite;
 }
 
-/* visibile: solo opacità/pointer (più affidabile su Safari) */
-#backToTop.is-visible{
-  opacity: 1;
-  pointer-events: auto;
+/* Animazione fluttuante delicata */
+@keyframes float-gentle {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
 }
 
-#backToTop:hover{
-  transform: translateY(-3px) scale(1.1);
-  box-shadow: 0 8px 25px rgba(255,215,0,.6), 0 0 0 2px rgba(255,215,0,.2);
-  background: linear-gradient(135deg, #ffeb3b, var(--gold, #d4af37));
-  animation: none; /* pausa effetto fluttuante durante hover */
+.back-to-top.floating:hover {
+    transform: translateY(-3px) scale(1.1);
+    box-shadow: 
+        0 8px 25px rgba(255, 215, 0, 0.6),
+        0 0 0 2px rgba(255, 215, 0, 0.2);
+    background: linear-gradient(135deg, #ffeb3b, var(--gold));
+    animation: none; /* Ferma l'animazione durante l'hover */
 }
 
-#backToTop:active{
-  transform: translateY(-1px) scale(1.05);
+.back-to-top.floating:active {
+    transform: translateY(-1px) scale(1.05);
 }
 
-/* variante “glow” opzionale */
-#backToTop.glow{
-  background: radial-gradient(circle at 30% 30%, #ffeb3b, var(--gold, #d4af37));
-  box-shadow: 0 4px 20px rgba(255,215,0,.5), 0 0 30px rgba(255,215,0,.3), inset 0 1px 0 rgba(255,255,255,.4);
+/* Versione con effetto "bolla luminosa" */
+.back-to-top.floating.glow {
+    background: radial-gradient(circle at 30% 30%, #ffeb3b, var(--gold));
+    box-shadow: 
+        0 4px 20px rgba(255, 215, 0, 0.5),
+        0 0 30px rgba(255, 215, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
-/* variante “glass” opzionale */
-#backToTop.glass{
-  background: rgba(212,175,55,.15);
-  backdrop-filter: blur(15px);
-  border: 1px solid rgba(255,215,0,.4);
-  color: var(--gold, #d4af37);
-  box-shadow: 0 4px 20px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.1);
-}
-#backToTop.glass:hover{
-  background: rgba(212,175,55,.25);
-  color: #0a0a1a;
+/* Versione trasparente/semitrasparente */
+.back-to-top.floating.glass {
+    background: rgba(212, 175, 55, 0.15);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 215, 0, 0.4);
+    color: var(--gold);
+    box-shadow: 
+        0 4px 20px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-/* animazione fluttuante */
-@keyframes float-gentle{
-  0%,100%{ transform: translateY(0); }
-  50%    { transform: translateY(-5px); }
+.back-to-top.floating.glass:hover {
+    background: rgba(212, 175, 55, 0.25);
+    color: #0a0a1a;
 }
 
-/* mobile: dimensioni leggermente ridotte */
-@media (max-width: 768px){
-  #backToTop{
-    left: 20px;
-    width: 45px; height: 45px; line-height: 45px; font-size: 1.3rem;
-    animation: float-gentle-mobile 4s ease-in-out infinite;
-  }
-  @keyframes float-gentle-mobile{
-    0%,100%{ transform: translateY(0); }
-    50%    { transform: translateY(-3px); }
-  }
+/* Regolazioni per diverse altezze del CTA */
+.back-to-top.floating.above-small-cta {
+    bottom: 90px; /* Per CTA più piccoli */
 }
 
-/* accessibilità: riduci movimento */
-@media (prefers-reduced-motion: reduce){
-  #backToTop{ animation: none; transition: none; }
-  #backToTop:hover{ transform: none; }
+.back-to-top.floating.above-large-cta {
+    bottom: 120px; /* Per CTA più grandi */
 }
 
-/* debug: mostralo comunque per 10s all’avvio */
-@keyframes backtotop-debug{ from{opacity:1} to{opacity:1} }
-html[data-btt-debug="1"] #backToTop{ opacity:1; pointer-events:auto; animation: backtotop-debug 10s; }
+.back-to-top.floating.above-xl-cta {
+    bottom: 150px; /* Per CTA molto grandi */
+}
 
+/* Versione compatta per mobile */
+@media (max-width: 768px) {
+    .back-to-top.floating {
+        bottom: 80px; /* Più vicino al bordo su mobile */
+        left: 20px;
+        width: 45px;
+        height: 45px;
+        font-size: 1.3rem;
+    }
+    
+    .back-to-top.floating.above-small-cta {
+        bottom: 70px;
+    }
+    
+    .back-to-top.floating.above-large-cta {
+        bottom: 100px;
+    }
+    
+    /* Riduci animazione su mobile per performance */
+    .back-to-top.floating {
+        animation: float-gentle-mobile 4s ease-in-out infinite;
+    }
+    
+    @keyframes float-gentle-mobile {
+        0%, 100% {
+            transform: translateY(0px);
+        }
+        50% {
+            transform: translateY(-3px);
+        }
+    }
+}
+
+/* Supporto per preferenze di movimento ridotto */
+@media (prefers-reduced-motion: reduce) {
+    .back-to-top.floating {
+        animation: none;
+        transition: none;
+    }
+    
+    .back-to-top.floating:hover {
+        transform: none;
+    }
+}
 </style>
 <style>
     /* Stili per le cometine variopinte */
@@ -3734,6 +4411,17 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
   box-shadow: 0 0 0 2px color-mix(in oklab, var(--accent) 30%, transparent);
 }
 
+/* ===== STARS FIELD (if present) ===== */
+.star.color-accent{ background-color: var(--accent); box-shadow: 0 0 8px var(--accent); }
+.shooting-star{
+  box-shadow: 0 0 10px var(--accent), 0 0 20px #ffffff;
+  background: linear-gradient(90deg, transparent 0%, var(--accent) 40%, #ffffff 60%, transparent 100%);
+}
+[data-accent] .shooting-star.accent { filter: drop-shadow(0 0 6px var(--accent)); }
+
+@media (prefers-reduced-motion: reduce){
+  .welcome-title-themable{ animation:none !important; text-shadow:none !important; }
+}
 </style><style id="topbar-switcher-inline-css">
 /* Compact switcher inside top-bar */
 .topbar-switcher .btn-ghost{ 
@@ -3748,7 +4436,77 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
   .topbar-switcher{ gap:.35rem; }
   .topbar-switcher .btn-ghost{ padding:.3rem .5rem; font-size:.92rem; }
 }
- </style>
+  /* === Pulsante Dizionario — stile coerente con .ctrl-btn === */
+.dict-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-family: "Montserrat", sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    cursor: pointer;
+    transition: background .25s ease, border-color .25s ease, opacity .25s ease;
+}
+
+.dict-btn:hover {
+    background: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.25);
+}
+
+.dict-btn .dict-icona {
+    font-size: 18px;
+    pointer-events: none;
+}
+
+.dict-btn .dict-testo {
+    pointer-events: none;
+}
+
+/* === Modal Dizionario === */
+#dict-modal {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 400px;
+    height: 100vh;
+    background: var(--menu-bg);
+    border-left: 2px solid var(--gold);
+    z-index: 10000;
+    transform: translateX(100%);
+    transition: transform .35s ease-out;
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+#dict-modal.open {
+    transform: translateX(0);
+}
+
+#dict-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .3s ease;
+}
+
+#dict-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+
+
+</style>
 </head>
 <body>
   <div hidden="True" id="search-backdrop"></div>
@@ -3756,273 +4514,219 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
     <div class="search-header"><h3 class="search-title">Risultati</h3><button aria-label="Chiudi pannello" class="search-close" id="search-close" type="button">Chiudi</button></div>
     <div class="search-results results-scroll" id="search-results"><div class="sp-item" data-placeholder="true"><h4 class="result-title">Suggerimento</h4><p class="result-desc">Digita nel campo di ricerca in alto per vedere i risultati qui.</p></div></div></div>
 <!-- UI PATCH BLOCKS -->
-<div class="slider-vertical" aria-label="Galleria autori">
-  <div class="slider-inner" id="sliderInner">
+<div aria-label="Galleria autori" class="slider-vertical">
+<div class="slider-inner" id="sliderInner">
 <!-- PRIME 3 IMMAGINI: loading="eager" perché visibili subito -->
 <div class="slide-vertical">
-  <img src="/foto/socrate.webp?v=20251106" alt="Socrate" width="260" height="340"
-       decoding="async" loading="eager" fetchpriority="high">
-  <p>Socrate</p>
+<img alt="Socrate" decoding="async" height="340" loading="eager" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/socrate.webp" width="260"/>
+<p>Socrate</p>
+</div>
+<div class="slide-vertical">
+<img alt="Platone" decoding="async" height="340" loading="eager" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/platone.webp" width="260"/>
+<p>Platone</p>
+</div>
+<div class="slide-vertical">
+<img alt="Aristotele" decoding="async" height="340" loading="eager" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/aristotele.webp" width="260"/>
+<p>Aristotele</p>
+</div>
+<!-- TUTTE LE ALTRE: loading="lazy" -->
+<div class="slide-vertical">
+<img alt="Maria Teresa" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/mt.webp" width="260"/>
+<p>🕯️Maria Teresa: virtù e bellezza in armonia✝️</p>
+</div>
+<div class="slide-vertical">
+<img alt="Livia" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/immagini%20per%20sito/Livia.jpeg" width="260"/>
+<p>👑🦌Livia🦅DEA egizia🔱</p>
+</div>
+  <div class="slide-vertical">
+<img alt="Polpetta" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/immagini%20per%20sito/polpetta.webp" width="260"/>
+<p>🏹 Polpetta🦸: guerriera celtica</p>
+</div>
+<div class="slide-vertical">
+<img alt="Cerbero" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/cerbero.webp" width="260"/>
+<p>Cerbero - Guardiano dell'Ade</p>
+</div>
+<div class="slide-vertical">
+<img alt="Nietzsche" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/nietzsche.webp" width="260"/>
+<p>Nietzsche: sentì i becchini seppellire Dio</p>
+</div>
+<div class="slide-vertical">
+<img alt="Kant" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/kant.webp" width="260"/>
+<p>Kant - il più zoppo tra gli storpi del concetto</p>
+</div>
+   <div class="slide-vertical">
+<img alt="Dante Alighieri" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/dante.webp" width="260"/>
+<p>Dante ovvero la iena che poeta fra le tombe.</p>
+</div>
+  <div class="slide-vertical">
+<img alt="Cartesio" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/cartesio.webp" width="260"/>
+<p>Cartesio</p>
+</div>
+<div class="slide-vertical">
+  <img alt="Zygmunt Bauman" decoding="async" height="340" loading="lazy"
+       src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/bauman.webp" width="260"/>
+  <p>Zygmunt Bauman</p>
+</div>
+<div class="slide-vertical">
+  <img alt="Voltaire" decoding="async" height="340" loading="lazy"
+       src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/voltaire.webp" width="260"/>
+  <p>Voltaire</p>
+</div>
+<div class="slide-vertical">
+  <img alt="Leszek Kołakowski" decoding="async" height="340" loading="lazy"
+       src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/kolakowski.webp" width="260"/>
+  <p>Leszek Kołakowski</p>
 </div>
 
 <div class="slide-vertical">
-  <img src="/foto/platone.webp?v=20251106" alt="Platone" width="260" height="340"
-       decoding="async" loading="eager" fetchpriority="high">
-  <p>Platone</p>
+  <img alt="Tararski" decoding="async" height="340" loading="lazy"
+       src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/tararski.webp" width="260"/>
+  <p>Alfred Tararski</p>
+</div>
+<div class="slide-vertical">
+<img alt="Gadamer" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/gadamer.webp" width="260"/>
+<p>H.G.Gadamer</p>
 </div>
 
 <div class="slide-vertical">
-  <img src="/foto/aristotele.webp?v=20251106" alt="Aristotele" width="260" height="340"
-       decoding="async" loading="eager" fetchpriority="high">
-  <p>Aristotele</p>
+<img alt="Ricoeur" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/ricoeur.webp" width="260"/>
+<p>P. Ricoeur</p>
 </div>
-      <!-- TUTTE LE ALTRE: loading="lazy" -->
-    <div class="slide-vertical">
-      <img src="/foto/mt.webp?v=20251105" alt="Maria Teresa" width="260" height="340" decoding="async" loading="lazy">
-      <p>🕯️Maria Teresa: virtù e bellezza in armonia✝️</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/livia.webp?v=20251105" alt="Livia" width="260" height="340" decoding="async" loading="lazy">
-      <p>👑🦌Livia🦅DEA egizia🔱</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/polpetta.webp?v=20251105" alt="Polpetta" width="260" height="340" decoding="async" loading="lazy">
-      <p>🏹 Polpetta🦸: guerriera celtica</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/cerbero.webp?v=20251105" alt="Cerbero" width="260" height="340" decoding="async" loading="lazy">
-      <p>Cerbero - Guardiano dell'Ade</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/nietzsche.webp?v=20251105" alt="Nietzsche" width="260" height="340" decoding="async" loading="lazy">
-      <p>Nietzsche: sentì i becchini seppellire Dio</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/kant.webp?v=20251105" alt="Kant" width="260" height="340" decoding="async" loading="lazy">
-      <p>Kant - il più zoppo tra gli storpi del concetto</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/dante.webp?v=20251105" alt="Dante Alighieri" width="260" height="340" decoding="async" loading="lazy">
-      <p>Dante ovvero la iena che poeta fra le tombe.</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/eraclito.webp?v=20251105" alt="Eraclito" width="260" height="340" decoding="async" loading="lazy">
-      <p>Eraclito  - 🎡 paladino del caos🎲</p>
-    </div>
-    <div class="slide-vertical">
-      <img src="/foto/gorgia.webp?v=20251105" alt="Gorgia" width="260" height="340" decoding="async" loading="lazy">
-      <p>Gorgia - sfidò la realtà con il nichilismo</p>
-    </div>
-    <div class="slide-vertical">
-      <img src="/foto/cartesio.webp?v=20251105" alt="Cartesio" width="260" height="340" decoding="async" loading="lazy">
-      <p>Cartesio</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/bauman.webp?v=20251105" alt="Zygmunt Bauman" width="260" height="340" decoding="async" loading="lazy">
-      <p>Zygmunt Bauman</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/voltaire.webp?v=20251105" alt="Voltaire" width="260" height="340" decoding="async" loading="lazy">
-      <p>Voltaire</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/kolakowski.webp?v=20251105" alt="Leszek Kołakowski" width="260" height="340" decoding="async" loading="lazy">
-      <p>Leszek Kołakowski</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/tararski.webp?v=20251105" alt="Tararski" width="260" height="340" decoding="async" loading="lazy">
-      <p>Alfred Tararski</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/gadamer.webp?v=20251105" alt="Gadamer" width="260" height="340" decoding="async" loading="lazy">
-      <p>H.G.Gadamer</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/ricoeur.webp?v=20251105" alt="Ricoeur" width="260" height="340" decoding="async" loading="lazy">
-      <p>P. Ricoeur</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/levinas.webp?v=20251105" alt="Levinas" width="260" height="340" decoding="async" loading="lazy">
-      <p>E. Lévinas</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/tommaso.webp?v=20251105" alt="San Tommaso" width="260" height="340" decoding="async" loading="lazy">
-      <p>San Tommaso</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/dea.webp?v=20251105" alt="Dea" width="260" height="340" decoding="async" loading="lazy">
-      <p>𓍝Divinità mesopotamica⚯</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/vattimo.webp?v=20251105" alt="Gianni Vattimo" width="260" height="340" decoding="async" loading="lazy">
-      <p>Gianni Vattimo</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/krk.webp?v=20251105" alt="Testa di..." width="260" height="340" decoding="async" loading="lazy">
-      <p>Testa di ...</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/democrito.webp?v=20251105" alt="Democrito" width="260" height="340" decoding="async" loading="lazy">
-      <p>Democrito</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/talete.webp?v=20251105" alt="Talete" width="260" height="340" decoding="async" loading="lazy">
-      <p>Talete</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/aristippo.webp?v=20251105" alt="Aristippo" width="260" height="340" decoding="async" loading="lazy">
-      <p>Aristippo</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/cacciari.webp?v=20251105" alt="Massimo Cacciari" width="260" height="340" decoding="async" loading="lazy">
-      <p>Massimo Cacciari</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/cicerone.webp?v=20251105" alt="Cicerone" width="260" height="340" decoding="async" loading="lazy">
-      <p>Cicerone</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/deleuze.webp?v=20251105" alt="Gilles Deleuze" width="260" height="340" decoding="async" loading="lazy">
-      <p>Gilles Deleuze</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/derrida.webp?v=20251105" alt="Jacques Derrida" width="260" height="340" decoding="async" loading="lazy">
-      <p>Jacques Derrida</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/dewey.webp?v=20251105" alt="John Dewey" width="260" height="340" decoding="async" loading="lazy">
-      <p>John Dewey</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/foucault.webp?v=20251105" alt="Michel Foucault" width="260" height="340" decoding="async" loading="lazy">
-      <p>Michel Foucault</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/hegel.webp?v=20251105" alt="G.W.F. Hegel" width="260" height="340" decoding="async" loading="lazy">
-      <p>G.W.F. Hegel</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/heidegger.webp?v=20251105" alt="Martin Heidegger" width="260" height="340" decoding="async" loading="lazy">
-      <p>Martin Heidegger</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/horkheimer.webp?v=20251105" alt="Max Horkheimer" width="260" height="340" decoding="async" loading="lazy">
-      <p>Max Horkheimer</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/husserl.webp?v=20251105" alt="Edmund Husserl" width="260" height="340" decoding="async" loading="lazy">
-      <p>Edmund Husserl</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/ponty.webp?v=20251105" alt="Maurice Merleau-Ponty" width="260" height="340" decoding="async" loading="lazy">
-      <p>Maurice Merleau-Ponty</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/peirce.webp?v=20251105" alt="Charles S. Peirce" width="260" height="340" decoding="async" loading="lazy">
-      <p>Charles S. Peirce</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/pirrone.webp?v=20251105" alt="Pirrone" width="260" height="340" decoding="async" loading="lazy">
-      <p>Pirrone</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/pitagora.webp?v=20251105" alt="Pitagora" width="260" height="340" decoding="async" loading="lazy">
-      <p>Pitagora</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/diotima.webp?v=20251105" alt="Diotima" width="260" height="340" decoding="async" loading="lazy">
-      <p>Diotima di Mantinea</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/ipazia.webp?v=20251105" alt="Ipàzia" width="260" height="340" decoding="async" loading="lazy">
-      <p>Ipàzia di Alessandria</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/russell.webp?v=20251105" alt="Bertrand Russell" width="260" height="340" decoding="async" loading="lazy">
-      <p>Bertrand Russell</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/severino.webp?v=20251105" alt="Emanuele Severino" width="260" height="340" decoding="async" loading="lazy">
-      <p>Emanuele Severino</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/bulgakov.webp?v=20251105" alt="Michail Bulgakov" width="260" height="340" decoding="async" loading="lazy">
-      <p>Michail Bulgakov</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/dostoyevsky.webp?v=20251105" alt="Fëdor Dostoevskij" width="260" height="340" decoding="async" loading="lazy">
-      <p>Fëdor Dostoevskij</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/galimberti.webp?v=20251105" alt="Umberto Galimberti" width="260" height="340" decoding="async" loading="lazy">
-      <p>Umberto Galimberti</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/weber.webp?v=20251105" alt="Max Weber" width="260" height="340" decoding="async" loading="lazy">
-      <p>Max Weber</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/sestov.webp?v=20251105" alt="Lev Šestov" width="260" height="340" decoding="async" loading="lazy">
-      <p>Lev Šestov</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/schelling.webp?v=20251105" alt="F.W.J. Schelling" width="260" height="340" decoding="async" loading="lazy">
-      <p>F.W.J. Schelling</p>
-    </div>
-
-    <div class="slide-vertical">
-      <img src="/foto/wittgenstein.webp?v=20251105" alt="Ludwig Wittgenstein" width="260" height="340" decoding="async" loading="lazy">
-      <p>Ludwig Wittgenstein</p>
-    </div>
-
-  </div>
+<div class="slide-vertical">
+<img alt="Levinas" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/levinas.webp" width="260"/>
+<p>E. Lévinas</p>
+</div>
+<div class="slide-vertical">
+<img alt="San Tommaso" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/tommaso.webp" width="260"/>
+<p>San Tommaso</p>
+</div>
+<div class="slide-vertical">
+<img alt="Dea" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/dea.webp" width="260"/>
+<p>𓍝Divinità mesopotamica⚯</p>
+</div>
+<div class="slide-vertical">
+<img alt="Gianni Vattimo" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/vattimo.webp" width="260"/>
+<p>Gianni Vattimo</p>
+</div>
+<div class="slide-vertical">
+<img alt="Testa di..." decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/krk.webp" width="260"/>
+<p>Testa di ...</p>
+</div>
+<div class="slide-vertical">
+<img alt="Democrito" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/democrito.webp" width="260"/>
+<p>Democrito</p>
+</div>
+<div class="slide-vertical">
+<img alt="Talete" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/talete.webp" width="260"/>
+<p>Talete</p>
+</div>
+<div class="slide-vertical">
+<img alt="Aristippo" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/aristippo.webp" width="260"/>
+<p>Aristippo</p>
+</div>
+<div class="slide-vertical">
+<img alt="Massimo Cacciari" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/cacciari.webp" width="260"/>
+<p>Massimo Cacciari</p>
+</div>
+<div class="slide-vertical">
+<img alt="Cicerone" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/cicerone.webp" width="260"/>
+<p>Cicerone</p>
 </div>
 
+<div class="slide-vertical">
+<img alt="Gilles Deleuze" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/deleuze.webp" width="260"/>
+<p>Gilles Deleuze</p>
+</div>
+<div class="slide-vertical">
+<img alt="Jacques Derrida" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/derrida.webp" width="260"/>
+<p>Jacques Derrida</p>
+</div>
+<div class="slide-vertical">
+<img alt="John Dewey" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/dewey.webp" width="260"/>
+<p>John Dewey</p>
+</div>
+<div class="slide-vertical">
+<img alt="Michel Foucault" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/foucault.webp" width="260"/>
+<p>Michel Foucault</p>
+</div>
+<div class="slide-vertical">
+<img alt="G.W.F. Hegel" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/hegel.webp" width="260"/>
+<p>G.W.F. Hegel</p>
+</div>
+<div class="slide-vertical">
+<img alt="Martin Heidegger" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/heidegger.webp" width="260"/>
+<p>Martin Heidegger</p>
+</div>
+<div class="slide-vertical">
+<img alt="Max Horkheimer" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/immagini%20per%20sito/horkheimer.jpg" width="260"/>
+<p>Max Horkheimer</p>
+</div>
+<div class="slide-vertical">
+<img alt="Edmund Husserl" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/husserl.webp" width="260"/>
+<p>Edmund Husserl</p>
+</div>
+<div class="slide-vertical">
+<img alt="Maurice Merleau-Ponty" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/ponty.webp" width="260"/>
+<p>Maurice Merleau-Ponty</p>
+</div>
+<div class="slide-vertical">
+<img alt="Charles S. Peirce" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/peirce.webp" width="260"/>
+<p>Charles S. Peirce</p>
+</div>
+<div class="slide-vertical">
+<img alt="Pirrone" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/pirrone.webp" width="260"/>
+<p>Pirrone</p>
+</div>
+<div class="slide-vertical">
+<img alt="Pitagora" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/pitagora.webp" width="260"/>
+<p>Pitagora</p>
+</div>
+<div class="slide-vertical">
+<img alt="Diotima" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/diotima.webp" width="260"/>
+<p>Diotima di Mantinea</p>
+</div>
+<div class="slide-vertical">
+<img alt="Ipàzia" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/ipazia.webp" width="260"/>
+<p>Ipàzia di Alessandria</p>
+</div>
+<div class="slide-vertical">
+<img alt="Bertrand Russell" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/russell.webp" width="260"/>
+<p>Bertrand Russell</p>
+</div>
+<div class="slide-vertical">
+<img alt="Emanuele Severino" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/severino.webp" width="260"/>
+<p>Emanuele Severino</p>
+</div>
+<div class="slide-vertical">
+<img alt="Michail Bulgakov" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/immagini%20per%20sito/bulgakov.jpg" width="260"/>
+<p>Michail Bulgakov</p>
+</div>
+<div class="slide-vertical">
+<img alt="Fëdor Dostoevskij" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/dostoyevsky.webp" width="260"/>
+<p>Fëdor Dostoevskij</p>
+</div>
+<div class="slide-vertical">
+<img alt="Umberto Galimberti" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/galimberti.webp" width="260"/>
+<p>Umberto Galimberti</p>
+</div>
+<div class="slide-vertical">
+<img alt="Max Weber" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/veber.webp" width="260"/>
+<p>Max Weber</p>
+</div>
+<div class="slide-vertical">
+<img alt="Lev Šestov" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/sestov.webp" width="260"/>
+<p>Lev Šestov</p>
+</div>
+<div class="slide-vertical">
+<img alt="F.W.J. Schelling" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/schelling.webp" width="260"/>
+<p>F.W.J. Schelling</p>
+</div>
+<div class="slide-vertical">
+<img alt="Ludwig Wittgenstein" decoding="async" height="340" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/wittgenstein.webp" width="260"/>
+<p>Ludwig Wittgenstein</p>
+</div>
+</div>
+</div>
 <div class="slider-controls" id="slider-controls">
 <button class="ctrl-btn" id="slider-toggle">⏯️ Avvia / Ferma</button>
 <button class="ctrl-btn" id="slider-invert">🔄 Inverti</button>
@@ -4037,57 +4741,34 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 <aside aria-label="Ultimi articoli" class="articles-blob">
 <h3>📰 Ultimi articoli</h3>
 <ul>
-<li><a href="articoli/filosofia_presocratica.html">Filosofia Presocratica</a></li>
 <li><a href="articoli/circolo_di_vienna.html">Circolo di Vienna</a></li>
 <li><a href="articoli/ipazia.html">Ipàzia di Alessandria</a></li>
 <li><a href="articoli/platone_mito_caverna.html">Il Mito della Caverna di Platone</a></li>
 <li><a href="articoli/parmenide1.html">Parmenide di Elea</a></li>
-
+<li><a href="articoli/2nietzsche.html">Nietzsche</a></li>
 <li><a href="articoli/battaglia_maratona.html">Battaglia di Maratona</a></li>
 </ul>
 </aside>
-<!-- Dizionario filosofico — multi-fonte, compatto -->
-<div class="right-box" id="dict-compact">
-<h3>📘 Dizionario filosofico</h3>
-<div class="mini">multi‑fonte, compatto</div>
-<form id="dict-form">
-<div class="row">
-<input id="dict-q" placeholder="Cerca un termine…" type="search"/>
-</div>
-<div class="sources">
-<label><input checked="" data-url="https://duckduckgo.com/?q=site%3Aplato.stanford.edu+{q}" type="checkbox"/> SEP</label>
-<label><input checked="" data-url="https://duckduckgo.com/?q=site%3Aiep.utm.edu+{q}" type="checkbox"/> IEP</label>
-<label><input checked="" data-url="https://www.treccani.it/risultati?q={q}" type="checkbox"/> Treccani</label>
-<label><input data-url="https://it.wikipedia.org/w/index.php?search={q}" type="checkbox"/> Wikipedia</label>
-<label><input data-url="https://www.britannica.com/search?query={q}" type="checkbox"/> Britannica</label>
-</div>
-<div class="row">
-<button class="btn" type="submit">Cerca</button>
-</div>
-</form>
-</div>
+
+
 <!-- Enciclopedia filosofica (IEP tradotta) -->
 <div class="right-box" id="iep-linkbox">
-<h3>📚 Enciclopedia filosofica (IEP)</h3>
-<div class="row">
-<a class="btn" href="https://iep-utm-edu.translate.goog/a/?_x_tr_sl=auto&amp;_x_tr_tl=it&amp;_x_tr_hl=uk&amp;_x_tr_pto=wapp" rel="noopener" target="_blank">
-        Apri versione tradotta
-        </a>
-</div>
+
+  <h3>📚 Enciclopedia filosofica IEP</h3>
+
+  <a class="btn"
+     href="https://iep-utm-edu.translate.goog/a/?_x_tr_sl=auto&_x_tr_tl=it&_x_tr_hl=uk&_x_tr_pto=wapp"
+     target="_blank" rel="noopener">
+    Apri versione tradotta
+  </a>
 <div class="mini">
-        oppure <a href="https://iep.utm.edu/" rel="noopener" target="_blank">IEP originale</a>
-</div>
-</div>
-<div class="right-embed" aria-label="Video: spinoza">
-  <iframe
-    src="https://archive.org/embed/spinoza_202511"
-    title="Baruch Spinoza — Video (Archive.org)"
-    allowfullscreen
-    loading="lazy"
-    referrerpolicy="strict-origin-when-cross-origin">
-  </iframe>
+      oppure <a href="https://iep.utm.edu/" target="_blank" rel="noopener">IEP originale</a>
+  </div>
 </div>
 
+<div class="right-embed">
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" src="https://www.youtube.com/embed/G_REgkOuQfw" title="Schopenhauer e Nietzsche (Hans-Georg Gadamer) - 3x4"></iframe>
+</div>
 <div id="russell-box"><button id="russell-btn">🎵 "La maggior parte degli uomini preferirebbe morire piuttosto che pensare,  infatti è quello che fanno."<br/><strong>– Bertrand Russell</strong></button></div>
 <div id="russell-hint">Clicca box sotto per ascoltare la chitarra 🎸</div>
 <audio id="russell-audio" playsinline="True" preload="auto" src="https://casi0048.github.io/suoni/gitarra.mp3"></audio>
@@ -4183,28 +4864,71 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 </div>
 </div>
 </div>
+<!-- ============================================================
+        TOPBAR CON DIZIONARIO
+============================================================ -->
 <div class="bar-right">
-<div class="translate-box">
-<span>🌐</span>
-<select aria-label="Traduci pagina" class="translate-select" id="customTranslate">
-<option value="it">Italiano</option>
-<option value="en">English</option>
-<option value="fr">Français</option>
-<option value="de">Deutsch</option>
-<option value="es">Español</option>
-<option value="pl">Polski</option>
-</select>
-<div aria-hidden="true" id="google_translate_element" style="position:fixed;bottom:0;right:0;width:1px;height:1px;opacity:0;pointer-events:none;overflow:hidden"></div>
+
+    <!-- 📘 DIZIONARIO -->
+    <button id="openDict" class="dict-btn" aria-label="Apri dizionario">
+        <span>📘</span>
+        <span>Dizionario</span>
+    </button>
+
+    <!-- 🌐 Traduttore -->
+    <div class="translate-box">
+        <span>🌐</span>
+        <select id="customTranslate" class="translate-select">
+            <option value="it">Italiano</option>
+            <option value="en">English</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="es">Español</option>
+            <option value="pl">Polski</option>
+        </select>
+    </div>
+
+    <!-- 🔍 Search -->
+    <div class="search-container">
+        <input id="site-search" type="search" placeholder="Cerca nel sito…">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+    </div>
+
 </div>
-<div class="search-container" role="search">
-<input aria-label="Cerca" id="site-search" placeholder="Cerca nel sito..." type="search"/>
-<i aria-hidden="true" class="fa-solid fa-magnifying-glass search-icon"></i>
-</div>
-<button aria-label="Cambia tema" class="ctrl-btn theme-btn" id="theme-toggle" title="Tema chiaro/scuro">
-    🌙
-  </button>
-<button class="ctrl-btn" id="btn-thunder" title="Riproduci tuono">⚡ Tuono</button>
-</div>
+
+
+<!-- ============================================================
+        OVERLAY + MODALE DIZIONARIO
+============================================================ -->
+<div id="dict-overlay"></div>
+
+<div id="dict-modal">
+
+    <div class="dict-header">
+        <h2>📘 Dizionario Filosofico</h2>
+        <button id="dict-close" aria-label="Chiudi">×</button>
+    </div>
+
+    <div class="dict-body">
+
+        <input id="dict-q" type="search" placeholder="Cerca un termine…">
+
+        <div id="dict-suggestions"></div>
+
+        <!-- FONTI -->
+        <div class="sources">
+            <label><input checked type="checkbox" data-url="https://duckduckgo.com/?q=site%3Aplato.stanford.edu+{q}"> SEP</label>
+            <label><input checked type="checkbox" data-url="https://duckduckgo.com/?q=site%3Aiep.utm.edu+{q}"> IEP</label>
+            <label><input checked="" data-url="https://www.treccani.it/risultati?q={q}" type="checkbox"/> Treccani</label>
+            <label><input type="checkbox" data-url="https://it.wikipedia.org/w/index.php?search={q}"> Wikipedia</label>
+            <label><input type="checkbox" data-url="https://www.britannica.com/search?query={q}"> Britannica</label>
+        </div>
+
+        <button id="dict-search">Cerca</button>
+        <button id="open-all">Apri tutte</button>
+
+    </div>
+ </div>
 </div>
 <!-- Menu principale -->
 <div class="menu-container">
@@ -4511,12 +5235,12 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 <a href="articoli/heidegger.html" role="menuitem">Heidegger</a>
 <a href="articoli/gadamer.html" role="menuitem">Hans-Georg Gadamer</a>
 <a href="/articoli/ricoeur.html" role="menuitem">Paul Ricoeur</a>
-<h4>Post-Positivismo</h4>
-<a href="articoli/popper.html" role="menuitem">Karl R. Popper</a>
-<a href="articoli/kuhn.html" role="menuitem">Thomas S. Kuhn</a>
-<a href="articoli/lakatos.html" role="menuitem">Imre Lakatos</a>
-<a href="articoli/feyerabend.html" role="menuitem">Paul K. Feyerabend</a>
-<a href="articoli/preti.html" role="menuitem">Giulio Preti</a>
+  <h4>Post-Positivismo</h4>
+              <a href="articoli/popper.html" role="menuitem">Karl R. Popper</a>
+              <a href="articoli/kuhn.html" role="menuitem">Thomas S. Kuhn</a>
+              <a href="articoli/lakatos.html" role="menuitem">Imre Lakatos</a>
+              <a href="articoli/feyerabend.html" role="menuitem">Paul K. Feyerabend</a>
+              <a href="articoli/preti.html" role="menuitem">Giulio Preti</a>
 </div>
 <div>
 <h4>Filosofia del linguaggio</h4>
@@ -5413,6 +6137,54 @@ function softPlay(audio, volume, delay) {
         loadIndex().then(()=>{ if (input.value.trim()) search(input.value); });
       })();
     </script>
+<script>
+/* === DIZIONARIO FILOSOFICO — VERSIONE DEFINITIVA === */
+document.addEventListener("DOMContentLoaded", () => {
+
+  const form  = document.getElementById("dict-form");
+  const input = document.getElementById("dict-q");
+
+  if (!form || !input) return;
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const q = input.value.trim();
+    if (!q) return;
+
+    const checks = form.querySelectorAll(".sources input[type='checkbox']:checked");
+    if (!checks.length) return;
+
+    checks.forEach((chk) => {
+      const tpl = chk.dataset.url || "";
+      let finalURL = "";
+
+      /* ⭐ TRECCANI — FORMATO UFFICIALE FUNZIONANTE */
+      if (/treccani\.it/i.test(tpl)) {
+        const enc = encodeURIComponent(q);
+        finalURL =
+          "https://www.treccani.it/enciclopedia/ricerca/" + enc + "/?search=" + enc;
+      }
+
+      /* ⭐ Wikipedia */
+      else if (/wikipedia\.org/i.test(tpl)) {
+        finalURL =
+          "https://it.wikipedia.org/wiki/" +
+          encodeURIComponent(q.replace(/\s+/g, "_"));
+      }
+
+      /* ⭐ Altri motori */
+      else {
+        finalURL = tpl.replace("{q}", encodeURIComponent(q));
+      }
+
+      window.open(finalURL, "_blank", "noopener");
+    });
+
+  });
+
+});
+</script>
 
 <script id="thunder-toggle-fix">
       (function(){
@@ -5572,12 +6344,13 @@ function softPlay(audio, volume, delay) {
           }
         }
       
-        // osserva cambi al pannello + input
-        const mo = new MutationObserver(()=> updateRelated());
-        mo.observe(resultsWrap, {childList:true, subtree:true});
-        input.addEventListener('input', ()=> setTimeout(updateRelated, 80));
-        document.addEventListener('DOMContentLoaded', updateRelated);
-      })();
+         // osserva cambi al pannello + input
+    const mo = new MutationObserver(() => updateRelated());
+    mo.observe(resultsWrap, { childList: true, subtree: true });
+    input.addEventListener('input', () => setTimeout(updateRelated, 80));
+    document.addEventListener('DOMContentLoaded', updateRelated);
+})(); 
+</script>
     </script>
 <script id="search-clear-js">
 document.addEventListener('DOMContentLoaded', ()=>{
@@ -5622,6 +6395,58 @@ document.addEventListener('DOMContentLoaded', ()=>{
 });
 </script>
 
+<!-- === INIZIO COMETINE ORIZZONTALI BIDIREZIONALI === -->
+<style>
+  .comet{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 20px;    /* lunghezza scia */
+  height: 2px;    /* spessore scia */
+  z-index: 2;     /* livello: sotto UI, sopra lo sfondo */
+    opacity: .85;
+     pointer-events: none;
+    transform: translateX(-100%);
+    border-radius: 2px;
+    animation: comet-move-ltr linear forwards;
+    filter: drop-shadow(0 0 6px rgba(255,255,255,.7));
+     z-index: 3;
+  }
+
+  /* piccolo “nucleo” luminoso */
+  .comet::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 6px;
+    height: 6px;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    background: rgba(255,255,255,.95);
+    box-shadow: 0 0 10px rgba(255,255,255,.9), 0 0 18px rgba(255,255,255,.6);
+    
+    /* Usa la variabile CSS per la posizione */
+    left: var(--head-position, 0px);
+    right: auto;
+}
+
+/* direzione sinistra → destra */
+.comet[data-direction="rtl"]::after {
+    left: auto;
+    right: var(--head-position, 0px);
+}
+
+  /* direzione destra → sinistra */
+  @keyframes comet-move-rtl {
+    from { transform: translateX(110vw) translateY(var(--startY)); opacity:.8; }
+    to   { transform: translateX(-10%) translateY(var(--endY)); opacity:0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .comet { animation: none !important; opacity: 0; }
+  }
+</style>
+
 <script>
 (function(){
   const BODY = document.body;
@@ -5663,15 +6488,18 @@ document.addEventListener('DOMContentLoaded', ()=>{
       comet.style.setProperty('--head-pos', 'left');
     }
 
-    // sposta la testolina luminosa a seconda della direzione
-    comet.style.setProperty('--duration', `${duration}s`);
-    comet.style.animationDuration = `${duration}s`;
+   // sposta la testolina luminosa a seconda della direzione
+comet.style.setProperty('--duration', `${duration}s`);
+comet.style.animationDuration = `${duration}s`;
 
-    const head = getComputedStyle(comet, '::after').content;
+// Controlla la direzione e imposta la posizione della testa
 if(dir === 'rtl') {
-  comet.style.setProperty('--head-side', 'left');
+    // Da destra a sinistra - testa a destra
+    comet.style.setProperty('--head-position', '0px'); // right: 0
+} else {
+    // Da sinistra a destra - testa a sinistra  
+    comet.style.setProperty('--head-position', '0px'); // left: 0
 }
-
     // aggiunta
     BODY.appendChild(comet);
     setTimeout(()=> comet.remove(), duration*1000);
@@ -5745,47 +6573,20 @@ if(dir === 'rtl') {
 <!-- Biscottino (riapri preferenze) -->
 <button aria-label="Preferenze cookie" id="cookie-fab" title="Preferenze cookie">🍪 Cookie</button>
 <script>
-// ========== GESTIONE ERRORI GLOBALE - VERSIONE PULITA ==========
+// ========== GESTIONE ERRORI GLOBALE ==========
 window.addEventListener('error', function(e) {
-    console.log('⚠️ Errore catturato (silenziato)');
-    
-    // Previeni il crash della pagina
-    e.preventDefault();
-    
-    return true;
+  console.error('Errore globale:', e.error);
 });
-
 
 // Safe element selector con fallback
 function safeQuery(selector, context = document) {
-    try {
-        const element = context.querySelector(selector);
-        if (!element) {
-            console.warn(`⚠️ Elemento "${selector}" non trovato`);
-            return null;
-        }
-        return element;
-    } catch (error) {
-        console.error(`❌ Errore cercando "${selector}":`, error);
-        return null;
-    }
+  try {
+    return context.querySelector(selector);
+  } catch (error) {
+    console.warn(`Elemento ${selector} non trovato:`, error);
+    return null;
+  }
 }
-
-// Safe multi-element selector
-function safeQueryAll(selector, context = document) {
-    try {
-        const elements = context.querySelectorAll(selector);
-        if (elements.length === 0) {
-            console.warn(`⚠️ Nessun elemento "${selector}" trovato`);
-        }
-        return Array.from(elements);
-    } catch (error) {
-        console.error(`❌ Errore cercando "${selector}":`, error);
-        return [];
-    }
-}
-
-console.log('✅ Gestione errori attivata');
 </script>
 <script id="cookie-consent-js">
 (function(){
@@ -6563,78 +7364,78 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-   // 6. INIZIALIZZAZIONE SICURA EFFETTI STELLARI
-function initializeStarEffects() {
-    safeDOMOperation(
-        () => {
-            const starsContainer = document.getElementById('starsContainer');
-            if (starsContainer && typeof initStars === 'function') {
-                initStars();
-                console.log('✅ Effetti stelle avanzati attivati');
-            } else if (starsContainer) {
-                createBasicStars();
-            }
-        },
-        () => {
-            console.log('ℹ️ Effetti stelle disabilitati per problemi di performance');
-            const starsContainer = document.getElementById('starsContainer');
-            if (starsContainer) {
-                starsContainer.style.display = 'none';
-            }
-        }
-    );
-} // 
-
-// 7. CSS PER STATI SPECIALI
-function injectPerformanceCSS() {
-    return safeDOMOperation(() => {
-        if (!document.head) return false;
-        
-        const performanceCSS = `
-            .fade-in {
-                animation: fadeIn 0.5s ease-in;
-            }
-            
-            .offline {
-                opacity: 0.8;
-                filter: grayscale(0.3);
-            }
-            
-            @keyframes fadeIn {
-                from { opacity: 0; }
-                to { opacity: 1; }
-            }
-            
-            @media (prefers-reduced-motion: reduce) {
-                .fade-in, .star {
-                    animation: none !important;
+    // 6. INIZIALIZZAZIONE SICURA EFFETTI STELLARI
+    function initializeStarEffects() {
+        safeDOMOperation(
+            () => {
+                const starsContainer = document.getElementById('starsContainer');
+                if (starsContainer && typeof initStars === 'function') {
+                    initStars();
+                    console.log('✅ Effetti stelle avanzati attivati');
+                } else if (starsContainer) {
+                    createBasicStars();
+                }
+            },
+            () => {
+                console.log('ℹ️ Effetti stelle disabilitati per problemi di performance');
+                const starsContainer = document.getElementById('starsContainer');
+                if (starsContainer) {
+                    starsContainer.style.display = 'none';
                 }
             }
-        `;
+        );
+    }
 
-        const style = document.createElement('style');
-        style.textContent = performanceCSS;
-        document.head.appendChild(style);
-        console.log('✅ CSS performance injectato');
-        return true;
-    });
-}
+    // 7. CSS PER STATI SPECIALI
+    function injectPerformanceCSS() {
+        return safeDOMOperation(() => {
+            if (!document.head) return false;
+            
+            const performanceCSS = `
+                .fade-in {
+                    animation: fadeIn 0.5s ease-in;
+                }
+                
+                .offline {
+                    opacity: 0.8;
+                    filter: grayscale(0.3);
+                }
+                
+                @keyframes fadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+                
+                @media (prefers-reduced-motion: reduce) {
+                    .fade-in, .star {
+                        animation: none !important;
+                    }
+                }
+            `;
 
-// 8. INIZIALIZZAZIONE PRINCIPALE
-console.log('🚀 Inizializzazione sistema stellare...');
+            const style = document.createElement('style');
+            style.textContent = performanceCSS;
+            document.head.appendChild(style);
+            console.log('✅ CSS performance injectato');
+            return true;
+        });
+    }
 
-injectPerformanceCSS();
-initializeStars();
-initializeLazyLoading();
-initializeStarEffects();
+    // 8. INIZIALIZZAZIONE PRINCIPALE
+    console.log('🚀 Inizializzazione sistema stellare...');
+    
+    injectPerformanceCSS();
+    initializeStars();
+    initializeLazyLoading();
+    initializeStarEffects();
 
-console.log('✅ Sistema completamente inizializzato');
-//}); // <-- SE C'È QUESTA, RIMUOVILA!
+    console.log('✅ Sistema completamente inizializzato');
+});
 
 // 9. GESTIONE ERRORI GLOBALE
 window.addEventListener('error', (event) => {
     console.error('❌ Errore globale catturato:', event.error);
-}); 
+});
 
 // 10. GESTIONE STATO CONNESSIONE
 window.addEventListener('online', () => {
@@ -6668,64 +7469,23 @@ console.log('⭐ Sistema stellare caricato e pronto');
 <script id="range-dynamic-script">
 (function(){
   function setFill(el){
-    if(!el || !el.style) return;
-    try {
-      var min = parseFloat(el.min) || 0;
-      var max = parseFloat(el.max) || 100;
-      var val = parseFloat(el.value) || 0;
-      var pct = Math.max(0, Math.min(100, ((val - min) * 100) / (max - min)));
-      el.style.setProperty('--fill', pct + '%');
-    } catch(error) {
-      console.warn('Errore in setFill:', error);
-    }
+    if(!el) return;
+    var min = +el.min || 0;
+    var max = +el.max || 100;
+    var val = +el.value || 0;
+    var pct = ((val - min) * 100) / (max - min);
+    el.style.setProperty('--fill', pct + '%');
   }
-  
   function bind(el){
-    if(!el) {
-      console.warn('Elemento slider non trovato');
-      return;
-    }
+    if(!el) return;
     setFill(el);
     el.addEventListener('input', function(){ setFill(el); });
     el.addEventListener('change', function(){ setFill(el); });
   }
-  
-  function initRangeSliders() {
-    console.log('🎚️ Inizializzazione slider...');
-    
-    // Volume slider (dentro audio-player)
-    var audioPlayer = document.getElementById('audio-player');
-    if(audioPlayer) {
-      var volumeSlider = audioPlayer.querySelector('#volume');
-      if(volumeSlider) {
-        bind(volumeSlider);
-        console.log('✅ Volume slider inizializzato');
-      } else {
-        console.warn('❌ #volume non trovato in audio-player');
-      }
-    } else {
-      console.warn('❌ #audio-player non trovato');
-    }
-    
-    // Speed slider
-    var speedSlider = document.getElementById('slider-speed');
-    if(speedSlider) {
-      bind(speedSlider);
-      console.log('✅ Speed slider inizializzato');
-    } else {
-      console.warn('❌ #slider-speed non trovato');
-    }
-  }
-  
-  // INIZIALIZZA CON RITARDO PER ASSICURARSI CHE GLI ELEMENTI ESISTANO
-  setTimeout(function(){
-    if(document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initRangeSliders);
-    } else {
-      initRangeSliders();
-    }
-  }, 100);
-  
+  document.addEventListener('DOMContentLoaded', function(){
+    bind(document.querySelector('#audio-player #volume'));
+    bind(document.querySelector('#slider-speed'));
+  });
 })();
 </script>
 <script id="speed-readout-js">
@@ -7215,8 +7975,10 @@ document.addEventListener('DOMContentLoaded', function() {
 })();
 </script>
 <!-- Pulsante Torna Su -->
-<button id="backToTop" class="back-to-top floating glow above-small-cta" aria-label="Torna su" title="Torna su">↑</button>
-
+<!-- Con effetto glow -->
+<button aria-label="Torna all'inizio" class="back-to-top floating glow" id="backToTop">
+    ↑
+</button>
 <script>
 // === GENERATORE DI STELLE - VERSIONE CORRETTA ===
 (function() {
@@ -7486,8 +8248,464 @@ document.addEventListener('DOMContentLoaded', function() {
     })();
 </script>
 <script id="ultimate-explosion-fixed">
-</script>
+/* === SISTEMA DI ESPLOSIONE CORRETTO === */
+document.addEventListener('DOMContentLoaded', function() {
+  let explodingText = document.getElementById('exploding');
+  if (!explodingText) {
+    explodingText = Array.from(document.querySelectorAll('h1,h2,h3,p,span,.hero-title,.headline,.motto'))
+      .find(el => el.textContent && el.textContent.includes('Sustine et abstine'));
+  }
+  const explodeBtn = document.querySelector('#btn-explode');
+  const explosionSound = document.getElementById('explosionSound');
+  if (!explodingText) return;
 
+  // AGGIUNGI CSS FISSO PRIMA DI TUTTO
+  const explosionStyles = `
+    .explosion-char {
+      display: inline-block;
+      will-change: transform, opacity, filter;
+    }
+    
+    .exploding-text.boom-active .explosion-char {
+      animation: none !important; /* Disabilita animazioni CSS conflittuali */
+    }
+    
+   .mega-shockwave {
+    position: fixed;
+    border-radius: 50%;
+    background: radial-gradient(circle, 
+        rgba(255,255,255,1) 0%, 
+        rgba(255,215,0,0.9) 15%, 
+        rgba(255,100,0,0.7) 30%, 
+        rgba(0,204,255,0.5) 50%,
+        transparent 70%
+    );
+    animation: megaShockwave 1.5s ease-out forwards;
+    z-index: 2147483601;
+    pointer-events: none;
+}
+
+@keyframes megaShockwave {
+    0% { 
+        transform: translate(-50%, -50%) scale(0.1); 
+        opacity: 1; 
+    }
+    100% { 
+        transform: translate(-50%, -50%) scale(25);  /* AUMENTA QUESTO VALORE! */
+        opacity: 0; 
+    }
+}
+    
+    .mega-particle {
+      position: fixed;
+      border-radius: 50%;
+      animation: megaParticleFly 2s ease-out forwards;
+      z-index: 2147483600;
+      pointer-events: none;
+    }
+    
+    @keyframes megaParticleFly {
+      0% { transform: translate(0, 0) scale(1); opacity: 1; }
+      100% { transform: translate(var(--p-dx), var(--p-dy)) scale(0); opacity: 0; }
+    }
+  `;
+  
+  const styleSheet = document.createElement('style');
+  styleSheet.textContent = explosionStyles;
+  document.head.appendChild(styleSheet);
+
+  const clean = s => (s||'')
+    .normalize('NFC')
+    .replace(/[\uFEFF\u200B-\u200D\u2060]/g, '')
+    .replace(/\uFFFD/g, '');
+
+  // PREPARAZIONE SEMPLIFICATA
+  function prepareExplosion() {
+    if (explodingText.__split) return;
+    const text = clean(explodingText.textContent);
+    explodingText.__originalText = text;
+    explodingText.classList.add('exploding-text');
+    explodingText.innerHTML = '';
+    
+    for (let i = 0; i < text.length; i++) {
+      const charSpan = document.createElement('span');
+      charSpan.className = 'explosion-char';
+      charSpan.textContent = text[i];
+      charSpan.style.setProperty('--index', i);
+      explodingText.appendChild(charSpan);
+    }
+    explodingText.__split = true;
+  }
+
+  // EFFETTI VISIVI SEMPLIFICATI
+  function createShockwave(element) {
+    const rect = element.getBoundingClientRect();
+    const shockwave = document.createElement('div');
+    shockwave.className = 'mega-shockwave';
+    shockwave.style.left = (rect.left + rect.width / 2) + 'px';
+    shockwave.style.top = (rect.top + rect.height / 2) + 'px';
+    shockwave.style.width = '90px';
+    shockwave.style.height = '90px';
+    document.body.appendChild(shockwave);
+    setTimeout(() => shockwave.remove(), 1500);
+  }
+
+  function createParticles(element) {
+    const rect = element.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    
+    for (let i = 0; i < 20; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'mega-particle';
+      particle.style.left = centerX + 'px';
+      particle.style.top = centerY + 'px';
+      particle.style.setProperty('--p-dx', (Math.random() * 600 - 300) + 'px');
+      particle.style.setProperty('--p-dy', (Math.random() * 400 - 300) + 'px');
+      
+      const size = 4 + Math.random() * 8;
+      particle.style.width = size + 'px';
+      particle.style.height = size + 'px';
+      particle.style.background = ['#ff0000', '#ffd700', '#00ccff', '#b967ff'][i % 4];
+      
+      document.body.appendChild(particle);
+      setTimeout(() => particle.remove(), 2000);
+    }
+  }
+
+  // ANIMAZIONE PRINCIPALE CORRETTA
+  function explodeTarget(element) {
+    if (!element || element.__exploding) return;
+    element.__exploding = true;
+
+    // Audio
+    if (explosionSound) {
+      try {
+        explosionSound.currentTime = 0;
+        explosionSound.volume = 0.7;
+        explosionSound.play().catch(() => {});
+      } catch(_) {}
+    }
+
+    // Reset stato visivo
+    element.classList.remove('boom-recomposing');
+    element.classList.add('boom-active');
+    element.style.border = '2px solid rgba(255,215,0,0.5)';
+
+    // Effetti
+    createShockwave(element);
+    createParticles(element);
+
+    const spans = Array.from(element.querySelectorAll('.explosion-char'));
+    if (!spans.length) {
+      prepareExplosion();
+      return setTimeout(() => explodeTarget(element), 100);
+    }
+
+    let finished = 0;
+    
+    spans.forEach((span, index) => {
+      // RESET PREVENTIVO
+      span.style.transform = 'translate(0px, 0px) rotate(0deg)';
+      span.style.opacity = '1';
+      span.style.filter = 'blur(0px)';
+      
+      const dx = (Math.random() * 400 - 200);
+      const dy = (Math.random() * 300 - 250);
+      const rotation = (Math.random() * 360 - 180);
+      const delay = index * 15;
+      const duration = 800 + Math.random() * 400;
+
+      // ANIMAZIONE USCITA - USA Web Animations API
+      const exitKeyframes = [
+        { 
+          transform: 'translate(0px, 0px) rotate(0deg)',
+          opacity: 1,
+          filter: 'blur(0px)'
+        },
+        { 
+          transform: `translate(${dx}px, ${dy}px) rotate(${rotation}deg)`,
+          opacity: 0,
+          filter: 'blur(8px)'
+        }
+      ];
+
+      const exitAnimation = span.animate(exitKeyframes, {
+        duration: duration,
+        delay: delay,
+        easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+        fill: 'forwards'
+      });
+
+      // ANIMAZIONE RIENTRO - ATTESA ESPLICITA
+      exitAnimation.onfinish = () => {
+        setTimeout(() => {
+          const returnKeyframes = [
+            { 
+              transform: `translate(${dx}px, ${dy}px) rotate(${rotation}deg)`,
+              opacity: 0,
+              filter: 'blur(8px)'
+            },
+            { 
+              transform: 'translate(0px, 0px) rotate(0deg)',
+              opacity: 1,
+              filter: 'blur(0px)'
+            }
+          ];
+
+          const returnAnimation = span.animate(returnKeyframes, {
+            duration: duration * 0.8,
+            easing: 'cubic-bezier(0.2, 0.8, 0.4, 1.2)',
+            fill: 'forwards'
+          });
+
+          returnAnimation.onfinish = () => {
+            // RESET FINALE ESPLICITO
+            span.style.transform = 'translate(0px, 0px) rotate(0deg)';
+            span.style.opacity = '1';
+            span.style.filter = 'blur(0px)';
+            
+            finished++;
+            
+            if (finished === spans.length) {
+              // PULIZIA FINALE
+              element.classList.remove('boom-active');
+              element.classList.add('boom-recomposing');
+              
+              setTimeout(() => {
+                element.classList.remove('boom-recomposing');
+                element.style.border = '';
+                element.__exploding = false;
+              }, 300);
+            }
+          };
+        }, 300); // Ritardo fisso per il rientro
+      };
+    });
+  }
+
+  // INIZIALIZZAZIONE
+  prepareExplosion();
+
+  // EVENT LISTENERS
+  if (explodeBtn) {
+    explodeBtn.addEventListener('click', function(e){
+      e.preventDefault();
+      explodeTarget(explodingText);
+    });
+  }
+
+  explodingText.addEventListener('click', function(){
+    explodeTarget(this);
+  });
+
+  console.log('✅ Sistema esplosione caricato - Lettere si ricomporranno!');
+});
+
+// Helper semplificato
+function softPlay(audio, volume, delay) {
+  if (!audio) return Promise.reject('Audio element not found');
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      try {
+        audio.volume = volume || 1.0;
+        audio.muted = false;
+        audio.play().then(resolve).catch(resolve);
+      } catch (e) { resolve(); }
+    }, delay || 0);
+  });
+}
+
+// FUNZIONE TOPRELATED COMPLETATA
+function topRelated(query, exclude, limit = 3) {
+    const q = norm(query);
+    if (!q) return [];
+    
+    const scored = INDEX
+        .map(it => ({ it, s: score(q, it) }))
+        .filter(x => x.s > 0 && !exclude.has(x.it.url))
+        .sort((a, b) => b.s - a.s)
+        .slice(0, limit)
+        .map(x => x.it);
+    
+    return scored;
+}
+</script>
+<script id="explosion-theater-js">
+(function(){
+  const motto = document.getElementById('exploding');
+  if(!motto) return;
+  let textEl = motto.querySelector('.m-text') || motto;
+  if(!textEl.querySelector('.char')){
+    const txt = textEl.textContent;
+    textEl.textContent = '';
+    for(const ch of [...txt]){
+      const s = document.createElement('span');
+      s.className = 'char';
+      s.textContent = ch === ' ' ? ' ' : ch;
+      textEl.appendChild(s);
+    }
+  }
+
+  if(!document.querySelector('.fx-layer')){
+    const layer = document.createElement('div');
+    layer.className = 'fx-layer';
+    layer.innerHTML = '<div class="fx-flash"></div><div class="fx-shock"></div><div class="fx-smoke"></div><canvas class="fx-embers"></canvas>';
+    document.body.appendChild(layer);
+  }
+  const layer = document.querySelector('.fx-layer');
+  const flash = layer.querySelector('.fx-flash');
+  const shock = layer.querySelector('.fx-shock');
+  const smoke = layer.querySelector('.fx-smoke');
+  const canvas = layer.querySelector('.fx-embers');
+  const ctx = canvas.getContext('2d');
+  function resize(){ canvas.width = innerWidth; canvas.height = innerHeight; }
+  resize(); addEventListener('resize', resize);
+
+  const prefersReduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let animating = false;
+
+  function centerOf(el){
+    const r = el.getBoundingClientRect();
+    return { x: r.left + r.width/2, y: r.top + r.height/2 };
+  }
+
+  let sparks = [];
+  function seedSparks(x,y,count){
+    for(let i=0;i<count;i++){
+      const a = Math.random()*Math.PI*2;
+      const sp = 2 + Math.random()*6;
+      sparks.push({ x,y, vx: Math.cos(a)*sp, vy: Math.sin(a)*sp - (Math.random()*2), life: 40+Math.random()*50, age: 0, r: 1+Math.random()*2 });
+    }
+  }
+  function tick(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    for(let i=sparks.length-1;i>=0;i--){
+      const s=sparks[i];
+      s.age++;
+      s.vy += 0.06; s.vx *= 0.99; s.vy *= 0.995;
+      s.x += s.vx; s.y += s.vy;
+      const t = 1 - (s.age/s.life);
+      if(t<=0){ sparks.splice(i,1); continue; }
+      ctx.globalAlpha = Math.max(0,t);
+      const g = ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r*3);
+      g.addColorStop(0,'rgba(255,240,180,1)');
+      g.addColorStop(1,'rgba(255,120,0,0)');
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fill();
+    }
+    if(animating) requestAnimationFrame(tick);
+  }
+
+  function shake(intensity, duration){
+    const start = performance.now();
+    (function step(now){
+      const t = (now-start)/duration;
+      if(t>=1){ document.body.style.transform=''; return; }
+      const n = 1 - t;
+      const dx = (Math.random()*2-1)*intensity*n;
+      const dy = (Math.random()*2-1)*intensity*n;
+      document.body.style.transform = 'translate('+dx+'px,'+dy+'px)';
+      requestAnimationFrame(step);
+    })(start);
+  }
+
+  function explode(){
+    if(prefersReduce || animating) return;
+    animating = true;
+
+    const chars = [...textEl.querySelectorAll('.char')];
+    motto.classList.add('preglow');
+    flash.style.opacity = 1;
+    setTimeout(()=> flash.style.opacity = 0, 120);
+
+    shock.style.opacity = 1; shock.style.transform = 'translate(-50%,-50%) scale(.25)';
+    smoke.style.opacity = .25; smoke.style.transform = 'translate(-50%,-50%) scale(.4)';
+    const start = performance.now(), DUR=680;
+    (function loop(now){
+      const t = Math.min(1,(now-start)/DUR);
+      const ease = t<.5 ? 2*t*t : -1+(4-2*t)*t;
+      shock.style.transform = 'translate(-50%,-50%) scale('+(.25 + ease*2.0)+')';
+      shock.style.opacity = String(1 - t);
+      smoke.style.transform = 'translate(-50%,-50%) scale('+(.4 + ease*1.4)+')';
+      smoke.style.opacity = String(.25 * (1 - t));
+      if(t<1) requestAnimationFrame(loop);
+    })(start);
+
+    const {x:cx,y:cy}=centerOf(textEl);
+    chars.forEach((ch)=>{
+      const b = ch.getBoundingClientRect();
+      const ox=b.left+b.width/2, oy=b.top+b.height/2;
+      const dx=ox-cx, dy=oy-cy;
+      const dist=Math.hypot(dx,dy)||1;
+      const dirx=dx/dist, diry=dy/dist;
+      const power = 90 + Math.random()*160;
+      const rot = (Math.random()*720-360);
+      const delay = (dist/600)*180;
+      ch.style.willChange='transform,opacity';
+      setTimeout(()=>{
+        ch.animate([
+          { transform:'translate3d(0,0,0) rotate(0deg)', opacity:1 },
+          { transform:'translate3d('+(dirx*power)+'px,'+(diry*power)+'px,0) rotate('+rot+'deg)', opacity:0 }
+        ], { duration: 620 + Math.random()*320, easing:'cubic-bezier(.2,.9,.2,1)', fill:'forwards' });
+      }, delay);
+    });
+
+    const c = centerOf(textEl);
+    seedSparks(c.x,c.y,110);
+    tick();
+    shake(4,380);
+
+    setTimeout(()=>{ motto.classList.remove('preglow'); animating=false; }, 1200);
+  }
+
+  // Trigger: se esiste un bottone con id btn-explode
+  const btn = document.getElementById('btn-explode');
+  if(btn) btn.addEventListener('click', explode);
+
+  // Esporta API globale minimale:
+  window.EchiExplode = explode;
+})();
+</script>
+<script>
+  // === PULSANTE TORNA SU ===
+(function(){
+    const backToTop = document.getElementById('backToTop');
+    if (!backToTop) return;
+    
+    // Mostra/nascondi il pulsante durante lo scroll
+    function toggleBackToTop() {
+        if (window.scrollY > 300) {
+            backToTop.style.display = 'flex';
+        } else {
+            backToTop.style.display = 'none';
+        }
+    }
+    
+    // Scroll fluido verso l'alto
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+    
+    // Event listeners
+    window.addEventListener('scroll', toggleBackToTop);
+    backToTop.addEventListener('click', scrollToTop);
+    
+    // Anche con tasto Enter per accessibilità
+    backToTop.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            scrollToTop();
+        }
+    });
+    
+    // Inizializza
+    toggleBackToTop();
+})();
+</script>
 <script>
 // RICERCA SICURA CON CONTROLLI
 document.addEventListener('DOMContentLoaded', function() {
@@ -7539,7 +8757,904 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 })();
 </script>
-<script src="/assets/js/script.js?v=20251106" defer></script>
+<script>
+// SLIDER VERTICALE - Velocità iniziale 5
+class VerticalSlider {
+    constructor() {
+        this.sliderInner = document.getElementById('sliderInner');
+        this.toggleBtn = document.getElementById('slider-toggle');
+        this.invertBtn = document.getElementById('slider-invert');
+        this.speedSlider = document.getElementById('slider-speed');
+        
+        this.isPlaying = true;
+        this.direction = 1;
+        this.speed = 5;
+        this.animationId = null;
+        this.position = 0;
+        
+        this.init();
+    }
+    
+    createSpeedReadout() {
+        const readout = document.createElement('span');
+        readout.id = 'speed-readout';
+        readout.textContent = '5';
+        readout.style.cssText = `
+            display: inline-block;
+            min-width: 3.5ch;
+            margin-left: .6rem;
+            padding: .15rem .4rem;
+            border-radius: .5rem;
+            font-variant-numeric: tabular-nums;
+            font-size: .9rem;
+            line-height: 1.1;
+            background: rgba(255,255,255,.15);
+            border: 1px solid rgba(212,175,55,.55);
+            box-shadow: 0 0 6px rgba(255,215,0,.25);
+        `;
+        this.speedSlider.parentNode.appendChild(readout);
+        return readout;
+    }
+    
+    init() {
+        if (!this.sliderInner) {
+            console.warn('Slider elements not found');
+            return;
+        }
+        
+        this.speedReadout = document.getElementById('speed-readout') || this.createSpeedReadout();
+        
+        // Event listeners
+        this.toggleBtn.addEventListener('click', () => this.toggle());
+        this.invertBtn.addEventListener('click', () => this.invert());
+        this.speedSlider.addEventListener('input', (e) => this.setSpeed(e.target.value));
+        
+        // Espandi range velocità a 1-20
+        this.speedSlider.min = 1;
+        this.speedSlider.max = 20;
+        this.speedSlider.value = 5;
+        
+        // Imposta velocità iniziale
+        this.setSpeed(5);
+        
+        this.startAnimation();
+    }
+    
+    setSpeed(value) {
+        this.speed = parseInt(value);
+        this.speedReadout.textContent = value;
+        
+        // Mappa valori a intervalli di tempo (più granulare)
+        const speedMap = {
+            1: 200,   // Molto lento
+            2: 180,   // Molto lento
+            3: 160,   // Lento
+            4: 140,   // Lento
+            5: 120,   // Lento-Medio ⭐ VELOCITÀ INIZIALE
+            6: 100,   // Lento-Medio
+            7: 80,    // Medio
+            8: 60,    // Medio
+            9: 50,    // Medio-Veloce
+            10: 40,   // Medio-Veloce
+            11: 35,   // Veloce
+            12: 30,   // Veloce
+            13: 25,   // Veloce
+            14: 20,   // Molto veloce
+            15: 15,   // Molto veloce
+            16: 12,   // Estremamente veloce
+            17: 10,   // Estremamente veloce
+            18: 8,    // Massima velocità
+            19: 6,    // Massima velocità
+            20: 4     // Massima velocità
+        };
+        
+        this.animationSpeed = speedMap[this.speed] || 50;
+        
+        if (this.isPlaying) {
+            this.restartAnimation();
+        }
+    }
+    
+    toggle() {
+        this.isPlaying = !this.isPlaying;
+        this.toggleBtn.textContent = this.isPlaying ? '⏸️ Ferma' : '▶️ Avvia';
+        this.toggleBtn.title = this.isPlaying ? 'Ferma slider' : 'Avvia slider';
+        
+        if (this.isPlaying) {
+            this.startAnimation();
+        } else {
+            this.stopAnimation();
+        }
+    }
+    
+    invert() {
+        this.direction *= -1;
+        this.invertBtn.textContent = this.direction === 1 ? '🔄 Inverti' : '🔄 Normale';
+        this.invertBtn.title = this.direction === 1 ? 'Inverti direzione' : 'Direzione normale';
+    }
+    
+    startAnimation() {
+        if (this.animationId) return;
+        
+        const animate = () => {
+            // Movimento basato sulla velocità (più fluido)
+            this.position += this.direction * (this.speed / 3);
+            
+            // Calcola dimensioni per il loop
+            const containerHeight = this.sliderInner.parentElement.clientHeight;
+            const contentHeight = this.sliderInner.scrollHeight;
+            const maxScroll = Math.max(0, contentHeight - containerHeight);
+            
+            // Gestisci loop continuo
+            if (this.position >= maxScroll) {
+                this.position = 0;
+            } else if (this.position < 0) {
+                this.position = maxScroll;
+            }
+            
+            this.sliderInner.style.transform = `translateY(-${this.position}px)`;
+            this.animationId = requestAnimationFrame(animate);
+        };
+        
+        this.animationId = requestAnimationFrame(animate);
+    }
+    
+    stopAnimation() {
+        if (this.animationId) {
+            cancelAnimationFrame(this.animationId);
+            this.animationId = null;
+        }
+    }
+    
+    restartAnimation() {
+        this.stopAnimation();
+        this.startAnimation();
+    }
+    
+    // Metodo per debug
+    getStatus() {
+        return {
+            playing: this.isPlaying,
+            direction: this.direction,
+            speed: this.speed,
+            position: Math.round(this.position),
+            animationSpeed: this.animationSpeed + 'ms'
+        };
+    }
+}
+
+// Inizializza slider quando DOM è pronto
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        try {
+            const slider = new VerticalSlider();
+            console.log('✅ Vertical Slider initialized - Speed: 5');
+            window.verticalSlider = slider; // Per debug
+        } catch (error) {
+            console.error('❌ Slider initialization failed:', error);
+        }
+    }, 100);
+});
+</script>
+    
+
+
+
+<script>
+// DIZIONARIO FILOSOFICO
+document.addEventListener('DOMContentLoaded', function() {
+    const openDictBtn = document.getElementById('openDict');
+    
+    if (!openDictBtn) {
+        console.error('Bottone dizionario non trovato!');
+        return;
+    }
+
+    openDictBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        openDictionaryModal();
+    });
+
+    function openDictionaryModal() {
+        // Previeni duplicati
+        if (document.getElementById('dict-modal')) {
+            return;
+        }
+
+        // Crea il modal
+        const modal = document.createElement('div');
+        modal.id = 'dict-modal';
+        modal.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            backdrop-filter: blur(5px);
+        `;
+
+        modal.innerHTML = `
+            <div style="
+                background: var(--menu-bg);
+                border: 2px solid var(--gold);
+                border-radius: 15px;
+                padding: 2rem;
+                width: 90%;
+                max-width: 600px;
+                max-height: 80vh;
+                overflow: auto;
+                position: relative;
+                box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            ">
+                <button id="close-dict" style="
+                    position: absolute;
+                    top: 15px;
+                    right: 15px;
+                    background: none;
+                    border: none;
+                    color: var(--gold);
+                    font-size: 1.5rem;
+                    cursor: pointer;
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                ">×</button>
+                
+                <h3 style="color: var(--gold); margin-bottom: 1.5rem; font-family: 'Cinzel', serif;">
+                    📘 Dizionario Filosofico
+                </h3>
+                
+                <!-- Barra di ricerca -->
+                <div style="margin-bottom: 1.5rem;">
+                    <input type="text" id="dict-search" placeholder="Cerca termine filosofico..." style="
+                        width: 100%;
+                        padding: 0.75rem;
+                        border: 1px solid var(--menu-border);
+                        border-radius: 8px;
+                        background: rgba(20,20,40,0.8);
+                        color: var(--text-light);
+                        font-size: 1rem;
+                    ">
+                </div>
+                
+                <!-- Risultati -->
+                <div id="dict-results" style="
+                    max-height: 400px;
+                    overflow-y: auto;
+                    padding-right: 10px;
+                ">
+                    <div class="dict-term" data-term="epistemologia">
+                        <h4 style="color: var(--cyan); margin-bottom: 0.5rem;">Epistemologia</h4>
+                        <p style="color: var(--text-light); margin: 0; font-size: 0.9rem;">
+                            Branca della filosofia che studia la conoscenza scientifica, i suoi fondamenti e metodi.
+                        </p>
+                    </div>
+                    
+                    <div class="dict-term" data-term="ontologia">
+                        <h4 style="color: var(--cyan); margin-bottom: 0.5rem;">Ontologia</h4>
+                        <p style="color: var(--text-light); margin: 0; font-size: 0.9rem;">
+                            Studio dell'essere in quanto essere, della realtà e dell'esistenza.
+                        </p>
+                    </div>
+                    
+                    <div class="dict-term" data-term="dialettica">
+                        <h4 style="color: var(--cyan); margin-bottom: 0.5rem;">Dialettica</h4>
+                        <p style="color: var(--text-light); margin: 0; font-size: 0.9rem;">
+                            Metodo di ragionamento che procede attraverso tesi, antitesi e sintesi.
+                        </p>
+                    </div>
+                    
+                    <div class="dict-term" data-term="eudaimonia">
+                        <h4 style="color: var(--cyan); margin-bottom: 0.5rem;">Eudaimonia</h4>
+                        <p style="color: var(--text-light); margin: 0; font-size: 0.9rem;">
+                            Concetto greco di felicità come realizzazione della propria natura razionale.
+                        </p>
+                    </div>
+                    
+                    <div class="dict-term" data-term="a priori">
+                        <h4 style="color: var(--cyan); margin-bottom: 0.5rem;">A priori</h4>
+                        <p style="color: var(--text-light); margin: 0; font-size: 0.9rem;">
+                            Conoscenza indipendente dall'esperienza, basata sulla ragione pura.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Categorie rapide -->
+                <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--menu-border);">
+                    <h4 style="color: var(--gold); margin-bottom: 0.5rem;">Categorie</h4>
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <button class="dict-category" data-cat="metafisica" style="
+                            padding: 0.5rem 1rem;
+                            background: rgba(255,215,0,0.1);
+                            border: 1px solid var(--gold);
+                            border-radius: 20px;
+                            color: var(--gold);
+                            cursor: pointer;
+                            font-size: 0.8rem;
+                        ">Metafisica</button>
+                        
+                        <button class="dict-category" data-cat="etica" style="
+                            padding: 0.5rem 1rem;
+                            background: rgba(0,204,255,0.1);
+                            border: 1px solid var(--cyan);
+                            border-radius: 20px;
+                            color: var(--cyan);
+                            cursor: pointer;
+                            font-size: 0.8rem;
+                        ">Etica</button>
+                        
+                        <button class="dict-category" data-cat="logica" style="
+                            padding: 0.5rem 1rem;
+                            background: rgba(185,103,255,0.1);
+                            border: 1px solid var(--purple);
+                            border-radius: 20px;
+                            color: var(--purple);
+                            cursor: pointer;
+                            font-size: 0.8rem;
+                        ">Logica</button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(modal);
+
+        // Aggiungi funzionalità di ricerca
+        const searchInput = document.getElementById('dict-search');
+        const results = document.getElementById('dict-results');
+        const terms = results.querySelectorAll('.dict-term');
+
+        searchInput.addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            
+            terms.forEach(term => {
+                const termText = term.getAttribute('data-term').toLowerCase();
+                if (termText.includes(searchTerm)) {
+                    term.style.display = 'block';
+                } else {
+                    term.style.display = 'none';
+                }
+            });
+        });
+
+        // Focus sulla ricerca
+        setTimeout(() => {
+            searchInput.focus();
+        }, 100);
+
+        // Chiudi modal
+        const closeBtn = document.getElementById('close-dict');
+        closeBtn.addEventListener('click', closeDictionaryModal);
+
+        // Chiudi cliccando fuori
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeDictionaryModal();
+            }
+        });
+
+        // Chiudi con ESC
+        document.addEventListener('keydown', function closeOnEsc(e) {
+            if (e.key === 'Escape') {
+                closeDictionaryModal();
+                document.removeEventListener('keydown', closeOnEsc);
+            }
+        });
+    }
+
+    function closeDictionaryModal() {
+        const modal = document.getElementById('dict-modal');
+        if (modal) {
+            modal.remove();
+        }
+    }
+
+    // Tasto scorciatoia Ctrl+D
+    document.addEventListener('keydown', function(e) {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
+            e.preventDefault();
+            openDictionaryModal();
+        }
+    });
+});
+</script>
+ 
+<!-- ============================================================
+        JAVASCRIPT DIZIONARIO - VERSIONE DEFINITIVA
+============================================================ -->
+  <!--
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("📘 Dizionario filosofico - Inizializzazione");
+
+    // Riferimenti agli elementi
+    const openBtn = document.getElementById("openDict");
+    const closeBtn = document.getElementById("dict-close");
+    const modal = document.getElementById("dict-modal");
+    const overlay = document.getElementById("dict-overlay");
+    const input = document.getElementById("dict-q");
+    const btnSearch = document.getElementById("dict-search");
+    const btnOpenAll = document.getElementById("open-all");
+    const suggestions = document.getElementById("dict-suggestions");
+
+    // Stato del modale
+    let isModalOpen = false;
+
+    // Verifica che tutti gli elementi essenziali esistano
+    if (!modal || !overlay || !closeBtn) {
+        console.error("❌ Elementi modale non trovati!");
+        return;
+    }
+
+    /* ============================
+       INIZIALIZZAZIONE GSAP
+    ============================ */
+    gsap.set(modal, { 
+        x: "100%",
+        position: "fixed",
+        top: 0,
+        right: 0
+    });
+    
+    gsap.set(overlay, { 
+        autoAlpha: 0,
+        display: "none"
+    });
+
+    /* ============================
+       APERTURA MODALE
+    ============================ */
+    function openDictionary() {
+        if (isModalOpen) return;
+        
+        console.log("🎯 Apertura modale dizionario");
+        isModalOpen = true;
+
+        // Mostra overlay
+        gsap.set(overlay, { display: "block" });
+        
+        // Animazioni
+        gsap.to(overlay, {
+            duration: 0.3,
+            autoAlpha: 1,
+            ease: "power2.out"
+        });
+
+        gsap.to(modal, {
+            duration: 0.4,
+            x: "0%",
+            ease: "power3.out",
+            onComplete: () => {
+                // Focus sull'input
+                if (input) {
+                    input.focus();
+                    input.select();
+                }
+            }
+        });
+    }
+
+    /* ============================
+       CHIUSURA MODALE
+    ============================ */
+    function closeDictionary() {
+        if (!isModalOpen) return;
+        
+        console.log("🎯 Chiusura modale dizionario");
+        isModalOpen = false;
+
+        gsap.to(modal, {
+            duration: 0.35,
+            x: "100%",
+            ease: "power2.in"
+        });
+
+        gsap.to(overlay, {
+            duration: 0.25,
+            autoAlpha: 0,
+            ease: "power2.out",
+            onComplete: () => {
+                gsap.set(overlay, { display: "none" });
+            }
+        });
+    }
+
+    /* ============================
+       GESTIONE EVENTI
+    ============================ */
+    
+    // Apertura con il bottone dizionario
+    if (openBtn) {
+        openBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            openDictionary();
+        });
+    }
+
+    // Chiusura con il bottone X
+    if (closeBtn) {
+        closeBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            closeDictionary();
+        });
+    }
+
+    // Chiusura cliccando sull'overlay
+    if (overlay) {
+        overlay.addEventListener("click", (e) => {
+            if (e.target === overlay) {
+                closeDictionary();
+            }
+        });
+    }
+
+    // Chiusura con ESC
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && isModalOpen) {
+            closeDictionary();
+        }
+    });
+
+    /* ============================
+       FUNZIONALITÀ RICERCA
+    ============================ */
+    
+    function performSearch() {
+        const q = input.value.trim();
+        if (!q) {
+            showMessage("Inserisci un termine da cercare", "error");
+            return;
+        }
+
+        const checkedSources = document.querySelectorAll(".sources input:checked");
+        if (checkedSources.length === 0) {
+            showMessage("Seleziona almeno una fonte", "error");
+            return;
+        }
+
+        const encodedTerm = encodeURIComponent(q);
+        
+        checkedSources.forEach((source, index) => {
+            const url = source.dataset.url.replace("{q}", encodedTerm);
+            setTimeout(() => {
+                window.open(url, "_blank");
+            }, index * 100); // Delay per evitare blocchi del browser
+        });
+
+        showMessage(`Apertura ${checkedSources.length} fonte(i) per "${q}"`, "success");
+    }
+
+    function openAllSources() {
+        const q = input.value.trim();
+        if (!q) {
+            showMessage("Inserisci un termine da cercare", "error");
+            return;
+        }
+
+        const allSources = document.querySelectorAll(".sources input");
+        const encodedTerm = encodeURIComponent(q);
+        
+        allSources.forEach((source, index) => {
+            const url = source.dataset.url.replace("{q}", encodedTerm);
+            setTimeout(() => {
+                window.open(url, "_blank");
+            }, index * 100);
+        });
+
+        showMessage(`Apertura tutte le ${allSources.length} fonti per "${q}"`, "success");
+    }
+
+    /* ============================
+       SUGGERIMENTI IN TEMPO REALE
+    ============================ */
+    
+    const commonTerms = [
+        "epistemologia", "ontologia", "metafisica", "etica", "logica",
+        "dialettica", "fenomenologia", "ermeneutica", "esistenzialismo",
+        "razionalismo", "empirismo", "idealismo", "materialismo"
+    ];
+
+    if (input && suggestions) {
+        input.addEventListener("input", function() {
+            const value = this.value.toLowerCase();
+            suggestions.innerHTML = "";
+
+            if (value.length < 2) return;
+
+            const matches = commonTerms.filter(term => 
+                term.toLowerCase().includes(value)
+            ).slice(0, 5);
+
+            if (matches.length > 0) {
+                matches.forEach(term => {
+                    const div = document.createElement("div");
+                    div.className = "suggestion-item";
+                    div.textContent = term;
+                    div.addEventListener("click", () => {
+                        input.value = term;
+                        suggestions.innerHTML = "";
+                        performSearch();
+                    });
+                    suggestions.appendChild(div);
+                });
+            }
+        });
+
+        // Nascondi suggerimenti quando perde il focus
+        input.addEventListener("blur", () => {
+            setTimeout(() => {
+                suggestions.innerHTML = "";
+            }, 200);
+        });
+    }
+
+    /* ============================
+       UTILITIES
+    ============================ */
+    
+    function showMessage(text, type = "info") {
+        // Crea un messaggio temporaneo
+        const message = document.createElement("div");
+        message.textContent = text;
+        message.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            background: ${type === "error" ? "#ff4444" : type === "success" ? "#44ff44" : "#4444ff"};
+            color: white;
+            border-radius: 8px;
+            z-index: 100000;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        `;
+        
+        document.body.appendChild(message);
+        
+        setTimeout(() => {
+            if (message.parentNode) {
+                message.parentNode.removeChild(message);
+            }
+        }, 3000);
+    }
+
+    /* ============================
+       EVENT LISTENER RICERCA
+    ============================ */
+    
+    if (btnSearch) {
+        btnSearch.addEventListener("click", (e) => {
+            e.preventDefault();
+            performSearch();
+        });
+    }
+
+    if (btnOpenAll) {
+        btnOpenAll.addEventListener("click", (e) => {
+            e.preventDefault();
+            openAllSources();
+        });
+    }
+
+    // Ricerca con Enter
+    if (input) {
+        input.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                performSearch();
+            }
+        });
+    }
+
+    // Debug
+    console.log("✅ Dizionario inizializzato correttamente");
+    
+    // Esporta per debug
+    window.dictionary = {
+        open: openDictionary,
+        close: closeDictionary,
+        search: performSearch,
+        openAll: openAllSources
+    };
+
+});
+</script>
+-->
+<!-- ============================================================
+        DIZIONARIO - VERSIONE DEFINITIVA FUNZIONANTE
+============================================================ -->
+<script>
+console.log('🎯 Inizializzazione dizionario...');
+
+let isModalOpen = false;
+
+function openDictionary() {
+    if (isModalOpen) return;
+    
+    console.log('🔓 APERTURA DIZIONARIO');
+    const modal = document.getElementById('dict-modal');
+    const overlay = document.getElementById('dict-overlay');
+    
+    if (modal && overlay) {
+        modal.style.transform = 'translateX(0)';
+        overlay.style.display = 'block';
+        isModalOpen = true;
+        
+        // Focus
+        const input = document.getElementById('dict-q');
+        if (input) {
+            setTimeout(() => {
+                input.focus();
+                input.select();
+            }, 100);
+        }
+    }
+}
+
+function closeDictionary() {
+    if (!isModalOpen) return;
+    
+    console.log('🔒 CHIUSURA DIZIONARIO');
+    const modal = document.getElementById('dict-modal');
+    const overlay = document.getElementById('dict-overlay');
+    
+    if (modal && overlay) {
+        modal.style.transform = 'translateX(100%)';
+        overlay.style.display = 'none';
+        isModalOpen = false;
+    }
+}
+
+// INIZIALIZZAZIONE ROBUSTA
+function initDictionary() {
+    console.log('🔄 Setup event listeners...');
+    
+    // 1. BOTTONE APERTURA
+    const openBtn = document.getElementById('openDict');
+    if (openBtn) {
+        openBtn.addEventListener('click', openDictionary);
+        openBtn.onclick = openDictionary; // Doppio binding
+        console.log('✅ Listener apertura aggiunto');
+    }
+    
+    // 2. BOTTONE CHIUSURA (X) - MULTIPLI METODI
+    const closeBtn = document.getElementById('dict-close');
+    if (closeBtn) {
+        // Metodo 1: addEventListener
+        closeBtn.addEventListener('click', function(e) {
+            console.log('🎯 Click X (addEventListener)');
+            e.preventDefault();
+            e.stopPropagation();
+            closeDictionary();
+        });
+        
+        // Metodo 2: onclick diretto
+        closeBtn.onclick = function(e) {
+            console.log('🎯 Click X (onclick)');
+            if (e) e.preventDefault();
+            closeDictionary();
+            return false;
+        };
+        
+        // Metodo 3: anche con mousedown
+        closeBtn.addEventListener('mousedown', function(e) {
+            e.preventDefault();
+        });
+        
+        console.log('✅ Listener chiusura X aggiunto');
+    }
+    
+    // 3. OVERLAY
+    const overlay = document.getElementById('dict-overlay');
+    if (overlay) {
+        overlay.addEventListener('click', closeDictionary);
+        console.log('✅ Listener overlay aggiunto');
+    }
+    
+    // 4. ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && isModalOpen) {
+            console.log('🎯 ESC premuto');
+            closeDictionary();
+        }
+    });
+    
+    // 5. RICERCA
+    const searchBtn = document.getElementById('dict-search');
+    const openAllBtn = document.getElementById('open-all');
+    const searchInput = document.getElementById('dict-q');
+    
+    if (searchBtn && searchInput) {
+        searchBtn.addEventListener('click', function() {
+            const query = searchInput.value.trim();
+            if (!query) {
+                alert('Inserisci un termine da cercare');
+                return;
+            }
+            
+            const sources = document.querySelectorAll('.sources input:checked');
+            if (sources.length === 0) {
+                alert('Seleziona almeno una fonte');
+                return;
+            }
+            
+            const encoded = encodeURIComponent(query);
+            sources.forEach((source, index) => {
+                const url = source.dataset.url.replace('{q}', encoded);
+                setTimeout(() => window.open(url, '_blank'), index * 100);
+            });
+        });
+    }
+    
+    if (openAllBtn && searchInput) {
+        openAllBtn.addEventListener('click', function() {
+            const query = searchInput.value.trim();
+            if (!query) {
+                alert('Inserisci un termine da cercare');
+                return;
+            }
+            
+            const encoded = encodeURIComponent(query);
+            const sources = document.querySelectorAll('.sources input');
+            sources.forEach((source, index) => {
+                const url = source.dataset.url.replace('{q}', encoded);
+                setTimeout(() => window.open(url, '_blank'), index * 100);
+            });
+        });
+    }
+    
+    // Enter per cercare
+    if (searchInput) {
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                searchBtn?.click();
+            }
+        });
+    }
+}
+
+// AVVIO
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('✅ DOM pronto - inizializzo dizionario');
+    initDictionary();
+    
+    // Esporta per debug
+    window.dictionary = {
+        open: openDictionary,
+        close: closeDictionary,
+        debug: function() {
+            console.log('=== DEBUG DIZIONARIO ===');
+            console.log('Stato isModalOpen:', isModalOpen);
+            console.log('Elementi:', {
+                openBtn: !!document.getElementById('openDict'),
+                closeBtn: !!document.getElementById('dict-close'),
+                modal: !!document.getElementById('dict-modal'),
+                overlay: !!document.getElementById('dict-overlay')
+            });
+        }
+    };
+    
+    console.log('🎉 Dizionario inizializzato! Usa dictionary.debug()');
+});
+
+// Fallback per DOM già caricato
+if (document.readyState === 'complete') {
+    console.log('⚡ DOM già completo - inizializzo ora');
+    setTimeout(initDictionary, 100);
+}
+</script>
+
 </body>
 </html>
-
