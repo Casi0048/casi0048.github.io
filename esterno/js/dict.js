@@ -15,26 +15,19 @@ document.addEventListener("DOMContentLoaded", () => {
     /* ============================================================
        APRI MODALE (GSAP)
     ============================================================ */
-    btnOpen.addEventListener("click", () => {
+   btnOpen.addEventListener("click", () => {
+    modal.classList.add("open");
+    overlay.classList.add("active");
+    console.log("📘 Modale aperta");
+});
 
-        // mostra overlay
-        overlay.style.pointerEvents = "auto";
+btnClose.addEventListener("click", closeDict);
+overlay.addEventListener("click", closeDict);
 
-        gsap.to(overlay, {
-            duration: 0.3,
-            opacity: 1,
-            ease: "power2.out"
-        });
-
-        // slide modale
-        gsap.to(modal, {
-            duration: 0.35,
-            x: 0,
-            ease: "power3.out"
-        });
-
-        console.log("📘 Modale aperto");
-    });
+function closeDict(){
+    modal.classList.remove("open");
+    overlay.classList.remove("active");
+}
 
     /* ============================================================
        CHIUDI MODALE (GSAP)
