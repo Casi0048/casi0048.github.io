@@ -9169,73 +9169,42 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-<!-- ============================================================
-        JAVASCRIPT MODALE DIZIONARIO — VERSIONE GSAP FLUIDA
+ 
+ <!-- ============================================================
+        JAVASCRIPT MODALE DIZIONARIO
 ============================================================ -->
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
-    console.log("📘 Dizionario con GSAP attivo");
+    console.log("📘 Dizionario attivo");
 
-    const openBtn     = document.getElementById("openDict");
-    const closeBtn    = document.getElementById("dict-close");
-    const modal       = document.getElementById("dict-modal");
-    const overlay     = document.getElementById("dict-overlay");
+    const openBtn  = document.getElementById("openDict");
+    const closeBtn = document.getElementById("dict-close");
+    const modal    = document.getElementById("dict-modal");
+    const overlay  = document.getElementById("dict-overlay");
 
-    const input       = document.getElementById("dict-q");
-    const btnSearch   = document.getElementById("dict-search");
-    const btnOpenAll  = document.getElementById("open-all");
+    const input    = document.getElementById("dict-q");
+    const btnSearch = document.getElementById("dict-search");
+    const btnOpenAll = document.getElementById("open-all");
 
-    /* ============================
-       PREPARAZIONE GSAP
-    ============================ */
-    gsap.set(modal, { x: "100%" });
-    gsap.set(overlay, { autoAlpha: 0 });
-
-    /* ============================
-       APERTURA MODALE
-    ============================ */
+    /* ====== APRI MODALE ====== */
     openBtn.addEventListener("click", () => {
-
-        gsap.to(overlay, {
-            duration: 0.35,
-            autoAlpha: 1,
-            ease: "power1.out"
-        });
-
-        gsap.to(modal, {
-            duration: 0.45,
-            x: "0%",
-            ease: "power3.out"
-        });
-
+        modal.style.transform = "translateX(0)";
+        overlay.style.opacity = "1";
+        overlay.style.pointerEvents = "auto";
         console.log("📘 Modale aperto");
     });
 
-    /* ============================
-       CHIUSURA MODALE
-    ============================ */
+    /* ====== CHIUDI MODALE ====== */
     function closeDict() {
-
-        gsap.to(overlay, {
-            duration: 0.30,
-            autoAlpha: 0,
-            ease: "power1.out"
-        });
-
-        gsap.to(modal, {
-            duration: 0.40,
-            x: "100%",
-            ease: "power2.in"
-        });
+        modal.style.transform = "translateX(100%)";
+        overlay.style.opacity = "0";
+        overlay.style.pointerEvents = "none";
     }
-
     closeBtn.addEventListener("click", closeDict);
     overlay.addEventListener("click", closeDict);
 
-    /* ============================
-       RICERCA
-    ============================ */
+    /* ====== Ricerca ====== */
     btnSearch.addEventListener("click", () => {
         const q = input.value.trim();
         if (!q) return;
@@ -9249,9 +9218,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    /* ============================
-       APRI TUTTE LE FONTI
-    ============================ */
+    /* ====== Apri tutte ====== */
     btnOpenAll.addEventListener("click", () => {
         const q = input.value.trim();
         if (!q) return;
