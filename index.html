@@ -9488,5 +9488,266 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 -->
+  <script>
+// Gestione Dizionario Filosofico - VERSIONE ROBUSTA
+class DictionaryManager {
+    constructor() {
+        this.isInitialized = false;
+        this.init();
+    }
+
+    init() {
+        if (this.isInitialized) return;
+        
+        this.bindEvents();
+        this.isInitialized = true;
+        console.log('DictionaryManager initialized');
+    }
+
+    bindEvents() {
+        // Delegazione eventi per gestire elementi che potrebbero essere ricreati
+        document.addEventListener('click', (e) => {
+            // Apri dizionario
+            if (e.target.closest('#openDict')) {
+                this.openDictionary();
+                return;
+            }
+
+            // Chiudi dizionario
+            if (e.target.closest('#dict-close') || e.target.id === 'dict-overlay') {
+                this.closeDictionary();
+                return;
+            }
+
+            // Ricerca
+            if (e.target.closest('#dict-search')) {
+                this.performSearch();
+                return;
+            }
+
+            // Apri tutte le fonti
+            if (e.target.closest('#open-all')) {
+                this.openAllSources();
+                return;
+            }
+
+            // Suggerimenti
+            if (e.target.closest('.suggestion-item')) {
+                this.useSuggestion(e.target.closest('.suggestion-item'));
+                return;
+            }
+        });
+
+        // Ricerca con Enter
+        document.addEventListener('keypress', (e) => {
+            if (e.target.id === 'dict-q' && e.key === 'Enter') {
+                this.performSearch();
+            }
+        });
+
+        // Chiudi con ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.isDictionaryOpen()) {
+                this.closeDictionary();
+            }
+        });
+
+        // Suggerimenti automatici
+        document.addEventListener('input', (e) => {
+            if (e.target.id === 'dict-q') {
+                this.showSuggestions(e.target.value);
+            }
+        });
+    }
+
+    isDictionaryOpen() {
+        const modal = document.getElementById('dict-modal');
+        return modal && modal.classList.contains('open');
+    }
+
+    openDictionary() {
+        const modal = document.getElementById('dict-modal');
+        const overlay = document.getElementById('dict-overlay');
+        const searchInput = document.getElementById('dict-q');
+
+        if (modal && overlay) {
+            modal.classList.add('open');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            if (searchInput) {
+                setTimeout(() => searchInput.focus(), 300);
+            }
+        } else {
+            console.error('Dictionary elements not found');
+            this.createDictionaryElements();
+        }
+    }
+
+    closeDictionary() {
+        const modal = document.getElementById('dict-modal');
+        const overlay = document.getElementById('dict-overlay');
+
+        if (modal && overlay) {
+            modal.classList.remove('open');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    }
+
+    performSearch() {
+        const searchInput = document.getElementById('dict-q');
+        if (!searchInput) return;
+
+        const query = searchInput.value.trim();
+        if (!query) {
+            this.showNotification('Inserisci un termine da cercare', 'warning');
+            return;
+        }
+
+        const sources = document.querySelectorAll('.sources input:checked');
+        if (sources.length === 0) {
+            this.showNotification('Seleziona almeno una fonte', 'warning');
+            return;
+        }
+
+        sources.forEach(source => {
+            const url = source.getAttribute('data-url').replace('{q}', encodeURIComponent(query));
+            window.open(url, '_blank');
+        });
+
+        this.showNotification(`Aperte ${sources.length} fonti per "${query}"`, 'success');
+    }
+
+    openAllSources() {
+        const searchInput = document.getElementById('dict-q');
+        const query = searchInput ? searchInput.value.trim() || 'philosophy' : 'philosophy';
+        const sources = document.querySelectorAll('.sources input');
+
+        sources.forEach(source => {
+            const url = source.getAttribute('data-url').replace('{q}', encodeURIComponent(query));
+            window.open(url, '_blank');
+        });
+
+        this.showNotification(`Aperte tutte le fonti per "${query}"`, 'success');
+    }
+
+    showSuggestions(query) {
+        const suggestionsContainer = document.getElementById('dict-suggestions');
+        if (!suggestionsContainer) return;
+
+        if (query.length < 2) {
+            suggestionsContainer.innerHTML = '';
+            return;
+        }
+
+        const terms = [
+            'metafisica', 'epistemologia', 'etica', 'estetica', 'logica',
+            'ontologia', 'fenomenologia', 'ermeneutica', 'esistenzialismo',
+            'stoicismo', 'epicureismo', 'scetticismo', 'razionalismo', 'empirismo',
+            'idealismo', 'materialismo', 'pragmatismo', 'strutturalismo',
+            'post-strutturalismo', 'decostruzionismo', 'filosofia analitica',
+            'filosofia continentale', 'dialettica', 'trascendentale', 'coscienza',
+            'percezione', 'conoscenza', 'verità', 'bellezza', 'morale', 'libertà'
+        ];
+
+        const filtered = terms.filter(term => 
+            term.toLowerCase().includes(query.toLowerCase())
+        ).slice(0, 8);
+
+        suggestionsContainer.innerHTML = filtered.map(term => 
+            `<div class="suggestion-item" data-term="${term}">${term}</div>`
+        ).join('');
+    }
+
+    useSuggestion(suggestionElement) {
+        const term = suggestionElement.getAttribute('data-term');
+        const searchInput = document.getElementById('dict-q');
+        const suggestionsContainer = document.getElementById('dict-suggestions');
+
+        if (searchInput) {
+            searchInput.value = term;
+        }
+        if (suggestionsContainer) {
+            suggestionsContainer.innerHTML = '';
+        }
+        
+        this.performSearch();
+    }
+
+    showNotification(message, type = 'info') {
+        // Crea una notifica temporanea
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: ${type === 'success' ? 'var(--gold)' : type === 'warning' ? '#ff6b6b' : 'var(--cyan)'};
+            color: #0a0a1a;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            z-index: 10001;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            animation: slideInRight 0.3s ease;
+        `;
+        notification.textContent = message;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.animation = 'slideOutRight 0.3s ease';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 300);
+        }, 3000);
+    }
+
+    createDictionaryElements() {
+        console.log('Creating dictionary elements dynamically...');
+        // Questa funzione può essere estesa per creare gli elementi dinamicamente se mancano
+    }
+}
+
+// Inizializzazione robusta che funziona anche con navigazione SPA
+let dictionaryManager;
+
+function initializeDictionary() {
+    if (!dictionaryManager) {
+        dictionaryManager = new DictionaryManager();
+    } else {
+        // Re-binda gli eventi se necessario
+        dictionaryManager.bindEvents();
+    }
+}
+
+// Inizializza quando il DOM è pronto
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeDictionary);
+} else {
+    initializeDictionary();
+}
+
+// Reinizializza dopo navigazione (per SPA)
+document.addEventListener('page:load', initializeDictionary); // Per Turbolinks
+document.addEventListener('turbo:load', initializeDictionary); // Per Turbo
+window.addEventListener('load', initializeDictionary);
+
+// Fallback: riprova l'inizializzazione periodicamente per i primi 5 secondi
+let retryCount = 0;
+const maxRetries = 10;
+const retryInterval = setInterval(() => {
+    if (!dictionaryManager || !dictionaryManager.isInitialized) {
+        initializeDictionary();
+        retryCount++;
+    }
+    
+    if (retryCount >= maxRetries || dictionaryManager?.isInitialized) {
+        clearInterval(retryInterval);
+    }
+}, 500);
+</script>
 </body>
 </html>
