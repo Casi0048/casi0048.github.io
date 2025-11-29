@@ -4422,8 +4422,38 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 @media (prefers-reduced-motion: reduce){
   .welcome-title-themable{ animation:none !important; text-shadow:none !important; }
 }
-</style>
- 
+<style>
+/* === Pulsante Dizionario Galleggiante & Indistruttibile === */
+#dict-floating-btn {
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+
+  font-size: 28px;
+  background: #1a1e2e;
+  color: #fff;
+
+  width: 58px;
+  height: 58px;
+
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.25);
+  box-shadow: 0 0 12px rgba(0,0,0,0.45);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  z-index: 999999; /* più alto di tutto */
+  transition: all .25s ease;
+}
+
+#dict-floating-btn:hover {
+  background: #2c3248;
+  transform: scale(1.08);
+}
+
 </style>
 </head>
 <body>
@@ -9484,6 +9514,23 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
+});
+</script>
+<!-- === Pulsante Dizionario Fisso / Galleggiante === -->
+<button id="dict-floating-btn" title="Apri dizionario">
+    📘
+</button>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const fab = document.getElementById("dict-floating-btn");
+  const modal = document.getElementById("dict-modal");
+  const overlay = document.getElementById("dict-overlay");
+
+  fab.addEventListener("click", () => {
+    modal.style.transform = "translateX(0)";
+    overlay.style.opacity = "1";
+    overlay.style.pointerEvents = "auto";
+  });
 });
 </script>
 
