@@ -4423,40 +4423,58 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
   .welcome-title-themable{ animation:none !important; text-shadow:none !important; }
 }
 <style>
-/* === Pulsante Dizionario Galleggiante & Indistruttibile === */
-#dict-floating-btn {
+
+/* === FAB Dizionario Filosofico — ALWAYS ON TOP === */
+#dict-fab {
   position: fixed;
-  bottom: 22px;
-  right: 22px;
-
-  font-size: 28px;
-  background: #1a1e2e;
-  color: #fff;
-
+  bottom: 1.6rem;
+  right: 1.6rem;
   width: 58px;
   height: 58px;
-
   border-radius: 50%;
-  border: 2px solid rgba(255,255,255,0.25);
-  box-shadow: 0 0 12px rgba(0,0,0,0.45);
-
+  background: rgba(20,20,40,.88);
+  border: 2px solid rgba(255,215,0,.55);
+  color: #ffd86a;
+  font-size: 1.8rem;
   display: flex;
   align-items: center;
   justify-content: center;
-
   cursor: pointer;
-  z-index: 999999; /* più alto di tutto */
-  transition: all .25s ease;
+
+  box-shadow: 0 0 14px rgba(255,215,0,.55),
+              0 0 24px rgba(0,0,0,.65);
+
+  z-index: 2147483650 !important;   /* SUPER PRIORITÀ */
+
+  transition: transform .25s ease, background .25s ease;
 }
 
-#dict-floating-btn:hover {
-  background: #2c3248;
-  transform: scale(1.08);
+/* Hover */
+#dict-fab:hover {
+  transform: scale(1.12);
+  background: rgba(255,215,0,.15);
 }
+
+/* Mobile: leggermente più piccolo */
+@media(max-width: 680px){
+  #dict-fab {
+    width: 50px;
+    height: 50px;
+    font-size: 1.55rem;
+    bottom: 1.2rem;
+    right: 1.2rem;
+  }
+}
+
 
 </style>
 </head>
 <body>
+  <!-- === FAB Dizionario Filosofico === -->
+<button id="dict-fab" title="Dizionario filosofico">
+    📘
+</button>
+
   <div hidden="True" id="search-backdrop"></div>
   <div class="search-panel" id="search-panel">
     <div class="search-header"><h3 class="search-title">Risultati</h3><button aria-label="Chiudi pannello" class="search-close" id="search-close" type="button">Chiudi</button></div>
@@ -4813,10 +4831,6 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 </div>
 </div>
 
-  <!-- === Pulsante Dizionario Fisso / Galleggiante === -->
-<button id="dict-floating-btn" title="Apri dizionario">
-    📘 Dizionario
-</button>
 <!-- ============================================================
         TOPBAR CON DIZIONARIO
 ============================================================ -->
@@ -9523,16 +9537,21 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const fab = document.getElementById("dict-floating-btn");
-  const modal = document.getElementById("dict-modal");
-  const overlay = document.getElementById("dict-overlay");
+document.addEventListener("DOMContentLoaded", function(){
 
-  fab.addEventListener("click", () => {
-    modal.style.transform = "translateX(0)";
-    overlay.style.opacity = "1";
-    overlay.style.pointerEvents = "auto";
-  });
+    const fab = document.getElementById("dict-fab");
+    const modal = document.getElementById("dict-modal");
+    const overlay = document.getElementById("dict-overlay");
+
+    if (fab && modal && overlay) {
+        fab.addEventListener("click", () => {
+            modal.classList.add("open");
+            overlay.classList.add("open");
+        });
+    } else {
+        console.warn("FAB: elementi del dizionario mancanti");
+    }
+
 });
 </script>
 
