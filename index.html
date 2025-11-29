@@ -8966,11 +8966,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 100);
 });
 </script>
-    
-
-
-
-<script>
+ <script>
 // DIZIONARIO FILOSOFICO
 document.addEventListener('DOMContentLoaded', function() {
     const openDictBtn = document.getElementById('openDict');
@@ -9044,7 +9040,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 <!-- Barra di ricerca -->
                 <div style="margin-bottom: 1.5rem;">
-                    <input type="text" id="dict-search" placeholder="Cerca termine filosofico..." style="
+                    <input type="text" id="dict-search-input" placeholder="Cerca termine filosofico..." style="
                         width: 100%;
                         padding: 0.75rem;
                         border: 1px solid var(--menu-border);
@@ -9096,9 +9092,123 @@ document.addEventListener('DOMContentLoaded', function() {
                         </p>
                     </div>
                 </div>
-               
+                
+                <!-- FONTI DI RICERCA -->
+                <div class="sources" style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--menu-border);">
+                    <h4 style="color: var(--gold); margin-bottom: 0.5rem;">Fonti di ricerca:</h4>
+                    <label style="display: block; margin-bottom: 0.5rem; color: var(--text-light);">
+                        <input type="checkbox" checked data-url="https://www.treccani.it/risultati?q={q}">
+                        Treccani
+                    </label>
+                    <label style="display: block; margin-bottom: 0.5rem; color: var(--text-light);">
+                        <input type="checkbox" checked data-url="https://duckduckgo.com/?q=site%3Aplato.stanford.edu+{q}">
+                        Stanford Encyclopedia (SEP)
+                    </label>
+                    <label style="display: block; margin-bottom: 0.5rem; color: var(--text-light);">
+                        <input type="checkbox" data-url="https://it.wikipedia.org/w/index.php?search={q}">
+                        Wikipedia
+                    </label>
+                </div>
+                
+                <!-- BOTTONI AZIONE -->
+                <div style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: flex-end;">
+                    <button id="dict-search-btn" style="
+                        padding: 0.75rem 1.5rem;
+                        background: var(--gold);
+                        border: none;
+                        border-radius: 8px;
+                        color: #000;
+                        font-weight: bold;
+                        cursor: pointer;
+                    ">Cerca</button>
+                    
+                    <button id="dict-close-btn" style="
+                        padding: 0.75rem 1.5rem;
+                        background: transparent;
+                        border: 1px solid var(--gold);
+                        border-radius: 8px;
+                        color: var(--gold);
+                        cursor: pointer;
+                    ">Chiudi</button>
+                </div>
+            </div>
+        `;
 
-</script>
+        document.body.appendChild(modal);
+
+        // Aggiungi funzionalità di ricerca
+        const searchInput = document.getElementById('dict-search-input');
+        const searchBtn = document.getElementById('dict-search-btn');
+        const closeBtn = document.getElementById('dict-close-btn');
+        const closeDictBtn = document.getElementById('close-dict');
+
+        // Funzione di ricerca
+        function performSearch() {
+            const query = searchInput.value.trim();
+            if (!query) {
+                alert('Inserisci un termine da cercare');
+                return;
+            }
+
+            const sources = document.querySelectorAll('.sources input:checked');
+            if (sources.length === 0) {
+                alert('Seleziona almeno una fonte');
+                return;
+            }
+
+            const encoded = encodeURIComponent(query);
+            
+            sources.forEach((source, index) => {
+                const url = source.dataset.url.replace('{q}', encoded);
+                setTimeout(() => {
+                    window.open(url, '_blank');
+                }, index * 100);
+            });
+        }
+
+        // Event listeners
+        searchBtn.addEventListener('click', performSearch);
+        
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        // Chiusura modal
+        function closeModal() {
+            modal.remove();
+        }
+
+        closeBtn.addEventListener('click', closeModal);
+        closeDictBtn.addEventListener('click', closeModal);
+
+        // Chiudi cliccando fuori
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Chiudi con ESC
+        document.addEventListener('keydown', function closeOnEsc(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+                document.removeEventListener('keydown', closeOnEsc);
+            }
+        });
+
+        // Focus sulla ricerca
+        setTimeout(() => {
+            searchInput.focus();
+        }, 100);
+    }
+}); // <-- QUESTA ERA LA PARENTESI MANCANTE!
+</script>   
+
+
+
+
 
 <!-- ============================================================
         JAVASCRIPT DIZIONARIO - VERSIONE DEFINITIVA
