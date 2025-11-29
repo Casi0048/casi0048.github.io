@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
         modal.style.transform = "translateX(0)";
         overlay.style.opacity = "1";
         overlay.style.pointerEvents = "auto";
-        console.log("📘 Modale aperto");
+        
     });
 
     // === CHIUDI MODALE ===
@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
         modal.style.transform = "translateX(100%)";
         overlay.style.opacity = "0";
         overlay.style.pointerEvents = "none";
-        console.log("📘 Modale chiuso");
+       
     }
 
     btnClose.addEventListener("click", closeDict);
