@@ -1,3 +1,8 @@
+console.log("🔥 dict.js LOADED correttamente");
+console.log("openDict =", document.getElementById("openDict"));
+console.log("dict-modal =", document.getElementById("dict-modal"));
+
+
 <!-- ============================================================
         JAVASCRIPT DIZIONARIO - VERSIONE DEBUG
 ============================================================ -->
