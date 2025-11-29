@@ -1,48 +1,59 @@
-// ============================================================
-//   DIZIONARIO FILOSOFICO — MODALE LATERALE FUNZIONANTE
-// ============================================================
 
+// ============================================================
+//  MODALE DIZIONARIO — VERSIONE A (GSAP Smooth)
+// ============================================================
 document.addEventListener("DOMContentLoaded", () => {
 
-    console.log("🔥 dict.js caricato correttamente");
+    console.log("📘 Dizionario GSAP attivo");
 
-    const btnOpen    = document.getElementById("openDict");
-    const btnClose   = document.getElementById("dict-close");
-    const modal      = document.getElementById("dict-modal");
-    const overlay    = document.getElementById("dict-overlay");
+    const btnOpen   = document.getElementById("openDict");
+    const btnClose  = document.getElementById("dict-close");
+    const modal     = document.getElementById("dict-modal");
+    const overlay   = document.getElementById("dict-overlay");
 
-    const input      = document.getElementById("dict-q");
-    const btnSearch  = document.getElementById("dict-search");
+    const input     = document.getElementById("dict-q");
+    const btnSearch = document.getElementById("dict-search");
     const btnOpenAll = document.getElementById("open-all");
 
-    console.log("DICT STATUS:", { btnOpen, btnClose, modal, overlay });
-
-    // Blocca tutto se mancano elementi
-    if (!btnOpen || !modal || !overlay || !btnClose) {
-        console.error("❌ Dizionario: elementi mancanti nel DOM");
+    if (!btnOpen || !modal || !btnClose || !overlay) {
+        console.error("❌ Dizionario: elementi mancanti");
         return;
     }
 
-    // === APRI MODALE ===
+    /* ========== APRI MODALE ========== */
     btnOpen.addEventListener("click", () => {
-        modal.style.transform = "translateX(0)";
-        overlay.style.opacity = "1";
-        overlay.style.pointerEvents = "auto";
-        
+        gsap.to(modal, {
+            x: 0,
+            duration: 0.35,
+            ease: "power3.out"
+        });
+        gsap.to(overlay, {
+            opacity: 1,
+            pointerEvents: "auto",
+            duration: 0.25
+        });
+        console.log("📘 Modale aperto (GSAP)");
     });
 
-    // === CHIUDI MODALE ===
+    /* ========== CHIUDI MODALE ========== */
     function closeDict() {
-        modal.style.transform = "translateX(100%)";
-        overlay.style.opacity = "0";
-        overlay.style.pointerEvents = "none";
-       
+        gsap.to(modal, {
+            x: "100%",
+            duration: 0.30,
+            ease: "power3.in"
+        });
+        gsap.to(overlay, {
+            opacity: 0,
+            pointerEvents: "none",
+            duration: 0.25
+        });
     }
 
     btnClose.addEventListener("click", closeDict);
     overlay.addEventListener("click", closeDict);
 
-    // === RICERCA SINGOLA ===
+
+    /* ========== RICERCA ========== */
     btnSearch.addEventListener("click", () => {
         const q = input.value.trim();
         if (!q) return;
@@ -51,12 +62,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const list = modal.querySelectorAll(".sources input:checked");
 
         list.forEach(chk => {
-            const url = chk.dataset.url.replace("{q}", enc);
-            window.open(url, "_blank");
+            const finalURL = chk.dataset.url.replace("{q}", enc);
+            window.open(finalURL, "_blank", "noopener");
         });
     });
 
-    // === APRI TUTTE ===
+    /* ========== APRI TUTTE ========== */
     btnOpenAll.addEventListener("click", () => {
         const q = input.value.trim();
         if (!q) return;
@@ -65,9 +76,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const list = modal.querySelectorAll(".sources input");
 
         list.forEach(chk => {
-            const url = chk.dataset.url.replace("{q}", enc);
-            window.open(url, "_blank");
+            const finalURL = chk.dataset.url.replace("{q}", enc);
+            window.open(finalURL, "_blank", "noopener");
         });
     });
-
 });
+
