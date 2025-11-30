@@ -579,3 +579,38 @@ window.addEventListener('error', function(e) {
     console.error('Errore JavaScript:', e.error);
 });
 
+// Aggiungi questa funzione al tuo JavaScript esistente
+function setupClearButton() {
+    const searchInput = document.getElementById('dict-q');
+    const clearButton = document.querySelector('.dict-clear-btn');
+    
+    if (!searchInput || !clearButton) return;
+    
+    // Mostra/nascondi pulsante X
+    function toggleClearButton() {
+        if (searchInput.value.length > 0) {
+            clearButton.classList.add('visible');
+        } else {
+            clearButton.classList.remove('visible');
+        }
+    }
+    
+    // Cancella input
+    function clearInput() {
+        searchInput.value = '';
+        searchInput.focus();
+        toggleClearButton();
+    }
+    
+    // Event listeners
+    searchInput.addEventListener('input', toggleClearButton);
+    clearButton.addEventListener('click', clearInput);
+    
+    // Inizializza stato
+    toggleClearButton();
+}
+
+// Chiama la funzione quando il dizionario viene aperto
+document.addEventListener('DOMContentLoaded', function() {
+    setupClearButton();
+});
