@@ -4871,20 +4871,24 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
     </button>
 
     <!-- 🌐 Traduttore -->
-    <div class="translate-box">
-        <span>🌐</span>
-        <select id="customTranslate" class="translate-select">
+    div id="google_translate_element" style="display: none;"></div>
+        <div class="translate-box">
+          <span class="translate-icon" aria-hidden="true">🌐</span>
+          <select aria-label="Traduci pagina" class="translate-select" id="customTranslate">
             <option value="it">Italiano</option>
             <option value="en">English</option>
             <option value="fr">Français</option>
             <option value="de">Deutsch</option>
             <option value="es">Español</option>
             <option value="pl">Polski</option>
-        </select>
+          </select>
+        </div>
+        <!-- UN SOLO contenitore nascosto per Google -->
+        <div id="google_translate_element"
+          style="position:fixed;bottom:0;right:0;width:1px;height:1px;opacity:0;
+          pointer-events:none;overflow:hidden;"></div>
+      </div>
     </div>
-
-</div>
-
 
 <!-- ============================================================
      OVERLAY + MODALE DIZIONARIO FILOSOFICO
@@ -7153,73 +7157,7 @@ document.addEventListener("DOMContentLoaded", function(){
   var btn = document.getElementById('btn-explode') || document.getElementById('explode-btn');
   if(btn){ btn.addEventListener('click', function(ev){ ev.preventDefault(); onClick(ev); }, true); }
 })();</script>
-<script>
-// TRADUTTORE 1-CLICK PER SITO COMPLETO
-document.getElementById('customTranslate')?.addEventListener('change', function(e) {
-    const lang = e.target.value;
-    
-    if (lang === 'it') {
-        window.location.href = window.location.pathname;
-        return;
-    }
-    
-    // Direttamente a Google Translate per siti
-    const translateUrl = `https://translate.google.com/translate?hl=${lang}&sl=auto&tl=${lang}&u=${encodeURIComponent(window.location.href)}`;
-    window.open(translateUrl, '_blank');
-    
-    // Feedback visivo
-    showQuickTranslationNotice(lang);
-    
-    // Ripristina selezione
-    setTimeout(() => e.target.value = 'it', 1000);
-});
 
-function showQuickTranslationNotice(lang) {
-    const notice = document.createElement('div');
-    notice.innerHTML = `
-        <div class="quick-translation-notice">
-            <span>🌐 Apertura traduzione sito completo...</span>
-        </div>
-    `;
-    
-    notice.style.cssText = `
-        position: fixed;
-        top: 100px;
-        right: 20px;
-        background: linear-gradient(135deg, var(--gold), #ffeb3b);
-        color: #0a0a1a;
-        padding: 12px 20px;
-        border-radius: 8px;
-        font-weight: 700;
-        z-index: 10000;
-        box-shadow: 0 4px 15px rgba(255,215,0,0.4);
-        animation: slideInRight 0.3s ease;
-        border: 1px solid rgba(255,215,0,0.6);
-        font-family: 'Montserrat', sans-serif;
-    `;
-    
-    document.body.appendChild(notice);
-    
-    setTimeout(() => {
-        notice.style.animation = 'slideOutRight 0.3s ease';
-        setTimeout(() => notice.remove(), 300);
-    }, 3000);
-}
-
-// Animazione
-const quickStyle = document.createElement('style');
-quickStyle.textContent = `
-    @keyframes slideInRight {
-        from { transform: translateX(100%); opacity: 0; }
-        to { transform: translateX(0); opacity: 1; }
-    }
-    @keyframes slideOutRight {
-        from { transform: translateX(0); opacity: 1; }
-        to { transform: translateX(100%); opacity: 0; }
-    }
-`;
-document.head.appendChild(quickStyle);
-</script>
 <script>
 // SISTEMA STELLARE COMPLETO CON VERIFICHE DI SICUREZZA - VERSIONE CORRETTA
 document.addEventListener('DOMContentLoaded', function() {
@@ -9487,6 +9425,95 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 </script>
-
+ <script>
+    /* ===== Google Translate: controllo da select custom ===== */
+    
+    // 1) Carica script di Google una sola volta
+    (function loadGTranslate() {
+      if (window._gtLoaded) return;
+      window._gtLoaded = true;
+      // callback globale richiesta da Google
+      window.googleTranslateElementInit = function () {
+        new google.translate.TranslateElement({
+          pageLanguage: 'it',                      // lingua sorgente del sito
+          includedLanguages: 'it,en,fr,de,es,pl',  // lingue permesse
+          autoDisplay: false
+        }, 'google_translate_element');
+      };
+    
+      var s = document.createElement('script');
+      s.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+      s.defer = true;
+      document.head.appendChild(s);
+    })();
+    
+    // 2) Helper: dispatch evento change cross-browser
+    function fireChange(el){
+      try {
+        var evt = new Event('change', { bubbles: true });
+        el.dispatchEvent(evt);
+      } catch(e){
+        var evtOld = document.createEvent('HTMLEvents');
+        evtOld.initEvent('change', true, true);
+        el.dispatchEvent(evtOld);
+      }
+    }
+    
+    // 3) Selettore della combo originale di Google (quando pronta)
+    function withGTCombo(fn){
+      var tries = 0;
+      (function poll(){
+        var combo = document.querySelector('.goog-te-combo');
+        if (combo) return fn(combo);
+        if (tries++ < 60) return setTimeout(poll, 250); // fino a ~15s
+        console.warn('Google Translate non inizializzato in tempo');
+      })();
+    }
+    
+    // 4) Imposta cookie per reset su IT
+    function setCookie(name, value, days){
+      var d = new Date(); d.setTime(d.getTime()+ (days*24*60*60*1000));
+      document.cookie = name + "=" + value + "; expires=" + d.toUTCString() + "; path=/";
+    }
+    
+    // 5) Handler del select custom
+    (function initCustomTranslate(){
+      var sel = document.getElementById('customTranslate');
+      if (!sel) return;
+    
+      sel.addEventListener('change', function(e){
+        var lang = e.target.value || 'it';
+    
+        // Caso “Italiano” = ripristina pagina originale
+        if (lang === 'it'){
+          // Reset cookie usato da GTranslate e ricarica pulito
+          setCookie('googtrans', '/auto/it', 1);
+          setCookie('googtrans', '/auto/it', 1); // doppio set per sottodomini
+          location.reload();
+          return;
+        }
+    
+        // Seleziona lingua sulla combo nascosta di Google
+        withGTCombo(function(combo){
+          combo.value = lang;
+          fireChange(combo);
+        });
+      });
+    
+      // Sincronizza il select alla lingua attuale (se l’utente ricarica una pagina tradotta)
+      document.addEventListener('DOMContentLoaded', function(){
+        var m = (document.cookie.match(/(?:^|;\s*)googtrans=([^;]+)/) || [])[1];
+        if (m){
+          try{
+            var parts = decodeURIComponent(m).split('/');
+            var current = parts[parts.length - 1] || 'it';
+            if (['it','en','fr','de','es','pl'].includes(current)){
+              sel.value = current;
+            }
+          }catch(_){}
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
