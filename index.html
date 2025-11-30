@@ -4874,17 +4874,15 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 ============================================================ -->
 <div class="bar-right">
 
-  <!-- 🔍 Search -->
-<div class="search-container notranslate" translate="no">
-    <input id="site-search"
-           type="search"
-           placeholder="Cerca nel sito…"
-           class="notranslate"
-           translate="no">
-    <i class="fa-solid fa-magnifying-glass search-icon"></i>
-</div>
-
-
+    <!-- 🔍 Search -->
+    <div class="search-container notranslate" translate="no">
+        <input id="site-search"
+               type="search"
+               placeholder="Cerca nel sito…"
+               class="notranslate"
+               translate="no">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+    </div>
 
     <!-- 📘 DIZIONARIO -->
     <button id="openDict" class="dict-btn" aria-label="Apri dizionario">
@@ -7175,66 +7173,145 @@ document.addEventListener("DOMContentLoaded", function(){
   var btn = document.getElementById('btn-explode') || document.getElementById('explode-btn');
   if(btn){ btn.addEventListener('click', function(ev){ ev.preventDefault(); onClick(ev); }, true); }
 })();</script>
-<script id="gt-wire">
+<script>
+// ============================================================
+// TRADUTTORE SEMPLIFICATO - SENZA ERRORI 401
+// ============================================================
+
 document.addEventListener('DOMContentLoaded', function() {
-  var translateSelect = document.getElementById('customTranslate');
-  function clearCookie(){
-    var past='Thu, 01 Jan 1970 00:00:00 GMT';
-    document.cookie='googtrans=; expires='+past+'; path=/;';
-    document.cookie='googtrans=; expires='+past+'; path=/; domain='+location.hostname+';';
-  }
-  function openWebTranslate(lang){
-    var u = location.href; var sl='it';
-    var url='https://translate.google.com/translate?hl='+encodeURIComponent(lang)+'&sl='+encodeURIComponent(sl)+'&tl='+encodeURIComponent(lang)+'&u='+encodeURIComponent(u);
-    window.open(url, '_blank', 'noopener');
-  }
-  function setCombo(lang){
-    var combo = document.querySelector('.goog-te-combo');
-    if(combo){
-      combo.value = lang; combo.dispatchEvent(new Event('change')); return true;
-    }
-    var frame = document.querySelector('.goog-te-menu-frame');
-    if(frame && frame.contentDocument){
-      var select = frame.contentDocument.querySelector('.goog-te-combo');
-      if(select){ select.value = lang; select.dispatchEvent(new Event('change')); return true; }
-    }
-    return false;
-  }
-  function loadGT(){
-    if(!(window.google && google.translate)){
-      var s=document.createElement('script');
-      s.src='https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-      s.async=true;
-      s.onerror=function(){ document.documentElement.setAttribute('data-gt-error','load-failed'); };
-      document.head.appendChild(s);
-    }
-  }
-  function translatePage(lang){
-    if(!lang) return;
-    if(lang==='it'){ clearCookie(); setTimeout(function(){ location.reload(); }, 50); return; }
-    loadGT();
-    var tries=0;
-    (function wait(){
-      if(window.google && google.translate){
-        try{ if(!document.querySelector('.goog-te-combo')) { window.googleTranslateElementInit(); } }catch(_){}
-        if(setCombo(lang)) return;
-      }
-      if(tries++ < 60){ setTimeout(wait, 150); }
-      else { document.documentElement.setAttribute('data-gt-error','load-failed'); openWebTranslate(lang); }
-    })();
-  }
-  if(translateSelect){
-    translateSelect.addEventListener('change', function(){ translatePage(this.value); }, {passive:true});
-    try{
-      var c=(document.cookie||'').split(';').map(function(s){return s.trim();}).find(function(s){return s.indexOf('googtrans=')===0;});
-      if(!c){ translateSelect.value='it'; }
-      else{
-        var val=decodeURIComponent(c.split('=')[1]||''); var parts=val.split('/'); var l=parts[2]||'it';
-        if(translateSelect.querySelector('option[value="'+l+'"]')) translateSelect.value=l;
-      }
-    }catch(_){ translateSelect.value='it'; }
-  }
+    const translateSelect = document.getElementById('customTranslate');
+    
+    if (!translateSelect) return;
+    
+    // Funzione principale per tradurre
+    translateSelect.addEventListener('change', function(e) {
+        const selectedLang = e.target.value;
+        handleTranslation(selectedLang);
+    });
+    
+    // Imposta la lingua corrente
+    setCurrentLanguage(translateSelect);
 });
+
+function handleTranslation(lang) {
+    if (lang === 'it') {
+        // Se selezione italiano, ricarica la pagina per rimuovere eventuali traduzioni
+        window.location.href = window.location.pathname + '?lang=it';
+        return;
+    }
+    
+    // Per altre lingue: apri Google Translate in nuova scheda
+    openGoogleTranslate(lang);
+    
+    // Ripristina la selezione dopo un breve delay
+    setTimeout(() => {
+        const select = document.getElementById('customTranslate');
+        if (select) select.value = 'it';
+    }, 1000);
+}
+
+function openGoogleTranslate(targetLang) {
+    const currentUrl = window.location.href;
+    const translateUrl = `https://translate.google.com/translate?hl=${targetLang}&sl=auto&tl=${targetLang}&u=${encodeURIComponent(currentUrl)}`;
+    
+    // Apri in nuova scheda
+    window.open(translateUrl, '_blank', 'noopener,noreferrer');
+    
+    // Mostra feedback visivo
+    showTranslationFeedback(targetLang);
+}
+
+function showTranslationFeedback(lang) {
+    // Crea notifica temporanea
+    const notification = document.createElement('div');
+    notification.className = 'translation-notification';
+    notification.innerHTML = `
+        <span>🌐 Traduzione in ${getLanguageName(lang)}...</span>
+    `;
+    
+    // Stili per la notifica
+    notification.style.cssText = `
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        background: linear-gradient(135deg, var(--gold), #ffeb3b);
+        color: #0a0a1a;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-weight: 700;
+        font-family: 'Montserrat', sans-serif;
+        z-index: 10000;
+        box-shadow: 0 4px 15px rgba(255,215,0,0.4);
+        animation: slideInRight 0.3s ease;
+        border: 1px solid rgba(255,215,0,0.6);
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Rimuovi dopo 3 secondi
+    setTimeout(() => {
+        notification.style.animation = 'slideOutRight 0.3s ease';
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 300);
+    }, 3000);
+}
+
+function getLanguageName(code) {
+    const languages = {
+        'en': 'inglese',
+        'fr': 'francese',
+        'de': 'tedesco', 
+        'es': 'spagnolo',
+        'pl': 'polacco'
+    };
+    return languages[code] || code;
+}
+
+function setCurrentLanguage(selectElement) {
+    // Cerca parametro lang nell'URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlLang = urlParams.get('lang');
+    
+    if (urlLang && selectElement.querySelector(`option[value="${urlLang}"]`)) {
+        selectElement.value = urlLang;
+    } else {
+        selectElement.value = 'it';
+    }
+}
+
+// Aggiungi gli stili per le animazioni
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideInRight {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes slideOutRight {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+    }
+    
+    .translation-notification {
+        pointer-events: none;
+    }
+`;
+document.head.appendChild(style);
 </script>
 <script>
 // SISTEMA STELLARE COMPLETO CON VERIFICHE DI SICUREZZA - VERSIONE CORRETTA
