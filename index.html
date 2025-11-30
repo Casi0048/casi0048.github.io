@@ -1485,27 +1485,7 @@ nav.menu-desktop .mega-menu{ z-index: 90 !important; pointer-events: auto !impor
   .timeline-content { padding: 15px; margin: 10px 5px; } /* opzionale, migliora leggibilità */
 }
 </style>
-<script id="gt-init">
-window.googleTranslateElementInit = function(){
-  try{
-    new google.translate.TranslateElement({
-      pageLanguage: 'it',
-      includedLanguages: 'en,fr,de,es,pl',
-      autoDisplay: false
-    }, 'google_translate_element');
-    document.documentElement.removeAttribute('data-gt-error');
-  }catch(e){ console.warn('GT init error', e); }
-};
-</script><script defer="True" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script><style id="motto-style-2">
-/* Elegant motto styling with typographic separators */
-.motto { letter-spacing:.295em; }
-.motto .m-text { font-size:1.06em; }
-.motto .m-icon { font-size:1.08em; }
-.motto .m-sep { opacity:.6; padding:0 .4ch; }
-@media (max-width:600px){
-  .motto { font-size:.96rem; }
-}
-</style>
+
 <style>
 /* === SFONDO STELLARE COMPLETO - VERSIONE DEFINITIVA === */
 .stars-container {
@@ -7174,57 +7154,205 @@ document.addEventListener("DOMContentLoaded", function(){
   if(btn){ btn.addEventListener('click', function(ev){ ev.preventDefault(); onClick(ev); }, true); }
 })();</script>
 <script>
-// TRADUTTORE CON AVVISO PER CONTENUTI DINAMICI
-document.getElementById('customTranslate')?.addEventListener('change', function(e) {
-    const lang = e.target.value;
+// ============================================================
+// TRADUTTORE SEMPLIFICATO - ZERO ERRORI 401
+// ============================================================
+
+document.addEventListener('DOMContentLoaded', function() {
+    const translateSelect = document.getElementById('customTranslate');
     
-    if (lang === 'it') {
-        window.location.href = window.location.pathname;
-        return;
-    }
+    if (!translateSelect) return;
     
-    showTranslationAlert(lang);
-    setTimeout(() => e.target.value = 'it', 500);
+    // Disabilita qualsiasi tentativo di Google Translate
+    disableGoogleTranslate();
+    
+    translateSelect.addEventListener('change', function(e) {
+        const selectedLang = e.target.value;
+        
+        if (selectedLang === 'it') {
+            // Ricarica in italiano
+            window.location.href = window.location.pathname;
+            return;
+        }
+        
+        // Apri traduttore esterno
+        openExternalTranslator(selectedLang);
+        
+        // Ripristina selezione
+        setTimeout(() => {
+            e.target.value = 'it';
+        }, 1000);
+    });
 });
 
-function showTranslationAlert(lang) {
-    const alertBox = document.createElement('div');
-    alertBox.innerHTML = `
-        <div class="translation-alert">
-            <h3>⚠️ Limitazioni Traduzione</h3>
-            <p>Google Translate potrebbe non tradurre:</p>
-            <ul>
-                <li>• Menu di navigazione</li>
-                <li>• Elementi interattivi</li>
-                <li>• Contenuti caricati dinamicamente</li>
-            </ul>
-            <p>Per una traduzione completa, usa il <strong>traduttore manuale</strong> copiando i testi.</p>
-            <div class="alert-buttons">
-                <button onclick="openBasicTranslation('${lang}')" class="btn-primary">Prova Traduzione Automatica</button>
-                <button onclick="this.closest('.translation-alert').remove()" class="btn-secondary">Annulla</button>
-            </div>
-        </div>
-    `;
+function disableGoogleTranslate() {
+    // Blocca qualsiasi script Google Translate
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            mutation.addedNodes.forEach(function(node) {
+                if (node.nodeType === 1) { // Element node
+                    if (node.src && node.src.includes('translate.google')) {
+                        node.remove();
+                    }
+                    if (node.innerHTML && node.innerHTML.includes('google.translate')) {
+                        node.remove();
+                    }
+                }
+            });
+        });
+    });
     
-    alertBox.style.cssText = `
+    observer.observe(document.head, { childList: true, subtree: true });
+    observer.observe(document.body, { childList: true, subtree: true });
+    
+    // Blocca richieste a Google Translate
+    const originalFetch = window.fetch;
+    window.fetch = function(...args) {
+        if (typeof args[0] === 'string' && args[0].includes('translate.google')) {
+            return Promise.reject(new Error('Google Translate blocked'));
+        }
+        return originalFetch.apply(this, args);
+    };
+}
+
+function openExternalTranslator(lang) {
+    const languageNames = {
+        'en': 'inglese',
+        'fr': 'francese', 
+        'de': 'tedesco',
+        'es': 'spagnolo',
+        'pl': 'polacco'
+    };
+    
+    const currentUrl = window.location.href;
+    
+    // 🔥 USA DEEPL COME ALTERNATIVA (Nessun 401!)
+    const deepLUrl = `https://www.deepl.com/translator#it/${lang}`;
+    
+    // Alternative senza errori 401:
+    const translators = [
+        {
+            name: 'DeepL',
+            url: deepLUrl,
+            description: 'Traduttore di alta qualità'
+        },
+        {
+            name: 'Bing Translator', 
+            url: `https://www.bing.com/translator?from=it&to=${lang}`,
+            description: 'Microsoft Translator'
+        },
+        {
+            name: 'Yandex Translate',
+            url: `https://translate.yandex.com/?lang=it-${lang}`,
+            description: 'Traduttore russo'
+        }
+    ];
+    
+    // Mostra scelta del traduttore
+    showTranslatorChoice(languageNames[lang], translators, currentUrl);
+}
+
+function showTranslatorChoice(langName, translators, currentUrl) {
+    const modal = document.createElement('div');
+    modal.className = 'translator-choice-modal';
+    modal.style.cssText = `
         position: fixed;
         top: 0; left: 0;
         width: 100%; height: 100%;
-        background: rgba(0,0,0,0.7);
+        background: rgba(0,0,0,0.8);
         display: flex;
         align-items: center;
         justify-content: center;
         z-index: 10000;
+        backdrop-filter: blur(5px);
     `;
     
-    document.body.appendChild(alertBox);
+    let optionsHTML = translators.map(translator => `
+        <div class="translator-option" onclick="openTranslator('${translator.url}')">
+            <strong>${translator.name}</strong>
+            <span>${translator.description}</span>
+        </div>
+    `).join('');
+    
+    modal.innerHTML = `
+        <div class="translator-modal-content" style="
+            background: rgba(10,10,30,0.95);
+            border: 2px solid var(--gold);
+            border-radius: 12px;
+            padding: 2rem;
+            color: var(--text-light);
+            font-family: 'Montserrat', sans-serif;
+            max-width: 500px;
+            text-align: center;
+        ">
+            <h3 style="color: var(--gold); margin-bottom: 1rem;">🌐 Traduzione in ${langName}</h3>
+            <p style="margin-bottom: 1.5rem; opacity: 0.9;">
+                Scegli un servizio di traduzione:<br>
+                <small>(Copia-incolla l'URL del sito)</small>
+            </p>
+            <div class="translator-options" style="
+                display: flex;
+                flex-direction: column;
+                gap: 0.8rem;
+                margin-bottom: 1.5rem;
+            ">
+                ${optionsHTML}
+            </div>
+            <div style="font-size: 0.9rem; opacity: 0.7; margin-bottom: 1rem;">
+                URL da copiare:<br>
+                <code style="background: rgba(255,255,255,0.1); padding: 0.3rem 0.6rem; border-radius: 4px; font-size: 0.8rem;">${currentUrl}</code>
+            </div>
+            <button onclick="this.closest('.translator-choice-modal').remove()" style="
+                background: transparent;
+                color: var(--text-light);
+                border: 1px solid var(--gold);
+                padding: 0.6rem 1.5rem;
+                border-radius: 6px;
+                cursor: pointer;
+            ">Annulla</button>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
 }
 
-function openBasicTranslation(lang) {
-    const url = `https://translate.google.com/translate?hl=${lang}&sl=it&tl=${lang}&u=${encodeURIComponent(window.location.href)}`;
-    window.open(url, '_blank');
-    document.querySelector('.translation-alert')?.remove();
-}
+// Funzione globale per aprire il traduttore
+window.openTranslator = function(url) {
+    window.open(url, '_blank', 'noopener,noreferrer');
+    document.querySelector('.translator-choice-modal')?.remove();
+};
+
+// CSS per le opzioni del traduttore
+const translatorStyle = document.createElement('style');
+translatorStyle.textContent = `
+    .translator-option {
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,215,0,0.3);
+        border-radius: 8px;
+        padding: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: left;
+    }
+    
+    .translator-option:hover {
+        background: rgba(255,215,0,0.1);
+        border-color: var(--gold);
+        transform: translateY(-2px);
+    }
+    
+    .translator-option strong {
+        color: var(--gold);
+        display: block;
+        margin-bottom: 0.3rem;
+    }
+    
+    .translator-option span {
+        font-size: 0.9rem;
+        opacity: 0.8;
+    }
+`;
+document.head.appendChild(translatorStyle);
 </script>
 <script>
 // SISTEMA STELLARE COMPLETO CON VERIFICHE DI SICUREZZA - VERSIONE CORRETTA
