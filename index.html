@@ -4850,17 +4850,13 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 </div>
 </div>
 <!-- ============================================================
-        TOPBAR CON DIZIONARIO
+        TOPBAR CON DIZIONARIO E TRADUTTORE
 ============================================================ -->
 <div class="bar-right">
 
     <!-- 🔍 Search -->
     <div class="search-container notranslate" translate="no">
-        <input id="site-search"
-               type="search"
-               placeholder="Cerca nel sito…"
-               class="notranslate"
-               translate="no">
+        <input id="site-search" type="search" placeholder="Cerca nel sito…">
         <i class="fa-solid fa-magnifying-glass search-icon"></i>
     </div>
 
@@ -4870,25 +4866,23 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
         <span>Dizionario</span>
     </button>
 
-    <!-- 🌐 Traduttore -->
-    <div id="google_translate_element" style="display: none;"></div>
-        <div class="translate-box">
-          <span class="translate-icon" aria-hidden="true">🌐</span>
-          <select aria-label="Traduci pagina" class="translate-select" id="customTranslate">
+    <!-- 🌐 Traduttore IN-PAGE -->
+    <div class="translate-box">
+        <span>🌐</span>
+        <select id="customTranslate" class="translate-select">
             <option value="it">Italiano</option>
             <option value="en">English</option>
             <option value="fr">Français</option>
             <option value="de">Deutsch</option>
             <option value="es">Español</option>
             <option value="pl">Polski</option>
-          </select>
-        </div>
-        <!-- UN SOLO contenitore nascosto per Google -->
-        <div id="google_translate_element"
-          style="position:fixed;bottom:0;right:0;width:1px;height:1px;opacity:0;
-          pointer-events:none;overflow:hidden;"></div>
-      </div>
+        </select>
     </div>
+
+</div>
+
+<!-- ELEMENTO GOOGLE TRANSLATE (NASCOSTO) -->
+<div id="google_translate_element" style="display: none !important;"></div>
 
 <!-- ============================================================
      OVERLAY + MODALE DIZIONARIO FILOSOFICO
@@ -9425,95 +9419,261 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 </script>
- <script>
-    /* ===== Google Translate: controllo da select custom ===== */
+<script>
+/* ============================================================
+   GOOGLE TRANSLATE INTEGRATO - TRADUZIONE IN-PAGE
+   ============================================================ */
+
+// 1) Carica script di Google una sola volta
+(function loadGTranslate() {
+  if (window._gtLoaded) return;
+  window._gtLoaded = true;
+  
+  // callback globale richiesta da Google
+  window.googleTranslateElementInit = function () {
+    new google.translate.TranslateElement({
+      pageLanguage: 'it',                      // lingua sorgente del sito
+      includedLanguages: 'it,en,fr,de,es,pl',  // lingue permesse
+      autoDisplay: false,                      // non mostrare banner automatico
+      layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+    }, 'google_translate_element');
     
-    // 1) Carica script di Google una sola volta
-    (function loadGTranslate() {
-      if (window._gtLoaded) return;
-      window._gtLoaded = true;
-      // callback globale richiesta da Google
-      window.googleTranslateElementInit = function () {
-        new google.translate.TranslateElement({
-          pageLanguage: 'it',                      // lingua sorgente del sito
-          includedLanguages: 'it,en,fr,de,es,pl',  // lingue permesse
-          autoDisplay: false
-        }, 'google_translate_element');
-      };
-    
-      var s = document.createElement('script');
-      s.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-      s.defer = true;
-      document.head.appendChild(s);
-    })();
-    
-    // 2) Helper: dispatch evento change cross-browser
-    function fireChange(el){
-      try {
-        var evt = new Event('change', { bubbles: true });
-        el.dispatchEvent(evt);
-      } catch(e){
-        var evtOld = document.createEvent('HTMLEvents');
-        evtOld.initEvent('change', true, true);
-        el.dispatchEvent(evtOld);
-      }
+    // Nascondi il banner di Google
+    hideGoogleBanner();
+  };
+
+  var s = document.createElement('script');
+  s.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+  s.defer = true;
+  s.onerror = function() {
+    console.error('Google Translate failed to load');
+    document.documentElement.setAttribute('data-gt-error', 'load-failed');
+  };
+  document.head.appendChild(s);
+})();
+
+// 2) Nascondi il banner di Google
+function hideGoogleBanner() {
+  // Nascondi banner
+  const style = document.createElement('style');
+  style.textContent = `
+    .goog-te-banner-frame {
+      display: none !important;
     }
-    
-    // 3) Selettore della combo originale di Google (quando pronta)
-    function withGTCombo(fn){
-      var tries = 0;
-      (function poll(){
-        var combo = document.querySelector('.goog-te-combo');
-        if (combo) return fn(combo);
-        if (tries++ < 60) return setTimeout(poll, 250); // fino a ~15s
-        console.warn('Google Translate non inizializzato in tempo');
-      })();
+    .goog-te-menu-frame {
+      max-width: 100% !important;
     }
-    
-    // 4) Imposta cookie per reset su IT
-    function setCookie(name, value, days){
-      var d = new Date(); d.setTime(d.getTime()+ (days*24*60*60*1000));
-      document.cookie = name + "=" + value + "; expires=" + d.toUTCString() + "; path=/";
+    body {
+      top: 0 !important;
     }
+    /* Nascondi la combo di Google ma mantieni funzionalità */
+    .goog-te-combo {
+      opacity: 0;
+      position: absolute;
+      pointer-events: none;
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+// 3) Helper: dispatch evento change cross-browser
+function fireChange(el){
+  try {
+    var evt = new Event('change', { bubbles: true });
+    el.dispatchEvent(evt);
+  } catch(e){
+    var evtOld = document.createEvent('HTMLEvents');
+    evtOld.initEvent('change', true, true);
+    el.dispatchEvent(evtOld);
+  }
+}
+
+// 4) Selettore della combo originale di Google (quando pronta)
+function withGTCombo(fn){
+  var tries = 0;
+  (function poll(){
+    var combo = document.querySelector('.goog-te-combo');
+    if (combo) return fn(combo);
+    if (tries++ < 40) return setTimeout(poll, 250); // fino a ~10s
+    console.warn('Google Translate non inizializzato in tempo');
+    showTranslationError();
+  })();
+}
+
+// 5) Imposta cookie per reset su IT
+function setCookie(name, value, days){
+  var d = new Date(); 
+  d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+  var expires = "expires=" + d.toUTCString();
+  document.cookie = name + "=" + value + "; " + expires + "; path=/";
+}
+
+// 6) Handler del select custom
+(function initCustomTranslate(){
+  var sel = document.getElementById('customTranslate');
+  if (!sel) return;
+
+  sel.addEventListener('change', function(e){
+    var lang = e.target.value || 'it';
+
+    // Caso "Italiano" = ripristina pagina originale
+    if (lang === 'it'){
+      // Reset cookie usato da GTranslate e ricarica pulito
+      setCookie('googtrans', '/it/it', 1);
+      setCookie('googtrans', '/it/it', 1); // doppio set per sottodomini
+      setTimeout(function() {
+        location.reload();
+      }, 100);
+      return;
+    }
+
+    // Mostra indicatore di caricamento
+    showTranslationLoading(lang);
     
-    // 5) Handler del select custom
-    (function initCustomTranslate(){
-      var sel = document.getElementById('customTranslate');
-      if (!sel) return;
-    
-      sel.addEventListener('change', function(e){
-        var lang = e.target.value || 'it';
-    
-        // Caso “Italiano” = ripristina pagina originale
-        if (lang === 'it'){
-          // Reset cookie usato da GTranslate e ricarica pulito
-          setCookie('googtrans', '/auto/it', 1);
-          setCookie('googtrans', '/auto/it', 1); // doppio set per sottodomini
-          location.reload();
-          return;
+    // Seleziona lingua sulla combo nascosta di Google
+    withGTCombo(function(combo){
+      combo.value = lang;
+      fireChange(combo);
+      
+      // Nascondi loading dopo la traduzione
+      setTimeout(hideTranslationLoading, 1500);
+    });
+  });
+
+  // Sincronizza il select alla lingua attuale (se l'utente ricarica una pagina tradotta)
+  document.addEventListener('DOMContentLoaded', function(){
+    var m = (document.cookie.match(/(?:^|;\s*)googtrans=([^;]+)/) || [])[1];
+    if (m){
+      try{
+        var parts = decodeURIComponent(m).split('/');
+        var current = parts[parts.length - 1] || 'it';
+        if (['it','en','fr','de','es','pl'].includes(current)){
+          sel.value = current;
         }
-    
-        // Seleziona lingua sulla combo nascosta di Google
-        withGTCombo(function(combo){
-          combo.value = lang;
-          fireChange(combo);
-        });
-      });
-    
-      // Sincronizza il select alla lingua attuale (se l’utente ricarica una pagina tradotta)
-      document.addEventListener('DOMContentLoaded', function(){
-        var m = (document.cookie.match(/(?:^|;\s*)googtrans=([^;]+)/) || [])[1];
-        if (m){
-          try{
-            var parts = decodeURIComponent(m).split('/');
-            var current = parts[parts.length - 1] || 'it';
-            if (['it','en','fr','de','es','pl'].includes(current)){
-              sel.value = current;
-            }
-          }catch(_){}
-        }
-      });
-    })();
-  </script>
+      }catch(_){}
+    }
+  });
+})();
+
+// 7) Feedback visivo per l'utente
+function showTranslationLoading(lang) {
+  const loading = document.createElement('div');
+  loading.id = 'translation-loading';
+  loading.innerHTML = `
+    <div class="translation-loading-content">
+      <div class="loading-spinner"></div>
+      <span>Traduzione in ${getLanguageName(lang)}...</span>
+    </div>
+  `;
+  
+  loading.style.cssText = `
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    background: linear-gradient(135deg, var(--gold), #ffeb3b);
+    color: #0a0a1a;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 700;
+    z-index: 10000;
+    box-shadow: 0 4px 15px rgba(255,215,0,0.4);
+    animation: slideInRight 0.3s ease;
+    border: 1px solid rgba(255,215,0,0.6);
+    font-family: 'Montserrat', sans-serif;
+  `;
+  
+  document.body.appendChild(loading);
+}
+
+function hideTranslationLoading() {
+  const loading = document.getElementById('translation-loading');
+  if (loading) {
+    loading.style.animation = 'slideOutRight 0.3s ease';
+    setTimeout(() => loading.remove(), 300);
+  }
+}
+
+function showTranslationError() {
+  const error = document.createElement('div');
+  error.innerHTML = `
+    <div style="text-align: center;">
+      <div>⚠️ Errore traduzione</div>
+      <small>Ricaricare la pagina</small>
+    </div>
+  `;
+  
+  error.style.cssText = `
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    background: #ff6b6b;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 700;
+    z-index: 10000;
+    animation: slideInRight 0.3s ease;
+    font-family: 'Montserrat', sans-serif;
+  `;
+  
+  document.body.appendChild(error);
+  setTimeout(() => error.remove(), 3000);
+}
+
+function getLanguageName(code) {
+  const languages = {
+    'en': 'inglese',
+    'fr': 'francese', 
+    'de': 'tedesco',
+    'es': 'spagnolo',
+    'pl': 'polacco'
+  };
+  return languages[code] || code;
+}
+
+// 8) CSS per le animazioni
+const translationStyle = document.createElement('style');
+translationStyle.textContent = `
+  @keyframes slideInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+  
+  @keyframes slideOutRight {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(100%); opacity: 0; }
+  }
+  
+  .translation-loading-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .loading-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid transparent;
+    border-top: 2px solid #0a0a1a;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  /* Migliora lo stile del selettore Google Translate */
+  .goog-te-gadget {
+    font-family: 'Montserrat', sans-serif !important;
+  }
+  
+  .goog-te-menu-value span {
+    color: var(--text-light) !important;
+  }
+`;
+document.head.appendChild(translationStyle);
+</script>
 </body>
 </html>
