@@ -7174,144 +7174,57 @@ document.addEventListener("DOMContentLoaded", function(){
   if(btn){ btn.addEventListener('click', function(ev){ ev.preventDefault(); onClick(ev); }, true); }
 })();</script>
 <script>
-// ============================================================
-// TRADUTTORE SEMPLIFICATO - SENZA ERRORI 401
-// ============================================================
-
-document.addEventListener('DOMContentLoaded', function() {
-    const translateSelect = document.getElementById('customTranslate');
+// TRADUTTORE CON AVVISO PER CONTENUTI DINAMICI
+document.getElementById('customTranslate')?.addEventListener('change', function(e) {
+    const lang = e.target.value;
     
-    if (!translateSelect) return;
-    
-    // Funzione principale per tradurre
-    translateSelect.addEventListener('change', function(e) {
-        const selectedLang = e.target.value;
-        handleTranslation(selectedLang);
-    });
-    
-    // Imposta la lingua corrente
-    setCurrentLanguage(translateSelect);
-});
-
-function handleTranslation(lang) {
     if (lang === 'it') {
-        // Se selezione italiano, ricarica la pagina per rimuovere eventuali traduzioni
-        window.location.href = window.location.pathname + '?lang=it';
+        window.location.href = window.location.pathname;
         return;
     }
     
-    // Per altre lingue: apri Google Translate in nuova scheda
-    openGoogleTranslate(lang);
-    
-    // Ripristina la selezione dopo un breve delay
-    setTimeout(() => {
-        const select = document.getElementById('customTranslate');
-        if (select) select.value = 'it';
-    }, 1000);
-}
+    showTranslationAlert(lang);
+    setTimeout(() => e.target.value = 'it', 500);
+});
 
-function openGoogleTranslate(targetLang) {
-    const currentUrl = window.location.href;
-    const translateUrl = `https://translate.google.com/translate?hl=${targetLang}&sl=auto&tl=${targetLang}&u=${encodeURIComponent(currentUrl)}`;
-    
-    // Apri in nuova scheda
-    window.open(translateUrl, '_blank', 'noopener,noreferrer');
-    
-    // Mostra feedback visivo
-    showTranslationFeedback(targetLang);
-}
-
-function showTranslationFeedback(lang) {
-    // Crea notifica temporanea
-    const notification = document.createElement('div');
-    notification.className = 'translation-notification';
-    notification.innerHTML = `
-        <span>🌐 Traduzione in ${getLanguageName(lang)}...</span>
+function showTranslationAlert(lang) {
+    const alertBox = document.createElement('div');
+    alertBox.innerHTML = `
+        <div class="translation-alert">
+            <h3>⚠️ Limitazioni Traduzione</h3>
+            <p>Google Translate potrebbe non tradurre:</p>
+            <ul>
+                <li>• Menu di navigazione</li>
+                <li>• Elementi interattivi</li>
+                <li>• Contenuti caricati dinamicamente</li>
+            </ul>
+            <p>Per una traduzione completa, usa il <strong>traduttore manuale</strong> copiando i testi.</p>
+            <div class="alert-buttons">
+                <button onclick="openBasicTranslation('${lang}')" class="btn-primary">Prova Traduzione Automatica</button>
+                <button onclick="this.closest('.translation-alert').remove()" class="btn-secondary">Annulla</button>
+            </div>
+        </div>
     `;
     
-    // Stili per la notifica
-    notification.style.cssText = `
+    alertBox.style.cssText = `
         position: fixed;
-        top: 100px;
-        right: 20px;
-        background: linear-gradient(135deg, var(--gold), #ffeb3b);
-        color: #0a0a1a;
-        padding: 12px 20px;
-        border-radius: 8px;
-        font-weight: 700;
-        font-family: 'Montserrat', sans-serif;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
         z-index: 10000;
-        box-shadow: 0 4px 15px rgba(255,215,0,0.4);
-        animation: slideInRight 0.3s ease;
-        border: 1px solid rgba(255,215,0,0.6);
     `;
     
-    document.body.appendChild(notification);
-    
-    // Rimuovi dopo 3 secondi
-    setTimeout(() => {
-        notification.style.animation = 'slideOutRight 0.3s ease';
-        setTimeout(() => {
-            if (notification.parentNode) {
-                notification.parentNode.removeChild(notification);
-            }
-        }, 300);
-    }, 3000);
+    document.body.appendChild(alertBox);
 }
 
-function getLanguageName(code) {
-    const languages = {
-        'en': 'inglese',
-        'fr': 'francese',
-        'de': 'tedesco', 
-        'es': 'spagnolo',
-        'pl': 'polacco'
-    };
-    return languages[code] || code;
+function openBasicTranslation(lang) {
+    const url = `https://translate.google.com/translate?hl=${lang}&sl=it&tl=${lang}&u=${encodeURIComponent(window.location.href)}`;
+    window.open(url, '_blank');
+    document.querySelector('.translation-alert')?.remove();
 }
-
-function setCurrentLanguage(selectElement) {
-    // Cerca parametro lang nell'URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const urlLang = urlParams.get('lang');
-    
-    if (urlLang && selectElement.querySelector(`option[value="${urlLang}"]`)) {
-        selectElement.value = urlLang;
-    } else {
-        selectElement.value = 'it';
-    }
-}
-
-// Aggiungi gli stili per le animazioni
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes slideInRight {
-        from {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
-    }
-    
-    @keyframes slideOutRight {
-        from {
-            transform: translateX(0);
-            opacity: 1;
-        }
-        to {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-    }
-    
-    .translation-notification {
-        pointer-events: none;
-    }
-`;
-document.head.appendChild(style);
 </script>
 <script>
 // SISTEMA STELLARE COMPLETO CON VERIFICHE DI SICUREZZA - VERSIONE CORRETTA
