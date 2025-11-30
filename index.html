@@ -4850,13 +4850,17 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 </div>
 </div>
 <!-- ============================================================
-        TOPBAR CON DIZIONARIO E TRADUTTORE
+        TOPBAR CON DIZIONARIO
 ============================================================ -->
 <div class="bar-right">
 
     <!-- 🔍 Search -->
     <div class="search-container notranslate" translate="no">
-        <input id="site-search" type="search" placeholder="Cerca nel sito…">
+        <input id="site-search"
+               type="search"
+               placeholder="Cerca nel sito…"
+               class="notranslate"
+               translate="no">
         <i class="fa-solid fa-magnifying-glass search-icon"></i>
     </div>
 
@@ -4866,23 +4870,25 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
         <span>Dizionario</span>
     </button>
 
-    <!-- 🌐 Traduttore IN-PAGE -->
-    <div class="translate-box">
-        <span>🌐</span>
-        <select id="customTranslate" class="translate-select">
+    <!-- 🌐 Traduttore -->
+    <div id="google_translate_element" style="display: none;"></div>
+        <div class="translate-box">
+          <span class="translate-icon" aria-hidden="true">🌐</span>
+          <select aria-label="Traduci pagina" class="translate-select" id="customTranslate">
             <option value="it">Italiano</option>
             <option value="en">English</option>
             <option value="fr">Français</option>
             <option value="de">Deutsch</option>
             <option value="es">Español</option>
             <option value="pl">Polski</option>
-        </select>
+          </select>
+        </div>
+        <!-- UN SOLO contenitore nascosto per Google -->
+        <div id="google_translate_element"
+          style="position:fixed;bottom:0;right:0;width:1px;height:1px;opacity:0;
+          pointer-events:none;overflow:hidden;"></div>
+      </div>
     </div>
-
-</div>
-
-<!-- ELEMENTO GOOGLE TRANSLATE (NASCOSTO) -->
-<div id="google_translate_element" style="display: none !important;"></div>
 
 <!-- ============================================================
      OVERLAY + MODALE DIZIONARIO FILOSOFICO
@@ -9419,417 +9425,95 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 </script>
-<script>
-// ============================================================
-// TRADUZIONE IN-PAGE - VERSIONE FUNZIONANTE
-// ============================================================
-
-let googleTranslateLoaded = false;
-
-document.addEventListener('DOMContentLoaded', function() {
-    const translateSelect = document.getElementById('customTranslate');
+ <script>
+    /* ===== Google Translate: controllo da select custom ===== */
     
-    if (!translateSelect) return;
+    // 1) Carica script di Google una sola volta
+    (function loadGTranslate() {
+      if (window._gtLoaded) return;
+      window._gtLoaded = true;
+      // callback globale richiesta da Google
+      window.googleTranslateElementInit = function () {
+        new google.translate.TranslateElement({
+          pageLanguage: 'it',                      // lingua sorgente del sito
+          includedLanguages: 'it,en,fr,de,es,pl',  // lingue permesse
+          autoDisplay: false
+        }, 'google_translate_element');
+      };
     
-    // Carica Google Translate
-    loadGoogleTranslate();
+      var s = document.createElement('script');
+      s.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+      s.defer = true;
+      document.head.appendChild(s);
+    })();
     
-    // Sincronizza selezione con cookie esistente
-    syncCurrentLanguage(translateSelect);
-    
-    translateSelect.addEventListener('change', function(e) {
-        const selectedLang = e.target.value;
-        translateInPage(selectedLang);
-    });
-});
-
-function loadGoogleTranslate() {
-    if (googleTranslateLoaded) return;
-    googleTranslateLoaded = true;
-    
-    // Callback globale per Google Translate
-    window.googleTranslateElementInit = function() {
-        if (!window.google || !google.translate) return;
-        
-        try {
-            new google.translate.TranslateElement({
-                pageLanguage: 'it',
-                includedLanguages: 'en,fr,de,es,pl',
-                autoDisplay: false,
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-            }, 'google_translate_element');
-            
-            // Nascondi gli elementi di Google
-            hideGoogleTranslateUI();
-            
-            console.log('Google Translate loaded successfully');
-        } catch (error) {
-            console.error('Google Translate init error:', error);
-        }
-    };
-    
-    // Carica script Google Translate
-    const script = document.createElement('script');
-    script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-    script.defer = true;
-    script.onerror = function() {
-        console.error('Failed to load Google Translate');
-        showError('Impossibile caricare il traduttore');
-    };
-    document.head.appendChild(script);
-}
-
-function hideGoogleTranslateUI() {
-    // Nascondi l'interfaccia di Google Translate
-    const style = document.createElement('style');
-    style.textContent = `
-        .goog-te-banner-frame {
-            display: none !important;
-        }
-        .goog-te-gadget {
-            display: none !important;
-        }
-        .goog-te-combo {
-            display: none !important;
-        }
-        body {
-            top: 0 !important;
-        }
-        /* Mantieni la funzionalità ma nascondi l'UI */
-        #google_translate_element {
-            display: none !important;
-        }
-    `;
-    document.head.appendChild(style);
-}
-
-function translateInPage(lang) {
-    if (lang === 'it') {
-        // Ritorna all'italiano
-        revertToItalian();
-        return;
+    // 2) Helper: dispatch evento change cross-browser
+    function fireChange(el){
+      try {
+        var evt = new Event('change', { bubbles: true });
+        el.dispatchEvent(evt);
+      } catch(e){
+        var evtOld = document.createEvent('HTMLEvents');
+        evtOld.initEvent('change', true, true);
+        el.dispatchEvent(evtOld);
+      }
     }
     
-    showTranslationProgress(lang);
+    // 3) Selettore della combo originale di Google (quando pronta)
+    function withGTCombo(fn){
+      var tries = 0;
+      (function poll(){
+        var combo = document.querySelector('.goog-te-combo');
+        if (combo) return fn(combo);
+        if (tries++ < 60) return setTimeout(poll, 250); // fino a ~15s
+        console.warn('Google Translate non inizializzato in tempo');
+      })();
+    }
     
-    // Aspetta che Google Translate sia caricato
-    waitForGoogleTranslate().then(() => {
-        performTranslation(lang);
-    }).catch(error => {
-        console.error('Translation failed:', error);
-        showError('Traduzione fallita. Ricarica la pagina e riprova.');
-    });
-}
-
-function waitForGoogleTranslate() {
-    return new Promise((resolve, reject) => {
-        let attempts = 0;
-        const maxAttempts = 50; // 5 secondi
-        
-        function check() {
-            attempts++;
-            
-            if (window.google && window.google.translate && document.querySelector('.goog-te-combo')) {
-                resolve();
-                return;
+    // 4) Imposta cookie per reset su IT
+    function setCookie(name, value, days){
+      var d = new Date(); d.setTime(d.getTime()+ (days*24*60*60*1000));
+      document.cookie = name + "=" + value + "; expires=" + d.toUTCString() + "; path=/";
+    }
+    
+    // 5) Handler del select custom
+    (function initCustomTranslate(){
+      var sel = document.getElementById('customTranslate');
+      if (!sel) return;
+    
+      sel.addEventListener('change', function(e){
+        var lang = e.target.value || 'it';
+    
+        // Caso “Italiano” = ripristina pagina originale
+        if (lang === 'it'){
+          // Reset cookie usato da GTranslate e ricarica pulito
+          setCookie('googtrans', '/auto/it', 1);
+          setCookie('googtrans', '/auto/it', 1); // doppio set per sottodomini
+          location.reload();
+          return;
+        }
+    
+        // Seleziona lingua sulla combo nascosta di Google
+        withGTCombo(function(combo){
+          combo.value = lang;
+          fireChange(combo);
+        });
+      });
+    
+      // Sincronizza il select alla lingua attuale (se l’utente ricarica una pagina tradotta)
+      document.addEventListener('DOMContentLoaded', function(){
+        var m = (document.cookie.match(/(?:^|;\s*)googtrans=([^;]+)/) || [])[1];
+        if (m){
+          try{
+            var parts = decodeURIComponent(m).split('/');
+            var current = parts[parts.length - 1] || 'it';
+            if (['it','en','fr','de','es','pl'].includes(current)){
+              sel.value = current;
             }
-            
-            if (attempts >= maxAttempts) {
-                reject(new Error('Google Translate timeout'));
-                return;
-            }
-            
-            setTimeout(check, 100);
+          }catch(_){}
         }
-        
-        check();
-    });
-}
-
-function performTranslation(lang) {
-    try {
-        const combo = document.querySelector('.goog-te-combo');
-        if (!combo) {
-            throw new Error('Translate combo not found');
-        }
-        
-        // Cambia lingua
-        combo.value = lang;
-        
-        // Trigger cambio (metodi multipli per compatibilità)
-        const event = new Event('change', { bubbles: true });
-        combo.dispatchEvent(event);
-        
-        // Force trigger per alcuni browser
-    if (typeof jQuery !== 'undefined' && jQuery(combo).length) {
-            jQuery(combo).trigger('change');
-        }
-        
-        // Backup: usa l'API diretta di Google
-        setTimeout(() => {
-            if (window.google && google.translate && google.translate.TranslateElement) {
-                try {
-                    const instance = google.translate.TranslateElement.getInstance();
-                    if (instance) {
-                        instance.restore();
-                        instance.translate('it', lang);
-                    }
-                } catch (e) {
-                    console.log('API translation fallback used');
-                }
-            }
-        }, 500);
-        
-        // Mostra conferma
-        setTimeout(() => {
-            showTranslationComplete(lang);
-            updateLanguageIndicator(lang);
-        }, 1500);
-        
-    } catch (error) {
-        console.error('Translation error:', error);
-        showError('Errore durante la traduzione');
-    }
-}
-
-function revertToItalian() {
-    // Rimuovi cookie di traduzione
-    document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-    document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.' + location.hostname + ';';
-    
-    showTranslationProgress('it');
-    
-    // Ricarica la pagina per ritornare all'originale
-    setTimeout(() => {
-        window.location.reload();
-    }, 800);
-}
-
-function syncCurrentLanguage(selectElement) {
-    try {
-        const cookieMatch = document.cookie.match(/(?:^|;\s*)googtrans=([^;]+)/);
-        if (cookieMatch) {
-            const cookieValue = decodeURIComponent(cookieMatch[1]);
-            const parts = cookieValue.split('/');
-            const currentLang = parts[parts.length - 1];
-            
-            if (currentLang && currentLang !== 'it') {
-                selectElement.value = currentLang;
-                updateLanguageIndicator(currentLang);
-            }
-        }
-    } catch (e) {
-        // Ignora errori cookie
-    }
-}
-
-function updateLanguageIndicator(lang) {
-    const indicator = document.getElementById('language-indicator') || createLanguageIndicator();
-    const languageNames = {
-        'en': 'EN',
-        'fr': 'FR', 
-        'de': 'DE',
-        'es': 'ES',
-        'pl': 'PL',
-        'it': 'IT'
-    };
-    
-    indicator.textContent = languageNames[lang] || lang.toUpperCase();
-    indicator.style.display = 'inline-block';
-}
-
-function createLanguageIndicator() {
-    const indicator = document.createElement('span');
-    indicator.id = 'language-indicator';
-    indicator.style.cssText = `
-        background: var(--gold);
-        color: #0a0a1a;
-        padding: 2px 6px;
-        border-radius: 4px;
-        font-size: 0.7rem;
-        font-weight: bold;
-        margin-left: 5px;
-        display: none;
-    `;
-    
-    const translateBox = document.querySelector('.translate-box');
-    if (translateBox) {
-        translateBox.appendChild(indicator);
-    }
-    
-    return indicator;
-}
-
-// FEEDBACK VISIVO
-function showTranslationProgress(lang) {
-    const languageNames = {
-        'en': 'inglese',
-        'fr': 'francese', 
-        'de': 'tedesco',
-        'es': 'spagnolo',
-        'pl': 'polacco',
-        'it': 'italiano'
-    };
-    
-    const progress = document.createElement('div');
-    progress.id = 'translation-progress';
-    progress.innerHTML = `
-        <div class="progress-content">
-            <div class="progress-spinner"></div>
-            <div class="progress-text">
-                Traduzione in <strong>${languageNames[lang]}</strong>...
-            </div>
-        </div>
-    `;
-    
-    progress.style.cssText = `
-        position: fixed;
-        top: 100px;
-        right: 20px;
-        background: rgba(10,10,30,0.95);
-        border: 2px solid var(--gold);
-        border-radius: 10px;
-        padding: 1rem 1.5rem;
-        color: var(--text-light);
-        z-index: 10000;
-        font-family: 'Montserrat', sans-serif;
-        box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-        backdrop-filter: blur(10px);
-    `;
-    
-    document.body.appendChild(progress);
-    
-    // Rimuovi automaticamente dopo 3 secondi
-    setTimeout(() => {
-        if (progress.parentNode) {
-            progress.style.opacity = '0';
-            progress.style.transition = 'opacity 0.3s ease';
-            setTimeout(() => progress.remove(), 300);
-        }
-    }, 3000);
-}
-
-function showTranslationComplete(lang) {
-    const languageNames = {
-        'en': 'inglese',
-        'fr': 'francese', 
-        'de': 'tedesco',
-        'es': 'spagnolo',
-        'pl': 'polacco'
-    };
-    
-    const complete = document.createElement('div');
-    complete.innerHTML = `
-        <div style="display: flex; align-items: center; gap: 10px;">
-            <span style="color: var(--gold); font-size: 1.2rem;">✓</span>
-            <span>Traduzione completata in <strong>${languageNames[lang]}</strong></span>
-        </div>
-    `;
-    
-    complete.style.cssText = `
-        position: fixed;
-        top: 100px;
-        right: 20px;
-        background: rgba(10,10,30,0.95);
-        border: 2px solid #00ff88;
-        border-radius: 10px;
-        padding: 1rem 1.5rem;
-        color: var(--text-light);
-        z-index: 10000;
-        font-family: 'Montserrat', sans-serif;
-        box-shadow: 0 5px 20px rgba(0,255,136,0.2);
-        backdrop-filter: blur(10px);
-        animation: slideInRight 0.3s ease;
-    `;
-    
-    document.body.appendChild(complete);
-    
-    setTimeout(() => {
-        complete.style.opacity = '0';
-        complete.style.transition = 'opacity 0.3s ease';
-        setTimeout(() => complete.remove(), 300);
-    }, 2000);
-}
-
-function showError(message) {
-    const error = document.createElement('div');
-    error.innerHTML = `
-        <div style="display: flex; align-items: center; gap: 10px;">
-            <span style="color: #ff6b6b; font-size: 1.2rem;">⚠</span>
-            <span>${message}</span>
-        </div>
-    `;
-    
-    error.style.cssText = `
-        position: fixed;
-        top: 100px;
-        right: 20px;
-        background: rgba(255,107,107,0.1);
-        border: 2px solid #ff6b6b;
-        border-radius: 10px;
-        padding: 1rem 1.5rem;
-        color: var(--text-light);
-        z-index: 10000;
-        font-family: 'Montserrat', sans-serif;
-        backdrop-filter: blur(10px);
-        animation: slideInRight 0.3s ease;
-    `;
-    
-    document.body.appendChild(error);
-    
-    setTimeout(() => {
-        error.style.opacity = '0';
-        error.style.transition = 'opacity 0.3s ease';
-        setTimeout(() => error.remove(), 300);
-    }, 3000);
-}
-
-// CSS per le animazioni
-const translationStyles = document.createElement('style');
-translationStyles.textContent = `
-    @keyframes slideInRight {
-        from {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
-    }
-    
-    .progress-content {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-    
-    .progress-spinner {
-        width: 20px;
-        height: 20px;
-        border: 2px solid rgba(255,215,0,0.3);
-        border-top: 2px solid var(--gold);
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-    }
-    
-    .progress-text strong {
-        color: var(--gold);
-    }
-    
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-    
-    /* Migliora il selettore lingua */
-    .translate-box {
-        position: relative;
-    }
-`;
-document.head.appendChild(translationStyles);
-</script>
-
-
+      });
+    })();
+  </script>
 </body>
 </html>
