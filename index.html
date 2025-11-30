@@ -9421,24 +9421,191 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 <script>
 // ============================================================
-// TRADUTTORE SICURO E FUNZIONANTE - APPROCCIO COLLAUDATO
+// TRADUZIONE IN-PAGE - VERSIONE FUNZIONANTE
 // ============================================================
+
+let googleTranslateLoaded = false;
 
 document.addEventListener('DOMContentLoaded', function() {
     const translateSelect = document.getElementById('customTranslate');
     
     if (!translateSelect) return;
     
-    // Sincronizza con cookie esistente
-    syncLanguageWithCookie(translateSelect);
+    // Carica Google Translate
+    loadGoogleTranslate();
+    
+    // Sincronizza selezione con cookie esistente
+    syncCurrentLanguage(translateSelect);
     
     translateSelect.addEventListener('change', function(e) {
         const selectedLang = e.target.value;
-        handleLanguageChange(selectedLang);
+        translateInPage(selectedLang);
     });
 });
 
-function syncLanguageWithCookie(selectElement) {
+function loadGoogleTranslate() {
+    if (googleTranslateLoaded) return;
+    googleTranslateLoaded = true;
+    
+    // Callback globale per Google Translate
+    window.googleTranslateElementInit = function() {
+        if (!window.google || !google.translate) return;
+        
+        try {
+            new google.translate.TranslateElement({
+                pageLanguage: 'it',
+                includedLanguages: 'en,fr,de,es,pl',
+                autoDisplay: false,
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            }, 'google_translate_element');
+            
+            // Nascondi gli elementi di Google
+            hideGoogleTranslateUI();
+            
+            console.log('Google Translate loaded successfully');
+        } catch (error) {
+            console.error('Google Translate init error:', error);
+        }
+    };
+    
+    // Carica script Google Translate
+    const script = document.createElement('script');
+    script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    script.defer = true;
+    script.onerror = function() {
+        console.error('Failed to load Google Translate');
+        showError('Impossibile caricare il traduttore');
+    };
+    document.head.appendChild(script);
+}
+
+function hideGoogleTranslateUI() {
+    // Nascondi l'interfaccia di Google Translate
+    const style = document.createElement('style');
+    style.textContent = `
+        .goog-te-banner-frame {
+            display: none !important;
+        }
+        .goog-te-gadget {
+            display: none !important;
+        }
+        .goog-te-combo {
+            display: none !important;
+        }
+        body {
+            top: 0 !important;
+        }
+        /* Mantieni la funzionalità ma nascondi l'UI */
+        #google_translate_element {
+            display: none !important;
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+function translateInPage(lang) {
+    if (lang === 'it') {
+        // Ritorna all'italiano
+        revertToItalian();
+        return;
+    }
+    
+    showTranslationProgress(lang);
+    
+    // Aspetta che Google Translate sia caricato
+    waitForGoogleTranslate().then(() => {
+        performTranslation(lang);
+    }).catch(error => {
+        console.error('Translation failed:', error);
+        showError('Traduzione fallita. Ricarica la pagina e riprova.');
+    });
+}
+
+function waitForGoogleTranslate() {
+    return new Promise((resolve, reject) => {
+        let attempts = 0;
+        const maxAttempts = 50; // 5 secondi
+        
+        function check() {
+            attempts++;
+            
+            if (window.google && window.google.translate && document.querySelector('.goog-te-combo')) {
+                resolve();
+                return;
+            }
+            
+            if (attempts >= maxAttempts) {
+                reject(new Error('Google Translate timeout'));
+                return;
+            }
+            
+            setTimeout(check, 100);
+        }
+        
+        check();
+    });
+}
+
+function performTranslation(lang) {
+    try {
+        const combo = document.querySelector('.goog-te-combo');
+        if (!combo) {
+            throw new Error('Translate combo not found');
+        }
+        
+        // Cambia lingua
+        combo.value = lang;
+        
+        // Trigger cambio (metodi multipli per compatibilità)
+        const event = new Event('change', { bubbles: true });
+        combo.dispatchEvent(event);
+        
+        // Force trigger per alcuni browser
+    if (typeof jQuery !== 'undefined' && jQuery(combo).length) {
+            jQuery(combo).trigger('change');
+        }
+        
+        // Backup: usa l'API diretta di Google
+        setTimeout(() => {
+            if (window.google && google.translate && google.translate.TranslateElement) {
+                try {
+                    const instance = google.translate.TranslateElement.getInstance();
+                    if (instance) {
+                        instance.restore();
+                        instance.translate('it', lang);
+                    }
+                } catch (e) {
+                    console.log('API translation fallback used');
+                }
+            }
+        }, 500);
+        
+        // Mostra conferma
+        setTimeout(() => {
+            showTranslationComplete(lang);
+            updateLanguageIndicator(lang);
+        }, 1500);
+        
+    } catch (error) {
+        console.error('Translation error:', error);
+        showError('Errore durante la traduzione');
+    }
+}
+
+function revertToItalian() {
+    // Rimuovi cookie di traduzione
+    document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.' + location.hostname + ';';
+    
+    showTranslationProgress('it');
+    
+    // Ricarica la pagina per ritornare all'originale
+    setTimeout(() => {
+        window.location.reload();
+    }, 800);
+}
+
+function syncCurrentLanguage(selectElement) {
     try {
         const cookieMatch = document.cookie.match(/(?:^|;\s*)googtrans=([^;]+)/);
         if (cookieMatch) {
@@ -9446,118 +9613,103 @@ function syncLanguageWithCookie(selectElement) {
             const parts = cookieValue.split('/');
             const currentLang = parts[parts.length - 1];
             
-            if (currentLang && currentLang !== 'it' && selectElement.querySelector(`option[value="${currentLang}"]`)) {
+            if (currentLang && currentLang !== 'it') {
                 selectElement.value = currentLang;
+                updateLanguageIndicator(currentLang);
             }
         }
     } catch (e) {
-        console.log('No language cookie found');
+        // Ignora errori cookie
     }
 }
 
-function handleLanguageChange(lang) {
-    if (lang === 'it') {
-        // Reset to Italian
-        resetToItalian();
-        return;
+function updateLanguageIndicator(lang) {
+    const indicator = document.getElementById('language-indicator') || createLanguageIndicator();
+    const languageNames = {
+        'en': 'EN',
+        'fr': 'FR', 
+        'de': 'DE',
+        'es': 'ES',
+        'pl': 'PL',
+        'it': 'IT'
+    };
+    
+    indicator.textContent = languageNames[lang] || lang.toUpperCase();
+    indicator.style.display = 'inline-block';
+}
+
+function createLanguageIndicator() {
+    const indicator = document.createElement('span');
+    indicator.id = 'language-indicator';
+    indicator.style.cssText = `
+        background: var(--gold);
+        color: #0a0a1a;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.7rem;
+        font-weight: bold;
+        margin-left: 5px;
+        display: none;
+    `;
+    
+    const translateBox = document.querySelector('.translate-box');
+    if (translateBox) {
+        translateBox.appendChild(indicator);
     }
     
-    // Show loading indicator
-    showTranslationNotice(lang);
-    
-    // Use the PROVEN method that actually works
-    translateWithProvenMethod(lang);
+    return indicator;
 }
 
-function resetToItalian() {
-    // Clear translation cookies
-    document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-    document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.' + location.hostname + ';';
-    
-    // Reload to original Italian
-    setTimeout(() => {
-        window.location.href = window.location.pathname + window.location.search.replace(/[?&]hl=[^&]+/, '');
-    }, 100);
-}
-
-function translateWithProvenMethod(lang) {
-    // METHOD 1: Direct Google Translate URL (THIS WORKS)
-    const translateUrl = `https://translate.google.com/translate?hl=${lang}&sl=auto&tl=${lang}&u=${encodeURIComponent(window.location.href)}&client=webapp`;
-    
-    // METHOD 2: Alternative format
-    const translateUrl2 = `https://translate.google.com/translate?depth=1&hl=${lang}&rurl=translate.google.com&sl=auto&sp=nmt4&tl=${lang}&u=${encodeURIComponent(window.location.href)}&xid=456,47`;
-    
-    // METHOD 3: Simple translator
-    const translateUrl3 = `https://translation.googleapis.com/translate_a/t?client=gtx&sl=auto&tl=${lang}&dt=t&q=${encodeURIComponent('Redirecting to translator...')}`;
-    
-    // Open the translator - THIS IS WHAT ACTUALLY WORKS
-    const newWindow = window.open(translateUrl, '_blank', 'width=1200,height=700,noopener,noreferrer');
-    
-    if (newWindow) {
-        // Set a cookie to remember the language choice
-        setLanguageCookie(lang);
-    } else {
-        // Fallback: show instructions
-        showManualTranslationInstructions(lang);
-    }
-}
-
-function setLanguageCookie(lang) {
-    const expiryDate = new Date();
-    expiryDate.setFullYear(expiryDate.getFullYear() + 1);
-    document.cookie = `preferred_lang=${lang}; expires=${expiryDate.toUTCString()}; path=/`;
-}
-
-function showTranslationNotice(lang) {
+// FEEDBACK VISIVO
+function showTranslationProgress(lang) {
     const languageNames = {
         'en': 'inglese',
         'fr': 'francese', 
         'de': 'tedesco',
         'es': 'spagnolo',
-        'pl': 'polacco'
+        'pl': 'polacco',
+        'it': 'italiano'
     };
     
-    const notice = document.createElement('div');
-    notice.className = 'translation-notice-active';
-    notice.innerHTML = `
-        <div class="translation-notice-content">
-            <div class="notice-spinner"></div>
-            <div class="notice-text">
-                <strong>Apertura traduttore...</strong>
-                <span>Il sito si aprirà in ${languageNames[lang]} tra pochi secondi</span>
+    const progress = document.createElement('div');
+    progress.id = 'translation-progress';
+    progress.innerHTML = `
+        <div class="progress-content">
+            <div class="progress-spinner"></div>
+            <div class="progress-text">
+                Traduzione in <strong>${languageNames[lang]}</strong>...
             </div>
         </div>
     `;
     
-    notice.style.cssText = `
+    progress.style.cssText = `
         position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        top: 100px;
+        right: 20px;
         background: rgba(10,10,30,0.95);
         border: 2px solid var(--gold);
-        border-radius: 12px;
-        padding: 2rem;
+        border-radius: 10px;
+        padding: 1rem 1.5rem;
         color: var(--text-light);
         z-index: 10000;
         font-family: 'Montserrat', sans-serif;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        box-shadow: 0 5px 20px rgba(0,0,0,0.3);
         backdrop-filter: blur(10px);
-        min-width: 300px;
-        text-align: center;
     `;
     
-    document.body.appendChild(notice);
+    document.body.appendChild(progress);
     
-    // Remove after 3 seconds
+    // Rimuovi automaticamente dopo 3 secondi
     setTimeout(() => {
-        notice.style.opacity = '0';
-        notice.style.transition = 'opacity 0.3s ease';
-        setTimeout(() => notice.remove(), 300);
+        if (progress.parentNode) {
+            progress.style.opacity = '0';
+            progress.style.transition = 'opacity 0.3s ease';
+            setTimeout(() => progress.remove(), 300);
+        }
     }, 3000);
 }
 
-function showManualTranslationInstructions(lang) {
+function showTranslationComplete(lang) {
     const languageNames = {
         'en': 'inglese',
         'fr': 'francese', 
@@ -9566,125 +9718,103 @@ function showManualTranslationInstructions(lang) {
         'pl': 'polacco'
     };
     
-    const modal = document.createElement('div');
-    modal.className = 'translation-instructions-modal';
-    modal.style.cssText = `
-        position: fixed;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        background: rgba(0,0,0,0.9);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 10000;
-        backdrop-filter: blur(5px);
-    `;
-    
-    modal.innerHTML = `
-        <div class="instructions-content" style="
-            background: rgba(10,10,30,0.95);
-            border: 2px solid var(--gold);
-            border-radius: 16px;
-            padding: 2rem;
-            color: var(--text-light);
-            font-family: 'Montserrat', sans-serif;
-            max-width: 500px;
-            margin: 1rem;
-            text-align: center;
-        ">
-            <h3 style="color: var(--gold); margin-bottom: 1rem;">🌐 Traduzione in ${languageNames[lang]}</h3>
-            
-            <div style="text-align: left; margin-bottom: 1.5rem;">
-                <p><strong>Per tradurre il sito:</strong></p>
-                <ol style="margin-left: 1.5rem; margin-bottom: 1.5rem;">
-                    <li>Copia questo URL: <code style="background: rgba(255,255,255,0.1); padding: 0.2rem 0.5rem; border-radius: 4px; display: block; margin: 0.5rem 0; word-break: break-all;">${window.location.href}</code></li>
-                    <li>Vai su <a href="https://translate.google.com" target="_blank" style="color: var(--cyan);">translate.google.com</a></li>
-                    <li>Incolla l'URL e scegli ${languageNames[lang]} come lingua</li>
-                    <li>Clicca sul link tradotto per navigare</li>
-                </ol>
-            </div>
-            
-            <div style="display: flex; gap: 1rem; justify-content: center;">
-                <button onclick="copyCurrentUrl()" style="
-                    background: var(--gold);
-                    color: #0a0a1a;
-                    border: none;
-                    padding: 0.7rem 1.5rem;
-                    border-radius: 6px;
-                    cursor: pointer;
-                    font-weight: 700;
-                ">Copia URL</button>
-                
-                <button onclick="this.closest('.translation-instructions-modal').remove()" style="
-                    background: transparent;
-                    color: var(--text-light);
-                    border: 1px solid var(--gold);
-                    padding: 0.7rem 1.5rem;
-                    border-radius: 6px;
-                    cursor: pointer;
-                ">Chiudi</button>
-            </div>
+    const complete = document.createElement('div');
+    complete.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="color: var(--gold); font-size: 1.2rem;">✓</span>
+            <span>Traduzione completata in <strong>${languageNames[lang]}</strong></span>
         </div>
     `;
     
-    document.body.appendChild(modal);
+    complete.style.cssText = `
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        background: rgba(10,10,30,0.95);
+        border: 2px solid #00ff88;
+        border-radius: 10px;
+        padding: 1rem 1.5rem;
+        color: var(--text-light);
+        z-index: 10000;
+        font-family: 'Montserrat', sans-serif;
+        box-shadow: 0 5px 20px rgba(0,255,136,0.2);
+        backdrop-filter: blur(10px);
+        animation: slideInRight 0.3s ease;
+    `;
     
-    // Close when clicking outside
-    modal.addEventListener('click', function(e) {
-        if (e.target === modal) {
-            modal.remove();
-        }
-    });
+    document.body.appendChild(complete);
+    
+    setTimeout(() => {
+        complete.style.opacity = '0';
+        complete.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => complete.remove(), 300);
+    }, 2000);
 }
 
-// Global function to copy URL
-window.copyCurrentUrl = function() {
-    navigator.clipboard.writeText(window.location.href).then(() => {
-        const buttons = document.querySelectorAll('button');
-        buttons.forEach(btn => {
-            if (btn.textContent.includes('Copia URL')) {
-                const originalText = btn.textContent;
-                btn.textContent = '✓ Copiato!';
-                setTimeout(() => {
-                    btn.textContent = originalText;
-                }, 2000);
-            }
-        });
-    });
-};
+function showError(message) {
+    const error = document.createElement('div');
+    error.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="color: #ff6b6b; font-size: 1.2rem;">⚠</span>
+            <span>${message}</span>
+        </div>
+    `;
+    
+    error.style.cssText = `
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        background: rgba(255,107,107,0.1);
+        border: 2px solid #ff6b6b;
+        border-radius: 10px;
+        padding: 1rem 1.5rem;
+        color: var(--text-light);
+        z-index: 10000;
+        font-family: 'Montserrat', sans-serif;
+        backdrop-filter: blur(10px);
+        animation: slideInRight 0.3s ease;
+    `;
+    
+    document.body.appendChild(error);
+    
+    setTimeout(() => {
+        error.style.opacity = '0';
+        error.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => error.remove(), 300);
+    }, 3000);
+}
 
-// Add CSS for animations
-const translationCSS = document.createElement('style');
-translationCSS.textContent = `
-    .translation-notice-content {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 1rem;
+// CSS per le animazioni
+const translationStyles = document.createElement('style');
+translationStyles.textContent = `
+    @keyframes slideInRight {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
     }
     
-    .notice-spinner {
-        width: 40px;
-        height: 40px;
-        border: 3px solid rgba(255,215,0,0.3);
-        border-top: 3px solid var(--gold);
+    .progress-content {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    
+    .progress-spinner {
+        width: 20px;
+        height: 20px;
+        border: 2px solid rgba(255,215,0,0.3);
+        border-top: 2px solid var(--gold);
         border-radius: 50%;
         animation: spin 1s linear infinite;
     }
     
-    .notice-text {
-        text-align: center;
-    }
-    
-    .notice-text strong {
-        display: block;
-        margin-bottom: 0.5rem;
+    .progress-text strong {
         color: var(--gold);
-    }
-    
-    .notice-text span {
-        opacity: 0.8;
-        font-size: 0.9rem;
     }
     
     @keyframes spin {
@@ -9692,16 +9822,14 @@ translationCSS.textContent = `
         100% { transform: rotate(360deg); }
     }
     
-    .instructions-content a {
-        color: var(--cyan);
-        text-decoration: none;
-    }
-    
-    .instructions-content a:hover {
-        text-decoration: underline;
+    /* Migliora il selettore lingua */
+    .translate-box {
+        position: relative;
     }
 `;
-document.head.appendChild(translationCSS);
+document.head.appendChild(translationStyles);
 </script>
+
+
 </body>
 </html>
