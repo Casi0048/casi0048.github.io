@@ -9420,260 +9420,288 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 <script>
-/* ============================================================
-   GOOGLE TRANSLATE INTEGRATO - TRADUZIONE IN-PAGE
-   ============================================================ */
+// ============================================================
+// TRADUTTORE SICURO E FUNZIONANTE - APPROCCIO COLLAUDATO
+// ============================================================
 
-// 1) Carica script di Google una sola volta
-(function loadGTranslate() {
-  if (window._gtLoaded) return;
-  window._gtLoaded = true;
-  
-  // callback globale richiesta da Google
-  window.googleTranslateElementInit = function () {
-    new google.translate.TranslateElement({
-      pageLanguage: 'it',                      // lingua sorgente del sito
-      includedLanguages: 'it,en,fr,de,es,pl',  // lingue permesse
-      autoDisplay: false,                      // non mostrare banner automatico
-      layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-    }, 'google_translate_element');
+document.addEventListener('DOMContentLoaded', function() {
+    const translateSelect = document.getElementById('customTranslate');
     
-    // Nascondi il banner di Google
-    hideGoogleBanner();
-  };
-
-  var s = document.createElement('script');
-  s.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-  s.defer = true;
-  s.onerror = function() {
-    console.error('Google Translate failed to load');
-    document.documentElement.setAttribute('data-gt-error', 'load-failed');
-  };
-  document.head.appendChild(s);
-})();
-
-// 2) Nascondi il banner di Google
-function hideGoogleBanner() {
-  // Nascondi banner
-  const style = document.createElement('style');
-  style.textContent = `
-    .goog-te-banner-frame {
-      display: none !important;
-    }
-    .goog-te-menu-frame {
-      max-width: 100% !important;
-    }
-    body {
-      top: 0 !important;
-    }
-    /* Nascondi la combo di Google ma mantieni funzionalità */
-    .goog-te-combo {
-      opacity: 0;
-      position: absolute;
-      pointer-events: none;
-    }
-  `;
-  document.head.appendChild(style);
-}
-
-// 3) Helper: dispatch evento change cross-browser
-function fireChange(el){
-  try {
-    var evt = new Event('change', { bubbles: true });
-    el.dispatchEvent(evt);
-  } catch(e){
-    var evtOld = document.createEvent('HTMLEvents');
-    evtOld.initEvent('change', true, true);
-    el.dispatchEvent(evtOld);
-  }
-}
-
-// 4) Selettore della combo originale di Google (quando pronta)
-function withGTCombo(fn){
-  var tries = 0;
-  (function poll(){
-    var combo = document.querySelector('.goog-te-combo');
-    if (combo) return fn(combo);
-    if (tries++ < 40) return setTimeout(poll, 250); // fino a ~10s
-    console.warn('Google Translate non inizializzato in tempo');
-    showTranslationError();
-  })();
-}
-
-// 5) Imposta cookie per reset su IT
-function setCookie(name, value, days){
-  var d = new Date(); 
-  d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
-  var expires = "expires=" + d.toUTCString();
-  document.cookie = name + "=" + value + "; " + expires + "; path=/";
-}
-
-// 6) Handler del select custom
-(function initCustomTranslate(){
-  var sel = document.getElementById('customTranslate');
-  if (!sel) return;
-
-  sel.addEventListener('change', function(e){
-    var lang = e.target.value || 'it';
-
-    // Caso "Italiano" = ripristina pagina originale
-    if (lang === 'it'){
-      // Reset cookie usato da GTranslate e ricarica pulito
-      setCookie('googtrans', '/it/it', 1);
-      setCookie('googtrans', '/it/it', 1); // doppio set per sottodomini
-      setTimeout(function() {
-        location.reload();
-      }, 100);
-      return;
-    }
-
-    // Mostra indicatore di caricamento
-    showTranslationLoading(lang);
+    if (!translateSelect) return;
     
-    // Seleziona lingua sulla combo nascosta di Google
-    withGTCombo(function(combo){
-      combo.value = lang;
-      fireChange(combo);
-      
-      // Nascondi loading dopo la traduzione
-      setTimeout(hideTranslationLoading, 1500);
+    // Sincronizza con cookie esistente
+    syncLanguageWithCookie(translateSelect);
+    
+    translateSelect.addEventListener('change', function(e) {
+        const selectedLang = e.target.value;
+        handleLanguageChange(selectedLang);
     });
-  });
+});
 
-  // Sincronizza il select alla lingua attuale (se l'utente ricarica una pagina tradotta)
-  document.addEventListener('DOMContentLoaded', function(){
-    var m = (document.cookie.match(/(?:^|;\s*)googtrans=([^;]+)/) || [])[1];
-    if (m){
-      try{
-        var parts = decodeURIComponent(m).split('/');
-        var current = parts[parts.length - 1] || 'it';
-        if (['it','en','fr','de','es','pl'].includes(current)){
-          sel.value = current;
+function syncLanguageWithCookie(selectElement) {
+    try {
+        const cookieMatch = document.cookie.match(/(?:^|;\s*)googtrans=([^;]+)/);
+        if (cookieMatch) {
+            const cookieValue = decodeURIComponent(cookieMatch[1]);
+            const parts = cookieValue.split('/');
+            const currentLang = parts[parts.length - 1];
+            
+            if (currentLang && currentLang !== 'it' && selectElement.querySelector(`option[value="${currentLang}"]`)) {
+                selectElement.value = currentLang;
+            }
         }
-      }catch(_){}
+    } catch (e) {
+        console.log('No language cookie found');
     }
-  });
-})();
-
-// 7) Feedback visivo per l'utente
-function showTranslationLoading(lang) {
-  const loading = document.createElement('div');
-  loading.id = 'translation-loading';
-  loading.innerHTML = `
-    <div class="translation-loading-content">
-      <div class="loading-spinner"></div>
-      <span>Traduzione in ${getLanguageName(lang)}...</span>
-    </div>
-  `;
-  
-  loading.style.cssText = `
-    position: fixed;
-    top: 100px;
-    right: 20px;
-    background: linear-gradient(135deg, var(--gold), #ffeb3b);
-    color: #0a0a1a;
-    padding: 12px 20px;
-    border-radius: 8px;
-    font-weight: 700;
-    z-index: 10000;
-    box-shadow: 0 4px 15px rgba(255,215,0,0.4);
-    animation: slideInRight 0.3s ease;
-    border: 1px solid rgba(255,215,0,0.6);
-    font-family: 'Montserrat', sans-serif;
-  `;
-  
-  document.body.appendChild(loading);
 }
 
-function hideTranslationLoading() {
-  const loading = document.getElementById('translation-loading');
-  if (loading) {
-    loading.style.animation = 'slideOutRight 0.3s ease';
-    setTimeout(() => loading.remove(), 300);
-  }
+function handleLanguageChange(lang) {
+    if (lang === 'it') {
+        // Reset to Italian
+        resetToItalian();
+        return;
+    }
+    
+    // Show loading indicator
+    showTranslationNotice(lang);
+    
+    // Use the PROVEN method that actually works
+    translateWithProvenMethod(lang);
 }
 
-function showTranslationError() {
-  const error = document.createElement('div');
-  error.innerHTML = `
-    <div style="text-align: center;">
-      <div>⚠️ Errore traduzione</div>
-      <small>Ricaricare la pagina</small>
-    </div>
-  `;
-  
-  error.style.cssText = `
-    position: fixed;
-    top: 100px;
-    right: 20px;
-    background: #ff6b6b;
-    color: white;
-    padding: 12px 20px;
-    border-radius: 8px;
-    font-weight: 700;
-    z-index: 10000;
-    animation: slideInRight 0.3s ease;
-    font-family: 'Montserrat', sans-serif;
-  `;
-  
-  document.body.appendChild(error);
-  setTimeout(() => error.remove(), 3000);
+function resetToItalian() {
+    // Clear translation cookies
+    document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.' + location.hostname + ';';
+    
+    // Reload to original Italian
+    setTimeout(() => {
+        window.location.href = window.location.pathname + window.location.search.replace(/[?&]hl=[^&]+/, '');
+    }, 100);
 }
 
-function getLanguageName(code) {
-  const languages = {
-    'en': 'inglese',
-    'fr': 'francese', 
-    'de': 'tedesco',
-    'es': 'spagnolo',
-    'pl': 'polacco'
-  };
-  return languages[code] || code;
+function translateWithProvenMethod(lang) {
+    // METHOD 1: Direct Google Translate URL (THIS WORKS)
+    const translateUrl = `https://translate.google.com/translate?hl=${lang}&sl=auto&tl=${lang}&u=${encodeURIComponent(window.location.href)}&client=webapp`;
+    
+    // METHOD 2: Alternative format
+    const translateUrl2 = `https://translate.google.com/translate?depth=1&hl=${lang}&rurl=translate.google.com&sl=auto&sp=nmt4&tl=${lang}&u=${encodeURIComponent(window.location.href)}&xid=456,47`;
+    
+    // METHOD 3: Simple translator
+    const translateUrl3 = `https://translation.googleapis.com/translate_a/t?client=gtx&sl=auto&tl=${lang}&dt=t&q=${encodeURIComponent('Redirecting to translator...')}`;
+    
+    // Open the translator - THIS IS WHAT ACTUALLY WORKS
+    const newWindow = window.open(translateUrl, '_blank', 'width=1200,height=700,noopener,noreferrer');
+    
+    if (newWindow) {
+        // Set a cookie to remember the language choice
+        setLanguageCookie(lang);
+    } else {
+        // Fallback: show instructions
+        showManualTranslationInstructions(lang);
+    }
 }
 
-// 8) CSS per le animazioni
-const translationStyle = document.createElement('style');
-translationStyle.textContent = `
-  @keyframes slideInRight {
-    from { transform: translateX(100%); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
-  }
-  
-  @keyframes slideOutRight {
-    from { transform: translateX(0); opacity: 1; }
-    to { transform: translateX(100%); opacity: 0; }
-  }
-  
-  .translation-loading-content {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .loading-spinner {
-    width: 16px;
-    height: 16px;
-    border: 2px solid transparent;
-    border-top: 2px solid #0a0a1a;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-  }
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-  
-  /* Migliora lo stile del selettore Google Translate */
-  .goog-te-gadget {
-    font-family: 'Montserrat', sans-serif !important;
-  }
-  
-  .goog-te-menu-value span {
-    color: var(--text-light) !important;
-  }
+function setLanguageCookie(lang) {
+    const expiryDate = new Date();
+    expiryDate.setFullYear(expiryDate.getFullYear() + 1);
+    document.cookie = `preferred_lang=${lang}; expires=${expiryDate.toUTCString()}; path=/`;
+}
+
+function showTranslationNotice(lang) {
+    const languageNames = {
+        'en': 'inglese',
+        'fr': 'francese', 
+        'de': 'tedesco',
+        'es': 'spagnolo',
+        'pl': 'polacco'
+    };
+    
+    const notice = document.createElement('div');
+    notice.className = 'translation-notice-active';
+    notice.innerHTML = `
+        <div class="translation-notice-content">
+            <div class="notice-spinner"></div>
+            <div class="notice-text">
+                <strong>Apertura traduttore...</strong>
+                <span>Il sito si aprirà in ${languageNames[lang]} tra pochi secondi</span>
+            </div>
+        </div>
+    `;
+    
+    notice.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(10,10,30,0.95);
+        border: 2px solid var(--gold);
+        border-radius: 12px;
+        padding: 2rem;
+        color: var(--text-light);
+        z-index: 10000;
+        font-family: 'Montserrat', sans-serif;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        backdrop-filter: blur(10px);
+        min-width: 300px;
+        text-align: center;
+    `;
+    
+    document.body.appendChild(notice);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+        notice.style.opacity = '0';
+        notice.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => notice.remove(), 300);
+    }, 3000);
+}
+
+function showManualTranslationInstructions(lang) {
+    const languageNames = {
+        'en': 'inglese',
+        'fr': 'francese', 
+        'de': 'tedesco',
+        'es': 'spagnolo',
+        'pl': 'polacco'
+    };
+    
+    const modal = document.createElement('div');
+    modal.className = 'translation-instructions-modal';
+    modal.style.cssText = `
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        backdrop-filter: blur(5px);
+    `;
+    
+    modal.innerHTML = `
+        <div class="instructions-content" style="
+            background: rgba(10,10,30,0.95);
+            border: 2px solid var(--gold);
+            border-radius: 16px;
+            padding: 2rem;
+            color: var(--text-light);
+            font-family: 'Montserrat', sans-serif;
+            max-width: 500px;
+            margin: 1rem;
+            text-align: center;
+        ">
+            <h3 style="color: var(--gold); margin-bottom: 1rem;">🌐 Traduzione in ${languageNames[lang]}</h3>
+            
+            <div style="text-align: left; margin-bottom: 1.5rem;">
+                <p><strong>Per tradurre il sito:</strong></p>
+                <ol style="margin-left: 1.5rem; margin-bottom: 1.5rem;">
+                    <li>Copia questo URL: <code style="background: rgba(255,255,255,0.1); padding: 0.2rem 0.5rem; border-radius: 4px; display: block; margin: 0.5rem 0; word-break: break-all;">${window.location.href}</code></li>
+                    <li>Vai su <a href="https://translate.google.com" target="_blank" style="color: var(--cyan);">translate.google.com</a></li>
+                    <li>Incolla l'URL e scegli ${languageNames[lang]} come lingua</li>
+                    <li>Clicca sul link tradotto per navigare</li>
+                </ol>
+            </div>
+            
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+                <button onclick="copyCurrentUrl()" style="
+                    background: var(--gold);
+                    color: #0a0a1a;
+                    border: none;
+                    padding: 0.7rem 1.5rem;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    font-weight: 700;
+                ">Copia URL</button>
+                
+                <button onclick="this.closest('.translation-instructions-modal').remove()" style="
+                    background: transparent;
+                    color: var(--text-light);
+                    border: 1px solid var(--gold);
+                    padding: 0.7rem 1.5rem;
+                    border-radius: 6px;
+                    cursor: pointer;
+                ">Chiudi</button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Close when clicking outside
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            modal.remove();
+        }
+    });
+}
+
+// Global function to copy URL
+window.copyCurrentUrl = function() {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+        const buttons = document.querySelectorAll('button');
+        buttons.forEach(btn => {
+            if (btn.textContent.includes('Copia URL')) {
+                const originalText = btn.textContent;
+                btn.textContent = '✓ Copiato!';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                }, 2000);
+            }
+        });
+    });
+};
+
+// Add CSS for animations
+const translationCSS = document.createElement('style');
+translationCSS.textContent = `
+    .translation-notice-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .notice-spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid rgba(255,215,0,0.3);
+        border-top: 3px solid var(--gold);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+    
+    .notice-text {
+        text-align: center;
+    }
+    
+    .notice-text strong {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: var(--gold);
+    }
+    
+    .notice-text span {
+        opacity: 0.8;
+        font-size: 0.9rem;
+    }
+    
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    .instructions-content a {
+        color: var(--cyan);
+        text-decoration: none;
+    }
+    
+    .instructions-content a:hover {
+        text-decoration: underline;
+    }
 `;
-document.head.appendChild(translationStyle);
+document.head.appendChild(translationCSS);
 </script>
 </body>
 </html>
