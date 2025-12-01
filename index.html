@@ -43,9 +43,22 @@
 <link rel="stylesheet" href="/esterno/css/dict.css">
 <script src="/esterno/js/dict.js" defer></script>
  
-  <!-- Script del menu esterno -->
-<script src="menu/menu.js" defer></script>
+<!-- MENU ESTERNO -->
+<div id="site-menu"></div>
+
 <link rel="stylesheet" href="menu/menu.css">
+
+<script>
+fetch("menu/menu.html")
+  .then(r => r.text())
+  .then(html => {
+    document.getElementById("site-menu").innerHTML = html;
+    console.log("✔ Menu HTML caricato");
+  })
+  .catch(err => console.error("Errore caricamento menu:", err));
+</script>
+
+<script src="menu/menu.js" defer></script>
 
 
 <!-- GSAP prima -->
@@ -9120,19 +9133,6 @@ document.addEventListener("DOMContentLoaded", () => {
   </script>
 <!-- Contenitore menu esterno -->
 <div id="site-menu"></div>
-
-
-
-<script>
-fetch("menu/menu.html")
-  .then(r => r.text())
-  .then(html => {
-    document.getElementById("site-menu").innerHTML = html;
-    console.log("✔ Menu HTML caricato");
-  })
-  .catch(err => console.error("Errore menu esterno:", err));
-</script>
-
 
 
 </body>
