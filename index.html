@@ -4503,7 +4503,23 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 </style>
 </head>
 <body>
+<!-- MENU ESTERNO -->
 <div id="site-menu"></div>
+
+<link rel="stylesheet" href="menu/menu.css">
+
+<script>
+fetch("menu/menu.html")
+  .then(r => r.text())
+  .then(html => {
+    document.getElementById("site-menu").innerHTML = html;
+    console.log("✔ Menu HTML caricato");
+  })
+  .catch(err => console.error("Errore caricamento menu:", err));
+</script>
+
+<script src="menu/menu.js" defer></script>
+
   <!-- === FAB Dizionario === -->
 <button id="dict-fab" class="fab-with-text">
   <span class="fab-label">Dizionario</span>
@@ -9131,9 +9147,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     })();
   </script>
-<!-- Contenitore menu esterno -->
-<div id="site-menu"></div>
-
 
 </body>
 </html>
