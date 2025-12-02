@@ -9620,71 +9620,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 </script>
-<script>
-// Mappa delle fonti con template e formattazione specifica
-const sourceTemplates = {
-    treccani: {
-        direct: 'https://www.treccani.it/vocabolario/{term}/',
-        search: 'https://www.treccani.it/vocabolario/ricerca/{term}/',
-        formatTerm: (term) => term.toLowerCase().replace(/\s+/g, '-')
-    },
-    wikipedia: {
-        direct: 'https://it.wikipedia.org/wiki/{term}',
-        formatTerm: (term) => term.replace(/\s+/g, '_')
-    },
-    etymonline: {
-        direct: 'https://www.etymonline.com/search?q={term}',
-        formatTerm: (term) => encodeURIComponent(term)
-    }
-};
 
-// Funzione per costruire URL
-function buildSourceUrl(source, term) {
-    const template = sourceTemplates[source];
-    if (!template) return null;
-    
-    const formattedTerm = template.formatTerm 
-        ? template.formatTerm(term)
-        : encodeURIComponent(term);
-    
-    return template.direct.replace('{term}', formattedTerm);
-}
 
-// Esempio di utilizzo
-function openDictionarySources(term) {
-    const checkboxes = document.querySelectorAll('input[name="source"]:checked');
-    
-    checkboxes.forEach(checkbox => {
-        const source = checkbox.value;
-        const url = buildSourceUrl(source, term);
-        
-        if (url) {
-            // Apri in nuova scheda
-            window.open(url, '_blank', 'noopener,noreferrer');
-            
-            // O se vuoi verifica prima l'esistenza:
-            // checkUrlExists(url).then(exists => {
-            //     if (exists) window.open(url, '_blank');
-            //     else {
-            //         // Fallback alla ricerca
-            //         const searchUrl = sourceTemplates[source].search;
-            //         if (searchUrl) window.open(searchUrl, '_blank');
-            //     }
-            // });
-        }
-    });
-}
-
-// Verifica se URL esiste (opzionale)
-async function checkUrlExists(url) {
-    try {
-        const response = await fetch(url, { method: 'HEAD', mode: 'no-cors' });
-        return true;
-    } catch {
-        return false;
-    }
-}
-</script>
 
 </body>
 </html>
