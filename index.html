@@ -6598,250 +6598,113 @@ function safeQuery(selector, context = document) {
   }
 }
 </script>
-<script id="cookie-consent-js">
-(function(){
-  const LS_KEY = 'cookieConsent.v1';
-  const $ = (s,c=document)=>c.querySelector(s);
-
-  const banner = $('#cookie-banner');
-  const modal  = $('#cookie-modal');
-  const fab    = $('#cookie-fab');
-
-  const pref   = $('#cc-pref');
-  const anal   = $('#cc-analytics');
-  const mark   = $('#cc-marketing');
-
-  const btnAccept  = $('#cc-accept');
-  const btnDecline = $('#cc-decline');
-  const btnCustom  = $('#cc-customize');
-  const btnSave    = $('#cc-save');
-  const btnCancel  = $('#cc-cancel');
-  const btnRejectAll = $('#cc-reject-all');
-
-  function getStored(){
-    try{ return JSON.parse(localStorage.getItem(LS_KEY)) || null; }catch(e){ return null; }
-  }
-  function store(consent){
-    localStorage.setItem(LS_KEY, JSON.stringify({ ts: Date.now(), consent }));
+style id="cookie-consent-css">
+  :root{
+    --cc-bg: rgba(10,10,30,.96);
+    --cc-border: rgba(255,215,0,.28);
+    --cc-gold: var(--gold, #d4af37);
+    --cc-cyan: var(--cyan, #00ccff);
   }
 
-  // Funzione per applicare le preferenze (carica script se consentito)
-  function apply(consent){
-    console.log('Applicazione cookie:', consent);
-    
-    // ESEMPIO: se analytics true, carica GA
-    if (consent.analytics){
-      // loadAnalytics(); // <- tuo script reale
-      console.log('Analytics attivati');
-    }
-    
-    if (consent.marketing){
-      // loadMarketing(); // <- tuo script reale
-      console.log('Marketing attivato');
-    }
-    
-    if (consent.preferences){
-      console.log('Preferenze attivate');
-    }
+  /* Banner compatto “fluttuante” (bottom center) */
+  .cc-banner{
+    position: fixed; left: 50%; bottom: 1.25rem; transform: translateX(-50%);
+    width: min(92vw, 740px);
+    background: var(--cc-bg);
+    border: 1px solid var(--cc-border);
+    border-radius: 12px;
+    box-shadow: 0 1.2rem 2.4rem rgba(0,0,0,.45);
+    padding: .95rem 1rem;
+    display: none;
+    z-index: 2147483607; /* sopra tutto */
+    backdrop-filter: blur(.5rem);
+  }
+  .cc-banner.open{ display: grid; gap: .75rem; grid-template-columns: 1fr auto; align-items: start; }
+  .cc-banner .cc-title{ font-family:'Cinzel',serif; color: var(--cc-gold); margin: 0 0 .25rem; font-size: 1.05rem; }
+  .cc-banner .cc-text{ color:#dfe8ff; font-size:.92rem; line-height:1.35; opacity:.95; margin:0; }
+  .cc-actions{ display: flex; gap: .5rem; flex-wrap: wrap; align-items:center; justify-content:flex-end; }
+  .cc-btn{
+    border:1px solid var(--cc-border); border-radius:.55rem; padding:.48rem .75rem;
+    background: rgba(20,20,40,.78); color:#ffd86a; font-weight:700; cursor:pointer;
+  }
+  .cc-btn.solid{ background: linear-gradient(180deg,#ffd86a,#e3c45a); color:#0b1022; border-color: #ffd86a; }
+  .cc-link{ color: var(--cc-cyan); text-decoration: none; font-weight: 600; }
+
+  /* MODALE “Personalizza” */
+  .cc-modal{
+    position: fixed; inset: 0; display: none; place-items: center;
+    background: rgba(0,0,0,.55); z-index: 2147483608;
+  }
+  .cc-modal.open{ display: grid; }
+  .cc-card{
+    width: min(94vw, 720px); max-height: 80vh; overflow:auto;
+    background: var(--cc-bg);
+    border:1px solid var(--cc-border); border-radius:14px; padding:1rem 1rem 1.1rem;
+    box-shadow: 0 1.3rem 2.6rem rgba(0,0,0,.5);
+  }
+  .cc-card h3{ margin:.1rem 0 .2rem; color:var(--cc-gold); font-family:'Cinzel',serif; }
+  .cc-row{ display:grid; grid-template-columns: 1fr auto; gap:.5rem; align-items:center; padding:.55rem .5rem; border-bottom:1px solid rgba(255,215,0,.13); }
+  .cc-row:last-child{ border-bottom:0; }
+  .cc-desc{ font-size:.92rem; color:#cfe2ff; opacity:.95; margin:.15rem 0 0; }
+  .cc-switch{ display:flex; align-items:center; gap:.5rem; }
+  .cc-switch input{ width: 46px; height: 24px; appearance: none; background: #1e2746; border-radius: 999px; position: relative; outline: none; cursor: pointer; border:1px solid rgba(255,215,0,.22); }
+  .cc-switch input:checked{ background:#2a7dff; }
+  .cc-switch input::after{
+    content:""; position:absolute; left:3px; top:3px; width:18px; height:18px; border-radius:50%; background:#fff; transition:.2s;
+  }
+  .cc-switch input:checked::after{ transform: translateX(22px); }
+  .cc-badge{ font-size:.75rem; color:#0b1022; background: var(--cc-gold); border-radius:999px; padding:.08rem .5rem; font-weight:800; }
+  .cc-actions-row{ margin-top:.8rem; display:flex; gap:.6rem; justify-content:flex-end; flex-wrap:wrap; }
+  .cc-btn.outline{ background: rgba(20,20,40,.78); color:#ffd86a; }
+
+  /* FAB (biscottino) — lo muovo se “tocca” il box di Russell */
+  #cookie-fab{
+    position: fixed; left: 1.25rem; bottom: 1.25rem;
+    width: 48px; height: 48px; border-radius: 999px; border:1px solid var(--cc-border);
+    background: rgba(20,20,40,.78);
+    display: grid; place-items: center; cursor: pointer;
+    box-shadow: 0 .8rem 1.6rem rgba(0,0,0,.45);
+    z-index: 2147483606;
+    color:#ffde9a; font-size:1.25rem;
+  }
+  #cookie-fab:hover{ box-shadow: 0 0 .85rem rgba(255,215,0,.45); }
+
+  @media (max-width: 900px){
+    .cc-banner{ left: .75rem; right:.75rem; transform:none; width:auto; }
+  }
+</style>
+<style id="cookie-fab-label">
+  /* Trasforma il FAB in un pill-button con icona + testo affiancati */
+  #cookie-fab{
+    display: inline-flex !important;
+    align-items: center;
+    gap: .45rem;                 /* distanza tra 🍪 e “Cookie” */
+    height: 48px;
+    width: auto !important;      /* niente 48px fissi */
+    padding: 0 .85rem 0 .70rem;  /* spazio orizzontale */
+    border-radius: 999px;
+    white-space: nowrap;         /* evita a capo del testo */
+    line-height: 1;              /* allineamento verticale pulito */
+    font-weight: 700;            /* testo un po’ più deciso */
+    /* mantiene colori/ombra già definiti in precedenza */
   }
 
-  // Gestione animazioni CSS
-  function openBanner(){ 
-    banner.classList.add('open'); 
-    banner.style.display = 'flex';
-  }
-  
-  function closeBanner(){ 
-    banner.classList.remove('open');
-    setTimeout(() => {
-      banner.style.display = 'none';
-      showFab(); // Mostra il FAB dopo che il banner scompare
-    }, 500);
-  }
-  
-  function openModal(){ 
-    modal.classList.add('open'); 
-    modal.setAttribute('aria-hidden','false');
-    pauseFabAnimation(); // Pausa animazione quando il modale è aperto
-  }
-  
-  function closeModal(){ 
-    modal.classList.remove('open'); 
-    modal.setAttribute('aria-hidden','true');
-    resumeFabAnimation(); // Riprende animazione
+  /* Accessibilità focus */
+  #cookie-fab:focus-visible{
+    outline: 2px solid var(--cc-gold, #d4af37);
+    outline-offset: 2px;
   }
 
-  // ========== GESTIONE ANIMAZIONE FAB ==========
-  
-
-  // ========== EVENT LISTENERS ==========
-  
-  // Pulsanti banner
-  btnAccept.addEventListener('click', ()=>{
-    const consent = { preferences:true, analytics:true, marketing:true };
-    store(consent); 
-    apply(consent); 
-    closeBanner();
-    // Feedback visivo
-    showToast('Tutti i cookie attivati!', 'success');
-  });
-  
-  btnDecline.addEventListener('click', ()=>{
-    const consent = { preferences:false, analytics:false, marketing:false };
-    store(consent); 
-    apply(consent); 
-    closeBanner();
-    showToast('Cookie non necessari disattivati', 'warning');
-  });
-  
-  btnCustom.addEventListener('click', ()=>{
-    // precompila gli switch dalla memoria
-    const s = getStored();
-    pref.checked = !!(s && s.consent.preferences);
-    anal.checked = !!(s && s.consent.analytics);
-    mark.checked = !!(s && s.consent.marketing);
-    openModal();
-    closeBanner();
-  });
-
-  // Pulsanti modale
-  btnSave.addEventListener('click', ()=>{
-    const consent = { 
-      preferences:pref.checked, 
-      analytics:anal.checked, 
-      marketing:mark.checked 
-    };
-    store(consent); 
-    apply(consent); 
-    closeModal(); 
-    closeBanner();
-    showToast('Preferenze salvate!', 'success');
-  });
-  
-  btnCancel.addEventListener('click', ()=> {
-    closeModal();
-    // Se non c'era scelta precedente, riapre banner
-    if (!getStored()) {
-      setTimeout(() => openBanner(), 300);
-    }
-  });
-  
-  btnRejectAll.addEventListener('click', ()=>{
-    pref.checked = false;
-    anal.checked = false;
-    mark.checked = false;
-  });
-
-  // FAB: riapre la modale in ogni momento
-  fab.addEventListener('click', ()=>{
-    const s = getStored();
-    pref.checked = !!(s && s.consent.preferences);
-    anal.checked = !!(s && s.consent.analytics);
-    mark.checked = !!(s && s.consent.marketing);
-    openModal();
-  });
-
-  // Gestione hover per pausa animazione
-  fab.addEventListener('mouseenter', () => {
-    pauseFabAnimation();
-    fab.style.transform = 'scale(1.1)';
-  });
-  
-  fab.addEventListener('mouseleave', () => {
-    resumeFabAnimation();
-    fab.style.transform = 'scale(1)';
-  });
-
-  // ========== FUNZIONI AUSILIARIE ==========
-  
-  // Evita sovrapposizione con il box di Russell
-  function avoidOverlap(){
-    const rb = document.getElementById('russell-box'); 
-    if(!rb) return;
-    
-    const r1 = fab.getBoundingClientRect();
-    const r2 = rb.getBoundingClientRect();
-    
-    const overlap = !(r1.right < r2.left || r1.left > r2.right || 
-                      r1.bottom < r2.top || r1.top > r2.bottom);
-    
-    if(overlap){
-      fab.style.left = 'auto';
-      fab.style.right = (parseFloat(getComputedStyle(rb).right) + 70) + 'px';
-    } else {
-      fab.style.right = 'auto';
-      fab.style.left  = '1.25rem';
+  /* Tweak responsive: pill leggermente più compatto su schermi stretti */
+  @media (max-width: 680px){
+    #cookie-fab{
+      height: 44px;
+      gap: .40rem;
+      padding: 0 .75rem 0 .60rem;
+      font-size: .95rem;
     }
   }
-  
-  // Toast per feedback
-  function showToast(message, type = 'info') {
-    const toast = document.createElement('div');
-    toast.className = `cookie-toast ${type}`;
-    toast.innerHTML = `
-      <span>${type === 'success' ? '✅' : type === 'warning' ? '⚠️' : 'ℹ️'}</span>
-      <span>${message}</span>
-    `;
-    
-    toast.style.cssText = `
-      position: fixed;
-      bottom: 100px;
-      right: 2rem;
-      background: ${type === 'success' ? '#4CAF50' : type === 'warning' ? '#FF9800' : '#2196F3'};
-      color: white;
-      padding: 1rem 1.5rem;
-      border-radius: 8px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-      z-index: 10004;
-      transform: translateX(100px);
-      opacity: 0;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    `;
-    
-    document.body.appendChild(toast);
-    
-    setTimeout(() => {
-      toast.style.transform = 'translateX(0)';
-      toast.style.opacity = '1';
-    }, 100);
-    
-    setTimeout(() => {
-      toast.style.transform = 'translateX(100px)';
-      toast.style.opacity = '0';
-      setTimeout(() => toast.remove(), 400);
-    }, 3000);
-  }
-
-  // ========== INIZIALIZZAZIONE FINALE ==========
-  
-  avoidOverlap();
-  window.addEventListener('resize', avoidOverlap);
-  window.addEventListener('scroll', avoidOverlap);
-
-  // ESC chiude la modale
-  document.addEventListener('keydown', (e)=>{ 
-    if(e.key === 'Escape') closeModal(); 
-  });
-
-  // Supporto per prefers-reduced-motion
-  const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-  if (mediaQuery.matches) {
-    setFabAnimation('none');
-  }
-  
-  mediaQuery.addEventListener('change', (e) => {
-    if (e.matches) {
-      setFabAnimation('none');
-    } else {
-      startFabAnimation();
-    }
-  });
-
-})();
-</script>
+</style>
 <script>
 /* === Floating Quotes Controller v2 === */
 (function(){
