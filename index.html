@@ -1824,14 +1824,42 @@ nav.menu-desktop .mega-menu{ z-index: 90 !important; pointer-events: auto !impor
    filter: brightness(2.10) saturate(2.08);
   z-index: 2147483600; /* bring above misc overlays while pinging */
 }
-/* Button visual sync */
-#russell-btn{
-  transition: color 160ms ease, text-shadow 160ms ease, opacity 160ms ease;
+#russell-btn {
+  transition: 
+    color 160ms cubic-bezier(0.4, 0, 0.2, 1),
+    text-shadow 160ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 160ms cubic-bezier(0.4, 0, 0.2, 1),
+    transform 160ms cubic-bezier(0.4, 0, 0.2, 1),
+    letter-spacing 160ms cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  display: inline-block;
+  will-change: color, text-shadow, transform;
 }
-#russell-btn.ping{
-  color: #ffe08a;
-  text-shadow: 0 0 10px rgba(255,215,0,.45);
-  opacity: 1;
+
+/* Multi-layer text glow animation */
+@keyframes textGlowWave {
+  0%, 100% {
+    text-shadow: 
+      0 0 10px rgba(255, 215, 0, 0.45),
+      0 0 20px rgba(255, 215, 0, 0.25),
+      0 0 30px rgba(255, 215, 0, 0.1);
+  }
+  50% {
+    text-shadow: 
+      0 0 15px rgba(255, 224, 138, 0.65),
+      0 0 30px rgba(255, 215, 0, 0.35),
+      0 0 45px rgba(255, 215, 0, 0.15);
+  }
+}
+
+/* Pulsing color animation */
+@keyframes colorPulse {
+  0%, 100% {
+    color: #ffe08a;
+  }
+  50% {
+    color: #ffeb3b;
+  }
 }
 
 /* Fallback: immediate feedback on press even without JS */
