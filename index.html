@@ -1811,222 +1811,39 @@ nav.menu-desktop .mega-menu{ z-index: 90 !important; pointer-events: auto !impor
 }
 </style>
 <style id="russell-conservative-anim">
-/* Conservative micro‑interaction for Russell box — enhanced version */
-#russell-box {
-  transition: 
-    box-shadow 220ms cubic-bezier(0.4, 0, 0.2, 1),
-    transform 220ms cubic-bezier(0.4, 0, 0.2, 1),
-    background-color 220ms cubic-bezier(0.4, 0, 0.2, 1),
-    filter 220ms cubic-bezier(0.4, 0, 0.2, 1);
+/* Conservative micro‑interaction for Russell box — stronger & robust */
+#russell-box{
+  transition: box-shadow 220ms ease, transform 220ms ease, background-color 220ms ease, filter 220ms ease;
   will-change: box-shadow, transform, filter;
 }
-
 /* Click/keyboard ping state */
-#russell-box.ping {
-  box-shadow: 
-    0 0 0 2px rgba(255, 215, 0, 0.40),
-    0 0 28px rgba(255, 215, 0, 0.55),
-    0 0 0 4px rgba(255, 215, 0, 0.1);
+#russell-box.ping{
+   box-shadow: 0 0 0 2px rgba(255,215,0,.40), 0 0 28px rgba(255,215,0,.55);
   transform: translateY(-2px) scale(1.015);
-  background-color: rgba(20, 20, 40, 0.88);
-  filter: brightness(2.10) saturate(2.08);
-  z-index: 2147483600;
+  background-color: rgba(20,20,40,.88);
+   filter: brightness(2.10) saturate(2.08);
+  z-index: 2147483600; /* bring above misc overlays while pinging */
 }
-
-/* Button visual sync - Enhanced with multi-layer effects */
-#russell-btn {
-  transition: 
-    color 160ms cubic-bezier(0.4, 0, 0.2, 1),
-    text-shadow 160ms cubic-bezier(0.4, 0, 0.2, 1),
-    opacity 160ms cubic-bezier(0.4, 0, 0.2, 1),
-    transform 160ms cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  display: inline-block;
-  will-change: color, text-shadow, transform;
+/* Button visual sync */
+#russell-btn{
+  transition: color 160ms ease, text-shadow 160ms ease, opacity 160ms ease;
 }
-
-/* Multi-layer text glow animation */
-@keyframes textGlowWave {
-  0%, 100% {
-    text-shadow: 
-      0 0 10px rgba(255, 215, 0, 0.45),
-      0 0 20px rgba(255, 215, 0, 0.25);
-  }
-  50% {
-    text-shadow: 
-      0 0 15px rgba(255, 224, 138, 0.65),
-      0 0 30px rgba(255, 215, 0, 0.35);
-  }
-}
-
-/* Pulsing color animation */
-@keyframes colorPulse {
-  0%, 100% {
-    color: #ffe08a;
-  }
-  50% {
-    color: #ffeb3b;
-  }
-}
-
-/* Shimmer effect on letters */
-@keyframes letterShimmer {
-  0% {
-    background-position: -100% center;
-  }
-  100% {
-    background-position: 200% center;
-  }
-}
-
-#russell-btn.ping {
+#russell-btn.ping{
   color: #ffe08a;
-  animation: 
-    textGlowWave 1200ms ease-in-out,
-    colorPulse 1200ms ease-in-out;
+  text-shadow: 0 0 10px rgba(255,215,0,.45);
   opacity: 1;
-  transform-origin: center center;
-  
-  /* Gradient text effect */
-  background: linear-gradient(
-    90deg,
-    #ffe08a 0%,
-    #ffeb3b 25%,
-    #ffd700 50%,
-    #ffeb3b 75%,
-    #ffe08a 100%
-  );
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: letterShimmer 1.5s linear infinite;
 }
 
-/* Underline effect */
-#russell-btn::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.5), transparent);
-  transform: scaleX(0);
-  transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-#russell-btn:hover:not(.ping)::after {
-  transform: scaleX(1);
-}
-
-#russell-btn.ping::after {
-  background: linear-gradient(90deg, transparent, #ffd700, transparent);
-  animation: underlineExpand 800ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-@keyframes underlineExpand {
-  from {
-    transform: scaleX(0);
-    opacity: 0;
-  }
-  to {
-    transform: scaleX(1);
-    opacity: 1;
-  }
-}
-
-/* Icon animation */
-#russell-btn i,
-#russell-btn svg,
-#russell-btn .icon {
-  transition: all 220ms cubic-bezier(0.4, 0, 0.2, 1);
-  display: inline-block;
-}
-
-#russell-btn.ping i,
-#russell-btn.ping svg,
-#russell-btn.ping .icon {
-  animation: iconSparkle 800ms ease-out;
-  transform: scale(1.1);
-}
-
-@keyframes iconSparkle {
-  0%, 100% {
-    filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.4));
-  }
-  50% {
-    filter: drop-shadow(0 0 10px rgba(255, 224, 138, 0.6));
-  }
-}
-
-/* Active states */
-#russell-box:active {
-  box-shadow: 
-    0 0 0 2px rgba(255, 215, 0, 0.35),
-    0 0 22px rgba(255, 215, 0, 0.55);
+/* Fallback: immediate feedback on press even without JS */
+#russell-box:active{
+  box-shadow: 0 0 0 2px rgba(255,215,0,.35), 0 0 22px rgba(255,215,0,.55);
   filter: brightness(1.04);
-  transform: translateY(0);
 }
 
-#russell-btn:active {
-  transform: scale(0.98);
-  transition-duration: 80ms;
-}
-
-/* Hover effects */
-#russell-box:hover:not(.ping) {
-  transform: translateY(-1px);
-  box-shadow: 
-    0 4px 12px rgba(255, 215, 0, 0.15),
-    0 0 0 1px rgba(255, 215, 0, 0.2);
-}
-
-#russell-btn:hover:not(.ping) {
-  color: rgba(255, 224, 138, 0.9);
-  text-shadow: 0 0 6px rgba(255, 215, 0, 0.2);
-  transform: translateY(-1px);
-}
-
-/* Respect reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  #russell-box, 
-  #russell-btn,
-  #russell-btn i,
-  #russell-btn svg,
-  #russell-btn .icon {
-    transition: box-shadow 220ms ease, color 160ms ease, opacity 160ms ease;
-    animation: none !important;
-  }
-  
-  #russell-box.ping {
-    transform: none;
-    box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.40), 0 0 28px rgba(255, 215, 0, 0.55);
-  }
-  
-  #russell-btn.ping {
-    color: #ffe08a;
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.45);
-    background: none;
-    -webkit-text-fill-color: #ffe08a;
-  }
-  
-  #russell-btn::after,
-  #russell-btn.ping::after {
-    display: none;
-  }
-  
-  #russell-btn.ping i,
-  #russell-btn.ping svg,
-  #russell-btn.ping .icon {
-    transform: none;
-    filter: none;
-  }
-}
-
-/* Ensure proper stacking */
-#russell-btn {
-  isolation: isolate;
+/* Respect reduced motion: keep glow, skip lift */
+@media (prefers-reduced-motion: reduce){
+  #russell-box{ transition: box-shadow 220ms ease, background-color 220ms ease, filter 220ms ease; }
+  #russell-box.ping{ transform: none; }
 }
 </style>
 <style id="hard-overrides-right-left">
