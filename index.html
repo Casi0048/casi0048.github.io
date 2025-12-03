@@ -1069,8 +1069,6 @@ nav.menu-desktop .mega-menu.right-align:hover {
       .right-embed{position:fixed;right:1.25rem;top:40rem;width:20rem;z-index:25;background:rgba(10,10,30,.8);border:1px solid rgba(255,215,0,.25);border-radius:.75rem;padding:.5rem}
       .right-embed iframe{width:100%;height:264px;display:block;border:0}
       #russell-box{position:fixed;bottom:8vh;left:2rem;z-index:10;background:rgba(10,10,30,.8);border:1px solid rgba(255,215,0,.25);border-radius:.62rem;padding:.62rem .75rem;max-width:24rem;box-shadow:0 .5rem 1.12rem rgba(0,0,0,.35)}
-
-
       #russell-btn{all:unset;cursor:pointer;display:block;color:#ffd86a;}#russell-hint{position:fixed;bottom:19vh;left:3.5rem;z-index:2;color:#cfe8ff;opacity:.85;font-style:italic;font-weight:700}
       #lightning,#bolt{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:0}
       #lightning{background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.9),rgba(255,255,255,.2) 40%,transparent 65%);transition:opacity .18s ease-out}
@@ -1078,6 +1076,23 @@ nav.menu-desktop .mega-menu.right-align:hover {
       #effects-ctrl{position:fixed;top:.9rem;right:1.25rem;width:auto;z-index:2147483603;display:flex;gap:.5rem;justify-content:flex-end}
       #effects-ctrl .ctrl-btn{min-width:6.5rem}
       @media (min-width:1200px){ main{padding-left:16rem;padding-right:22rem} }
+
+
+      /* Enhanced button animation with text glow */
+#russell-btn {
+  transition: 
+    color 160ms cubic-bezier(0.4, 0, 0.2, 1),
+    text-shadow 160ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 160ms cubic-bezier(0.4, 0, 0.2, 1),
+    transform 160ms cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+@keyframes textShimmer {
+  0% { text-shadow: 0 0 10px rgba(255, 215, 0, 0.45); }
+  50% { text-shadow: 0 0 15px rgba(255, 224, 138, 0.6), 0 0 25px rgba(255, 215, 0, 0.3); }
+  100% { text-shadow: 0 0 10px rgba(255, 215, 0, 0.45); }
+}
     </style>
 <style id="right-links-css">
       .right-box{
@@ -1847,29 +1862,6 @@ nav.menu-desktop .mega-menu{ z-index: 90 !important; pointer-events: auto !impor
   #russell-box{ transition: box-shadow 220ms ease, background-color 220ms ease, filter 220ms ease; }
   #russell-box.ping{ transform: none; }
 }
-  /* Effetto onde d'urto */
-.russell-ring {
-  position: absolute;
-  inset: 0;
-  border-radius: 12px;
-  pointer-events: none;
-  border: 2px solid rgba(255, 215, 0, 0.7);
-  opacity: 0;
-  transform: scale(0.4);
-  filter: drop-shadow(0 0 10px gold);
-}
-
-/* Effetto scintille */
-.russell-spark {
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  background: gold;
-  border-radius: 50%;
-  pointer-events: none;
-  opacity: 0;
-}
-
 </style>
 <style id="hard-overrides-right-left">
 /* === HARD OVERRIDES: Alternanza sinistra/destra === */
@@ -4780,8 +4772,6 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 <iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" src="https://www.youtube.com/embed/G_REgkOuQfw" title="Schopenhauer e Nietzsche (Hans-Georg Gadamer) - 3x4"></iframe>
 </div>
 <div id="russell-box"><button id="russell-btn">🎵 "La maggior parte degli uomini preferirebbe morire piuttosto che pensare,  infatti è quello che fanno."<br/><strong>– Bertrand Russell</strong></button></div>
- 
-
 <div id="russell-hint">Clicca box sotto per ascoltare la chitarra 🎸</div>
 <audio id="russell-audio" playsinline="True" preload="auto" src="https://casi0048.github.io/suoni/gitarra.mp3"></audio>
 <audio id="thunder-sound" playsinline="True" preload="auto">
@@ -9502,70 +9492,5 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     })();
   </script>
-  <script>
-document.addEventListener("DOMContentLoaded", () => {
-  
-  const btn = document.getElementById("russell-btn");
-  const box = document.getElementById("russell-box");
-  const rings = box.querySelectorAll(".russell-ring");
-  const sparksContainer = document.getElementById("russell-sparks");
-
-  btn.addEventListener("click", () => {
-
-    /* --- 1) bagliore del box --- */
-    gsap.fromTo(box, 
-      { boxShadow: "0 0 0px rgba(255,215,0,0.0)" },
-      { boxShadow: "0 0 25px rgba(255,215,0,0.9)", duration: .45, ease: "power3.out" }
-    );
-
-    /* --- 2) vibrazione morbida --- */
-    gsap.fromTo(box, 
-      { x: 0 }, 
-      { x: 6, yoyo: true, repeat: 3, duration: 0.08, ease: "power2.inOut" }
-    );
-
-    /* --- 3) onde d’urto (due cerchi) --- */
-    rings.forEach((r, i) => {
-      gsap.fromTo(r,
-        { scale: 0.3, opacity: .9 },
-        { 
-          scale: 1.7 + i * 0.4, 
-          opacity: 0, 
-          duration: 0.7,
-          ease: "power2.out"
-        }
-      );
-    });
-
-    /* --- 4) scintille dorate random --- */
-    for (let i = 0; i < 14; i++) {
-      const s = document.createElement("div");
-      s.className = "russell-spark";
-      sparksContainer.appendChild(s);
-
-      const angle = Math.random() * Math.PI * 2;
-      gsap.fromTo(s,
-        {
-          x: box.offsetWidth/2,
-          y: box.offsetHeight/2,
-          opacity: 1,
-          scale: 1
-        },
-        {
-          x: box.offsetWidth/2 + Math.cos(angle) * (35 + Math.random()*50),
-          y: box.offsetHeight/2 + Math.sin(angle) * (35 + Math.random()*50),
-          opacity: 0,
-          scale: 0,
-          duration: 0.55,
-          ease: "power2.out",
-          onComplete: () => s.remove()
-        }
-      );
-    }
-
-  });
-});
-</script>
-
 </body>
 </html>
