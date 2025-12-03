@@ -883,3 +883,219 @@
 #cookie-fab.no-animation {
   animation: none !important;
 }
+/* =====AGGIUNTA CSS RUSSELL BOX===== */
+
+/* Conservative micro‑interaction for Russell box — enhanced but stable */
+#russell-box {
+  transition: 
+    box-shadow 220ms cubic-bezier(0.4, 0, 0.2, 1),
+    transform 220ms cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 220ms cubic-bezier(0.4, 0, 0.2, 1),
+    filter 220ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 220ms cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: box-shadow, transform, filter;
+  position: relative;
+  overflow: visible; /* Cambiato da hidden a visible */
+}
+
+/* CORREZIONE: Animazione pulsa solo su hover, non sempre */
+#russell-box:hover:not(.ping) {
+  animation: subtlePulse 2s ease-in-out infinite;
+}
+
+@keyframes subtlePulse {
+  0%, 100% { 
+    box-shadow: 
+      0 4px 12px rgba(255, 215, 0, 0.1),
+      0 0 0 1px rgba(255, 215, 0, 0.15);
+  }
+  50% { 
+    box-shadow: 
+      0 4px 16px rgba(255, 215, 0, 0.15),
+      0 0 0 1px rgba(255, 215, 0, 0.2);
+  }
+}
+
+/* Multi‑layer glow effect for ping state */
+@keyframes multiGlow {
+  0% {
+    box-shadow: 
+      0 0 0 2px rgba(255, 215, 0, 0.40),
+      0 0 28px rgba(255, 215, 0, 0.55),
+      0 0 0 0px rgba(255, 215, 0, 0.15);
+  }
+  50% {
+    box-shadow: 
+      0 0 0 2px rgba(255, 215, 0, 0.45),
+      0 0 32px rgba(255, 215, 0, 0.65),
+      0 0 0 4px rgba(255, 215, 0, 0.10);
+  }
+  100% {
+    box-shadow: 
+      0 0 0 2px rgba(255, 215, 0, 0.40),
+      0 0 28px rgba(255, 215, 0, 0.55),
+      0 0 0 0px rgba(255, 215, 0, 0.15);
+  }
+}
+
+/* Click/keyboard ping state with enhanced animation */
+#russell-box.ping {
+  animation: multiGlow 800ms ease-out;
+  transform: translateY(-2px) scale(1.015);
+  background-color: rgba(20, 20, 40, 0.88);
+  filter: brightness(2.10) saturate(2.08);
+  z-index: 2147483600;
+  border-color: rgba(255, 215, 0, 0.3);
+}
+
+/* Inner light effect for ping state - RIMOSSO se causa problemi */
+/* #russell-box.ping::before {
+  display: none;
+} */
+
+/* Ripple effect on click - MODIFICATO per non causare overflow */
+#russell-box::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 215, 0, 0.2);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1; /* Messo dietro il contenuto */
+}
+
+#russell-box.ping::after {
+  animation: rippleEffect 800ms ease-out;
+}
+
+@keyframes rippleEffect {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 0.8;
+  }
+  100% {
+    width: 150px; /* Ridotto da 200px */
+    height: 150px;
+    opacity: 0;
+  }
+}
+
+/* Enhanced button animation with text glow */
+#russell-btn {
+  transition: 
+    color 160ms cubic-bezier(0.4, 0, 0.2, 1),
+    text-shadow 160ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 160ms cubic-bezier(0.4, 0, 0.2, 1),
+    transform 160ms cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+@keyframes textShimmer {
+  0% { text-shadow: 0 0 10px rgba(255, 215, 0, 0.45); }
+  50% { text-shadow: 0 0 15px rgba(255, 224, 138, 0.6), 0 0 25px rgba(255, 215, 0, 0.3); }
+  100% { text-shadow: 0 0 10px rgba(255, 215, 0, 0.45); }
+}
+
+#russell-btn.ping {
+  color: #ffe08a;
+  animation: textShimmer 800ms ease-out;
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+/* Icon animation if present */
+#russell-btn i,
+#russell-btn svg,
+#russell-btn .icon {
+  transition: transform 220ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#russell-btn.ping i,
+#russell-btn.ping svg,
+#russell-btn.ping .icon {
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* Enhanced active state with depth */
+#russell-box:active {
+  animation: none;
+  box-shadow: 
+    0 0 0 2px rgba(255, 215, 0, 0.35),
+    0 0 22px rgba(255, 215, 0, 0.55),
+    inset 0 2px 4px rgba(0, 0, 0, 0.2);
+  filter: brightness(1.04);
+  transform: translateY(0) scale(0.99);
+}
+
+/* Hover anticipation */
+#russell-box:hover:not(.ping) {
+  transform: translateY(-1px);
+  box-shadow: 
+    0 6px 16px rgba(255, 215, 0, 0.15),
+    0 0 0 1px rgba(255, 215, 0, 0.2);
+  filter: brightness(1.05);
+}
+
+/* Respect reduced motion: keep visual feedback, skip complex animations */
+@media (prefers-reduced-motion: reduce) {
+  #russell-box { 
+    transition: box-shadow 220ms ease, background-color 220ms ease, filter 220ms ease;
+    animation: none !important;
+  }
+  
+  #russell-box:hover:not(.ping) {
+    animation: none;
+  }
+  
+  #russell-box.ping { 
+    transform: none; 
+    animation: none;
+  }
+  
+  #russell-box::after {
+    display: none;
+  }
+  
+  #russell-btn.ping {
+    animation: none;
+    transform: none;
+  }
+  
+  #russell-btn.ping i,
+  #russell-btn.ping svg,
+  #russell-btn.ping .icon {
+    transform: none;
+  }
+}
+
+/* Staggered animation for child elements - SEMPLIFICATO */
+#russell-box.ping > * {
+  animation: childFadeIn 300ms ease-out backwards;
+}
+
+@keyframes childFadeIn {
+  from {
+    opacity: 0.9;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Box shadow base per lo stato normale */
+#russell-box:not(.ping):not(:hover) {
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.1);
+}
+
+/* Fix per contenuti figli */
+#russell-box > * {
+  position: relative;
+  z-index: 1;
+}
+
