@@ -1824,6 +1824,7 @@ nav.menu-desktop .mega-menu{ z-index: 90 !important; pointer-events: auto !impor
    filter: brightness(2.10) saturate(2.08);
   z-index: 2147483600; /* bring above misc overlays while pinging */
 }
+/* Button visual sync - Enhanced with multi-layer effects */
 #russell-btn {
   transition: 
     color 160ms cubic-bezier(0.4, 0, 0.2, 1),
@@ -1860,6 +1861,197 @@ nav.menu-desktop .mega-menu{ z-index: 90 !important; pointer-events: auto !impor
   50% {
     color: #ffeb3b;
   }
+}
+
+/* Subtle scale animation */
+@keyframes gentleBounce {
+  0%, 100% {
+    transform: scale(1) translateY(0);
+  }
+  25% {
+    transform: scale(1.03) translateY(-2px);
+  }
+  75% {
+    transform: scale(1.01) translateY(-1px);
+  }
+}
+
+/* Shimmer effect on letters */
+@keyframes letterShimmer {
+  0% {
+    background-position: -100% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+#russell-btn.ping {
+  color: #ffe08a;
+  animation: 
+    textGlowWave 1200ms ease-in-out,
+    colorPulse 1200ms ease-in-out,
+    gentleBounce 1200ms ease-in-out;
+  opacity: 1;
+  transform-origin: center center;
+  letter-spacing: 0.3px;
+  
+  /* Gradient text effect for modern browsers */
+  background: linear-gradient(
+    90deg,
+    #ffe08a 0%,
+    #ffeb3b 25%,
+    #ffd700 50%,
+    #ffeb3b 75%,
+    #ffe08a 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: letterShimmer 2s linear infinite paused;
+}
+
+/* Activate shimmer only during ping animation */
+#russell-btn.ping {
+  animation-play-state: running;
+}
+
+/* Individual letter animation (if text is short) */
+#russell-btn.ping span {
+  display: inline-block;
+  animation: letterPop 300ms cubic-bezier(0.68, -0.55, 0.27, 1.55) backwards;
+}
+
+@keyframes letterPop {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Staggered animation for each letter */
+#russell-btn.ping span:nth-child(1) { animation-delay: 50ms; }
+#russell-btn.ping span:nth-child(2) { animation-delay: 100ms; }
+#russell-btn.ping span:nth-child(3) { animation-delay: 150ms; }
+#russell-btn.ping span:nth-child(4) { animation-delay: 200ms; }
+#russell-btn.ping span:nth-child(5) { animation-delay: 250ms; }
+
+/* Hover anticipation */
+#russell-btn:hover:not(.ping) {
+  color: rgba(255, 224, 138, 0.9);
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.25);
+  transform: translateY(-1px);
+  letter-spacing: 0.2px;
+}
+
+/* Underline effect on hover */
+#russell-btn::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.5), transparent);
+  transform: scaleX(0);
+  transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#russell-btn:hover:not(.ping)::after {
+  transform: scaleX(1);
+}
+
+#russell-btn.ping::after {
+  background: linear-gradient(90deg, transparent, #ffd700, transparent);
+  animation: underlineExpand 800ms cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scaleX(1);
+}
+
+@keyframes underlineExpand {
+  from {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  to {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+/* Icon animation if present */
+#russell-btn i,
+#russell-btn svg,
+#russell-btn .icon {
+  transition: all 220ms cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-block;
+}
+
+#russell-btn.ping i,
+#russell-btn.ping svg,
+#russell-btn.ping .icon {
+  animation: iconSparkle 800ms ease-out;
+  transform: scale(1.15) rotate(5deg);
+  filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6));
+}
+
+@keyframes iconSparkle {
+  0%, 100% {
+    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6));
+  }
+  50% {
+    filter: drop-shadow(0 0 15px rgba(255, 224, 138, 0.8)) 
+            drop-shadow(0 0 25px rgba(255, 215, 0, 0.4));
+  }
+}
+
+/* Active/pressed state */
+#russell-btn:active {
+  transform: scale(0.98) translateY(1px);
+  transition-duration: 80ms;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  #russell-btn {
+    transition: color 160ms ease, opacity 160ms ease;
+  }
+  
+  #russell-btn.ping {
+    animation: none;
+    color: #ffe08a;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.45);
+    background: none;
+    -webkit-text-fill-color: #ffe08a;
+    letter-spacing: normal;
+  }
+  
+  #russell-btn.ping span {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  
+  #russell-btn::after {
+    display: none;
+  }
+  
+  #russell-btn.ping i,
+  #russell-btn.ping svg,
+  #russell-btn.ping .icon {
+    animation: none;
+    transform: none;
+    filter: none;
+  }
+}
+
+/* Ensure proper stacking */
+#russell-btn {
+  isolation: isolate;
 }
 
 /* Fallback: immediate feedback on press even without JS */
