@@ -1811,7 +1811,7 @@ nav.menu-desktop .mega-menu{ z-index: 90 !important; pointer-events: auto !impor
 }
 </style>
 <style id="russell-conservative-anim">
-/* Conservative micro‑interaction for Russell box — enhanced with multi‑layer animation */
+/* Conservative micro‑interaction for Russell box — enhanced but stable */
 #russell-box {
   transition: 
     box-shadow 220ms cubic-bezier(0.4, 0, 0.2, 1),
@@ -1821,23 +1821,25 @@ nav.menu-desktop .mega-menu{ z-index: 90 !important; pointer-events: auto !impor
     border-color 220ms cubic-bezier(0.4, 0, 0.2, 1);
   will-change: box-shadow, transform, filter;
   position: relative;
-  overflow: hidden;
+  overflow: visible; /* Cambiato da hidden a visible */
 }
 
-/* Subtle breathing effect for resting state */
+/* CORREZIONE: Animazione pulsa solo su hover, non sempre */
+#russell-box:hover:not(.ping) {
+  animation: subtlePulse 2s ease-in-out infinite;
+}
+
 @keyframes subtlePulse {
   0%, 100% { 
-    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.08),
-                0 0 0 1px rgba(255, 215, 0, 0.1);
+    box-shadow: 
+      0 4px 12px rgba(255, 215, 0, 0.1),
+      0 0 0 1px rgba(255, 215, 0, 0.15);
   }
   50% { 
-    box-shadow: 0 4px 14px rgba(255, 215, 0, 0.12),
-                0 0 0 1px rgba(255, 215, 0, 0.15);
+    box-shadow: 
+      0 4px 16px rgba(255, 215, 0, 0.15),
+      0 0 0 1px rgba(255, 215, 0, 0.2);
   }
-}
-
-#russell-box:not(.ping) {
-  animation: subtlePulse 6s ease-in-out infinite;
 }
 
 /* Multi‑layer glow effect for ping state */
@@ -1872,30 +1874,12 @@ nav.menu-desktop .mega-menu{ z-index: 90 !important; pointer-events: auto !impor
   border-color: rgba(255, 215, 0, 0.3);
 }
 
-/* Inner light effect for ping state */
-#russell-box.ping::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(
-    circle at center,
-    rgba(255, 215, 0, 0.15) 0%,
-    transparent 70%
-  );
-  opacity: 0;
-  animation: innerGlow 800ms ease-out;
-}
+/* Inner light effect for ping state - RIMOSSO se causa problemi */
+/* #russell-box.ping::before {
+  display: none;
+} */
 
-@keyframes innerGlow {
-  0% { opacity: 0; }
-  50% { opacity: 0.8; }
-  100% { opacity: 0; }
-}
-
-/* Ripple effect on click */
+/* Ripple effect on click - MODIFICATO per non causare overflow */
 #russell-box::after {
   content: '';
   position: absolute;
@@ -1908,6 +1892,7 @@ nav.menu-desktop .mega-menu{ z-index: 90 !important; pointer-events: auto !impor
   transform: translate(-50%, -50%);
   opacity: 0;
   pointer-events: none;
+  z-index: -1; /* Messo dietro il contenuto */
 }
 
 #russell-box.ping::after {
@@ -1921,8 +1906,8 @@ nav.menu-desktop .mega-menu{ z-index: 90 !important; pointer-events: auto !impor
     opacity: 0.8;
   }
   100% {
-    width: 200px;
-    height: 200px;
+    width: 150px; /* Ridotto da 200px */
+    height: 150px;
     opacity: 0;
   }
 }
@@ -1990,7 +1975,7 @@ nav.menu-desktop .mega-menu{ z-index: 90 !important; pointer-events: auto !impor
     animation: none !important;
   }
   
-  #russell-box:not(.ping) {
+  #russell-box:hover:not(.ping) {
     animation: none;
   }
   
@@ -1999,8 +1984,7 @@ nav.menu-desktop .mega-menu{ z-index: 90 !important; pointer-events: auto !impor
     animation: none;
   }
   
-  #russell-box.ping::before,
-  #russell-box.ping::after {
+  #russell-box::after {
     display: none;
   }
   
@@ -2016,25 +2000,29 @@ nav.menu-desktop .mega-menu{ z-index: 90 !important; pointer-events: auto !impor
   }
 }
 
-/* Staggered animation for child elements */
+/* Staggered animation for child elements - SEMPLIFICATO */
 #russell-box.ping > * {
   animation: childFadeIn 300ms ease-out backwards;
 }
 
 @keyframes childFadeIn {
   from {
-    opacity: 0.8;
-    transform: translateY(2px);
+    opacity: 0.9;
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
-/* Ensure proper stacking context */
-#russell-box {
-  isolation: isolate;
+/* Box shadow base per lo stato normale */
+#russell-box:not(.ping):not(:hover) {
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.1);
+}
+
+/* Fix per contenuti figli */
+#russell-box > * {
+  position: relative;
+  z-index: 1;
 }
 </style>
 <style id="hard-overrides-right-left">
