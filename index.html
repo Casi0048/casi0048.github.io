@@ -1076,62 +1076,6 @@ nav.menu-desktop .mega-menu.right-align:hover {
       #effects-ctrl{position:fixed;top:.9rem;right:1.25rem;width:auto;z-index:2147483603;display:flex;gap:.5rem;justify-content:flex-end}
       #effects-ctrl .ctrl-btn{min-width:6.5rem}
       @media (min-width:1200px){ main{padding-left:16rem;padding-right:22rem} }
-  /* Effetto onde d'urto */
-/* BOX GLOW FORTISSIMO */
-#russell-box.cosmic-pulse {
-  box-shadow: 0 0 45px rgba(255, 225, 120, 0.95),
-              0 0 85px rgba(255, 200, 80, 0.65),
-              inset 0 0 25px rgba(255, 215, 0, 0.45);
-  transition: box-shadow .25s;
-}
-
-/* ONDA D'URTO GIGANTE */
-.shockwave {
-  position: absolute;
-  inset: -40px;
-  border-radius: 50%;
-  border: 4px solid rgba(255, 230, 100, 0.9);
-  opacity: 0;
-  transform: scale(0.2);
-  filter: drop-shadow(0 0 25px gold);
-}
-
-/* FULMINE */
-.lightning-strike {
-  position: absolute;
-  left: 50%;
-  top: -30%;
-  width: 8px;
-  height: 220%;
-  transform: translateX(-50%) scaleY(0.1);
-  background: linear-gradient(to bottom, white, gold, transparent);
-  opacity: 0;
-  filter: drop-shadow(0 0 18px white);
-  clip-path: polygon(50% 0%, 54% 6%, 46% 15%, 57% 25%, 48% 40%, 60% 55%, 50% 72%, 55% 90%, 50% 100%);
-}
-
-/* SCINTILLE GRANDI */
-.spark {
-  position: absolute;
-  width: 12px;
-  height: 12px;
-  background: radial-gradient(circle, white 0%, gold 40%, transparent 75%);
-  border-radius: 50%;
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* DISTORSIONE CENTRALE (HEAT-WAVE) */
-.ripple {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255,255,255,0.45), transparent 70%);
-  opacity: 0;
-  transform: scale(0.2);
-  filter: blur(10px);
-}
-
     </style>
 <style id="right-links-css">
       .right-box{
@@ -4811,15 +4755,6 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 <iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" src="https://www.youtube.com/embed/G_REgkOuQfw" title="Schopenhauer e Nietzsche (Hans-Georg Gadamer) - 3x4"></iframe>
 </div>
 <div id="russell-box"><button id="russell-btn">🎵 "La maggior parte degli uomini preferirebbe morire piuttosto che pensare,  infatti è quello che fanno."<br/><strong>– Bertrand Russell</strong></button></div>
-  <div class="russell-ring"></div>
-<div class="russell-ring"></div>
-<div id="russell-sparks"></div>
-  <div class="shockwave"></div>
-<div class="lightning-strike"></div>
-<div class="ripple"></div>
-<div id="spark-container"></div>
-
-
 <div id="russell-hint">Clicca box sotto per ascoltare la chitarra 🎸</div>
 <audio id="russell-audio" playsinline="True" preload="auto" src="https://casi0048.github.io/suoni/gitarra.mp3"></audio>
 <audio id="thunder-sound" playsinline="True" preload="auto">
@@ -9601,99 +9536,5 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     })();
   </script>
- <script>
-document.addEventListener("DOMContentLoaded", () => {
-
-  const btn = document.getElementById("russell-btn");
-  const box = document.getElementById("russell-box");
-  const shock = box.querySelector(".shockwave");
-  const bolt = box.querySelector(".lightning-strike");
-  const ripple = box.querySelector(".ripple");
-  const sparks = document.getElementById("spark-container");
-
-  btn.addEventListener("click", () => {
-
-    /* --- 0) SCREEN SHAKE (vero impatto) --- */
-    gsap.fromTo(document.body, {x:0, y:0}, {
-      x: gsap.utils.random(-8, 8),
-      y: gsap.utils.random(-6, 6),
-      duration: 0.18,
-      ease: "power2.inOut",
-      repeat: 3,
-      yoyo: true
-    });
-
-    /* --- 1) PULSE GLOW DORATO --- */
-    box.classList.add("cosmic-pulse");
-    setTimeout(() => box.classList.remove("cosmic-pulse"), 350);
-
-    /* --- 2) ONDA D’URTO --- */
-    gsap.fromTo(shock,
-      {opacity:1, scale:0.25},
-      {
-        opacity:0,
-        scale:1.9,
-        duration:0.55,
-        ease:"power2.out"
-      }
-    );
-
-    /* --- 3) DISTORSIONE HEAT-WAVE --- */
-    gsap.fromTo(ripple,
-      {opacity:0.85, scale:0.3},
-      {
-        opacity:0,
-        scale:1.6,
-        duration:0.65,
-        ease:"sine.out"
-      }
-    );
-
-    /* --- 4) FULMINE CENTRALE --- */
-    gsap.fromTo(bolt,
-      {opacity:1, scaleY:0.2},
-      {
-        opacity:0,
-        scaleY:1.3,
-        duration:0.28,
-        ease: "power3.out"
-      }
-    );
-
-    /* --- 5) SCINTILLE GRANDI E LUMINOSE --- */
-    for (let i = 0; i < 18; i++) {
-
-      const s = document.createElement("div");
-      s.className = "spark";
-      sparks.appendChild(s);
-
-      const angle = Math.random() * Math.PI * 2;
-      const dist = 55 + Math.random()*80;
-
-      gsap.fromTo(s,
-        {
-          x: box.offsetWidth/2,
-          y: box.offsetHeight/2,
-          opacity: 1,
-          scale: gsap.utils.random(0.8, 1.4)
-        },
-        {
-          x: box.offsetWidth/2 + Math.cos(angle)*dist,
-          y: box.offsetHeight/2 + Math.sin(angle)*dist,
-          opacity: 0,
-          duration: 0.65,
-          scale: 0,
-          ease: "power2.out",
-          onComplete: () => s.remove()
-        }
-      );
-    }
-
-  });
-});
-</script>
-
-
 </body>
 </html>
-
