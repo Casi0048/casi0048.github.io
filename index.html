@@ -239,7 +239,7 @@ p, h1, h2, h3, h4, h5, h6 {
       display: flex;
       justify-content: flex-start;
       align-items: center;
-      padding: 0.4rem 1rem;
+      padding: 0.8rem 1.2rem;
       background: var(--menu-bg);
       backdrop-filter: blur(0.6rem);
       -webkit-backdrop-filter: blur(0.6rem);
@@ -381,7 +381,7 @@ p, h1, h2, h3, h4, h5, h6 {
 
       .menu-container {
       position: fixed;
-      top: 4rem;
+      top: 4.5rem;
       left: 0;
       width: 100%;
       display: flex;
@@ -6673,125 +6673,35 @@ function safeQuery(selector, context = document) {
     localStorage.setItem(LS_KEY, JSON.stringify({ ts: Date.now(), consent }));
   }
 
-  // Funzione per applicare le preferenze (carica script se consentito)
+  // Iniettabile: qui caricherai librerie solo se consentito
   function apply(consent){
-    console.log('Applicazione cookie:', consent);
-    
-    // ESEMPIO: se analytics true, carica GA
+    // Esempio: se analytics true, carica GA (placeholder)
     if (consent.analytics){
-      // loadAnalytics(); // <- tuo script reale
-      console.log('Analytics attivati');
+      // loadAnalytics(); // <- qui il tuo script reale
     }
-    
-    if (consent.marketing){
-      // loadMarketing(); // <- tuo script reale
-      console.log('Marketing attivato');
-    }
-    
-    if (consent.preferences){
-      console.log('Preferenze attivate');
-    }
+    // Se marketing false, puoi nascondere/“offuscare” embed terzi
+    // …
   }
 
-  // Gestione animazioni CSS
-  function openBanner(){ 
-    banner.classList.add('open'); 
-    banner.style.display = 'flex';
-  }
-  
-  function closeBanner(){ 
-    banner.classList.remove('open');
-    setTimeout(() => {
-      banner.style.display = 'none';
-      showFab(); // Mostra il FAB dopo che il banner scompare
-    }, 500);
-  }
-  
-  function openModal(){ 
-    modal.classList.add('open'); 
-    modal.setAttribute('aria-hidden','false');
-    pauseFabAnimation(); // Pausa animazione quando il modale è aperto
-  }
-  
-  function closeModal(){ 
-    modal.classList.remove('open'); 
-    modal.setAttribute('aria-hidden','true');
-    resumeFabAnimation(); // Riprende animazione
-  }
+  function openBanner(){ banner.classList.add('open'); }
+  function closeBanner(){ banner.classList.remove('open'); }
+  function openModal(){ modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); }
+  function closeModal(){ modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); }
 
-  // ========== GESTIONE ANIMAZIONE FAB ==========
-  
-  // Mostra il FAB con animazione
-  function showFab() {
-    fab.style.display = 'flex';
-    setTimeout(() => {
-      fab.classList.add('visible');
-      startFabAnimation();
-    }, 100);
-  }
-  
-  // Nasconde il FAB
-  function hideFab() {
-    fab.classList.remove('visible');
-    setTimeout(() => {
-      fab.style.display = 'none';
-    }, 300);
-  }
-  
-  // Avvia animazione fluttuazione
-  function startFabAnimation() {
-    fab.style.animation = 'floatCookie 3s ease-in-out infinite';
-    fab.style.animationDelay = '0.5s';
-    fab.style.animationPlayState = 'running';
-  }
-  
-  // Pausa animazione
-  function pauseFabAnimation() {
-    fab.style.animationPlayState = 'paused';
-  }
-  
-  // Riprende animazione
-  function resumeFabAnimation() {
-    fab.style.animationPlayState = 'running';
-  }
-  
-  // Cambia stile animazione (es. per disabilitare dopo interazione)
-  function setFabAnimation(style) {
-    fab.style.animation = style;
-  }
-
-  // ========== INIZIALIZZAZIONE ==========
-  
-  // Prime impostazioni dall'archivio
+  // Prime impostazioni dall’archivio
   const stored = getStored();
-  if (!stored){ 
-    openBanner();  // mostra il banner solo se manca consenso
-    hideFab(); // Nasconde FAB finché non si decide
-  } else { 
-    apply(stored.consent); 
-    showFab(); // Mostra FAB se già deciso
-  }
+  if (!stored){ openBanner(); }  // mostra il banner solo se manca consenso
+  else { apply(stored.consent); }
 
-  // ========== EVENT LISTENERS ==========
-  
   // Pulsanti banner
   btnAccept.addEventListener('click', ()=>{
     const consent = { preferences:true, analytics:true, marketing:true };
-    store(consent); 
-    apply(consent); 
-    closeBanner();
-    // Feedback visivo
-    showToast('Tutti i cookie attivati!', 'success');
+    store(consent); apply(consent); closeBanner();
   });
-  
   btnDecline.addEventListener('click', ()=>{
     const consent = { preferences:false, analytics:false, marketing:false };
-    store(consent); 
-    apply(consent); 
-    closeBanner();
-    showToast('Cookie non necessari disattivati', 'warning');
+    store(consent); apply(consent); closeBanner();
   });
-  
   btnCustom.addEventListener('click', ()=>{
     // precompila gli switch dalla memoria
     const s = getStored();
@@ -6799,38 +6709,19 @@ function safeQuery(selector, context = document) {
     anal.checked = !!(s && s.consent.analytics);
     mark.checked = !!(s && s.consent.marketing);
     openModal();
-    closeBanner();
   });
 
   // Pulsanti modale
   btnSave.addEventListener('click', ()=>{
-    const consent = { 
-      preferences:pref.checked, 
-      analytics:anal.checked, 
-      marketing:mark.checked 
-    };
-    store(consent); 
-    apply(consent); 
-    closeModal(); 
-    closeBanner();
-    showToast('Preferenze salvate!', 'success');
+    const consent = { preferences:pref.checked, analytics:anal.checked, marketing:mark.checked };
+    store(consent); apply(consent); closeModal(); closeBanner();
   });
-  
-  btnCancel.addEventListener('click', ()=> {
-    closeModal();
-    // Se non c'era scelta precedente, riapre banner
-    if (!getStored()) {
-      setTimeout(() => openBanner(), 300);
-    }
-  });
-  
+  btnCancel.addEventListener('click', ()=> closeModal());
   btnRejectAll.addEventListener('click', ()=>{
-    pref.checked = false;
-    anal.checked = false;
-    mark.checked = false;
+    pref.checked = anal.checked = mark.checked = false;
   });
 
-  // FAB: riapre la modale in ogni momento
+  // Biscottino: riapre la modale in ogni momento
   fab.addEventListener('click', ()=>{
     const s = getStored();
     pref.checked = !!(s && s.consent.preferences);
@@ -6839,105 +6730,27 @@ function safeQuery(selector, context = document) {
     openModal();
   });
 
-  // Gestione hover per pausa animazione
-  fab.addEventListener('mouseenter', () => {
-    pauseFabAnimation();
-    fab.style.transform = 'scale(1.1)';
-  });
-  
-  fab.addEventListener('mouseleave', () => {
-    resumeFabAnimation();
-    fab.style.transform = 'scale(1)';
-  });
-
-  // ========== FUNZIONI AUSILIARIE ==========
-  
-  // Evita sovrapposizione con il box di Russell
+  // Evita sovrapposizione con il box di Russell: se collide, sposta a destra
   function avoidOverlap(){
-    const rb = document.getElementById('russell-box'); 
+    const rb = document.getElementById('russell-box'); /* presente nel tuo file */ 
     if(!rb) return;
-    
     const r1 = fab.getBoundingClientRect();
     const r2 = rb.getBoundingClientRect();
-    
-    const overlap = !(r1.right < r2.left || r1.left > r2.right || 
-                      r1.bottom < r2.top || r1.top > r2.bottom);
-    
+    const overlap = !(r1.right < r2.left || r1.left > r2.right || r1.bottom < r2.top || r1.top > r2.bottom);
     if(overlap){
       fab.style.left = 'auto';
-      fab.style.right = (parseFloat(getComputedStyle(rb).right) + 70) + 'px';
-    } else {
+      fab.style.right = '1.25rem';
+    }else{
       fab.style.right = 'auto';
       fab.style.left  = '1.25rem';
     }
   }
-  
-  // Toast per feedback
-  function showToast(message, type = 'info') {
-    const toast = document.createElement('div');
-    toast.className = `cookie-toast ${type}`;
-    toast.innerHTML = `
-      <span>${type === 'success' ? '✅' : type === 'warning' ? '⚠️' : 'ℹ️'}</span>
-      <span>${message}</span>
-    `;
-    
-    toast.style.cssText = `
-      position: fixed;
-      bottom: 100px;
-      right: 2rem;
-      background: ${type === 'success' ? '#4CAF50' : type === 'warning' ? '#FF9800' : '#2196F3'};
-      color: white;
-      padding: 1rem 1.5rem;
-      border-radius: 8px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-      z-index: 10004;
-      transform: translateX(100px);
-      opacity: 0;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    `;
-    
-    document.body.appendChild(toast);
-    
-    setTimeout(() => {
-      toast.style.transform = 'translateX(0)';
-      toast.style.opacity = '1';
-    }, 100);
-    
-    setTimeout(() => {
-      toast.style.transform = 'translateX(100px)';
-      toast.style.opacity = '0';
-      setTimeout(() => toast.remove(), 400);
-    }, 3000);
-  }
-
-  // ========== INIZIALIZZAZIONE FINALE ==========
-  
   avoidOverlap();
   window.addEventListener('resize', avoidOverlap);
   window.addEventListener('scroll', avoidOverlap);
 
   // ESC chiude la modale
-  document.addEventListener('keydown', (e)=>{ 
-    if(e.key === 'Escape') closeModal(); 
-  });
-
-  // Supporto per prefers-reduced-motion
-  const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-  if (mediaQuery.matches) {
-    setFabAnimation('none');
-  }
-  
-  mediaQuery.addEventListener('change', (e) => {
-    if (e.matches) {
-      setFabAnimation('none');
-    } else {
-      startFabAnimation();
-    }
-  });
-
+  document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeModal(); });
 })();
 </script>
 <script>
