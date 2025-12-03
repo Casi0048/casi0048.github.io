@@ -239,7 +239,7 @@ p, h1, h2, h3, h4, h5, h6 {
       display: flex;
       justify-content: flex-start;
       align-items: center;
-      padding: 0.4rem 1rem;
+      padding: 0.4rem 0.8rem;
       background: var(--menu-bg);
       backdrop-filter: blur(0.6rem);
       -webkit-backdrop-filter: blur(0.6rem);
@@ -1076,6 +1076,23 @@ nav.menu-desktop .mega-menu.right-align:hover {
       #effects-ctrl{position:fixed;top:.9rem;right:1.25rem;width:auto;z-index:2147483603;display:flex;gap:.5rem;justify-content:flex-end}
       #effects-ctrl .ctrl-btn{min-width:6.5rem}
       @media (min-width:1200px){ main{padding-left:16rem;padding-right:22rem} }
+
+
+      /* Enhanced button animation with text glow */
+#russell-btn {
+  transition: 
+    color 160ms cubic-bezier(0.4, 0, 0.2, 1),
+    text-shadow 160ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 160ms cubic-bezier(0.4, 0, 0.2, 1),
+    transform 160ms cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+@keyframes textShimmer {
+  0% { text-shadow: 0 0 10px rgba(255, 215, 0, 0.45); }
+  50% { text-shadow: 0 0 15px rgba(255, 224, 138, 0.6), 0 0 25px rgba(255, 215, 0, 0.3); }
+  100% { text-shadow: 0 0 10px rgba(255, 215, 0, 0.45); }
+}
     </style>
 <style id="right-links-css">
       .right-box{
@@ -4413,7 +4430,7 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
   position: fixed;
   bottom: 25.4rem;
   right: 5.2rem;
-  padding: 4px 12px;
+  padding: 10px 18px;
 
   display: flex;
   align-items: center;
@@ -4796,13 +4813,9 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 <audio id="explosionSound" playsinline preload="auto"
        src="https://casi0048.github.io/suoni/explosion-1.mp3"></audio>
 
-<!-- Fulmine globale (se usato in altre parti della pagina) -->
 <div aria-hidden="true" id="lightning"></div>
 <div aria-hidden="true" id="bolt"></div>
-
-
 <!-- Sfondo con particelle cosmiche -->
-
 <div id="cosmic-bg"></div>
 <div aria-hidden="true" class="stars-container" id="starsContainer"></div>
 <!-- Top Bar -->
@@ -4999,11 +5012,6 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
                data-url="https://scholar.google.com/scholar?q={q}">
         🎓 Google Scholar
     </label>
-      <label>
-  <input type="checkbox"
-         data-url="https://www.google.com/search?q=site:raicultura.it/filosofia+{q}">
-  🎥 Rai Cultura – Filosofia
-</label>
     </div>
 
     <button id="dict-search" class="btn notranslate" translate="no">Cerca</button>
@@ -9048,64 +9056,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     ">
                 </div>
                 
-                <!-- Risultati -->
-                <div id="dict-results" style="
-                    max-height: 400px;
-                    overflow-y: auto;
-                    padding-right: 10px;
-                ">
-                    <div class="dict-term" data-term="epistemologia">
-                        <h4 style="color: var(--cyan); margin-bottom: 0.5rem;">Epistemologia</h4>
-                        <p style="color: var(--text-light); margin: 0; font-size: 0.9rem;">
-                            Branca della filosofia che studia la conoscenza scientifica, i suoi fondamenti e metodi.
-                        </p>
-                    </div>
-                    
-                    <div class="dict-term" data-term="ontologia">
-                        <h4 style="color: var(--cyan); margin-bottom: 0.5rem;">Ontologia</h4>
-                        <p style="color: var(--text-light); margin: 0; font-size: 0.9rem;">
-                            Studio dell'essere in quanto essere, della realtà e dell'esistenza.
-                        </p>
-                    </div>
-                    
-                    <div class="dict-term" data-term="dialettica">
-                        <h4 style="color: var(--cyan); margin-bottom: 0.5rem;">Dialettica</h4>
-                        <p style="color: var(--text-light); margin: 0; font-size: 0.9rem;">
-                            Metodo di ragionamento che procede attraverso tesi, antitesi e sintesi.
-                        </p>
-                    </div>
-                    
-                    <div class="dict-term" data-term="eudaimonia">
-                        <h4 style="color: var(--cyan); margin-bottom: 0.5rem;">Eudaimonia</h4>
-                        <p style="color: var(--text-light); margin: 0; font-size: 0.9rem;">
-                            Concetto greco di felicità come realizzazione della propria natura razionale.
-                        </p>
-                    </div>
-                    
-                    <div class="dict-term" data-term="a priori">
-                        <h4 style="color: var(--cyan); margin-bottom: 0.5rem;">A priori</h4>
-                        <p style="color: var(--text-light); margin: 0; font-size: 0.9rem;">
-                            Conoscenza indipendente dall'esperienza, basata sulla ragione pura.
-                        </p>
-                    </div>
-                </div>
                 
-                <!-- FONTI DI RICERCA -->
-                <div class="sources" style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--menu-border);">
-                    <h4 style="color: var(--gold); margin-bottom: 0.5rem;">Fonti di ricerca:</h4>
-                    <label style="display: block; margin-bottom: 0.5rem; color: var(--text-light);">
-                        <input type="checkbox" checked data-url="https://www.treccani.it/risultati?q={q}">
-                        Treccani
-                    </label>
-                    <label style="display: block; margin-bottom: 0.5rem; color: var(--text-light);">
-                        <input type="checkbox" checked data-url="https://duckduckgo.com/?q=site%3Aplato.stanford.edu+{q}">
-                        Stanford Encyclopedia (SEP)
-                    </label>
-                    <label style="display: block; margin-bottom: 0.5rem; color: var(--text-light);">
-                        <input type="checkbox" data-url="https://it.wikipedia.org/w/index.php?search={q}">
-                        Wikipedia
-                    </label>
-                </div>
+                
                 
                 <!-- BOTTONI AZIONE -->
                 <div style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: flex-end;">
