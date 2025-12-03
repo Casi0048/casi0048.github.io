@@ -614,3 +614,72 @@ function setupClearButton() {
 document.addEventListener('DOMContentLoaded', function() {
     setupClearButton();
 });
+// Gestione banner cookie
+document.addEventListener('DOMContentLoaded', function() {
+  const cookieBanner = document.getElementById('cookie-banner');
+  const cookieFab = document.getElementById('cookie-fab');
+  const cookieModal = document.getElementById('cookie-modal');
+  
+  // Mostra banner dopo 1 secondo con animazione
+  setTimeout(() => {
+    cookieBanner.classList.add('show');
+  }, 1000);
+  
+  // FAB click - mostra modale
+  cookieFab.addEventListener('click', () => {
+    cookieModal.classList.add('show');
+    cookieBanner.classList.remove('show');
+  });
+  
+  // Pulsante Personalizza nel banner
+  document.getElementById('cc-customize')?.addEventListener('click', () => {
+    cookieModal.classList.add('show');
+    cookieBanner.classList.remove('show');
+  });
+  
+  // Pulsante Annulla nel modale
+  document.getElementById('cc-cancel')?.addEventListener('click', () => {
+    cookieModal.classList.remove('show');
+    // Riporta il banner dopo 0.5s se non ha scelto
+    setTimeout(() => {
+      if (!localStorage.getItem('cookiePreferences')) {
+        cookieBanner.classList.add('show');
+      }
+    }, 500);
+  });
+  
+  // Pulsante Accetta tutto
+  document.getElementById('cc-accept')?.addEventListener('click', () => {
+    cookieBanner.classList.add('exit');
+    setTimeout(() => {
+      cookieBanner.classList.remove('show', 'exit');
+      localStorage.setItem('cookiePreferences', 'all');
+      showToast('Preferenze salvate con successo!');
+    }, 500);
+  });
+  
+  // Pulsante Rifiuta tutto
+  document.getElementById('cc-reject-all')?.addEventListener('click', () => {
+    cookieModal.classList.remove('show');
+    cookieBanner.classList.add('exit');
+    setTimeout(() => {
+      cookieBanner.classList.remove('show', 'exit');
+      localStorage.setItem('cookiePreferences', 'none');
+      showToast('Cookie non necessari disattivati');
+    }, 500);
+  });
+  
+  // Funzione toast per feedback
+  function showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'cookie-toast';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => toast.classList.add('show'), 100);
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
+  }
+});
