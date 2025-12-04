@@ -2538,71 +2538,104 @@ footer {
 /* ================================
    VIDEO PLAYER — ECHI DI SOFIA
 ================================ */
-
-.video-widget {
-  margin-top: 22px;
-}
-
-.video-title {
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: var(--gold);
-  margin-bottom: 10px;
-}
-
-/* Contenitore video */
-.video-player-box {
+/* Player compatto sidebar */
+.video-player-box.sidebar-player {
   position: relative;
-  width: 100%;
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
-  border: 1px solid rgba(255, 215, 0, 0.35);
+  border: 1px solid rgba(255, 215, 0, 0.30);
   box-shadow: 0 0 12px rgba(255, 215, 0, 0.25);
 }
 
 /* Video */
-.video-player-box video {
+.video-player-box.sidebar-player video {
   width: 100%;
   display: block;
-  border-radius: inherit;
-  cursor: pointer;
 }
 
-/* Pulsante Play overlay */
-.video-play-btn {
+/* Pulsante centrale Play */
+.video-overlay-play {
   position: absolute;
   inset: 0;
   margin: auto;
-  width: 68px;
-  height: 68px;
-  
+  width: 45px;
+  height: 45px;
   background: rgba(0,0,0,0.45);
   border: 2px solid var(--gold);
   border-radius: 50%;
-
+  font-size: 1.4rem;
+  color: var(--gold);
+  backdrop-filter: blur(5px);
   display: flex;
   align-items: center;
   justify-content: center;
-
-  font-size: 2rem;
-  color: var(--gold);
-
   cursor: pointer;
   transition: 0.25s ease;
-  backdrop-filter: blur(4px);
-  
-  box-shadow: 0 0 16px rgba(255, 215, 0, 0.4);
 }
 
-.video-play-btn:hover {
-  transform: scale(1.12);
-  box-shadow: 0 0 22px rgba(255, 215, 0, 0.6);
-}
-
-/* Quando il video parte → pulsante fade out */
-.video-play-btn.hidden {
+.video-overlay-play.hidden {
   opacity: 0;
   pointer-events: none;
+}
+
+/* MINI CONTROLLI — versione compressa */
+.video-controls {
+  position: absolute;
+  bottom: 4px;
+  left: 0;
+  right: 0;
+
+  padding: 4px 6px;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(6px);
+  border-radius: 6px;
+
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  opacity: 0;
+  transition: opacity .25s ease;
+}
+
+.video-controls.visible {
+  opacity: 1;
+}
+
+/* Pulsante play/pause molto compatto */
+.ctrl-btn {
+  background: rgba(255,255,255,0.12);
+  border: none;
+  color: var(--gold);
+  padding: 3px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+/* Barra di progresso più sottile */
+#progressBar {
+  flex: 1;
+  height: 3px;
+  appearance: none;
+  background: rgba(255,255,255,0.3);
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+#progressBar::-webkit-slider-thumb {
+  appearance: none;
+  width: 10px;
+  height: 10px;
+  background: var(--gold);
+  border-radius: 50%;
+}
+
+/* Timer più piccolo */
+.time {
+  font-size: 0.75rem;
+  color: var(--text-light);
+  white-space: nowrap;
 }
 
 </style>
@@ -3250,24 +3283,32 @@ footer {
       </section>
       <!-- Sidebar -->
       <aside class="sidebar">
-        <!-- === VIDEO FILOSOFICO PERSONALIZZATO === -->
+       <!-- === VIDEO FILOSOFICO PERSONALIZZATO — APPLE SIDEBAR === -->
 <div class="video-widget">
   
   <h3 class="video-title">🎥 Socrate — «So di non sapere»</h3>
 
-  <div class="video-player-box">
-    <video id="philoVideo" preload="metadata" tabindex="0">
-  <source src="https://ia902901.us.archive.org/12/items/socrate_202511/socrate.mp4" type="video/mp4">
+  <div class="video-player-box sidebar-player">
+    
+    <video id="philoVideo" preload="metadata">
+      <source src="https://ia902901.us.archive.org/12/items/socrate_202511/socrate.mp4" type="video/mp4">
       Il tuo browser non supporta il video HTML5.
     </video>
 
-    <!-- Pulsante Play overlay -->
-    <button class="video-play-btn" id="videoPlayBtn" aria-label="Riproduci Video">
-      ▶
-    </button>
+    <!-- Pulsante centrale -->
+    <button class="video-overlay-play" id="overlayPlay">▶</button>
+
+    <!-- MINI CONTROLLI -->
+    <div class="video-controls" id="videoControls">
+      <button class="ctrl-btn" id="togglePlay">⏯</button>
+      <input type="range" id="progressBar" min="0" max="100" value="0">
+      <span class="time" id="videoTime">0:00</span>
+    </div>
+
   </div>
 
 </div>
+
 
         <!-- 📘 BOTTONE DICTIONARY -->
 <button id="openDict" class="dict-btn">
@@ -5483,32 +5524,64 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("DOMContentLoaded", () => {
 
   const video = document.getElementById("philoVideo");
-  const playBtn = document.getElementById("videoPlayBtn");
+  const overlayPlay = document.getElementById("overlayPlay");
+  const controls = document.getElementById("videoControls");
+  const togglePlay = document.getElementById("togglePlay");
+  const progressBar = document.getElementById("progressBar");
+  const timeDisplay = document.getElementById("videoTime");
 
-  // Avvia il video
-  playBtn.addEventListener("click", () => {
+  let hideControlsTimeout;
+
+  function showControls() {
+    controls.classList.add("visible");
+    clearTimeout(hideControlsTimeout);
+    hideControlsTimeout = setTimeout(() => {
+      controls.classList.remove("visible");
+    }, 1500);
+  }
+
+  // Overlay play
+  overlayPlay.addEventListener("click", () => {
     video.play();
-    playBtn.classList.add("hidden");
+    overlayPlay.classList.add("hidden");
+    showControls();
   });
 
-  // Click sul video → pausa/riprendi
-  video.addEventListener("click", () => {
+  // Toggle play
+  togglePlay.addEventListener("click", () => {
     if (video.paused) {
       video.play();
-      playBtn.classList.add("hidden");
+      overlayPlay.classList.add("hidden");
     } else {
       video.pause();
-      playBtn.classList.remove("hidden");
+      overlayPlay.classList.remove("hidden");
     }
+    showControls();
   });
 
-  // Mostra il pulsante quando termina
-  video.addEventListener("ended", () => {
-    playBtn.classList.remove("hidden");
+  // Progress bar update
+  video.addEventListener("timeupdate", () => {
+    progressBar.value = (video.currentTime / video.duration) * 100 || 0;
+
+    const cur = Math.floor(video.currentTime);
+    const min = Math.floor(cur / 60);
+    const sec = String(cur % 60).padStart(2,"0");
+
+    timeDisplay.textContent = `${min}:${sec}`;
   });
+
+  // Seek
+  progressBar.addEventListener("input", () => {
+    video.currentTime = (progressBar.value / 100) * video.duration;
+  });
+
+  // Show controls on mousemove
+  video.addEventListener("mousemove", showControls);
+  controls.addEventListener("mousemove", showControls);
 
 });
 </script>
+
 
 </body>
 </html>
