@@ -2350,17 +2350,12 @@ footer {
   padding: 22px 26px;
   width: 360px;
   box-shadow: 0 0 25px rgba(255, 215, 0, 0.35);
-  animation: modalIn 260ms ease-out forwards;
-  transform: translateY(20px);
+
+  /* RIMOSSE animazioni CSS per usare GSAP */
+  transform: scale(0.85);
   opacity: 0;
 }
 
-@keyframes modalIn {
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
 
 /* =============================
    COMANDI
@@ -5341,62 +5336,81 @@ function createSimpleWaves() {
     }
 }
   </script>
- <script>
+<script>
 document.addEventListener("DOMContentLoaded", () => {
 
-  const openBtn  = document.getElementById("openDict");
-  const modal    = document.getElementById("dictModal");
-  const box      = document.querySelector(".dict-modal");
+  const openBtn = document.getElementById("openDict");
+  const modal = document.getElementById("dictModal");
+  const box = document.querySelector(".dict-modal");
   const closeBtn = document.querySelector(".dict-close");
-  const input    = document.getElementById("dict-q");
+  const searchBtn = document.getElementById("dict-search");
+  const input = document.getElementById("dict-q");
+  const clearBtn = document.getElementById("dict-clear");
 
-  // APRI MODAL con animazione GSAP
+  /* -------- APERTURA MODALE (con GSAP se presente) -------- */
   openBtn.addEventListener("click", () => {
-
-    // Mostra overlay
     modal.style.display = "flex";
 
-    // Reset stato visivo
-    gsap.set(modal, { opacity: 0 });
-    gsap.set(box, { opacity: 0, scale: 0.85 });
+    if (window.gsap) {
+      gsap.set(modal, { opacity: 0 });
+      gsap.set(box, { opacity: 0, scale: 0.85 });
 
-    // Timeline elegante
-    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-
-    tl.to(modal, { opacity: 1, duration: 0.25 })      // fade overlay
-      .to(box, { 
-          opacity: 1, 
-          scale: 1, 
-          duration: 0.35 
-      }, "-=0.10");  // zoom + fade del box
+      gsap.timeline({ defaults: { ease: "power3.out" } })
+        .to(modal, { opacity: 1, duration: 0.25 })
+        .to(box, { opacity: 1, scale: 1, duration: 0.35 }, "-=0.10");
+    }
 
     input.focus();
   });
 
-  // CHIUDI MODAL
-  closeBtn.addEventListener("click", () => {
-    closeModal();
-  });
+  /* -------- CHIUSURA MODALE -------- */
+  function closeModal() {
+    if (window.gsap) {
+      gsap.timeline({ defaults: { ease: "power2.inOut" } })
+        .to(box, { scale: 0.88, opacity: 0, duration: 0.25 })
+        .to(modal, { opacity: 0, duration: 0.25 }, "-=0.10")
+        .add(() => modal.style.display = "none");
+    } else {
+      modal.style.display = "none";
+    }
+  }
 
-  // CHIUDI CLIC STICKY SU SFONDO
-  modal.addEventListener("click", (e) => {
+  closeBtn.addEventListener("click", closeModal);
+
+  modal.addEventListener("click", e => {
     if (e.target === modal) closeModal();
   });
 
-  // Impedisci chiusura cliccando contenuto
-  box.addEventListener("click", (e) => e.stopPropagation());
+  box.addEventListener("click", e => e.stopPropagation());
 
-  // Funzione chiusura animata
-  function closeModal(){
-    const tl = gsap.timeline({ defaults: { ease: "power2.inOut" } });
+  /* -------- X per cancellare input -------- */
+  input.addEventListener("input", () => {
+    clearBtn.style.display = input.value.trim() ? "flex" : "none";
+  });
 
-    tl.to(box, { scale: 0.88, opacity: 0, duration: 0.25 })
-      .to(modal, { opacity: 0, duration: 0.25 }, "-=0.10")
-      .add(() => modal.style.display = "none");
-  }
+  clearBtn.addEventListener("click", () => {
+    input.value = "";
+    clearBtn.style.display = "none";
+    input.focus();
+  });
+
+  /* -------- FUNZIONE PRINCIPALE DI RICERCA -------- */
+  searchBtn.addEventListener("click", () => {
+    const q = input.value.trim();
+    if (!q) return;
+
+    const checks = modal.querySelectorAll("input[type='checkbox']:checked");
+
+    checks.forEach(box => {
+      const url = box.dataset.url.replace("{q}", encodeURIComponent(q));
+      window.open(url, "_blank");
+    });
+  });
 
 });
 </script>
+
+
 </body>
 </html>
  
