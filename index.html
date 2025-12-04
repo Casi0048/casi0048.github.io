@@ -2535,6 +2535,75 @@ footer {
   background: #05A417;  rgba(255, 215, 0, 0.20);
   box-shadow: 0 0 6px rgba(255, 215, 0, 0.45);
 }
+/* ================================
+   VIDEO PLAYER — ECHI DI SOFIA
+================================ */
+
+.video-widget {
+  margin-top: 22px;
+}
+
+.video-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+
+/* Contenitore video */
+.video-player-box {
+  position: relative;
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 215, 0, 0.35);
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.25);
+}
+
+/* Video */
+.video-player-box video {
+  width: 100%;
+  display: block;
+  border-radius: inherit;
+  cursor: pointer;
+}
+
+/* Pulsante Play overlay */
+.video-play-btn {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 68px;
+  height: 68px;
+  
+  background: rgba(0,0,0,0.45);
+  border: 2px solid var(--gold);
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 2rem;
+  color: var(--gold);
+
+  cursor: pointer;
+  transition: 0.25s ease;
+  backdrop-filter: blur(4px);
+  
+  box-shadow: 0 0 16px rgba(255, 215, 0, 0.4);
+}
+
+.video-play-btn:hover {
+  transform: scale(1.12);
+  box-shadow: 0 0 22px rgba(255, 215, 0, 0.6);
+}
+
+/* Quando il video parte → pulsante fade out */
+.video-play-btn.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
 
 </style>
 <body>
@@ -2591,7 +2660,7 @@ footer {
             </h3>
             <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
               <div style="text-align: center;">
-                <img alt="Socrate" decoding="async" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/immagini%20per%20sito/Socrates_Louvre.jpg" style="width: 100%; max-width: 80px; border-radius: 50%; border: 3px solid #d4af37;"/>
+                <img alt="Socrate" decoding="async" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/socrate.webp" style="width: 100%; max-width: 80px; border-radius: 50%; border: 3px solid #d4af37;"/>
                 <p style="margin-top: 10px; color: #e9eef5; font-weight: bold; font-family: 'Cormorant Garamond', serif;">Socrate</p>
                 <p style="font-style: italic; color: #9ad0ff; font-size: 0.85rem;font-weight: 700;">"So di non sapere."</p>
               </div>
@@ -3181,25 +3250,25 @@ footer {
       </section>
       <!-- Sidebar -->
       <aside class="sidebar">
-        <!-- INIZIO Aggiungi questo widget nel sidebar -->
-        <div class="sidebar-widget">
-          <h3>Video Filosofici</h3>
-          <div class="video-player">
-            <div class="right-embed" aria-label="Video: Spinoza">
-              <iframe
-                src="https://archive.org/embed/socrate_202511"
-                title="Socrate — Video (Archive.org)"
-                allowfullscreen
-                loading="lazy"
-                referrerpolicy="strict-origin-when-cross-origin"
-                style="width: 100%; height: 230px; border-radius: 4px; border: none;">
-              </iframe>
-            </div>
-            <p style="margin-top: 10px; font-size: 0.9rem; font-weight:700; color: var(--text-muted);">
-              Socrate - so di non sapere
-            </p>
-          </div>
-        </div>
+        <!-- === VIDEO FILOSOFICO PERSONALIZZATO === -->
+<div class="video-widget">
+  
+  <h3 class="video-title">🎥 Socrate — «So di non sapere»</h3>
+
+  <div class="video-player-box">
+    <video id="philoVideo" preload="metadata" tabindex="0">
+      <source src="https://casi0048.github.io/media/socrate.mp4" type="video/mp4">
+      Il tuo browser non supporta il video HTML5.
+    </video>
+
+    <!-- Pulsante Play overlay -->
+    <button class="video-play-btn" id="videoPlayBtn" aria-label="Riproduci Video">
+      ▶
+    </button>
+  </div>
+
+</div>
+
         <!-- 📘 BOTTONE DICTIONARY -->
 <button id="openDict" class="dict-btn">
     <span></span>
@@ -5410,7 +5479,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 </script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
 
+  const video = document.getElementById("philoVideo");
+  const playBtn = document.getElementById("videoPlayBtn");
+
+  // Avvia il video
+  playBtn.addEventListener("click", () => {
+    video.play();
+    playBtn.classList.add("hidden");
+  });
+
+  // Click sul video → pausa/riprendi
+  video.addEventListener("click", () => {
+    if (video.paused) {
+      video.play();
+      playBtn.classList.add("hidden");
+    } else {
+      video.pause();
+      playBtn.classList.remove("hidden");
+    }
+  });
+
+  // Mostra il pulsante quando termina
+  video.addEventListener("ended", () => {
+    playBtn.classList.remove("hidden");
+  });
+
+});
+</script>
 
 </body>
 </html>
