@@ -59,6 +59,7 @@
       crossorigin="anonymous">
 
 <!-- ===== RICERCA E CONFIGURAZIONE ===== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
   <!-- ===== RICERCA E CONFIGURAZIONE ===== -->
 
@@ -3213,8 +3214,8 @@ footer {
 
 <!-- ===== MODAL DIZIONARIO FILOSOFICO ===== -->
 <div id="dictModal" class="dict-modal-overlay">
-
     <div class="dict-modal">
+
 
         <!-- Pulsante chiusura -->
         <button class="dict-close" aria-label="Chiudi dizionario">✖</button>
@@ -5340,68 +5341,62 @@ function createSimpleWaves() {
     }
 }
   </script>
- 
-<script>
+ <script>
 document.addEventListener("DOMContentLoaded", () => {
 
-  const openBtn = document.getElementById("openDict");
-  const modal = document.getElementById("dictModal");
+  const openBtn  = document.getElementById("openDict");
+  const modal    = document.getElementById("dictModal");
+  const box      = document.querySelector(".dict-modal");
   const closeBtn = document.querySelector(".dict-close");
-  const searchBtn = document.getElementById("dict-search");
-  const input = document.getElementById("dict-q");
+  const input    = document.getElementById("dict-q");
 
-  // APRI MODAL
+  // APRI MODAL con animazione GSAP
   openBtn.addEventListener("click", () => {
+
+    // Mostra overlay
     modal.style.display = "flex";
+
+    // Reset stato visivo
+    gsap.set(modal, { opacity: 0 });
+    gsap.set(box, { opacity: 0, scale: 0.85 });
+
+    // Timeline elegante
+    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+    tl.to(modal, { opacity: 1, duration: 0.25 })      // fade overlay
+      .to(box, { 
+          opacity: 1, 
+          scale: 1, 
+          duration: 0.35 
+      }, "-=0.10");  // zoom + fade del box
+
     input.focus();
   });
 
   // CHIUDI MODAL
   closeBtn.addEventListener("click", () => {
-    modal.style.display = "none";
+    closeModal();
   });
 
-  // CHIUDI CLICCANDO FUORI
+  // CHIUDI CLIC STICKY SU SFONDO
   modal.addEventListener("click", (e) => {
-    if (e.target === modal) modal.style.display = "none";
+    if (e.target === modal) closeModal();
   });
 
-  // CERCA
-  searchBtn.addEventListener("click", () => {
-    const q = input.value.trim();
-    if (!q) return;
+  // Impedisci chiusura cliccando contenuto
+  box.addEventListener("click", (e) => e.stopPropagation());
 
-    const checks = modal.querySelectorAll("input[type='checkbox']:checked");
+  // Funzione chiusura animata
+  function closeModal(){
+    const tl = gsap.timeline({ defaults: { ease: "power2.inOut" } });
 
-    checks.forEach(box => {
-      const url = box.dataset.url.replace("{q}", encodeURIComponent(q));
-      window.open(url, "_blank");
-    });
-  });
+    tl.to(box, { scale: 0.88, opacity: 0, duration: 0.25 })
+      .to(modal, { opacity: 0, duration: 0.25 }, "-=0.10")
+      .add(() => modal.style.display = "none");
+  }
 
 });
 </script>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-
-  const input = document.getElementById("dict-q");
-  const clearBtn = document.getElementById("dict-clear");
-
-  // Mostra/nasconde la X
-  input.addEventListener("input", () => {
-    clearBtn.style.display = input.value.trim() ? "flex" : "none";
-  });
-
-  // Cancella testo
-  clearBtn.addEventListener("click", () => {
-    input.value = "";
-    clearBtn.style.display = "none";
-    input.focus();
-  });
-
-});
-</script>
-
 </body>
 </html>
  
