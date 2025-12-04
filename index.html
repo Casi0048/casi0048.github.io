@@ -2321,6 +2321,225 @@ footer {
 .waves-container.interactive .wave:active {
     animation: waveExpand 1s ease-out;
 }
+
+
+/* ====== BOTTONE DIZIONARIO — Stile Echi di Sofia ====== */
+
+/* =============================
+   MODAL OVERLAY
+============================= */
+.dict-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(6px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* =============================
+   MODAL BOX
+============================= */
+.dict-modal {
+  background: rgba(20, 20, 35, 0.95);
+  border: 1px solid rgba(255, 215, 0, 0.35);
+  border-radius: 16px;
+  padding: 22px 26px;
+  width: 360px;
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.35);
+  animation: modalIn 260ms ease-out forwards;
+  transform: translateY(20px);
+  opacity: 0;
+}
+
+@keyframes modalIn {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* =============================
+   COMANDI
+============================= */
+.dict-close {
+  background: transparent;
+  border: none;
+  color: #ffd86a;
+  font-size: 1.4rem;
+  cursor: pointer;
+  float: right;
+  margin-top: -10px;
+}
+
+.dict-title {
+  font-family: "Cormorant Garamond", serif;
+  color: var(--gold, #ffd86a);
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+/* Campo testo */
+.dict-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 18px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,215,0,0.35);
+  color: var(--text-light, #e9eef5);
+}
+
+/* =============================
+   SEZIONI LISTA
+============================= */
+.dict-section {
+  margin-bottom: 20px;
+}
+
+.dict-section h3 {
+  color: var(--gold);
+  margin-bottom: 6px;
+  font-size: 1.05rem;
+}
+
+.dict-section label {
+  display: block;
+  color: var(--text-light);
+  margin: 5px 0;
+  cursor: pointer;
+}
+
+/* =============================
+   PULSANTE CERCA
+============================= */
+.dict-search-btn {
+  width: 100%;
+  padding: 10px 0;
+  border-radius: 10px;
+  background: rgba(255,215,0,0.18);
+  border: 1px solid rgba(255,215,0,0.4);
+  color: var(--gold);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 150ms;
+}
+
+.dict-search-btn:hover {
+  background: rgba(255,215,0,0.28);
+  box-shadow: 0 0 12px rgba(255,215,0,0.45);
+}
+/* ===============================
+   BOTTONE DIZIONARIO — GOLD EDITION
+   =============================== */
+
+.dict-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+
+  padding: 10px 18px;
+  border-radius: 12px;
+
+  background: rgba(255, 215, 0, 0.10); /* leggero oro */
+  border: 1px solid rgba(255, 215, 0, 0.35);
+
+  color: var(--gold, #ffd86a);
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    box-shadow 220ms ease,
+    transform 180ms ease,
+    color 180ms ease;
+}
+
+/* Hover: bagliore dorato */
+.dict-btn:hover {
+  background: rgba(255, 215, 0, 0.20);
+  border-color: rgba(255, 215, 0, 0.60);
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.45);
+  transform: translateY(-2px);
+}
+
+/* Active: click più morbido */
+.dict-btn:active {
+  transform: translateY(0) scale(0.96);
+  box-shadow: 0 0 6px rgba(255, 215, 0, 0.3);
+}
+
+/* Icona */
+.dict-btn span:first-child {
+  font-size: 1.2rem;
+  filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5));
+}
+
+/* Testo */
+.dict-btn span:last-child {
+  letter-spacing: 0.4px;
+}
+
+/* Accessibilità: focus ring */
+.dict-btn:focus-visible {
+  outline: 3px solid rgba(255, 215, 0, 0.65);
+  outline-offset: 3px;
+  box-shadow: 0 0 14px rgba(255, 215, 0, 0.55);
+}
+/* Wrapper per input + X */
+.dict-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* Input stilizzato */
+.dict-input {
+  width: 100%;
+  padding: 10px 38px 10px 12px; /* spazio per la X */
+  border-radius: 10px;
+  border: 1px solid rgba(255, 215, 0, 0.35);
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--text-light);
+  font-family: inherit;
+}
+
+/* Pulsante X */
+.dict-clear-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(calc(-50% - 9px));
+
+  width: 32px;
+  height: 32px;
+
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 215, 0, 0.5);
+  border-radius: 50%;
+
+  color: var(--gold, #ffd86a);
+  font-size: 0.85rem;
+
+  display: none; /* appare solo quando c’è testo */
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  transition: 0.15s ease;
+}
+
+.dict-clear-btn:hover {
+  background: rgba(255, 215, 0, 0.20);
+  box-shadow: 0 0 6px rgba(255, 215, 0, 0.45);
+}
+
 </style>
 <body>
   <!-- Header -->
@@ -2986,6 +3205,91 @@ footer {
             </p>
           </div>
         </div>
+        <!-- 📘 BOTTONE DICTIONARY -->
+<button id="openDict" class="dict-btn">
+    <span>📘</span>
+    <span>Dizionario</span>
+</button>
+
+<!-- ===== MODAL DIZIONARIO FILOSOFICO ===== -->
+<div id="dictModal" class="dict-modal-overlay">
+
+    <div class="dict-modal">
+
+        <!-- Pulsante chiusura -->
+        <button class="dict-close" aria-label="Chiudi dizionario">✖</button>
+
+        <h2 class="dict-title">📘 Dizionario & Risorse Filosofiche</h2>
+
+        <!-- Campo ricerca -->
+<div class="dict-input-wrapper">
+    <input 
+        id="dict-q" 
+        type="text" 
+        placeholder="Cerca un termine filosofico…" 
+        class="dict-input"
+    >
+    <button id="dict-clear" class="dict-clear-btn" aria-label="Cancella ricerca">✖</button>
+</div>
+
+
+        <!-- Gruppo dizionari -->
+        <div class="dict-section">
+            <h3>Dizionari</h3>
+
+            <label>
+                <input checked type="checkbox" data-url="https://www.treccani.it/enciclopedia/ricerca/{q}/?search={q}">
+                📘 Treccani
+            </label>
+          <label>
+                <input checked type="checkbox" data-url="https://it.wikipedia.org/w/index.php?search={q}">
+                📚 Wikipedia
+            </label>
+            <label>
+                <input checked type="checkbox" data-url="https://www.garzantilinguistica.it/ricerca/?q={q}">
+                📚 Garzanti – Filosofia
+            </label>
+
+            <label>
+                <input type="checkbox" data-url="https://www.utetgrandiopere.it/dizionari/ricerca/?q={q}">
+                📕 UTET – Dizionario
+            </label>
+        </div>
+
+        <!-- Gruppo Risorse -->
+        <div class="dict-section">
+            <h3>Risorse Filosofiche</h3>
+
+            <label>
+                <input type="checkbox" data-url="https://www.raicultura.it/ricerca/?search={q}">
+                🎥 Rai Cultura – Filosofia
+            </label>
+
+            <label>
+                <input type="checkbox" data-url="https://scholar.google.com/scholar?q={q}+philosophy">
+                🔍 Google Scholar (ricerca accademica)
+            </label>
+
+            <label>
+                <input type="checkbox" data-url="https://plato.stanford.edu/search/searcher.py?query={q}">
+                📘 Stanford Encyclopedia of Philosophy (SEP)
+            </label>
+
+            <label>
+                <input type="checkbox" data-url="https://iep.utm.edu/?s={q}">
+                📗 Internet Encyclopedia of Philosophy (IEP)
+            </label>
+        </div>
+
+        <!-- Pulsante esecuzione -->
+        <button id="dict-search" class="dict-search-btn">Cerca</button>
+
+    </div><!-- /.dict-modal -->
+
+</div><!-- /#dictModal -->
+
+
+
         <div aria-label="Lettore audio" class="audio-player" id="audio-player">
           <div class="audio-title">🎧 Musica per lo studio</div>
           <br/>
@@ -3020,6 +3324,60 @@ footer {
         </div>
       </aside>
     </div>
+  </div>
+  <!------------------------------------------------------------------->
+  <!-- Fonti -->
+    <div class="sources notranslate" translate="no">
+
+      <label class="notranslate" translate="no">
+        <input type="checkbox" checked
+               data-url="https://duckduckgo.com/?q=site%3Aplato.stanford.edu+{q}">
+         🏛️ Stanford Encyclopedia (SEP)
+      </label>
+
+      <label class="notranslate" translate="no">
+        <input type="checkbox" checked
+               data-url="https://duckduckgo.com/?q=site%3Aiep.utm.edu+{q}">
+         🧭 IEP – Internet Encyclopedia
+      </label>
+<label>
+  <input checked type="checkbox"
+         data-url="https://www.treccani.it/enciclopedia/ricerca/{q}/?search={q}">
+  📘 Treccani
+</label>
+      <label class="notranslate" translate="no">
+        <input type="checkbox"
+               data-url="https://it.wikipedia.org/w/index.php?search={q}">
+        📚 Wikipedia
+      </label>
+
+      <label class="notranslate" translate="no">
+        <input type="checkbox"
+               data-url="https://www.britannica.com/search?query={q}">
+         🌍 Encyclopaedia Britannica
+      </label>
+ <label>
+        <input checked 
+               type="checkbox"
+               data-url="https://www.google.com/search?q={q}">
+        🔎 Google
+    </label>
+      <label>
+        <input checked 
+               type="checkbox"
+               data-url="https://scholar.google.com/scholar?q={q}">
+        🎓 Google Scholar
+    </label>
+      <label>
+  <input type="checkbox"
+         data-url="https://www.google.com/search?q=site:raicultura.it/filosofia+{q}">
+  🎥 Rai Cultura – Filosofia
+</label>
+    </div>
+
+    <button id="dict-search" class="btn notranslate" translate="no">Cerca</button>
+    <button id="open-all" class="btn small notranslate" translate="no">Apri tutte</button>
+
   </div>
   <!------------------------------------------------------------------>
  <!-- SLIDER FILOSOFI -->
@@ -4982,6 +5340,68 @@ function createSimpleWaves() {
     }
 }
   </script>
+ 
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const openBtn = document.getElementById("openDict");
+  const modal = document.getElementById("dictModal");
+  const closeBtn = document.querySelector(".dict-close");
+  const searchBtn = document.getElementById("dict-search");
+  const input = document.getElementById("dict-q");
+
+  // APRI MODAL
+  openBtn.addEventListener("click", () => {
+    modal.style.display = "flex";
+    input.focus();
+  });
+
+  // CHIUDI MODAL
+  closeBtn.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
+
+  // CHIUDI CLICCANDO FUORI
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) modal.style.display = "none";
+  });
+
+  // CERCA
+  searchBtn.addEventListener("click", () => {
+    const q = input.value.trim();
+    if (!q) return;
+
+    const checks = modal.querySelectorAll("input[type='checkbox']:checked");
+
+    checks.forEach(box => {
+      const url = box.dataset.url.replace("{q}", encodeURIComponent(q));
+      window.open(url, "_blank");
+    });
+  });
+
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const input = document.getElementById("dict-q");
+  const clearBtn = document.getElementById("dict-clear");
+
+  // Mostra/nasconde la X
+  input.addEventListener("input", () => {
+    clearBtn.style.display = input.value.trim() ? "flex" : "none";
+  });
+
+  // Cancella testo
+  clearBtn.addEventListener("click", () => {
+    input.value = "";
+    clearBtn.style.display = "none";
+    input.focus();
+  });
+
+});
+</script>
+
 </body>
 </html>
  
