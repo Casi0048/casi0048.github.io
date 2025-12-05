@@ -2327,141 +2327,215 @@ footer {
 
 /* ====== BOTTONE DIZIONARIO — Stile Echi di Sofia ====== */
 
-/* ===============================
-   BOTTONE DIZIONARIO — GOLD STYLE
-=============================== */
-
-.dict-btn {
-  display: inline-flex;
-  align-items: center;
+/* =============================
+   MODAL OVERLAY
+============================= */
+.dict-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(6px);
+  display: none;
   justify-content: center;
-  gap: 0.45rem;
+  align-items: center;
+  z-index: 9999;
+}
 
-  padding: 10px 26px;
-  border-radius: 12px;
+/* =============================
+   MODAL BOX
+============================= */
+.dict-modal {
+  background: rgba(20, 20, 35, 0.95);
+  border: 1px solid rgba(255, 215, 0, 0.35);
+  border-radius: 16px;
+  padding: 22px 26px;
+  width: 360px;
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.35);
 
-  background: rgba(255, 215, 0, 0.12);
-  border: 1px solid rgba(255, 215, 0, 0.42);
+  /* RIMOSSE animazioni CSS per usare GSAP */
+  transform: scale(0.85);
+  opacity: 0;
+}
 
-  color: var(--gold, #ffd86a);
-  font-family: "Cinzel", "Cormorant Garamond", serif;
-  font-size: 1.05rem;
-  font-weight: 600;
 
+/* =============================
+   COMANDI
+============================= */
+.dict-close {
+  background: transparent;
+  border: none;
+  color: #ffd86a;
+  font-size: 1.4rem;
   cursor: pointer;
-  backdrop-filter: blur(4px);
-
-  transition: all 0.25s ease;
+  float: right;
+  margin-top: -10px;
 }
 
-.dict-btn:hover {
-  background: rgba(255, 215, 0, 0.22);
-  border-color: rgba(255, 215, 0, 0.65);
-  transform: translateY(-2px);
-  box-shadow: 0 0 12px rgba(255,215,0,0.45);
-}
-
-.dict-btn:active {
-  transform: scale(0.96);
-}
-
-/* Titolo */
 .dict-title {
-  text-align: center;
   font-family: "Cormorant Garamond", serif;
-  color: var(--gold);
-  font-size: 1.45rem;
-  margin-bottom: 18px;
+  color: var(--gold, #ffd86a);
+  margin-bottom: 12px;
+  text-align: center;
 }
 
-/* Input + X */
-.dict-input-wrap {
-  position: relative;
-}
-
+/* Campo testo */
 .dict-input {
   width: 100%;
-  padding: 12px 38px 12px 12px;
-
-  background: rgba(255,255,255,0.10);
-  border: 1px solid rgba(255,215,0,0.35);
-  
-  border-radius: 12px;
-  color: var(--text-light);
-  font-size: 1rem;
-}
-
-.dict-clear {
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-
-  width: 26px;
-  height: 26px;
-
-  background: rgba(255,255,255,0.15);
-  border-radius: 50%;
-  border: 1px solid rgba(255,215,0,0.45);
-
-  color: var(--gold);
-  font-size: 0.8rem;
-  display: none;
-
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.dict-clear:hover {
-  background: rgba(255,215,0,0.30);
-}
-
-/* Contenuto */
-.dict-content {
-  margin-top: 16px;
+  padding: 10px;
   margin-bottom: 18px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,215,0,0.35);
+  color: var(--text-light, #e9eef5);
+}
+
+/* =============================
+   SEZIONI LISTA
+============================= */
+.dict-section {
+  margin-bottom: 20px;
 }
 
 .dict-section h3 {
   color: var(--gold);
-  font-size: 1.1rem;
   margin-bottom: 6px;
-  margin-top: 14px;
+  font-size: 1.05rem;
 }
 
 .dict-section label {
   display: block;
   color: var(--text-light);
   margin: 5px 0;
-  font-size: 0.95rem;
   cursor: pointer;
 }
 
-/* Pulsante Cerca */
+/* =============================
+   PULSANTE CERCA
+============================= */
 .dict-search-btn {
   width: 100%;
-  padding: 12px 0;
-
-  border-radius: 12px;
-  border: 1px solid rgba(255,215,0,0.45);
-
-  background: rgba(255,215,0,0.20);
+  padding: 10px 0;
+  border-radius: 10px;
+  background: rgba(255,215,0,0.18);
+  border: 1px solid rgba(255,215,0,0.4);
   color: var(--gold);
-  font-size: 1.08rem;
-  font-weight: 600;
-
+  font-size: 1rem;
   cursor: pointer;
-  transition: 0.2s ease;
+  transition: 150ms;
 }
 
 .dict-search-btn:hover {
-  background: rgba(255,215,0,0.32);
+  background: rgba(255,215,0,0.28);
   box-shadow: 0 0 12px rgba(255,215,0,0.45);
 }
+/* ===============================
+   BOTTONE DIZIONARIO — GOLD EDITION
+   =============================== */
 
+.dict-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.1rem;
 
+  padding: 10px 62px;
+  border-radius: 12px;
 
+  background: rgba(255, 215, 0, 0.10); /* leggero oro */
+  border: 1px solid rgba(255, 215, 0, 0.35);
+
+  color: var(--gold, #ffd86a);
+  font-family: 'Cinzel';     cursive"Cormorant Garamond", serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    box-shadow 220ms ease,
+    transform 180ms ease,
+    color 180ms ease;
+}
+
+/* Hover: bagliore dorato */
+.dict-btn:hover {
+  background: rgba(255, 215, 0, 0.20);
+  border-color: rgba(255, 215, 0, 0.60);
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.45);
+  transform: translateY(-2px);
+}
+
+/* Active: click più morbido */
+.dict-btn:active {
+  transform: translateY(0) scale(0.96);
+  box-shadow: 0 0 6px rgba(255, 215, 0, 0.3);
+}
+
+/* Icona */
+.dict-btn span:first-child {
+  font-size: 1.2rem;
+  filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5));
+}
+
+/* Testo */
+.dict-btn span:last-child {
+  letter-spacing: 0.4px;
+}
+
+/* Accessibilità: focus ring */
+.dict-btn:focus-visible {
+  outline: 3px solid rgba(255, 215, 0, 0.65);
+  outline-offset: 3px;
+  box-shadow: 0 0 14px rgba(255, 215, 0, 0.55);
+}
+/* Wrapper per input + X */
+.dict-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* Input stilizzato */
+.dict-input {
+  width: 100%;
+  padding: 10px 38px 10px 12px; /* spazio per la X */
+  border-radius: 10px;
+  border: 1px solid rgba(255, 215, 0, 0.35);
+  background: #yellow; rgba(255, 255, 255, 0.07);
+  color: #red;  var(--text-light);
+  font-family: inherit;
+}
+
+/* Pulsante X */
+.dict-clear-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(calc(-50% - 9px));
+
+  width: 32px;
+  height: 32px;
+
+  background: #D01C1F; rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 215, 0, 0.5);
+  border-radius: 50%;
+
+  color: var(--gold, #ffd86a);
+  font-size: 0.85rem;
+
+  display: none; /* appare solo quando c’è testo */
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  transition: 0.15s ease;
+}
+
+.dict-clear-btn:hover {
+  background: #05A417;  rgba(255, 215, 0, 0.20);
+  box-shadow: 0 0 6px rgba(255, 215, 0, 0.45);
+}
 /* ================================
    VIDEO PLAYER — ECHI DI SOFIA
 ================================ */
@@ -3244,9 +3318,86 @@ footer {
     <span> DIZIONARIO e RISORSE</span>
 </button>
 
+<!-- ===== MODAL DIZIONARIO FILOSOFICO ===== -->
+<div id="dictModal" class="dict-modal-overlay">
+    <div class="dict-modal">
 
 
-   <div aria-label="Lettore audio" class="audio-player" id="audio-player">
+        <!-- Pulsante chiusura -->
+        <button class="dict-close" aria-label="Chiudi dizionario">✖</button>
+
+        <h2 class="dict-title">📘 Dizionario & Risorse Filosofiche</h2>
+
+        <!-- Campo ricerca -->
+<div class="dict-input-wrapper">
+    <input 
+        id="dict-q" 
+        type="text" 
+        placeholder="Cerca un termine filosofico…" 
+        class="dict-input"
+    >
+    <button id="dict-clear" class="dict-clear-btn" aria-label="Cancella ricerca">✖</button>
+</div>
+
+
+        <!-- Gruppo dizionari -->
+        <div class="dict-section">
+            <h3>Dizionari</h3>
+
+            <label>
+                <input checked type="checkbox" data-url="https://www.treccani.it/enciclopedia/ricerca/{q}/?search={q}">
+                📘 Treccani
+            </label>
+          <label>
+                <input checked type="checkbox" data-url="https://it.wikipedia.org/w/index.php?search={q}">
+                📚 Wikipedia
+            </label>
+            <label>
+                <input checked type="checkbox" data-url="https://www.garzantilinguistica.it/ricerca/?q={q}">
+                📚 Garzanti – Filosofia
+            </label>
+
+            <label>
+                <input type="checkbox" data-url="https://www.utetgrandiopere.it/dizionari/ricerca/?q={q}">
+                📕 UTET – Dizionario
+            </label>
+        </div>
+
+        <!-- Gruppo Risorse -->
+        <div class="dict-section">
+            <h3>Risorse Filosofiche</h3>
+
+            <label>
+                <input type="checkbox" data-url="https://www.raicultura.it/ricerca/?search={q}">
+                🎥 Rai Cultura – Filosofia
+            </label>
+
+            <label>
+                <input type="checkbox" data-url="https://scholar.google.com/scholar?q={q}+philosophy">
+                🔍 Google Scholar (ricerca accademica)
+            </label>
+
+            <label>
+                <input type="checkbox" data-url="https://plato.stanford.edu/search/searcher.py?query={q}">
+                📘 Stanford Encyclopedia of Philosophy (SEP)
+            </label>
+
+            <label>
+                <input type="checkbox" data-url="https://iep.utm.edu/?s={q}">
+                📗 Internet Encyclopedia of Philosophy (IEP)
+            </label>
+        </div>
+
+        <!-- Pulsante esecuzione -->
+        <button id="dict-search" class="dict-search-btn">Cerca</button>
+
+    </div><!-- /.dict-modal -->
+
+</div><!-- /#dictModal -->
+
+
+
+        <div aria-label="Lettore audio" class="audio-player" id="audio-player">
           <div class="audio-title">🎧 Musica per lo studio</div>
           <br/>
           <div class="controls"><button aria-label="Riproduci/Pausa" id="playPause">▶️</button><span aria-live="polite" id="time">0:00 / 0:00</span><input id="volume" max="1" min="0" step="0.01" type="range" value="0.8"/></div>
@@ -5303,42 +5454,50 @@ function createSimpleWaves() {
 document.addEventListener("DOMContentLoaded", () => {
 
   const openBtn = document.getElementById("openDict");
-  const overlay = document.getElementById("dictModal");
-  const windowBox = overlay.querySelector(".dict-window");
-  const closeBtn = overlay.querySelector(".dict-close");
+  const modal = document.getElementById("dictModal");
+  const box = document.querySelector(".dict-modal");
+  const closeBtn = document.querySelector(".dict-close");
+  const searchBtn = document.getElementById("dict-search");
   const input = document.getElementById("dict-q");
   const clearBtn = document.getElementById("dict-clear");
 
-  // Apri modale
+  /* -------- APERTURA MODALE (con GSAP se presente) -------- */
   openBtn.addEventListener("click", () => {
-    overlay.style.display = "flex";
+    modal.style.display = "flex";
 
-    gsap.fromTo(windowBox,
-      {opacity: 0, scale: 0.82},
-      {opacity: 1, scale: 1, duration: 0.28, ease: "easeOut"}
-    );
+    if (window.gsap) {
+      gsap.set(modal, { opacity: 0 });
+      gsap.set(box, { opacity: 0, scale: 0.85 });
+
+      gsap.timeline({ defaults: { ease: "power3.out" } })
+        .to(modal, { opacity: 1, duration: 0.25 })
+        .to(box, { opacity: 1, scale: 1, duration: 0.35 }, "-=0.10");
+    }
 
     input.focus();
   });
 
-  // Chiudi modale
+  /* -------- CHIUSURA MODALE -------- */
   function closeModal() {
-    gsap.to(windowBox, {
-      opacity: 0,
-      scale: 0.82,
-      duration: 0.22,
-      onComplete: () => overlay.style.display = "none"
-    });
+    if (window.gsap) {
+      gsap.timeline({ defaults: { ease: "power2.inOut" } })
+        .to(box, { scale: 0.88, opacity: 0, duration: 0.25 })
+        .to(modal, { opacity: 0, duration: 0.25 }, "-=0.10")
+        .add(() => modal.style.display = "none");
+    } else {
+      modal.style.display = "none";
+    }
   }
 
   closeBtn.addEventListener("click", closeModal);
 
-  // Chiudi cliccando fuori
-  overlay.addEventListener("click", (e) => {
-    if (e.target === overlay) closeModal();
+  modal.addEventListener("click", e => {
+    if (e.target === modal) closeModal();
   });
 
-  // Clear input
+  box.addEventListener("click", e => e.stopPropagation());
+
+  /* -------- X per cancellare input -------- */
   input.addEventListener("input", () => {
     clearBtn.style.display = input.value.trim() ? "flex" : "none";
   });
@@ -5349,9 +5508,21 @@ document.addEventListener("DOMContentLoaded", () => {
     input.focus();
   });
 
+  /* -------- FUNZIONE PRINCIPALE DI RICERCA -------- */
+  searchBtn.addEventListener("click", () => {
+    const q = input.value.trim();
+    if (!q) return;
+
+    const checks = modal.querySelectorAll("input[type='checkbox']:checked");
+
+    checks.forEach(box => {
+      const url = box.dataset.url.replace("{q}", encodeURIComponent(q));
+      window.open(url, "_blank");
+    });
+  });
+
 });
 </script>
-
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -5413,84 +5584,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 </script>
-  <script>
-document.addEventListener("DOMContentLoaded", () => {
 
-  const openBtn = document.getElementById("openDict");
-  const overlay = document.getElementById("dictModal");
-  const closeBtn = document.querySelector(".dict-close");
-  const searchBtn = document.getElementById("dict-search");
-  const input = document.getElementById("dict-q");
-  const clearBtn = document.getElementById("dict-clear");
-
-  // Apri modale
-  openBtn.addEventListener("click", () => {
-    overlay.style.display = "flex";
-    input.focus();
-  });
-
-  // Chiudi modale
-  closeBtn.addEventListener("click", () => {
-    overlay.style.display = "none";
-  });
-
-  // Chiudi cliccando fuori
-  overlay.addEventListener("click", (e) => {
-    if (e.target === overlay) overlay.style.display = "none";
-  });
-
-  // Clear input
-  input.addEventListener("input", () => {
-    clearBtn.style.display = input.value ? "block" : "none";
-  });
-
-  clearBtn.addEventListener("click", () => {
-    input.value = "";
-    clearBtn.style.display = "none";
-    input.focus();
-  });
-
-  // Ricerca
-  searchBtn.addEventListener("click", () => {
-    const q = input.value.trim();
-    if (!q) return;
-
-    const checks = overlay.querySelectorAll("input[type='checkbox']:checked");
-
-    checks.forEach(box => {
-      const url = box.dataset.url.replace("{q}", encodeURIComponent(q));
-      window.open(url, "_blank");
-    });
-  });
-
-});
-</script>
-
-<!-- ===== MODALE APPLE MINIMALE ===== -->
-<div id="dictModal" class="dict-overlay">
-
-  <div class="dict-window">
-
-    <button class="dict-close">✕</button>
-
-    <h2 class="dict-title">📘 Dizionario & Risorse Filosofiche</h2>
-
-    <div class="dict-input-wrap">
-      <input id="dict-q" class="dict-input" type="text" placeholder="Cerca un termine…">
-      <button id="dict-clear" class="dict-clear">✕</button>
-    </div>
-
-    <div class="dict-section">
-      <h3>Dizionari</h3>
-      <label><input checked type="checkbox" data-url="https://www.treccani.it/vocabolario/{q}/"> 📘 Treccani</label>
-      <label><input checked type="checkbox" data-url="https://it.wikipedia.org/wiki/{q}"> 📚 Wikipedia</label>
-    </div>
-
-    <button id="dict-search" class="dict-search-btn">Cerca</button>
-
-  </div>
-
-</div>
 
 </body>
 </html>
