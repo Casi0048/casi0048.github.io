@@ -2501,6 +2501,49 @@ footer {
   outline-offset: 3px;
   box-shadow: 0 0 14px rgba(255, 215, 0, 0.55);
 }
+/* Input glow dorato professionale */
+.dict-input {
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.dict-input:focus {
+  border-color: rgba(255,215,0,0.75);
+  box-shadow: 0 0 12px rgba(255,215,0,0.35);
+  background: rgba(255,255,255,0.12);
+  outline: none;
+}
+/* X effetto fade + rotation + glow */
+.dict-clear {
+  opacity: 0;
+  transform: translateY(-50%) scale(0.9);
+  transition: 
+      opacity 0.18s ease,
+      transform 0.22s ease,
+      background 0.22s ease,
+      box-shadow 0.22s ease;
+}
+
+/* Quando appare */
+.dict-clear.show {
+  opacity: 1;
+  transform: translateY(-50%) scale(1);
+}
+
+/* Hover: glow + rotazione morbida */
+.dict-clear:hover {
+  background: rgba(255, 215, 0, 0.25);
+  box-shadow: 0 0 8px rgba(255,215,0,0.55);
+  transform: translateY(-50%) scale(1.08) rotate(7deg);
+}
+
+/* Click: micro-shrink */
+.dict-clear:active {
+  transform: translateY(-50%) scale(0.92);
+}
+.dict-input:focus::placeholder {
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
 
 /* ================================
    VIDEO PLAYER — ECHI DI SOFIA
@@ -5465,14 +5508,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* -------- X per cancellare input -------- */
   input.addEventListener("input", () => {
-    clearBtn.style.display = input.value.trim() ? "flex" : "none";
-  });
+   if (input.value.trim()) {
+    clearBtn.classList.add("show");
+} else {
+    clearBtn.classList.remove("show");
+}
 
-  clearBtn.addEventListener("click", () => {
-    input.value = "";
-    clearBtn.style.display = "none";
-    input.focus();
   });
+clearBtn.addEventListener("click", () => {
+  input.value = "";
+  clearBtn.classList.remove("show");
+  input.focus();
+});
+
 
   /* -------- FUNZIONE PRINCIPALE DI RICERCA -------- */
   searchBtn.addEventListener("click", () => {
