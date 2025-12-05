@@ -2326,14 +2326,17 @@ footer {
 
 
 /* ====== BOTTONE DIZIONARIO — Stile Echi di Sofia ====== */
+/* =====================================================
+   DIZIONARIO MODALE — ECHIS DI SOFIA (VERSIONE CLEAN)
+   ===================================================== */
 
 /* =============================
-   MODAL OVERLAY
+   OVERLAY
 ============================= */
 .dict-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(6px);
   display: none;
   justify-content: center;
@@ -2352,25 +2355,27 @@ footer {
   width: 360px;
   box-shadow: 0 0 25px rgba(255, 215, 0, 0.35);
 
-  /* RIMOSSE animazioni CSS per usare GSAP */
+  /* GSAP gestirà trasformazioni e opacità */
   transform: scale(0.85);
   opacity: 0;
 }
 
-
 /* =============================
-   COMANDI
+   CHIUSURA (X)
 ============================= */
 .dict-close {
   background: transparent;
   border: none;
-  color: #ffd86a;
+  color: var(--gold, #ffd86a);
   font-size: 1.4rem;
   cursor: pointer;
   float: right;
   margin-top: -10px;
 }
 
+/* =============================
+   TITOLO
+============================= */
 .dict-title {
   font-family: "Cormorant Garamond", serif;
   color: var(--gold, #ffd86a);
@@ -2378,19 +2383,57 @@ footer {
   text-align: center;
 }
 
-/* Campo testo */
+/* =============================
+   INPUT + CLEAR BUTTON
+============================= */
+.dict-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
 .dict-input {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 18px;
+  padding: 10px 38px 10px 12px; /* spazio a destra per la X */
   border-radius: 10px;
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,215,0,0.35);
+  border: 1px solid rgba(255, 215, 0, 0.35);
+  background: rgba(255, 255, 255, 0.07);
   color: var(--text-light, #e9eef5);
+  font-size: 1rem;
+  margin-bottom: 18px;
+}
+
+/* Pulsante "X" */
+.dict-clear-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 28px;
+  height: 28px;
+
+  display: none;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 215, 0, 0.5);
+  border-radius: 50%;
+
+  color: var(--gold, #ffd86a);
+  font-size: 0.85rem;
+  cursor: pointer;
+
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dict-clear-btn:hover {
+  background: rgba(255, 215, 0, 0.25);
+  box-shadow: 0 0 6px rgba(255, 215, 0, 0.45);
 }
 
 /* =============================
-   SEZIONI LISTA
+   SEZIONI
 ============================= */
 .dict-section {
   margin-bottom: 20px;
@@ -2399,6 +2442,7 @@ footer {
 .dict-section h3 {
   color: var(--gold);
   margin-bottom: 6px;
+  font-family: "Cinzel", serif;
   font-size: 1.05rem;
 }
 
@@ -2407,6 +2451,7 @@ footer {
   color: var(--text-light);
   margin: 5px 0;
   cursor: pointer;
+  font-size: 0.95rem;
 }
 
 /* =============================
@@ -2416,126 +2461,23 @@ footer {
   width: 100%;
   padding: 10px 0;
   border-radius: 10px;
-  background: rgba(255,215,0,0.18);
-  border: 1px solid rgba(255,215,0,0.4);
+
+  background: rgba(255, 215, 0, 0.18);
+  border: 1px solid rgba(255, 215, 0, 0.40);
   color: var(--gold);
-  font-size: 1rem;
+
+  font-size: 1.05rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: 150ms;
+
+  transition: 150ms ease-in-out;
 }
 
 .dict-search-btn:hover {
-  background: rgba(255,215,0,0.28);
-  box-shadow: 0 0 12px rgba(255,215,0,0.45);
-}
-/* ===============================
-   BOTTONE DIZIONARIO — GOLD EDITION
-   =============================== */
-
-.dict-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.1rem;
-
-  padding: 10px 62px;
-  border-radius: 12px;
-
-  background: rgba(255, 215, 0, 0.10); /* leggero oro */
-  border: 1px solid rgba(255, 215, 0, 0.35);
-
-  color: var(--gold, #ffd86a);
-  font-family: 'Cinzel';     cursive"Cormorant Garamond", serif;
-  font-size: 1.05rem;
-  font-weight: 600;
-
-  cursor: pointer;
-  backdrop-filter: blur(4px);
-
-  transition:
-    background 180ms ease,
-    border-color 180ms ease,
-    box-shadow 220ms ease,
-    transform 180ms ease,
-    color 180ms ease;
-}
-
-/* Hover: bagliore dorato */
-.dict-btn:hover {
-  background: rgba(255, 215, 0, 0.20);
-  border-color: rgba(255, 215, 0, 0.60);
+  background: rgba(255, 215, 0, 0.28);
   box-shadow: 0 0 12px rgba(255, 215, 0, 0.45);
-  transform: translateY(-2px);
 }
 
-/* Active: click più morbido */
-.dict-btn:active {
-  transform: translateY(0) scale(0.96);
-  box-shadow: 0 0 6px rgba(255, 215, 0, 0.3);
-}
-
-/* Icona */
-.dict-btn span:first-child {
-  font-size: 1.2rem;
-  filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5));
-}
-
-/* Testo */
-.dict-btn span:last-child {
-  letter-spacing: 0.4px;
-}
-
-/* Accessibilità: focus ring */
-.dict-btn:focus-visible {
-  outline: 3px solid rgba(255, 215, 0, 0.65);
-  outline-offset: 3px;
-  box-shadow: 0 0 14px rgba(255, 215, 0, 0.55);
-}
-/* Wrapper per input + X */
-.dict-input-wrapper {
-  position: relative;
-  width: 100%;
-}
-
-/* Input stilizzato */
-.dict-input {
-  width: 100%;
-  padding: 10px 38px 10px 12px; /* spazio per la X */
-  border-radius: 10px;
-  border: 1px solid rgba(255, 215, 0, 0.35);
-  background: #yellow; rgba(255, 255, 255, 0.07);
-  color: #red;  var(--text-light);
-  font-family: inherit;
-}
-
-/* Pulsante X */
-.dict-clear-btn {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(calc(-50% - 9px));
-
-  width: 32px;
-  height: 32px;
-
-  background: #D01C1F; rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 215, 0, 0.5);
-  border-radius: 50%;
-
-  color: var(--gold, #ffd86a);
-  font-size: 0.85rem;
-
-  display: none; /* appare solo quando c’è testo */
-  align-items: center;
-  justify-content: center;
-
-  cursor: pointer;
-  transition: 0.15s ease;
-}
-
-.dict-clear-btn:hover {
-  background: #05A417;  rgba(255, 215, 0, 0.20);
-  box-shadow: 0 0 6px rgba(255, 215, 0, 0.45);
-}
 /* ================================
    VIDEO PLAYER — ECHI DI SOFIA
 ================================ */
