@@ -4926,6 +4926,209 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
     transform: scale(0.95);
     transition: transform 0.1s;
 }
+    /* STILE FAB (FLOATING ACTION BUTTON) */
+.cc-fab {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  z-index: 1000;
+  
+  /* Stile */
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 0.75rem 1.25rem;
+  cursor: pointer;
+  
+  /* Ombre e profondità */
+  box-shadow: 
+    0 6px 16px rgba(79, 70, 229, 0.25),
+    0 12px 32px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Animazione di fluttuazione */
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Animazione di fluttuazione */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  33% {
+    transform: translateY(-6px) translateX(2px);
+  }
+  66% {
+    transform: translateY(-3px) translateX(-2px);
+  }
+}
+
+/* Effetti hover */
+.cc-fab:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 
+    0 12px 24px rgba(79, 70, 229, 0.35),
+    0 20px 40px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+  animation-play-state: paused;
+}
+
+/* Effetto active/click */
+.cc-fab:active {
+  transform: translateY(-2px) scale(0.98);
+  transition: transform 0.1s;
+}
+
+/* Icona SVG */
+.cc-fab-icon {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+  transition: transform 0.3s;
+}
+
+.cc-fab:hover .cc-fab-icon {
+  transform: rotate(15deg);
+}
+
+/* Etichetta (visibile solo su desktop) */
+.cc-fab-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.025em;
+}
+
+/* EFFETTI DI STATO */
+.cc-fab.accepted {
+  animation: pulse-accept 1s ease;
+}
+
+.cc-fab.declined {
+  animation: pulse-decline 1s ease;
+}
+
+.cc-fab.saved {
+  animation: pulse-save 1s ease;
+}
+
+/* Animazioni di pulsazione */
+@keyframes pulse-accept {
+  0% { 
+    box-shadow: 
+      0 6px 16px rgba(79, 70, 229, 0.25),
+      0 12px 32px rgba(0, 0, 0, 0.1),
+      0 0 0 0 rgba(34, 197, 94, 0);
+  }
+  50% {
+    box-shadow: 
+      0 6px 16px rgba(79, 70, 229, 0.25),
+      0 12px 32px rgba(0, 0, 0, 0.1),
+      0 0 0 20px rgba(34, 197, 94, 0.3);
+  }
+  100% { 
+    box-shadow: 
+      0 6px 16px rgba(79, 70, 229, 0.25),
+      0 12px 32px rgba(0, 0, 0, 0.1),
+      0 0 0 0 rgba(34, 197, 94, 0);
+  }
+}
+
+@keyframes pulse-decline {
+  0% { 
+    box-shadow: 
+      0 6px 16px rgba(79, 70, 229, 0.25),
+      0 12px 32px rgba(0, 0, 0, 0.1),
+      0 0 0 0 rgba(239, 68, 68, 0);
+  }
+  50% {
+    box-shadow: 
+      0 6px 16px rgba(79, 70, 229, 0.25),
+      0 12px 32px rgba(0, 0, 0, 0.1),
+      0 0 0 20px rgba(239, 68, 68, 0.3);
+  }
+  100% { 
+    box-shadow: 
+      0 6px 16px rgba(79, 70, 229, 0.25),
+      0 12px 32px rgba(0, 0, 0, 0.1),
+      0 0 0 0 rgba(239, 68, 68, 0);
+  }
+}
+
+@keyframes pulse-save {
+  0% { 
+    box-shadow: 
+      0 6px 16px rgba(79, 70, 229, 0.25),
+      0 12px 32px rgba(0, 0, 0, 0.1),
+      0 0 0 0 rgba(59, 130, 246, 0);
+  }
+  50% {
+    box-shadow: 
+      0 6px 16px rgba(79, 70, 229, 0.25),
+      0 12px 32px rgba(0, 0, 0, 0.1),
+      0 0 0 20px rgba(59, 130, 246, 0.3);
+  }
+  100% { 
+    box-shadow: 
+      0 6px 16px rgba(79, 70, 229, 0.25),
+      0 12px 32px rgba(0, 0, 0, 0.1),
+      0 0 0 0 rgba(59, 130, 246, 0);
+  }
+}
+
+/* Quando il banner cookie è aperto */
+#cookie-banner.open ~ .cc-fab {
+  bottom: calc(180px + 1.5rem); /* Banner height + margin */
+}
+
+/* Quando la modale è aperta */
+#cookie-modal.open ~ .cc-fab,
+#cookie-modal.open + .cc-fab {
+  animation-play-state: paused;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .cc-fab {
+    bottom: 1rem;
+    left: 1rem;
+    padding: 0.75rem;
+    border-radius: 50%;
+  }
+  
+  .cc-fab-label {
+    display: none; /* Nascondi testo su mobile */
+  }
+  
+  #cookie-banner.open ~ .cc-fab {
+    display: none; /* Nascondi completamente su mobile quando banner è aperto */
+  }
+}
+
+/* DARK MODE */
+@media (prefers-color-scheme: dark) {
+  .cc-fab {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    box-shadow: 
+      0 6px 16px rgba(99, 102, 241, 0.3),
+      0 12px 32px rgba(0, 0, 0, 0.25),
+      0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+  }
+  
+  .cc-fab:hover {
+    box-shadow: 
+      0 12px 24px rgba(99, 102, 241, 0.4),
+      0 20px 40px rgba(0, 0, 0, 0.3),
+      0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  }
+}
 </style>
 </head>
 <body>
