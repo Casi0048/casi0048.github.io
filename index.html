@@ -5506,20 +5506,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
   box.addEventListener("click", e => e.stopPropagation());
 
-  /* -------- X per cancellare input -------- */
-  input.addEventListener("input", () => {
-   if (input.value.trim()) {
-    clearBtn.classList.add("show");
-} else {
-    clearBtn.classList.remove("show");
-}
+/* -------- X per cancellare input -------- */
+input.addEventListener("input", () => {
 
-  });
+  // Se c’è testo → mostra X
+  if (input.value.trim() !== "") {
+    clearBtn.classList.add("show");
+  } 
+  // Se vuoto → nasconde X
+  else {
+    clearBtn.classList.remove("show");
+  }
+
+});
+
+// Click sulla X → cancella input
 clearBtn.addEventListener("click", () => {
   input.value = "";
   clearBtn.classList.remove("show");
   input.focus();
 });
+
 
 
   /* -------- FUNZIONE PRINCIPALE DI RICERCA -------- */
