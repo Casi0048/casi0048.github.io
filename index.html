@@ -2575,6 +2575,98 @@ footer {
   box-shadow: 0 0 14px rgba(255, 215, 0, 0.55);
 }
 
+/* BORDO DORATO ANIMATO ATTORNO ALLA MODALE */
+.dict-modal {
+  position: relative;
+  overflow: hidden;
+}
+
+.dict-modal::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px;
+
+  background: conic-gradient(
+    from 0deg,
+    rgba(255,215,0,0.0),
+    rgba(255,215,0,0.45),
+    rgba(255,215,0,0.0) 60%
+  );
+
+  animation: goldSpin 6s linear infinite;
+  pointer-events: none;
+  mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+}
+
+@keyframes goldSpin {
+  to { transform: rotate(360deg); }
+}
+.dict-modal:hover {
+  box-shadow: 0 0 35px rgba(255,215,0,0.45);
+  transition: box-shadow 0.35s ease;
+}
+.dict-section {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.dict-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.dict-section input[type="checkbox"] {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255,215,0,0.5);
+  border-radius: 4px;
+  margin-right: 8px;
+  cursor: pointer;
+  background: rgba(255,255,255,0.06);
+  transition: 0.25s ease;
+  position: relative;
+}
+
+.dict-section input[type="checkbox"]:checked {
+  background: rgba(255,215,0,0.35);
+  border-color: var(--gold);
+  box-shadow: 0 0 8px rgba(255,215,0,0.45);
+}
+
+.dict-section input[type="checkbox"]:checked::after {
+  content: "✔";
+  position: absolute;
+  color: var(--gold);
+  font-size: 0.85rem;
+  left: 1px;
+  top: -1px;
+  animation: checkPop 0.25s ease;
+}
+
+@keyframes checkPop {
+  0% { transform: scale(0); opacity: 0; }
+  80% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); }
+}
+.dict-title {
+  text-shadow: 0 0 6px rgba(255,215,0,0.25);
+  animation: titleGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes titleGlow {
+  from { text-shadow: 0 0 4px rgba(255,215,0,0.15); }
+  to   { text-shadow: 0 0 10px rgba(255,215,0,0.35); }
+}
 
 /* ================================
    VIDEO PLAYER — ECHI DI SOFIA
@@ -5608,6 +5700,13 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 });
+  // Animazione delle sezioni interne
+document.querySelectorAll(".dict-section").forEach((sec, i) => {
+  setTimeout(() => {
+    sec.classList.add("visible");
+  }, 120 * i); // ritardo progressivo
+});
+
 </script>
 
 <script>
