@@ -2326,66 +2326,43 @@ footer {
 
 
 /* ====== BOTTONE DIZIONARIO — Stile Echi di Sofia ====== */
-/* ==========================================================
-   MODALE STILE APPLE — VETRO SATINATO + ANIMAZIONE
-========================================================== */
 
-.dict-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.55);
-  backdrop-filter: blur(6px);
-  display: none;
-  justify-content: center;
+/* ===============================
+   BOTTONE DIZIONARIO — GOLD STYLE
+=============================== */
+
+.dict-btn {
+  display: inline-flex;
   align-items: center;
-  z-index: 9999;
-}
+  justify-content: center;
+  gap: 0.45rem;
 
-/* Finestra */
-.dict-window {
-  width: 420px;
-  max-height: 85vh;
+  padding: 10px 26px;
+  border-radius: 12px;
 
-  background: rgba(28, 28, 45, 0.65);
-  backdrop-filter: blur(14px);
+  background: rgba(255, 215, 0, 0.12);
+  border: 1px solid rgba(255, 215, 0, 0.42);
 
-  border-radius: 20px;
-  border: 1px solid rgba(255,255,255,0.15);
-
-  box-shadow:
-    0 0 40px rgba(0,0,0,0.35),
-    0 0 12px rgba(255,215,0,0.18);
-
-  padding: 26px;
-  overflow-y: auto;
-  position: relative;
-
-  opacity: 0;
-  transform: scale(0.82);
-}
-
-/* Pulsante chiusura */
-.dict-close {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-
-  width: 32px;
-  height: 32px;
-
-  background: rgba(255,255,255,0.15);
-  border: none;
-  border-radius: 50%;
-  color: var(--text-light);
-  font-size: 1rem;
+  color: var(--gold, #ffd86a);
+  font-family: "Cinzel", "Cormorant Garamond", serif;
+  font-size: 1.05rem;
+  font-weight: 600;
 
   cursor: pointer;
-  backdrop-filter: blur(6px);
+  backdrop-filter: blur(4px);
+
+  transition: all 0.25s ease;
 }
 
-.dict-close:hover {
-  background: rgba(255, 215, 0, 0.32);
-  color: var(--gold);
+.dict-btn:hover {
+  background: rgba(255, 215, 0, 0.22);
+  border-color: rgba(255, 215, 0, 0.65);
+  transform: translateY(-2px);
+  box-shadow: 0 0 12px rgba(255,215,0,0.45);
+}
+
+.dict-btn:active {
+  transform: scale(0.96);
 }
 
 /* Titolo */
@@ -3267,65 +3244,7 @@ footer {
     <span> DIZIONARIO e RISORSE</span>
 </button>
 
-<!-- ===== MODAL DIZIONARIO FILOSOFICO ===== -->
-<!-- ===== MODALE DIZIONARIO — APPLE GLASS EDITION ===== -->
-<div id="dictModal" class="dict-overlay">
 
-    <div class="dict-window">
-        
-        <button class="dict-close" aria-label="Chiudi dizionario">✕</button>
-
-        <h2 class="dict-title">
-            📘 Dizionario & Risorse Filosofiche
-        </h2>
-
-        <div class="dict-input-wrap">
-            <input id="dict-q" type="text"
-                   placeholder="Cerca un termine filosofico…"
-                   class="dict-input">
-            <button id="dict-clear" class="dict-clear">✕</button>
-        </div>
-
-        <div class="dict-content">
-
-            <div class="dict-section">
-                <h3>Dizionari</h3>
-
-                <label><input checked type="checkbox"
-                    data-url="https://www.treccani.it/vocabolario/{q}/"> 📘 Treccani</label>
-
-                <label><input checked type="checkbox"
-                    data-url="https://it.wikipedia.org/wiki/{q}"> 📚 Wikipedia</label>
-
-                <label><input type="checkbox"
-                    data-url="https://www.garzantilinguistica.it/ricerca/?q={q}"> 📕 Garzanti – Filosofia</label>
-
-                <label><input type="checkbox"
-                    data-url="https://www.utetgrandiopere.it/dizionari/ricerca/?q={q}"> 📗 UTET – Dizionario</label>
-            </div>
-
-            <div class="dict-section">
-                <h3>Risorse Filosofiche</h3>
-
-                <label><input type="checkbox"
-                    data-url="https://www.raicultura.it/ricerca/?search={q}"> 🎥 Rai Cultura</label>
-
-                <label><input type="checkbox"
-                    data-url="https://scholar.google.com/scholar?q={q}+philosophy"> 🔍 Google Scholar</label>
-
-                <label><input type="checkbox"
-                    data-url="https://plato.stanford.edu/search/searcher.py?query={q}"> 📘 Stanford Encyclopedia of Philosophy</label>
-
-                <label><input type="checkbox"
-                    data-url="https://iep.utm.edu/?s={q}"> 📗 IEP – Internet Encyclopedia of Philosophy</label>
-            </div>
-
-        </div>
-
-        <button id="dict-search" class="dict-search-btn">Cerca</button>
-
-    </div>
-</div>
 
    <div aria-label="Lettore audio" class="audio-player" id="audio-player">
           <div class="audio-title">🎧 Musica per lo studio</div>
@@ -5494,6 +5413,84 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 </script>
+  <script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const openBtn = document.getElementById("openDict");
+  const overlay = document.getElementById("dictModal");
+  const closeBtn = document.querySelector(".dict-close");
+  const searchBtn = document.getElementById("dict-search");
+  const input = document.getElementById("dict-q");
+  const clearBtn = document.getElementById("dict-clear");
+
+  // Apri modale
+  openBtn.addEventListener("click", () => {
+    overlay.style.display = "flex";
+    input.focus();
+  });
+
+  // Chiudi modale
+  closeBtn.addEventListener("click", () => {
+    overlay.style.display = "none";
+  });
+
+  // Chiudi cliccando fuori
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) overlay.style.display = "none";
+  });
+
+  // Clear input
+  input.addEventListener("input", () => {
+    clearBtn.style.display = input.value ? "block" : "none";
+  });
+
+  clearBtn.addEventListener("click", () => {
+    input.value = "";
+    clearBtn.style.display = "none";
+    input.focus();
+  });
+
+  // Ricerca
+  searchBtn.addEventListener("click", () => {
+    const q = input.value.trim();
+    if (!q) return;
+
+    const checks = overlay.querySelectorAll("input[type='checkbox']:checked");
+
+    checks.forEach(box => {
+      const url = box.dataset.url.replace("{q}", encodeURIComponent(q));
+      window.open(url, "_blank");
+    });
+  });
+
+});
+</script>
+
+<!-- ===== MODALE APPLE MINIMALE ===== -->
+<div id="dictModal" class="dict-overlay">
+
+  <div class="dict-window">
+
+    <button class="dict-close">✕</button>
+
+    <h2 class="dict-title">📘 Dizionario & Risorse Filosofiche</h2>
+
+    <div class="dict-input-wrap">
+      <input id="dict-q" class="dict-input" type="text" placeholder="Cerca un termine…">
+      <button id="dict-clear" class="dict-clear">✕</button>
+    </div>
+
+    <div class="dict-section">
+      <h3>Dizionari</h3>
+      <label><input checked type="checkbox" data-url="https://www.treccani.it/vocabolario/{q}/"> 📘 Treccani</label>
+      <label><input checked type="checkbox" data-url="https://it.wikipedia.org/wiki/{q}"> 📚 Wikipedia</label>
+    </div>
+
+    <button id="dict-search" class="dict-search-btn">Cerca</button>
+
+  </div>
+
+</div>
 
 </body>
 </html>
