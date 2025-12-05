@@ -2327,9 +2327,13 @@ footer {
 
 /* ====== BOTTONE DIZIONARIO — Stile Echi di Sofia ====== */
 
-/* =============================
-   MODAL OVERLAY
-============================= */
+/* =========================================
+   DIZIONARIO MODALE — ECHI DI SOFIA
+========================================= */
+
+/* -----------------------------
+   OVERLAY SFONDO
+----------------------------- */
 .dict-modal-overlay {
   position: fixed;
   inset: 0;
@@ -2341,9 +2345,9 @@ footer {
   z-index: 9999;
 }
 
-/* =============================
-   MODAL BOX
-============================= */
+/* -----------------------------
+   BOX MODALE
+----------------------------- */
 .dict-modal {
   background: rgba(20, 20, 35, 0.95);
   border: 1px solid rgba(255, 215, 0, 0.35);
@@ -2352,23 +2356,27 @@ footer {
   width: 360px;
   box-shadow: 0 0 25px rgba(255, 215, 0, 0.35);
 
+  /* inizialmente nascosto (GSAP lo anima) */
   transform: scale(0.85);
   opacity: 0;
 }
 
-/* =============================
-   COMANDI
-============================= */
+/* -----------------------------
+   CHIUSURA
+----------------------------- */
 .dict-close {
   background: transparent;
   border: none;
-  color: #ffd86a;
+  color: var(--gold, #ffd86a);
   font-size: 1.4rem;
   cursor: pointer;
   float: right;
   margin-top: -10px;
 }
 
+/* -----------------------------
+   TITOLO
+----------------------------- */
 .dict-title {
   font-family: "Cormorant Garamond", serif;
   color: var(--gold, #ffd86a);
@@ -2376,12 +2384,9 @@ footer {
   text-align: center;
 }
 
-/* =============================
-   INPUT
-============================= */
-/* =============================
-   INPUT + X
-============================= */
+/* =========================================
+   INPUT + CLEAR BUTTON
+========================================= */
 
 /* Contenitore dell’input */
 .dict-input-wrap {
@@ -2389,10 +2394,10 @@ footer {
   width: 100%;
 }
 
-/* Input stile Echi di Sofia */
+/* Input principale */
 .dict-input {
   width: 100%;
-  padding: 10px 38px 10px 12px; /* ← spazio riservato alla X */
+  padding: 10px 38px 10px 12px; /* spazio per la X */
   margin-bottom: 18px;
   border-radius: 10px;
   background: rgba(255,255,255,0.07);
@@ -2400,12 +2405,13 @@ footer {
   color: var(--text-light, #e9eef5);
   font-size: 1rem;
 
-  transition: border-color 0.25s ease,
-              box-shadow 0.25s ease,
-              background 0.25s ease;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
 }
 
-/* Glow dorato professionale */
+/* Glow focus dorato */
 .dict-input:focus {
   border-color: rgba(255,215,0,0.75);
   box-shadow: 0 0 12px rgba(255,215,0,0.35);
@@ -2418,7 +2424,7 @@ footer {
   transition: opacity 0.3s ease;
 }
 
-/* Pulsante X Apple style */
+/* Pulsante X */
 .dict-clear {
   position: absolute;
   right: 10px;
@@ -2442,36 +2448,35 @@ footer {
   opacity: 0;
   pointer-events: none;
 
-  transition: 
+  transition:
       opacity 0.18s ease,
       transform 0.22s ease,
       background 0.22s ease,
       box-shadow 0.22s ease;
 }
 
-/* Quando appare */
+/* Stato visibile */
 .dict-clear.show {
   opacity: 1;
   transform: translateY(-50%) scale(1);
   pointer-events: auto;
 }
 
-/* Hover: glow + rotazione morbida */
+/* Effetto hover */
 .dict-clear:hover {
   background: rgba(255, 215, 0, 0.25);
   box-shadow: 0 0 8px rgba(255,215,0,0.55);
   transform: translateY(-50%) scale(1.08) rotate(7deg);
 }
 
-/* Click: micro-shrink */
+/* Effetto click */
 .dict-clear:active {
   transform: translateY(-50%) scale(0.92);
 }
 
-
-/* =============================
+/* =========================================
    SEZIONI LISTA
-============================= */
+========================================= */
 .dict-section {
   margin-bottom: 20px;
 }
@@ -2489,9 +2494,9 @@ footer {
   cursor: pointer;
 }
 
-/* =============================
+/* =========================================
    PULSANTE CERCA
-============================= */
+========================================= */
 .dict-search-btn {
   width: 100%;
   padding: 10px 0;
@@ -2509,9 +2514,9 @@ footer {
   box-shadow: 0 0 12px rgba(255,215,0,0.45);
 }
 
-/* ===============================
-   BOTTONE DIZIONARIO — GOLD EDITION
-=============================== */
+/* =========================================
+   BOTTONE DI APERTURA MODALE
+========================================= */
 .dict-btn {
   display: inline-flex;
   align-items: center;
@@ -2531,12 +2536,14 @@ footer {
   cursor: pointer;
   backdrop-filter: blur(4px);
 
-  transition: background 180ms ease,
-              border-color 180ms ease,
-              box-shadow 220ms ease,
-              transform 180ms ease;
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    box-shadow 220ms ease,
+    transform 180ms ease;
 }
 
+/* Hover */
 .dict-btn:hover {
   background: rgba(255, 215, 0, 0.20);
   border-color: rgba(255, 215, 0, 0.60);
@@ -2544,68 +2551,30 @@ footer {
   transform: translateY(-2px);
 }
 
+/* Click */
 .dict-btn:active {
   transform: translateY(0) scale(0.96);
   box-shadow: 0 0 6px rgba(255, 215, 0, 0.3);
 }
 
+/* Icona del bottone */
 .dict-btn span:first-child {
   font-size: 1.2rem;
   filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5));
 }
 
+/* Testo del bottone */
 .dict-btn span:last-child {
   letter-spacing: 0.4px;
 }
 
+/* Focus accessibile */
 .dict-btn:focus-visible {
   outline: 3px solid rgba(255, 215, 0, 0.65);
   outline-offset: 3px;
   box-shadow: 0 0 14px rgba(255, 215, 0, 0.55);
 }
-/* Input glow dorato professionale */
-.dict-input {
-  transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
-}
 
-.dict-input:focus {
-  border-color: rgba(255,215,0,0.75);
-  box-shadow: 0 0 12px rgba(255,215,0,0.35);
-  background: rgba(255,255,255,0.12);
-  outline: none;
-}
-/* X effetto fade + rotation + glow */
-.dict-clear {
-  opacity: 0;
-  transform: translateY(-50%) scale(0.9);
-  transition: 
-      opacity 0.18s ease,
-      transform 0.22s ease,
-      background 0.22s ease,
-      box-shadow 0.22s ease;
-}
-
-/* Quando appare */
-.dict-clear.show {
-  opacity: 1;
-  transform: translateY(-50%) scale(1);
-}
-
-/* Hover: glow + rotazione morbida */
-.dict-clear:hover {
-  background: rgba(255, 215, 0, 0.25);
-  box-shadow: 0 0 8px rgba(255,215,0,0.55);
-  transform: translateY(-50%) scale(1.08) rotate(7deg);
-}
-
-/* Click: micro-shrink */
-.dict-clear:active {
-  transform: translateY(-50%) scale(0.92);
-}
-.dict-input:focus::placeholder {
-  opacity: 0.5;
-  transition: opacity 0.3s ease;
-}
 
 /* ================================
    VIDEO PLAYER — ECHI DI SOFIA
@@ -3401,13 +3370,8 @@ footer {
 
         <!-- Campo ricerca -->
 <div class="dict-input-wrap">
-    <input 
-        id="dict-q" 
-        type="text" 
-        placeholder="Cerca un termine…" 
-        class="dict-input"
-    >
-    <button id="dict-clear" class="dict-clear">✕</button>
+    <input id="dict-q" class="dict-input" type="text" placeholder="Cerca…">
+    <button id="dict-clear" class="dict-clear">✖</button>
 </div>
 
 
@@ -5524,15 +5488,21 @@ function createSimpleWaves() {
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
-  const openBtn = document.getElementById("openDict");
-  const modal = document.getElementById("dictModal");
-  const box = document.querySelector(".dict-modal");
+  const openBtn  = document.getElementById("openDict");
+  const modal    = document.getElementById("dictModal");
+  const box      = document.querySelector(".dict-modal");
   const closeBtn = document.querySelector(".dict-close");
-  const searchBtn = document.getElementById("dict-search");
-  const input = document.getElementById("dict-q");
+  const searchBtn= document.getElementById("dict-search");
+
+  const input    = document.getElementById("dict-q");
   const clearBtn = document.getElementById("dict-clear");
 
-  /* -------- APERTURA MODALE (con GSAP se presente) -------- */
+  let clearVisible = false; // stato interno per GSAP
+
+
+  /* ---------------------------------
+        APERTURA MODALE (GSAP)
+  ----------------------------------*/
   openBtn.addEventListener("click", () => {
     modal.style.display = "flex";
 
@@ -5542,56 +5512,89 @@ document.addEventListener("DOMContentLoaded", () => {
 
       gsap.timeline({ defaults: { ease: "power3.out" } })
         .to(modal, { opacity: 1, duration: 0.25 })
-        .to(box, { opacity: 1, scale: 1, duration: 0.35 }, "-=0.10");
+        .to(box,   { opacity: 1, scale: 1, duration: 0.35 }, "-=0.10");
     }
 
     input.focus();
   });
 
-  /* -------- CHIUSURA MODALE -------- */
+
+  /* ---------------------------------
+         CHIUSURA MODALE
+  ----------------------------------*/
   function closeModal() {
     if (window.gsap) {
       gsap.timeline({ defaults: { ease: "power2.inOut" } })
-        .to(box, { scale: 0.88, opacity: 0, duration: 0.25 })
+        .to(box,   { scale: 0.88, opacity: 0, duration: 0.25 })
         .to(modal, { opacity: 0, duration: 0.25 }, "-=0.10")
-        .add(() => modal.style.display = "none");
+        .add(() => { modal.style.display = "none"; });
     } else {
       modal.style.display = "none";
     }
   }
 
   closeBtn.addEventListener("click", closeModal);
-
-  modal.addEventListener("click", e => {
-    if (e.target === modal) closeModal();
-  });
-
+  modal.addEventListener("click", e => { if (e.target === modal) closeModal(); });
   box.addEventListener("click", e => e.stopPropagation());
 
-/* -------- X per cancellare input -------- */
-input.addEventListener("input", () => {
 
-  // Se c’è testo → mostra X
-  if (input.value.trim() !== "") {
-    clearBtn.classList.add("show");
-  } 
-  // Se vuoto → nasconde X
-  else {
-    clearBtn.classList.remove("show");
-  }
+  /* ---------------------------------
+       X INPUT — GSAP SLIDE & FADE
+  ----------------------------------*/
+  input.addEventListener("input", () => {
+    const hasText = input.value.trim().length > 0;
 
-});
+    if (hasText && !clearVisible) {
+      clearVisible = true;
+      clearBtn.classList.add("show");
 
-// Click sulla X → cancella input
-clearBtn.addEventListener("click", () => {
-  input.value = "";
-  clearBtn.classList.remove("show");
-  input.focus();
-});
+      gsap.fromTo(clearBtn,
+        { opacity: 0, x: 10, scale: 1.15 },
+        { opacity: 1, x: 0,  scale: 1, duration: 0.32, ease: "back.out(1.7)" }
+      );
+
+    } else if (!hasText && clearVisible) {
+
+      clearVisible = false;
+
+      gsap.to(clearBtn, {
+        opacity: 0,
+        x: 10,
+        scale: 0.85,
+        duration: 0.25,
+        ease: "power2.out",
+        onComplete: () => clearBtn.classList.remove("show")
+      });
+    }
+  });
 
 
+  /* ---------------------------------
+        CLICK SU X — CANCELLAZIONE
+  ----------------------------------*/
+  clearBtn.addEventListener("click", () => {
 
-  /* -------- FUNZIONE PRINCIPALE DI RICERCA -------- */
+    input.value = "";
+    input.focus();
+
+    if (clearVisible) {
+      clearVisible = false;
+
+      gsap.to(clearBtn, {
+        opacity: 0,
+        x: 10,
+        scale: 0.85,
+        duration: 0.20,
+        ease: "power2.out",
+        onComplete: () => clearBtn.classList.remove("show")
+      });
+    }
+  });
+
+
+  /* ---------------------------------
+         CERCA PRINCIPALE
+  ----------------------------------*/
   searchBtn.addEventListener("click", () => {
     const q = input.value.trim();
     if (!q) return;
@@ -5606,6 +5609,7 @@ clearBtn.addEventListener("click", () => {
 
 });
 </script>
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
