@@ -4880,6 +4880,52 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
   @media (prefers-reduced-motion: reduce) {
     .comet { animation: none !important; opacity: 0; }
   }
+    /* Effetti per gli stati del FAB */
+#cookie-fab.accepted {
+    animation: pulse-green 1s ease;
+}
+
+#cookie-fab.declined {
+    animation: pulse-red 1s ease;
+}
+
+#cookie-fab.saved {
+    animation: pulse-blue 1s ease;
+}
+
+#cookie-fab.clicked {
+    transform: scale(0.95);
+}
+
+#cookie-fab.modal-open {
+    animation-play-state: paused;
+    opacity: 0.7;
+}
+
+/* Animazioni di pulsazione */
+@keyframes pulse-green {
+    0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+    70% { box-shadow: 0 0 0 15px rgba(34, 197, 94, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+}
+
+@keyframes pulse-red {
+    0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+    70% { box-shadow: 0 0 0 15px rgba(239, 68, 68, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+@keyframes pulse-blue {
+    0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
+    70% { box-shadow: 0 0 0 15px rgba(59, 130, 246, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+}
+
+/* Effetto per il pulsante "Rifiuta tutto" nella modale */
+#cc-reject-all.clicked {
+    transform: scale(0.95);
+    transition: transform 0.1s;
+}
 </style>
 </head>
 <body>
@@ -6952,62 +6998,125 @@ if(dir === 'rtl') {
 
 <!-- === COMETINE MULTIDIREZIONALI FINE=== -->
 <!-- Cookie Banner -->
-<div aria-label="Impostazioni cookie" aria-live="polite" class="cc-banner" id="cookie-banner" role="dialog">
-<div>
-<h4 class="cc-title">🍪 Utilizziamo i cookie</h4>
-<p class="cc-text">
+<div aria-label="Impostazioni cookie" aria-live="polite" class="cc-banner" id="cookie-banner" role="dialog" aria-modal="true">
+  <div class="cc-banner-content">
+    <h4 class="cc-title">🍪 Utilizziamo i cookie</h4>
+    <p class="cc-text">
       Usiamo cookie necessari e, previo consenso, cookie per analisi e miglioramento.
-      Puoi modificare le scelte in qualsiasi momento. Leggi la <a class="cc-link" href="https://casi0048.github.io/pagine/privacy-policy.html" rel="noopener" target="_blank">Privacy &amp; Cookie Policy</a>.
+      Puoi modificare le scelte in qualsiasi momento. Leggi la 
+      <a class="cc-link" href="https://casi0048.github.io/pagine/privacy-policy.html" rel="noopener" target="_blank">Privacy &amp; Cookie Policy</a>.
     </p>
+  </div>
+  <div class="cc-actions">
+    <button class="cc-btn cc-btn--secondary" id="cc-decline" type="button" aria-label="Rifiuta tutti i cookie non necessari">
+      Rifiuta
+    </button>
+    <button class="cc-btn cc-btn--outline" id="cc-customize" type="button" aria-label="Personalizza le impostazioni cookie">
+      Personalizza
+    </button>
+    <button class="cc-btn cc-btn--primary" id="cc-accept" type="button" aria-label="Accetta tutti i cookie">
+      Accetta tutto
+    </button>
+  </div>
 </div>
-<div class="cc-actions">
-<button class="cc-btn" id="cc-decline" type="button">Rifiuta</button>
-<button class="cc-btn" id="cc-customize" type="button">Personalizza</button>
-<button class="cc-btn solid" id="cc-accept" type="button">Accetta tutto</button>
-</div>
-</div>
+
 <!-- Modale preferenze -->
-<div aria-hidden="true" aria-label="Preferenze cookie" class="cc-modal" id="cookie-modal">
-<div class="cc-card" role="document">
-<h3>Preferenze cookie</h3>
-<p class="cc-text">Seleziona le categorie non necessarie che desideri attivare.</p>
-<div class="cc-row">
-<div>
-<div><span class="cc-badge">Necessari</span> Sempre attivi</div>
-<p class="cc-desc">Richiesti per il corretto funzionamento del sito.</p>
+<div aria-hidden="true" aria-label="Preferenze cookie" class="cc-modal" id="cookie-modal" role="dialog" aria-modal="true">
+  <div class="cc-modal-backdrop" data-close-modal></div>
+  <div class="cc-card" role="document">
+    <div class="cc-card-header">
+      <h2 class="cc-card-title">Preferenze cookie</h2>
+      <p class="cc-card-subtitle">Seleziona le categorie non necessarie che desideri attivare.</p>
+    </div>
+    
+    <div class="cc-card-body">
+      <!-- Necessari (sempre attivi) -->
+      <div class="cc-row cc-row--disabled">
+        <div class="cc-row-content">
+          <div class="cc-row-header">
+            <span class="cc-badge cc-badge--required">Necessari</span>
+            <span class="cc-badge cc-badge--status">Sempre attivi</span>
+          </div>
+          <p class="cc-desc">Richiesti per il corretto funzionamento del sito.</p>
+        </div>
+        <div class="cc-switch">
+          <input aria-label="Cookie necessari - Sempre attivi" checked disabled type="checkbox" />
+        </div>
+      </div>
+      
+      <!-- Preferenze -->
+      <div class="cc-row">
+        <div class="cc-row-content">
+          <div class="cc-row-header">
+            <span class="cc-category">Preferenze</span>
+          </div>
+          <p class="cc-desc">Memorizzano le tue scelte nel sito (es. lingua, tema, impostazioni).</p>
+        </div>
+        <div class="cc-switch">
+          <label class="cc-switch-label" for="cc-pref">
+            <input aria-label="Attiva cookie per le preferenze" id="cc-pref" type="checkbox" />
+            <span class="cc-switch-slider"></span>
+          </label>
+        </div>
+      </div>
+      
+      <!-- Statistiche -->
+      <div class="cc-row">
+        <div class="cc-row-content">
+          <div class="cc-row-header">
+            <span class="cc-category">Statistiche</span>
+          </div>
+          <p class="cc-desc">Ci aiutano a capire come usi il sito (dati in forma anonima e aggregata).</p>
+        </div>
+        <div class="cc-switch">
+          <label class="cc-switch-label" for="cc-analytics">
+            <input aria-label="Attiva cookie per le statistiche" id="cc-analytics" type="checkbox" />
+            <span class="cc-switch-slider"></span>
+          </label>
+        </div>
+      </div>
+      
+      <!-- Marketing -->
+      <div class="cc-row">
+        <div class="cc-row-content">
+          <div class="cc-row-header">
+            <span class="cc-category">Marketing</span>
+          </div>
+          <p class="cc-desc">Contenuti esterni (video, mappe) che potrebbero impostare cookie di terze parti.</p>
+        </div>
+        <div class="cc-switch">
+          <label class="cc-switch-label" for="cc-marketing">
+            <input aria-label="Attiva cookie per il marketing" id="cc-marketing" type="checkbox" />
+            <span class="cc-switch-slider"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+    
+    <div class="cc-card-footer">
+      <div class="cc-actions-row">
+        <button class="cc-btn cc-btn--ghost" id="cc-cancel" type="button" aria-label="Annulla e chiudi">
+          Annulla
+        </button>
+        <button class="cc-btn cc-btn--secondary" id="cc-reject-all" type="button" aria-label="Rifiuta tutti i cookie non necessari">
+          Rifiuta tutto
+        </button>
+        <button class="cc-btn cc-btn--primary" id="cc-save" type="button" aria-label="Salva le preferenze selezionate">
+          Salva preferenze
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
-<div class="cc-switch"><input aria-label="Cookie necessari" checked="" disabled="" type="checkbox"/></div>
-</div>
-<div class="cc-row">
-<div>
-<div>Preferenze</div>
-<p class="cc-desc">Memorizzano scelte del sito (es. lingua).</p>
-</div>
-<div class="cc-switch"><input aria-label="Cookie preferenze" id="cc-pref" type="checkbox"/></div>
-</div>
-<div class="cc-row">
-<div>
-<div>Statistiche</div>
-<p class="cc-desc">Aiutano a capire come usi il sito (in forma aggregata).</p>
-</div>
-<div class="cc-switch"><input aria-label="Cookie statistiche" id="cc-analytics" type="checkbox"/></div>
-</div>
-<div class="cc-row">
-<div>
-<div>Marketing</div>
-<p class="cc-desc">Contenuti/embeds esterni che potrebbero impostare cookie.</p>
-</div>
-<div class="cc-switch"><input aria-label="Cookie marketing" id="cc-marketing" type="checkbox"/></div>
-</div>
-<div class="cc-actions-row">
-<button class="cc-btn outline" id="cc-cancel" type="button">Annulla</button>
-<button class="cc-btn" id="cc-reject-all" type="button">Rifiuta tutto</button>
-<button class="cc-btn solid" id="cc-save" type="button">Salva preferenze</button>
-</div>
-</div>
-</div>
-<!-- Biscottino (riapri preferenze) -->
-<button aria-label="Preferenze cookie" id="cookie-fab" title="Preferenze cookie">🍪 Cookie</button>
+
+<!-- Bottone fluttuante per preferenze -->
+<button aria-label="Gestisci preferenze cookie" class="cc-fab" id="cookie-fab" title="Gestisci cookie">
+  <svg class="cc-fab-icon" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-2-9l-3 3 3 3 7-7-3-3z"/>
+  </svg>
+  <span class="cc-fab-label">Cookie</span>
+</button>
+
 <script>
 // ========== GESTIONE ERRORI GLOBALE ==========
 window.addEventListener('error', function(e) {
@@ -7032,6 +7141,7 @@ function safeQuery(selector, context = document) {
   const banner = $('#cookie-banner');
   const modal  = $('#cookie-modal');
   const fab    = $('#cookie-fab');
+  const fabIcon = fab.querySelector('svg');
 
   const pref   = $('#cc-pref');
   const anal   = $('#cc-analytics');
@@ -7051,35 +7161,105 @@ function safeQuery(selector, context = document) {
     localStorage.setItem(LS_KEY, JSON.stringify({ ts: Date.now(), consent }));
   }
 
+  // Funzione per aggiornare l'icona del FAB in base al consenso
+  function updateFabIcon(consent) {
+    if (!consent || (!consent.preferences && !consent.analytics && !consent.marketing)) {
+      // Nessun consenso o tutti rifiutati: icona "cookie vuoto"
+      fabIcon.innerHTML = '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-2-9l-3 3 3 3 7-7-3-3z"/>';
+    } else if (consent.preferences && consent.analytics && consent.marketing) {
+      // Tutto accettato: icona "check completo"
+      fabIcon.innerHTML = '<path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>';
+    } else {
+      // Consenso parziale: icona "settings/ingranaggio"
+      fabIcon.innerHTML = '<path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>';
+    }
+  }
+
   // Iniettabile: qui caricherai librerie solo se consentito
   function apply(consent){
+    // Aggiorna l'icona del FAB
+    updateFabIcon(consent);
+    
     // Esempio: se analytics true, carica GA (placeholder)
     if (consent.analytics){
       // loadAnalytics(); // <- qui il tuo script reale
+      console.log('Analytics caricati (consenso dato)');
+    } else {
+      console.log('Analytics non caricati (consenso negato)');
     }
-    // Se marketing false, puoi nascondere/“offuscare” embed terzi
-    // …
+    
+    // Se marketing true, carica embed terzi
+    if (consent.marketing){
+      // loadMarketing(); // <- qui i tuoi script di marketing
+      console.log('Marketing caricato (consenso dato)');
+    } else {
+      console.log('Marketing non caricato (consenso negato)');
+    }
+    
+    // Se preferences true, salva le preferenze UI
+    if (consent.preferences){
+      // applyUIPreferences(); // <- qui le tue preferenze UI
+      console.log('Preferenze UI applicate');
+    }
   }
 
-  function openBanner(){ banner.classList.add('open'); }
-  function closeBanner(){ banner.classList.remove('open'); }
-  function openModal(){ modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); }
-  function closeModal(){ modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); }
+  function openBanner(){ 
+    banner.classList.add('open'); 
+    // Ferma l'animazione di fluttuazione quando il banner è aperto
+    fab.style.animationPlayState = 'paused';
+  }
+  
+  function closeBanner(){ 
+    banner.classList.remove('open'); 
+    // Ripristina l'animazione di fluttuazione
+    fab.style.animationPlayState = 'running';
+  }
+  
+  function openModal(){ 
+    modal.classList.add('open'); 
+    modal.setAttribute('aria-hidden','false');
+    // Aggiungi classe per fermare animazione durante la modale
+    fab.classList.add('modal-open');
+  }
+  
+  function closeModal(){ 
+    modal.classList.remove('open'); 
+    modal.setAttribute('aria-hidden','true');
+    // Rimuovi classe per riprendere animazione
+    fab.classList.remove('modal-open');
+  }
 
-  // Prime impostazioni dall’archivio
+  // Prime impostazioni dall'archivio
   const stored = getStored();
-  if (!stored){ openBanner(); }  // mostra il banner solo se manca consenso
-  else { apply(stored.consent); }
+  if (!stored){ 
+    openBanner();  // mostra il banner solo se manca consenso
+    // Imposta icona iniziale (nessun consenso)
+    updateFabIcon(null);
+  } else { 
+    apply(stored.consent); 
+  }
 
   // Pulsanti banner
   btnAccept.addEventListener('click', ()=>{
     const consent = { preferences:true, analytics:true, marketing:true };
-    store(consent); apply(consent); closeBanner();
+    store(consent); 
+    apply(consent); 
+    closeBanner();
+    // Effetto visivo di conferma sul FAB
+    fab.classList.add('accepted');
+    setTimeout(() => fab.classList.remove('accepted'), 1000);
   });
+  
   btnDecline.addEventListener('click', ()=>{
     const consent = { preferences:false, analytics:false, marketing:false };
-    store(consent); apply(consent); closeBanner();
+    store(consent); 
+    apply(consent); 
+    closeBanner();
+    // Effetto visivo di rifiuto sul FAB
+    fab.classList.add('declined');
+    setTimeout(() => fab.classList.remove('declined'), 1000);
   });
+  
   btnCustom.addEventListener('click', ()=>{
     // precompila gli switch dalla memoria
     const s = getStored();
@@ -7091,12 +7271,28 @@ function safeQuery(selector, context = document) {
 
   // Pulsanti modale
   btnSave.addEventListener('click', ()=>{
-    const consent = { preferences:pref.checked, analytics:anal.checked, marketing:mark.checked };
-    store(consent); apply(consent); closeModal(); closeBanner();
+    const consent = { 
+      preferences: pref.checked, 
+      analytics: anal.checked, 
+      marketing: mark.checked 
+    };
+    store(consent); 
+    apply(consent); 
+    closeModal(); 
+    closeBanner();
+    
+    // Effetto visivo di salvataggio sul FAB
+    fab.classList.add('saved');
+    setTimeout(() => fab.classList.remove('saved'), 1000);
   });
+  
   btnCancel.addEventListener('click', ()=> closeModal());
+  
   btnRejectAll.addEventListener('click', ()=>{
     pref.checked = anal.checked = mark.checked = false;
+    // Feedback visivo nella modale
+    btnRejectAll.classList.add('clicked');
+    setTimeout(() => btnRejectAll.classList.remove('clicked'), 300);
   });
 
   // Biscottino: riapre la modale in ogni momento
@@ -7106,6 +7302,10 @@ function safeQuery(selector, context = document) {
     anal.checked = !!(s && s.consent.analytics);
     mark.checked = !!(s && s.consent.marketing);
     openModal();
+    
+    // Effetto pulsante premuto
+    fab.classList.add('clicked');
+    setTimeout(() => fab.classList.remove('clicked'), 300);
   });
 
   // Evita sovrapposizione con il box di Russell: se collide, sposta a destra
@@ -7115,20 +7315,45 @@ function safeQuery(selector, context = document) {
     const r1 = fab.getBoundingClientRect();
     const r2 = rb.getBoundingClientRect();
     const overlap = !(r1.right < r2.left || r1.left > r2.right || r1.bottom < r2.top || r1.top > r2.bottom);
+    
     if(overlap){
       fab.style.left = 'auto';
       fab.style.right = '1.25rem';
-    }else{
+    } else {
       fab.style.right = 'auto';
       fab.style.left  = '1.25rem';
     }
   }
+  
+  // Inizializza la posizione
   avoidOverlap();
-  window.addEventListener('resize', avoidOverlap);
-  window.addEventListener('scroll', avoidOverlap);
+  
+  // Aggiorna la posizione al resize/scroll con debounce
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(avoidOverlap, 100);
+  });
+  
+  let scrollTimeout;
+  window.addEventListener('scroll', () => {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(avoidOverlap, 50);
+  });
 
   // ESC chiude la modale
-  document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeModal(); });
+  document.addEventListener('keydown', (e)=>{ 
+    if(e.key === 'Escape' && modal.classList.contains('open')) {
+      closeModal();
+    }
+  });
+
+  // Clic fuori dalla modale la chiude
+  modal.addEventListener('click', (e)=>{
+    if(e.target === modal){
+      closeModal();
+    }
+  });
 })();
 </script>
 <script>
