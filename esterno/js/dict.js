@@ -899,8 +899,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
 });
-</script>
- <script>
+
     /* ===== Google Translate: controllo da select custom ===== */
     
     // 1) Carica script di Google una sola volta
@@ -989,8 +988,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
     })();
-  </script>
-  <script>
+
 document.addEventListener("DOMContentLoaded", () => {
 
   const box = document.getElementById("russell-box");
