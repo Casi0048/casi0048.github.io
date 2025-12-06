@@ -8624,48 +8624,33 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <script>
-/* Transizione per overlay */
-#filosofi-overlay {
-    transition: opacity 0.2s ease, transform 0.2s ease;
-    opacity: 0;
-    transform: translateY(-5px);
-}
-
-/* Stato attivo del bottone */
-#paradigma-btn.active {
-    background: rgba(255, 215, 0, 0.1);
-    border-color: rgba(255, 215, 0, 0.5);
-}
-
-/* Mobile: overlay centrato e più grande */
-@media (max-width: 768px) {
-    #filosofi-overlay {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%) scale(0.95);
-        width: 90%;
-        max-width: 500px;
-        max-height: 80vh;
-        overflow-y: auto;
-        z-index: 10000;
+    const btn = document.getElementById('paradigma-btn');
+    const overlay = document.getElementById('filosofi-overlay');
+    
+    let hideTimeout;
+    
+    function showOverlay() {
+        clearTimeout(hideTimeout);
+        overlay.style.display = 'block';
     }
     
-    #filosofi-overlay[style*="display: block"] {
-        animation: popIn 0.3s ease-out;
+    function hideOverlay() {
+        hideTimeout = setTimeout(() => {
+            overlay.style.display = 'none';
+        }, 300);
     }
     
-    @keyframes popIn {
-        from {
-            opacity: 0;
-            transform: translate(-50%, -50%) scale(0.9);
-        }
-        to {
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
-        }
-    }
-}
+    // Apri overlay al passaggio mouse sul bottone
+    btn.addEventListener('mouseenter', showOverlay);
+    
+    // Chiudi overlay dopo uscita mouse dal bottone
+    btn.addEventListener('mouseleave', hideOverlay);
+    
+    // Se il mouse entra nell'overlay cancella la chiusura
+    overlay.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
+    
+    // Se il mouse esce dall'overlay, avvia chiusura
+    overlay.addEventListener('mouseleave', hideOverlay);
 </script>
 
 <script>
