@@ -615,4 +615,542 @@ document.addEventListener('DOMContentLoaded', function() {
     setupClearButton();
 });
 -->
+<!-- ============================================================
+        JAVASCRIPT SPOSTATI 6 DICEMBRE
+============================================================ -->
 
+document.addEventListener("DOMContentLoaded", () => {
+
+  const fab      = document.getElementById("dict-fab");
+  const modal    = document.getElementById("dict-modal");
+  const overlay  = document.getElementById("dict-overlay");
+  const closeBtn = document.getElementById("dict-close");
+
+  // APRI
+  fab.addEventListener("click", () => {
+    modal.style.transform = "translateX(0)";
+    overlay.style.opacity = "1";
+    overlay.style.pointerEvents = "auto";
+  });
+
+  // CHIUDI
+  function closeDict() {
+    modal.style.transform = "translateX(100%)";
+    overlay.style.opacity = "0";
+    overlay.style.pointerEvents = "none";
+  }
+
+  overlay.addEventListener("click", closeDict);
+  closeBtn.addEventListener("click", closeDict);
+
+});
+
+
+  <!-- ============================================================
+        JAVASCRIPT DIZIONARIO - VERSIONE DEFINITIVA
+============================================================ -->
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("📘 Dizionario filosofico - Inizializzazione");
+
+    // Riferimenti agli elementi
+    const openBtn = document.getElementById("openDict");
+    const closeBtn = document.getElementById("dict-close");
+    const modal = document.getElementById("dict-modal");
+    const overlay = document.getElementById("dict-overlay");
+    const input = document.getElementById("dict-q");
+    const btnSearch = document.getElementById("dict-search");
+    const btnOpenAll = document.getElementById("open-all");
+    const suggestions = document.getElementById("dict-suggestions");
+
+    // Stato del modale
+    let isModalOpen = false;
+
+    // Verifica che tutti gli elementi essenziali esistano
+    if (!modal || !overlay || !closeBtn) {
+        console.error("❌ Elementi modale non trovati!");
+        return;
+    }
+
+    /* ============================
+       INIZIALIZZAZIONE GSAP
+    ============================ */
+    gsap.set(modal, { 
+        x: "100%",
+        position: "fixed",
+        top: 0,
+        right: 0
+    });
+    
+    gsap.set(overlay, { 
+        autoAlpha: 0,
+        display: "none"
+    });
+
+    /* ============================
+       APERTURA MODALE
+    ============================ */
+    function openDictionary() {
+        if (isModalOpen) return;
+      
+        // Mostra overlay
+        gsap.set(overlay, { display: "block" });
+        
+        // Animazioni
+        gsap.to(overlay, {
+            duration: 0.3,
+            autoAlpha: 1,
+            ease: "power2.out"
+        });
+
+        gsap.to(modal, {
+            duration: 0.4,
+            x: "0%",
+            ease: "power3.out",
+            onComplete: () => {
+                // Focus sull'input
+                if (input) {
+                    input.focus();
+                    input.select();
+                }
+            }
+        });
+    }
+
+    /* ============================
+       CHIUSURA MODALE
+    ============================ */
+    function closeDictionary() {
+        if (!isModalOpen) return;
+     
+        gsap.to(modal, {
+            duration: 0.35,
+            x: "100%",
+            ease: "power2.in"
+        });
+
+        gsap.to(overlay, {
+            duration: 0.25,
+            autoAlpha: 0,
+            ease: "power2.out",
+            onComplete: () => {
+                gsap.set(overlay, { display: "none" });
+            }
+        });
+    }
+
+    /* ============================
+       GESTIONE EVENTI
+    ============================ */
+    
+    // Apertura con il bottone dizionario
+    if (openBtn) {
+        openBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            openDictionary();
+        });
+    }
+
+    // Chiusura con il bottone X
+    if (closeBtn) {
+        closeBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            closeDictionary();
+        });
+    }
+
+    // Chiusura cliccando sull'overlay
+    if (overlay) {
+        overlay.addEventListener("click", (e) => {
+            if (e.target === overlay) {
+                closeDictionary();
+            }
+        });
+    }
+
+    // Chiusura con ESC
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && isModalOpen) {
+            closeDictionary();
+        }
+    });
+
+    /* ============================
+       FUNZIONALITÀ RICERCA
+    ============================ */
+    
+    function performSearch() {
+        const q = input.value.trim();
+        if (!q) {
+            showMessage("Inserisci un termine da cercare", "error");
+            return;
+        }
+
+        const checkedSources = document.querySelectorAll(".sources input:checked");
+        if (checkedSources.length === 0) {
+            showMessage("Seleziona almeno una fonte", "error");
+            return;
+        }
+
+        const encodedTerm = encodeURIComponent(q);
+        
+        checkedSources.forEach((source, index) => {
+            const url = source.dataset.url.replace("{q}", encodedTerm);
+            setTimeout(() => {
+                window.open(url, "_blank");
+            }, index * 100); // Delay per evitare blocchi del browser
+        });
+
+        showMessage(`Apertura ${checkedSources.length} fonte(i) per "${q}"`, "success");
+    }
+
+    function openAllSources() {
+        const q = input.value.trim();
+        if (!q) {
+            showMessage("Inserisci un termine da cercare", "error");
+            return;
+        }
+
+        const allSources = document.querySelectorAll(".sources input");
+        const encodedTerm = encodeURIComponent(q);
+        
+        allSources.forEach((source, index) => {
+            const url = source.dataset.url.replace("{q}", encodedTerm);
+            setTimeout(() => {
+                window.open(url, "_blank");
+            }, index * 100);
+        });
+
+        showMessage(`Apertura tutte le ${allSources.length} fonti per "${q}"`, "success");
+    }
+
+   
+    /* ============================
+       UTILITIES
+    ============================ */
+    
+    function showMessage(text, type = "info") {
+        // Crea un messaggio temporaneo
+        const message = document.createElement("div");
+        message.textContent = text;
+        message.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            background: ${type === "error" ? "#ff4444" : type === "success" ? "#44ff44" : "#4444ff"};
+            color: white;
+            border-radius: 8px;
+            z-index: 100000;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        `;
+        
+        document.body.appendChild(message);
+        
+        setTimeout(() => {
+            if (message.parentNode) {
+                message.parentNode.removeChild(message);
+            }
+        }, 3000);
+    }
+
+    /* ============================
+       EVENT LISTENER RICERCA
+    ============================ */
+    
+    if (btnSearch) {
+        btnSearch.addEventListener("click", (e) => {
+            e.preventDefault();
+            performSearch();
+        });
+    }
+
+    if (btnOpenAll) {
+        btnOpenAll.addEventListener("click", (e) => {
+            e.preventDefault();
+            openAllSources();
+        });
+    }
+
+    // Ricerca con Enter
+    if (input) {
+        input.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                performSearch();
+            }
+        });
+    }
+
+    // Debug
+    console.log("✅ Dizionario inizializzato correttamente");
+    
+    // Esporta per debug
+    window.dictionary = {
+        open: openDictionary,
+        close: closeDictionary,
+        search: performSearch,
+        openAll: openAllSources
+    };
+
+});
+</script>
+ <script>
+    /* ===== Google Translate: controllo da select custom ===== */
+    
+    // 1) Carica script di Google una sola volta
+    (function loadGTranslate() {
+      if (window._gtLoaded) return;
+      window._gtLoaded = true;
+      // callback globale richiesta da Google
+      window.googleTranslateElementInit = function () {
+        new google.translate.TranslateElement({
+          pageLanguage: 'it',                      // lingua sorgente del sito
+          includedLanguages: 'it,en,fr,de,es,pl',  // lingue permesse
+          autoDisplay: false
+        }, 'google_translate_element');
+      };
+    
+      var s = document.createElement('script');
+      s.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+      s.defer = true;
+      document.head.appendChild(s);
+    })();
+    
+    // 2) Helper: dispatch evento change cross-browser
+    function fireChange(el){
+      try {
+        var evt = new Event('change', { bubbles: true });
+        el.dispatchEvent(evt);
+      } catch(e){
+        var evtOld = document.createEvent('HTMLEvents');
+        evtOld.initEvent('change', true, true);
+        el.dispatchEvent(evtOld);
+      }
+    }
+    
+    // 3) Selettore della combo originale di Google (quando pronta)
+    function withGTCombo(fn){
+      var tries = 0;
+      (function poll(){
+        var combo = document.querySelector('.goog-te-combo');
+        if (combo) return fn(combo);
+        if (tries++ < 60) return setTimeout(poll, 250); // fino a ~15s
+        console.warn('Google Translate non inizializzato in tempo');
+      })();
+    }
+    
+    // 4) Imposta cookie per reset su IT
+    function setCookie(name, value, days){
+      var d = new Date(); d.setTime(d.getTime()+ (days*24*60*60*1000));
+      document.cookie = name + "=" + value + "; expires=" + d.toUTCString() + "; path=/";
+    }
+    
+    // 5) Handler del select custom
+    (function initCustomTranslate(){
+      var sel = document.getElementById('customTranslate');
+      if (!sel) return;
+    
+      sel.addEventListener('change', function(e){
+        var lang = e.target.value || 'it';
+    
+        // Caso “Italiano” = ripristina pagina originale
+        if (lang === 'it'){
+          // Reset cookie usato da GTranslate e ricarica pulito
+          setCookie('googtrans', '/auto/it', 1);
+          setCookie('googtrans', '/auto/it', 1); // doppio set per sottodomini
+          location.reload();
+          return;
+        }
+    
+        // Seleziona lingua sulla combo nascosta di Google
+        withGTCombo(function(combo){
+          combo.value = lang;
+          fireChange(combo);
+        });
+      });
+    
+      // Sincronizza il select alla lingua attuale (se l’utente ricarica una pagina tradotta)
+      document.addEventListener('DOMContentLoaded', function(){
+        var m = (document.cookie.match(/(?:^|;\s*)googtrans=([^;]+)/) || [])[1];
+        if (m){
+          try{
+            var parts = decodeURIComponent(m).split('/');
+            var current = parts[parts.length - 1] || 'it';
+            if (['it','en','fr','de','es','pl'].includes(current)){
+              sel.value = current;
+            }
+          }catch(_){}
+        }
+      });
+    })();
+  </script>
+  <script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const box = document.getElementById("russell-box");
+  const btn = document.getElementById("russell-btn");
+
+  if (!box || !btn) {
+    console.warn("Russell Box non trovato nel DOM.");
+    return;
+  }
+
+  const shock1  = box.querySelector(".russell-shock");
+  const shock2  = box.querySelector(".russell-shock2");
+  const bolt    = box.querySelector(".russell-bolt");
+  const branch  = box.querySelector(".russell-branch");
+  const ripple  = box.querySelector(".russell-ripple");
+  const rings   = box.querySelectorAll(".russell-ring");
+  const fog     = box.querySelector(".russell-fog");
+  const sparks  = document.getElementById("russell-sparks");
+
+  btn.addEventListener("click", () => {
+
+    /* --- Nebbia --- */
+    gsap.fromTo(fog,
+      { opacity: 0 },
+      { opacity: 1, duration: 0.25, yoyo: true, repeat: 1 }
+    );
+
+    /* --- Shockwave 1 --- */
+    gsap.fromTo(shock1,
+      { opacity: 1, scale: 0.2 },
+      { opacity: 0, scale: 2.5, duration: 0.7 }
+    );
+
+    /* --- Shockwave 2 --- */
+    gsap.fromTo(shock2,
+      { opacity: 1, scale: 0.3 },
+      { opacity: 0, scale: 1.9, duration: 0.9 }
+    );
+
+    /* --- Fulmine principale --- */
+    gsap.fromTo(bolt,
+      { opacity: 1, scaleY: 0.1 },
+      { opacity: 0, scaleY: 1.4, duration: 0.35 }
+    );
+
+    /* --- Fulmine secondario (ramo) --- */
+    gsap.fromTo(branch,
+      { opacity: 1, x: -40, y: 10 },
+      { opacity: 0, x: 40, y: 120, duration: 0.38 }
+    );
+
+    /* --- Ripple --- */
+    gsap.fromTo(ripple,
+      { opacity: 0.9, scale: 0.3 },
+      { opacity: 0, scale: 1.5, duration: 0.55 }
+    );
+
+    /* --- Anelli energetici --- */
+    rings.forEach((r, i) => {
+      gsap.fromTo(r,
+        { opacity: 1, scale: 0.5 },
+        { opacity: 0, scale: 1.8 + i * 0.25, duration: 0.6 }
+      );
+    });
+
+    /* --- Scintille --- */
+    for (let i = 0; i < 26; i++) {
+      const s = document.createElement("div");
+      s.className = "russell-spark";
+      sparks.appendChild(s);
+
+      const angle = Math.random() * Math.PI * 2;
+      const dist  = 50 + Math.random() * 90;
+
+      gsap.fromTo(s,
+        { x: 100, y: 60, opacity: 1, scale: Math.random() * 1.3 + 0.4 },
+        {
+          x: 100 + Math.cos(angle) * dist,
+          y: 60 + Math.sin(angle) * dist,
+          opacity: 0,
+          scale: 0,
+          duration: 0.85,
+          ease: "power3.out",
+          onComplete: () => s.remove()
+        }
+      );
+    }
+
+  });
+
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  const box = document.getElementById("russell-box");
+  const btn = document.getElementById("russell-btn");
+
+  const shock1  = box.querySelector(".russell-shock");
+  const shock2  = box.querySelector(".russell-shock2");
+  const bolt    = box.querySelector(".russell-bolt");
+  const branch  = box.querySelector(".russell-branch");
+  const ripple  = box.querySelector(".russell-ripple");
+  const rings   = box.querySelectorAll(".russell-ring");
+  const fog     = box.querySelector(".russell-fog");
+  const sparksC = document.getElementById("russell-sparks");
+
+  btn.addEventListener("click", () => {
+
+    /* Nebbia */
+    gsap.fromTo(fog,
+      { opacity: 0 },
+      { opacity: 1, duration: 0.28, yoyo: true, repeat: 1 }
+    );
+
+    /* Shockwaves */
+    gsap.fromTo(shock1, { opacity: 1, scale: 0.25 },
+                        { opacity: 0, scale: 2.6, duration: 0.65 });
+
+    gsap.fromTo(shock2, { opacity: 1, scale: 0.32 },
+                        { opacity: 0, scale: 2.1, duration: 0.8 });
+
+    /* Fulmine */
+    gsap.fromTo(bolt,   { opacity: 1, scaleY: 0.1 },
+                        { opacity: 0, scaleY: 1.4, duration: 0.3 });
+
+    gsap.fromTo(branch, { opacity: 1, x: -40, y: 10 },
+                        { opacity: 0, x: 60,  y: 120, duration: 0.35 });
+
+    /* Ripple */
+    gsap.fromTo(ripple, { opacity: 0.9, scale: 0.3 },
+                        { opacity: 0, scale: 1.8, duration: 0.55 });
+
+    /* Rings */
+    rings.forEach((r,i) => {
+      gsap.fromTo(r, { opacity: 1, scale: 0.5 },
+                     { opacity: 0, scale: 2 + i*0.2, duration: 0.55 });
+    });
+
+    /* Sparks */
+    for (let i=0;i<28;i++){
+      const s=document.createElement("div");
+      s.className="russell-spark";
+      sparksC.appendChild(s);
+
+      const angle=Math.random()*Math.PI*2;
+      const dist =60+Math.random()*90;
+
+      gsap.fromTo(s,
+        { x:100, y:65, opacity:1, scale:1 },
+        { x:100+Math.cos(angle)*dist,
+          y:65+Math.sin(angle)*dist,
+          opacity:0,
+          scale:0,
+          duration:0.85,
+          ease:"power3.out",
+          onComplete:()=>s.remove()
+        }
+      );
+    }
+
+  });
+
+});
