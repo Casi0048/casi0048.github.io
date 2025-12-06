@@ -784,5 +784,4 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-/* ===== 6 DICEMBRE ===== */
 
