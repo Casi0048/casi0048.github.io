@@ -8624,33 +8624,227 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <script>
+(function() {
+    'use strict';
+    
+    // Riferimenti agli elementi
     const btn = document.getElementById('paradigma-btn');
     const overlay = document.getElementById('filosofi-overlay');
     
-    let hideTimeout;
+    // Variabili di stato
+    let hideTimeout = null;
+    let isOverlayVisible = false;
+    let isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
     
+    // Controlla se gli elementi esistono
+    if (!btn || !overlay) {
+        console.warn('Elementi overlay non trovati');
+        return;
+    }
+    
+    // Mostra overlay con animazione
     function showOverlay() {
+        if (isOverlayVisible) return;
+        
         clearTimeout(hideTimeout);
+        
+        // Preparazione per animazione
+        overlay.style.opacity = '0';
+        overlay.style.transform = 'translateY(-10px)';
         overlay.style.display = 'block';
+        
+        // Forza reflow per abilitare transizione
+        void overlay.offsetWidth;
+        
+        // Animazione di entrata
+        overlay.style.opacity = '1';
+        overlay.style.transform = 'translateY(0)';
+        
+        isOverlayVisible = true;
+        btn.setAttribute('aria-expanded', 'true');
+        
+        // Aggiungi classe per stili hover
+        btn.classList.add('overlay-active');
+        
+        // Log per debug (rimuovi in produzione)
+        console.log('Overlay aperto');
     }
     
+    // Nascondi overlay con animazione
     function hideOverlay() {
+        if (!isOverlayVisible) return;
+        
         hideTimeout = setTimeout(() => {
-            overlay.style.display = 'none';
-        }, 300);
+            overlay.style.opacity = '0';
+            overlay.style.transform = 'translateY(-10px)';
+            
+            // Nascondi dopo l'animazione
+            setTimeout(() => {
+                if (!isOverlayVisible) {
+                    overlay.style.display = 'none';
+                    btn.classList.remove('overlay-active');
+                }
+            }, 300);
+            
+            isOverlayVisible = false;
+            btn.setAttribute('aria-expanded', 'false');
+            
+            console.log('Overlay chiuso');
+        }, 100); // Piccolo ritardo per evitare chiusure accidentali
     }
     
-    // Apri overlay al passaggio mouse sul bottone
-    btn.addEventListener('mouseenter', showOverlay);
+    // Toggle overlay (per click/tap)
+    function toggleOverlay() {
+        if (isOverlayVisible) {
+            hideOverlay();
+        } else {
+            showOverlay();
+        }
+    }
     
-    // Chiudi overlay dopo uscita mouse dal bottone
-    btn.addEventListener('mouseleave', hideOverlay);
+    // Chiudi overlay con ESC
+    function handleEscapeKey(e) {
+        if (e.key === 'Escape' && isOverlayVisible) {
+            hideOverlay();
+            btn.focus(); // Riporta focus al bottone
+        }
+    }
     
-    // Se il mouse entra nell'overlay cancella la chiusura
-    overlay.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
+    // Chiudi overlay al click fuori
+    function handleClickOutside(e) {
+        if (isOverlayVisible && 
+            !overlay.contains(e.target) && 
+            !btn.contains(e.target)) {
+            hideOverlay();
+        }
+    }
     
-    // Se il mouse esce dall'overlay, avvia chiusura
-    overlay.addEventListener('mouseleave', hideOverlay);
+    // Gestione per dispositivi touch
+    function setupTouchHandlers() {
+        let touchStartTime;
+        let touchStartX, touchStartY;
+        
+        btn.addEventListener('touchstart', function(e) {
+            touchStartTime = Date.now();
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+            
+            // Su touch, mostra immediatamente
+            if (!isOverlayVisible) {
+                showOverlay();
+            }
+        });
+        
+        btn.addEventListener('touchend', function(e) {
+            const touchTime = Date.now() - touchStartTime;
+            
+            // Se tap breve, toggle
+            if (touchTime < 300) {
+                toggleOverlay();
+            }
+        });
+        
+        // Swipe per chiudere sull'overlay
+        overlay.addEventListener('touchstart', function(e) {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+        });
+        
+        overlay.addEventListener('touchend', function(e) {
+            const touchEndX = e.changedTouches[0].clientX;
+            const touchEndY = e.changedTouches[0].clientY;
+            
+            const deltaX = touchEndX - touchStartX;
+            const deltaY = touchEndY - touchStartY;
+            
+            // Se swipe down significativo, chiudi
+            if (Math.abs(deltaY) > Math.abs(deltaX) && deltaY > 50) {
+                hideOverlay();
+            }
+        });
+    }
+    
+    // Inizializzazione eventi
+    function init() {
+        // Imposta attributi ARIA per accessibilità
+        btn.setAttribute('aria-haspopup', 'dialog');
+        btn.setAttribute('aria-expanded', 'false');
+        btn.setAttribute('aria-controls', 'filosofi-overlay');
+        overlay.setAttribute('aria-modal', 'true');
+        overlay.setAttribute('aria-label', 'I Filosofi che hanno cambiato il paradigma');
+        overlay.setAttribute('role', 'dialog');
+        
+        // Transizioni CSS
+        overlay.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+        
+        // Eventi mouse (solo per desktop)
+        if (!isTouchDevice) {
+            btn.addEventListener('mouseenter', showOverlay);
+            btn.addEventListener('mouseleave', hideOverlay);
+            overlay.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
+            overlay.addEventListener('mouseleave', hideOverlay);
+        }
+        
+        // Eventi click/tap (universali)
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            toggleOverlay();
+        });
+        
+        // Eventi tastiera
+        btn.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggleOverlay();
+            } else if (e.key === 'ArrowDown' && !isOverlayVisible) {
+                e.preventDefault();
+                showOverlay();
+            }
+        });
+        
+        // Eventi globali
+        document.addEventListener('keydown', handleEscapeKey);
+        document.addEventListener('click', handleClickOutside);
+        
+        // Gestione touch
+        if (isTouchDevice) {
+            setupTouchHandlers();
+        }
+        
+        // Pausa slider quando overlay è aperto (se esiste)
+        overlay.addEventListener('mouseenter', function() {
+            const sliderToggle = document.getElementById('slider-toggle');
+            if (sliderToggle && window.pauseSlider) {
+                window.pauseSlider();
+            }
+        });
+        
+        overlay.addEventListener('mouseleave', function() {
+            const sliderToggle = document.getElementById('slider-toggle');
+            if (sliderToggle && window.resumeSlider && !isOverlayVisible) {
+                window.resumeSlider();
+            }
+        });
+        
+        // Log inizializzazione
+        console.log('Overlay filosofi inizializzato - Touch:', isTouchDevice);
+    }
+    
+    // Inizializza quando il DOM è pronto
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+    
+    // Esponi funzioni globalmente per debug (opzionale)
+    window.overlayController = {
+        show: showOverlay,
+        hide: hideOverlay,
+        toggle: toggleOverlay,
+        isVisible: () => isOverlayVisible
+    };
+})();
 </script>
 
 <script>
