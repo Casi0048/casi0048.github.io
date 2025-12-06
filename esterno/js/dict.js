@@ -647,6 +647,20 @@ document.addEventListener("DOMContentLoaded", () => {
             audioGuitar.currentTime = 0;
             audioGuitar.play().catch(()=>{});
         }
+// --- Flash sincronizzato con attacco della chitarra ---
+const flash = document.getElementById("russell-flash");
+if (flash) {
+    gsap.fromTo(flash,
+      { opacity: 0 },
+      { opacity: 1, duration: 0.18, ease: "power2.out" }
+    );
+    gsap.to(flash, {
+      opacity: 0,
+      duration: 0.35,
+      ease: "power3.in",
+      delay: 0.05
+    });
+}
 
         /* --- Nebbia --- */
         gsap.fromTo(fog, { opacity: 0 }, { opacity: 1, duration: 0.3, yoyo: true, repeat: 1 });
