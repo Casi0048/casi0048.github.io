@@ -185,7 +185,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 /* ===== JS PARADIGMA ===== */
-<!--
+
 // Gestione Overlay Filosofi Paradigma
 class FilosofiOverlay {
     constructor() {
@@ -614,7 +614,7 @@ function setupClearButton() {
 document.addEventListener('DOMContentLoaded', function() {
     setupClearButton();
 });
--->
+
 <!-- ============================================================
         JAVASCRIPT SPOSTATI 6 DICEMBRE
 ============================================================ -->
