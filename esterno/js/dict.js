@@ -637,18 +637,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const fog     = box.querySelector(".fog-layer");
     const sparksC = document.getElementById("spark-container");
 
-    // Audio
-    const audioGuitar  = document.getElementById("russell-audio");
-    const audioThunder = document.getElementById("thunder-sound");
-    const audioExplode = document.getElementById("explosionSound");
-
+    // Audio — SOLO chitarra
+    const audioGuitar = document.getElementById("russell-audio");
 
     btn.addEventListener("click", () => {
 
-        /* --- AUDIO sincronizzato --- */
-        if (audioGuitar)  audioGuitar.play().catch(()=>{});
-        setTimeout(() => { if (audioThunder) audioThunder.play().catch(()=>{}); }, 300);
-        setTimeout(() => { if (audioExplode) audioExplode.play().catch(()=>{}); }, 450);
+        /* 🎸 Suono SOLO CHITARRA */
+        if (audioGuitar) {
+            audioGuitar.currentTime = 0;
+            audioGuitar.play().catch(()=>{});
+        }
 
         /* --- Nebbia --- */
         gsap.fromTo(fog, { opacity: 0 }, { opacity: 1, duration: 0.3, yoyo: true, repeat: 1 });
@@ -699,6 +697,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 });
+
 
 
 
