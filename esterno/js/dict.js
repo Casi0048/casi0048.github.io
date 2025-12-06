@@ -615,9 +615,8 @@ document.addEventListener('DOMContentLoaded', function() {
     setupClearButton();
 });
 
-<!-- ============================================================
-        JAVASCRIPT SPOSTATI 6 DICEMBRE
-============================================================ -->
+
+/* ===== JAVASCRIPT SPOSTATI 6 DICEMBRE ===== */
 
 document.addEventListener("DOMContentLoaded", () => {
 
