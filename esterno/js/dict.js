@@ -622,9 +622,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const box = document.getElementById("russell-box");
   const btn = document.getElementById("russell-btn");
+  const sparks = document.getElementById("russell-sparks");
 
-  if (!box || !btn) {
-    console.warn("Russell Box non trovato nel DOM.");
+  if (!box || !btn || !sparks) {
+    console.warn("Russell Box: elementi mancanti.");
     return;
   }
 
@@ -635,68 +636,54 @@ document.addEventListener("DOMContentLoaded", () => {
   const ripple  = box.querySelector(".russell-ripple");
   const rings   = box.querySelectorAll(".russell-ring");
   const fog     = box.querySelector(".russell-fog");
-  const sparks  = document.getElementById("russell-sparks");
 
   btn.addEventListener("click", () => {
 
-    /* --- Nebbia --- */
-    gsap.fromTo(fog,
+    /* Nebbia */
+    fog && gsap.fromTo(fog,
       { opacity: 0 },
-      { opacity: 1, duration: 0.25, yoyo: true, repeat: 1 }
+      { opacity: 1, duration: 0.28, yoyo: true, repeat: 1 }
     );
 
-    /* --- Shockwave 1 --- */
-    gsap.fromTo(shock1,
-      { opacity: 1, scale: 0.2 },
-      { opacity: 0, scale: 2.5, duration: 0.7 }
-    );
+    /* Shockwaves */
+    shock1 && gsap.fromTo(shock1, { opacity: 1, scale: 0.25 },
+                                   { opacity: 0, scale: 2.6, duration: 0.65 });
 
-    /* --- Shockwave 2 --- */
-    gsap.fromTo(shock2,
-      { opacity: 1, scale: 0.3 },
-      { opacity: 0, scale: 1.9, duration: 0.9 }
-    );
+    shock2 && gsap.fromTo(shock2, { opacity: 1, scale: 0.32 },
+                                   { opacity: 0, scale: 2.1, duration: 0.8 });
 
-    /* --- Fulmine principale --- */
-    gsap.fromTo(bolt,
-      { opacity: 1, scaleY: 0.1 },
-      { opacity: 0, scaleY: 1.4, duration: 0.35 }
-    );
+    /* Fulmine */
+    bolt && gsap.fromTo(bolt, { opacity: 1, scaleY: 0.1 },
+                               { opacity: 0, scaleY: 1.4, duration: 0.3 });
 
-    /* --- Fulmine secondario (ramo) --- */
-    gsap.fromTo(branch,
-      { opacity: 1, x: -40, y: 10 },
-      { opacity: 0, x: 40, y: 120, duration: 0.38 }
-    );
+    branch && gsap.fromTo(branch, { opacity: 1, x: -40, y: 10 },
+                                   { opacity: 0, x: 60, y: 120, duration: 0.35 });
 
-    /* --- Ripple --- */
-    gsap.fromTo(ripple,
-      { opacity: 0.9, scale: 0.3 },
-      { opacity: 0, scale: 1.5, duration: 0.55 }
-    );
+    /* Ripple */
+    ripple && gsap.fromTo(ripple, { opacity: 0.9, scale: 0.3 },
+                                     { opacity: 0, scale: 1.8, duration: 0.55 });
 
-    /* --- Anelli energetici --- */
+    /* Rings */
     rings.forEach((r, i) => {
-      gsap.fromTo(r,
-        { opacity: 1, scale: 0.5 },
-        { opacity: 0, scale: 1.8 + i * 0.25, duration: 0.6 }
-      );
+      gsap.fromTo(r, { opacity: 1, scale: 0.5 },
+                    { opacity: 0, scale: 2 + i * 0.2, duration: 0.55 });
     });
 
-    /* --- Scintille --- */
-    for (let i = 0; i < 26; i++) {
+    /* Sparks */
+    for (let i = 0; i < 28; i++) {
       const s = document.createElement("div");
       s.className = "russell-spark";
       sparks.appendChild(s);
 
       const angle = Math.random() * Math.PI * 2;
-      const dist  = 50 + Math.random() * 90;
+      const dist = 60 + Math.random() * 90;
 
-      gsap.fromTo(s,
-        { x: 100, y: 60, opacity: 1, scale: Math.random() * 1.3 + 0.4 },
+      gsap.fromTo(
+        s,
+        { x: 100, y: 65, opacity: 1, scale: 1 },
         {
           x: 100 + Math.cos(angle) * dist,
-          y: 60 + Math.sin(angle) * dist,
+          y: 65 + Math.sin(angle) * dist,
           opacity: 0,
           scale: 0,
           duration: 0.85,
@@ -707,81 +694,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
   });
-
 });
 
-
-document.addEventListener("DOMContentLoaded", () => {
-
-  const box = document.getElementById("russell-box");
-  const btn = document.getElementById("russell-btn");
-
-  const shock1  = box.querySelector(".russell-shock");
-  const shock2  = box.querySelector(".russell-shock2");
-  const bolt    = box.querySelector(".russell-bolt");
-  const branch  = box.querySelector(".russell-branch");
-  const ripple  = box.querySelector(".russell-ripple");
-  const rings   = box.querySelectorAll(".russell-ring");
-  const fog     = box.querySelector(".russell-fog");
-  const sparksC = document.getElementById("russell-sparks");
-
-  btn.addEventListener("click", () => {
-
-    /* Nebbia */
-    gsap.fromTo(fog,
-      { opacity: 0 },
-      { opacity: 1, duration: 0.28, yoyo: true, repeat: 1 }
-    );
-
-    /* Shockwaves */
-    gsap.fromTo(shock1, { opacity: 1, scale: 0.25 },
-                        { opacity: 0, scale: 2.6, duration: 0.65 });
-
-    gsap.fromTo(shock2, { opacity: 1, scale: 0.32 },
-                        { opacity: 0, scale: 2.1, duration: 0.8 });
-
-    /* Fulmine */
-    gsap.fromTo(bolt,   { opacity: 1, scaleY: 0.1 },
-                        { opacity: 0, scaleY: 1.4, duration: 0.3 });
-
-    gsap.fromTo(branch, { opacity: 1, x: -40, y: 10 },
-                        { opacity: 0, x: 60,  y: 120, duration: 0.35 });
-
-    /* Ripple */
-    gsap.fromTo(ripple, { opacity: 0.9, scale: 0.3 },
-                        { opacity: 0, scale: 1.8, duration: 0.55 });
-
-    /* Rings */
-    rings.forEach((r,i) => {
-      gsap.fromTo(r, { opacity: 1, scale: 0.5 },
-                     { opacity: 0, scale: 2 + i*0.2, duration: 0.55 });
-    });
-
-    /* Sparks */
-    for (let i=0;i<28;i++){
-      const s=document.createElement("div");
-      s.className="russell-spark";
-      sparksC.appendChild(s);
-
-      const angle=Math.random()*Math.PI*2;
-      const dist =60+Math.random()*90;
-
-      gsap.fromTo(s,
-        { x:100, y:65, opacity:1, scale:1 },
-        { x:100+Math.cos(angle)*dist,
-          y:65+Math.sin(angle)*dist,
-          opacity:0,
-          scale:0,
-          duration:0.85,
-          ease:"power3.out",
-          onComplete:()=>s.remove()
-        }
-      );
-    }
-
-  });
-
-});
 
 
 
