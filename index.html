@@ -4731,8 +4731,7 @@ footer {
                
                 </div>
            
-
-            <!-- Terza colonna -->
+          <!-- Seconda colonna -->
             <div class="footer-column">
                 <h4>🧭 Esplora</h4>
                 <ul>
@@ -4747,7 +4746,7 @@ footer {
                 </ul>
             </div>
 
-            <!-- Quarta colonna -->
+            <!-- <terza colonna -->
             <div class="footer-column">
                 <h4>🔍 Studio e Ricerca</h4>
                 <ul>
@@ -4761,7 +4760,7 @@ footer {
                 </ul>
             </div>
 
-            <!-- Quinta colonna -->
+            <!-- Quarta colonna -->
             <div class="footer-column">
                 <h4>🏛️ Enciclopedie e Risorse</h4>
                 <ul>
@@ -5412,105 +5411,136 @@ footer {
     </div>
 </div>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const cookieBanner = document.getElementById('cookieBanner');
-        const cookieAccept = document.getElementById('cookieAccept');
-        const cookieReject = document.getElementById('cookieReject');
-        const cookieSettings = document.getElementById('cookieSettings');
-        const cookieSave = document.getElementById('cookieSave');
-        const cookieSettingsPanel = document.getElementById('cookieSettingsPanel');
-        
-        // Controlla se l'utente ha già fatto una scelta
-        if (!getCookie('cookieConsent')) {
-            setTimeout(() => {
-                cookieBanner.classList.add('show');
-            }, 1000);
+   document.addEventListener('DOMContentLoaded', function() {
+    // Seleziona gli elementi con controllo di esistenza
+    const cookieBanner = document.getElementById('cookieBanner');
+    const cookieAccept = document.getElementById('cookieAccept');
+    const cookieReject = document.getElementById('cookieReject');
+    const cookieSettings = document.getElementById('cookieSettings');
+    const cookieSave = document.getElementById('cookieSave');
+    const cookieSettingsPanel = document.getElementById('cookieSettingsPanel');
+    
+    // Verifica che il banner esista prima di procedere
+    if (!cookieBanner) {
+        console.warn('Elemento cookieBanner non trovato nel DOM');
+        return; // Esci dalla funzione se il banner non esiste
+    }
+    
+    // Controlla se l'utente ha già fatto una scelta
+    if (!getCookie('cookieConsent')) {
+        setTimeout(() => {
+            cookieBanner.classList.add('show');
+        }, 1000);
+    }
+    
+    // Funzione helper per aggiungere event listener con controllo
+    function addClickListener(element, handler) {
+        if (element && typeof handler === 'function') {
+            element.addEventListener('click', handler);
+        } else {
+            console.warn('Tentativo di aggiungere event listener a elemento non valido:', element);
         }
-        
-        // Accetta tutti i cookie
+    }
+    
+    // Accetta tutti i cookie (controllo se l'elemento esiste)
+    if (cookieAccept) {
         cookieAccept.addEventListener('click', function() {
             setCookie('cookieConsent', 'all', 365);
             setCookie('analyticsCookies', 'true', 365);
             setCookie('preferenceCookies', 'true', 365);
             hideBanner();
         });
-        
-        // Rifiuta cookie non essenziali
+    }
+    
+    // Rifiuta cookie non essenziali (controllo se l'elemento esiste)
+    if (cookieReject) {
         cookieReject.addEventListener('click', function() {
             setCookie('cookieConsent', 'essential', 365);
             setCookie('analyticsCookies', 'false', 365);
             setCookie('preferenceCookies', 'false', 365);
             hideBanner();
         });
-        
-        // Mostra/nascondi impostazioni
+    }
+    
+    // Mostra/nascondi impostazioni (controllo se l'elemento esiste)
+    if (cookieSettings) {
         cookieSettings.addEventListener('click', function() {
-            cookieSettingsPanel.classList.toggle('show');
-        });
-        
-        // Salva preferenze personalizzate
-        cookieSave.addEventListener('click', function() {
-            const analyticsChecked = document.getElementById('analyticsCookies').checked;
-            const preferenceChecked = document.getElementById('preferenceCookies').checked;
-            
-            setCookie('cookieConsent', 'custom', 365);
-            setCookie('analyticsCookies', analyticsChecked ? 'true' : 'false', 365);
-            setCookie('preferenceCookies', preferenceChecked ? 'true' : 'false', 365);
-            
-            hideBanner();
-        });
-        
-        // Funzione per nascondere il banner
-        function hideBanner() {
-            cookieBanner.classList.remove('show');
-            cookieBanner.classList.add('hide');
-            
-            setTimeout(() => {
-                cookieBanner.style.display = 'none';
-            }, 500);
-        }
-        
-        // Funzione per impostare i cookie
-        function setCookie(name, value, days) {
-            const date = new Date();
-            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-            const expires = "expires=" + date.toUTCString();
-            document.cookie = name + "=" + value + ";" + expires + ";path=/;SameSite=Lax";
-        }
-        
-        // Funzione per ottenere i cookie
-        function getCookie(name) {
-            const cookieName = name + "=";
-            const decodedCookie = decodeURIComponent(document.cookie);
-            const cookieArray = decodedCookie.split(';');
-            
-            for (let i = 0; i < cookieArray.length; i++) {
-                let cookie = cookieArray[i];
-                while (cookie.charAt(0) === ' ') {
-                    cookie = cookie.substring(1);
-                }
-                if (cookie.indexOf(cookieName) === 0) {
-                    return cookie.substring(cookieName.length, cookie.length);
-                }
+            if (cookieSettingsPanel) {
+                cookieSettingsPanel.classList.toggle('show');
             }
-            return "";
-        }
-        
-        // Applica le preferenze cookie al caricamento della pagina
-        function applyCookiePreferences() {
-            const analytics = getCookie('analyticsCookies');
-            const preferences = getCookie('preferenceCookies');
+        });
+    }
+    
+    // Salva preferenze personalizzate (controllo se l'elemento esiste)
+    if (cookieSave) {
+        cookieSave.addEventListener('click', function() {
+            const analyticsInput = document.getElementById('analyticsCookies');
+            const preferenceInput = document.getElementById('preferenceCookies');
             
-            // Qui puoi aggiungere il codice per caricare o rimuovere script di analytics
-            // in base alle preferenze dell'utente
-            console.log('Preferenze cookie applicate:');
-            console.log('Analytics:', analytics === 'true');
-            console.log('Preferenze:', preferences === 'true');
-        }
+            if (analyticsInput && preferenceInput) {
+                const analyticsChecked = analyticsInput.checked;
+                const preferenceChecked = preferenceInput.checked;
+                
+                setCookie('cookieConsent', 'custom', 365);
+                setCookie('analyticsCookies', analyticsChecked ? 'true' : 'false', 365);
+                setCookie('preferenceCookies', preferenceChecked ? 'true' : 'false', 365);
+                
+                hideBanner();
+            }
+        });
+    }
+    
+    // Funzione per nascondere il banner
+    function hideBanner() {
+        cookieBanner.classList.remove('show');
+        cookieBanner.classList.add('hide');
         
-        // Applica le preferenze al caricamento
-        applyCookiePreferences();
-    });
+        setTimeout(() => {
+            cookieBanner.style.display = 'none';
+        }, 500);
+    }
+    
+    // Funzione per impostare i cookie
+    function setCookie(name, value, days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        const expires = "expires=" + date.toUTCString();
+        document.cookie = name + "=" + value + ";" + expires + ";path=/;SameSite=Lax";
+    }
+    
+    // Funzione per ottenere i cookie
+    function getCookie(name) {
+        const cookieName = name + "=";
+        const decodedCookie = decodeURIComponent(document.cookie);
+        const cookieArray = decodedCookie.split(';');
+        
+        for (let i = 0; i < cookieArray.length; i++) {
+            let cookie = cookieArray[i];
+            while (cookie.charAt(0) === ' ') {
+                cookie = cookie.substring(1);
+            }
+            if (cookie.indexOf(cookieName) === 0) {
+                return cookie.substring(cookieName.length, cookie.length);
+            }
+        }
+        return "";
+    }
+    
+    // Applica le preferenze cookie al caricamento della pagina
+    function applyCookiePreferences() {
+        const analytics = getCookie('analyticsCookies');
+        const preferences = getCookie('preferenceCookies');
+        
+        // Qui puoi aggiungere il codice per caricare o rimuovere script di analytics
+        // in base alle preferenze dell'utente
+        console.log('Preferenze cookie applicate:');
+        console.log('Analytics:', analytics === 'true');
+        console.log('Preferenze:', preferences === 'true');
+    }
+    
+    // Applica le preferenze al caricamento
+    applyCookiePreferences();
+});
       /* ===== PULSANTE TORNA SU ===== */
     (function() {
     const backToTop = document.getElementById('backToTop');
