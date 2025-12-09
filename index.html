@@ -4711,7 +4711,7 @@ footer {
   </section>
   <!---------------------------------------------------------------->
   <!-- Pulsante Torna Su -->
-  <button id="backToTop" title="Torna su">↑</button>
+  <button class="back-to-top" id="backToTop" aria-label="Torna all'inizio">
   <i class="fas fa-chevron-up"></i>
   </button>
   <!-- Footer -->
@@ -5410,62 +5410,170 @@ footer {
         </div>
     </div>
 </div>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // ... tutto il tuo codice cookie (come prima) ...
+  <script>
+   document.addEventListener('DOMContentLoaded', function() {
+    // Seleziona gli elementi con controllo di esistenza
+    const cookieBanner = document.getElementById('cookieBanner');
+    const cookieAccept = document.getElementById('cookieAccept');
+    const cookieReject = document.getElementById('cookieReject');
+    const cookieSettings = document.getElementById('cookieSettings');
+    const cookieSave = document.getElementById('cookieSave');
+    const cookieSettingsPanel = document.getElementById('cookieSettingsPanel');
     
-    // Mostra l'icona cookie anche se si scrolla
-    let lastScrollTop = 0;
-    window.addEventListener('scroll', function() {
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        
-      
-    /* ===== PULSANTE TORNA SU ===== */
-    const backToTopButton = document.getElementById('backToTop');
-    
-    if (backToTopButton) {
-        // Mostra/nascondi il pulsante durante lo scroll
-        window.addEventListener('scroll', function() {
-            if (window.pageYOffset > 300) {
-                backToTopButton.style.display = 'block';
-                // Se hai la classe 'show' nel tuo CSS
-                if (backToTopButton.classList) {
-                    backToTopButton.classList.add('show');
-                }
-            } else {
-                backToTopButton.style.display = 'none';
-                if (backToTopButton.classList) {
-                    backToTopButton.classList.remove('show');
-                }
-            }
-        });
-        
-        // Scroll verso l'alto quando si clicca il pulsante
-        backToTopButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-        
-        // Inizializza subito il controllo dello scroll
-        // (per mostrare il pulsante se la pagina è già scrollata)
-        if (window.pageYOffset > 300) {
-            backToTopButton.style.display = 'block';
-            if (backToTopButton.classList) {
-                backToTopButton.classList.add('show');
-            }
-        }
-    } else {
-        console.warn('Pulsante "Torna su" non trovato');
+    // Verifica che il banner esista prima di procedere
+    if (!cookieBanner) {
+        console.warn('Elemento cookieBanner non trovato nel DOM');
+        return; // Esci dalla funzione se il banner non esiste
     }
     
-    // ===== LETTORE AUDIO =====
-    // ... il tuo codice per il lettore audio ...
+    // Controlla se l'utente ha già fatto una scelta
+    if (!getCookie('cookieConsent')) {
+        setTimeout(() => {
+            cookieBanner.classList.add('show');
+        }, 1000);
+    }
     
-}); // Fine del DOMContentLoaded
-
+    // Funzione helper per aggiungere event listener con controllo
+    function addClickListener(element, handler) {
+        if (element && typeof handler === 'function') {
+            element.addEventListener('click', handler);
+        } else {
+            console.warn('Tentativo di aggiungere event listener a elemento non valido:', element);
+        }
+    }
+    
+    // Accetta tutti i cookie (controllo se l'elemento esiste)
+    if (cookieAccept) {
+        cookieAccept.addEventListener('click', function() {
+            setCookie('cookieConsent', 'all', 365);
+            setCookie('analyticsCookies', 'true', 365);
+            setCookie('preferenceCookies', 'true', 365);
+            hideBanner();
+        });
+    }
+    
+    // Rifiuta cookie non essenziali (controllo se l'elemento esiste)
+    if (cookieReject) {
+        cookieReject.addEventListener('click', function() {
+            setCookie('cookieConsent', 'essential', 365);
+            setCookie('analyticsCookies', 'false', 365);
+            setCookie('preferenceCookies', 'false', 365);
+            hideBanner();
+        });
+    }
+    
+    // Mostra/nascondi impostazioni (controllo se l'elemento esiste)
+    if (cookieSettings) {
+        cookieSettings.addEventListener('click', function() {
+            if (cookieSettingsPanel) {
+                cookieSettingsPanel.classList.toggle('show');
+            }
+        });
+    }
+    
+    // Salva preferenze personalizzate (controllo se l'elemento esiste)
+    if (cookieSave) {
+        cookieSave.addEventListener('click', function() {
+            const analyticsInput = document.getElementById('analyticsCookies');
+            const preferenceInput = document.getElementById('preferenceCookies');
+            
+            if (analyticsInput && preferenceInput) {
+                const analyticsChecked = analyticsInput.checked;
+                const preferenceChecked = preferenceInput.checked;
+                
+                setCookie('cookieConsent', 'custom', 365);
+                setCookie('analyticsCookies', analyticsChecked ? 'true' : 'false', 365);
+                setCookie('preferenceCookies', preferenceChecked ? 'true' : 'false', 365);
+                
+                hideBanner();
+            }
+        });
+    }
+    
+    // Funzione per nascondere il banner
+    function hideBanner() {
+        cookieBanner.classList.remove('show');
+        cookieBanner.classList.add('hide');
+        
+        setTimeout(() => {
+            cookieBanner.style.display = 'none';
+        }, 500);
+    }
+    
+    // Funzione per impostare i cookie
+    function setCookie(name, value, days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        const expires = "expires=" + date.toUTCString();
+        document.cookie = name + "=" + value + ";" + expires + ";path=/;SameSite=Lax";
+    }
+    
+    // Funzione per ottenere i cookie
+    function getCookie(name) {
+        const cookieName = name + "=";
+        const decodedCookie = decodeURIComponent(document.cookie);
+        const cookieArray = decodedCookie.split(';');
+        
+        for (let i = 0; i < cookieArray.length; i++) {
+            let cookie = cookieArray[i];
+            while (cookie.charAt(0) === ' ') {
+                cookie = cookie.substring(1);
+            }
+            if (cookie.indexOf(cookieName) === 0) {
+                return cookie.substring(cookieName.length, cookie.length);
+            }
+        }
+        return "";
+    }
+    
+    // Applica le preferenze cookie al caricamento della pagina
+    function applyCookiePreferences() {
+        const analytics = getCookie('analyticsCookies');
+        const preferences = getCookie('preferenceCookies');
+        
+        // Qui puoi aggiungere il codice per caricare o rimuovere script di analytics
+        // in base alle preferenze dell'utente
+        console.log('Preferenze cookie applicate:');
+        console.log('Analytics:', analytics === 'true');
+        console.log('Preferenze:', preferences === 'true');
+    }
+    
+    // Applica le preferenze al caricamento
+    applyCookiePreferences();
+});
+      /* ===== PULSANTE TORNA SU ===== */
+    (function() {
+    const backToTop = document.getElementById('backToTop');
+    
+    if (!backToTop) return;
+    
+    // Mostra/nascondi pulsante allo scroll
+    function toggleBackToTop() {
+        if (window.pageYOffset > 300) {
+            backToTop.classList.add('visible');
+        } else {
+            backToTop.classList.remove('visible');
+        }
+    }
+    
+    // Scroll fluido verso l'alto
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+    
+    // Event listeners
+    window.addEventListener('scroll', toggleBackToTop);
+    backToTop.addEventListener('click', scrollToTop);
+    
+    // Inizializza lo stato
+    toggleBackToTop();
+    
+    console.log('🔝 Back to top button initialized');
+    })();
+    // ===== LETTORE AUDIO =====
     document.addEventListener('DOMContentLoaded', function() {
     const audio = document.getElementById('myAudio');
     const playPause = document.getElementById('playPause');
