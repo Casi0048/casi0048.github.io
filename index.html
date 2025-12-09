@@ -5678,10 +5678,31 @@ footer {
                 cookieIcon.style.display = 'flex';
             }
         }
-        lastScrollTop = scrollTop;
+       /* ===== PULSANTE TORNA SU ===== */
+    const backToTopButton = document.getElementById('backToTop');
+    
+    // Mostra/nascondi il pulsante durante lo scroll
+    window.addEventListener('scroll', function() {
+        if (window.pageYOffset > 300) {
+            backToTopButton.style.display = 'block';
+            backToTopButton.classList.add('show');
+        } else {
+            backToTopButton.style.display = 'none';
+            backToTopButton.classList.remove('show');
+        }
     });
+    
+    // Scroll verso l'alto quando si clicca il pulsante
+    if (backToTopButton) {
+        backToTopButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
 });
-
     // ===== LETTORE AUDIO =====
     document.addEventListener('DOMContentLoaded', function() {
     const audio = document.getElementById('myAudio');
