@@ -712,12 +712,8 @@ if (flash) {
 
 });
 
- <!-- ============================================================
-        JAVASCRIPT DIZIONARIO - VERSIONE DEFINITIVA
-============================================================ -->
-
-
-document.addEventListener("DOMContentLoaded", () => {
+/* === JAVASCRIPT DIZIONARIO - VERSIONE DEFINITIVA =================================================== */
+      document.addEventListener("DOMContentLoaded", () => {
     console.log("📘 Dizionario filosofico - Inizializzazione");
 
     // Riferimenti agli elementi
