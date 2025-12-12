@@ -241,7 +241,7 @@ button, input, select, textarea {
 
 /* Ripristina margini tipografici */
 p, h1, h2, h3, h4, h5, h6 {
-  margin-bottom: 0rem;
+  margin-bottom: 1rem;
 }
 
 body {
@@ -1308,480 +1308,7 @@ nav.menu-desktop .mega-menu.right-align:hover {
       #dict-compact, #iep-linkbox { position: static; width:100%; margin: .75rem 0; }
       }
       /* Assicurati che l'enciclopedia abbia un z-index più alto */
-/* ===== OVERLAY DIZIONARIO ===== */
-.dict-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(3px);
-    z-index: 9990;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-}
 
-.dict-overlay.active {
-    opacity: 1;
-    visibility: visible;
-}
-
-/* ===== MODALE DIZIONARIO ===== */
-.dict-modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.95);
-    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-    padding: 25px;
-    border-radius: 15px;
-    z-index: 9991;
-    opacity: 0;
-    visibility: hidden;
-    max-width: 600px;
-    width: 90%;
-    max-height: 80vh;
-    overflow-y: auto;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.dict-modal.open {
-    opacity: 1;
-    visibility: visible;
-    transform: translate(-50%, -50%) scale(1);
-}
-
-/* Header modale */
-.dict-modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 2px solid #e9ecef;
-}
-
-.dict-modal-header h3 {
-    margin: 0;
-    color:gold;  #1a237e;
-    font-size: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.dict-close {
-    background: none;
-    border: none;
-    font-size: 28px;
-    color: #666;
-    cursor: pointer;
-    padding: 0;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    transition: all 0.2s ease;
-}
-
-.dict-close:hover {
-    background: #f0f0f0;
-    color: #333;
-}
-
-/* Body modale */
-.dict-modal-body {
-    padding: 10px 0;
-}
-
-/* Input ricerca */
-#dict-q {
-    width: 100%;
-    padding: 12px 15px;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    font-size: 16px;
-    margin-bottom: 15px;
-    transition: border-color 0.3s ease;
-}
-
-#dict-q:focus {
-    outline: none;
-    border-color: #1a237e;
-    box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.1);
-}
-
-/* Pulsanti ricerca */
-#dict-search, #open-all {
-    padding: 10px 20px;
-    background: linear-gradient(135deg, #1a237e 0%, #311b92 100%);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-#dict-search:hover, #open-all:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(26, 35, 126, 0.2);
-}
-
-#open-all {
-    background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
-}
-
-/* ===== FAB DIZIONARIO ===== */
-.fab-with-text {
-    position: fixed;
-    bottom: 150px; /* Sopra "Torna su" */
-    right: 20px;
-    background: linear-gradient(135deg, #1a237e 0%, #311b92 100%);
-    color: white;
-    border: none;
-    border-radius: 25px;
-    padding: 12px 20px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    z-index: 9989;
-    box-shadow: 0 6px 15px rgba(26, 35, 126, 0.3);
-    transition: all 0.3s ease;
-    font-weight: 600;
-}
-
-.fab-with-text:hover {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 10px 20px rgba(26, 35, 126, 0.4);
-}
-
-.fab-with-text:active {
-    transform: translateY(0) scale(1);
-}
-
-.fab-icona {
-    font-size: 1.3em;
-}
-
-.fab-label {
-    font-size: 0.95em;
-    white-space: nowrap;
-}
-
-/* ===== SUGGERIMENTI ===== */
-.dict-suggestions {
-    margin: 10px 0;
-    max-height: 200px;
-    overflow-y: auto;
-    border-radius: 8px;
-    border: 1px solid #e0e0e0;
-    background: white;
-}
-
-.suggestion-item {
-    padding: 10px 15px;
-    cursor: pointer;
-    border-bottom: 1px solid #f0f0f0;
-    transition: background-color 0.2s ease;
-}
-
-.suggestion-item:hover {
-    background-color: #f5f5f5;
-}
-
-.suggestion-item:last-child {
-    border-bottom: none;
-}
-
-/* ===== FONTI (SOURCES) ===== */
-.sources {
-    margin: 20px 0;
-    padding: 15px;
-   <!-- background: #f8f9fa;-->
-    border-radius: 10px;
-    border: 1px solid #e9ecef;
-}
-
-.sources label {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 0;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    border-radius: 6px;
-    padding-left: 10px;
-}
-
-.sources label:hover {
-    background-color: rgba(26, 35, 126, 0.05);
-}
-
-.sources input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
-}
-
-/* ===== RESPONSIVE ===== */
-@media (max-width: 768px) {
-    .dict-modal {
-        width: 95%;
-        padding: 20px;
-        max-height: 85vh;
-    }
-    
-    .dict-modal-header h3 {
-        font-size: 1.3rem;
-    }
-    
-    .fab-with-text {
-        bottom: 120px;
-        right: 15px;
-        padding: 10px 15px;
-    }
-    
-    .fab-label {
-        font-size: 0.85em;
-    }
-}
-
-@media (max-width: 480px) {
-    .dict-modal {
-        padding: 15px;
-        border-radius: 10px;
-    }
-    
-    .fab-with-text {
-        bottom: 100px;
-        padding: 8px 12px;
-    }
-    
-    .fab-icona {
-        font-size: 1.1em;
-    }
-    
-    .fab-label {
-        display: none; /* Nascondi testo su mobile molto piccolo */
-    }
-    
-    #dict-search, #open-all {
-        width: 100%;
-        margin-right: 0;
-        margin-bottom: 10px;
-    }
-}
-
-/* ===== ANIMAZIONI PER GSAP (se usi) ===== */
-.dict-modal.gsap-ready {
-    transform: translateX(100%) translateY(-50%);
-    top: 50%;
-    left: auto;
-    right: 0;
-}
-
-.dict-modal.gsap-ready.open {
-    transform: translateX(0) translateY(-50%);
-}
-
-/* Se vuoi il modale laterale destro (stile drawer) */
-.dict-modal.side-drawer {
-    top: 0;
-    left: auto;
-    right: 0;
-    transform: translateX(100%);
-    width: 400px;
-    max-width: 100%;
-    height: 100vh;
-    max-height: 100vh;
-    border-radius: 0;
-    margin: 0;
-}
-
-.dict-modal.side-drawer.open {
-    transform: translateX(0);
-}
-  /* ============================================================
-   CONTAINER INPUT CON "X"
-   ============================================================ */
-.dict-input-container {
-  position: relative;
-  width: 100%;
-  margin-bottom: 1.5rem;
-}
-
-#dict-q {
-  width: 100%;
-  padding: 1rem 3rem 1rem 1.2rem;
-  border: 1px solid rgba(255,215,0,0.3);
-  border-radius: 12px;
-  background: linear-gradient(
-    135deg,
-    rgba(20,20,40,0.9) 0%,
-    rgba(25,25,45,0.9) 100%
-  );
-  color: #e9eef5;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  font-family: 'Montserrat', sans-serif;
-  box-sizing: border-box;
-}
-
-#dict-q:focus {
-  outline: none;
-  border-color: rgba(255,215,0,0.8);
-  box-shadow: 
-    0 0 0 3px rgba(255,215,0,0.15),
-    inset 0 2px 8px rgba(0,0,0,0.2);
-}
-
-/* Pulsante "X" di cancellazione */
-.dict-clear-btn {
-  position: absolute;
-  right: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: rgba(233, 238, 245, 0.7);
-  font-size: 1.1rem;
-  cursor: pointer;
-  padding: 0;
-  width: 26px;
-  height: 26px;
-  display: none; /* Nascosto di default */
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  backdrop-filter: blur(5px);
-  z-index: 2;
-}
-
-.dict-clear-btn:hover {
-  background: rgba(255, 107, 107, 0.2);
-  color: #ff6b6b;
-  border-color: rgba(255, 107, 107, 0.4);
-  transform: translateY(-50%) scale(1.15);
-  box-shadow: 0 0 8px rgba(255, 107, 107, 0.3);
-}
-
-.dict-clear-btn:active {
-  transform: translateY(-50%) scale(0.95);
-}
-
-/* ============================================================
-   PULSANTI RICERCA
-   ============================================================ */
-.dict-buttons {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.dict-btn {
-  flex: 1;
-  padding: 0.8rem 1.5rem;
-  border: none;
-  border-radius: 10px;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-align: center;
-}
-
-.dict-btn.primary {
-  background: linear-gradient(135deg, #00ccff 0%, #00b8eb 100%);
-  color: #0a0a1a;
-  box-shadow: 0 4px 12px rgba(0,204,255,0.3);
-}
-
-.dict-btn.primary:hover {
-  background: linear-gradient(135deg, #00b8eb 0%, #00a0d4 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0,204,255,0.4);
-}
-
-.dict-btn.secondary {
-  background: linear-gradient(
-    135deg,
-    rgba(255,215,0,0.25) 0%,
-    rgba(255,215,0,0.15) 100%
-  );
-  color: #ffd86a;
-  border: 1px solid rgba(255,215,0,0.4);
-  box-shadow: 0 4px 12px rgba(255,215,0,0.2);
-}
-
-.dict-btn.secondary:hover {
-  background: linear-gradient(
-    135deg,
-    rgba(255,215,0,0.35) 0%,
-    rgba(255,215,0,0.25) 100%
-  );
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(255,215,0,0.3);
-}
-
-/* ============================================================
-   SUGGERIMENTI
-   ============================================================ */
-.dict-suggestions {
-  margin-bottom: 1.5rem;
-  max-height: 200px;
-  overflow-y: auto;
-  border-radius: 10px;
-  border: 1px solid rgba(255,215,0,0.2);
-  background: rgba(20,20,30,0.8);
-}
-
-/* ============================================================
-   FONTI
-   ============================================================ */
-.sources {
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-  padding: 1.2rem;
-  background: rgba(20,20,30,0.7);
-  border-radius: 10px;
-  border: 1px solid rgba(255,215,0,0.2);
-}
-
-.sources label {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  cursor: pointer;
-  color: #e9eef5;
-  font-size: 0.9rem;
-  padding: 0.5rem;
-  border-radius: 6px;
-  transition: background-color 0.2s ease;
-}
-
-.sources label:hover {
-  background: rgba(255,215,0,0.1);
-}
-
-.sources input[type="checkbox"] {
-  accent-color: #ffd86a;
-  width: 18px;
-  height: 18px;
-  cursor: pointer;
-}
     </style>
 <style id="effects-right-edge">
       /* 🎯 Tieni qui i “knob” da regolare */
@@ -5084,356 +4611,79 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 /* ============================================================
    🔘 FAB DIZIONARIO – Versione estesa con testo
    ============================================================ */
-/* ============================================================
-   VARIABILI PER CONSISTENZA
-   ============================================================ */
-:root {
-  --dict-primary-gold: #ffd86a;
-  --dict-dark-bg: rgba(20,20,30,0.96);
-  --dict-darker-bg: rgba(10,10,20,0.95);
-  --dict-border-gold: rgba(255,215,0,0.55);
-  --dict-overlay-bg: rgba(0,0,0,0.45);
-  --dict-modal-width: 360px;
-  --dict-fab-bottom: 25.4rem;
-  --dict-fab-right: 5.2rem;
-}
 
-/* ============================================================
-   FAB DIZIONARIO – Stile Uniformato
-   ============================================================ */
 #dict-fab {
   position: fixed;
-  bottom: var(--dict-fab-bottom);
-  right: var(--dict-fab-right);
-  padding: 12px 20px;
-  
+  bottom: 25.4rem;
+  right: 5.2rem;
+  padding: 10px 18px;
+
   display: flex;
   align-items: center;
-  gap: 12px;
-  
+  gap: 10px;
+
   background: rgba(20,20,40,0.90);
-  border: 2px solid var(--dict-border-gold);
+  border: 2px solid rgba(255,215,0,0.55);
   border-radius: 40px;
-  
-  color: var(--dict-primary-gold);
+
+  color: #ffd86a;
   font-size: 1.15rem;
   font-family: "Cinzel", serif;
-  letter-spacing: 0.4px;
-  font-weight: 600;
-  
+  letter-spacing: .4px;
+
   cursor: pointer;
-  z-index: 999;
-  
-  box-shadow: 
-    0 0 14px rgba(255,215,0,0.55),
-    0 4px 12px rgba(0,0,0,0.2);
-  
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  
-  /* Effetto di profondità */
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  z-index: 999 !important;
+
+  box-shadow: 0 0 14px rgba(255,215,0,0.55);
+  transition: background .25s ease, transform .25s ease;
 }
 
 #dict-fab:hover {
-  background: rgba(30,30,50,0.95);
-  transform: translateY(-3px);
-  box-shadow: 
-    0 0 20px rgba(255,215,0,0.7),
-    0 6px 20px rgba(0,0,0,0.3);
-  border-color: rgba(255,215,0,0.8);
-}
-
-#dict-fab:active {
-  transform: translateY(-1px);
-  transition: transform 0.1s ease;
+  background: rgba(30,30,50,0.92);
+  transform: translateY(-2px);
 }
 
 #dict-fab .fab-icona {
   font-size: 1.45rem;
-  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3));
 }
 
-.fab-label {
-  font-size: 1rem;
-  white-space: nowrap;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-}
 
 /* ============================================================
-   OVERLAY – Stile Uniformato
+   OVERLAY
    ============================================================ */
 #dict-overlay {
   position: fixed;
   inset: 0;
-  background: var(--dict-overlay-bg);
-  backdrop-filter: blur(4px);
+  background: rgba(0,0,0,0.45);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease;
+  transition: opacity .25s ease;
   z-index: 999998;
 }
 
-#dict-overlay.active {
-  opacity: 1;
-  pointer-events: auto;
-}
-
 /* ============================================================
-   MODALE LATERALE – Stile Uniformato
+   MODALE LATERALE
    ============================================================ */
 #dict-modal {
   position: fixed;
   top: 0;
   right: 0;
-  width: var(--dict-modal-width);
+  width: 360px;
   height: 100vh;
-  background: var(--dict-dark-bg);
+
+  background: rgba(20,20,30,0.96);
   backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+
   border-left: 1px solid rgba(255,255,255,0.15);
+
   transform: translateX(100%);
-  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform .35s ease;
+
   display: flex;
   flex-direction: column;
+
   z-index: 999999;
-  
-  /* Box-shadow coerente con FAB */
-  box-shadow: 
-    -5px 0 25px rgba(0,0,0,0.5),
-    0 0 15px rgba(255,215,0,0.3),
-    inset 0 0 20px rgba(255,215,0,0.1);
 }
-
-#dict-modal.open {
-  transform: translateX(0);
-}
-
-/* Bordo gradiente esterno – Stile Uniformato */
-#dict-modal {
-  position: relative; /* Necessario per il bordo in ::before */
-}
-
-#dict-modal::before {
-  content: '';
-  position: absolute;
-  top: -3px;
-  left: -3px;
-  right: -3px;
-  bottom: -3px;
-  background: linear-gradient(
-    45deg,
-    var(--dict-primary-gold),
-    #ffed4e,
-    var(--dict-primary-gold),
-    #ffed4e,
-    var(--dict-primary-gold)
-  );
-  border-radius: 4px;
-  z-index: -1;
-  animation: borderGlow 3s linear infinite;
-  filter: blur(2px);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-#dict-modal.open::before {
-  opacity: 0.8;
-}
-
-@keyframes borderGlow {
-  0% {
-    opacity: 0.8;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0.8;
-  }
-}
-
-/* Contenitore interno per il bordo */
-.dict-modal-container {
-  position: relative;
-  z-index: 1;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  background: var(--dict-dark-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  overflow: hidden;
-}
-
-/* ============================================================
-   COMPONENTI INTERNI MODALE – Stile Uniformato
-   ============================================================ */
-.dict-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.5rem 1.8rem;
-  border-bottom: 1px solid rgba(255,215,0,0.2);
-  background: var(--dict-darker-bg);
-  flex-shrink: 0;
-}
-
-.dict-header h2 {
-  color: var(--dict-primary-gold);
-  font-family: "Cinzel", serif;
-  margin: 0;
-  font-size: 1.4rem;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  text-shadow: 
-    0 2px 4px rgba(0,0,0,0.3),
-    0 0 20px rgba(255,216,106,0.2);
-}
-
-.dict-header h2::before {
-  content: '📖';
-  font-size: 1.2rem;
-  opacity: 0.8;
-}
-
-#dict-close {
-  background: rgba(255,215,0,0.9);
-  border: none;
-  color: #0a0a1a;
-  font-size: 1.6rem;
-  cursor: pointer;
-  padding: 0;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  font-weight: bold;
-  box-shadow: 
-    inset 0 2px 4px rgba(255,255,255,0.3),
-    0 2px 8px rgba(0,0,0,0.2);
-}
-
-#dict-close:hover {
-  background: var(--dict-primary-gold);
-  transform: scale(1.15) rotate(90deg);
-  box-shadow: 
-    inset 0 2px 4px rgba(255,255,255,0.4),
-    0 4px 12px rgba(255,216,106,0.4);
-}
-
-.dict-body {
-  padding: 1.8rem;
-  flex: 1;
-  overflow-y: auto;
-  background: rgba(15,15,25,0.7);
-}
-
-/* ============================================================
-   RESPONSIVE DESIGN – Uniformato
-   ============================================================ */
-@media (max-width: 768px) {
-  :root {
-    --dict-modal-width: 100vw;
-    --dict-fab-bottom: 1.5rem;
-    --dict-fab-right: 1.5rem;
-  }
-  
-  #dict-fab {
-    padding: 10px 16px;
-    font-size: 1rem;
-  }
-  
-  .fab-label {
-    font-size: 0.9rem;
-  }
-  
-  #dict-fab .fab-icona {
-    font-size: 1.3rem;
-  }
-  
-  #dict-modal {
-    border-left: none;
-    box-shadow: 
-      -5px 0 20px rgba(0,0,0,0.4),
-      0 0 12px rgba(255,215,0,0.25),
-      inset 0 0 15px rgba(255,215,0,0.08);
-  }
-  
-  .dict-header {
-    padding: 1.2rem 1.4rem;
-  }
-  
-  .dict-header h2 {
-    font-size: 1.2rem;
-  }
-  
-  .dict-body {
-    padding: 1.4rem;
-  }
-}
-
-@media (max-width: 480px) {
-  #dict-fab {
-    padding: 10px;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    justify-content: center;
-  }
-  
-  .fab-label {
-    display: none;
-  }
-  
-  #dict-fab .fab-icona {
-    font-size: 1.5rem;
-    margin: 0;
-  }
-  
-  #dict-modal::before {
-    display: none; /* Disabilita bordo su mobile piccolo */
-  }
-}
-
-/* ============================================================
-   STATI DI FOCUS – Uniformati
-   ============================================================ */
-#dict-fab:focus-visible,
-#dict-close:focus-visible {
-  outline: 2px solid var(--dict-primary-gold);
-  outline-offset: 3px;
-}
-
-/* ============================================================
-   ACCESSIBILITÀ – Riduzione Movimento
-   ============================================================ */
-@media (prefers-reduced-motion: reduce) {
-  #dict-fab,
-  #dict-modal,
-  #dict-close,
-  #dict-overlay {
-    transition: none !important;
-    animation: none !important;
-  }
-  
-  #dict-fab:hover,
-  #dict-close:hover {
-    transform: none !important;
-  }
-  
-  #dict-modal::before {
-    animation: none !important;
-  }
-}
-
-
 /* === RUSSELL BOX — CSS ISOLATO === */
 
 
@@ -5891,50 +5141,12 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 </head>
 <body>
 
+  <!-- === FAB Dizionario === -->
+<button id="dict-fab" class="fab-with-text">
+  <span class="fab-label">Dizionario</span>
+  <span class="fab-icona">📘</span>
+</button>
 
-
-<!-- Modale Dizionario -->
-<div id="dict-modal" class="dict-modal" aria-hidden="true" aria-labelledby="dict-title">
-  <div class="dict-modal-container">
-    <header class="dict-header">
-      <h2 id="dict-title">📘 Dizionario Filosofico</h2>
-      <button id="dict-close" aria-label="Chiudi dizionario">×</button>
-    </header>
-    
-    <div class="dict-body">
-      <div class="dict-input-container">
-        <input type="text" id="dict-q" placeholder="Cerca termine filosofico..." autocomplete="off">
-        <button id="dict-clear" class="dict-clear-btn" aria-label="Cancella testo" title="Cancella ricerca">
-          ✕
-        </button>
-      </div>
-      
-      <div class="dict-buttons">
-        <button id="dict-search" class="dict-btn primary">Cerca</button>
-        <button id="open-all" class="dict-btn secondary">Apri tutte le fonti</button>
-      </div>
-      
-      <div id="dict-suggestions" class="dict-suggestions"></div>
-      
-      <div class="sources">
-            <label><input type="checkbox" data-url="https://www.treccani.it/vocabolario/ricerca/{q}" checked> Treccani</label>
-            <label><input type="checkbox" data-url="https://www.etimo.it/?term={q}" checked> Etimologia</label>
-            <label><input type="checkbox" data-url="https://plato.stanford.edu/search/searcher.py?query={q}" checked> Stanford</label>
-            <label><input type="checkbox" data-url="https://iep.utm.edu/search/{q}/" checked> IEP</label>
-            <label><input type="checkbox" data-url="https://it.wikipedia.org/wiki/{q}"> Wikipedia IT</label>
-            <label><input type="checkbox" data-url="https://en.wikipedia.org/wiki/{q}"> Wikipedia EN</label>
-        </div>
-        
-        <button id="open-all">Apri tutte le fonti</button>
-    </div>
-</div>
-
-<!-- Overlay per chiudere il modale -->
-<div id="dict-overlay" class="dict-overlay"></div>
-        
-        <button id="open-all">Apri tutte le fonti</button>
-    </div>
-</div>
 
 
   <div hidden="True" id="search-backdrop"></div>
@@ -6361,7 +5573,6 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 <button class="ctrl-btn" id="btn-thunder" title="Riproduci tuono">⚡ Tuono</button>
 </div>
 </div>
-  <!--
 <!-- ============================================================
      OVERLAY + MODALE DIZIONARIO FILOSOFICO
 ============================================================ -->
@@ -6370,7 +5581,34 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 
 <!-- ====== MODALE DIZIONARIO ====== -->
 <div id="dict-modal" class="dict-modal notranslate" translate="no">
-<!-- =========================
+
+  <!-- Header -->
+  <div class="dict-header">
+    <h2 class="notranslate" translate="no">📘 Dizionario Filosofico</h2>
+    <button id="dict-close" class="dict-close-btn" aria-label="Chiudi modale">×</button>
+  </div>
+
+<!-- Corpo -->
+  <div class="dict-body">
+
+    <!-- Campo ricerca -->
+    <div class="dict-input-wrap">
+      <input id="dict-q"
+             type="search"
+             class="dict-input notranslate"
+             translate="no"
+             placeholder="Cerca un termine…">
+
+      <!-- Pulsante X per cancellare -->
+     
+    </div> 
+
+    <!-- Suggerimenti live -->
+    <div id="dict-suggestions"
+         class="dict-suggestions notranslate"
+         translate="no"></div>
+
+    <!-- =========================
          FONTI FILOSOFICHE
          ========================= -->
     <div class="sources">
@@ -6432,11 +5670,10 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
   </div>
 
 </div>
- -->
-
-
+  <div>
   
-  <!-- Menu principale -->
+
+<!-- Menu principale -->
 <div class="menu-container">
 <nav aria-label="Navigazione principale" class="menu-desktop" role="navigation">
 <ul role="menu">
@@ -10723,259 +9960,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 </script>
-  <!-- ============================================================
-        JAVASCRIPT DIZIONARIO - VERSIONE DEFINITIVA
-============================================================ -->
-<script>
-
-document.addEventListener("DOMContentLoaded", () => {
-    console.log("📘 Dizionario filosofico - Inizializzazione");
-
-    // Riferimenti agli elementi
-    const openBtn = document.getElementById("openDict");
-    const closeBtn = document.getElementById("dict-close");
-    const modal = document.getElementById("dict-modal");
-    const overlay = document.getElementById("dict-overlay");
-    const input = document.getElementById("dict-q");
-    const btnSearch = document.getElementById("dict-search");
-    const btnOpenAll = document.getElementById("open-all");
-    const suggestions = document.getElementById("dict-suggestions");
-
-    // Stato del modale
-    let isModalOpen = false;
-
-    // Verifica che tutti gli elementi essenziali esistano
-    if (!modal || !overlay || !closeBtn) {
-        console.error("❌ Elementi modale non trovati!");
-        return;
-    }
-
-    /* ============================
-       INIZIALIZZAZIONE GSAP
-    ============================ */
-    gsap.set(modal, { 
-        x: "100%",
-        position: "fixed",
-        top: 0,
-        right: 0
-    });
-    
-    gsap.set(overlay, { 
-        autoAlpha: 0,
-        display: "none"
-    });
-
-    /* ============================
-       APERTURA MODALE
-    ============================ */
-    function openDictionary() {
-        if (isModalOpen) return;
-      
-        // Mostra overlay
-        gsap.set(overlay, { display: "block" });
-        
-        // Animazioni
-        gsap.to(overlay, {
-            duration: 0.3,
-            autoAlpha: 1,
-            ease: "power2.out"
-        });
-
-        gsap.to(modal, {
-            duration: 0.4,
-            x: "0%",
-            ease: "power3.out",
-            onComplete: () => {
-                // Focus sull'input
-                if (input) {
-                    input.focus();
-                    input.select();
-                }
-            }
-        });
-    }
-
-    /* ============================
-       CHIUSURA MODALE
-    ============================ */
-    function closeDictionary() {
-        if (!isModalOpen) return;
-     
-        gsap.to(modal, {
-            duration: 0.35,
-            x: "100%",
-            ease: "power2.in"
-        });
-
-        gsap.to(overlay, {
-            duration: 0.25,
-            autoAlpha: 0,
-            ease: "power2.out",
-            onComplete: () => {
-                gsap.set(overlay, { display: "none" });
-            }
-        });
-    }
-
-    /* ============================
-       GESTIONE EVENTI
-    ============================ */
-    
-    // Apertura con il bottone dizionario
-    if (openBtn) {
-        openBtn.addEventListener("click", (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            openDictionary();
-        });
-    }
-
-    // Chiusura con il bottone X
-    if (closeBtn) {
-        closeBtn.addEventListener("click", (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            closeDictionary();
-        });
-    }
-
-    // Chiusura cliccando sull'overlay
-    if (overlay) {
-        overlay.addEventListener("click", (e) => {
-            if (e.target === overlay) {
-                closeDictionary();
-            }
-        });
-    }
-
-    // Chiusura con ESC
-    document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && isModalOpen) {
-            closeDictionary();
-        }
-    });
-
-    /* ============================
-       FUNZIONALITÀ RICERCA
-    ============================ */
-    
-    function performSearch() {
-        const q = input.value.trim();
-        if (!q) {
-            showMessage("Inserisci un termine da cercare", "error");
-            return;
-        }
-
-        const checkedSources = document.querySelectorAll(".sources input:checked");
-        if (checkedSources.length === 0) {
-            showMessage("Seleziona almeno una fonte", "error");
-            return;
-        }
-
-        const encodedTerm = encodeURIComponent(q);
-        
-        checkedSources.forEach((source, index) => {
-            const url = source.dataset.url.replace("{q}", encodedTerm);
-            setTimeout(() => {
-                window.open(url, "_blank");
-            }, index * 100); // Delay per evitare blocchi del browser
-        });
-
-        showMessage(`Apertura ${checkedSources.length} fonte(i) per "${q}"`, "success");
-    }
-
-    function openAllSources() {
-        const q = input.value.trim();
-        if (!q) {
-            showMessage("Inserisci un termine da cercare", "error");
-            return;
-        }
-
-        const allSources = document.querySelectorAll(".sources input");
-        const encodedTerm = encodeURIComponent(q);
-        
-        allSources.forEach((source, index) => {
-            const url = source.dataset.url.replace("{q}", encodedTerm);
-            setTimeout(() => {
-                window.open(url, "_blank");
-            }, index * 100);
-        });
-
-        showMessage(`Apertura tutte le ${allSources.length} fonti per "${q}"`, "success");
-    }
-
-   
-    /* ============================
-       UTILITIES
-    ============================ */
-    
-    function showMessage(text, type = "info") {
-        // Crea un messaggio temporaneo
-        const message = document.createElement("div");
-        message.textContent = text;
-        message.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 12px 20px;
-            background: ${type === "error" ? "#ff4444" : type === "success" ? "#44ff44" : "#4444ff"};
-            color: white;
-            border-radius: 8px;
-            z-index: 100000;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 14px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        `;
-        
-        document.body.appendChild(message);
-        
-        setTimeout(() => {
-            if (message.parentNode) {
-                message.parentNode.removeChild(message);
-            }
-        }, 3000);
-    }
-
-    /* ============================
-       EVENT LISTENER RICERCA
-    ============================ */
-    
-    if (btnSearch) {
-        btnSearch.addEventListener("click", (e) => {
-            e.preventDefault();
-            performSearch();
-        });
-    }
-
-    if (btnOpenAll) {
-        btnOpenAll.addEventListener("click", (e) => {
-            e.preventDefault();
-            openAllSources();
-        });
-    }
-
-    // Ricerca con Enter
-    if (input) {
-        input.addEventListener("keypress", (e) => {
-            if (e.key === "Enter") {
-                e.preventDefault();
-                performSearch();
-            }
-        });
-    }
-
-    // Debug
-    console.log("✅ Dizionario inizializzato correttamente");
-    
-    // Esporta per debug
-    window.dictionary = {
-        open: openDictionary,
-        close: closeDictionary,
-        search: performSearch,
-        openAll: openAllSources
-    };
-
-});
+ 
 </script>
  <script>
     /* ===== Google Translate: controllo da select custom ===== */
