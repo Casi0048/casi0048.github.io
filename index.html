@@ -4950,38 +4950,19 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 }
 
 
-
 /* ============================================================
-   MODALE LATERALE
+   OVERLAY
    ============================================================ */
-#dict-modal {
+#dict-overlay {
   position: fixed;
-  top: 0;
-  right: 0;
-  width: 360px;
-  height: 100vh;
-  background: rgba(20,20,30,0.96);
-  backdrop-filter: blur(12px);
-  border-left: 1px solid rgba(255,255,255,0.15);
-  transform: translateX(100%);
-  transition: transform .35s ease;
-  display: flex;
-  flex-direction: column;
-  z-index: 999999;
-  
-  /* IMPORTANTE: position: relative per permettere a ::before di funzionare */
-  position: relative;
-  
-  /* Aggiungi un po' di padding per compensare il bordo */
-  padding: 3px;
-  box-sizing: border-box;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease;
+  z-index: 999998;
 }
-
-#dict-modal.open {
-  transform: translateX(0);
-}
-
-/* Bordo gradiente - CORRETTO */
+/* Bordo gradiente */
 #dict-modal::before {
   content: '';
   position: absolute;
@@ -5015,8 +4996,34 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
   }
 }
 
+/* Per mantenere il contenuto sopra il bordo */
+#dict-modal > * {
+  position: relative;
+  z-index: 1;
+}
+/* ============================================================
+   MODALE LATERALE
+   ============================================================ */
+#dict-modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 360px;
+  height: 100vh;
 
+  background: rgba(20,20,30,0.96);
+  backdrop-filter: blur(12px);
 
+  border-left: 1px solid rgba(255,255,255,0.15);
+
+  transform: translateX(100%);
+  transition: transform .35s ease;
+
+  display: flex;
+  flex-direction: column;
+
+  z-index: 999999;
+}
 
 /* === RUSSELL BOX — CSS ISOLATO === */
 
