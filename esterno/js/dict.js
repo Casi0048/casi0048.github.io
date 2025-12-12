@@ -214,7 +214,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* ===== FINE DIZIONARIO ===== */
-});
+
 /* ===== JS PARADIGMA ===== */
 
 // Gestione Overlay Filosofi Paradigma
