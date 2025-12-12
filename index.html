@@ -4962,7 +4962,45 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
   transition: opacity .25s ease;
   z-index: 999998;
 }
+/* Bordo gradiente */
+#dict-modal::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  background: linear-gradient(
+    45deg,
+    #ffd700,
+    #ffed4e,
+    #ffd700,
+    #ffed4e,
+    #ffd700
+  );
+  border-radius: 4px;
+  z-index: -1;
+  animation: borderGlow 3s linear infinite;
+  filter: blur(2px);
+}
 
+@keyframes borderGlow {
+  0% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.8;
+  }
+}
+
+/* Per mantenere il contenuto sopra il bordo */
+#dict-modal > * {
+  position: relative;
+  z-index: 1;
+}
 /* ============================================================
    MODALE LATERALE
    ============================================================ */
