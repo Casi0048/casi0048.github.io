@@ -9746,187 +9746,213 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
  <script>
-// DIZIONARIO FILOSOFICO
+// DIZIONARIO FILOSOFICO - VERSIONE CORRETTA
 document.addEventListener('DOMContentLoaded', function() {
-    const openDictBtn = document.getElementById('openDict');
+    // Riferimenti agli elementi ESISTENTI nel tuo HTML
+    const dictFab = document.getElementById('dict-fab');
+    const dictModal = document.getElementById('dict-modal');
+    const dictOverlay = document.getElementById('dict-overlay');
+    const dictClose = document.getElementById('dict-close');
+    const dictQ = document.getElementById('dict-q');
+    const dictSearch = document.getElementById('dict-search');
+    const dictClear = document.getElementById('dict-clear');
+    const openAll = document.getElementById('open-all');
     
-    if (!openDictBtn) {
-        console.error('Bottone dizionario non trovato!');
+    // Controllo elementi essenziali
+    if (!dictFab || !dictModal || !dictOverlay || !dictClose) {
+        console.warn('Elementi essenziali dizionario non trovati');
         return;
     }
-
-    openDictBtn.addEventListener('click', function(e) {
+    
+    /* ========== FUNZIONI APRI/CHIUDI ========== */
+    function openDictionaryModal() {
+        dictModal.classList.add('open');
+        dictOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        
+        // Focus sull'input dopo un breve ritardo
+        setTimeout(() => {
+            if (dictQ) dictQ.focus();
+        }, 100);
+        
+        console.log('📘 Dizionario aperto');
+    }
+    
+    function closeDictionaryModal() {
+        dictModal.classList.remove('open');
+        dictOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+        console.log('📘 Dizionario chiuso');
+    }
+    
+    /* ========== EVENT LISTENERS ========== */
+    // Apri con FAB
+    dictFab.addEventListener('click', function(e) {
         e.preventDefault();
         openDictionaryModal();
     });
-
-    function openDictionaryModal() {
-        // Previeni duplicati
-        if (document.getElementById('dict-modal')) {
+    
+    // Chiudi con pulsante X
+    dictClose.addEventListener('click', closeDictionaryModal);
+    
+    // Chiudi con overlay
+    dictOverlay.addEventListener('click', closeDictionaryModal);
+    
+    // Chiudi con ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && dictModal.classList.contains('open')) {
+            closeDictionaryModal();
+        }
+    });
+    
+    /* ========== GESTIONE "X" PER CANCELLARE INPUT ========== */
+    if (dictQ && dictClear) {
+        // Mostra/nascondi la "X" in base al contenuto
+        function updateClearButton() {
+            if (dictQ.value.trim().length > 0) {
+                dictClear.style.display = 'flex';
+            } else {
+                dictClear.style.display = 'none';
+            }
+        }
+        
+        // Inizializza
+        updateClearButton();
+        
+        // Ascolta l'input
+        dictQ.addEventListener('input', updateClearButton);
+        
+        // Cancella il testo
+        dictClear.addEventListener('click', function() {
+            dictQ.value = '';
+            dictQ.focus();
+            updateClearButton();
+            
+            // Trigger evento input per aggiornare suggerimenti
+            dictQ.dispatchEvent(new Event('input', { bubbles: true }));
+        });
+        
+        // Cancella con tasto ESC
+        dictQ.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && dictQ.value.trim().length > 0) {
+                e.preventDefault();
+                dictQ.value = '';
+                updateClearButton();
+                dictQ.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+        });
+    }
+    
+    /* ========== FUNZIONE DI RICERCA ========== */
+    function performSearch() {
+        const query = dictQ ? dictQ.value.trim() : '';
+        
+        if (!query) {
+            alert('✍️ Inserisci un termine da cercare');
+            if (dictQ) dictQ.focus();
             return;
         }
-
-        // Crea il modal
-        const modal = document.createElement('div');
-        modal.id = 'dict-modal';
-        modal.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.85);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10000;
-            backdrop-filter: blur(5px);
-        `;
-
-        modal.innerHTML = `
-            <div style="
-                background: var(--menu-bg);
-                border: 2px solid var(--gold);
-                border-radius: 15px;
-                padding: 2rem;
-                width: 90%;
-                max-width: 600px;
-                max-height: 80vh;
-                overflow: auto;
-                position: relative;
-                box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-            ">
-                <button id="close-dict" style="
-                    position: absolute;
-                    top: 15px;
-                    right: 15px;
-                    background: none;
-                    border: none;
-                    color: var(--gold);
-                    font-size: 1.5rem;
-                    cursor: pointer;
-                    width: 30px;
-                    height: 30px;
-                    border-radius: 50%;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                ">×</button>
-                
-                <h3 style="color: var(--gold); margin-bottom: 1.5rem; font-family: 'Cinzel', serif;">
-                     Dizionario Filosofico
-                </h3>
-                
-                <!-- Barra di ricerca -->
-                <div style="margin-bottom: 1.5rem;">
-                    <input type="text" id="dict-search-input" placeholder="Cerca termine filosofico..." style="
-                        width: 100%;
-                        padding: 0.75rem;
-                        border: 1px solid var(--menu-border);
-                        border-radius: 8px;
-                        background: rgba(20,20,40,0.8);
-                        color: var(--text-light);
-                        font-size: 1rem;
-                    ">
-                </div>
-                
-                
-                
-                
-                <!-- BOTTONI AZIONE -->
-                <div style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: flex-end;">
-                    <button id="dict-search-btn" style="
-                        padding: 0.75rem 1.5rem;
-                        background: var(--gold);
-                        border: none;
-                        border-radius: 8px;
-                        color: #000;
-                        font-weight: bold;
-                        cursor: pointer;
-                    ">Cerca</button>
-                    
-                    <button id="dict-close-btn" style="
-                        padding: 0.75rem 1.5rem;
-                        background: transparent;
-                        border: 1px solid var(--gold);
-                        border-radius: 8px;
-                        color: var(--gold);
-                        cursor: pointer;
-                    ">Chiudi</button>
-                </div>
-            </div>
-        `;
-
-        document.body.appendChild(modal);
-
-        // Aggiungi funzionalità di ricerca
-        const searchInput = document.getElementById('dict-search-input');
-        const searchBtn = document.getElementById('dict-search-btn');
-        const closeBtn = document.getElementById('dict-close-btn');
-        const closeDictBtn = document.getElementById('close-dict');
-
-        // Funzione di ricerca
-        function performSearch() {
-            const query = searchInput.value.trim();
-            if (!query) {
-                alert('Inserisci un termine da cercare');
-                return;
-            }
-
-            const sources = document.querySelectorAll('.sources input:checked');
-            if (sources.length === 0) {
-                alert('Seleziona almeno una fonte');
-                return;
-            }
-
-            const encoded = encodeURIComponent(query);
-            
-            sources.forEach((source, index) => {
-                const url = source.dataset.url.replace('{q}', encoded);
-                setTimeout(() => {
-                    window.open(url, '_blank');
-                }, index * 100);
-            });
-        }
-
-        // Event listeners
-        searchBtn.addEventListener('click', performSearch);
         
-        searchInput.addEventListener('keypress', function(e) {
+        const sources = document.querySelectorAll('.sources input:checked');
+        
+        if (sources.length === 0) {
+            alert('📚 Seleziona almeno una fonte');
+            return;
+        }
+        
+        const encoded = encodeURIComponent(query);
+        console.log(`🔍 Ricerca: "${query}" in ${sources.length} fonte(i)`);
+        
+        // Apri ogni fonte con un piccolo ritardo
+        sources.forEach((source, index) => {
+            const url = source.getAttribute('data-url').replace('{q}', encoded);
+            setTimeout(() => {
+                window.open(url, '_blank', 'noopener,noreferrer');
+            }, index * 150);
+        });
+        
+        // Chiudi il modale dopo la ricerca (opzionale)
+        // setTimeout(closeDictionaryModal, 500);
+    }
+    
+    /* ========== EVENT LISTENERS RICERCA ========== */
+    if (dictSearch) {
+        dictSearch.addEventListener('click', performSearch);
+    }
+    
+    if (dictQ) {
+        // Ricerca con Enter
+        dictQ.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 performSearch();
             }
         });
-
-        // Chiusura modal
-        function closeModal() {
-            modal.remove();
-        }
-
-        closeBtn.addEventListener('click', closeModal);
-        closeDictBtn.addEventListener('click', closeModal);
-
-        // Chiudi cliccando fuori
-        modal.addEventListener('click', function(e) {
-            if (e.target === modal) {
-                closeModal();
-            }
-        });
-
-        // Chiudi con ESC
-        document.addEventListener('keydown', function closeOnEsc(e) {
-            if (e.key === 'Escape') {
-                closeModal();
-                document.removeEventListener('keydown', closeOnEsc);
-            }
-        });
-
-        // Focus sulla ricerca
-        setTimeout(() => {
-            searchInput.focus();
-        }, 100);
     }
-}); // <-- QUESTA ERA LA PARENTESI MANCANTE!
+    
+    /* ========== APRI TUTTE LE FONTI ========== */
+    if (openAll) {
+        openAll.addEventListener('click', function() {
+            const query = dictQ ? dictQ.value.trim() : 'filosofia';
+            const encoded = encodeURIComponent(query);
+            const allSources = document.querySelectorAll('.sources input');
+            
+            console.log(`🌐 Apertura di tutte le fonti per: "${query}"`);
+            
+            allSources.forEach((source, index) => {
+                const url = source.getAttribute('data-url').replace('{q}', encoded);
+                setTimeout(() => {
+                    window.open(url, '_blank', 'noopener,noreferrer');
+                }, index * 150);
+            });
+        });
+    }
+    
+    /* ========== SUGGERIMENTI AUTOMATICI ========== */
+    const suggestions = document.getElementById('dict-suggestions');
+    if (dictQ && suggestions) {
+        dictQ.addEventListener('input', function() {
+            const query = this.value.trim().toLowerCase();
+            
+            if (query.length < 2) {
+                suggestions.innerHTML = '';
+                return;
+            }
+            
+            const terms = [
+                'metafisica', 'epistemologia', 'etica', 'estetica', 'logica',
+                'ontologia', 'fenomenologia', 'ermeneutica', 'esistenzialismo',
+                'stoicismo', 'epicureismo', 'scetticismo', 'razionalismo', 'empirismo',
+                'idealismo', 'materialismo', 'pragmatismo', 'strutturalismo',
+                'post-strutturalismo', 'decostruzionismo', 'filosofia analitica',
+                'filosofia continentale'
+            ];
+            
+            const filtered = terms.filter(term => 
+                term.includes(query) || term.startsWith(query)
+            ).slice(0, 5);
+            
+            suggestions.innerHTML = filtered.map(term => 
+                `<div class="suggestion-item" data-term="${term}">${term}</div>`
+            ).join('');
+            
+            // Click su suggerimento
+            suggestions.querySelectorAll('.suggestion-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    dictQ.value = this.getAttribute('data-term');
+                    suggestions.innerHTML = '';
+                    if (dictSearch) dictSearch.click();
+                });
+            });
+        });
+    }
+    
+    /* ========== INIZIALIZZAZIONE ========== */
+    console.log('✅ Dizionario filosofico inizializzato');
+    
+    // Forza chiusura iniziale (in caso di refresh con modale aperto)
+    dictModal.classList.remove('open');
+    dictOverlay.classList.remove('active');
+});
 </script>   
 
 <script>
@@ -9958,7 +9984,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </script>
  
-</script>
  <script>
     /* ===== Google Translate: controllo da select custom ===== */
     
