@@ -1,178 +1,168 @@
 
 // ============================================================
-//  MODALE DIZIONARIO — VERSIONE A (GSAP Smooth)
+//  MODALE DIZIONARIO — VERSIONE UNIFICATA (GSAP + FAB)
 // ============================================================
 document.addEventListener("DOMContentLoaded", () => {
+    console.log("📘 Dizionario inizializzazione...");
 
-    console.log("📘 Dizionario GSAP attivo");
-
-    const btnOpen   = document.getElementById("openDict");
-    const btnClose  = document.getElementById("dict-close");
-    const modal     = document.getElementById("dict-modal");
-    const overlay   = document.getElementById("dict-overlay");
-
-    const input     = document.getElementById("dict-q");
-    const btnSearch = document.getElementById("dict-search");
-    const btnOpenAll = document.getElementById("open-all");
-
-    if (!btnOpen || !modal || !btnClose || !overlay) {
-        console.error("❌ Dizionario: elementi mancanti");
-        return;
-    }
-
-    /* ========== APRI MODALE ========== */
-    btnOpen.addEventListener("click", () => {
-        gsap.to(modal, {
-            x: 0,
-            duration: 0.35,
-            ease: "power3.out"
-        });
-        gsap.to(overlay, {
-            opacity: 1,
-            pointerEvents: "auto",
-            duration: 0.25
-        });
-        console.log("📘 Modale aperto (GSAP)");
-    });
-
-    /* ========== CHIUDI MODALE ========== */
-    function closeDict() {
-        gsap.to(modal, {
-            x: "100%",
-            duration: 0.30,
-            ease: "power3.in"
-        });
-        gsap.to(overlay, {
-            opacity: 0,
-            pointerEvents: "none",
-            duration: 0.25
-        });
-    }
-
-    btnClose.addEventListener("click", closeDict);
-    overlay.addEventListener("click", closeDict);
-
-
-    /* ========== RICERCA ========== */
-    btnSearch.addEventListener("click", () => {
-        const q = input.value.trim();
-        if (!q) return;
-
-        const enc = encodeURIComponent(q);
-        const list = modal.querySelectorAll(".sources input:checked");
-
-        list.forEach(chk => {
-            const finalURL = chk.dataset.url.replace("{q}", enc);
-            window.open(finalURL, "_blank", "noopener");
-        });
-    });
-
-    /* ========== APRI TUTTE ========== */
-    btnOpenAll.addEventListener("click", () => {
-        const q = input.value.trim();
-        if (!q) return;
-
-        const enc = encodeURIComponent(q);
-        const list = modal.querySelectorAll(".sources input");
-
-        list.forEach(chk => {
-            const finalURL = chk.dataset.url.replace("{q}", enc);
-            window.open(finalURL, "_blank", "noopener");
-        });
-    });
-});
-/* ===== AGGIUNTO ===== */
-
-// Gestione Dizionario Filosofico
-document.addEventListener('DOMContentLoaded', function() {
-    // USA dict-fab invece di openDict
-    const dictBtn = document.getElementById('dict-fab');
+    // Riferimenti agli elementi
+    const dictFab = document.getElementById('dict-fab');     // FAB
     const dictModal = document.getElementById('dict-modal');
     const dictOverlay = document.getElementById('dict-overlay');
     const dictClose = document.getElementById('dict-close');
-    const dictSearch = document.getElementById('dict-search');
     const dictQ = document.getElementById('dict-q');
+    const dictSearch = document.getElementById('dict-search');
     const openAll = document.getElementById('open-all');
 
-    // AGGIUNGI CONTROLLO PRIMA DI TUTTO
-    if (!dictBtn) {
-        console.warn('Pulsante dizionario (dict-fab) non trovato');
-        return; // Esci senza errori
+    // Debug: mostra quali elementi mancano
+    const elements = {
+        dictFab: dictFab,
+        dictModal: dictModal,
+        dictOverlay: dictOverlay,
+        dictClose: dictClose,
+        dictQ: dictQ,
+        dictSearch: dictSearch,
+        openAll: openAll
+    };
+    
+    console.log('Elementi trovati:', Object.entries(elements)
+        .filter(([key, value]) => value)
+        .map(([key]) => key));
+    
+    const missing = Object.entries(elements)
+        .filter(([key, value]) => !value && key !== 'openAll')
+        .map(([key]) => key);
+    
+    if (missing.length > 0) {
+        console.warn('❌ Dizionario: elementi mancanti:', missing);
+        return;
     }
 
-    // Apri dizionario - SOLO SE dictBtn ESISTE
-    dictBtn.addEventListener('click', function() {
-        // Controlla anche che il modale esista
-        if (!dictModal || !dictOverlay) {
-            console.warn('Modale dizionario non trovato');
-            return;
+    /* ========== FUNZIONI APRI/CHIUDI ========== */
+    function openDict() {
+        console.log("📘 Apertura modale...");
+        
+        // GSAP animation
+        if (typeof gsap !== 'undefined') {
+            gsap.to(dictModal, {
+                x: 0,
+                duration: 0.35,
+                ease: "power3.out"
+            });
+            gsap.to(dictOverlay, {
+                opacity: 1,
+                pointerEvents: "auto",
+                duration: 0.25
+            });
+        } else {
+            // Fallback CSS se GSAP non esiste
+            dictModal.style.transform = 'translateX(0)';
+            dictModal.style.opacity = '1';
+            dictOverlay.style.opacity = '1';
+            dictOverlay.style.pointerEvents = 'auto';
         }
+        
         dictModal.classList.add('open');
         dictOverlay.classList.add('active');
         document.body.style.overflow = 'hidden';
-        if (dictQ) dictQ.focus();
-    });
-
-    // Chiudi dizionario
-    function closeDict() {
-        if (dictModal && dictOverlay) {
-            dictModal.classList.remove('open');
-            dictOverlay.classList.remove('active');
-            document.body.style.overflow = '';
-        }
+        
+        setTimeout(() => {
+            if (dictQ) dictQ.focus();
+        }, 100);
     }
 
-    if (dictClose) dictClose.addEventListener('click', closeDict);
-    if (dictOverlay) dictOverlay.addEventListener('click', closeDict);
+    function closeDict() {
+        console.log("📘 Chiusura modale...");
+        
+        // GSAP animation
+        if (typeof gsap !== 'undefined') {
+            gsap.to(dictModal, {
+                x: "100%",
+                duration: 0.30,
+                ease: "power3.in"
+            });
+            gsap.to(dictOverlay, {
+                opacity: 0,
+                pointerEvents: "none",
+                duration: 0.25
+            });
+        } else {
+            // Fallback CSS
+            dictModal.style.transform = 'translateX(100%)';
+            dictModal.style.opacity = '0';
+            dictOverlay.style.opacity = '0';
+            dictOverlay.style.pointerEvents = 'none';
+        }
+        
+        dictModal.classList.remove('open');
+        dictOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    /* ========== EVENT LISTENER ========== */
+    // Apri con FAB
+    dictFab.addEventListener('click', openDict);
+
+    // Chiudi con pulsante X
+    dictClose.addEventListener('click', closeDict);
+
+    // Chiudi con overlay
+    dictOverlay.addEventListener('click', closeDict);
 
     // Chiudi con ESC
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && dictModal && dictModal.classList.contains('open')) {
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && dictModal.classList.contains('open')) {
             closeDict();
         }
     });
 
-    // Ricerca nel dizionario - CON CONTROLLO
-    if (dictSearch) {
-        dictSearch.addEventListener('click', function() {
-            const query = dictQ ? dictQ.value.trim() : '';
-            if (!query) return;
+    /* ========== RICERCA ========== */
+    dictSearch.addEventListener('click', () => {
+        const query = dictQ.value.trim();
+        if (!query) {
+            dictQ.focus();
+            return;
+        }
 
-            const sources = document.querySelectorAll('.sources input:checked');
-            sources.forEach(source => {
-                const url = source.getAttribute('data-url').replace('{q}', encodeURIComponent(query));
-                window.open(url, '_blank');
-            });
+        const enc = encodeURIComponent(query);
+        const checkedSources = document.querySelectorAll('.sources input:checked');
+        
+        if (checkedSources.length === 0) {
+            alert('Seleziona almeno una fonte!');
+            return;
+        }
+
+        checkedSources.forEach(source => {
+            const url = source.getAttribute('data-url').replace('{q}', enc);
+            window.open(url, '_blank', 'noopener');
         });
-    }
+    });
 
-    // Apri tutte le fonti - CON CONTROLLO
+    /* ========== APRI TUTTE LE FONTI ========== */
     if (openAll) {
-        openAll.addEventListener('click', function() {
-            const query = dictQ ? dictQ.value.trim() : 'philosophy';
-            const sources = document.querySelectorAll('.sources input');
-            sources.forEach(source => {
-                const url = source.getAttribute('data-url').replace('{q}', encodeURIComponent(query));
-                window.open(url, '_blank');
+        openAll.addEventListener('click', () => {
+            const query = dictQ.value.trim() || 'philosophy';
+            const enc = encodeURIComponent(query);
+            const allSources = document.querySelectorAll('.sources input');
+            
+            allSources.forEach(source => {
+                const url = source.getAttribute('data-url').replace('{q}', enc);
+                window.open(url, '_blank', 'noopener');
             });
         });
     }
 
-    // Ricerca con Enter - CON CONTROLLO
-    if (dictQ) {
-        dictQ.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter' && dictSearch) {
-                dictSearch.click();
-            }
-        });
-    }
+    /* ========== RICERCA CON ENTER ========== */
+    dictQ.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            dictSearch.click();
+        }
+    });
 
-    // Suggerimenti automatici - CON CONTROLLO
-    if (dictQ) {
+    /* ========== SUGGERIMENTI AUTOMATICI ========== */
+    const suggestions = document.getElementById('dict-suggestions');
+    if (suggestions) {
         dictQ.addEventListener('input', function() {
-            const suggestions = document.getElementById('dict-suggestions');
-            if (!suggestions) return;
-            
             const query = this.value.trim().toLowerCase();
             
             if (query.length < 2) {
@@ -202,13 +192,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 item.addEventListener('click', function() {
                     dictQ.value = this.getAttribute('data-term');
                     suggestions.innerHTML = '';
-                    if (dictSearch) dictSearch.click();
+                    dictSearch.click();
                 });
             });
         });
     }
-    
-    console.log('✅ Dizionario inizializzato con FAB');
+
+    /* ========== INIZIALIZZAZIONE ========== */
+    // Imposta stato iniziale per GSAP
+    if (typeof gsap !== 'undefined') {
+        gsap.set(dictModal, { x: "100%" });
+        gsap.set(dictOverlay, { opacity: 0, pointerEvents: "none" });
+    } else {
+        // Fallback CSS
+        dictModal.style.transform = 'translateX(100%)';
+        dictOverlay.style.opacity = '0';
+        dictOverlay.style.pointerEvents = 'none';
+    }
+
+    console.log('✅ Dizionario inizializzato con FAB e GSAP');
+});
+
+/* ===== FINE DIZIONARIO ===== */
 });
 /* ===== JS PARADIGMA ===== */
 
