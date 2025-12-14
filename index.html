@@ -8632,33 +8632,57 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <script>
-    const btn = document.getElementById('paradigma-btn');
-    const overlay = document.getElementById('filosofi-overlay');
+// ============ PRIMO SCRIPT: OVERLAY FILOSOFI ============
+
+const overlayBtn = document.getElementById('paradigma-btn');
+const overlay = document.getElementById('filosofi-overlay');
+let hideTimeout;
+
+// Costanti per la gestione dei timeout (in millisecondi)
+const HIDE_DELAY = 300;
+const DEBOUNCE_DELAY = 50;
+
+function showOverlay() {
+    clearTimeout(hideTimeout);
+    overlay.style.display = 'block';
+    // Aggiungi classe per eventuali animazioni CSS
+    overlay.classList.add('visible');
+}
+
+function hideOverlay() {
+    hideTimeout = setTimeout(() => {
+        overlay.style.display = 'none';
+        overlay.classList.remove('visible');
+    }, HIDE_DELAY);
+}
+
+// Debounce per evitare chiamate multiple rapide
+let debounceTimer;
+function debounceHideOverlay() {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(hideOverlay, DEBOUNCE_DELAY);
+}
+
+// Event listeners con gestione errori
+if (overlayBtn && overlay) {
+    overlayBtn.addEventListener('mouseenter', showOverlay);
+    overlayBtn.addEventListener('mouseleave', hideOverlay);
+    overlayBtn.addEventListener('focus', showOverlay);
+    overlayBtn.addEventListener('blur', debounceHideOverlay);
     
-    let hideTimeout;
-    
-    function showOverlay() {
-        clearTimeout(hideTimeout);
-        overlay.style.display = 'block';
-    }
-    
-    function hideOverlay() {
-        hideTimeout = setTimeout(() => {
-            overlay.style.display = 'none';
-        }, 300);
-    }
-    
-    // Apri overlay al passaggio mouse sul bottone
-    btn.addEventListener('mouseenter', showOverlay);
-    
-    // Chiudi overlay dopo uscita mouse dal bottone
-    btn.addEventListener('mouseleave', hideOverlay);
-    
-    // Se il mouse entra nell'overlay cancella la chiusura
     overlay.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
-    
-    // Se il mouse esce dall'overlay, avvia chiusura
     overlay.addEventListener('mouseleave', hideOverlay);
+    overlay.addEventListener('focusin', () => clearTimeout(hideTimeout));
+    overlay.addEventListener('focusout', debounceHideOverlay);
+    
+    // Supporto per tastiera
+    overlayBtn.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && overlay.style.display === 'block') {
+            hideOverlay();
+            overlayBtn.focus();
+        }
+    });
+}
 </script>
 
 <script>
