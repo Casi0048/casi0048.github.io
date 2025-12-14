@@ -993,7 +993,402 @@ if (flash) {
 
 });
 /* ===== 7 DICEMBRE AGGIUNTA ===== */
+// ============ OVERLAY FILOSOFI CON GSAP ============
 
+const overlayBtn = document.getElementById('paradigma-btn');
+const overlay = document.getElementById('filosofi-overlay');
+const overlayContent = overlay ? overlay.querySelector('.filosofi-content') || overlay : null;
+let isOverlayVisible = false;
+let hideTimeout;
+
+// Configurazione animazioni GSAP
+const ANIMATION_CONFIG = {
+    duration: 0.3,
+    ease: "power2.out",
+    stagger: 0.05, // Per animazioni a scaglione dei contenuti
+    yOffset: -15,
+    hideDelay: 200,
+    showDelay: 50
+};
+
+// Inizializza GSAP e stato overlay
+function initGSAPOverlay() {
+    if (!overlay) return;
+    
+    // Nascondi completamente l'overlay all'inizio
+    gsap.set(overlay, {
+        opacity: 0,
+        y: ANIMATION_CONFIG.yOffset,
+        scale: 0.95,
+        display: 'none', // Usiamo display none inizialmente con GSAP
+        pointerEvents: 'none'
+    });
+    
+    // Se c'è contenuto specifico, prepara per animazioni a scaglione
+    if (overlayContent && overlayContent !== overlay) {
+        const items = overlayContent.querySelectorAll('.filosofo-item, h3, div');
+        gsap.set(items, {
+            opacity: 0,
+            y: 10
+        });
+    }
+}
+
+// Mostra overlay con GSAP
+function showOverlay() {
+    clearTimeout(hideTimeout);
+    
+    if (!overlay || isOverlayVisible) return;
+    
+    isOverlayVisible = true;
+    
+    // Mostra l'overlay prima di animare
+    gsap.set(overlay, {
+        display: 'block',
+        pointerEvents: 'auto'
+    });
+    
+    // Crea una timeline per animazioni sequenziali
+    const tl = gsap.timeline({
+        defaults: {
+            ease: ANIMATION_CONFIG.ease
+        }
+    });
+    
+    // Animazione dell'overlay principale
+    tl.to(overlay, {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: ANIMATION_CONFIG.duration
+    });
+    
+    // Animazione a scaglione del contenuto (se esistono elementi)
+    if (overlayContent && overlayContent !== overlay) {
+        const items = overlayContent.querySelectorAll('.filosofo-item, h3, div[style*="grid"] > *');
+        
+        if (items.length > 0) {
+            tl.to(items, {
+                opacity: 1,
+                y: 0,
+                stagger: ANIMATION_CONFIG.stagger,
+                duration: ANIMATION_CONFIG.duration * 0.8
+            }, "-=0.1"); // Inizia leggermente prima della fine dell'animazione principale
+        }
+    }
+    
+    // Focus per accessibilità
+    setTimeout(() => {
+        const firstFocusable = overlay.querySelector('button, a, [tabindex="0"]');
+        if (firstFocusable) {
+            firstFocusable.focus();
+        }
+    }, ANIMATION_CONFIG.duration * 1000);
+    
+    return tl;
+}
+
+// Nascondi overlay con GSAP
+function hideOverlay() {
+    if (!overlay || !isOverlayVisible) return;
+    
+    isOverlayVisible = false;
+    
+    // Crea timeline per animazione di uscita
+    const tl = gsap.timeline({
+        onComplete: () => {
+            // Nascondi completamente dopo l'animazione
+            gsap.set(overlay, {
+                display: 'none',
+                pointerEvents: 'none'
+            });
+            
+            // Ripristina focus al bottone
+            if (overlayBtn) {
+                overlayBtn.focus();
+            }
+        }
+    });
+    
+    // Prima anima via il contenuto (se esiste)
+    if (overlayContent && overlayContent !== overlay) {
+        const items = overlayContent.querySelectorAll('.filosofo-item, h3, div[style*="grid"] > *');
+        
+        if (items.length > 0) {
+            tl.to(items, {
+                opacity: 0,
+                y: 10,
+                stagger: ANIMATION_CONFIG.stagger * 0.5,
+                duration: ANIMATION_CONFIG.duration * 0.6
+            });
+        }
+    }
+    
+    // Poi anima l'overlay stesso
+    tl.to(overlay, {
+        opacity: 0,
+        y: ANIMATION_CONFIG.yOffset,
+        scale: 0.95,
+        duration: ANIMATION_CONFIG.duration
+    }, "-=0.1");
+    
+    return tl;
+}
+
+// Gestione eventi con debouncing
+let hoverTimer;
+const HOVER_DELAY = 100;
+
+function handleMouseEnter() {
+    clearTimeout(hoverTimer);
+    hoverTimer = setTimeout(() => {
+        showOverlay();
+    }, HOVER_DELAY);
+}
+
+function handleMouseLeave() {
+    clearTimeout(hoverTimer);
+    hideTimeout = setTimeout(() => {
+        if (isOverlayVisible && !isMouseInOverlay()) {
+            hideOverlay();
+        }
+    }, ANIMATION_CONFIG.hideDelay);
+}
+
+// Controlla se il mouse è nell'overlay
+function isMouseInOverlay() {
+    return overlay && overlay.matches(':hover');
+}
+
+// Setup event listeners
+function setupGSAPEvents() {
+    if (!overlayBtn || !overlay) {
+        console.warn('Elementi overlay non trovati');
+        return;
+    }
+    
+    // Inizializza GSAP
+    initGSAPOverlay();
+    
+    // Eventi mouse
+    overlayBtn.addEventListener('mouseenter', handleMouseEnter);
+    overlayBtn.addEventListener('mouseleave', handleMouseLeave);
+    
+    // Eventi touch
+    overlayBtn.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        handleMouseEnter();
+    });
+    
+    // Mantieni overlay visibile quando ci si passa sopra
+    overlay.addEventListener('mouseenter', () => {
+        clearTimeout(hideTimeout);
+    });
+    
+    overlay.addEventListener('mouseleave', (e) => {
+        // Controlla se stiamo uscendo verso il bottone
+        if (e.relatedTarget !== overlayBtn) {
+            handleMouseLeave();
+        }
+    });
+    
+    // Accessibilità tastiera
+    overlayBtn.addEventListener('focus', handleMouseEnter);
+    overlayBtn.addEventListener('blur', handleMouseLeave);
+    
+    overlay.addEventListener('focusin', () => {
+        clearTimeout(hideTimeout);
+    });
+    
+    overlay.addEventListener('focusout', (e) => {
+        if (!overlay.contains(e.relatedTarget) && e.relatedTarget !== overlayBtn) {
+            handleMouseLeave();
+        }
+    });
+    
+    // Chiusura con ESC
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && isOverlayVisible) {
+            hideOverlay();
+        }
+    });
+    
+    // Click esterno per chiudere
+    document.addEventListener('click', (e) => {
+        if (!isOverlayVisible) return;
+        
+        if (!overlay.contains(e.target) && !overlayBtn.contains(e.target)) {
+            hideOverlay();
+        }
+    });
+}
+
+// ============ ANIMAZIONE PERSONALIZZATA PER 4 FILOSOFI ============
+
+// Se vuoi un'animazione speciale per la griglia dei 4 filosofi
+function animateFilosofiGrid() {
+    if (!overlay) return;
+    
+    const gridContainer = overlay.querySelector('div[style*="grid-template-columns"]');
+    if (!gridContainer) return;
+    
+    const filosofiItems = gridContainer.children;
+    
+    // Animazione di ingresso speciale
+    gsap.fromTo(filosofiItems,
+        {
+            opacity: 0,
+            y: 30,
+            scale: 0.8,
+            rotationY: -15
+        },
+        {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            rotationY: 0,
+            stagger: {
+                each: 0.08,
+                from: "center",
+                grid: [1, 4], // 1 riga, 4 colonne
+                ease: "back.out(1.2)"
+            },
+            duration: 0.5,
+            ease: "power3.out"
+        }
+    );
+}
+
+// Versione alternativa con animazione a "card flip"
+function animateFilosofiCards() {
+    if (!overlay) return;
+    
+    const cards = overlay.querySelectorAll('div[style*="text-align: center"]');
+    
+    cards.forEach((card, index) => {
+        gsap.fromTo(card,
+            {
+                opacity: 0,
+                rotationY: 90,
+                scale: 0.5
+            },
+            {
+                opacity: 1,
+                rotationY: 0,
+                scale: 1,
+                delay: index * 0.1,
+                duration: 0.4,
+                ease: "back.out(1.3)",
+                onComplete: function() {
+                    // Aggiungi hover effect dopo l'animazione
+                    gsap.set(card, {
+                        boxShadow: "0 4px 8px rgba(0,0,0,0.2)"
+                    });
+                }
+            }
+        );
+    });
+}
+
+// Mostra overlay con animazione speciale
+function showOverlayWithSpecialAnimation() {
+    clearTimeout(hideTimeout);
+    
+    if (!overlay || isOverlayVisible) return;
+    
+    isOverlayVisible = true;
+    
+    // Mostra overlay
+    gsap.set(overlay, {
+        display: 'block',
+        pointerEvents: 'auto'
+    });
+    
+    // Timeline per animazioni coordinate
+    const masterTl = gsap.timeline();
+    
+    // 1. Animazione overlay principale
+    masterTl.to(overlay, {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.4,
+        ease: "elastic.out(1, 0.5)"
+    });
+    
+    // 2. Animazione titolo
+    const title = overlay.querySelector('h3');
+    if (title) {
+        masterTl.fromTo(title,
+            {
+                opacity: 0,
+                y: -20,
+                scale: 1.2
+            },
+            {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                duration: 0.3,
+                ease: "back.out(1.5)"
+            },
+            "-=0.2"
+        );
+    }
+    
+    // 3. Animazione griglia filosofi (scegli una delle due)
+    masterTl.add(animateFilosofiGrid, "-=0.1");
+    // Oppure: masterTl.add(animateFilosofiCards, "-=0.1");
+    
+    return masterTl;
+}
+
+// ============ INIZIALIZZAZIONE ============
+
+// Inizializza quando il DOM è pronto
+document.addEventListener('DOMContentLoaded', function() {
+    // Carica GSAP (se non già caricato via CDN)
+    if (typeof gsap === 'undefined') {
+        console.error('GSAP non caricato. Caricalo via CDN prima di questo script.');
+        return;
+    }
+    
+    setupGSAPEvents();
+    
+    // Registra plugin ScrollTrigger se necessario (opzionale)
+    // gsap.registerPlugin(ScrollTrigger);
+});
+
+// ============ UTILITY FUNCTIONS ============
+
+// Forza mostra overlay (per debug o altri controlli)
+window.showFilosofiOverlay = function() {
+    return showOverlayWithSpecialAnimation();
+};
+
+// Forza nascondi overlay
+window.hideFilosofiOverlay = function() {
+    return hideOverlay();
+};
+
+// Toggle overlay
+window.toggleFilosofiOverlay = function() {
+    if (isOverlayVisible) {
+        return hideOverlay();
+    } else {
+        return showOverlayWithSpecialAnimation();
+    }
+};
+
+// Pausa/ripresa animazioni (per performance)
+window.pauseFilosofiAnimations = function() {
+    if (overlay) {
+        gsap.killTweensOf(overlay);
+        if (overlayContent) {
+            gsap.killTweensOf(overlayContent.querySelectorAll('*'));
+        }
+    }
+};
 
 
 
