@@ -5489,6 +5489,25 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
       <span class="dot red-dot"></span>
     </button>
   </div>
+  <button id="paradigma-btn"
+        aria-haspopup="true"
+        aria-expanded="false">
+  Filosofi
+</button>
+
+<div id="filosofi-overlay" aria-hidden="true">
+  <!-- colonne / contenuti -->
+</div>
+<style>
+  #filosofi-overlay {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(12px);
+  will-change: transform, opacity;
+}
+
+</style>
 <div style="position: relative;">
 <button class="ctrl-btn" id="paradigma-btn" style="
             background: rgba(20, 20, 40, 0.78);
@@ -5520,6 +5539,7 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
             border: 1px solid rgba(255, 215, 0, 0.3);
             z-index: 9999;
             backdrop-filter: blur(10px);">
+  
 <h3 style="color: #ffd86a; margin-bottom: 20px; font-family: 'Cinzel', serif; text-align: center;">
                 I Filosofi che hanno cambiato il paradigma
                 <span style="font-size: 1.5em; color: #00ccff;">▾</span>
@@ -5548,7 +5568,73 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 </div>
 </div>
 </div>
- 
+ <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const btn = document.getElementById("paradigma-btn");
+  const overlay = document.getElementById("filosofi-overlay");
+
+  if (!btn || !overlay || !window.gsap) return;
+
+  let hideTimeout;
+  const HIDE_DELAY = 220;
+
+  /* === TIMELINE GSAP === */
+  const tl = gsap.timeline({
+    paused: true,
+    defaults: { ease: "power2.out", duration: 0.35 }
+  });
+
+  tl.set(overlay, {
+      visibility: "visible",
+      pointerEvents: "auto"
+    })
+    .fromTo(overlay,
+      { opacity: 0, y: 14 },
+      { opacity: 1, y: 0 }
+    );
+
+  /* === OPEN / CLOSE === */
+  const openOverlay = () => {
+    clearTimeout(hideTimeout);
+    btn.setAttribute("aria-expanded", "true");
+    overlay.setAttribute("aria-hidden", "false");
+    tl.play();
+  };
+
+  const closeOverlay = () => {
+    hideTimeout = setTimeout(() => {
+      btn.setAttribute("aria-expanded", "false");
+      overlay.setAttribute("aria-hidden", "true");
+
+      tl.reverse().then(() => {
+        gsap.set(overlay, {
+          visibility: "hidden",
+          pointerEvents: "none"
+        });
+      });
+    }, HIDE_DELAY);
+  };
+
+  /* === POINTER === */
+  btn.addEventListener("pointerenter", openOverlay);
+  btn.addEventListener("pointerleave", closeOverlay);
+
+  overlay.addEventListener("pointerenter", () => clearTimeout(hideTimeout));
+  overlay.addEventListener("pointerleave", closeOverlay);
+
+  /* === TASTIERA === */
+  btn.addEventListener("focus", openOverlay);
+  btn.addEventListener("blur", closeOverlay);
+
+  overlay.addEventListener("focusin", openOverlay);
+  overlay.addEventListener("focusout", closeOverlay);
+
+});
+</script>
+
 <!-- ============================================================
         TOPBAR CON DIZIONARIO
 ============================================================ -->
@@ -8631,35 +8717,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<script>
-    const btn = document.getElementById('paradigma-btn');
-    const overlay = document.getElementById('filosofi-overlay');
-    
-    let hideTimeout;
-    
-    function showOverlay() {
-        clearTimeout(hideTimeout);
-        overlay.style.display = 'block';
-    }
-    
-    function hideOverlay() {
-        hideTimeout = setTimeout(() => {
-            overlay.style.display = 'none';
-        }, 300);
-    }
-    
-    // Apri overlay al passaggio mouse sul bottone
-    btn.addEventListener('mouseenter', showOverlay);
-    
-    // Chiudi overlay dopo uscita mouse dal bottone
-    btn.addEventListener('mouseleave', hideOverlay);
-    
-    // Se il mouse entra nell'overlay cancella la chiusura
-    overlay.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
-    
-    // Se il mouse esce dall'overlay, avvia chiusura
-    overlay.addEventListener('mouseleave', hideOverlay);
-</script>
+
 
 <script>
 // Funzioni per il modale
