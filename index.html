@@ -8632,62 +8632,243 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <script>
-    const btn = document.getElementById('paradigma-btn');
-    const overlay = document.getElementById('filosofi-overlay');
+// ============ OVERLAY FILOSOFI CON ANIMAZIONI FLUIDE ============
+
+const overlayBtn = document.getElementById('paradigma-btn');
+const overlay = document.getElementById('filosofi-overlay');
+let hideTimeout;
+
+// Configurazione animazioni
+const ANIMATION_CONFIG = {
+    showDelay: 50,        // Ritardo minimo per mostrare
+    hideDelay: 200,       // Ritardo per nascondere
+    animationDuration: 300, // Durata animazione CSS
+    debounceDelay: 50     // Debounce per eventi rapidi
+};
+
+// Inizializza le proprietà CSS per le animazioni
+function initOverlayAnimations() {
+    if (!overlay) return;
     
-    let hideTimeout;
+    // Assicurati che l'overlay abbia le proprietà di transizione
+    overlay.style.transition = `
+        opacity ${ANIMATION_CONFIG.animationDuration}ms ease-in-out,
+        transform ${ANIMATION_CONFIG.animationDuration}ms ease-in-out,
+        visibility ${ANIMATION_CONFIG.animationDuration}ms ease-in-out
+    `;
     
-    function showOverlay() {
+    // Stato iniziale nascosto
+    overlay.style.opacity = '0';
+    overlay.style.transform = 'translateY(-10px)';
+    overlay.style.visibility = 'hidden';
+    overlay.style.display = 'block'; // Sempre blocco ma nascosto
+}
+
+// Mostra overlay con animazione fluida
+function showOverlay() {
+    clearTimeout(hideTimeout);
+    
+    // Cancella qualsiasi timeout di debounce
+    if (window.debounceTimer) {
+        clearTimeout(window.debounceTimer);
+    }
+    
+    // Piccolo ritardo per evitare animazioni accidentali durante passaggi rapidi
+    setTimeout(() => {
+        if (!overlay) return;
+        
+        overlay.style.visibility = 'visible';
+        overlay.style.pointerEvents = 'auto';
+        
+        // Trigger per l'animazione (next frame)
+        requestAnimationFrame(() => {
+            overlay.style.opacity = '1';
+            overlay.style.transform = 'translateY(0)';
+        });
+        
+        // Focus sul primo elemento interattivo nell'overlay per accessibilità
+        setTimeout(() => {
+            const firstInteractive = overlay.querySelector('button, a, input, [tabindex="0"]');
+            if (firstInteractive) {
+                firstInteractive.focus();
+            }
+        }, ANIMATION_CONFIG.animationDuration);
+    }, ANIMATION_CONFIG.showDelay);
+}
+
+// Nascondi overlay con animazione fluida
+function hideOverlay() {
+    hideTimeout = setTimeout(() => {
+        if (!overlay) return;
+        
+        overlay.style.opacity = '0';
+        overlay.style.transform = 'translateY(-10px)';
+        
+        // Dopo l'animazione, nascondi completamente
+        setTimeout(() => {
+            overlay.style.visibility = 'hidden';
+            overlay.style.pointerEvents = 'none';
+            
+            // Restituisci il focus al bottone
+            if (overlayBtn) {
+                overlayBtn.focus();
+            }
+        }, ANIMATION_CONFIG.animationDuration);
+    }, ANIMATION_CONFIG.hideDelay);
+}
+
+// Debounce migliorato per evitare lampeggi
+function debounceHideOverlay() {
+    clearTimeout(window.debounceTimer);
+    window.debounceTimer = setTimeout(hideOverlay, ANIMATION_CONFIG.debounceDelay);
+}
+
+// Gestisce l'entrata del mouse (con supporto per touch)
+function handleMouseEnter() {
+    clearTimeout(window.debounceTimer);
+    showOverlay();
+}
+
+// Gestisce l'uscita del mouse
+function handleMouseLeave() {
+    debounceHideOverlay();
+}
+
+// Setup event listeners con gestione completa
+function setupOverlayEvents() {
+    if (!overlayBtn || !overlay) {
+        console.warn('Elementi overlay non trovati');
+        return;
+    }
+    
+    // Inizializza animazioni
+    initOverlayAnimations();
+    
+    // Eventi per mouse
+    overlayBtn.addEventListener('mouseenter', handleMouseEnter);
+    overlayBtn.addEventListener('mouseleave', handleMouseLeave);
+    
+    // Eventi per touch (mobile)
+    overlayBtn.addEventListener('touchstart', handleMouseEnter);
+    overlayBtn.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        handleMouseLeave();
+    });
+    
+    // Eventi per accessibilità (tastiera)
+    overlayBtn.addEventListener('focus', handleMouseEnter);
+    overlayBtn.addEventListener('blur', handleMouseLeave);
+    
+    // Mantieni overlay visibile quando ci si passa sopra
+    overlay.addEventListener('mouseenter', () => {
         clearTimeout(hideTimeout);
-        overlay.style.display = 'block';
-    }
+        clearTimeout(window.debounceTimer);
+    });
     
-    function hideOverlay() {
-        hideTimeout = setTimeout(() => {
-            overlay.style.display = 'none';
-        }, 300);
-    }
+    overlay.addEventListener('mouseleave', handleMouseLeave);
     
-    // Apri overlay al passaggio mouse sul bottone
-    btn.addEventListener('mouseenter', showOverlay);
+    // Supporto tastiera nell'overlay
+    overlay.addEventListener('focusin', () => {
+        clearTimeout(hideTimeout);
+        clearTimeout(window.debounceTimer);
+    });
     
-    // Chiudi overlay dopo uscita mouse dal bottone
-    btn.addEventListener('mouseleave', hideOverlay);
+    overlay.addEventListener('focusout', (e) => {
+        // Controlla se il focus sta uscendo completamente dall'overlay
+        if (!overlay.contains(e.relatedTarget)) {
+            handleMouseLeave();
+        }
+    });
     
-    // Se il mouse entra nell'overlay cancella la chiusura
-    overlay.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
+    // Chiusura con ESC
+    overlay.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            hideOverlay();
+            if (overlayBtn) overlayBtn.focus();
+        }
+    });
     
-    // Se il mouse esce dall'overlay, avvia chiusura
-    overlay.addEventListener('mouseleave', hideOverlay);
-</script>
-
-<script>
-// Funzioni per il modale
-function showNewsletterModal() {
-  document.getElementById('newsletterModal').style.display = 'flex';
+    // Click esterno per chiudere (opzionale)
+    document.addEventListener('click', (e) => {
+        if (!overlay || overlay.style.visibility !== 'visible') return;
+        
+        if (!overlay.contains(e.target) && !overlayBtn.contains(e.target)) {
+            hideOverlay();
+        }
+    });
 }
 
-function closeNewsletterModal() {
-  document.getElementById('newsletterModal').style.display = 'none';
+// ============ INIZIALIZZAZIONE ============
+
+// Inizializza quando il DOM è pronto
+document.addEventListener('DOMContentLoaded', function() {
+    setupOverlayEvents();
+    
+    // Supporto per preferenze di riduzione animazioni
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    
+    if (prefersReducedMotion.matches) {
+        // Disabilita animazioni se l'utente preferisce meno movimento
+        if (overlay) {
+            overlay.style.transition = 'none';
+        }
+    }
+    
+    // Aggiorna in caso di cambio preferenze
+    prefersReducedMotion.addEventListener('change', (e) => {
+        if (overlay) {
+            overlay.style.transition = e.matches ? 'none' : 
+                `opacity ${ANIMATION_CONFIG.animationDuration}ms ease-in-out,
+                 transform ${ANIMATION_CONFIG.animationDuration}ms ease-in-out,
+                 visibility ${ANIMATION_CONFIG.animationDuration}ms ease-in-out`;
+        }
+    });
+});
+
+// ============ FUNZIONALITÀ UTILITY ============
+
+// Funzione per forzare la chiusura dell'overlay (utile per altri script)
+function forceHideOverlay() {
+    clearTimeout(hideTimeout);
+    clearTimeout(window.debounceTimer);
+    
+    if (overlay) {
+        overlay.style.opacity = '0';
+        overlay.style.transform = 'translateY(-10px)';
+        overlay.style.visibility = 'hidden';
+        overlay.style.pointerEvents = 'none';
+    }
+    
+    if (overlayBtn) {
+        overlayBtn.focus();
+    }
 }
 
-// Chiudi modale cliccando fuori
-document.getElementById('newsletterModal').addEventListener('click', function(e) {
-  if (e.target === this) closeNewsletterModal();
-});
+// Funzione per forzare la visualizzazione dell'overlay
+function forceShowOverlay() {
+    clearTimeout(hideTimeout);
+    clearTimeout(window.debounceTimer);
+    
+    if (overlay) {
+        overlay.style.visibility = 'visible';
+        overlay.style.pointerEvents = 'auto';
+        overlay.style.opacity = '1';
+        overlay.style.transform = 'translateY(0)';
+    }
+}
 
-// Gestione form (base)
-document.getElementById('newsletterForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-  const email = this.querySelector('input[type="email"]').value;
-  alert('Grazie per esserti iscritto! Controlla la tua email: ' + email);
-  closeNewsletterModal();
-});
-
-// Chiudi con ESC
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') closeNewsletterModal();
-});
+// Esponi le funzioni globalmente se necessario (opzionale)
+window.overlayControls = {
+    show: forceShowOverlay,
+    hide: forceHideOverlay,
+    toggle: function() {
+        if (overlay && overlay.style.visibility === 'visible') {
+            forceHideOverlay();
+        } else {
+            forceShowOverlay();
+        }
+    }
+};
 </script>
  
 <script>
