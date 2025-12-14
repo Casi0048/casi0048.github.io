@@ -1,1394 +1,573 @@
+/* ============================================================
+   🔘 DIZIONARIO FILOSOFICO - STILE UNIFICATO
+   ============================================================ */
 
-// ============================================================
-//  MODALE DIZIONARIO — VERSIONE UNIFICATA (GSAP + FAB)
-// ============================================================
-document.addEventListener("DOMContentLoaded", () => {
-    console.log("📘 Dizionario inizializzazione...");
-
-    // Riferimenti agli elementi
-    const dictFab = document.getElementById('dict-fab');     // FAB
-    const dictModal = document.getElementById('dict-modal');
-    const dictOverlay = document.getElementById('dict-overlay');
-    const dictClose = document.getElementById('dict-close');
-    const dictQ = document.getElementById('dict-q');
-    const dictSearch = document.getElementById('dict-search');
-    const openAll = document.getElementById('open-all');
-
-    // Debug: mostra quali elementi mancano
-    const elements = {
-        dictFab: dictFab,
-        dictModal: dictModal,
-        dictOverlay: dictOverlay,
-        dictClose: dictClose,
-        dictQ: dictQ,
-        dictSearch: dictSearch,
-        openAll: openAll
-    };
-    
-    console.log('Elementi trovati:', Object.entries(elements)
-        .filter(([key, value]) => value)
-        .map(([key]) => key));
-    
-    const missing = Object.entries(elements)
-        .filter(([key, value]) => !value && key !== 'openAll')
-        .map(([key]) => key);
-    
-    if (missing.length > 0) {
-        console.warn('❌ Dizionario: elementi mancanti:', missing);
-        return;
-    }
-
-    /* ========== FUNZIONI APRI/CHIUDI ========== */
-    function openDict() {
-        console.log("📘 Apertura modale...");
-        
-        // GSAP animation
-        if (typeof gsap !== 'undefined') {
-            gsap.to(dictModal, {
-                x: 0,
-                duration: 0.35,
-                ease: "power3.out"
-            });
-            gsap.to(dictOverlay, {
-                opacity: 1,
-                pointerEvents: "auto",
-                duration: 0.25
-            });
-        } else {
-            // Fallback CSS se GSAP non esiste
-            dictModal.style.transform = 'translateX(0)';
-            dictModal.style.opacity = '1';
-            dictOverlay.style.opacity = '1';
-            dictOverlay.style.pointerEvents = 'auto';
-        }
-        
-        dictModal.classList.add('open');
-        dictOverlay.classList.add('active');
-        document.body.style.overflow = 'hidden';
-        
-        setTimeout(() => {
-            if (dictQ) dictQ.focus();
-        }, 100);
-    }
-
-    function closeDict() {
-        console.log("📘 Chiusura modale...");
-        
-        // GSAP animation
-        if (typeof gsap !== 'undefined') {
-            gsap.to(dictModal, {
-                x: "100%",
-                duration: 0.30,
-                ease: "power3.in"
-            });
-            gsap.to(dictOverlay, {
-                opacity: 0,
-                pointerEvents: "none",
-                duration: 0.25
-            });
-        } else {
-            // Fallback CSS
-            dictModal.style.transform = 'translateX(100%)';
-            dictModal.style.opacity = '0';
-            dictOverlay.style.opacity = '0';
-            dictOverlay.style.pointerEvents = 'none';
-        }
-        
-        dictModal.classList.remove('open');
-        dictOverlay.classList.remove('active');
-        document.body.style.overflow = '';
-    }
-
-    /* ========== EVENT LISTENER ========== */
-    // Apri con FAB
-    dictFab.addEventListener('click', openDict);
-
-    // Chiudi con pulsante X
-    dictClose.addEventListener('click', closeDict);
-
-    // Chiudi con overlay
-    dictOverlay.addEventListener('click', closeDict);
-
-    // Chiudi con ESC
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && dictModal.classList.contains('open')) {
-            closeDict();
-        }
-    });
-
-    /* ========== RICERCA ========== */
-    dictSearch.addEventListener('click', () => {
-        const query = dictQ.value.trim();
-        if (!query) {
-            dictQ.focus();
-            return;
-        }
-
-        const enc = encodeURIComponent(query);
-        const checkedSources = document.querySelectorAll('.sources input:checked');
-        
-        if (checkedSources.length === 0) {
-            alert('Seleziona almeno una fonte!');
-            return;
-        }
-
-        checkedSources.forEach(source => {
-            const url = source.getAttribute('data-url').replace('{q}', enc);
-            window.open(url, '_blank', 'noopener');
-        });
-    });
-
-    /* ========== APRI TUTTE LE FONTI ========== */
-    if (openAll) {
-        openAll.addEventListener('click', () => {
-            const query = dictQ.value.trim() || 'philosophy';
-            const enc = encodeURIComponent(query);
-            const allSources = document.querySelectorAll('.sources input');
-            
-            allSources.forEach(source => {
-                const url = source.getAttribute('data-url').replace('{q}', enc);
-                window.open(url, '_blank', 'noopener');
-            });
-        });
-    }
-
-    /* ========== RICERCA CON ENTER ========== */
-    dictQ.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            dictSearch.click();
-        }
-    });
-
-    /* ========== SUGGERIMENTI AUTOMATICI ========== */
-    const suggestions = document.getElementById('dict-suggestions');
-    if (suggestions) {
-        dictQ.addEventListener('input', function() {
-            const query = this.value.trim().toLowerCase();
-            
-            if (query.length < 2) {
-                suggestions.innerHTML = '';
-                return;
-            }
-
-            const terms = [
-                'metafisica', 'epistemologia', 'etica', 'estetica', 'logica',
-                'ontologia', 'fenomenologia', 'ermeneutica', 'esistenzialismo',
-                'stoicismo', 'epicureismo', 'scetticismo', 'razionalismo', 'empirismo',
-                'idealismo', 'materialismo', 'pragmatismo', 'strutturalismo',
-                'post-strutturalismo', 'decostruzionismo', 'filosofia analitica',
-                'filosofia continentale'
-            ];
-
-            const filtered = terms.filter(term => 
-                term.includes(query) || term.startsWith(query)
-            ).slice(0, 5);
-
-            suggestions.innerHTML = filtered.map(term => 
-                `<div class="suggestion-item" data-term="${term}">${term}</div>`
-            ).join('');
-
-            // Click su suggerimento
-            suggestions.querySelectorAll('.suggestion-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    dictQ.value = this.getAttribute('data-term');
-                    suggestions.innerHTML = '';
-                    dictSearch.click();
-                });
-            });
-        });
-    }
-
-    /* ========== INIZIALIZZAZIONE ========== */
-    // Imposta stato iniziale per GSAP
-    if (typeof gsap !== 'undefined') {
-        gsap.set(dictModal, { x: "100%" });
-        gsap.set(dictOverlay, { opacity: 0, pointerEvents: "none" });
-    } else {
-        // Fallback CSS
-        dictModal.style.transform = 'translateX(100%)';
-        dictOverlay.style.opacity = '0';
-        dictOverlay.style.pointerEvents = 'none';
-    }
-
-    console.log('✅ Dizionario inizializzato con FAB e GSAP');
-});
-
-/* ===== FINE DIZIONARIO ===== */
-
-/* ===== JS PARADIGMA ===== */
-
-// Gestione Overlay Filosofi Paradigma
-class FilosofiOverlay {
-    constructor() {
-        this.btn = document.getElementById('paradigma-btn');
-        this.overlay = document.getElementById('filosofi-overlay');
-        this.hideTimeout = null;
-        this.isVisible = false;
-        
-        this.init();
-    }
-
-    init() {
-        if (!this.btn || !this.overlay) {
-            console.warn('Elementi overlay filosofi non trovati');
-            return;
-        }
-
-        this.bindEvents();
-        this.setupAccessibility();
-    }
-
-    bindEvents() {
-        // Mouse events
-        this.btn.addEventListener('mouseenter', () => this.showOverlay());
-        this.btn.addEventListener('mouseleave', () => this.hideOverlay());
-        this.overlay.addEventListener('mouseenter', () => this.cancelHide());
-        this.overlay.addEventListener('mouseleave', () => this.hideOverlay());
-
-        // Keyboard events
-        this.btn.addEventListener('keydown', (e) => this.handleKeydown(e));
-        this.overlay.addEventListener('keydown', (e) => this.handleKeydown(e));
-
-        // Click outside to close
-        document.addEventListener('click', (e) => this.handleClickOutside(e));
-
-        // Prevent overlay close when interacting with form elements
-        this.overlay.addEventListener('focusin', () => this.cancelHide());
-        this.overlay.addEventListener('focusout', (e) => {
-            if (!this.overlay.contains(e.relatedTarget)) {
-                this.hideOverlay();
-            }
-        });
-    }
-
-    setupAccessibility() {
-        this.btn.setAttribute('aria-haspopup', 'true');
-        this.btn.setAttribute('aria-expanded', 'false');
-        this.overlay.setAttribute('role', 'dialog');
-        this.overlay.setAttribute('aria-label', 'I Filosofi che hanno cambiato il paradigma');
-        this.overlay.setAttribute('aria-modal', 'true');
-        this.overlay.setAttribute('aria-hidden', 'true');
-    }
-
-    showOverlay() {
-        this.cancelHide();
-        this.overlay.style.display = 'block';
-        this.overlay.style.opacity = '0';
-        
-        requestAnimationFrame(() => {
-            this.overlay.style.opacity = '1';
-            this.overlay.style.transform = 'translateY(0)';
-            this.overlay.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
-        });
-
-        this.isVisible = true;
-        this.btn.setAttribute('aria-expanded', 'true');
-        this.overlay.setAttribute('aria-hidden', 'false');
-        
-        // Focus management
-        setTimeout(() => {
-            const firstFocusable = this.overlay.querySelector('button, input, [tabindex]');
-            if (firstFocusable) firstFocusable.focus();
-        }, 100);
-    }
-
-    hideOverlay() {
-        this.hideTimeout = setTimeout(() => {
-            this.overlay.style.opacity = '0';
-            this.overlay.style.transform = 'translateY(-10px)';
-            
-            setTimeout(() => {
-                if (this.isVisible) {
-                    this.overlay.style.display = 'none';
-                    this.isVisible = false;
-                    this.btn.setAttribute('aria-expanded', 'false');
-                    this.overlay.setAttribute('aria-hidden', 'true');
-                    this.btn.focus();
-                }
-            }, 200);
-        }, 300);
-    }
-
-    cancelHide() {
-        if (this.hideTimeout) {
-            clearTimeout(this.hideTimeout);
-            this.hideTimeout = null;
-        }
-    }
-
-    handleKeydown(e) {
-        switch(e.key) {
-            case 'Escape':
-                if (this.isVisible) {
-                    e.preventDefault();
-                    this.hideOverlay();
-                }
-                break;
-            case 'Enter':
-            case ' ':
-                if (e.target === this.btn && !this.isVisible) {
-                    e.preventDefault();
-                    this.showOverlay();
-                }
-                break;
-            case 'Tab':
-                if (this.isVisible) {
-                    this.trapFocus(e);
-                }
-                break;
-        }
-    }
-
-    trapFocus(e) {
-        const focusableElements = this.overlay.querySelectorAll(
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-        );
-        const firstElement = focusableElements[0];
-        const lastElement = focusableElements[focusableElements.length - 1];
-
-        if (e.shiftKey && document.activeElement === firstElement) {
-            e.preventDefault();
-            lastElement.focus();
-        } else if (!e.shiftKey && document.activeElement === lastElement) {
-            e.preventDefault();
-            firstElement.focus();
-        }
-    }
-
-    handleClickOutside(e) {
-        if (this.isVisible && 
-            !this.btn.contains(e.target) && 
-            !this.overlay.contains(e.target)) {
-            this.hideOverlay();
-        }
-    }
-
-    // Public methods
-    open() {
-        this.showOverlay();
-    }
-
-    close() {
-        this.hideOverlay();
-    }
-
-    toggle() {
-        if (this.isVisible) {
-            this.close();
-        } else {
-            this.open();
-        }
-    }
+/* Variabili CSS per consistenza */
+:root {
+  --primary-gold: #ffd86a;
+  --dark-bg: rgba(20,20,30,0.96);
+  --darker-bg: rgba(10,10,20,0.9);
+  --accent-blue: #00ccff;
+  --accent-red: #FF0000;
+  --border-gold: rgba(255,215,0,0.55);
+  --text-light: #e9eef5;
+  --shadow-gold: 0 0 14px rgba(255,215,0,0.55);
+  --shadow-blue: 0 0 8px rgba(0,204,255,0.4);
+  --modal-width: 380px;
 }
 
-// Gestione Modale Newsletter
-class NewsletterModal {
-    constructor() {
-        this.modal = document.getElementById('newsletterModal');
-        this.form = document.getElementById('newsletterForm');
-        this.closeBtn = this.modal?.querySelector('.close-modal');
-        
-        this.init();
-    }
-
-    init() {
-        if (!this.modal || !this.form) {
-            console.warn('Elementi modale newsletter non trovati');
-            return;
-        }
-
-        this.bindEvents();
-        this.setupAccessibility();
-    }
-
-    bindEvents() {
-        // Close events
-        this.modal.addEventListener('click', (e) => this.handleBackdropClick(e));
-        this.closeBtn?.addEventListener('click', () => this.close());
-        
-        // Form submission
-        this.form.addEventListener('submit', (e) => this.handleSubmit(e));
-        
-        // Keyboard events
-        document.addEventListener('keydown', (e) => this.handleKeydown(e));
-        
-        // Prevent form submission on Enter in inputs
-        this.form.querySelectorAll('input').forEach(input => {
-            input.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' && e.target.type !== 'submit') {
-                    e.preventDefault();
-                }
-            });
-        });
-    }
-
-    setupAccessibility() {
-        this.modal.setAttribute('role', 'dialog');
-        this.modal.setAttribute('aria-label', 'Iscriviti alla Newsletter');
-        this.modal.setAttribute('aria-modal', 'true');
-        this.modal.setAttribute('aria-hidden', 'true');
-        
-        if (this.closeBtn) {
-            this.closeBtn.setAttribute('aria-label', 'Chiudi modale');
-        }
-    }
-
-    show() {
-        this.modal.style.display = 'flex';
-        this.modal.style.opacity = '0';
-        
-        requestAnimationFrame(() => {
-            this.modal.style.opacity = '1';
-            this.modal.style.transition = 'opacity 0.3s ease';
-        });
-
-        this.modal.setAttribute('aria-hidden', 'false');
-        document.body.style.overflow = 'hidden';
-        
-        // Focus management
-        setTimeout(() => {
-            const firstInput = this.form.querySelector('input[type="email"]');
-            if (firstInput) firstInput.focus();
-        }, 100);
-    }
-
-    close() {
-        this.modal.style.opacity = '0';
-        
-        setTimeout(() => {
-            this.modal.style.display = 'none';
-            this.modal.setAttribute('aria-hidden', 'true');
-            document.body.style.overflow = '';
-            
-            // Restore focus to the element that opened the modal
-            const previousActiveElement = document.activeElement;
-            if (previousActiveElement && document.body.contains(previousActiveElement)) {
-                previousActiveElement.focus();
-            }
-        }, 300);
-    }
-
-    handleBackdropClick(e) {
-        if (e.target === this.modal) {
-            this.close();
-        }
-    }
-
-    handleKeydown(e) {
-        if (e.key === 'Escape' && this.modal.style.display === 'flex') {
-            this.close();
-        }
-        
-        // Trap focus within modal when open
-        if (e.key === 'Tab' && this.modal.style.display === 'flex') {
-            this.trapFocus(e);
-        }
-    }
-
-    trapFocus(e) {
-        const focusableElements = this.modal.querySelectorAll(
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-        );
-        
-        if (focusableElements.length === 0) return;
-
-        const firstElement = focusableElements[0];
-        const lastElement = focusableElements[focusableElements.length - 1];
-
-        if (e.shiftKey && document.activeElement === firstElement) {
-            e.preventDefault();
-            lastElement.focus();
-        } else if (!e.shiftKey && document.activeElement === lastElement) {
-            e.preventDefault();
-            firstElement.focus();
-        }
-    }
-
-    async handleSubmit(e) {
-        e.preventDefault();
-        
-        const emailInput = this.form.querySelector('input[type="email"]');
-        const email = emailInput.value.trim();
-        
-        if (!this.validateEmail(email)) {
-            this.showMessage('Inserisci un indirizzo email valido', 'error');
-            emailInput.focus();
-            return;
-        }
-
-        // Disable form during submission
-        this.setFormState(true);
-        
-        try {
-            // Simula invio (sostituisci con la tua API)
-            await this.submitNewsletter(email);
-            this.showMessage('Grazie per esserti iscritto! Controlla la tua email.', 'success');
-            this.form.reset();
-            setTimeout(() => this.close(), 2000);
-        } catch (error) {
-            this.showMessage('Errore durante l\'iscrizione. Riprova più tardi.', 'error');
-        } finally {
-            this.setFormState(false);
-        }
-    }
-
-    validateEmail(email) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-    }
-
-    setFormState(disabled) {
-        const inputs = this.form.querySelectorAll('input, button');
-        inputs.forEach(input => {
-            input.disabled = disabled;
-        });
-        
-        const submitBtn = this.form.querySelector('button[type="submit"]');
-        if (submitBtn) {
-            submitBtn.textContent = disabled ? 'Invio in corso...' : 'Iscriviti';
-        }
-    }
-
-    async submitNewsletter(email) {
-        // Simula ritardo di rete
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        
-        // Simula successo (90% di successo)
-        if (Math.random() > 0.1) {
-            return { success: true };
-        } else {
-            throw new Error('Network error');
-        }
-    }
-
-    showMessage(message, type = 'info') {
-        // Rimuovi messaggi precedenti
-        const existingMessage = this.modal.querySelector('.form-message');
-        if (existingMessage) {
-            existingMessage.remove();
-        }
-        
-        // Crea nuovo messaggio
-        const messageEl = document.createElement('div');
-        messageEl.className = `form-message form-message--${type}`;
-        messageEl.textContent = message;
-        messageEl.style.cssText = `
-            padding: 0.8rem;
-            margin: 1rem 0;
-            border-radius: 6px;
-            font-weight: 600;
-            text-align: center;
-            background: ${type === 'success' ? 'rgba(0,255,0,0.1)' : 'rgba(255,0,0,0.1)'};
-            color: ${type === 'success' ? '#00ff00' : '#ff6b6b'};
-            border: 1px solid ${type === 'success' ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)'};
-        `;
-        
-        this.form.insertBefore(messageEl, this.form.firstChild);
-        
-        // Auto-remove success messages
-        if (type === 'success') {
-            setTimeout(() => messageEl.remove(), 5000);
-        }
-    }
+/* ============================================================
+   FAB DIZIONARIO – Pulsante Fisso
+   ============================================================ */
+#dict-fab {
+  position: fixed;
+  bottom: 150px; /* Sopra "Torna su" */
+  right: 20px;
+  background: linear-gradient(135deg, 
+    rgba(255, 215, 0, 0.9) 0%, 
+    rgba(255, 216, 106, 0.8) 100%);
+  color: #0a0a1a;
+  border: none;
+  border-radius: 25px;
+  padding: 12px 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 9997;
+  box-shadow: 
+    0 6px 15px rgba(255, 215, 0, 0.3),
+    0 0 20px rgba(255, 216, 106, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.3px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 215, 0, 0.4);
 }
 
-// Inizializzazione
-document.addEventListener('DOMContentLoaded', function() {
-    // Inizializza overlay filosofi
-    window.filosofiOverlay = new FilosofiOverlay();
-    
-    // Inizializza modale newsletter
-    window.newsletterModal = new NewsletterModal();
-    
-    // Espone le funzioni globali per l'HTML
-    window.showNewsletterModal = () => window.newsletterModal?.show();
-    window.closeNewsletterModal = () => window.newsletterModal?.close();
-});
-
-// Gestione errori globale
-window.addEventListener('error', function(e) {
-    console.error('Errore JavaScript:', e.error);
-});
-
-// Aggiungi questa funzione al tuo JavaScript esistente
-function setupClearButton() {
-    const searchInput = document.getElementById('dict-q');
-    const clearButton = document.querySelector('.dict-clear-btn');
-    
-    if (!searchInput || !clearButton) return;
-    
-    // Mostra/nascondi pulsante X
-    function toggleClearButton() {
-        if (searchInput.value.length > 0) {
-            clearButton.classList.add('visible');
-        } else {
-            clearButton.classList.remove('visible');
-        }
-    }
-    
-    // Cancella input
-    function clearInput() {
-        searchInput.value = '';
-        searchInput.focus();
-        toggleClearButton();
-    }
-    
-    // Event listeners
-    searchInput.addEventListener('input', toggleClearButton);
-    clearButton.addEventListener('click', clearInput);
-    
-    // Inizializza stato
-    toggleClearButton();
+#dict-fab:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 
+    0 10px 25px rgba(255, 215, 0, 0.4),
+    0 0 30px rgba(255, 216, 106, 0.3);
+  background: linear-gradient(135deg, 
+    rgba(255, 215, 0, 1) 0%, 
+    rgba(255, 216, 106, 0.9) 100%);
+  border-color: rgba(255, 215, 0, 0.7);
 }
 
-// Chiama la funzione quando il dizionario viene aperto
-document.addEventListener('DOMContentLoaded', function() {
-    setupClearButton();
-});
-
-
-/* ===== JAVASCRIPT SPOSTATI 6 DICEMBRE ===== */
-document.addEventListener("DOMContentLoaded", () => {
-
-    const box = document.getElementById("russell-box");
-    const btn = document.getElementById("russell-btn");
-
-    if (!box || !btn) {
-        console.warn("Russell Box non trovato nel DOM.");
-        return;
-    }
-
-    // Effetti
-    const shock1  = box.querySelector(".shockwave");
-    const shock2  = box.querySelector(".shockwave.second");
-    const bolt    = box.querySelector(".lightning-strike");
-    const branch  = box.querySelector(".lightning-branch");
-    const ripple  = box.querySelector(".ripple");
-    const rings   = box.querySelectorAll(".russell-ring");
-    const fog     = box.querySelector(".fog-layer");
-    const sparksC = document.getElementById("spark-container");
-
-    // Audio — SOLO chitarra
-    const audioGuitar = document.getElementById("russell-audio");
-
-    btn.addEventListener("click", () => {
-
-        /* 🎸 Suono SOLO CHITARRA */
-        if (audioGuitar) {
-            audioGuitar.currentTime = 0;
-            audioGuitar.play().catch(()=>{});
-        }
-// --- Flash sincronizzato con attacco della chitarra ---
-const flash = document.getElementById("russell-flash");
-if (flash) {
-    gsap.fromTo(flash,
-      { opacity: 0 },
-      { opacity: 1, duration: 0.18, ease: "power2.out" }
-    );
-    gsap.to(flash, {
-      opacity: 0,
-      duration: 0.35,
-      ease: "power3.in",
-      delay: 0.05
-    });
+#dict-fab:active {
+  transform: translateY(0) scale(1);
+  box-shadow: 
+    0 4px 10px rgba(255, 215, 0, 0.3),
+    0 0 15px rgba(255, 216, 106, 0.2);
 }
 
-        /* --- Nebbia --- */
-        gsap.fromTo(fog, { opacity: 0 }, { opacity: 1, duration: 0.3, yoyo: true, repeat: 1 });
-
-        /* --- Shockwaves --- */
-        gsap.fromTo(shock1, { opacity: 1, scale: 0.3 }, { opacity: 0, scale: 2.8, duration: 0.7 });
-        gsap.fromTo(shock2, { opacity: 1, scale: 0.4 }, { opacity: 0, scale: 2.1, duration: 0.85 });
-
-        /* --- Fulmine --- */
-        gsap.fromTo(bolt, { opacity: 1, scaleY: 0.15 }, { opacity: 0, scaleY: 1.3, duration: 0.35 });
-        gsap.fromTo(branch, { opacity: 1, x: -30, y: 10 }, { opacity: 0, x: 50, y: 110, duration: 0.35 });
-
-        /* --- Ripple --- */
-        gsap.fromTo(ripple, { opacity: 0.9, scale: 0.3 }, { opacity: 0, scale: 1.7, duration: 0.6 });
-
-        /* --- Anelli energetici --- */
-        rings.forEach((ring, i) => {
-            gsap.fromTo(ring,
-                { opacity: 1, scale: 0.5 },
-                { opacity: 0, scale: 1.9 + i * 0.3, duration: 0.6 }
-            );
-        });
-
-        /* --- Scintille --- */
-        for (let i = 0; i < 26; i++) {
-            const s = document.createElement("div");
-            s.className = "russell-spark";
-            sparksC.appendChild(s);
-
-            const angle = Math.random() * Math.PI * 2;
-            const dist  = 50 + Math.random() * 90;
-
-            gsap.fromTo(
-                s,
-                { x: 0, y: 0, opacity: 1, scale: 1 },
-                {
-                    x: Math.cos(angle) * dist,
-                    y: Math.sin(angle) * dist,
-                    opacity: 0,
-                    scale: 0,
-                    duration: 0.85,
-                    ease: "power3.out",
-                    onComplete: () => s.remove()
-                }
-            );
-        }
-
-    });
-
-});
-
-/* === JAVASCRIPT DIZIONARIO - VERSIONE DEFINITIVA =================================================== */
-      document.addEventListener("DOMContentLoaded", () => {
-    console.log("📘 Dizionario filosofico - Inizializzazione");
-
-    // Riferimenti agli elementi
-    const openBtn = document.getElementById("openDict");
-    const closeBtn = document.getElementById("dict-close");
-    const modal = document.getElementById("dict-modal");
-    const overlay = document.getElementById("dict-overlay");
-    const input = document.getElementById("dict-q");
-    const btnSearch = document.getElementById("dict-search");
-    const btnOpenAll = document.getElementById("open-all");
-    const suggestions = document.getElementById("dict-suggestions");
-
-    // Stato del modale
-    let isModalOpen = false;
-
-    // Verifica che tutti gli elementi essenziali esistano
-    if (!modal || !overlay || !closeBtn) {
-        console.error("❌ Elementi modale non trovati!");
-        return;
-    }
-
-    /* ============================
-       INIZIALIZZAZIONE GSAP
-    ============================ */
-    gsap.set(modal, { 
-        x: "100%",
-        position: "fixed",
-        top: 0,
-        right: 0
-    });
-    
-    gsap.set(overlay, { 
-        autoAlpha: 0,
-        display: "none"
-    });
-
-    /* ============================
-       APERTURA MODALE
-    ============================ */
-    function openDictionary() {
-        if (isModalOpen) return;
-      
-        // Mostra overlay
-        gsap.set(overlay, { display: "block" });
-        
-        // Animazioni
-        gsap.to(overlay, {
-            duration: 0.3,
-            autoAlpha: 1,
-            ease: "power2.out"
-        });
-
-        gsap.to(modal, {
-            duration: 0.4,
-            x: "0%",
-            ease: "power3.out",
-            onComplete: () => {
-                // Focus sull'input
-                if (input) {
-                    input.focus();
-                    input.select();
-                }
-            }
-        });
-    }
-
-    /* ============================
-       CHIUSURA MODALE
-    ============================ */
-    function closeDictionary() {
-        if (!isModalOpen) return;
-     
-        gsap.to(modal, {
-            duration: 0.35,
-            x: "100%",
-            ease: "power2.in"
-        });
-
-        gsap.to(overlay, {
-            duration: 0.25,
-            autoAlpha: 0,
-            ease: "power2.out",
-            onComplete: () => {
-                gsap.set(overlay, { display: "none" });
-            }
-        });
-    }
-
-    /* ============================
-       GESTIONE EVENTI
-    ============================ */
-    
-    // Apertura con il bottone dizionario
-    if (openBtn) {
-        openBtn.addEventListener("click", (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            openDictionary();
-        });
-    }
-
-    // Chiusura con il bottone X
-    if (closeBtn) {
-        closeBtn.addEventListener("click", (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            closeDictionary();
-        });
-    }
-
-    // Chiusura cliccando sull'overlay
-    if (overlay) {
-        overlay.addEventListener("click", (e) => {
-            if (e.target === overlay) {
-                closeDictionary();
-            }
-        });
-    }
-
-    // Chiusura con ESC
-    document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && isModalOpen) {
-            closeDictionary();
-        }
-    });
-
-    /* ============================
-       FUNZIONALITÀ RICERCA
-    ============================ */
-    
-    function performSearch() {
-        const q = input.value.trim();
-        if (!q) {
-            showMessage("Inserisci un termine da cercare", "error");
-            return;
-        }
-
-        const checkedSources = document.querySelectorAll(".sources input:checked");
-        if (checkedSources.length === 0) {
-            showMessage("Seleziona almeno una fonte", "error");
-            return;
-        }
-
-        const encodedTerm = encodeURIComponent(q);
-        
-        checkedSources.forEach((source, index) => {
-            const url = source.dataset.url.replace("{q}", encodedTerm);
-            setTimeout(() => {
-                window.open(url, "_blank");
-            }, index * 100); // Delay per evitare blocchi del browser
-        });
-
-        showMessage(`Apertura ${checkedSources.length} fonte(i) per "${q}"`, "success");
-    }
-
-    function openAllSources() {
-        const q = input.value.trim();
-        if (!q) {
-            showMessage("Inserisci un termine da cercare", "error");
-            return;
-        }
-
-        const allSources = document.querySelectorAll(".sources input");
-        const encodedTerm = encodeURIComponent(q);
-        
-        allSources.forEach((source, index) => {
-            const url = source.dataset.url.replace("{q}", encodedTerm);
-            setTimeout(() => {
-                window.open(url, "_blank");
-            }, index * 100);
-        });
-
-        showMessage(`Apertura tutte le ${allSources.length} fonti per "${q}"`, "success");
-    }
-
-   
-    /* ============================
-       UTILITIES
-    ============================ */
-    
-    function showMessage(text, type = "info") {
-        // Crea un messaggio temporaneo
-        const message = document.createElement("div");
-        message.textContent = text;
-        message.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 12px 20px;
-            background: ${type === "error" ? "#ff4444" : type === "success" ? "#44ff44" : "#4444ff"};
-            color: white;
-            border-radius: 8px;
-            z-index: 100000;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 14px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        `;
-        
-        document.body.appendChild(message);
-        
-        setTimeout(() => {
-            if (message.parentNode) {
-                message.parentNode.removeChild(message);
-            }
-        }, 3000);
-    }
-
-    /* ============================
-       EVENT LISTENER RICERCA
-    ============================ */
-    
-    if (btnSearch) {
-        btnSearch.addEventListener("click", (e) => {
-            e.preventDefault();
-            performSearch();
-        });
-    }
-
-    if (btnOpenAll) {
-        btnOpenAll.addEventListener("click", (e) => {
-            e.preventDefault();
-            openAllSources();
-        });
-    }
-
-    // Ricerca con Enter
-    if (input) {
-        input.addEventListener("keypress", (e) => {
-            if (e.key === "Enter") {
-                e.preventDefault();
-                performSearch();
-            }
-        });
-    }
-
-    // Debug
-    console.log("✅ Dizionario inizializzato correttamente");
-    
-    // Esporta per debug
-    window.dictionary = {
-        open: openDictionary,
-        close: closeDictionary,
-        search: performSearch,
-        openAll: openAllSources
-    };
-
-});
-/* ===== 7 DICEMBRE AGGIUNTA ===== */
-// ============ OVERLAY FILOSOFI CON GSAP ============
-
-const overlayBtn = document.getElementById('paradigma-btn');
-const overlay = document.getElementById('filosofi-overlay');
-const overlayContent = overlay ? overlay.querySelector('.filosofi-content') || overlay : null;
-let isOverlayVisible = false;
-let hideTimeout;
-
-// Configurazione animazioni GSAP
-const ANIMATION_CONFIG = {
-    duration: 0.3,
-    ease: "power2.out",
-    stagger: 0.05, // Per animazioni a scaglione dei contenuti
-    yOffset: -15,
-    hideDelay: 200,
-    showDelay: 50
-};
-
-// Inizializza GSAP e stato overlay
-function initGSAPOverlay() {
-    if (!overlay) return;
-    
-    // Nascondi completamente l'overlay all'inizio
-    gsap.set(overlay, {
-        opacity: 0,
-        y: ANIMATION_CONFIG.yOffset,
-        scale: 0.95,
-        display: 'none', // Usiamo display none inizialmente con GSAP
-        pointerEvents: 'none'
-    });
-    
-    // Se c'è contenuto specifico, prepara per animazioni a scaglione
-    if (overlayContent && overlayContent !== overlay) {
-        const items = overlayContent.querySelectorAll('.filosofo-item, h3, div');
-        gsap.set(items, {
-            opacity: 0,
-            y: 10
-        });
-    }
+.fab-icona {
+  font-size: 1.3em;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2));
 }
 
-// Mostra overlay con GSAP
-function showOverlay() {
-    clearTimeout(hideTimeout);
-    
-    if (!overlay || isOverlayVisible) return;
-    
-    isOverlayVisible = true;
-    
-    // Mostra l'overlay prima di animare
-    gsap.set(overlay, {
-        display: 'block',
-        pointerEvents: 'auto'
-    });
-    
-    // Crea una timeline per animazioni sequenziali
-    const tl = gsap.timeline({
-        defaults: {
-            ease: ANIMATION_CONFIG.ease
-        }
-    });
-    
-    // Animazione dell'overlay principale
-    tl.to(overlay, {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: ANIMATION_CONFIG.duration
-    });
-    
-    // Animazione a scaglione del contenuto (se esistono elementi)
-    if (overlayContent && overlayContent !== overlay) {
-        const items = overlayContent.querySelectorAll('.filosofo-item, h3, div[style*="grid"] > *');
-        
-        if (items.length > 0) {
-            tl.to(items, {
-                opacity: 1,
-                y: 0,
-                stagger: ANIMATION_CONFIG.stagger,
-                duration: ANIMATION_CONFIG.duration * 0.8
-            }, "-=0.1"); // Inizia leggermente prima della fine dell'animazione principale
-        }
-    }
-    
-    // Focus per accessibilità
-    setTimeout(() => {
-        const firstFocusable = overlay.querySelector('button, a, [tabindex="0"]');
-        if (firstFocusable) {
-            firstFocusable.focus();
-        }
-    }, ANIMATION_CONFIG.duration * 1000);
-    
-    return tl;
+.fab-label {
+  font-size: 0.95em;
+  white-space: nowrap;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
-// Nascondi overlay con GSAP
-function hideOverlay() {
-    if (!overlay || !isOverlayVisible) return;
-    
-    isOverlayVisible = false;
-    
-    // Crea timeline per animazione di uscita
-    const tl = gsap.timeline({
-        onComplete: () => {
-            // Nascondi completamente dopo l'animazione
-            gsap.set(overlay, {
-                display: 'none',
-                pointerEvents: 'none'
-            });
-            
-            // Ripristina focus al bottone
-            if (overlayBtn) {
-                overlayBtn.focus();
-            }
-        }
-    });
-    
-    // Prima anima via il contenuto (se esiste)
-    if (overlayContent && overlayContent !== overlay) {
-        const items = overlayContent.querySelectorAll('.filosofo-item, h3, div[style*="grid"] > *');
-        
-        if (items.length > 0) {
-            tl.to(items, {
-                opacity: 0,
-                y: 10,
-                stagger: ANIMATION_CONFIG.stagger * 0.5,
-                duration: ANIMATION_CONFIG.duration * 0.6
-            });
-        }
-    }
-    
-    // Poi anima l'overlay stesso
-    tl.to(overlay, {
-        opacity: 0,
-        y: ANIMATION_CONFIG.yOffset,
-        scale: 0.95,
-        duration: ANIMATION_CONFIG.duration
-    }, "-=0.1");
-    
-    return tl;
+/* ============================================================
+   OVERLAY DIZIONARIO
+   ============================================================ */
+#dict-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(3px);
+  z-index: 9998;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
 }
 
-// Gestione eventi con debouncing
-let hoverTimer;
-const HOVER_DELAY = 100;
-
-function handleMouseEnter() {
-    clearTimeout(hoverTimer);
-    hoverTimer = setTimeout(() => {
-        showOverlay();
-    }, HOVER_DELAY);
+#dict-overlay.active {
+  opacity: 1;
+  visibility: visible;
 }
 
-function handleMouseLeave() {
-    clearTimeout(hoverTimer);
-    hideTimeout = setTimeout(() => {
-        if (isOverlayVisible && !isMouseInOverlay()) {
-            hideOverlay();
-        }
-    }, ANIMATION_CONFIG.hideDelay);
+/* ============================================================
+   MODALE DIZIONARIO LATERALE
+   ============================================================ */
+#dict-modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: var(--modal-width);
+  height: 100vh;
+  background: var(--dark-bg);
+  backdrop-filter: blur(20px);
+  border-left: 1px solid rgba(255,255,255,0.1);
+  transform: translateX(100%);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  z-index: 9999;
+  box-shadow: -5px 0 30px rgba(0,0,0,0.3);
+  border-top: 3px solid transparent;
+  border-image: linear-gradient(90deg, transparent, var(--border-gold), transparent) 1;
 }
 
-// Controlla se il mouse è nell'overlay
-function isMouseInOverlay() {
-    return overlay && overlay.matches(':hover');
+#dict-modal::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    var(--border-gold), 
+    transparent);
+  z-index: 1;
 }
 
-// Setup event listeners
-function setupGSAPEvents() {
-    if (!overlayBtn || !overlay) {
-        console.warn('Elementi overlay non trovati');
-        return;
-    }
-    
-    // Inizializza GSAP
-    initGSAPOverlay();
-    
-    // Eventi mouse
-    overlayBtn.addEventListener('mouseenter', handleMouseEnter);
-    overlayBtn.addEventListener('mouseleave', handleMouseLeave);
-    
-    // Eventi touch
-    overlayBtn.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        handleMouseEnter();
-    });
-    
-    // Mantieni overlay visibile quando ci si passa sopra
-    overlay.addEventListener('mouseenter', () => {
-        clearTimeout(hideTimeout);
-    });
-    
-    overlay.addEventListener('mouseleave', (e) => {
-        // Controlla se stiamo uscendo verso il bottone
-        if (e.relatedTarget !== overlayBtn) {
-            handleMouseLeave();
-        }
-    });
-    
-    // Accessibilità tastiera
-    overlayBtn.addEventListener('focus', handleMouseEnter);
-    overlayBtn.addEventListener('blur', handleMouseLeave);
-    
-    overlay.addEventListener('focusin', () => {
-        clearTimeout(hideTimeout);
-    });
-    
-    overlay.addEventListener('focusout', (e) => {
-        if (!overlay.contains(e.relatedTarget) && e.relatedTarget !== overlayBtn) {
-            handleMouseLeave();
-        }
-    });
-    
-    // Chiusura con ESC
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && isOverlayVisible) {
-            hideOverlay();
-        }
-    });
-    
-    // Click esterno per chiudere
-    document.addEventListener('click', (e) => {
-        if (!isOverlayVisible) return;
-        
-        if (!overlay.contains(e.target) && !overlayBtn.contains(e.target)) {
-            hideOverlay();
-        }
-    });
+#dict-modal::after {
+  content: '';
+  position: absolute;
+  top: 1px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(255,215,0,0.3), 
+    transparent);
+  z-index: 1;
 }
 
-// ============ ANIMAZIONE PERSONALIZZATA PER 4 FILOSOFI ============
-
-// Se vuoi un'animazione speciale per la griglia dei 4 filosofi
-function animateFilosofiGrid() {
-    if (!overlay) return;
-    
-    const gridContainer = overlay.querySelector('div[style*="grid-template-columns"]');
-    if (!gridContainer) return;
-    
-    const filosofiItems = gridContainer.children;
-    
-    // Animazione di ingresso speciale
-    gsap.fromTo(filosofiItems,
-        {
-            opacity: 0,
-            y: 30,
-            scale: 0.8,
-            rotationY: -15
-        },
-        {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            rotationY: 0,
-            stagger: {
-                each: 0.08,
-                from: "center",
-                grid: [1, 4], // 1 riga, 4 colonne
-                ease: "back.out(1.2)"
-            },
-            duration: 0.5,
-            ease: "power3.out"
-        }
-    );
+#dict-modal.open {
+  transform: translateX(0);
+  animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-// Versione alternativa con animazione a "card flip"
-function animateFilosofiCards() {
-    if (!overlay) return;
-    
-    const cards = overlay.querySelectorAll('div[style*="text-align: center"]');
-    
-    cards.forEach((card, index) => {
-        gsap.fromTo(card,
-            {
-                opacity: 0,
-                rotationY: 90,
-                scale: 0.5
-            },
-            {
-                opacity: 1,
-                rotationY: 0,
-                scale: 1,
-                delay: index * 0.1,
-                duration: 0.4,
-                ease: "back.out(1.3)",
-                onComplete: function() {
-                    // Aggiungi hover effect dopo l'animazione
-                    gsap.set(card, {
-                        boxShadow: "0 4px 8px rgba(0,0,0,0.2)"
-                    });
-                }
-            }
-        );
-    });
+/* ============================================================
+   HEADER MODALE
+   ============================================================ */
+.dict-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.4rem 1.8rem;
+  border-bottom: 1px solid rgba(255,215,0,0.2);
+  background: linear-gradient(
+    135deg,
+    rgba(10,10,20,0.95) 0%,
+    rgba(20,20,40,0.95) 100%
+  );
+  flex-shrink: 0;
 }
 
-// Mostra overlay con animazione speciale
-function showOverlayWithSpecialAnimation() {
-    clearTimeout(hideTimeout);
-    
-    if (!overlay || isOverlayVisible) return;
-    
-    isOverlayVisible = true;
-    
-    // Mostra overlay
-    gsap.set(overlay, {
-        display: 'block',
-        pointerEvents: 'auto'
-    });
-    
-    // Timeline per animazioni coordinate
-    const masterTl = gsap.timeline();
-    
-    // 1. Animazione overlay principale
-    masterTl.to(overlay, {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 0.4,
-        ease: "elastic.out(1, 0.5)"
-    });
-    
-    // 2. Animazione titolo
-    const title = overlay.querySelector('h3');
-    if (title) {
-        masterTl.fromTo(title,
-            {
-                opacity: 0,
-                y: -20,
-                scale: 1.2
-            },
-            {
-                opacity: 1,
-                y: 0,
-                scale: 1,
-                duration: 0.3,
-                ease: "back.out(1.5)"
-            },
-            "-=0.2"
-        );
-    }
-    
-    // 3. Animazione griglia filosofi (scegli una delle due)
-    masterTl.add(animateFilosofiGrid, "-=0.1");
-    // Oppure: masterTl.add(animateFilosofiCards, "-=0.1");
-    
-    return masterTl;
+.dict-header h2 {
+  color: var(--primary-gold);
+  font-family: 'Cinzel Decorative', cursive;
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-shadow: 
+    0 2px 4px rgba(0,0,0,0.3),
+    0 0 20px rgba(255,216,106,0.2);
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-// ============ INIZIALIZZAZIONE ============
+.dict-header h2::before {
+  content: '📖';
+  font-size: 1.2rem;
+  opacity: 0.8;
+}
 
-// Inizializza quando il DOM è pronto
-document.addEventListener('DOMContentLoaded', function() {
-    // Carica GSAP (se non già caricato via CDN)
-    if (typeof gsap === 'undefined') {
-        console.error('GSAP non caricato. Caricalo via CDN prima di questo script.');
-        return;
-    }
-    
-    setupGSAPEvents();
-    
-    // Registra plugin ScrollTrigger se necessario (opzionale)
-    // gsap.registerPlugin(ScrollTrigger);
-});
+#dict-close {
+  background: rgba(255,215,0,0.9);
+  border: none;
+  color: #0a0a1a;
+  font-size: 1.6rem;
+  cursor: pointer;
+  padding: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  line-height: 1;
+  font-weight: bold;
+  box-shadow: 
+    inset 0 2px 4px rgba(255,255,255,0.3),
+    0 2px 8px rgba(0,0,0,0.2);
+}
 
-// ============ UTILITY FUNCTIONS ============
+#dict-close:hover {
+  background: var(--primary-gold);
+  transform: scale(1.15) rotate(90deg);
+  box-shadow: 
+    inset 0 2px 4px rgba(255,255,255,0.4),
+    0 4px 12px rgba(255,216,106,0.4);
+  color: #000;
+}
 
-// Forza mostra overlay (per debug o altri controlli)
-window.showFilosofiOverlay = function() {
-    return showOverlayWithSpecialAnimation();
-};
+/* ============================================================
+   CORPO MODALE
+   ============================================================ */
+.dict-modal-body {
+  padding: 1.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  flex: 1;
+  overflow-y: auto;
+  background-image: 
+    radial-gradient(circle at 10% 10%, rgba(255,215,0,0.02) 1px, transparent 1px),
+    radial-gradient(circle at 90% 90%, rgba(0,204,255,0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
 
-// Forza nascondi overlay
-window.hideFilosofiOverlay = function() {
-    return hideOverlay();
-};
+/* Scrollbar migliorata */
+.dict-modal-body::-webkit-scrollbar {
+  width: 8px;
+}
 
-// Toggle overlay
-window.toggleFilosofiOverlay = function() {
-    if (isOverlayVisible) {
-        return hideOverlay();
-    } else {
-        return showOverlayWithSpecialAnimation();
-    }
-};
+.dict-modal-body::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.03);
+  border-radius: 4px;
+  margin: 4px 0;
+}
 
-// Pausa/ripresa animazioni (per performance)
-window.pauseFilosofiAnimations = function() {
-    if (overlay) {
-        gsap.killTweensOf(overlay);
-        if (overlayContent) {
-            gsap.killTweensOf(overlayContent.querySelectorAll('*'));
-        }
-    }
-};
+.dict-modal-body::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    to bottom,
+    rgba(255,215,0,0.4),
+    rgba(255,215,0,0.6)
+  );
+  border-radius: 4px;
+  border: 1px solid rgba(255,215,0,0.2);
+}
 
+.dict-modal-body::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    to bottom,
+    rgba(255,215,0,0.6),
+    rgba(255,215,0,0.8)
+  );
+  box-shadow: 0 0 8px rgba(255,215,0,0.3);
+}
+
+/* ============================================================
+   INPUT RICERCA
+   ============================================================ */
+#dict-q {
+  width: 100%;
+  padding: 1rem 3rem 1rem 1.2rem;
+  border: 1px solid rgba(255,215,0,0.3);
+  border-radius: 12px;
+  background: linear-gradient(
+    135deg,
+    rgba(20,20,40,0.9) 0%,
+    rgba(25,25,45,0.9) 100%
+  );
+  color: var(--accent-red);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  font-family: 'Montserrat', sans-serif;
+  box-sizing: border-box;
+}
+
+#dict-q::placeholder {
+  color: rgba(233, 238, 245, 0.5);
+  font-style: italic;
+  transition: opacity 0.3s ease;
+}
+
+#dict-q:focus::placeholder {
+  opacity: 0.3;
+}
+
+#dict-q:focus {
+  outline: none;
+  border-color: rgba(255,215,0,0.8);
+  box-shadow: 
+    0 0 0 3px rgba(255,215,0,0.15),
+    inset 0 2px 8px rgba(0,0,0,0.2);
+  transform: translateY(-1px);
+}
+
+/* ============================================================
+   PULSANTI RICERCA (STILE UNIFICATO CON FAB)
+   ============================================================ */
+#dict-search,
+#open-all {
+  padding: 5px 20px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.3px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+#dict-search {
+  background: linear-gradient(135deg, var(--accent-blue) 0%, #00b8eb 100%);
+  color: #0a0a1a;
+  box-shadow: 
+    0 6px 15px rgba(0,204,255,0.3),
+    0 0 20px rgba(0,204,255,0.2);
+  border: 1px solid rgba(0,204,255,0.4);
+}
+
+#dict-search:hover {
+  background: linear-gradient(135deg, #00b8eb 0%, #00a0d4 100%);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 
+    0 10px 25px rgba(0,204,255,0.4),
+    0 0 30px rgba(0,204,255,0.3);
+}
+
+#open-all {
+  background: linear-gradient(135deg, 
+    rgba(255, 215, 0, 0.9) 0%, 
+    rgba(255, 216, 106, 0.8) 100%);
+  color: #0a0a1a;
+  box-shadow: 
+    0 6px 15px rgba(255, 215, 0, 0.3),
+    0 0 20px rgba(255, 216, 106, 0.2);
+  border: 1px solid rgba(255, 215, 0, 0.4);
+}
+
+#open-all:hover {
+  background: linear-gradient(135deg, 
+    rgba(255, 215, 0, 1) 0%, 
+    rgba(255, 216, 106, 0.9) 100%);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 
+    0 10px 25px rgba(255, 215, 0, 0.4),
+    0 0 30px rgba(255, 216, 106, 0.3);
+}
+
+/* ============================================================
+   SUGGERIMENTI
+   ============================================================ */
+.dict-suggestions {
+  margin: 10px 0;
+  max-height: 200px;
+  overflow-y: auto;
+  border-radius: 12px;
+  border: 1px solid rgba(255,215,0,0.2);
+  background: linear-gradient(
+    135deg,
+    rgba(20,20,40,0.9) 0%,
+    rgba(25,25,45,0.9) 100%
+  );
+}
+
+.suggestion-item {
+  padding: 12px 15px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  color: var(--text-light);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.suggestion-item:hover {
+  background: rgba(255,215,0,0.1);
+  color: var(--primary-gold);
+  padding-left: 20px;
+}
+
+.suggestion-item:last-child {
+  border-bottom: none;
+}
+
+/* ============================================================
+   FONTI (SOURCES)
+   ============================================================ */
+.sources {
+  margin: 20px 0;
+  padding: 15px;
+  background: linear-gradient(
+    135deg,
+    rgba(20,20,40,0.7) 0%,
+    rgba(25,25,45,0.7) 100%
+  );
+  border-radius: 12px;
+  border: 1px solid rgba(255,215,0,0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sources label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  color: var(--text-light);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.95rem;
+  padding: 10px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  background: rgba(255,255,255,0.05);
+}
+
+.sources label:hover {
+  background: rgba(255,215,0,0.1);
+  transform: translateX(5px);
+}
+
+.sources input[type="checkbox"] {
+  accent-color: var(--primary-gold);
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+/* ============================================================
+   ANIMAZIONI
+   ============================================================ */
+@keyframes modalSlideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes modalSlideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* ============================================================
+   RESPONSIVE DESIGN
+   ============================================================ */
+@media (max-width: 768px) {
+  #dict-modal {
+    width: 100vw;
+    border-left: none;
+  }
+  
+  .dict-header {
+    padding: 1.2rem 1.4rem;
+  }
+  
+  .dict-header h2 {
+    font-size: 1.2rem;
+  }
+  
+  .dict-modal-body {
+    padding: 1.4rem;
+    gap: 1.2rem;
+  }
+  
+  #dict-fab {
+    bottom: 120px;
+    right: 15px;
+    padding: 10px 16px;
+    font-size: 0.9rem;
+  }
+  
+  .fab-label {
+    display: none; /* Nascondi testo su mobile */
+  }
+}
+
+@media (max-width: 480px) {
+  #dict-fab {
+    bottom: 100px;
+    padding: 10px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    justify-content: center;
+  }
+  
+  .fab-icona {
+    font-size: 1.5em;
+    margin: 0;
+  }
+  
+  .dict-modal-body {
+    padding: 1rem;
+  }
+  
+  #dict-search,
+  #open-all {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
+
+/* ============================================================
+   STATI ATTIVI/FOCUS
+   ============================================================ */
+#dict-fab:focus-visible,
+#dict-close:focus-visible,
+#dict-search:focus-visible,
+#open-all:focus-visible,
+#dict-q:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 2px;
+}
+
+/* ============================================================
+   ACCESSIBILITÀ
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  #dict-fab,
+  #dict-modal,
+  #dict-close,
+  #dict-search,
+  #open-all,
+  .sources label,
+  .suggestion-item,
+  #dict-q,
+  #dict-overlay {
+    transition: none !important;
+    animation: none !important;
+  }
+  
+  #dict-fab:hover,
+  #dict-search:hover,
+  #open-all:hover,
+  .sources label:hover,
+  .suggestion-item:hover,
+  #dict-close:hover {
+    transform: none !important;
+  }
+}
 
 
