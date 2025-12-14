@@ -5490,7 +5490,7 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
     </button>
   </div>
 <div style="position: relative;">
-<button class="ctrl-btn" id="-btn" style="
+<button class="ctrl-btn" id="paradigma-btn" style="
             background: rgba(20, 20, 40, 0.78);
             border: 1px solid rgba(255, 215, 0, 0.25);
             border-radius: 0.5rem;
@@ -5521,7 +5521,7 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
             z-index: 9999;
             backdrop-filter: blur(10px);">
 <h3 style="color: #ffd86a; margin-bottom: 20px; font-family: 'Cinzel', serif; text-align: center;">
-                I Filosofi che hanno cambiato il 
+                I Filosofi che hanno cambiato il paradigma
                 <span style="font-size: 1.5em; color: #00ccff;">▾</span>
 </h3>
 <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
@@ -8632,100 +8632,33 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <script>
-      document.addEventListener('DOMContentLoaded', function() {
-          const paradigmaBtn = document.getElementById('paradigma-btn');
-          const filosofiOverlay = document.getElementById('filosofi-overlay');
-          const arrow = paradigmaBtn.querySelector('span');
-          
-          let closeTimeout;
-          
-          // Apri overlay al passaggio del mouse
-          paradigmaBtn.addEventListener('mouseenter', function() {
-              clearTimeout(closeTimeout); // Cancella eventuali timeout di chiusura
-              
-              // Mostra overlay con animazione
-              filosofiOverlay.style.display = 'block';
-              setTimeout(() => {
-                  filosofiOverlay.style.opacity = '1';
-              }, 10);
-              arrow.style.transform = 'rotate(180deg)';
-          });
-          
-          // Chiudi overlay quando il mouse esce dal bottone O dall'overlay
-          paradigmaBtn.addEventListener('mouseleave', function(e) {
-              // Controlla se il mouse sta andando verso l'overlay
-              const relatedTarget = e.relatedTarget;
-              if (!filosofiOverlay.contains(relatedTarget)) {
-                  startCloseTimeout();
-              }
-          });
-          
-          // Gestisci mouse enter sull'overlay
-          filosofiOverlay.addEventListener('mouseenter', function() {
-              clearTimeout(closeTimeout); // Mantieni aperto
-          });
-          
-          // Gestisci mouse leave dall'overlay
-          filosofiOverlay.addEventListener('mouseleave', function(e) {
-              const relatedTarget = e.relatedTarget;
-              if (!paradigmaBtn.contains(relatedTarget)) {
-                  startCloseTimeout();
-              }
-          });
-          
-          // Funzione per chiudere con delay
-          function startCloseTimeout() {
-              closeTimeout = setTimeout(() => {
-                  filosofiOverlay.style.opacity = '0';
-                  setTimeout(() => {
-                      filosofiOverlay.style.display = 'none';
-                  }, 300);
-                  arrow.style.transform = 'rotate(0deg)';
-              }, 300); // 300ms di delay prima della chiusura
-          }
-          
-          // Effetti hover sulle immagini
-          const filosofiImages = filosofiOverlay.querySelectorAll('img');
-          filosofiImages.forEach(img => {
-              img.addEventListener('mouseenter', function() {
-                  this.style.transform = 'scale(1.1)';
-              });
-              img.addEventListener('mouseleave', function() {
-                  this.style.transform = 'scale(1)';
-              });
-          });
-          
-          // Click sul bottone (opzionale - per compatibilità mobile)
-          paradigmaBtn.addEventListener('click', function(e) {
-              e.stopPropagation();
-              const isVisible = filosofiOverlay.style.display === 'block';
-              
-              if (isVisible) {
-                  filosofiOverlay.style.opacity = '0';
-                  setTimeout(() => {
-                      filosofiOverlay.style.display = 'none';
-                  }, 300);
-                  arrow.style.transform = 'rotate(0deg)';
-              } else {
-                  filosofiOverlay.style.display = 'block';
-                  setTimeout(() => {
-                      filosofiOverlay.style.opacity = '1';
-                  }, 10);
-                  arrow.style.transform = 'rotate(180deg)';
-              }
-          });
-          
-          // Chiudi overlay cliccando fuori (per mobile)
-          document.addEventListener('click', function(e) {
-              if (!paradigmaBtn.contains(e.target) && !filosofiOverlay.contains(e.target)) {
-                  filosofiOverlay.style.opacity = '0';
-                  setTimeout(() => {
-                      filosofiOverlay.style.display = 'none';
-                  }, 300);
-                  arrow.style.transform = 'rotate(0deg)';
-              }
-          });
-      });
+    const btn = document.getElementById('paradigma-btn');
+    const overlay = document.getElementById('filosofi-overlay');
+    
+    let hideTimeout;
+    
+    function showOverlay() {
+        clearTimeout(hideTimeout);
+        overlay.style.display = 'block';
+    }
+    
+    function hideOverlay() {
+        hideTimeout = setTimeout(() => {
+            overlay.style.display = 'none';
+        }, 300);
+    }
+    
+    // Apri overlay al passaggio mouse sul bottone
+    btn.addEventListener('mouseenter', showOverlay);
+    
+    // Chiudi overlay dopo uscita mouse dal bottone
+    btn.addEventListener('mouseleave', hideOverlay);
+    
+    // Se il mouse entra nell'overlay cancella la chiusura
+    overlay.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
+    
+    // Se il mouse esce dall'overlay, avvia chiusura
+    overlay.addEventListener('mouseleave', hideOverlay);
 </script>
 
 <script>
