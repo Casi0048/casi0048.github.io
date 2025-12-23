@@ -114,11 +114,13 @@
   --shadow-blue: 0 0 8px rgba(0,204,255,0.4);
   --modal-width: 380px;
 }
+</style>
+<style>
 
 /* =======================================
    ROOT GLOBAL VARIABLES
 ======================================= */
-{
+:root {
 
   /* ACCENT TOKENS (default: gold) */
   --accent:#ffd700;
@@ -7337,7 +7339,22 @@ if(dir === 'rtl') {
   <span class="cc-fab-label">Cookie</span>
 </button>
 
+<script>
+// ========== GESTIONE ERRORI GLOBALE ==========
+window.addEventListener('error', function(e) {
+  console.error('Errore globale:', e.error);
+});
 
+// Safe element selector con fallback
+function safeQuery(selector, context = document) {
+  try {
+    return context.querySelector(selector);
+  } catch (error) {
+    console.warn(`Elemento ${selector} non trovato:`, error);
+    return null;
+  }
+}
+</script>
 <script id="cookie-consent-js">
 (function(){
   const LS_KEY = 'cookieConsent.v1';
@@ -8239,9 +8256,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // 9. GESTIONE ERRORI GLOBALE
-window.addEventListener('error', (event) => {
-    console.error('❌ Errore globale catturato:', event.error);
-});
 
 // 10. GESTIONE STATO CONNESSIONE
 window.addEventListener('online', () => {
