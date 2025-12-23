@@ -1,21 +1,6 @@
 /* ============================================================
    🔘 DIZIONARIO FILOSOFICO - STILE UNIFICATO
    ============================================================ */
-
-/* Variabili CSS per consistenza */
-:root {
-  --primary-gold: #ffd86a;
-  --dark-bg: rgba(20,20,30,0.96);
-  --darker-bg: rgba(10,10,20,0.9);
-  --accent-blue: #00ccff;
-  --accent-red: #FF0000;
-  --border-gold: rgba(255,215,0,0.55);
-  --text-light: #e9eef5;
-  --shadow-gold: 0 0 14px rgba(255,215,0,0.55);
-  --shadow-blue: 0 0 8px rgba(0,204,255,0.4);
-  --modal-width: 380px;
-}
-
 /* ============================================================
    FAB DIZIONARIO – Pulsante Fisso
    ============================================================ */
@@ -567,6 +552,21 @@
   .suggestion-item:hover,
   #dict-close:hover {
     transform: none !important;
+  }
+}
+
+// ========== GESTIONE ERRORI GLOBALE ==========
+window.addEventListener('error', function(e) {
+  console.error('Errore globale:', e.error);
+});
+
+// Safe element selector con fallback
+function safeQuery(selector, context = document) {
+  try {
+    return context.querySelector(selector);
+  } catch (error) {
+    console.warn(`Elemento ${selector} non trovato:`, error);
+    return null;
   }
 }
 
