@@ -10480,5 +10480,25 @@ document.getElementById('menu-toggle')?.addEventListener('click', function() {
 window.addEventListener('load', initMobileLayout);
 window.addEventListener('resize', initMobileLayout);
 </script>
+  <script>
+  const btn = document.querySelector('.mobile-menu-btn');
+  const menu = document.querySelector('.mobile-menu');
+
+  btn.addEventListener('click', () => {
+    const open = btn.classList.toggle('open');
+    menu.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', open);
+    menu.setAttribute('aria-hidden', !open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+
+  document.querySelectorAll('.sub-toggle').forEach(t => {
+    t.addEventListener('click', () => {
+      const sub = t.nextElementSibling;
+      sub.style.display = sub.style.display === 'block' ? 'none' : 'block';
+    });
+  });
+</script>
+
 </body>
 </html>
