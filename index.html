@@ -10438,54 +10438,6 @@ document.addEventListener("DOMContentLoaded", () => {
   </script>
 
 <script>
-// Controlla se siamo su mobile e attiva il menu mobile
-function initMobileLayout() {
-  const isMobile = window.innerWidth <= 768;
-  const mobileHeader = document.getElementById('mobile-header');
-  const originalHeader = document.body.children[0]; // Primo div del sito
-  
-  if (isMobile) {
-    // Attiva header mobile
-    if (mobileHeader) mobileHeader.style.display = 'block';
-    
-    // Nascondi header originale e menu
-    if (originalHeader) {
-      // Nascondi logo originale
-      const originalLogo = originalHeader.querySelector('img');
-      if (originalLogo) originalLogo.style.display = 'none';
-      
-      // Nascondi menu originale (secondo div)
-      if (originalHeader.children[1]) {
-        originalHeader.children[1].style.display = 'none';
-      }
-    }
-    
-    // Mostra contenuti ma con layout mobile
-    document.body.style.fontSize = '18px';
-  } else {
-    // Disattiva mobile
-    if (mobileHeader) mobileHeader.style.display = 'none';
-    if (originalHeader) {
-      const originalLogo = originalHeader.querySelector('img');
-      if (originalLogo) originalLogo.style.display = 'block';
-      if (originalHeader.children[1]) {
-        originalHeader.children[1].style.display = 'block';
-      }
-    }
-  }
-}
-
-// Toggle menu mobile
-document.getElementById('menu-toggle')?.addEventListener('click', function() {
-  const mobileNav = document.getElementById('mobile-nav');
-  mobileNav.style.display = mobileNav.style.display === 'block' ? 'none' : 'block';
-});
-
-// Inizializza e ascolta resize
-window.addEventListener('load', initMobileLayout);
-window.addEventListener('resize', initMobileLayout);
-</script>
-<script>
 document.addEventListener('DOMContentLoaded', () => {
 
   const btn  = document.querySelector('.mobile-menu-btn');
@@ -10493,6 +10445,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (!btn || !menu) return;
 
+  /* Apri / chiudi menu */
   btn.addEventListener('click', () => {
     const open = btn.classList.toggle('open');
 
@@ -10503,7 +10456,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.style.overflow = open ? 'hidden' : '';
   });
 
-  document.querySelectorAll('.sub-toggle').forEach(toggle => {
+  /* Apri / chiudi sottomenu */
+  menu.querySelectorAll('.sub-toggle').forEach(toggle => {
     toggle.addEventListener('click', () => {
       const sub = toggle.nextElementSibling;
       if (!sub) return;
@@ -10513,49 +10467,48 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-});
-menu.querySelectorAll('a').forEach(link => {
-  link.addEventListener('click', () => {
-    btn.classList.remove('open');
-    menu.classList.remove('open');
-    document.body.style.overflow = '';
+  /* Chiudi menu cliccando un link */
+  menu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      btn.classList.remove('open');
+      menu.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+      menu.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    });
   });
-});
-// Chiudi menu al click su un link
-menu.querySelectorAll('a').forEach(link => {
-  link.addEventListener('click', () => {
-    btn.classList.remove('open');
-    menu.classList.remove('open');
-    btn.setAttribute('aria-expanded', 'false');
-    menu.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
+
+  /* Chiudi cliccando fuori */
+  menu.addEventListener('click', (e) => {
+    if (e.target === menu) {
+      btn.classList.remove('open');
+      menu.classList.remove('open');
+      document.body.style.overflow = '';
+    }
   });
-});
-menu.addEventListener('click', (e) => {
-  if (e.target === menu) {
-    btn.classList.remove('open');
-    menu.classList.remove('open');
-    document.body.style.overflow = '';
-  }
-});
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && menu.classList.contains('open')) {
-    btn.classList.remove('open');
-    menu.classList.remove('open');
-    document.body.style.overflow = '';
-  }
-});
 
-const currentPath = location.pathname.replace(/\/$/, '');
+  /* Chiudi con ESC */
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && menu.classList.contains('open')) {
+      btn.classList.remove('open');
+      menu.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  });
 
-menu.querySelectorAll('a').forEach(link => {
-  const linkPath = link.getAttribute('href').replace(/\/$/, '');
-  if (linkPath && currentPath.endsWith(linkPath)) {
-    link.classList.add('active');
-  }
+  /* Evidenzia pagina attiva */
+  const currentPath = location.pathname.replace(/\/$/, '');
+
+  menu.querySelectorAll('a').forEach(link => {
+    const linkPath = link.getAttribute('href')?.replace(/\/$/, '');
+    if (linkPath && currentPath.endsWith(linkPath)) {
+      link.classList.add('active');
+    }
+  });
+
 });
-
 </script>
+
 
 
 </body>
