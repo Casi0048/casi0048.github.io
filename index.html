@@ -10828,7 +10828,26 @@ document.addEventListener('DOMContentLoaded', () => {
   if (window.matchMedia('(max-width: 768px)').matches) {
   document.body.classList.add('is-mobile');
 }
-
+/* ===== JS AGGIUNTO ===== */
+  // Rileva mobile e disabilita animazioni complesse
+if (window.innerWidth <= 768) {
+  // Disabilita GSAP se presente
+  if (typeof gsap !== 'undefined') {
+    gsap.globalTimeline.pause();
+  }
+  
+  // Disabilita scroll animations
+  window.addEventListener('scroll', function() {
+    // No-op per evitare calcoli pesanti
+  }, { passive: true });
+  
+  // Semplifica Russell box
+  const russellBox = document.getElementById('russell-box');
+  if (russellBox) {
+    russellBox.style.transition = 'none';
+    russellBox.style.transform = 'none';
+  }
+}
 </script>
 
 </body>
