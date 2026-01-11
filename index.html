@@ -5507,7 +5507,293 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
     scroll-behavior: auto !important;
   }
 }
+/* =====================================================
+   📱 MOBILE - RIDUZIONE ANIMAZIONI (CRITICO)
+   ===================================================== */
+@media (max-width: 768px) {
+  
+  /* 1. DISABILITA TUTTE LE ANIMAZIONI PESANTI */
+  .stars-container,
+  .shooting-star,
+  .cosmic-particle,
+  .comet,
+  .floating-cta,
+  .floating-quotes,
+  #quote-runner,
+  .textShimmer,
+  .shakeSoft,
+  #lightning,
+  #bolt,
+  .russell-shock,
+  .russell-shock2,
+  .russell-bolt,
+  .russell-branch,
+  .russell-ripple,
+  .russell-ring,
+  .russell-spark,
+  .russell-fog {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+  
+  /* 2. RIDUCI/RIMUOVI ANIMAZIONI TIMELINE */
+  .timeline-container {
+    perspective: none !important;
+    transform-style: flat !important;
+  }
+  
+  .timeline::before,
+  .timeline::after {
+    animation: none !important;
+  }
+  
+  .timeline-item {
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+    transition: none !important;
+  }
+  
+  .timeline-item.left,
+  .timeline-item.right {
+    transform: none !important;
+    filter: none !important;
+  }
+  
+  .timeline-item.visible {
+    animation: none !important;
+  }
+  
+  .tl-dot {
+    animation: none !important;
+  }
+  
+  .tl-connector {
+    animation: none !important;
+    opacity: 0.5 !important;
+  }
+  
+  .timeline-content {
+    transform: none !important;
+    transition: none !important;
+  }
+  
+  .timeline-content:hover {
+    transform: none !important;
+  }
+  
+  /* 3. ANIMAZIONI TITOLO WELCOME */
+  .welcome-title {
+    animation: none !important;
+    background-position: 0% 50% !important;
+  }
+  
+  .welcome-title-themable {
+    animation: none !important;
+    background-position: 0% 50% !important;
+  }
+  
+  .accordion-subtitle {
+    animation: none !important;
+    transform: none !important;
+    letter-spacing: normal !important;
+  }
+  
+  /* 4. TYPING EFFECT - SEMPLIFICA */
+  .typing-effect {
+    white-space: normal !important;
+    animation: none !important;
+  }
+  
+  .cursor {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+  
+  /* 5. DISABLE TRANSITIONS/TRANSFORMS */
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    transition-delay: 0s !important;
+    animation-delay: 0s !important;
+  }
+  
+  /* 6. EFFETTI ESPLOSIONE - DISABILITA */
+  .exploding-text {
+    pointer-events: none !important;
+  }
+  
+  .exploding-text .char,
+  .exploding-text.boom-active .char,
+  .exploding-text.boom-recomposing .char {
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+  
+  .explosion-shockwave,
+  .explosion-particles,
+  .fx-layer,
+  .fx-flash,
+  .fx-shock,
+  .fx-smoke,
+  .fx-embers {
+    display: none !important;
+  }
+  
+  /* 7. SLIDER VERTICALE - STOP ANIMAZIONI */
+  .slider-vertical .slider-inner {
+    animation: none !important;
+  }
+  
+  .slider-vertical .slide-vertical {
+    animation: none !important;
+  }
+  
+  /* 8. FLOATING ELEMENTS - FERMA */
+  .back-to-top.floating {
+    animation: none !important;
+  }
+  
+  .cc-fab {
+    animation: none !important;
+  }
+  
+  /* 9. ALBERO FILOSOFICO - SEMPLIFICA */
+  .philosophy-tree .leaf {
+    animation: none !important;
+  }
+  
+  .heraclitus-clock .river-flow,
+  .heraclitus-clock .clock-hand.hours,
+  .heraclitus-clock .clock-hand.minutes {
+    animation: none !important;
+  }
+  
+  /* 10. PARTICOLARE: ANIMAZIONI CON FILTER/BLUR */
+  * {
+    filter: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  
+  /* 11. PREVINE LAG DA WILL-CHANGE */
+  * {
+    will-change: auto !important;
+  }
+  
+}
 
+/* =====================================================
+   📱 MOBILE - ULTERIORE OTTIMIZZAZIONE PER PERFORMANCE
+   ===================================================== */
+@media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+  /* Per utenti che hanno esplicitamente richiesto riduzione movimento */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  /* Ferma completamente le transizioni */
+  .typing-wrap,
+  .typing-effect {
+    animation: none !important;
+  }
+}
+
+/* =====================================================
+   📱 TOUCH OTTIMIZZAZIONE (IMPORTANTE!)
+   ===================================================== */
+@media (max-width: 768px) {
+  /* Previene ritardo click su iOS */
+  button, 
+  a, 
+  input, 
+  select, 
+  .ctrl-btn,
+  .menu-btn,
+  .color-dot {
+    touch-action: manipulation;
+  }
+  
+  /* Evita highlight blu su tap */
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* Migliora scrolling */
+  html {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Previene zoom su input in iOS */
+  input, select, textarea {
+    font-size: 16px;
+  }
+}
+
+/* =====================================================
+   📱 DISPOSITIVI LENTI - DISABILITA COMPLETAMENTE
+   ===================================================== */
+@media (max-width: 768px) and (max-resolution: 1.5dppx) {
+  /* Per dispositivi a bassa risoluzione/performance */
+  .timeline-item::before,
+  .timeline-item::after,
+  .tl-dot,
+  .tl-connector {
+    display: none !important;
+  }
+  
+  .timeline-content {
+    border: 1px solid rgba(255,215,0,0.2) !important;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1) !important;
+  }
+}
+    /* ===== Timeline - Versione Mobile Semplificata ===== */
+    @media (max-width: 768px) {
+  .timeline {
+    padding: 1rem 0;
+  }
+  
+  .timeline::before {
+    left: 20px;
+    width: 2px;
+    box-shadow: none;
+  }
+  
+  .timeline-item {
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 50px;
+    padding-right: 15px;
+  }
+  
+  .timeline-content {
+    padding: 1rem;
+    backdrop-filter: none;
+  }
+}
+    @media (max-width: 768px) {
+  .welcome-section {
+    margin-bottom: 3rem;
+    min-height: 200px;
+  }
+  
+  .welcome-decoration.left,
+  .welcome-decoration.right {
+    display: none; /* Nascondi elementi decorativi */
+  }
+}
 </style>
 </head>
 <body>
