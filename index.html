@@ -1554,10 +1554,6 @@ li.dropdown:focus-within .mega-menu a {
   overflow: visible !important;
 }
 
-.timeline-container {
-  overflow: visible !important;
-}
-
 .timeline-title {
   font-family: 'Cinzel', serif;
   color: var(--accent-gold, #ffd86a);
@@ -1792,8 +1788,8 @@ li.dropdown:focus-within .mega-menu a {
   text-shadow: 0 0 10px rgba(255, 235, 154, 0.3);
 }
 
-.timeline-item::before,
-.tl-dot {
+/* === PUNTO TIMELINE (UNIFICATO) === */
+.timeline-item::before {
   content: '';
   position: absolute;
   top: 2rem;
@@ -1819,13 +1815,12 @@ li.dropdown:focus-within .mega-menu a {
 }
 
 .timeline > .timeline-item .tl-dot {
-  left: 50% !important;
-  top: 2rem !important;
-  transform: translate(-50%, -50%) !important;
+  /* Questo selettore è mantenuto per compatibilità con eventuali script
+     che potrebbero fare riferimento a .tl-dot, ma lo stile effettivo
+     è applicato da .timeline-item::before */
 }
 
-.timeline-item.visible::before,
-.timeline-item.visible .tl-dot {
+.timeline-item.visible::before {
   opacity: 1;
   transform: translate(-50%, -50%) scale(1);
   animation: dotPulse 2s ease-in-out infinite 1s;
@@ -1843,6 +1838,7 @@ li.dropdown:focus-within .mega-menu a {
   100% { transform: translate(-50%, -50%) scale(1); }
 }
 
+/* === CONNETTORI === */
 .timeline-item::after,
 .tl-connector {
   content: '';
@@ -1893,6 +1889,7 @@ li.dropdown:focus-within .mega-menu a {
   to { transform: scaleX(1); opacity: 1; }
 }
 
+/* === LARGHEZZA CARD === */
 .timeline .timeline-item .timeline-content {
   width: calc(100% + var(--card-widen));
 }
@@ -1905,6 +1902,7 @@ li.dropdown:focus-within .mega-menu a {
   margin-right: calc(-1 * var(--card-widen));
 }
 
+/* === PERFORMANCE === */
 .timeline .timeline-item.visible,
 .timeline .timeline-item.visible::before,
 .timeline .timeline-item.visible::after {
