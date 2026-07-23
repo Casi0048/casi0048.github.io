@@ -4,182 +4,362 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mappa Concettuale di Filosofia</title>
+    <meta name="description" content="Una mappa concettuale completa della filosofia: branche, correnti, filosofi e periodi storici.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* =======================================
+           VARIABILI GLOBALI
+           ======================================= */
+        :root {
+            --primary: #8B0000;
+            --primary-light: #a00000;
+            --gold: #FFD700;
+            --gold-light: #FFE44D;
+            --bg-dark: #1a2a6c;
+            --bg-mid: #b21f1f;
+            --bg-light: #fdbb2d;
+            --text-dark: #333;
+            --text-light: #f8f8f8;
+            --white: #ffffff;
+            --shadow: 0 8px 16px rgba(0,0,0,0.2);
+            --shadow-hover: 0 15px 30px rgba(0,0,0,0.3);
+            --radius: 12px;
+            --transition: 0.3s ease;
+        }
+
+        /* =======================================
+           RESET & BASE
+           ======================================= */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-            color: #333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--bg-dark), var(--bg-mid), var(--bg-light));
+            color: var(--text-dark);
             min-height: 100vh;
             padding: 20px;
         }
-        
+
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
-        
+
+        /* =======================================
+           HEADER
+           ======================================= */
         header {
             text-align: center;
-            margin-bottom: 30px;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 40px;
+            color: var(--white);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            padding: 20px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 15px;
         }
-        
+
         h1 {
-            font-size: 2.8rem;
+            font-size: clamp(2.2rem, 5vw, 3.2rem);
             margin-bottom: 10px;
         }
-        
+
         .subtitle {
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 2vw, 1.3rem);
             font-style: italic;
             max-width: 800px;
             margin: 0 auto;
+            opacity: 0.9;
         }
-        
+
+        /* =======================================
+           CENTRAL NODE
+           ======================================= */
         .philosophy-map {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
-        
+
         .central-node {
-            background: #8B0000;
-            color: white;
-            padding: 25px 40px;
+            background: var(--primary);
+            color: var(--white);
+            padding: 30px 45px;
             border-radius: 50%;
             text-align: center;
-            font-size: 1.8rem;
+            font-size: clamp(1.4rem, 2.5vw, 1.8rem);
             font-weight: bold;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--shadow), 0 0 30px rgba(139,0,0,0.4);
             margin-bottom: 50px;
             position: relative;
             z-index: 10;
-            border: 5px solid #FFD700;
-            max-width: 300px;
-        }
-        
-        .branches-container {
+            border: 5px solid var(--gold);
+            max-width: 320px;
+            width: 100%;
+            aspect-ratio: 1/1;
             display: flex;
-            flex-wrap: wrap;
+            flex-direction: column;
             justify-content: center;
+            align-items: center;
+            transition: transform var(--transition), box-shadow var(--transition);
+        }
+
+        .central-node:hover {
+            transform: scale(1.03);
+            box-shadow: var(--shadow-hover), 0 0 50px rgba(255,215,0,0.3);
+        }
+
+        .central-node i {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--gold);
+        }
+
+        /* =======================================
+           BRANCHE
+           ======================================= */
+        .branches-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 30px;
             width: 100%;
+            margin-bottom: 50px;
         }
-        
+
         .branch {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            width: 350px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s, box-shadow 0.3s;
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: transform var(--transition), box-shadow var(--transition);
             position: relative;
+            border-top: 5px solid var(--gold);
         }
-        
+
         .branch:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
         }
-        
+
+        .branch-icon {
+            font-size: 2rem;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
         .branch-title {
             font-size: 1.5rem;
-            color: #8B0000;
-            margin-bottom: 15px;
+            color: var(--primary);
+            margin-bottom: 12px;
             padding-bottom: 10px;
-            border-bottom: 2px solid #FFD700;
+            border-bottom: 2px solid var(--gold);
             text-align: center;
         }
-        
+
+        .branch-description {
+            color: #666;
+            font-style: italic;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
         .branch-content {
             line-height: 1.6;
         }
-        
+
         .sub-branch {
-            margin-top: 15px;
-            padding-left: 15px;
-            border-left: 3px solid #8B0000;
+            margin-top: 12px;
+            padding: 12px 15px;
+            background: #f8f8f8;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+            transition: background var(--transition);
         }
-        
+
+        .sub-branch:hover {
+            background: var(--gold-light);
+        }
+
         .sub-branch-title {
             font-weight: bold;
-            color: #8B0000;
-            margin-bottom: 5px;
+            color: var(--primary);
+            margin-bottom: 4px;
         }
-        
+
+        .sub-branch-title i {
+            margin-right: 8px;
+            font-size: 0.9rem;
+        }
+
+        .sub-branch p {
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+        /* =======================================
+           KEY PHILOSOPHERS (per ogni branca)
+           ======================================= */
+        .key-philosophers {
+            margin-top: 15px;
+            padding-top: 12px;
+            border-top: 1px dashed #ddd;
+        }
+
+        .key-philosophers-title {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .key-philosophers-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .tag {
+            background: var(--primary);
+            color: var(--white);
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: background var(--transition), transform var(--transition);
+        }
+
+        .tag:hover {
+            background: var(--gold);
+            color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        /* =======================================
+           TIMELINE (ampliata)
+           ======================================= */
         .timeline {
-            margin-top: 50px;
+            margin-top: 20px;
             width: 100%;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            background: rgba(255,255,255,0.95);
+            border-radius: var(--radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
         }
-        
+
         .timeline-title {
             text-align: center;
-            font-size: 1.8rem;
-            color: #8B0000;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            color: var(--primary);
             margin-bottom: 25px;
             padding-bottom: 10px;
-            border-bottom: 2px solid #FFD700;
+            border-bottom: 2px solid var(--gold);
         }
-        
+
         .timeline-container {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
         }
-        
+
         .era {
-            flex: 1;
-            min-width: 200px;
             background: #f8f8f8;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 18px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+            transition: transform var(--transition), box-shadow var(--transition);
+            border-bottom: 4px solid var(--gold);
         }
-        
+
+        .era:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
         .era-title {
-            font-size: 1.3rem;
-            color: #8B0000;
-            margin-bottom: 10px;
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 12px;
             text-align: center;
+            font-weight: bold;
         }
-        
+
+        .era-title i {
+            margin-right: 8px;
+        }
+
         .philosopher {
-            margin: 8px 0;
-            padding-left: 10px;
-            border-left: 2px solid #FFD700;
+            margin: 6px 0;
+            padding: 4px 0 4px 12px;
+            border-left: 2px solid var(--gold);
+            font-size: 0.95rem;
+            transition: padding var(--transition);
         }
-        
+
+        .philosopher:hover {
+            padding-left: 18px;
+            background: var(--gold-light);
+            border-radius: 0 4px 4px 0;
+        }
+
+        .philosopher .dates {
+            color: #888;
+            font-size: 0.8rem;
+        }
+
+        /* =======================================
+           FOOTER
+           ======================================= */
         footer {
             text-align: center;
             margin-top: 40px;
-            color: white;
+            color: var(--white);
             padding: 20px;
             font-style: italic;
+            opacity: 0.8;
         }
-        
+
+        /* =======================================
+           RESPONSIVE
+           ======================================= */
         @media (max-width: 768px) {
             .branches-container {
-                flex-direction: column;
-                align-items: center;
+                grid-template-columns: 1fr;
             }
-            
-            .branch {
-                width: 90%;
-            }
-            
+
             .timeline-container {
-                flex-direction: column;
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .central-node {
+                padding: 20px 30px;
+                max-width: 200px;
+                font-size: 1.2rem;
+            }
+
+            .central-node i {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .timeline-container {
+                grid-template-columns: 1fr;
+            }
+
+            .branch {
+                padding: 18px;
+            }
+
+            .central-node {
+                max-width: 160px;
+                padding: 15px 20px;
+                font-size: 1rem;
             }
         }
     </style>
@@ -190,162 +370,310 @@
             <h1>Mappa Concettuale di Filosofia</h1>
             <p class="subtitle">Una panoramica visiva delle principali branche, concetti e periodi storici del pensiero filosofico</p>
         </header>
-        
+
         <div class="philosophy-map">
+            <!-- Central Node -->
             <div class="central-node">
+                <i class="fas fa-brain"></i>
                 FILOSOFIA<br>
-                Amore per la Saggezza
+                <span style="font-size: 0.7em; font-weight: normal; opacity: 0.9;">Amore per la Saggezza</span>
             </div>
-            
+
+            <!-- Branches -->
             <div class="branches-container">
+
+                <!-- 1. Metafisica -->
                 <div class="branch">
+                    <div class="branch-icon"><i class="fas fa-atom"></i></div>
                     <h2 class="branch-title">Metafisica</h2>
+                    <p class="branch-description">Studio della natura ultima della realtà e dell'esistenza.</p>
                     <div class="branch-content">
-                        <p>Studio della natura della realtà e dell'esistenza.</p>
                         <div class="sub-branch">
-                            <div class="sub-branch-title">Ontologia</div>
-                            <p>Studio dell'essere in quanto tale.</p>
+                            <div class="sub-branch-title"><i class="fas fa-circle"></i> Ontologia</div>
+                            <p>Studio dell'essere in quanto tale, delle sue categorie fondamentali.</p>
                         </div>
                         <div class="sub-branch">
-                            <div class="sub-branch-title">Filosofia della Mente</div>
-                            <p>Relazione tra mente e corpo.</p>
+                            <div class="sub-branch-title"><i class="fas fa-brain"></i> Filosofia della Mente</div>
+                            <p>Relazione tra mente e corpo, coscienza e intenzionalità.</p>
                         </div>
                         <div class="sub-branch">
-                            <div class="sub-branch-title">Teologia Filosofica</div>
-                            <p>Studio razionale di Dio e del divino.</p>
+                            <div class="sub-branch-title"><i class="fas fa-ghost"></i> Teologia Filosofica</div>
+                            <p>Studio razionale di Dio, del divino e della trascendenza.</p>
+                        </div>
+                        <div class="sub-branch">
+                            <div class="sub-branch-title"><i class="fas fa-clock"></i> Filosofia del Tempo</div>
+                            <p>Natura del tempo, eternità e divenire.</p>
+                        </div>
+                    </div>
+                    <div class="key-philosophers">
+                        <div class="key-philosophers-title">Filosofi chiave</div>
+                        <div class="key-philosophers-tags">
+                            <span class="tag">Parmenide</span>
+                            <span class="tag">Platone</span>
+                            <span class="tag">Aristotele</span>
+                            <span class="tag">Leibniz</span>
+                            <span class="tag">Heidegger</span>
                         </div>
                     </div>
                 </div>
-                
+
+                <!-- 2. Epistemologia -->
                 <div class="branch">
+                    <div class="branch-icon"><i class="fas fa-lightbulb"></i></div>
                     <h2 class="branch-title">Epistemologia</h2>
+                    <p class="branch-description">Teoria della conoscenza: che cos'è e come si acquisisce.</p>
                     <div class="branch-content">
-                        <p>Teoria della conoscenza e dei suoi fondamenti.</p>
                         <div class="sub-branch">
-                            <div class="sub-branch-title">Razionalismo</div>
-                            <p>La ragione come fonte primaria di conoscenza.</p>
+                            <div class="sub-branch-title"><i class="fas fa-brain"></i> Razionalismo</div>
+                            <p>La ragione come fonte primaria della conoscenza (Cartesio, Spinoza).</p>
                         </div>
                         <div class="sub-branch">
-                            <div class="sub-branch-title">Empirismo</div>
-                            <p>L'esperienza come fonte primaria di conoscenza.</p>
+                            <div class="sub-branch-title"><i class="fas fa-eye"></i> Empirismo</div>
+                            <p>L'esperienza sensibile come fonte primaria (Locke, Hume).</p>
                         </div>
                         <div class="sub-branch">
-                            <div class="sub-branch-title">Scetticismo</div>
-                            <p>Dubbio sulla possibilità di conoscenza certa.</p>
+                            <div class="sub-branch-title"><i class="fas fa-question-circle"></i> Scetticismo</div>
+                            <p>Dubbio radicale sulla possibilità di conoscenza certa (Pirrone).</p>
+                        </div>
+                        <div class="sub-branch">
+                            <div class="sub-branch-title"><i class="fas fa-balance-scale"></i> Criticismo</div>
+                            <p>Sintesi di razionalismo ed empirismo (Kant).</p>
+                        </div>
+                    </div>
+                    <div class="key-philosophers">
+                        <div class="key-philosophers-title">Filosofi chiave</div>
+                        <div class="key-philosophers-tags">
+                            <span class="tag">Cartesio</span>
+                            <span class="tag">Locke</span>
+                            <span class="tag">Hume</span>
+                            <span class="tag">Kant</span>
+                            <span class="tag">Popper</span>
                         </div>
                     </div>
                 </div>
-                
+
+                <!-- 3. Etica -->
                 <div class="branch">
+                    <div class="branch-icon"><i class="fas fa-hand-holding-heart"></i></div>
                     <h2 class="branch-title">Etica</h2>
+                    <p class="branch-description">Studio dei principi morali, del bene e del giusto.</p>
                     <div class="branch-content">
-                        <p>Studio dei principi morali e del comportamento umano.</p>
                         <div class="sub-branch">
-                            <div class="sub-branch-title">Deontologia</div>
-                            <p>Etica basata sul dovere (Kant).</p>
+                            <div class="sub-branch-title"><i class="fas fa-gavel"></i> Deontologia</div>
+                            <p>Etica basata sul dovere e sulle regole universali (Kant).</p>
                         </div>
                         <div class="sub-branch">
-                            <div class="sub-branch-title">Conseguenzialismo</div>
-                            <p>Moralità determinata dalle conseguenze (Utilitarismo).</p>
+                            <div class="sub-branch-title"><i class="fas fa-chart-line"></i> Conseguenzialismo</div>
+                            <p>Moralità determinata dalle conseguenze (Utilitarismo: Mill, Bentham).</p>
                         </div>
                         <div class="sub-branch">
-                            <div class="sub-branch-title">Etica della Virtù</div>
-                            <p>Focus sul carattere morale (Aristotele).</p>
+                            <div class="sub-branch-title"><i class="fas fa-gem"></i> Etica della Virtù</div>
+                            <p>Focus sul carattere e sulle virtù morali (Aristotele).</p>
+                        </div>
+                        <div class="sub-branch">
+                            <div class="sub-branch-title"><i class="fas fa-users"></i> Etica del Discorso</div>
+                            <p>Etica basata sul dialogo e sul consenso razionale (Habermas).</p>
+                        </div>
+                    </div>
+                    <div class="key-philosophers">
+                        <div class="key-philosophers-title">Filosofi chiave</div>
+                        <div class="key-philosophers-tags">
+                            <span class="tag">Socrate</span>
+                            <span class="tag">Aristotele</span>
+                            <span class="tag">Kant</span>
+                            <span class="tag">Mill</span>
+                            <span class="tag">Nietzsche</span>
                         </div>
                     </div>
                 </div>
-                
+
+                <!-- 4. Logica -->
                 <div class="branch">
+                    <div class="branch-icon"><i class="fas fa-code"></i></div>
                     <h2 class="branch-title">Logica</h2>
+                    <p class="branch-description">Studio del corretto ragionamento e dell'argomentazione.</p>
                     <div class="branch-content">
-                        <p>Studio del corretto ragionamento e dell'argomentazione.</p>
                         <div class="sub-branch">
-                            <div class="sub-branch-title">Deduzione</div>
-                            <p>Da premesse generali a conclusioni particolari.</p>
+                            <div class="sub-branch-title"><i class="fas fa-arrow-down"></i> Logica Deduttiva</div>
+                            <p>Da premesse generali a conclusioni particolari (sillogismi).</p>
                         </div>
                         <div class="sub-branch">
-                            <div class="sub-branch-title">Induzione</div>
+                            <div class="sub-branch-title"><i class="fas fa-arrow-up"></i> Logica Induttiva</div>
                             <p>Da osservazioni particolari a conclusioni generali.</p>
                         </div>
                         <div class="sub-branch">
-                            <div class="sub-branch-title">Fallacie</div>
-                            <p>Errori nel ragionamento.</p>
+                            <div class="sub-branch-title"><i class="fas fa-superscript"></i> Logica Simbolica</div>
+                            <p>Formalizzazione matematica del ragionamento (Frege, Russell).</p>
+                        </div>
+                        <div class="sub-branch">
+                            <div class="sub-branch-title"><i class="fas fa-exclamation-triangle"></i> Fallacie</div>
+                            <p>Errori e trappole del ragionamento.</p>
+                        </div>
+                    </div>
+                    <div class="key-philosophers">
+                        <div class="key-philosophers-title">Filosofi chiave</div>
+                        <div class="key-philosophers-tags">
+                            <span class="tag">Aristotele</span>
+                            <span class="tag">Frege</span>
+                            <span class="tag">Russell</span>
+                            <span class="tag">Wittgenstein</span>
                         </div>
                     </div>
                 </div>
-                
+
+                <!-- 5. Estetica -->
                 <div class="branch">
+                    <div class="branch-icon"><i class="fas fa-palette"></i></div>
                     <h2 class="branch-title">Estetica</h2>
+                    <p class="branch-description">Studio della bellezza, dell'arte e del gusto.</p>
                     <div class="branch-content">
-                        <p>Studio della bellezza, dell'arte e del gusto.</p>
                         <div class="sub-branch">
-                            <div class="sub-branch-title">Teoria del Bello</div>
-                            <p>Cos'è la bellezza? Esiste oggettivamente?</p>
+                            <div class="sub-branch-title"><i class="fas fa-star"></i> Teoria del Bello</div>
+                            <p>Cos'è la bellezza? Esiste oggettivamente? (Platone, Kant).</p>
                         </div>
                         <div class="sub-branch">
-                            <div class="sub-branch-title">Filosofia dell'Arte</div>
+                            <div class="sub-branch-title"><i class="fas fa-paint-brush"></i> Filosofia dell'Arte</div>
                             <p>Che cos'è un'opera d'arte? Qual è il suo valore?</p>
                         </div>
+                        <div class="sub-branch">
+                            <div class="sub-branch-title"><i class="fas fa-venus-mars"></i> Estetica del Sublime</div>
+                            <p>Il sentimento di meraviglia e terrore di fronte all'immenso.</p>
+                        </div>
+                    </div>
+                    <div class="key-philosophers">
+                        <div class="key-philosophers-title">Filosofi chiave</div>
+                        <div class="key-philosophers-tags">
+                            <span class="tag">Platone</span>
+                            <span class="tag">Kant</span>
+                            <span class="tag">Schopenhauer</span>
+                            <span class="tag">Adorno</span>
+                        </div>
                     </div>
                 </div>
-                
+
+                <!-- 6. Filosofia Politica -->
                 <div class="branch">
+                    <div class="branch-icon"><i class="fas fa-landmark"></i></div>
                     <h2 class="branch-title">Filosofia Politica</h2>
+                    <p class="branch-description">Studio dello Stato, del governo e della società.</p>
                     <div class="branch-content">
-                        <p>Studio dello Stato, del governo e della società.</p>
                         <div class="sub-branch">
-                            <div class="sub-branch-title">Contrattualismo</div>
-                            <p>Società come patto tra individui (Hobbes, Rousseau).</p>
+                            <div class="sub-branch-title"><i class="fas fa-handshake"></i> Contrattualismo</div>
+                            <p>Società come patto tra individui (Hobbes, Locke, Rousseau).</p>
                         </div>
                         <div class="sub-branch">
-                            <div class="sub-branch-title">Teoria della Giustizia</div>
-                            <p>Cosa rende una società giusta? (Rawls)</p>
+                            <div class="sub-branch-title"><i class="fas fa-scale-balanced"></i> Teoria della Giustizia</div>
+                            <p>Cosa rende una società giusta? (Rawls, Nozick).</p>
+                        </div>
+                        <div class="sub-branch">
+                            <div class="sub-branch-title"><i class="fas fa-user-tie"></i> Filosofia del Potere</div>
+                            <p>Natura del potere e del dominio (Foucault, Nietzsche).</p>
+                        </div>
+                        <div class="sub-branch">
+                            <div class="sub-branch-title"><i class="fas fa-people-arrows"></i> Democrazia</div>
+                            <p>Teorie sulla partecipazione politica e la sovranità popolare.</p>
+                        </div>
+                    </div>
+                    <div class="key-philosophers">
+                        <div class="key-philosophers-title">Filosofi chiave</div>
+                        <div class="key-philosophers-tags">
+                            <span class="tag">Platone</span>
+                            <span class="tag">Machiavelli</span>
+                            <span class="tag">Hobbes</span>
+                            <span class="tag">Rousseau</span>
+                            <span class="tag">Marx</span>
+                            <span class="tag">Rawls</span>
                         </div>
                     </div>
                 </div>
+
             </div>
-            
+
+            <!-- ======================================= -->
+            <!-- TIMELINE AMPLIATA                       -->
+            <!-- ======================================= -->
             <div class="timeline">
-                <h2 class="timeline-title">Storia della Filosofia</h2>
+                <h2 class="timeline-title"><i class="fas fa-clock" style="margin-right: 10px;"></i>Storia della Filosofia</h2>
                 <div class="timeline-container">
                     <div class="era">
-                        <h3 class="era-title">Filosofia Antica</h3>
-                        <div class="philosopher">Talete & Presocratici</div>
-                        <div class="philosopher">Socrate</div>
-                        <div class="philosopher">Platone</div>
-                        <div class="philosopher">Aristotele</div>
-                        <div class="philosopher">Scuole Ellenistiche</div>
+                        <h3 class="era-title"><i class="fas fa-scroll"></i>Filosofia Antica</h3>
+                        <div class="philosopher"><strong>Presocratici</strong> <span class="dates">VII-V sec. a.C.</span></div>
+                        <div class="philosopher"><strong>Socrate</strong> <span class="dates">469-399 a.C.</span></div>
+                        <div class="philosopher"><strong>Platone</strong> <span class="dates">428-348 a.C.</span></div>
+                        <div class="philosopher"><strong>Aristotele</strong> <span class="dates">384-322 a.C.</span></div>
+                        <div class="philosopher"><strong>Scuole Ellenistiche</strong> <span class="dates">IV-I sec. a.C.</span></div>
+                        <div class="philosopher"><strong>Neoplatonismo</strong> <span class="dates">III-VI sec. d.C.</span></div>
                     </div>
-                    
+
                     <div class="era">
-                        <h3 class="era-title">Filosofia Medievale</h3>
-                        <div class="philosopher">Agostino d'Ippona</div>
-                        <div class="philosopher">Anselmo d'Aosta</div>
-                        <div class="philosopher">Tommaso d'Aquino</div>
-                        <div class="philosopher">Guglielmo di Ockham</div>
+                        <h3 class="era-title"><i class="fas fa-church"></i>Filosofia Medievale</h3>
+                        <div class="philosopher"><strong>Patristica</strong> <span class="dates">II-VIII sec.</span></div>
+                        <div class="philosopher"><strong>Agostino d'Ippona</strong> <span class="dates">354-430</span></div>
+                        <div class="philosopher"><strong>Filosofia Islamica</strong> <span class="dates">IX-XIII sec.</span></div>
+                        <div class="philosopher"><strong>Anselmo d'Aosta</strong> <span class="dates">1033-1109</span></div>
+                        <div class="philosopher"><strong>Tommaso d'Aquino</strong> <span class="dates">1225-1274</span></div>
+                        <div class="philosopher"><strong>Guglielmo di Ockham</strong> <span class="dates">1288-1347</span></div>
                     </div>
-                    
+
                     <div class="era">
-                        <h3 class="era-title">Filosofia Moderna</h3>
-                        <div class="philosopher">Cartesio (Razionalismo)</div>
-                        <div class="philosopher">Locke, Hume (Empirismo)</div>
-                        <div class="philosopher">Kant (Criticismo)</div>
-                        <div class="philosopher">Hegel (Idealismo)</div>
+                        <h3 class="era-title"><i class="fas fa-pen-fancy"></i>Filosofia Moderna</h3>
+                        <div class="philosopher"><strong>Umanesimo</strong> <span class="dates">XIV-XVI sec.</span></div>
+                        <div class="philosopher"><strong>Cartesio</strong> <span class="dates">1596-1650</span></div>
+                        <div class="philosopher"><strong>Spinoza</strong> <span class="dates">1632-1677</span></div>
+                        <div class="philosopher"><strong>Locke, Hume</strong> <span class="dates">XVII-XVIII sec.</span></div>
+                        <div class="philosopher"><strong>Kant</strong> <span class="dates">1724-1804</span></div>
+                        <div class="philosopher"><strong>Hegel</strong> <span class="dates">1770-1831</span></div>
                     </div>
-                    
+
                     <div class="era">
-                        <h3 class="era-title">Filosofia Contemporanea</h3>
-                        <div class="philosopher">Marx (Materialismo)</div>
-                        <div class="philosopher">Nietzsche</div>
-                        <div class="philosopher">Heidegger (Esistenzialismo)</div>
-                        <div class="philosopher">Wittgenstein (Filosofia Analitica)</div>
+                        <h3 class="era-title"><i class="fas fa-rocket"></i>Filosofia Contemporanea</h3>
+                        <div class="philosopher"><strong>Marx</strong> <span class="dates">1818-1883</span></div>
+                        <div class="philosopher"><strong>Nietzsche</strong> <span class="dates">1844-1900</span></div>
+                        <div class="philosopher"><strong>Esistenzialismo</strong> <span class="dates">XIX-XX sec.</span></div>
+                        <div class="philosopher"><strong>Heidegger</strong> <span class="dates">1889-1976</span></div>
+                        <div class="philosopher"><strong>Filos. Analitica</strong> <span class="dates">XX sec.</span></div>
+                        <div class="philosopher"><strong>Filos. Continentale</strong> <span class="dates">XX-XXI sec.</span></div>
                     </div>
                 </div>
             </div>
+
+            <!-- ======================================= -->
+            <!-- CORRENTI E SCUOLE (sezione aggiuntiva)  -->
+            <!-- ======================================= -->
+            <div class="timeline" style="margin-top: 30px;">
+                <h2 class="timeline-title"><i class="fas fa-people-arrows" style="margin-right: 10px;"></i>Correnti e Scuole Filosofiche</h2>
+                <div class="timeline-container">
+                    <div class="era" style="border-bottom-color: var(--primary);">
+                        <h3 class="era-title"><i class="fas fa-gem"></i>Antiche</h3>
+                        <div class="philosopher"><strong>Stoicismo</strong> – Zenone, Seneca, Marco Aurelio</div>
+                        <div class="philosopher"><strong>Epicureismo</strong> – Epicuro, Lucrezio</div>
+                        <div class="philosopher"><strong>Scetticismo</strong> – Pirrone, Sesto Empirico</div>
+                        <div class="philosopher"><strong>Cinismo</strong> – Diogene di Sinope</div>
+                    </div>
+
+                    <div class="era" style="border-bottom-color: var(--primary);">
+                        <h3 class="era-title"><i class="fas fa-university"></i>Moderne</h3>
+                        <div class="philosopher"><strong>Razionalismo</strong> – Cartesio, Spinoza, Leibniz</div>
+                        <div class="philosopher"><strong>Empirismo</strong> – Locke, Berkeley, Hume</div>
+                        <div class="philosopher"><strong>Illuminismo</strong> – Voltaire, Rousseau, Kant</div>
+                        <div class="philosopher"><strong>Idealismo</strong> – Fichte, Schelling, Hegel</div>
+                    </div>
+
+                    <div class="era" style="border-bottom-color: var(--primary);">
+                        <h3 class="era-title"><i class="fas fa-rocket"></i>Contemporanee</h3>
+                        <div class="philosopher"><strong>Marxismo</strong> – Marx, Engels</div>
+                        <div class="philosopher"><strong>Esistenzialismo</strong> – Kierkegaard, Sartre, Camus</div>
+                        <div class="philosopher"><strong>Filosofia Analitica</strong> – Frege, Russell, Wittgenstein</div>
+                        <div class="philosopher"><strong>Filosofia Continentale</strong> – Heidegger, Foucault, Derrida</div>
+                        <div class="philosopher"><strong>Pragmatismo</strong> – Peirce, James, Dewey</div>
+                    </div>
+                </div>
+            </div>
+
         </div>
-        
+
         <footer>
-            <p>Mappa Concettuale di Filosofia - Uno strumento visivo per orientarsi nel pensiero filosofico</p>
+            <p>Mappa Concettuale di Filosofia &bull; Uno strumento visivo per orientarsi nel pensiero filosofico</p>
         </footer>
     </div>
 </body>
