@@ -4,296 +4,437 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Linea del Tempo Filosofica Completa</title>
+    <meta name="description" content="Esplora la storia del pensiero occidentale e orientale: dalla filosofia presocratica alla contemporanea, con filosofi, concetti e periodi storici.">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* =======================================
+           VARIABILI GLOBALI
+           ======================================= */
+        :root {
+            --primary: #8B0000;
+            --primary-light: #a00000;
+            --gold: #FFD700;
+            --gold-light: #FFE44D;
+            --bg-dark: #1a2a6c;
+            --bg-light: #2c3e50;
+            --text-dark: #333;
+            --text-light: #f8f8f8;
+            --white: #ffffff;
+            --shadow: 0 8px 16px rgba(0,0,0,0.2);
+            --radius: 15px;
+            --transition: 0.3s ease;
+        }
+
+        /* =======================================
+           RESET & BASE
+           ======================================= */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
-            background: linear-gradient(135deg, #1a2a6c, #2c3e50);
-            color: #333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--bg-dark), var(--bg-light));
+            color: var(--text-dark);
             min-height: 100vh;
             padding: 20px;
         }
-        
+
         .container {
             max-width: 1400px;
             margin: 0 auto;
         }
-        
+
+        /* =======================================
+           HEADER
+           ======================================= */
         header {
             text-align: center;
             margin-bottom: 30px;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            color: var(--white);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
             padding: 20px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 15px;
+            background: rgba(0,0,0,0.3);
+            border-radius: var(--radius);
         }
-        
+
         h1 {
-            font-size: 3rem;
+            font-size: clamp(2rem, 5vw, 3rem);
             margin-bottom: 10px;
         }
-        
+
         .subtitle {
-            font-size: 1.3rem;
+            font-size: clamp(1rem, 2vw, 1.3rem);
             font-style: italic;
             max-width: 800px;
             margin: 0 auto 20px;
+            opacity: 0.9;
         }
-        
+
+        /* =======================================
+           CONTROLLI
+           ======================================= */
         .controls {
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 10px;
             margin-top: 20px;
             flex-wrap: wrap;
         }
-        
+
         .period-btn {
             padding: 10px 20px;
-            background: #8B0000;
-            color: white;
+            background: var(--primary);
+            color: var(--white);
             border: none;
             border-radius: 30px;
             cursor: pointer;
             font-weight: bold;
-            transition: all 0.3s;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: all var(--transition);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
-        
-        .period-btn:hover {
-            background: #FFD700;
-            color: #8B0000;
+
+        .period-btn:hover,
+        .period-btn:focus-visible {
+            background: var(--gold);
+            color: var(--primary);
             transform: translateY(-3px);
+            outline: 2px solid var(--gold);
         }
-        
+
+        .period-btn.active {
+            background: var(--gold);
+            color: var(--primary);
+        }
+
+        /* =======================================
+           RICERCA
+           ======================================= */
+        .search-container {
+            margin: 20px auto 0;
+            max-width: 600px;
+            display: flex;
+        }
+
+        #searchInput {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 30px 0 0 30px;
+            font-size: 1.1rem;
+            box-shadow: var(--shadow);
+            min-width: 0;
+        }
+
+        #searchInput:focus-visible {
+            outline: 2px solid var(--gold);
+        }
+
+        #searchButton {
+            padding: 15px 25px;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 0 30px 30px 0;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background var(--transition);
+            box-shadow: var(--shadow);
+            flex-shrink: 0;
+        }
+
+        #searchButton:hover,
+        #searchButton:focus-visible {
+            background: var(--gold);
+            color: var(--primary);
+            outline: 2px solid var(--gold);
+        }
+
+        /* =======================================
+           TIMELINE
+           ======================================= */
         .timeline-container {
             position: relative;
             padding: 40px 0;
         }
-        
+
         .timeline {
             position: relative;
             max-width: 1200px;
             margin: 0 auto;
         }
-        
+
         .timeline::after {
             content: '';
             position: absolute;
             width: 6px;
-            background: #FFD700;
+            background: var(--gold);
             top: 0;
             bottom: 0;
             left: 50%;
             margin-left: -3px;
             border-radius: 10px;
         }
-        
+
+        /* =======================================
+           ERA (CARD)
+           ======================================= */
         .era {
             padding: 10px 40px;
             position: relative;
             width: 50%;
             margin-bottom: 50px;
             opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.5s ease;
+            transform: translateY(30px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
+
         .era.visible {
             opacity: 1;
             transform: translateY(0);
         }
-        
+
         .era::after {
             content: '';
             position: absolute;
             width: 25px;
             height: 25px;
-            background: #8B0000;
-            border: 4px solid #FFD700;
+            background: var(--primary);
+            border: 4px solid var(--gold);
             top: 15px;
             border-radius: 50%;
             z-index: 1;
+            transition: transform var(--transition);
         }
-        
+
+        .era:hover::after {
+            transform: scale(1.2);
+        }
+
         .left {
             left: 0;
         }
-        
+
         .right {
             left: 50%;
         }
-        
+
         .left::after {
             right: -17px;
         }
-        
+
         .right::after {
             left: -17px;
         }
-        
+
         .era-content {
             padding: 20px 30px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
             position: relative;
-            transition: transform 0.3s;
+            transition: transform var(--transition), box-shadow var(--transition);
         }
-        
+
         .era-content:hover {
-            transform: scale(1.02);
+            transform: scale(1.01);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.3);
         }
-        
+
+        /* =======================================
+           ERA - TITOLI E TESTO
+           ======================================= */
         .era-title {
-            font-size: 1.8rem;
-            color: #8B0000;
-            margin-bottom: 15px;
+            font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+            color: var(--primary);
+            margin-bottom: 10px;
             padding-bottom: 10px;
-            border-bottom: 2px solid #FFD700;
+            border-bottom: 2px solid var(--gold);
         }
-        
+
         .era-period {
             font-style: italic;
             color: #666;
             margin-bottom: 15px;
         }
-        
+
         .era-description {
             margin-bottom: 20px;
             line-height: 1.6;
         }
-        
+
+        /* =======================================
+           FILOSOFI
+           ======================================= */
         .philosophers-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 12px;
             margin-top: 15px;
         }
-        
+
         .philosopher {
             background: #f8f8f8;
-            padding: 12px;
+            padding: 12px 15px;
             border-radius: 8px;
-            border-left: 4px solid #8B0000;
-            transition: all 0.3s;
+            border-left: 4px solid var(--primary);
+            transition: all var(--transition);
         }
-        
+
         .philosopher:hover {
-            background: #FFD700;
+            background: var(--gold-light);
             transform: translateX(5px);
         }
-        
+
         .philosopher-name {
             font-weight: bold;
-            color: #8B0000;
-            margin-bottom: 5px;
+            color: var(--primary);
+            margin-bottom: 4px;
         }
-        
+
         .philosopher-dates {
             font-size: 0.9rem;
             color: #666;
         }
-        
+
+        /* =======================================
+           CONCETTI
+           ======================================= */
         .concepts {
             margin-top: 15px;
             padding: 15px;
             background: #f0f0f0;
             border-radius: 8px;
         }
-        
+
         .concepts-title {
             font-weight: bold;
             margin-bottom: 10px;
-            color: #8B0000;
+            color: var(--primary);
         }
-        
+
         .concept-list {
-            list-style-type: none;
+            list-style: none;
+            padding: 0;
         }
-        
+
         .concept-list li {
             padding: 5px 0;
             border-bottom: 1px dashed #ccc;
         }
-        
+
         .concept-list li:last-child {
             border-bottom: none;
         }
-        
-        .search-container {
-            margin: 30px auto;
-            max-width: 600px;
-            display: flex;
-        }
-        
-        #searchInput {
-            flex: 1;
-            padding: 15px;
-            border: none;
-            border-radius: 30px 0 0 30px;
-            font-size: 1.1rem;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        
-        #searchButton {
-            padding: 15px 25px;
-            background: #8B0000;
-            color: white;
-            border: none;
-            border-radius: 0 30px 30px 0;
-            cursor: pointer;
+
+        /* =======================================
+           HIGHLIGHT (RICERCA)
+           ======================================= */
+        .highlight {
+            background: #FFE44D;
             font-weight: bold;
-            transition: background 0.3s;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 0 2px;
+            border-radius: 3px;
         }
-        
-        #searchButton:hover {
-            background: #FFD700;
-            color: #8B0000;
-        }
-        
+
+        /* =======================================
+           FOOTER
+           ======================================= */
         footer {
             text-align: center;
             margin-top: 40px;
-            color: white;
+            color: var(--white);
             padding: 20px;
             font-style: italic;
+            opacity: 0.8;
         }
-        
-        .highlight {
-            background-color: yellow;
-            font-weight: bold;
+
+        /* =======================================
+           NO RESULTS
+           ======================================= */
+        .no-results {
+            text-align: center;
+            color: var(--white);
+            padding: 40px;
+            font-size: 1.2rem;
+            display: none;
+            background: rgba(0,0,0,0.2);
+            border-radius: var(--radius);
         }
-        
+
+        /* =======================================
+           RESPONSIVE
+           ======================================= */
         @media screen and (max-width: 768px) {
             .timeline::after {
                 left: 31px;
             }
-            
+
             .era {
                 width: 100%;
                 padding-left: 70px;
                 padding-right: 25px;
             }
-            
+
             .era::after {
                 left: 18px;
             }
-            
+
             .right {
                 left: 0;
             }
-            
-            h1 {
-                font-size: 2.2rem;
+
+            .right::after {
+                left: 18px;
+            }
+
+            .philosophers-container {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+
+            .controls {
+                gap: 8px;
+            }
+
+            .period-btn {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+            }
+
+            .search-container {
+                flex-wrap: wrap;
+            }
+
+            #searchInput {
+                border-radius: 30px;
+                width: 100%;
+            }
+
+            #searchButton {
+                border-radius: 30px;
+                width: 100%;
+                margin-top: 10px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .era-content {
+                padding: 15px;
+            }
+
+            .philosophers-container {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .period-btn {
+                padding: 6px 12px;
+                font-size: 0.8rem;
             }
         }
     </style>
@@ -303,35 +444,52 @@
         <header>
             <h1>Linea del Tempo Filosofica</h1>
             <p class="subtitle">Un viaggio completo attraverso la storia del pensiero occidentale, dai Presocratici alla filosofia contemporanea</p>
-            
-            <div class="controls">
-                <button class="period-btn" data-period="all">Tutta la Timeline</button>
-                <button class="period-btn" data-period="ancient">Filosofia Antica</button>
-                <button class="period-btn" data-period="medieval">Filosofia Medievale</button>
-                <button class="period-btn" data-period="modern">Filosofia Moderna</button>
-                <button class="period-btn" data-period="contemporary">Filosofia Contemporanea</button>
+
+            <div class="controls" role="tablist" aria-label="Filtra per periodo storico">
+                <button class="period-btn active" data-period="all" role="tab" aria-selected="true">Tutta la Timeline</button>
+                <button class="period-btn" data-period="ancient" role="tab" aria-selected="false">Filosofia Antica</button>
+                <button class="period-btn" data-period="medieval" role="tab" aria-selected="false">Filosofia Medievale</button>
+                <button class="period-btn" data-period="modern" role="tab" aria-selected="false">Filosofia Moderna</button>
+                <button class="period-btn" data-period="contemporary" role="tab" aria-selected="false">Filosofia Contemporanea</button>
             </div>
-            
+
             <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Cerca filosofi o concetti...">
-                <button id="searchButton"><i class="fas fa-search"></i></button>
+                <input type="search" id="searchInput" placeholder="Cerca filosofi o concetti..." aria-label="Cerca nella timeline">
+                <button id="searchButton" aria-label="Avvia ricerca"><i class="fas fa-search"></i></button>
             </div>
         </header>
-        
+
         <div class="timeline-container">
-            <div class="timeline">
-                <!-- Filosofia Antica -->
-                <div class="era left visible" data-period="ancient">
+            <div class="timeline" role="list">
+
+                <!-- ============================================================ -->
+                <!-- FILOSOFIA ANTICA                                              -->
+                <!-- ============================================================ -->
+
+                <!-- 1. Presocratici -->
+                <div class="era left visible" data-period="ancient" role="listitem">
                     <div class="era-content">
                         <h2 class="era-title">Filosofia Presocratica</h2>
                         <div class="era-period">VII - V secolo a.C.</div>
                         <div class="era-description">
-                            Prima fase della filosofia greca, focalizzata sulla ricerca del principio primo (arché) della realtà naturale.
+                            Prima fase della filosofia greca, focalizzata sulla ricerca del principio primo (arché) della realtà naturale. I pensatori di questa scuola si interrogano sull'origine e la struttura del cosmo.
                         </div>
                         <div class="philosophers-container">
                             <div class="philosopher">
                                 <div class="philosopher-name">Talete</div>
                                 <div class="philosopher-dates">624-546 a.C.</div>
+                            </div>
+                            <div class="philosopher">
+                                <div class="philosopher-name">Anassimandro</div>
+                                <div class="philosopher-dates">610-546 a.C.</div>
+                            </div>
+                            <div class="philosopher">
+                                <div class="philosopher-name">Anassimene</div>
+                                <div class="philosopher-dates">585-528 a.C.</div>
+                            </div>
+                            <div class="philosopher">
+                                <div class="philosopher-name">Pitagora</div>
+                                <div class="philosopher-dates">570-495 a.C.</div>
                             </div>
                             <div class="philosopher">
                                 <div class="philosopher-name">Eraclito</div>
@@ -340,6 +498,14 @@
                             <div class="philosopher">
                                 <div class="philosopher-name">Parmenide</div>
                                 <div class="philosopher-dates">515-450 a.C.</div>
+                            </div>
+                            <div class="philosopher">
+                                <div class="philosopher-name">Empedocle</div>
+                                <div class="philosopher-dates">495-435 a.C.</div>
+                            </div>
+                            <div class="philosopher">
+                                <div class="philosopher-name">Anassagora</div>
+                                <div class="philosopher-dates">500-428 a.C.</div>
                             </div>
                             <div class="philosopher">
                                 <div class="philosopher-name">Democrito</div>
@@ -353,17 +519,48 @@
                                 <li>Logos</li>
                                 <li>Divenire vs. Essere</li>
                                 <li>Atomismo</li>
+                                <li>Numeri come principio</li>
                             </ul>
                         </div>
                     </div>
                 </div>
-                
-                <div class="era right visible" data-period="ancient">
+
+                <!-- 2. Sofistica -->
+                <div class="era right visible" data-period="ancient" role="listitem">
+                    <div class="era-content">
+                        <h2 class="era-title">Sofistica</h2>
+                        <div class="era-period">V secolo a.C.</div>
+                        <div class="era-description">
+                            Movimento intellettuale che sposta l'attenzione dalla natura all'uomo e alla società. I sofisti sono maestri di retorica e insegnano l'arte della persuasione per il successo politico.
+                        </div>
+                        <div class="philosophers-container">
+                            <div class="philosopher">
+                                <div class="philosopher-name">Protagora</div>
+                                <div class="philosopher-dates">490-420 a.C.</div>
+                            </div>
+                            <div class="philosopher">
+                                <div class="philosopher-name">Gorgia</div>
+                                <div class="philosopher-dates">483-375 a.C.</div>
+                            </div>
+                        </div>
+                        <div class="concepts">
+                            <div class="concepts-title">Concetti Chiave:</div>
+                            <ul class="concept-list">
+                                <li>"L'uomo è misura di tutte le cose"</li>
+                                <li>Relativismo</li>
+                                <li>Retorica come arte</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Filosofia Classica -->
+                <div class="era left visible" data-period="ancient" role="listitem">
                     <div class="era-content">
                         <h2 class="era-title">Filosofia Classica</h2>
                         <div class="era-period">V - IV secolo a.C.</div>
                         <div class="era-description">
-                            Periodo d'oro della filosofia greca, con il passaggio dalla filosofia della natura all'etica e alla metafisica.
+                            Periodo d'oro della filosofia greca, con il passaggio dalla filosofia della natura all'etica, alla politica e alla metafisica. Nascono le grandi scuole filosofiche di Atene.
                         </div>
                         <div class="philosophers-container">
                             <div class="philosopher">
@@ -386,17 +583,19 @@
                                 <li>Teoria delle Idee</li>
                                 <li>Etica della virtù</li>
                                 <li>Logica aristotelica</li>
+                                <li>Politica e giustizia</li>
                             </ul>
                         </div>
                     </div>
                 </div>
-                
-                <div class="era left visible" data-period="ancient">
+
+                <!-- 4. Filosofia Ellenistica -->
+                <div class="era right visible" data-period="ancient" role="listitem">
                     <div class="era-content">
                         <h2 class="era-title">Filosofia Ellenistica</h2>
                         <div class="era-period">IV secolo a.C. - I secolo d.C.</div>
                         <div class="era-description">
-                            Periodo successivo ad Alessandro Magno, caratterizzato da un interesse per l'etica individuale e la ricerca della felicità.
+                            Periodo successivo ad Alessandro Magno, caratterizzato da un interesse per l'etica individuale e la ricerca della felicità. Le scuole filosofiche si concentrano sulla vita buona e sulla serenità interiore.
                         </div>
                         <div class="philosophers-container">
                             <div class="philosopher">
@@ -423,16 +622,95 @@
                         </div>
                     </div>
                 </div>
-                
-                <!-- Filosofia Medievale -->
-                <div class="era right visible" data-period="medieval">
+
+                <!-- 5. Stoicismo Romano -->
+                <div class="era left visible" data-period="ancient" role="listitem">
+                    <div class="era-content">
+                        <h2 class="era-title">Stoicismo Romano</h2>
+                        <div class="era-period">I - II secolo d.C.</div>
+                        <div class="era-description">
+                            Lo stoicismo giunge a Roma e si trasforma in una filosofia pratica per la vita quotidiana, enfatizzando la virtù, il dovere e l'accettazione del destino.
+                        </div>
+                        <div class="philosophers-container">
+                            <div class="philosopher">
+                                <div class="philosopher-name">Seneca</div>
+                                <div class="philosopher-dates">4 a.C. - 65 d.C.</div>
+                            </div>
+                            <div class="philosopher">
+                                <div class="philosopher-name">Epitteto</div>
+                                <div class="philosopher-dates">50-138 d.C.</div>
+                            </div>
+                            <div class="philosopher">
+                                <div class="philosopher-name">Marco Aurelio</div>
+                                <div class="philosopher-dates">121-180 d.C.</div>
+                            </div>
+                        </div>
+                        <div class="concepts">
+                            <div class="concepts-title">Concetti Chiave:</div>
+                            <ul class="concept-list">
+                                <li>Virtù come unico bene</li>
+                                <li>Accettazione del destino</li>
+                                <li>Dovere e responsabilità</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. Neoplatonismo -->
+                <div class="era right visible" data-period="ancient" role="listitem">
+                    <div class="era-content">
+                        <h2 class="era-title">Neoplatonismo</h2>
+                        <div class="era-period">III - VI secolo d.C.</div>
+                        <div class="era-description">
+                            Sintesi delle filosofie platoniche, aristoteliche e pitagoriche. Il Neoplatonismo diventa il ponte tra la filosofia antica e il pensiero cristiano medievale.
+                        </div>
+                        <div class="philosophers-container">
+                            <div class="philosopher">
+                                <div class="philosopher-name">Plotino</div>
+                                <div class="philosopher-dates">205-270 d.C.</div>
+                            </div>
+                            <div class="philosopher">
+                                <div class="philosopher-name">Porfirio</div>
+                                <div class="philosopher-dates">234-305 d.C.</div>
+                            </div>
+                            <div class="philosopher">
+                                <div class="philosopher-name">Giamblico</div>
+                                <div class="philosopher-dates">245-325 d.C.</div>
+                            </div>
+                        </div>
+                        <div class="concepts">
+                            <div class="concepts-title">Concetti Chiave:</div>
+                            <ul class="concept-list">
+                                <li>Uno (il Bene assoluto)</li>
+                                <li>Emanazione</li>
+                                <li>Ritorno all'Uno</li>
+                                <li>Teurgia</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ============================================================ -->
+                <!-- FILOSOFIA MEDIEVALE                                            -->
+                <!-- ============================================================ -->
+
+                <!-- 7. Patristica -->
+                <div class="era left visible" data-period="medieval" role="listitem">
                     <div class="era-content">
                         <h2 class="era-title">Patristica</h2>
                         <div class="era-period">II - VIII secolo d.C.</div>
                         <div class="era-description">
-                            Prima fase della filosofia cristiana, dedicata alla difesa e sistematizzazione della dottrina cristiana.
+                            Prima fase della filosofia cristiana, dedicata alla difesa e sistematizzazione della dottrina cristiana. I Padri della Chiesa cercano di conciliare fede e ragione.
                         </div>
                         <div class="philosophers-container">
+                            <div class="philosopher">
+                                <div class="philosopher-name">Clemente Alessandrino</div>
+                                <div class="philosopher-dates">150-215 d.C.</div>
+                            </div>
+                            <div class="philosopher">
+                                <div class="philosopher-name">Origene</div>
+                                <div class="philosopher-dates">185-253 d.C.</div>
+                            </div>
                             <div class="philosopher">
                                 <div class="philosopher-name">Agostino d'Ippona</div>
                                 <div class="philosopher-dates">354-430 d.C.</div>
@@ -440,6 +718,10 @@
                             <div class="philosopher">
                                 <div class="philosopher-name">Boezio</div>
                                 <div class="philosopher-dates">480-525 d.C.</div>
+                            </div>
+                            <div class="philosopher">
+                                <div class="philosopher-name">Gregorio di Nissa</div>
+                                <div class="philosopher-dates">335-395 d.C.</div>
                             </div>
                         </div>
                         <div class="concepts">
@@ -453,22 +735,81 @@
                         </div>
                     </div>
                 </div>
-                
-                <div class="era left visible" data-period="medieval">
+
+                <!-- 8. Filosofia Islamica ed Ebraica -->
+                <div class="era right visible" data-period="medieval" role="listitem">
+                    <div class="era-content">
+                        <h2 class="era-title">Filosofia Islamica ed Ebraica</h2>
+                        <div class="era-period">IX - XIII secolo</div>
+                        <div class="era-description">
+                            Durante il Medioevo, la filosofia fiorisce nel mondo islamico e nella tradizione ebraica, preservando e sviluppando il pensiero greco classico.
+                        </div>
+                        <div class="philosophers-container">
+                            <div class="philosopher">
+                                <div class="philosopher-name">Al-Kindi</div>
+                                <div class="philosopher-dates">801-873</div>
+                            </div>
+                            <div class="philosopher">
+                                <div class="philosopher-name">Avicenna (Ibn Sina)</div>
+                                <div class="philosopher-dates">980-1037</div>
+                            </div>
+                            <div class="philosopher">
+                                <div class="philosopher-name">Averroè (Ibn Rushd)</div>
+                                <div class="philosopher-dates">1126-1198</div>
+                            </div>
+                            <div class="philosopher">
+                                <div class="philosopher-name">Maimonide</div>
+                                <div class="philosopher-dates">1138-1204</div>
+                            </div>
+                            <div class="philosopher">
+                                <div class="philosopher-name">Al-Ghazali</div>
+                                <div class="philosopher-dates">1058-1111</div>
+                            </div>
+                        </div>
+                        <div class="concepts">
+                            <div class="concepts-title">Concetti Chiave:</div>
+                            <ul class="concept-list">
+                                <li>Rapporto fede-ragione</li>
+                                <li>Teologia negativa</li>
+                                <li>Luce divina</li>
+                                <li>Profetismo</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 9. Scolastica -->
+                <div class="era left visible" data-period="medieval" role="listitem">
                     <div class="era-content">
                         <h2 class="era-title">Scolastica</h2>
                         <div class="era-period">IX - XIV secolo</div>
                         <div class="era-description">
-                            Filosofia delle scuole monastiche e università medievali, caratterizzata dalla sintesi tra fede cristiana e ragione aristotelica.
+                            Filosofia delle scuole monastiche e università medievali, caratterizzata dalla sintesi tra fede cristiana e ragione aristotelica. La Scolastica domina il pensiero europeo per secoli.
                         </div>
                         <div class="philosophers-container">
+                            <div class="philosopher">
+                                <div class="philosopher-name">Pietro Abelardo</div>
+                                <div class="philosopher-dates">1079-1142</div>
+                            </div>
                             <div class="philosopher">
                                 <div class="philosopher-name">Anselmo d'Aosta</div>
                                 <div class="philosopher-dates">1033-1109</div>
                             </div>
                             <div class="philosopher">
+                                <div class="philosopher-name">Alberto Magno</div>
+                                <div class="philosopher-dates">1200-1280</div>
+                            </div>
+                            <div class="philosopher">
+                                <div class="philosopher-name">Bonaventura</div>
+                                <div class="philosopher-dates">1221-1274</div>
+                            </div>
+                            <div class="philosopher">
                                 <div class="philosopher-name">Tommaso d'Aquino</div>
                                 <div class="philosopher-dates">1225-1274</div>
+                            </div>
+                            <div class="philosopher">
+                                <div class="philosopher-name">Duns Scoto</div>
+                                <div class="philosopher-dates">1265-1308</div>
                             </div>
                             <div class="philosopher">
                                 <div class="philosopher-name">Guglielmo di Ockham</div>
@@ -486,14 +827,18 @@
                         </div>
                     </div>
                 </div>
-                
-                <!-- Filosofia Moderna -->
-                <div class="era right visible" data-period="modern">
+
+                <!-- ============================================================ -->
+                <!-- FILOSOFIA MODERNA                                              -->
+                <!-- ============================================================ -->
+
+                <!-- 10. Rinascimento e Umanesimo -->
+                <div class="era right visible" data-period="modern" role="listitem">
                     <div class="era-content">
                         <h2 class="era-title">Rinascimento e Umanesimo</h2>
                         <div class="era-period">XIV - XVI secolo</div>
                         <div class="era-description">
-                            Transizione dal Medioevo all'Età Moderna, con riscoperta dei classici e nuova centralità dell'uomo.
+                            Transizione dal Medioevo all'Età Moderna, con riscoperta dei classici e nuova centralità dell'uomo. La filosofia si emancipa dalla teologia e riscopre l'individuo.
                         </div>
                         <div class="philosophers-container">
                             <div class="philosopher">
@@ -508,25 +853,38 @@
                                 <div class="philosopher-name">Tommaso Campanella</div>
                                 <div class="philosopher-dates">1568-1639</div>
                             </div>
+                            <div class="philosopher">
+                                <div class="philosopher-name">Pico della Mirandola</div>
+                                <div class="philosopher-dates">1463-1494</div>
+                            </div>
+                            <div class="philosopher">
+                                <div class="philosopher-name">Giordano Bruno</div>
+                                <div class="philosopher-dates">1548-1600</div>
+                            </div>
+                            <div class="philosopher">
+                                <div class="philosopher-name">Marsilio Ficino</div>
+                                <div class="philosopher-dates">1433-1499</div>
+                            </div>
                         </div>
                         <div class="concepts">
                             <div class="concepts-title">Concetti Chiave:</div>
                             <ul class="concept-list">
                                 <li>Umanesimo</li>
                                 <li>Ragion di Stato</li>
-                                <li>Riforma protestante</li>
                                 <li>Utopia</li>
+                                <li>Dignità dell'uomo</li>
                             </ul>
                         </div>
                     </div>
                 </div>
-                
-                <div class="era left visible" data-period="modern">
+
+                <!-- 11. Razionalismo -->
+                <div class="era left visible" data-period="modern" role="listitem">
                     <div class="era-content">
                         <h2 class="era-title">Razionalismo</h2>
                         <div class="era-period">XVII secolo</div>
                         <div class="era-description">
-                            Corrente filosofica che considera la ragione come fonte primaria di conoscenza, indipendentemente dall'esperienza sensibile.
+                            Corrente filosofica che considera la ragione come fonte primaria di conoscenza, indipendentemente dall'esperienza sensibile. I razionalisti sviluppano sistemi metafisici deduttivi.
                         </div>
                         <div class="philosophers-container">
                             <div class="philosopher">
@@ -553,13 +911,14 @@
                         </div>
                     </div>
                 </div>
-                
-                <div class="era right visible" data-period="modern">
+
+                <!-- 12. Empirismo -->
+                <div class="era right visible" data-period="modern" role="listitem">
                     <div class="era-content">
                         <h2 class="era-title">Empirismo</h2>
                         <div class="era-period">XVII - XVIII secolo</div>
                         <div class="era-description">
-                            Corrente filosofica che considera l'esperienza sensibile come unica fonte della conoscenza.
+                            Corrente filosofica che considera l'esperienza sensibile come unica fonte della conoscenza. Gli empiristi rifiutano le idee innate e fondano la conoscenza sull'esperienza.
                         </div>
                         <div class="philosophers-container">
                             <div class="philosopher">
@@ -586,15 +945,20 @@
                         </div>
                     </div>
                 </div>
-                
-                <div class="era left visible" data-period="modern">
+
+                <!-- 13. Illuminismo -->
+                <div class="era left visible" data-period="modern" role="listitem">
                     <div class="era-content">
                         <h2 class="era-title">Illuminismo</h2>
                         <div class="era-period">XVIII secolo</div>
                         <div class="era-description">
-                            Movimento culturale e filosofico che esalta la ragione come strumento di progresso e emancipazione umana.
+                            Movimento culturale e filosofico che esalta la ragione come strumento di progresso e emancipazione umana. L'Illuminismo promuove la libertà, l'uguaglianza e i diritti civili.
                         </div>
                         <div class="philosophers-container">
+                            <div class="philosopher">
+                                <div class="philosopher-name">Montesquieu</div>
+                                <div class="philosopher-dates">1689-1755</div>
+                            </div>
                             <div class="philosopher">
                                 <div class="philosopher-name">Voltaire</div>
                                 <div class="philosopher-dates">1694-1778</div>
@@ -602,6 +966,10 @@
                             <div class="philosopher">
                                 <div class="philosopher-name">Jean-Jacques Rousseau</div>
                                 <div class="philosopher-dates">1712-1778</div>
+                            </div>
+                            <div class="philosopher">
+                                <div class="philosopher-name">Denis Diderot</div>
+                                <div class="philosopher-dates">1713-1784</div>
                             </div>
                             <div class="philosopher">
                                 <div class="philosopher-name">Immanuel Kant</div>
@@ -615,18 +983,23 @@
                                 <li>Contratto sociale</li>
                                 <li>Diritti dell'uomo</li>
                                 <li>Uso pubblico della ragione</li>
+                                <li>Separazione dei poteri</li>
                             </ul>
                         </div>
                     </div>
                 </div>
-                
-                <!-- Filosofia Contemporanea -->
-                <div class="era right visible" data-period="contemporary">
+
+                <!-- ============================================================ -->
+                <!-- FILOSOFIA CONTEMPORANEA                                        -->
+                <!-- ============================================================ -->
+
+                <!-- 14. Idealismo Tedesco -->
+                <div class="era right visible" data-period="contemporary" role="listitem">
                     <div class="era-content">
                         <h2 class="era-title">Idealismo Tedesco</h2>
                         <div class="era-period">Fine XVIII - XIX secolo</div>
                         <div class="era-description">
-                            Sviluppo della filosofia kantiana che porta all'identificazione di realtà e pensiero.
+                            Sviluppo della filosofia kantiana che porta all'identificazione di realtà e pensiero. L'Idealismo Tedesco è il culmine della filosofia moderna.
                         </div>
                         <div class="philosophers-container">
                             <div class="philosopher">
@@ -641,6 +1014,10 @@
                                 <div class="philosopher-name">Georg Hegel</div>
                                 <div class="philosopher-dates">1770-1831</div>
                             </div>
+                            <div class="philosopher">
+                                <div class="philosopher-name">Arthur Schopenhauer</div>
+                                <div class="philosopher-dates">1788-1860</div>
+                            </div>
                         </div>
                         <div class="concepts">
                             <div class="concepts-title">Concetti Chiave:</div>
@@ -648,18 +1025,52 @@
                                 <li>Idealismo assoluto</li>
                                 <li>Dialettica</li>
                                 <li>Spirito del mondo</li>
-                                <li>Fenomenologia dello spirito</li>
+                                <li>Volontà come noumeno</li>
                             </ul>
                         </div>
                     </div>
                 </div>
-                
-                <div class="era left visible" data-period="contemporary">
+
+                <!-- 15. Positivismo -->
+                <div class="era left visible" data-period="contemporary" role="listitem">
+                    <div class="era-content">
+                        <h2 class="era-title">Positivismo</h2>
+                        <div class="era-period">XIX secolo</div>
+                        <div class="era-description">
+                            Corrente filosofica che limita la conoscenza ai fatti positivi, cioè ai dati dell'esperienza scientifica. Il Positivismo influenza profondamente le scienze sociali.
+                        </div>
+                        <div class="philosophers-container">
+                            <div class="philosopher">
+                                <div class="philosopher-name">Auguste Comte</div>
+                                <div class="philosopher-dates">1798-1857</div>
+                            </div>
+                            <div class="philosopher">
+                                <div class="philosopher-name">John Stuart Mill</div>
+                                <div class="philosopher-dates">1806-1873</div>
+                            </div>
+                            <div class="philosopher">
+                                <div class="philosopher-name">Herbert Spencer</div>
+                                <div class="philosopher-dates">1820-1903</div>
+                            </div>
+                        </div>
+                        <div class="concepts">
+                            <div class="concepts-title">Concetti Chiave:</div>
+                            <ul class="concept-list">
+                                <li>Legge dei tre stadi</li>
+                                <li>Sociologia come scienza</li>
+                                <li>Evoluzionismo sociale</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 16. Marxismo -->
+                <div class="era right visible" data-period="contemporary" role="listitem">
                     <div class="era-content">
                         <h2 class="era-title">Marxismo e Materialismo</h2>
                         <div class="era-period">XIX secolo</div>
                         <div class="era-description">
-                            Filosofia che unisce materialismo dialettico e analisi economica per una critica radicale della società capitalistica.
+                            Filosofia che unisce materialismo dialettico e analisi economica per una critica radicale della società capitalistica. Il Marxismo diventa il fondamento teorico dei movimenti operai.
                         </div>
                         <div class="philosophers-container">
                             <div class="philosopher">
@@ -682,13 +1093,14 @@
                         </div>
                     </div>
                 </div>
-                
-                <div class="era right visible" data-period="contemporary">
+
+                <!-- 17. Esistenzialismo -->
+                <div class="era left visible" data-period="contemporary" role="listitem">
                     <div class="era-content">
                         <h2 class="era-title">Esistenzialismo</h2>
                         <div class="era-period">XIX - XX secolo</div>
                         <div class="era-description">
-                            Corrente filosofica che pone al centro l'esistenza umana, la libertà e la responsabilità individuale.
+                            Corrente filosofica che pone al centro l'esistenza umana, la libertà e la responsabilità individuale. L'Esistenzialismo affronta le grandi domande sul senso della vita.
                         </div>
                         <div class="philosophers-container">
                             <div class="philosopher">
@@ -700,8 +1112,20 @@
                                 <div class="philosopher-dates">1844-1900</div>
                             </div>
                             <div class="philosopher">
+                                <div class="philosopher-name">Karl Jaspers</div>
+                                <div class="philosopher-dates">1883-1969</div>
+                            </div>
+                            <div class="philosopher">
                                 <div class="philosopher-name">Jean-Paul Sartre</div>
                                 <div class="philosopher-dates">1905-1980</div>
+                            </div>
+                            <div class="philosopher">
+                                <div class="philosopher-name">Albert Camus</div>
+                                <div class="philosopher-dates">1913-1960</div>
+                            </div>
+                            <div class="philosopher">
+                                <div class="philosopher-name">Simone de Beauvoir</div>
+                                <div class="philosopher-dates">1908-1986</div>
                             </div>
                         </div>
                         <div class="concepts">
@@ -711,26 +1135,69 @@
                                 <li>Oltreuomo</li>
                                 <li>Angoscia e libertà</li>
                                 <li>Morte di Dio</li>
+                                <li>Assurdo</li>
                             </ul>
                         </div>
                     </div>
                 </div>
-                
-                <div class="era left visible" data-period="contemporary">
+
+                <!-- 18. Pragmatismo -->
+                <div class="era right visible" data-period="contemporary" role="listitem">
+                    <div class="era-content">
+                        <h2 class="era-title">Pragmatismo</h2>
+                        <div class="era-period">XIX - XX secolo</div>
+                        <div class="era-description">
+                            Filosofia americana che valuta le idee in base alle loro conseguenze pratiche. Il Pragmatismo influenza la psicologia, la pedagogia e la teoria politica.
+                        </div>
+                        <div class="philosophers-container">
+                            <div class="philosopher">
+                                <div class="philosopher-name">Charles Sanders Peirce</div>
+                                <div class="philosopher-dates">1839-1914</div>
+                            </div>
+                            <div class="philosopher">
+                                <div class="philosopher-name">William James</div>
+                                <div class="philosopher-dates">1842-1910</div>
+                            </div>
+                            <div class="philosopher">
+                                <div class="philosopher-name">John Dewey</div>
+                                <div class="philosopher-dates">1859-1952</div>
+                            </div>
+                        </div>
+                        <div class="concepts">
+                            <div class="concepts-title">Concetti Chiave:</div>
+                            <ul class="concept-list">
+                                <li>Verità come utilità</li>
+                                <li>Apprendimento esperienziale</li>
+                                <li>Democrazia e educazione</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 19. Filosofia Analitica -->
+                <div class="era left visible" data-period="contemporary" role="listitem">
                     <div class="era-content">
                         <h2 class="era-title">Filosofia Analitica</h2>
                         <div class="era-period">XX secolo</div>
                         <div class="era-description">
-                            Approccio filosofico che privilegia l'analisi del linguaggio e l'argomentazione logica.
+                            Approccio filosofico che privilegia l'analisi del linguaggio e l'argomentazione logica. La Filosofia Analitica domina il pensiero anglosassone e influenza la scienza.
                         </div>
                         <div class="philosophers-container">
+                            <div class="philosopher">
+                                <div class="philosopher-name">Gottlob Frege</div>
+                                <div class="philosopher-dates">1848-1925</div>
+                            </div>
+                            <div class="philosopher">
+                                <div class="philosopher-name">Bertrand Russell</div>
+                                <div class="philosopher-dates">1872-1970</div>
+                            </div>
                             <div class="philosopher">
                                 <div class="philosopher-name">Ludwig Wittgenstein</div>
                                 <div class="philosopher-dates">1889-1951</div>
                             </div>
                             <div class="philosopher">
-                                <div class="philosopher-name">Bertrand Russell</div>
-                                <div class="philosopher-dates">1872-1970</div>
+                                <div class="philosopher-name">Karl Popper</div>
+                                <div class="philosopher-dates">1902-1994</div>
                             </div>
                             <div class="philosopher">
                                 <div class="philosopher-name">Willard Quine</div>
@@ -743,23 +1210,28 @@
                                 <li>Atomismo logico</li>
                                 <li>Giochi linguistici</li>
                                 <li>Verificazionismo</li>
-                                <li>Critica ai fondamenti della matematica</li>
+                                <li>Falsificazionismo</li>
                             </ul>
                         </div>
                     </div>
                 </div>
-                
-                <div class="era right visible" data-period="contemporary">
+
+                <!-- 20. Filosofia Continentale -->
+                <div class="era right visible" data-period="contemporary" role="listitem">
                     <div class="era-content">
                         <h2 class="era-title">Filosofia Continentale</h2>
                         <div class="era-period">XX - XXI secolo</div>
                         <div class="era-description">
-                            Insieme di correnti filosofiche europee che si oppongono all'approccio analitico, enfatizzando la storicità e l'interpretazione.
+                            Insieme di correnti filosofiche europee che si oppongono all'approccio analitico, enfatizzando la storicità, l'interpretazione e la critica sociale. La Filosofia Continentale è caratterizzata da un approccio interdisciplinare.
                         </div>
                         <div class="philosophers-container">
                             <div class="philosopher">
                                 <div class="philosopher-name">Martin Heidegger</div>
                                 <div class="philosopher-dates">1889-1976</div>
+                            </div>
+                            <div class="philosopher">
+                                <div class="philosopher-name">Hannah Arendt</div>
+                                <div class="philosopher-dates">1906-1975</div>
                             </div>
                             <div class="philosopher">
                                 <div class="philosopher-name">Michel Foucault</div>
@@ -769,6 +1241,14 @@
                                 <div class="philosopher-name">Jacques Derrida</div>
                                 <div class="philosopher-dates">1930-2004</div>
                             </div>
+                            <div class="philosopher">
+                                <div class="philosopher-name">Jürgen Habermas</div>
+                                <div class="philosopher-dates">1929-vivente</div>
+                            </div>
+                            <div class="philosopher">
+                                <div class="philosopher-name">Gilles Deleuze</div>
+                                <div class="philosopher-dates">1925-1995</div>
+                            </div>
                         </div>
                         <div class="concepts">
                             <div class="concepts-title">Concetti Chiave:</div>
@@ -777,75 +1257,177 @@
                                 <li>Esser-ci (Dasein)</li>
                                 <li>Archeologia del sapere</li>
                                 <li>Biopotere</li>
+                                <li>Agire comunicativo</li>
                             </ul>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
-        
+
+        <!-- No results message -->
+        <div class="no-results" id="noResults" role="status" aria-live="polite">
+            <i class="fas fa-search" style="font-size: 2rem; display: block; margin-bottom: 10px;"></i>
+            Nessun risultato trovato per "<span id="searchTermDisplay"></span>"
+        </div>
+
         <footer>
-            <p>Linea del Tempo Filosofica - Un progetto completo per esplorare la storia del pensiero occidentale</p>
+            <p>Linea del Tempo Filosofica &bull; Un progetto completo per esplorare la storia del pensiero occidentale</p>
         </footer>
     </div>
 
     <script>
-        // Filtro per periodi
-        document.querySelectorAll('.period-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const period = this.getAttribute('data-period');
-                const eras = document.querySelectorAll('.era');
-                
+        (function() {
+            'use strict';
+
+            // ============================================
+            // FILTRO PER PERIODO
+            // ============================================
+            const periodBtns = document.querySelectorAll('.period-btn');
+            const eras = document.querySelectorAll('.era');
+
+            function filterPeriod(period) {
                 eras.forEach(era => {
-                    if (period === 'all' || era.getAttribute('data-period') === period) {
+                    const match = period === 'all' || era.getAttribute('data-period') === period;
+                    era.classList.toggle('visible', match);
+                });
+
+                periodBtns.forEach(btn => {
+                    const isActive = btn.getAttribute('data-period') === period;
+                    btn.classList.toggle('active', isActive);
+                    btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+                });
+
+                document.getElementById('noResults').style.display = 'none';
+            }
+
+            periodBtns.forEach(button => {
+                button.addEventListener('click', function() {
+                    filterPeriod(this.getAttribute('data-period'));
+                });
+            });
+
+            // ============================================
+            // RICERCA
+            // ============================================
+            const searchInput = document.getElementById('searchInput');
+            const searchButton = document.getElementById('searchButton');
+            const noResults = document.getElementById('noResults');
+            const searchTermDisplay = document.getElementById('searchTermDisplay');
+
+            function performSearch() {
+                const searchTerm = searchInput.value.trim().toLowerCase();
+
+                document.querySelectorAll('.highlight').forEach(el => {
+                    const parent = el.parentNode;
+                    parent.replaceChild(document.createTextNode(el.textContent), el);
+                    parent.normalize();
+                });
+
+                if (searchTerm === '') {
+                    noResults.style.display = 'none';
+                    filterPeriod('all');
+                    return;
+                }
+
+                let found = false;
+
+                eras.forEach(era => {
+                    const content = era.querySelector('.era-content');
+                    const text = content.textContent.toLowerCase();
+
+                    if (text.includes(searchTerm)) {
                         era.classList.add('visible');
+                        found = true;
+
+                        const walker = document.createTreeWalker(
+                            content,
+                            NodeFilter.SHOW_TEXT,
+                            null,
+                            false
+                        );
+                        const nodesToReplace = [];
+                        let node;
+                        while (node = walker.nextNode()) {
+                            if (node.textContent.toLowerCase().includes(searchTerm)) {
+                                nodesToReplace.push(node);
+                            }
+                        }
+
+                        nodesToReplace.forEach(textNode => {
+                            const parent = textNode.parentNode;
+                            const text = textNode.textContent;
+                            const parts = text.split(new RegExp(`(${searchTerm})`, 'gi'));
+                            const fragment = document.createDocumentFragment();
+                            parts.forEach(part => {
+                                if (part.toLowerCase() === searchTerm) {
+                                    const mark = document.createElement('span');
+                                    mark.className = 'highlight';
+                                    mark.textContent = part;
+                                    fragment.appendChild(mark);
+                                } else {
+                                    fragment.appendChild(document.createTextNode(part));
+                                }
+                            });
+                            parent.replaceChild(fragment, textNode);
+                        });
+
                     } else {
                         era.classList.remove('visible');
                     }
                 });
-            });
-        });
-        
-        // Funzione di ricerca
-        document.getElementById('searchButton').addEventListener('click', performSearch);
-        document.getElementById('searchInput').addEventListener('keyup', function(event) {
-            if (event.key === 'Enter') {
-                performSearch();
+
+                if (found) {
+                    noResults.style.display = 'none';
+                } else {
+                    searchTermDisplay.textContent = searchInput.value;
+                    noResults.style.display = 'block';
+                }
+
+                const firstResult = document.querySelector('.era.visible');
+                if (firstResult) {
+                    firstResult.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
             }
-        });
-        
-        function performSearch() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const eras = document.querySelectorAll('.era-content');
-            
-            // Rimuovi evidenziazioni precedenti
-            document.querySelectorAll('.highlight').forEach(el => {
-                el.classList.remove('highlight');
-            });
-            
-            if (searchTerm.trim() === '') return;
-            
-            eras.forEach(era => {
-                const text = era.textContent.toLowerCase();
-                if (text.includes(searchTerm)) {
-                    era.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    
-                    // Evidenzia il termine cercato
-                    const regex = new RegExp(searchTerm, 'gi');
-                    era.innerHTML = era.innerHTML.replace(regex, match => `<span class="highlight">${match}</span>`);
+
+            searchButton.addEventListener('click', performSearch);
+            searchInput.addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    performSearch();
                 }
             });
-        }
-        
-        // Animazione al caricamento
-        document.addEventListener('DOMContentLoaded', function() {
-            const eras = document.querySelectorAll('.era');
-            eras.forEach((era, index) => {
-                setTimeout(() => {
-                    era.classList.add('visible');
-                }, index * 200);
+
+            searchInput.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    searchInput.value = '';
+                    performSearch();
+                    searchInput.blur();
+                }
             });
-        });
+
+            // ============================================
+            // ANIMAZIONE AL CARICAMENTO
+            // ============================================
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                        }
+                    });
+                }, { threshold: 0.1 });
+
+                eras.forEach(era => {
+                    observer.observe(era);
+                });
+            } else {
+                eras.forEach(era => {
+                    era.classList.add('visible');
+                });
+            }
+
+        })();
     </script>
 </body>
 </html>
