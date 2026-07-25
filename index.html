@@ -99,6 +99,7 @@
   <!-- <link rel="preload" as="image" href="https://www.echidisofia.org/foto/socrate.webp"> -->
 
 <style>
+
 /* ============================================
    VARIABILI GLOBALI E TEMI
    ============================================ */
@@ -4123,7 +4124,7 @@ html {
 /* === CTA FLOTTANTE === */
 .floating-cta {
   position: fixed;
-  bottom: 50px;
+  bottom: 90px;
   right: 355px;
   z-index: 10000;
   animation: floatBounce 3s ease-in-out infinite;
@@ -6863,10 +6864,302 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
     transform: none !important;
   }
 }
+/* ============================================
+   CONTROLLO ANIMAZIONI GLOBALE-PULSANTE SOSPENDI ANIMAZIONI
+   ============================================ */
+
+/* Classe per sospendere TUTTE le animazioni */
+.animations-paused *,
+.animations-paused *::before,
+.animations-paused *::after {
+  animation-play-state: paused !important;
+  animation-duration: 0s !important;
+  transition-duration: 0s !important;
+  transition-delay: 0s !important;
+}
+
+/* Gestione specifica per stelle e comete */
+.animations-paused .star {
+  opacity: 0.15 !important;
+  animation: none !important;
+}
+
+.animations-paused .shooting-star {
+  display: none !important;
+  animation: none !important;
+}
+
+.animations-paused .cosmic-particle {
+  animation: none !important;
+}
+
+.animations-paused .timeline::after {
+  animation: none !important;
+}
+
+.animations-paused .timeline-item.visible {
+  animation: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+.animations-paused .accordion-subtitle {
+  animation: none !important;
+  transform: scale(1) !important;
+  opacity: 1 !important;
+}
+
+/* ============================================
+   CONTROLLO ANIMAZIONI - CSS COMPLETO
+   ============================================ */
+
+/* Classe per sospendere TUTTE le animazioni */
+.animations-paused *,
+.animations-paused *::before,
+.animations-paused *::after {
+  animation-play-state: paused !important;
+  animation-duration: 0s !important;
+  transition-duration: 0s !important;
+  transition-delay: 0s !important;
+}
+
+/* Gestione specifica per stelle e comete */
+.animations-paused .star {
+  opacity: 0.15 !important;
+  animation: none !important;
+}
+
+.animations-paused .shooting-star {
+  display: none !important;
+  animation: none !important;
+}
+
+.animations-paused .cosmic-particle {
+  animation: none !important;
+}
+
+.animations-paused .timeline::after {
+  animation: none !important;
+}
+
+.animations-paused .timeline-item.visible {
+  animation: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+.animations-paused .accordion-subtitle {
+  animation: none !important;
+  transform: scale(1) !important;
+  opacity: 1 !important;
+}
+
+/* ============================================
+   STILE PULSANTI
+   ============================================ */
+.animation-controls {
+  position: fixed;
+  bottom: .5rem;
+  right: 21.5rem;
+  z-index: 9999;
+  display: flex;
+  gap: 0.5rem;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.anim-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 10px;
+  background: rgba(10, 10, 30, 0.85);
+  backdrop-filter: blur(12px);
+  color: #e9eef5;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  min-width: 120px;
+  justify-content: center;
+}
+
+.anim-toggle-btn:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 215, 0, 0.6);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 215, 0, 0.1);
+}
+
+.anim-toggle-btn:active {
+  transform: translateY(0px);
+}
+
+.anim-toggle-btn .icon {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.anim-toggle-btn .label {
+  white-space: nowrap;
+}
+
+/* Stato attivo (animazioni sospese) */
+.anim-toggle-btn.active {
+  border-color: rgba(255, 100, 100, 0.5);
+  background: rgba(40, 10, 10, 0.85);
+  box-shadow: 0 0 20px rgba(255, 100, 100, 0.15);
+}
+
+.anim-toggle-btn.active:hover {
+  border-color: rgba(255, 100, 100, 0.8);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 100, 100, 0.2);
+}
+
+/* Badge di stato */
+.anim-status {
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  background: rgba(10, 10, 30, 0.8);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  color: #9ad0ff;
+  opacity: 0;
+  transition: all 0.4s ease;
+  pointer-events: none;
+}
+
+.anim-status.visible {
+  opacity: 1;
+}
+
+.anim-status.paused {
+  border-color: rgba(255, 100, 100, 0.4);
+  color: #ff6b6b;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .animation-controls {
+    bottom: 1rem;
+    right: 1rem;
+  }
+  
+  .anim-toggle-btn {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.75rem;
+    min-width: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .anim-toggle-btn .label {
+    display: none;
+  }
+  
+  .anim-toggle-btn {
+    min-width: 50px;
+    padding: 0.5rem;
+    border-radius: 50%;
+    aspect-ratio: 1;
+  }
+}
+/* ============================================
+   GESTIONE COMETE - AGGIUNTA SPECIFICA
+   ============================================ */
+
+/* Sospendi TUTTE le comete */
+.animations-paused .shooting-star,
+.animations-paused .shooting-star.fast,
+.animations-paused .shooting-star.slow,
+.animations-paused .shooting-star.diagonal,
+.animations-paused .shooting-star.horizontal,
+.animations-paused .shooting-star.vertical,
+.animations-paused .shooting-star.reverse,
+.animations-paused .shooting-star.micro {
+  animation-play-state: paused !important;
+  animation-duration: 0s !important;
+  animation-delay: 0s !important;
+  opacity: 0 !important; /* Nascondi le comete quando in pausa */
+  display: none !important;
+}
+
+/* Se vuoi tenerle visibili ma ferme */
+.animations-paused .shooting-star.keep-visible {
+  opacity: 0.3 !important;
+  display: block !important;
+  animation: none !important;
+  transform: translateX(0) translateY(0) !important;
+}
+
+/* Sospendi anche le particelle cosmiche */
+.animations-paused .cosmic-particle {
+  animation-play-state: paused !important;
+  animation-duration: 0s !important;
+  opacity: 0.2 !important;
+}
+
+/* Sospendi le scie delle comete */
+.animations-paused .shooting-star::before,
+.animations-paused .shooting-star::after {
+  animation-play-state: paused !important;
+  display: none !important;
+}
+/* ============================================
+   GESTIONE COMETE IN PAUSA - CSS
+   ============================================ */
+
+/* Ferma TUTTE le comete quando in pausa */
+.animations-paused .shooting-star,
+.animations-paused .shooting-star.fast,
+.animations-paused .shooting-star.slow,
+.animations-paused .shooting-star.diagonal,
+.animations-paused .shooting-star.horizontal,
+.animations-paused .shooting-star.vertical,
+.animations-paused .shooting-star.reverse,
+.animations-paused .shooting-star.micro {
+  animation-play-state: paused !important;
+  animation-duration: 0s !important;
+  opacity: 0 !important;
+  display: none !important;
+}
+
+/* Ferma particelle cosmiche */
+.animations-paused .cosmic-particle {
+  animation-play-state: paused !important;
+  animation-duration: 0s !important;
+  opacity: 0.2 !important;
+}
+
+/* Ferma stelle */
+.animations-paused .star {
+  animation-play-state: paused !important;
+  animation-duration: 0s !important;
+  opacity: 0.15 !important;
+}
 </style>
 </head>
 <body>
+<!-- Se preferisci HTML invece di JS puro -->
+<div class="animation-controls">
+  <button id="animToggleBtn" class="anim-toggle-btn" aria-pressed="false">
+    <span class="icon">⏸️</span>
+    <span class="label">Sospendi animazioni</span>
+  </button>
+  <div id="animStatus" class="anim-status">▶ Animazioni attive</div>
+</div>
 
+<script>
+  // Se usi HTML, aggiungi questo script
+  document.getElementById('animToggleBtn').addEventListener('click', () => {
+    window.AnimationAPI.toggle();
+  });
+</script>
   <!-- === FAB Dizionario === -->
 <button id="dict-fab" class="fab-with-text">
   <span class="fab-label">📘Dizionario</span>
@@ -9036,6 +9329,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
 
 <script>
+
 (function(){
   const BODY = document.body;
   const rnd = (min,max)=> Math.random()*(max-min)+min;
@@ -10725,7 +11019,16 @@ document.addEventListener('DOMContentLoaded', function() {
         
         container.appendChild(star);
     }
-    
+
+
+
+
+
+
+
+
+
+
     function createShootingStar() {
         const shooter = document.createElement('div');
         shooter.className = 'shooting-star';
@@ -10770,7 +11073,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, duration);
     }
     
-    function createMultipleShootingStars() {
+ function createMultipleShootingStars() {
         // Crea 1-2 stelle cadenti contemporaneamente
         const count = 1 + Math.floor(Math.random() * 2);
         for (let i = 0; i < count; i++) {
@@ -10794,7 +11097,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // AVVIA SUBITO
     setTimeout(createMultipleShootingStars, 500);
 })();
+
 </script>
+
 <script>
     (function() {
         const canvas = document.getElementById("tiny-comets");
@@ -10949,6 +11254,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     })();
 </script>
+
 <script id="ultimate-explosion-fixed">
 /* === SISTEMA DI ESPLOSIONE CORRETTO === */
 document.addEventListener('DOMContentLoaded', function() {
@@ -12044,5 +12350,398 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </script>
 
+<script>
+ // ============================================
+// CONTROLLO ANIMAZIONI - VERSIONE CON GESTIONE COMETE
+// ============================================
+
+(function() {
+  'use strict';
+  
+  const toggleBtn = document.getElementById('animToggleBtn');
+  const statusBadge = document.getElementById('animStatus');
+  
+  if (!toggleBtn) {
+    console.warn('Pulsante animToggleBtn non trovato!');
+    return;
+  }
+  
+  let isPaused = localStorage.getItem('animations-paused') === 'true';
+  
+  // ============================================
+  // GESTIONE COMETE
+  // ============================================
+  function handleComets(pause) {
+    const comets = document.querySelectorAll('.shooting-star');
+    
+    if (pause) {
+      comets.forEach(comet => {
+        comet.style.animationPlayState = 'paused';
+        comet.style.animationDuration = '0s';
+        comet.style.opacity = '0';
+        comet.style.display = 'none';
+      });
+    } else {
+      comets.forEach(comet => {
+        comet.style.animationPlayState = '';
+        comet.style.animationDuration = '';
+        comet.style.opacity = '';
+        comet.style.display = '';
+      });
+    }
+  }
+  
+
+
+
+
+  // ============================================
+  // GESTIONE STELLE
+  // ============================================
+  function handleStars(pause) {
+    const stars = document.querySelectorAll('.star');
+    stars.forEach(star => {
+      if (pause) {
+        star.style.animationPlayState = 'paused';
+        star.style.opacity = '0.15';
+      } else {
+        star.style.animationPlayState = '';
+        star.style.opacity = '';
+      }
+    });
+  }
+  
+  // ============================================
+  // FUNZIONE PRINCIPALE TOGGLE
+  // ============================================
+  function toggleAnimations() {
+    isPaused = !isPaused;
+    
+    // 1. Applica classe al body (gestisce tutto il resto)
+    document.body.classList.toggle('animations-paused', isPaused);
+    
+    // 2. Gestione specifica comete
+    handleComets(isPaused);
+    
+    // 3. Gestione specifica stelle
+    handleStars(isPaused);
+    
+    // 4. Aggiorna pulsante
+    toggleBtn.classList.toggle('active', isPaused);
+    toggleBtn.setAttribute('aria-pressed', isPaused ? 'true' : 'false');
+    
+    const icon = toggleBtn.querySelector('.icon');
+    const label = toggleBtn.querySelector('.label');
+    
+    if (icon) {
+      icon.textContent = isPaused ? '▶️' : '⏸️';
+    }
+    
+    if (label) {
+      label.textContent = isPaused ? 'Riprendi animazioni' : 'Sospendi animazioni';
+    }
+    
+    // 5. Aggiorna badge
+    if (statusBadge) {
+      statusBadge.textContent = isPaused ? '⏸ Animazioni sospese' : '▶ Animazioni attive';
+      statusBadge.classList.toggle('paused', isPaused);
+      statusBadge.classList.add('visible');
+      
+      clearTimeout(window.statusTimeout);
+      window.statusTimeout = setTimeout(() => {
+        statusBadge.classList.remove('visible');
+      }, 3000);
+    }
+    
+    // 6. Salva stato
+    localStorage.setItem('animations-paused', isPaused ? 'true' : 'false');
+    
+    // 7. Evento custom
+    document.dispatchEvent(new CustomEvent('animationsToggled', {
+      detail: { paused: isPaused }
+    }));
+    
+    console.log(`[Animations] ${isPaused ? '⏸ Sospese' : '▶ Riprese'} tutte le animazioni`);
+  }
+  
+  // ============================================
+  // EVENTI
+  // ============================================
+  
+  toggleBtn.addEventListener('click', toggleAnimations);
+  
+  document.addEventListener('keydown', (e) => {
+    if (e.shiftKey && (e.key === 'a' || e.key === 'A')) {
+      e.preventDefault();
+      toggleAnimations();
+    }
+  });
+  
+  // ============================================
+  // APPLICA STATO INIZIALE
+  // ============================================
+  
+  if (isPaused) {
+    document.body.classList.add('animations-paused');
+    handleComets(true);
+    handleStars(true);
+    
+    toggleBtn.classList.add('active');
+    toggleBtn.setAttribute('aria-pressed', 'true');
+    
+    const icon = toggleBtn.querySelector('.icon');
+    const label = toggleBtn.querySelector('.label');
+    
+    if (icon) icon.textContent = '▶️';
+    if (label) label.textContent = 'Riprendi animazioni';
+    
+    if (statusBadge) {
+      statusBadge.textContent = '⏸ Animazioni sospese';
+      statusBadge.classList.add('paused', 'visible');
+      setTimeout(() => statusBadge.classList.remove('visible'), 3000);
+    }
+  }
+  
+  // ============================================
+  // API PUBBLICA
+  // ============================================
+  
+  window.animController = {
+    toggle: toggleAnimations,
+    pause: function() {
+      if (!isPaused) this.toggle();
+      return this;
+    },
+    resume: function() {
+      if (isPaused) this.toggle();
+      return this;
+    },
+    isPaused: function() {
+      return isPaused;
+    },
+    getState: function() {
+      return { paused: isPaused };
+    }
+  };
+  
+  console.log('[Animations] Controller inizializzato con gestione comete. Usa Shift+A per toggle.');
+  
+})();
+// ============================================
+// FORZA FERMO COMETE - DA AGGIUNGERE IN FONDO
+// ============================================
+
+// Se le comete sono generate da un setInterval
+(function() {
+  // Salva i riferimenti agli intervalli
+  const originalSetInterval = window.setInterval;
+  window.setInterval = function(fn, delay) {
+    const id = originalSetInterval(fn, delay);
+    // Se l'intervallo genera comete, fermalo quando in pausa
+    if (fn.toString().includes('shooting-star') || fn.toString().includes('comet')) {
+      window._cometIntervals = window._cometIntervals || [];
+      window._cometIntervals.push(id);
+    }
+    return id;
+  };
+  
+  // Funzione per fermare tutti gli intervalli di comete
+  function stopAllCometIntervals() {
+    if (window._cometIntervals) {
+      window._cometIntervals.forEach(id => clearInterval(id));
+      window._cometIntervals = [];
+    }
+  }
+  
+  // Aggiungi alla funzione toggle
+  const originalToggle = window.animController.toggle;
+  window.animController.toggle = function() {
+    originalToggle();
+    if (this.isPaused()) {
+      stopAllCometIntervals();
+    }
+  };
+})();
+// ============================================
+// UCCISIONE TOTALE COMETE - SOLUZIONE DRASTICA
+// ============================================
+
+(function killAllComets() {
+  'use strict';
+  
+  // 1. Ferma TUTTI gli intervalli
+  const highestInterval = setInterval(() => {}, 99999);
+  for (let i = 0; i < highestInterval; i++) {
+    clearInterval(i);
+  }
+  
+  // 2. Ferma TUTTI i timeout
+  const highestTimeout = setTimeout(() => {}, 99999);
+  for (let i = 0; i < highestTimeout; i++) {
+    clearTimeout(i);
+  }
+  
+  // 3. Rimuovi TUTTE le comete esistenti
+  document.querySelectorAll('.shooting-star').forEach(el => {
+    el.remove();
+  });
+  
+  // 4. Impedisci nuove comete con CSS
+  const style = document.createElement('style');
+  style.textContent = `
+    .shooting-star {
+      display: none !important;
+      animation: none !important;
+      opacity: 0 !important;
+    }
+  `;
+  document.head.appendChild(style);
+  
+  console.log('[Kill Comets] Tutte le comete sono state uccise!');
+})();
+
+</script>
+<script>
+  
+  // ============================================
+// CACCIATORE DI COMETE RIBELLI
+// ============================================
+
+(function() {
+    'use strict';
+    
+    console.log('🔍 Inizio caccia alle comete ribelli...');
+    
+    // 1. Trova TUTTE le comete nel DOM
+    function findAllComets() {
+        const comets = [];
+        
+        // Cerca elementi con classe 'shooting-star'
+        document.querySelectorAll('.shooting-star').forEach(el => {
+            comets.push(el);
+        });
+        
+        // Cerca anche elementi con 'comet' nel nome
+        document.querySelectorAll('[class*="comet"]').forEach(el => {
+            comets.push(el);
+        });
+        
+        // Cerca elementi che hanno animazioni di comete
+        document.querySelectorAll('*').forEach(el => {
+            const style = getComputedStyle(el);
+            if (style.animationName && 
+                (style.animationName.includes('shoot') || 
+                 style.animationName.includes('comet') ||
+                 style.animationName.includes('star'))) {
+                comets.push(el);
+            }
+        });
+        
+        return comets;
+    }
+    
+    // 2. Analizza le comete trovate
+    function analyzeComets() {
+        const comets = findAllComets();
+        
+        console.log(`📊 Trovate ${comets.length} potenziali comete`);
+        
+        comets.forEach((comet, index) => {
+            const style = getComputedStyle(comet);
+            const rect = comet.getBoundingClientRect();
+            
+            console.log(`Cometa #${index}:`, {
+                className: comet.className,
+                tagName: comet.tagName,
+                position: `(${rect.left}, ${rect.top})`,
+                animation: style.animationName,
+                animationState: style.animationPlayState,
+                display: style.display,
+                opacity: style.opacity,
+                parent: comet.parentElement?.tagName || 'none'
+            });
+        });
+        
+        return comets;
+    }
+    
+    // 3. Uccidi le comete in modo drastico
+    function killAllComets() {
+        const comets = findAllComets();
+        let killed = 0;
+        
+        comets.forEach(comet => {
+            // Metodo 1: Rimozione diretta
+            try {
+                comet.remove();
+                killed++;
+            } catch(e) {
+                // Metodo 2: Nascondere
+                try {
+                    comet.style.display = 'none';
+                    comet.style.visibility = 'hidden';
+                    comet.style.opacity = '0';
+                    comet.style.pointerEvents = 'none';
+                    killed++;
+                } catch(e2) {
+                    console.warn('Impossibile uccidere cometa:', comet);
+                }
+            }
+        });
+        
+        console.log(`💀 Uccise ${killed} comete`);
+        return killed;
+    }
+    
+    // 4. Esegui
+    const comets = analyzeComets();
+    
+    if (comets.length > 0) {
+        console.log('🔫 Uccisione in corso...');
+        killAllComets();
+        
+        // Verifica dopo 1 secondo
+        setTimeout(() => {
+            const remaining = findAllComets();
+            if (remaining.length > 0) {
+                console.log(`⚠️ Rimangono ${remaining.length} comete! Uccisione 2° round...`);
+                killAllComets();
+            } else {
+                console.log('✅ Tutte le comete sono state uccise!');
+            }
+        }, 1000);
+    }
+    
+    // 5. Aggiungi un osservatore per bloccare nuove comete
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach(mutation => {
+            mutation.addedNodes.forEach(node => {
+                if (node.nodeType === 1) { // Elemento
+                    const isComet = 
+                        node.classList?.contains('shooting-star') ||
+                        node.className?.includes('comet') ||
+                        node.style?.animation?.includes('shoot');
+                    
+                    if (isComet) {
+                        console.log('🚫 Nuova cometa rilevata, uccisione immediata!');
+                        node.remove();
+                    }
+                }
+            });
+        });
+    });
+    
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+    
+    console.log('🛡️ Osservatore anti-comete attivato');
+    
+})();
+</script>
+<script>
+  
+</script>
 </body>
 </html>
