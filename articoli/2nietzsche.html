@@ -3,497 +3,1191 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nietzsche: Il Filosofo Cosmico</title>
+    <title>Friedrich Nietzsche - Il Filosofo del Martello</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Code+Pro&display=swap');
+        /* ============================================
+           STILE ARTICOLO NIETZSCHE
+           ============================================ */
         
-        :root {
-            --primary: #6e07f3;
-            --secondary: #5be9b9;
-            --dark: #0f0c24;
-            --light: #f8f9fa;
-            --comet: #ff6bff;
+        /* Reset e Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         
         body {
-            font-family: 'Source Code Pro', monospace;
-            background-color: var(--dark);
-            color: var(--light);
-            line-height: 1.6;
-            padding: 0;
-            margin: 0;
-            overflow-x: hidden;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(123, 31, 162, 0.1) 0%, transparent 20%),
-                radial-gradient(circle at 90% 30%, rgba(0, 255, 255, 0.05) 0%, transparent 25%);
-        }
-        
-        .container {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: #0a0a1a;
+            color: #e9eef5;
+            line-height: 1.8;
+            padding: 2rem;
             max-width: 900px;
             margin: 0 auto;
-            padding: 2rem;
-            position: relative;
-            z-index: 1;
         }
         
-        h1, h2, h3 {
-            font-family: 'Playfair Display', serif;
-            color: var(--secondary);
-        }
-        
-        h1 {
-            font-size: 3.5rem;
+        /* Header */
+        .nietzsche-header {
             text-align: center;
-            margin-bottom: 2rem;
-            text-shadow: 0 0 10px rgba(91, 233, 185, 0.5);
-            animation: pulse 4s infinite, float 6s ease-in-out infinite;
+            padding: 3rem 0;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+            margin-bottom: 3rem;
             position: relative;
         }
         
-        @keyframes pulse {
-            0% { text-shadow: 0 0 10px rgba(91, 233, 185, 0.5); }
-            50% { text-shadow: 0 0 20px rgba(91, 233, 185, 0.8), 0 0 30px rgba(91, 233, 185, 0.3); }
-            100% { text-shadow: 0 0 10px rgba(91, 233, 185, 0.5); }
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        .section {
-            background: rgba(15, 12, 36, 0.7);
-            border-left: 4px solid var(--primary);
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            border-radius: 0 8px 8px 0;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            transition: all 0.4s ease;
-            backdrop-filter: blur(5px);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .section:hover {
-            transform: translateY(-5px) scale(1.005);
-            box-shadow: 0 8px 25px rgba(110, 7, 243, 0.2);
-        }
-        
-        .section:before {
-            content: '';
+        .nietzsche-header::before {
+            content: '⚡';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, 
-                transparent 65%, 
-                rgba(91, 233, 185, 0.05) 75%, 
-                transparent 85%);
-            background-size: 300% 300%;
-            animation: shine 8s infinite;
-            pointer-events: none;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            animation: lightningPulse 2s ease-in-out infinite;
         }
         
-        @keyframes shine {
-            0% { background-position: 100% 100%; }
-            100% { background-position: 0% 0%; }
+        @keyframes lightningPulse {
+            0%, 100% { opacity: 1; transform: translateX(-50%) scale(1); }
+            50% { opacity: 0.3; transform: translateX(-50%) scale(1.3); }
         }
         
-        .toggle-btn {
-            background: linear-gradient(135deg, var(--primary) 0%, #8a2be2 100%);
-            color: white;
-            border: none;
-            padding: 1rem 1.5rem;
-            font-family: 'Source Code Pro', monospace;
-            font-size: 1rem;
+        .nietzsche-header h1 {
+            font-family: 'Cinzel', 'Georgia', serif;
+            font-size: 3.5rem;
+            color: #ffd86a;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+            margin-bottom: 0.5rem;
+            letter-spacing: 4px;
+        }
+        
+        .nietzsche-header .subtitle {
+            font-size: 1.2rem;
+            color: #9ad0ff;
+            font-style: italic;
+            font-weight: 300;
+        }
+        
+        .nietzsche-header .quote {
+            margin-top: 1.5rem;
+            font-size: 1.1rem;
+            color: #cfe8ff;
+            padding: 1rem 2rem;
+            border-left: 3px solid #ffd86a;
+            background: rgba(255, 215, 0, 0.05);
+            border-radius: 0 10px 10px 0;
+        }
+        
+        /* Indice Navigazione */
+        .navigation {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.15);
+            justify-content: center;
+        }
+        
+        .nav-btn {
+            padding: 0.6rem 1.2rem;
+            border: 1px solid rgba(255, 215, 0, 0.25);
+            border-radius: 25px;
+            background: rgba(10, 10, 30, 0.7);
+            color: #cfe8ff;
+            font-family: 'Georgia', serif;
+            font-size: 0.85rem;
             cursor: pointer;
-            border-radius: 4px;
-            display: block;
-            width: 100%;
-            text-align: left;
-            margin-bottom: 1rem;
-            transition: all 0.4s ease;
-            position: relative;
-            z-index: 2;
-            box-shadow: 0 4px 10px rgba(110, 7, 243, 0.3);
-        }
-        
-        .toggle-btn:after {
-            content: '+';
-            position: absolute;
-            right: 1.5rem;
-            font-size: 1.5rem;
             transition: all 0.3s ease;
+            text-decoration: none;
+            backdrop-filter: blur(10px);
         }
         
-        .toggle-btn.active:after {
-            content: '-';
-        }
-        
-        .toggle-btn:hover {
-            background: linear-gradient(135deg, #5a04d1 0%, #7b1fa2 100%);
+        .nav-btn:hover {
+            background: rgba(255, 215, 0, 0.15);
+            border-color: #ffd86a;
             transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(110, 7, 243, 0.4);
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.1);
         }
         
-        .content {
+        .nav-btn.active {
+            background: rgba(255, 215, 0, 0.2);
+            border-color: #ffd86a;
+            color: #ffd86a;
+        }
+        
+        /* Sezioni */
+        .section {
             display: none;
-            padding: 1rem;
-            animation: fadeIn 0.6s ease;
+            animation: fadeSlide 0.6s ease forwards;
+            padding: 1rem 0;
         }
         
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-15px); }
+        .section.active {
+            display: block;
+        }
+        
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
         
-        .quote {
-            font-style: italic;
-            border-left: 3px solid var(--secondary);
+        /* Contenuto */
+        .section h2 {
+            font-family: 'Cinzel', 'Georgia', serif;
+            color: #ffd86a;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.2);
+        }
+        
+        .section h3 {
+            color: #9ad0ff;
+            font-size: 1.3rem;
+            margin: 1.5rem 0 0.8rem 0;
+        }
+        
+        .section p {
+            margin-bottom: 1rem;
+            color: #d4dce8;
+        }
+        
+        .section .highlight {
+            background: rgba(255, 215, 0, 0.08);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            color: #ffd86a;
+        }
+        
+        /* Blocchi concettuali */
+        .concept-block {
+            background: rgba(20, 20, 50, 0.5);
+            border: 1px solid rgba(255, 215, 0, 0.15);
+            border-radius: 12px;
             padding: 1.5rem;
             margin: 1.5rem 0;
-            color: var(--secondary);
-            position: relative;
-            background: rgba(91, 233, 185, 0.05);
-            border-radius: 0 8px 8px 0;
-            animation: quoteGlow 4s infinite alternate;
+            backdrop-filter: blur(10px);
         }
         
-        @keyframes quoteGlow {
-            from { box-shadow: 0 0 5px rgba(91, 233, 185, 0.1); }
-            to { box-shadow: 0 0 15px rgba(91, 233, 185, 0.2); }
+        .concept-block h4 {
+            color: #ffd86a;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
         }
         
-        .quote:before {
-            content: '"';
-            font-size: 4rem;
-            position: absolute;
-            left: 0.5rem;
-            top: -0.5rem;
-            opacity: 0.2;
-            line-height: 1;
+        .concept-block .german {
+            color: #9ad0ff;
+            font-style: italic;
+            font-size: 0.9rem;
+            display: block;
+            margin-bottom: 0.5rem;
         }
         
-        .quote:after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 30px;
-            height: 30px;
-            border-bottom: 2px solid var(--secondary);
-            border-right: 2px solid var(--secondary);
-            opacity: 0.5;
+        /* Bottoni Mostra/Nascondi */
+        .toggle-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.5rem 1.2rem;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 30px;
+            background: rgba(10, 10, 30, 0.7);
+            color: #cfe8ff;
+            font-family: 'Georgia', serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            margin: 0.5rem 0;
         }
         
-        .glow {
-            animation: glow 2s ease-in-out infinite alternate;
+        .toggle-btn:hover {
+            background: rgba(255, 215, 0, 0.15);
+            border-color: #ffd86a;
+            transform: scale(1.02);
         }
         
-        @keyframes glow {
-            from { text-shadow: 0 0 5px var(--secondary); }
-            to { text-shadow: 0 0 15px var(--secondary), 0 0 25px rgba(91, 233, 185, 0.5); }
+        .toggle-btn .icon {
+            transition: transform 0.3s ease;
+            display: inline-block;
         }
         
-        footer {
-            text-align: center;
-            margin-top: 3rem;
-            padding: 2rem 1rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            position: relative;
+        .toggle-btn.active .icon {
+            transform: rotate(180deg);
         }
         
-        /* Comet Styles */
-        .comet {
-            position: fixed;
-            width: 6px;
-            height: 6px;
-            background: var(--comet);
-            border-radius: 50%;
-            box-shadow: 
-                0 0 10px 2px var(--comet),
-                0 0 20px 4px rgba(255, 107, 255, 0.5);
-            opacity: 0.8;
-            z-index: 0;
-            pointer-events: none;
-        }
-        
-        .comet-tail {
-            position: absolute;
-            height: 1px;
-            background: linear-gradient(90deg, var(--comet) 0%, transparent 100%);
-            transform-origin: left center;
-            pointer-events: none;
-        }
-        
-        /* Stars */
-        .star {
-            position: fixed;
-            width: 2px;
-            height: 2px;
-            background: white;
-            border-radius: 50%;
+        .toggle-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
             opacity: 0;
-            animation: twinkle 5s infinite;
-            z-index: 0;
         }
         
-        @keyframes twinkle {
-            0%, 100% { opacity: 0; transform: scale(0.5); }
-            50% { opacity: 0.8; transform: scale(1.2); }
+        .toggle-content.open {
+            max-height: 2000px;
+            opacity: 1;
         }
         
-        /* Floating Nietzsche */
-        .nietzsche-float {
-            position: fixed;
-            right: 5%;
-            bottom: 5%;
-            font-size: 3rem;
-            opacity: 0.1;
-            animation: floatSlow 15s ease-in-out infinite;
-            z-index: 0;
-            user-select: none;
+        /* Bottoni speciali */
+        .btn-deep {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(0, 204, 255, 0.15));
+            border-color: rgba(255, 215, 0, 0.4);
         }
         
-        @keyframes floatSlow {
-            0%, 100% { transform: translateY(0) rotate(-5deg); }
-            50% { transform: translateY(-50px) rotate(5deg); }
+        .btn-deep:hover {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.25), rgba(0, 204, 255, 0.25));
+            border-color: #ffd86a;
+        }
+        
+        .btn-mystic {
+            background: linear-gradient(135deg, rgba(185, 103, 255, 0.15), rgba(255, 215, 0, 0.15));
+            border-color: rgba(185, 103, 255, 0.4);
+        }
+        
+        .btn-mystic:hover {
+            background: linear-gradient(135deg, rgba(185, 103, 255, 0.25), rgba(255, 215, 0, 0.25));
+            border-color: #b967ff;
+        }
+        
+        /* Tooltip filosofici */
+        .philo-tip {
+            position: relative;
+            cursor: help;
+            color: #ffd86a;
+            border-bottom: 1px dashed rgba(255, 215, 0, 0.3);
+        }
+        
+        .philo-tip:hover::after {
+            content: attr(data-tip);
+            position: absolute;
+            bottom: 130%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(10, 10, 30, 0.95);
+            color: #e9eef5;
+            padding: 0.8rem 1.2rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            font-size: 0.85rem;
+            width: 280px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            pointer-events: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* Timeline */
+        .timeline-mini {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            padding: 1rem 0;
+        }
+        
+        .timeline-mini .event {
+            display: flex;
+            gap: 1rem;
+            padding: 0.8rem 1rem;
+            background: rgba(20, 20, 50, 0.3);
+            border-left: 3px solid #ffd86a;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .timeline-mini .event .year {
+            color: #ffd86a;
+            font-weight: bold;
+            min-width: 80px;
+            font-size: 0.9rem;
+        }
+        
+        .timeline-mini .event .desc {
+            color: #d4dce8;
+            font-size: 0.95rem;
+        }
+        
+        /* Citazioni */
+        .quote-block {
+            padding: 1.5rem 2rem;
+            margin: 1.5rem 0;
+            background: rgba(255, 215, 0, 0.05);
+            border-left: 4px solid #ffd86a;
+            border-radius: 0 12px 12px 0;
+            font-style: italic;
+            color: #cfe8ff;
+        }
+        
+        .quote-block .source {
+            display: block;
+            margin-top: 0.5rem;
+            color: #9ad0ff;
+            font-style: normal;
+            font-size: 0.9rem;
+        }
+        
+        /* Footer articolo */
+        .article-footer {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 215, 0, 0.15);
+            text-align: center;
+            color: #888;
+            font-size: 0.85rem;
+        }
+        
+        .article-footer .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        
+        .article-footer .tags span {
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            background: rgba(255, 215, 0, 0.08);
+            border: 1px solid rgba(255, 215, 0, 0.1);
+            color: #9ad0ff;
+            font-size: 0.75rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .nietzsche-header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .navigation {
+                gap: 0.3rem;
+            }
+            
+            .nav-btn {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.75rem;
+            }
+            
+            .section h2 {
+                font-size: 1.5rem;
+            }
+            
+            .timeline-mini .event {
+                flex-direction: column;
+                gap: 0.3rem;
+            }
+            
+            .timeline-mini .event .year {
+                min-width: auto;
+            }
+            
+            .philo-tip:hover::after {
+                width: 200px;
+                font-size: 0.75rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .nietzsche-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .nietzsche-header .subtitle {
+                font-size: 1rem;
+            }
+            
+            .concept-block {
+                padding: 1rem;
+            }
+            
+            .quote-block {
+                padding: 1rem;
+            }
+        }
+        
+        /* Scroll personalizzato */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #0a0a1a;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #ffd86a;
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #e5c200;
         }
     </style>
 </head>
 <body>
-    <!-- Background Elements -->
-    <div class="nietzsche-float">☄️</div>
     
-    <div class="container">
-        <h1 class="glow">Nietzsche: Il Filosofo Cosmico</h1>
+    <!-- HEADER -->
+    <header class="nietzsche-header">
+        <h1>⚡ Friedrich Nietzsche</h1>
+        <div class="subtitle">Il Filosofo del Martello · 1844-1900</div>
+        <div class="quote">
+            "Devi avere il caos dentro di te per poter generare una stella danzante."
+            <span style="display:block; font-size:0.8rem; color:#9ad0ff; margin-top:0.3rem;">— Così parlò Zarathustra</span>
+        </div>
+    </header>
+    
+    <!-- NAVIGAZIONE -->
+    <nav class="navigation" id="navContainer">
+        <button class="nav-btn active" data-section="vita">📜 Vita</button>
+        <button class="nav-btn" data-section="opere">📚 Opere</button>
+        <button class="nav-btn" data-section="concetti">🧠 Concetti</button>
+        <button class="nav-btn" data-section="letture">📖 Letture</button>
+        <button class="nav-btn" data-section="influenza">🌍 Influenza</button>
+        <button class="nav-btn" data-section="citazioni">✨ Citazioni</button>
+    </nav>
+    
+    <!-- ========================================
+    SEZIONE 1: VITA
+    ======================================== -->
+    <section class="section active" id="vita">
+        <h2>📜 Vita</h2>
         
-        <div class="section">
-            <button class="toggle-btn">🌌 Il Richiamo del Folle</button>
-            <div class="content">
-                <p>Nietzsche non era un filosofo come gli altri. Era un poeta cosmico, un astronomo dell'anima che mappava costellazioni di significato nell'oscurità.</p>
-                
-                <div class="quote">
-                    "In qualche remoto angolo dell'universo scintillante... c'è una stella dove animali intelligenti inventarono la conoscenza."<br>
-                    - Friedrich Nietzsche
+        <p>
+            <strong>Friedrich Wilhelm Nietzsche</strong> (1844-1900) è stato un filosofo, filologo, poeta e compositore tedesco. 
+            La sua opera, caratterizzata da una prosa aforistica e incisiva, ha profondamente influenzato la filosofia, la letteratura, 
+            la psicologia e la cultura del XX secolo.
+        </p>
+        
+        <div class="concept-block">
+            <h4>📅 Cronologia Essenziale</h4>
+            <div class="timeline-mini">
+                <div class="event">
+                    <span class="year">1844</span>
+                    <span class="desc">Nasce a Röcken, Prussia, figlio di un pastore luterano</span>
                 </div>
-                
-                <p>Il suo annuncio più scandaloso: <strong>"Dio è morto"</strong> risuonò come un'esplosione stellare che illuminò il cielo della filosofia moderna.</p>
+                <div class="event">
+                    <span class="year">1869</span>
+                    <span class="desc">Diventa professore di filologia classica a Basilea (a soli 24 anni)</span>
+                </div>
+                <div class="event">
+                    <span class="year">1879</span>
+                    <span class="desc">Si dimette dalla cattedra a causa dei problemi di salute</span>
+                </div>
+                <div class="event">
+                    <span class="year">1889</span>
+                    <span class="desc">Crollo psichico a Torino: l'abbraccio al cavallo</span>
+                </div>
+                <div class="event">
+                    <span class="year">1900</span>
+                    <span class="desc">Muore a Weimar, dopo undici anni di silenzio</span>
+                </div>
             </div>
         </div>
         
-        <div class="section">
-            <button class="toggle-btn">💫 La Volontà di Potenza</button>
-            <div class="content">
-                <p>La <strong>Volontà di Potenza</strong> è la forza che muove le galassie e gli atomi, l'energia primordiale che tutto permea:</p>
-                
-                <div class="quote">
-                    "Il mondo visto dall'interno, il mondo determinato e designato secondo il suo 'carattere intelligibile' — sarebbe appunto la 'volontà di potenza' e nient'altro che questa."<br>
-                    - Friedrich Nietzsche
-                </div>
-                
-                <p>Nell'era digitale questa forza si manifesta come:</p>
-                <ul>
-                    <li>Algoritmi che sfidano i limiti della conoscenza</li>
-                    <li>Reti neurali che imitano il pensiero</li>
-                    <li>Codice che plasma nuove realtà</li>
-                </ul>
-            </div>
-        </div>
+        <p>
+            La vita di Nietzsche è stata segnata da una <span class="highlight">salute cagionevole</span> e da un profondo isolamento. 
+            Tuttavia, la sua solitudine è stata anche il crogiolo in cui ha forgiato alcune delle idee più radicali e influenti della storia del pensiero occidentale.
+        </p>
         
-        <div class="section">
-            <button class="toggle-btn">♾️ L'Eterno Ritorno</button>
-            <div class="content">
-                <p>L'idea più vertiginosa: <strong>l'Eterno Ritorno</strong> è il loop cosmico definitivo, un universo che si ripete in ogni dettaglio:</p>
-                
-                <div class="quote">
-                    "Tutto va, tutto torna indietro; eternamente gira la ruota dell'essere. Tutto muore, tutto torna a fiorire; eternamente corre l'anno dell'essere."<br>
-                    - Friedrich Nietzsche
-                </div>
-                
-                <p>Per il programmatore filosofo:</p>
-                <ul>
-                    <li>Ogni <code>git commit</code> è un istante eterno</li>
-                    <li>Ogni <code>while(true)</code> è un micro-ritorno</li>
-                    <li>Ogni sistema ricorsivo un eco dell'eterno</li>
-                </ul>
-            </div>
-        </div>
+        <button class="toggle-btn" data-target="vita-detail">
+            <span class="icon">▼</span>
+            <span class="label">Approfondisci la biografia</span>
+        </button>
         
-        <div class="section">
-            <button class="toggle-btn">🚀 Il Superuomo</button>
-            <div class="content">
-                <p>L'<strong>Übermensch</strong> è colui che trasforma la gravità del reale in leggerezza cosmica:</p>
-                
-                <div class="quote">
-                    "L'uomo è una corda tesa tra la bestia e il superuomo — una corda sopra un abisso."<br>
-                    - Friedrich Nietzsche
-                </div>
-                
-                <p>Nell'era spaziale digitale:</p>
-                <ul>
-                    <li>Il Superuomo scrive codice che sfida la mortalità</li>
-                    <li>Trasforma dati in stelle, bit in mondi</li>
-                    <li>Vive come un astronauta metafisico</li>
-                </ul>
-            </div>
-        </div>
-        
-        <div class="section">
-            <button class="toggle-btn">☄️ La Filosofia come Cometa</button>
-            <div class="content">
-                <p>Il pensiero di Nietzsche è una cometa che attraversa il cielo della ragione, lasciando una scia incandescente:</p>
-                
-                <div class="quote">
-                    "Devi avere caos dentro di te per partorire una stella danzante."<br>
-                    - Friedrich Nietzsche
-                </div>
-                
-                <p>Manifesto per il programmatore cosmico:</p>
-                <ol>
-                    <li>Sii come una supernova — esplodi di creatività</li>
-                    <li>Orbita attorno a problemi mai risolti</li>
-                    <li>Lascia una scia di codice luminoso</li>
-                </ol>
-            </div>
-        </div>
-        
-        <footer>
+        <div class="toggle-content" id="vita-detail">
+            <h3>Le tappe fondamentali</h3>
             
-        </footer>
-    </div>
-
+            <p>
+                Nietzsche crebbe in un ambiente profondamente religioso. Dopo la morte del padre (1849) e del fratello, 
+                si trasferì con la madre a Naumburg. La sua formazione fu eccellente: studiò a Bonn e Lipsia, 
+                dove venne affascinato dalla filosofia di Schopenhauer e dalla musica di Wagner.
+            </p>
+            
+            <p>
+                L'incontro con Wagner fu inizialmente trasformativo. Nietzsche vedeva nel compositore la possibilità 
+                di una rinascita della cultura tedesca. Tuttavia, il progressivo allontanamento — segnato anche 
+                dalla conversione di Wagner al cristianesimo — segnò una svolta decisiva nel suo pensiero.
+            </p>
+            
+            <p>
+                Dopo il 1879, Nietzsche condusse una vita da <span class="highlight">"filosofo errante"</span>, 
+                spostandosi tra Svizzera, Italia e Francia meridionale. Fu in questo periodo che scrisse le sue opere 
+                maggiori: <em>La gaia scienza</em>, <em>Così parlò Zarathustra</em>, <em>Al di là del bene e del male</em>, 
+                <em>Genealogia della morale</em> e <em>L'Anticristo</em>.
+            </p>
+            
+            <div class="quote-block">
+                "Io non sono un uomo, sono dinamite."
+                <span class="source">— Ecce Homo</span>
+            </div>
+            
+            <p>
+                Il crollo del 1889 — quando abbracciò un cavallo a Torino — rappresenta il momento più enigmatico 
+                della sua esistenza. Trascorse gli ultimi undici anni in uno stato di follia, assistito prima dalla madre 
+                e poi dalla sorella Elisabeth, che avrebbe manipolato la sua eredità intellettuale in direzioni discusse.
+            </p>
+        </div>
+        
+    </section>
+    
+    <!-- ========================================
+    SEZIONE 2: OPERE
+    ======================================== -->
+    <section class="section" id="opere">
+        <h2>📚 Le Opere</h2>
+        
+        <p>
+            L'opera di Nietzsche si caratterizza per la sua <span class="highlight">frammentarietà</span> e per l'uso di forme letterarie 
+            non convenzionali: aforismi, poesie, parodie, profezie. Questa scelta stilistica è intenzionale: 
+            il filosofo rifiuta il sistema filosofico chiuso e predilige una scrittura che "balla" come il pensiero stesso.
+        </p>
+        
+        <div class="concept-block">
+            <h4>📖 Opere principali</h4>
+            <ul style="list-style: none; padding: 0; color: #d4dce8;">
+                <li style="padding: 0.3rem 0; border-bottom: 1px solid rgba(255,215,0,0.05);">
+                    <span style="color: #ffd86a;">1872</span> — <em>La nascita della tragedia</em>
+                </li>
+                <li style="padding: 0.3rem 0; border-bottom: 1px solid rgba(255,215,0,0.05);">
+                    <span style="color: #ffd86a;">1878</span> — <em>Umano, troppo umano</em>
+                </li>
+                <li style="padding: 0.3rem 0; border-bottom: 1px solid rgba(255,215,0,0.05);">
+                    <span style="color: #ffd86a;">1882</span> — <em>La gaia scienza</em>
+                </li>
+                <li style="padding: 0.3rem 0; border-bottom: 1px solid rgba(255,215,0,0.05);">
+                    <span style="color: #ffd86a;">1883-85</span> — <em>Così parlò Zarathustra</em>
+                </li>
+                <li style="padding: 0.3rem 0; border-bottom: 1px solid rgba(255,215,0,0.05);">
+                    <span style="color: #ffd86a;">1886</span> — <em>Al di là del bene e del male</em>
+                </li>
+                <li style="padding: 0.3rem 0; border-bottom: 1px solid rgba(255,215,0,0.05);">
+                    <span style="color: #ffd86a;">1887</span> — <em>Genealogia della morale</em>
+                </li>
+                <li style="padding: 0.3rem 0; border-bottom: 1px solid rgba(255,215,0,0.05);">
+                    <span style="color: #ffd86a;">1888</span> — <em>L'Anticristo</em> · <em>Ecce Homo</em>
+                </li>
+                <li style="padding: 0.3rem 0;">
+                    <span style="color: #ffd86a;">Postumo</span> — <em>La volontà di potenza</em> (frammenti)
+                </li>
+            </ul>
+        </div>
+        
+        <button class="toggle-btn btn-deep" data-target="opere-detail">
+            <span class="icon">▼</span>
+            <span class="label">Guida critica alle opere</span>
+        </button>
+        
+        <div class="toggle-content" id="opere-detail">
+            <h3>Periodi e trasformazioni</h3>
+            
+            <p>
+                L'opera di Nietzsche può essere suddivisa in tre fasi principali:
+            </p>
+            
+            <h4>🧪 Prima fase (1872-1878)</h4>
+            <p>
+                Caratterizzata dall'influenza di Schopenhauer e Wagner. <em>La nascita della tragedia</em> 
+                contrappone l'<span class="highlight">apollineo</span> e il <span class="highlight">dionisiaco</span>, 
+                due impulsi artistici che Nietzsche vede come fondamentali per la creazione culturale.
+            </p>
+            
+            <h4>🕯️ Fase illuministica (1878-1882)</h4>
+            <p>
+                Con <em>Umano, troppo umano</em> Nietzsche si distacca da Wagner e abbraccia uno stile più 
+                "illuminista" e analitico. Cerca di comprendere le illusioni metafisiche e religiose come prodotti 
+                della psicologia umana.
+            </p>
+            
+            <h4>⚡ Fase matura (1883-1888)</h4>
+            <p>
+                Il periodo delle opere maggiori. Nietzsche sviluppa i suoi concetti fondamentali: 
+                l'<span class="highlight">eterno ritorno</span>, il <span class="highlight">superuomo</span>, 
+                la <span class="highlight">volontà di potenza</span>, la <span class="highlight">morte di Dio</span>. 
+                Il linguaggio si fa profetico, aforistico, poetico.
+            </p>
+            
+            <div class="quote-block">
+                "Il mio scrivere è una danza, il mio pensiero è una danza, e chi non sa ballare non potrà mai comprendermi."
+                <span class="source">— Così parlò Zarathustra</span>
+            </div>
+        </div>
+        
+    </section>
+    
+    <!-- ========================================
+    SEZIONE 3: CONCETTI
+    ======================================== -->
+    <section class="section" id="concetti">
+        <h2>🧠 Concetti Fondamentali</h2>
+        
+        <p>
+            Nietzsche è il filosofo dei concetti che <span class="highlight">esplodono</span>. Ogni sua idea è un martello 
+            che colpisce le fondamenta della metafisica occidentale. Ecco le sue chiavi di lettura principali.
+        </p>
+        
+        <!-- 1. Morte di Dio -->
+        <div class="concept-block">
+            <h4>🕊️ La Morte di Dio</h4>
+            <span class="german">"Gott ist tot"</span>
+            <p style="margin-top:0.5rem;">
+                Annunciata in <em>La gaia scienza</em>, la morte di Dio non è un evento gioioso ma un <span class="highlight">trauma</span>. 
+                Con la perdita del fondamento metafisico della verità, l'umanità deve imparare a vivere senza 
+                certezze assolute. Nietzsche non celebra la morte di Dio: ne diagnostica le conseguenze, 
+                tra cui il <span class="highlight">nichilismo</span> come destino dell'Occidente.
+            </p>
+            
+            <button class="toggle-btn" data-target="morte-dio">
+                <span class="icon">▼</span>
+                <span class="label">Approfondisci</span>
+            </button>
+            
+            <div class="toggle-content" id="morte-dio">
+                <p>
+                    Per Nietzsche, la morte di Dio apre due possibilità: il <span class="highlight">nichilismo passivo</span> 
+                    (la perdita di senso che porta al nulla) e il <span class="highlight">nichilismo attivo</span> 
+                    (la distruzione dei valori per crearne di nuovi). Il superuomo è colui che sa affrontare questa sfida, 
+                    diventando il creatore di nuovi valori in un mondo senza garanzie trascendenti.
+                </p>
+                <div class="quote-block">
+                    "Dio è morto. Dio rimane morto. E noi lo abbiamo ucciso. Come possiamo consolarci, noi assassini tra gli assassini?"
+                    <span class="source">— La gaia scienza, §125</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 2. Volontà di Potenza -->
+        <div class="concept-block">
+            <h4>🔥 Volontà di Potenza</h4>
+            <span class="german">"Wille zur Macht"</span>
+            <p style="margin-top:0.5rem;">
+                Non è "volontà di dominio" nel senso politico, ma il <span class="highlight">principio immanente</span> 
+                di tutta la realtà. Ogni essere vivente tende ad affermare sé stesso, a crescere, a superarsi. 
+                La volontà di potenza è il motore dell'esistenza, l'impulso che spinge a oltrepassare i propri limiti.
+            </p>
+            
+            <button class="toggle-btn btn-mystic" data-target="volonta-potenza">
+                <span class="icon">▼</span>
+                <span class="label">Approfondisci</span>
+            </button>
+            
+            <div class="toggle-content" id="volonta-potenza">
+                <p>
+                    A differenza della "volontà di vivere" di Schopenhauer, che è negazione e desiderio, la volontà di potenza 
+                    di Nietzsche è <span class="highlight">affermazione</span>. Essa non cerca la sopravvivenza, ma la crescita, 
+                    la creazione, l'espansione. La volontà di potenza è anche la chiave per comprendere la morale: 
+                    i valori morali sono espressioni di una specifica volontà di potenza.
+                </p>
+                <div class="quote-block">
+                    "Dov'è la volontà di potenza, là c'è la vita, e là dove non c'è potenza, non c'è neppure vita."
+                    <span class="source">— Al di là del bene e del male</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 3. Superuomo -->
+        <div class="concept-block">
+            <h4>🦁 Il Superuomo</h4>
+            <span class="german">"Übermensch"</span>
+            <p style="margin-top:0.5rem;">
+                Il <span class="highlight">superuomo</span> non è un essere superiore o un tiranno, ma l'<span class="highlight">oltre-uomo</span>, 
+                colui che ha saputo superare l'umano, troppo umano. È il creatore di nuovi valori, colui che ha imparato 
+                a vivere senza Dio e a dire <span class="highlight">"sì"</span> alla vita in tutte le sue manifestazioni.
+            </p>
+            
+            <button class="toggle-btn" data-target="superuomo">
+                <span class="icon">▼</span>
+                <span class="label">Approfondisci</span>
+            </button>
+            
+            <div class="toggle-content" id="superuomo">
+                <p>
+                    Il superuomo è il significato della terra. Nietzsche contrappone il superuomo all'<span class="highlight">"ultimo uomo"</span>, 
+                    l'essere mediocre che cerca solo comfort e sicurezza. Il superuomo è colui che accetta l'eterno ritorno 
+                    e ama la vita in modo incondizionato.
+                </p>
+                <div class="quote-block">
+                    "L'uomo è qualcosa che deve essere superato. Che cosa avete fatto per superarlo?"
+                    <span class="source">— Così parlò Zarathustra</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 4. Eterno Ritorno -->
+        <div class="concept-block">
+            <h4>🌀 L'Eterno Ritorno</h4>
+            <span class="german">"Die ewige Wiederkunft"</span>
+            <p style="margin-top:0.5rem;">
+                L'idea che <span class="highlight">tutto ciò che è accaduto ritornerà</span> all'infinito. 
+                Non una dottrina cosmologica, ma un <span class="highlight">esperimento del pensiero</span>: 
+                se la vita dovesse ripetersi eternamente, saresti in grado di dire "sì" alla tua esistenza? 
+                È la formula per l'<span class="highlight">amor fati</span>, l'amore del destino.
+            </p>
+            
+            <button class="toggle-btn btn-deep" data-target="eterno-ritorno">
+                <span class="icon">▼</span>
+                <span class="label">Approfondisci</span>
+            </button>
+            
+            <div class="toggle-content" id="eterno-ritorno">
+                <p>
+                    L'eterno ritorno è la sfida più radicale di Nietzsche. Se tutto ritorna, ogni istante acquista un 
+                    <span class="highlight">valore infinito</span>. Il superuomo è colui che non solo accetta l'eterno ritorno, 
+                    ma lo <span class="highlight">desidera</span> come la più alta forma di affermazione della vita.
+                </p>
+                <div class="quote-block">
+                    "Questa vita, come tu la vivi ora, dovrai viverla ancora una volta e innumerevoli volte; e non ci sarà in essa niente di nuovo, ma ogni dolore e ogni piacere deve ritornare."
+                    <span class="source">— La gaia scienza, §341</span>
+                </div>
+            </div>
+        </div>
+        
+    </section>
+    
+    <!-- ========================================
+    SEZIONE 4: LETTURE
+    ======================================== -->
+    <section class="section" id="letture">
+        <h2>📖 Possibili Letture di Nietzsche</h2>
+        
+        <p>
+            Nietzsche è un filosofo <span class="highlight">poliedrico</span>, che si presta a molteplici interpretazioni. 
+            La sua opera è un prisma che rifrange la luce in direzioni diverse. Ecco alcune delle principali 
+            chiavi di lettura.
+        </p>
+        
+        <!-- Lettura 1 -->
+        <div class="concept-block">
+            <h4>🔮 1. Nietzsche come Critico della Morale</h4>
+            <p>
+                La <span class="highlight">genealogia</span> della morale è forse l'aspetto più noto del pensiero di Nietzsche. 
+                Egli mostra come i valori morali non siano eterni, ma siano il prodotto di forze storiche e psicologiche. 
+                La morale cristiana, in particolare, è una <span class="highlight">"morale degli schiavi"</span> che ha 
+                invertito i valori della nobiltà.
+            </p>
+            
+            <button class="toggle-btn" data-target="lettura-morale">
+                <span class="icon">▼</span>
+                <span class="label">Leggi di più</span>
+            </button>
+            
+            <div class="toggle-content" id="lettura-morale">
+                <p>
+                    La distinzione tra <span class="highlight">morale dei signori</span> e <span class="highlight">morale degli schiavi</span> 
+                    è centrale. La prima afferma la vita, la forza, l'orgoglio; la seconda nega la vita, 
+                    esalta la debolezza e la sottomissione. Il cristianesimo, per Nietzsche, è la più grande 
+                    manifestazione della morale degli schiavi, perché ha reso sacro ciò che è debole e malato.
+                </p>
+                <p>
+                    La <span class="highlight">psicologia del risentimento</span> è il meccanismo che produce la morale 
+                    degli schiavi: i deboli, non potendo affermarsi, si vendicano trasformando i loro difetti in virtù.
+                </p>
+                <div class="quote-block">
+                    "Il concetto di 'peccato' è stato inventato per rendere l'uomo degno di essere tormentato."
+                    <span class="source">— L'Anticristo</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Lettura 2 -->
+        <div class="concept-block">
+            <h4>🎭 2. Nietzsche come Filosofo dell'Arte</h4>
+            <p>
+                La sua prima opera, <em>La nascita della tragedia</em>, è un manifesto per una concezione 
+                <span class="highlight">estetica</span> dell'esistenza. Nietzsche vede l'arte non come evasione, 
+                ma come la <span class="highlight">forma più alta</span> di conoscenza e di affermazione della vita.
+            </p>
+            
+            <button class="toggle-btn btn-mystic" data-target="lettura-arte">
+                <span class="icon">▼</span>
+                <span class="label">Leggi di più</span>
+            </button>
+            
+            <div class="toggle-content" id="lettura-arte">
+                <p>
+                    La contrapposizione tra <span class="highlight">apollineo</span> e <span class="highlight">dionisiaco</span> 
+                    non è solo una teoria estetica, ma una visione dell'esistenza. L'apollineo è l'ordine, la forma, il principio di 
+                    individuazione; il dionisiaco è l'ebbrezza, la fusione, la perdita dei confini. La grande arte nasce 
+                    dall'<span class="highlight">equilibrio dinamico</span> tra queste due forze.
+                </p>
+                <p>
+                    Per Nietzsche, l'arte è la <span class="highlight">grande mentitrice</span> che rende sopportabile 
+                    la vita. Essa è l'unica risposta adeguata alla "verità" del divenire e del caos.
+                </p>
+                <div class="quote-block">
+                    "La vita senza musica sarebbe un errore."
+                    <span class="source">— Frammenti postumi</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Lettura 3 -->
+        <div class="concept-block">
+            <h4>🌍 3. Nietzsche come Filosofo della Vita</h4>
+            <p>
+                Nietzsche è il filosofo del <span class="highlight">"sì alla vita"</span>. La sua filosofia è una 
+                <span class="highlight">fisiologia</span> della cultura, che cerca di comprendere le condizioni 
+                della vita che fiorisce. La salute, la forza, la gioia sono i criteri ultimi del valore.
+            </p>
+            
+            <button class="toggle-btn" data-target="lettura-vita">
+                <span class="icon">▼</span>
+                <span class="label">Leggi di più</span>
+            </button>
+            
+            <div class="toggle-content" id="lettura-vita">
+                <p>
+                    Questa lettura mette in luce l'aspetto <span class="highlight">affermativo</span> del pensiero di Nietzsche. 
+                    Il suo <span class="highlight">amor fati</span> (amore del destino) non è rassegnazione, ma la capacità 
+                    di volere che tutto ciò che accade <span class="highlight">sia così</span>. È la forma più alta 
+                    di libertà: non scegliere tra le alternative, ma volere ciò che è.
+                </p>
+                <p>
+                    Nietzsche critica ogni filosofia che nega la vita: il platonismo, il cristianesimo, il pessimismo. 
+                    La sua è una <span class="highlight">filosofia della gioia</span> che celebra la potenza e la 
+                    creatività dell'esistenza.
+                </p>
+                <div class="quote-block">
+                    "La mia formula per la grandezza dell'uomo è l'<em>amor fati</em>: non volere nulla di diverso, né in avanti, né indietro, né per tutta l'eternità."
+                    <span class="source">— Ecce Homo</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Lettura 4 -->
+        <div class="concept-block">
+            <h4>🧩 4. Nietzsche come Decostruttore del Linguaggio</h4>
+            <p>
+                Nietzsche anticipa molte istanze della filosofia contemporanea, in particolare la 
+                <span class="highlight">decostruzione</span> del linguaggio. Egli mostra come le parole 
+                e i concetti siano <span class="highlight">metafore</span> che hanno dimenticato la loro 
+                origine umana, troppo umana.
+            </p>
+            
+            <button class="toggle-btn btn-deep" data-target="lettura-linguaggio">
+                <span class="icon">▼</span>
+                <span class="label">Leggi di più</span>
+            </button>
+            
+            <div class="toggle-content" id="lettura-linguaggio">
+                <p>
+                    In <em>Verità e menzogna in senso extramorale</em>, Nietzsche mostra come la verità sia 
+                    un <span class="highlight">esercito di metafore</span> che abbiamo dimenticato come tali. 
+                    Le parole non riflettono la realtà, ma la costruiscono attraverso convenzioni sociali.
+                </p>
+                <p>
+                    Questa dimensione del suo pensiero ha influenzato la filosofia continentale (da Heidegger a Derrida) 
+                    e la critica letteraria. Nietzsche è, in questo senso, il <span class="highlight">filosofo del sospetto</span> 
+                    che smaschera le pretese di verità del linguaggio e della metafisica.
+                </p>
+                <div class="quote-block">
+                    "La verità è un esercito di metafore, metonimie, antropomorfismi, in breve, una somma di relazioni umane."
+                    <span class="source">— Verità e menzogna in senso extramorale</span>
+                </div>
+            </div>
+        </div>
+        
+    </section>
+    
+    <!-- ========================================
+    SEZIONE 5: INFLUENZA
+    ======================================== -->
+    <section class="section" id="influenza">
+        <h2>🌍 Influenza e Ricezione</h2>
+        
+        <p>
+            L'eredità di Nietzsche è <span class="highlight">immensa e contraddittoria</span>. La sua opera è stata 
+            interpretata in modi radicalmente diversi, spesso strumentalizzata per scopi opposti. 
+            Dalla psicoanalisi alla teologia, dalla letteratura alla politica, Nietzsche ha lasciato un'impronta 
+            indelebile sulla cultura del XX e XXI secolo.
+        </p>
+        
+        <div class="concept-block">
+            <h4>🎯 Aree di Influenza</h4>
+            
+            <h3 style="font-size:1rem; color:#ffd86a; margin-top:0.5rem;">Psicoanalisi</h3>
+            <p>
+                Freud riconobbe in Nietzsche un precursore. La sua psicologia del profondo, la critica alla 
+                coscienza e la nozione di pulsione hanno influenzato la psicoanalisi, anche se Freud non ammetteva 
+                apertamente questo debito.
+            </p>
+            
+            <h3 style="font-size:1rem; color:#ffd86a; margin-top:0.5rem;">Filosofia Continentale</h3>
+            <p>
+                Heidegger scrisse fondamentali interpretazioni di Nietzsche, vedendo in lui il compimento 
+                della metafisica occidentale. Foucault, Deleuze, Derrida e molti altri hanno letto e riletto 
+                Nietzsche, trovando in lui strumenti per la critica della modernità.
+            </p>
+            
+            <h3 style="font-size:1rem; color:#ffd86a; margin-top:0.5rem;">Letteratura</h3>
+            <p>
+                Autori come Thomas Mann, Hermann Hesse, André Gide, e più recentemente, autori contemporanei 
+                come Michel Houellebecq, hanno incorporato il pensiero di Nietzsche nelle loro opere.
+            </p>
+            
+            <h3 style="font-size:1rem; color:#ffd86a; margin-top:0.5rem;">Nazismo? (La strumentalizzazione)</h3>
+            <p>
+                La sorella di Nietzsche, Elisabeth, manipolò i suoi scritti per adattarli all'ideologia nazista. 
+                L'immagine di Nietzsche come "filosofo del nazismo" è una <span class="highlight">falsificazione</span> 
+                che ha danneggiato la sua reputazione. Nietzsche era un critico radicale del nazionalismo, 
+                dell'antisemitismo e di ogni forma di gregarismo.
+            </p>
+            
+            <button class="toggle-btn btn-deep" data-target="influenza-detail">
+                <span class="icon">▼</span>
+                <span class="label">Approfondisci la ricezione critica</span>
+            </button>
+            
+            <div class="toggle-content" id="influenza-detail">
+                <h3>La lettura di Nietzsche nel Novecento</h3>
+                
+                <p>
+                    Nel Novecento, Nietzsche è stato letto e riletto attraverso molteplici lenti:
+                </p>
+                
+                <ul style="color:#d4dce8; padding-left:1.5rem;">
+                    <li style="margin:0.5rem 0;"><strong>Lettura esistenzialista</strong> (Jaspers, Heidegger): Nietzsche come filosofo dell'esistenza e della libertà radicale.</li>
+                    <li style="margin:0.5rem 0;"><strong>Lettura postmoderna</strong> (Deleuze, Derrida): Nietzsche come decostruttore del logos e della metafisica.</li>
+                    <li style="margin:0.5rem 0;"><strong>Lettura politica</strong> (Gramsci, Foucault): Nietzsche come pensatore delle relazioni di potere.</li>
+                    <li style="margin:0.5rem 0;"><strong>Lettura psicologica</strong> (Adler, Jung): Nietzsche come anticipatore della psicologia del profondo.</li>
+                </ul>
+                
+                <p>
+                    Oggi Nietzsche continua a essere un filosofo <span class="highlight">vivo</span>, capace di 
+                    parlare alle nostre inquietudini contemporanee: la crisi dei valori, il nichilismo, 
+                    la ricerca di senso in un mondo che non offre più certezze.
+                </p>
+            </div>
+        </div>
+        
+    </section>
+    
+    <!-- ========================================
+    SEZIONE 6: CITAZIONI
+    ======================================== -->
+    <section class="section" id="citazioni">
+        <h2>✨ Le Citazioni</h2>
+        
+        <p>
+            La prosa di Nietzsche è un <span class="highlight">fulmine</span> che squarcia il cielo del pensiero. 
+            Ogni sua frase è un aforisma che può essere letto come una poesia, un manifesto o una sfida.
+        </p>
+        
+        <!-- Citazioni organizzate -->
+        <div class="concept-block">
+            <h4>📝 Aforismi fondamentali</h4>
+            
+            <div style="padding:0.5rem 0; border-bottom:1px solid rgba(255,215,0,0.05);">
+                <p style="font-style:italic; color:#cfe8ff; font-size:1.05rem;">
+                    "Bisogna avere il caos dentro di sé per poter generare una stella danzante."
+                </p>
+                <p style="font-size:0.85rem; color:#9ad0ff; text-align:right;">— Così parlò Zarathustra</p>
+            </div>
+            
+            <div style="padding:0.5rem 0; border-bottom:1px solid rgba(255,215,0,0.05);">
+                <p style="font-style:italic; color:#cfe8ff; font-size:1.05rem;">
+                    "Ciò che non mi uccide, mi rende più forte."
+                </p>
+                <p style="font-size:0.85rem; color:#9ad0ff; text-align:right;">— Il crepuscolo degli idoli</p>
+            </div>
+            
+            <div style="padding:0.5rem 0; border-bottom:1px solid rgba(255,215,0,0.05);">
+                <p style="font-style:italic; color:#cfe8ff; font-size:1.05rem;">
+                    "Se guardi a lungo nell'abisso, anche l'abisso guarda dentro di te."
+                </p>
+                <p style="font-size:0.85rem; color:#9ad0ff; text-align:right;">— Al di là del bene e del male</p>
+            </div>
+            
+            <div style="padding:0.5rem 0; border-bottom:1px solid rgba(255,215,0,0.05);">
+                <p style="font-style:italic; color:#cfe8ff; font-size:1.05rem;">
+                    "Dio è morto. Dio rimane morto. E noi lo abbiamo ucciso."
+                </p>
+                <p style="font-size:0.85rem; color:#9ad0ff; text-align:right;">— La gaia scienza</p>
+            </div>
+            
+            <div style="padding:0.5rem 0; border-bottom:1px solid rgba(255,215,0,0.05);">
+                <p style="font-style:italic; color:#cfe8ff; font-size:1.05rem;">
+                    "Senza musica, la vita sarebbe un errore."
+                </p>
+                <p style="font-size:0.85rem; color:#9ad0ff; text-align:right;">— Il crepuscolo degli idoli</p>
+            </div>
+            
+            <div style="padding:0.5rem 0;">
+                <p style="font-style:italic; color:#cfe8ff; font-size:1.05rem;">
+                    "Diventa ciò che sei."
+                </p>
+                <p style="font-size:0.85rem; color:#9ad0ff; text-align:right;">— Così parlò Zarathustra</p>
+            </div>
+        </div>
+        
+        <button class="toggle-btn btn-mystic" data-target="citazioni-detail">
+            <span class="icon">▼</span>
+            <span class="label">Altre citazioni celebri</span>
+        </button>
+        
+        <div class="toggle-content" id="citazioni-detail">
+            <div style="padding:0.5rem 0; border-bottom:1px solid rgba(255,215,0,0.05);">
+                <p style="font-style:italic; color:#cfe8ff; font-size:1.05rem;">
+                    "L'uomo è una corda tesa tra la bestia e il superuomo."
+                </p>
+                <p style="font-size:0.85rem; color:#9ad0ff; text-align:right;">— Così parlò Zarathustra</p>
+            </div>
+            
+            <div style="padding:0.5rem 0; border-bottom:1px solid rgba(255,215,0,0.05);">
+                <p style="font-style:italic; color:#cfe8ff; font-size:1.05rem;">
+                    "La morale è la miglior difesa contro la solitudine."
+                </p>
+                <p style="font-size:0.85rem; color:#9ad0ff; text-align:right;">— Frammenti postumi</p>
+            </div>
+            
+            <div style="padding:0.5rem 0; border-bottom:1px solid rgba(255,215,0,0.05);">
+                <p style="font-style:italic; color:#cfe8ff; font-size:1.05rem;">
+                    "Il cristianesimo ha fatto dell'uomo una bestia malata."
+                </p>
+                <p style="font-size:0.85rem; color:#9ad0ff; text-align:right;">— L'Anticristo</p>
+            </div>
+            
+            <div style="padding:0.5rem 0;">
+                <p style="font-style:italic; color:#cfe8ff; font-size:1.05rem;">
+                    "Tutti gli uomini sono artisti, ma la maggior parte lo ha dimenticato."
+                </p>
+                <p style="font-size:0.85rem; color:#9ad0ff; text-align:right;">— Frammenti postumi</p>
+            </div>
+        </div>
+        
+    </section>
+    
+    <!-- FOOTER -->
+    <footer class="article-footer">
+        <p style="color:#9ad0ff; font-size:1rem; margin-bottom:0.5rem;">
+            ⚡ "Bisogna avere il caos dentro di sé per poter generare una stella danzante." ⚡
+        </p>
+        <p>Articolo enciclopedico su Friedrich Nietzsche · Pubblicato su GitHub</p>
+        <div class="tags">
+            <span>#filosofia</span>
+            <span>#nietzsche</span>
+            <span>#superuomo</span>
+            <span>#eternoritorno</span>
+            <span>#volontadipotenza</span>
+            <span>#amorfati</span>
+            <span>#nichilismo</span>
+        </div>
+        <p style="margin-top:1rem; font-size:0.75rem; opacity:0.5;">
+            Contenuto liberamente distribuibile · Ultimo aggiornamento: <span id="updateDate"></span>
+        </p>
+    </footer>
+    
+    <!-- ============================================
+    JAVASCRIPT: NAVIGAZIONE E TOGGLE
+    ============================================ -->
     <script>
-        // Section toggle logic
-        document.querySelectorAll('.toggle-btn').forEach(button => {
-            button.addEventListener('click', () => {
-                button.classList.toggle('active');
-                const content = button.nextElementSibling;
+        (function() {
+            'use strict';
+            
+            // ============================================
+            // NAVIGAZIONE TRA SEZIONI
+            // ============================================
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            const sections = document.querySelectorAll('.section');
+            
+            function navigateTo(sectionId) {
+                // Nascondi tutte le sezioni
+                sections.forEach(s => s.classList.remove('active'));
                 
-                if (content.style.display === 'block') {
-                    content.style.display = 'none';
-                } else {
-                    content.style.display = 'block';
-                    // Create comet effect when opening a section
-                    createComet(button);
-                }
-            });
-        });
-        
-        // Auto-open first section
-        document.querySelector('.toggle-btn').click();
-        
-        // Create stars
-        function createStars() {
-            const starsCount = 100;
-            for (let i = 0; i < starsCount; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.left = `${Math.random() * 100}vw`;
-                star.style.top = `${Math.random() * 100}vh`;
-                star.style.animationDelay = `${Math.random() * 5}s`;
-                document.body.appendChild(star);
-            }
-        }
-        
-        // Create comets
-        function createComet(triggerElement) {
-            const rect = triggerElement.getBoundingClientRect();
-            const startX = rect.left + rect.width/2;
-            const startY = rect.top + rect.height/2;
-            
-            // Comet head
-            const comet = document.createElement('div');
-            comet.className = 'comet';
-            comet.style.left = `${startX}px`;
-            comet.style.top = `${startY}px`;
-            document.body.appendChild(comet);
-            
-            // Comet tail
-            const tail = document.createElement('div');
-            tail.className = 'comet-tail';
-            tail.style.left = `${startX}px`;
-            tail.style.top = `${startY + 3}px`;
-            tail.style.width = '0px';
-            document.body.appendChild(tail);
-            
-            // Random end point
-            const endX = Math.random() * window.innerWidth;
-            const endY = Math.random() * window.innerHeight;
-            
-            // Animate comet
-            const duration = 2000 + Math.random() * 1000;
-            const startTime = performance.now();
-            
-            function animateComet(currentTime) {
-                const elapsed = currentTime - startTime;
-                const progress = Math.min(elapsed / duration, 1);
+                // Mostra la sezione target
+                const target = document.getElementById(sectionId);
+                if (target) target.classList.add('active');
                 
-                // Calculate current position
-                const currentX = startX + (endX - startX) * progress;
-                const currentY = startY + (endY - startY) * progress;
-                
-                // Update positions
-                comet.style.left = `${currentX}px`;
-                comet.style.top = `${currentY}px`;
-                
-                // Update tail
-                tail.style.left = `${currentX}px`;
-                tail.style.top = `${currentY + 3}px`;
-                tail.style.width = `${50 * (1 - progress)}px`;
-                tail.style.transform = `rotate(${Math.atan2(endY - startY, endX - startX)}rad)`;
-                
-                if (progress < 1) {
-                    requestAnimationFrame(animateComet);
-                } else {
-                    // Fade out
-                    comet.style.transition = 'opacity 0.5s';
-                    tail.style.transition = 'opacity 0.5s';
-                    comet.style.opacity = '0';
-                    tail.style.opacity = '0';
-                    
-                    // Remove elements after fade out
-                    setTimeout(() => {
-                        comet.remove();
-                        tail.remove();
-                    }, 500);
-                }
-            }
-            
-            requestAnimationFrame(animateComet);
-        }
-        
-        // Random comets
-        function createRandomComet() {
-            setTimeout(() => {
-                createComet({
-                    getBoundingClientRect: () => ({
-                        left: Math.random() * window.innerWidth * 0.2,
-                        top: Math.random() * window.innerHeight * 0.2,
-                        width: 0,
-                        height: 0
-                    })
+                // Aggiorna bottoni
+                navButtons.forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.section === sectionId);
                 });
-                createRandomComet();
-            }, 3000 + Math.random() * 7000);
-        }
-        
-        // Initialize effects
-        createStars();
-        createRandomComet();
-        
-        // Add comet on click anywhere
-        document.addEventListener('click', (e) => {
-            createComet({
-                getBoundingClientRect: () => ({
-                    left: e.clientX,
-                    top: e.clientY,
-                    width: 0,
-                    height: 0
-                })
+                
+                // Scorri in alto
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+            
+            navButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const sectionId = this.dataset.section;
+                    navigateTo(sectionId);
+                    
+                    // Aggiorna URL hash
+                    if (history.pushState) {
+                        history.pushState(null, '', '#' + sectionId);
+                    }
+                });
             });
-        });
+            
+            // Gestione hash all'avvio
+            if (window.location.hash) {
+                const hash = window.location.hash.replace('#', '');
+                const validSection = document.getElementById(hash);
+                if (validSection) {
+                    navigateTo(hash);
+                }
+            }
+            
+            // ============================================
+            // BOTTONI TOGGLE (Mostra/Nascondi)
+            // ============================================
+            
+            const toggleButtons = document.querySelectorAll('.toggle-btn');
+            
+            toggleButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const targetId = this.dataset.target;
+                    const content = document.getElementById(targetId);
+                    
+                    if (!content) return;
+                    
+                    // Toggle classe
+                    const isOpen = content.classList.contains('open');
+                    content.classList.toggle('open');
+                    this.classList.toggle('active');
+                    
+                    // Aggiorna label
+                    const label = this.querySelector('.label');
+                    if (label) {
+                        label.textContent = isOpen ? 'Espandi' : 'Nascondi';
+                    }
+                });
+            });
+            
+            // ============================================
+            // DATA AGGIORNAMENTO
+            // ============================================
+            
+            const dateElement = document.getElementById('updateDate');
+            if (dateElement) {
+                const now = new Date();
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                dateElement.textContent = now.toLocaleDateString('it-IT', options);
+            }
+            
+            // ============================================
+            // KEYBOARD SHORTCUTS
+            // ============================================
+            
+            document.addEventListener('keydown', function(e) {
+                // Numeri 1-6 per navigare
+                const num = parseInt(e.key);
+                if (num >= 1 && num <= 6) {
+                    const btn = navButtons[num - 1];
+                    if (btn) {
+                        btn.click();
+                        e.preventDefault();
+                    }
+                }
+            });
+            
+            console.log('📚 Articolo su Nietzsche caricato!');
+            console.log('💡 Usa i tasti 1-6 per navigare tra le sezioni.');
+            
+        })();
     </script>
+    
 </body>
 </html>
