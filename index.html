@@ -722,40 +722,82 @@ main {
   color: #9ad0ff;
   font-weight: 600;
   display: inline-block;
-  animation: accordionEffect 3s ease-in-out infinite;
+  animation: accordionType 3.5s ease-in-out infinite;
   text-align: center;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 1.2rem;
   border-radius: 10px;
   background: rgba(10, 10, 30, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(154, 208, 255, 0.1);
   box-shadow: 0 0 15px rgba(154, 208, 255, 0.3);
   margin-bottom: 2rem;
+  transition: all 0.3s ease;
+  position: relative;
 }
 
-@keyframes accordionEffect {
+/* Cursore lampeggiante */
+.accordion-subtitle::before {
+  content: '|';
+  position: absolute;
+  right: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ad0ff;
+  animation: cursorBlink 1s step-end infinite;
+  opacity: 0;
+}
+
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.accordion-subtitle:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 30px rgba(154, 208, 255, 0.5);
+  border-color: rgba(154, 208, 255, 0.3);
+}
+
+@keyframes accordionType {
   0%, 100% {
-    transform: scaleX(0.85);
+    transform: scale(0.92);
     letter-spacing: 0px;
     opacity: 0.7;
-    background: rgba(10, 10, 30, 0.7);
-    box-shadow: 0 0 10px rgba(154, 208, 255, 0.2);
+    box-shadow: 0 0 10px rgba(154, 208, 255, 0.15);
   }
-  25% {
-    transform: scaleX(0.9);
+  15% {
+    transform: scale(0.95);
     letter-spacing: 1px;
-    opacity: 0.8;
+    opacity: 0.85;
   }
-  50% {
-    transform: scaleX(1);
+  35% {
+    transform: scale(1);
     letter-spacing: 2px;
     opacity: 1;
-    background: rgba(20, 20, 50, 0.8);
-    box-shadow: 0 0 20px rgba(154, 208, 255, 0.5);
+    box-shadow: 0 0 30px rgba(154, 208, 255, 0.5);
+  }
+  55% {
+    transform: scale(0.97);
+    letter-spacing: 1px;
+    opacity: 0.9;
   }
   75% {
-    transform: scaleX(0.9);
-    letter-spacing: 1px;
-    opacity: 0.8;
+    transform: scale(0.94);
+    letter-spacing: 0px;
+    opacity: 0.75;
   }
+}
+/* Per performance migliori */
+.accordion-subtitle {
+  will-change: transform, opacity;
+  transform: translateZ(0); /* Hardware acceleration */
+}
+
+/* Per tema scuro/chiaro */
+[data-theme="light"] .accordion-subtitle {
+  background: rgba(255, 255, 255, 0.8);
+  color: #2c5282;
+  border-color: rgba(44, 82, 130, 0.2);
 }
 
 /* ============================================
@@ -6853,6 +6895,75 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
   }
 }
 </style>
+
+
+<style>
+#atmosphereToggle {
+    margin-left: 10px;
+    cursor: pointer;
+
+    padding: 9px 18px;
+    border-radius: 30px;
+
+    border: 1px solid rgba(255,255,255,0.35);
+    background: rgba(255,255,255,0.08);
+
+    color: #f5e9c8;
+    font-size: 15px;
+    letter-spacing: 0.4px;
+
+    backdrop-filter: blur(8px);
+
+    box-shadow:
+        0 0 12px rgba(255,220,130,0.18),
+        inset 0 0 8px rgba(255,255,255,0.08);
+
+    transition:
+        background 0.4s ease,
+        box-shadow 0.4s ease,
+        transform 0.25s ease,
+        color 0.4s ease;
+}
+
+
+/* effetto al passaggio del mouse */
+#atmosphereToggle:hover {
+    background: rgba(255,255,255,0.16);
+
+    box-shadow:
+        0 0 18px rgba(255,220,130,0.35),
+        inset 0 0 10px rgba(255,255,255,0.15);
+
+    transform: translateY(-2px);
+}
+
+
+/* quando l'atmosfera è ridotta */
+#atmosphereToggle.atmosphere-off {
+    color: #c8c8c8;
+
+    background: rgba(255,255,255,0.04);
+
+    box-shadow:
+        0 0 8px rgba(255,255,255,0.08);
+}
+
+
+/* icona più luminosa */
+#atmosphereToggle::first-letter {
+    color: #ffe9a6;
+}
+
+
+/* vecchia funzione pausa animazioni */
+.animations-paused *,
+.animations-paused *::before,
+.animations-paused *::after {
+    animation-play-state: paused !important;
+}
+
+</style>
+
 </head>
 <body>
 
@@ -7400,6 +7511,10 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 <!-- ============================================================
         TOPBAR CON DIZIONARIO
 ============================================================ -->
+<!--   Bottone atmosfera dinamica INIZIO -->
+<button id="atmosphereToggle" class="control-btn" title="Attiva o sospende le animazioni del cielo"> ✦ Cielo stellato </button>
+<!--BOTTONE ATMOSFERA DINAMICA - FINE   -->
+
 <div class="bar-right">
 <div class="translate-box">
 <span>🌐</span>
@@ -12032,6 +12147,59 @@ document.addEventListener('DOMContentLoaded', () => {
 }
 
 </script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
 
+    const button = document.getElementById("atmosphereToggle");
+
+    if (!button) return;
+
+    let atmosphereOn = true;
+
+    button.addEventListener("click", function () {
+
+        atmosphereOn = !atmosphereOn;
+
+        const elements = document.querySelectorAll(
+            '[class*="star"], [class*="comet"], [class*="meteor"], [class*="shoot"], [class*="particle"], [id*="star"], [id*="comet"], canvas'
+        );
+
+        elements.forEach(el => {
+
+            // lascia sempre visibile la timeline
+            if (
+                el.classList.contains("timeline") ||
+                el.closest(".timeline")
+            ) {
+                return;
+            }
+
+            el.style.display = atmosphereOn ? "" : "none";
+
+        });
+
+
+        if (atmosphereOn) {
+
+    button.innerHTML = "✦ Cielo stellato";
+    button.title = "Riduci stelle, comete ed effetti del cielo";
+
+    // stile pulsante attivo
+    button.classList.remove("atmosphere-off");
+
+} else {
+
+    button.innerHTML = "✦ Cielo limpido";
+    button.title = "Mostra stelle, comete ed effetti del cielo";
+
+    // stile pulsante ridotto
+    button.classList.add("atmosphere-off");
+
+}
+
+    });
+
+});
+</script>
 </body>
 </html>
