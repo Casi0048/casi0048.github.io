@@ -841,15 +841,50 @@ main {
 }
 
 /* ============================================
-   FLOATING QUOTES
+   FLOATING QUOTES - PREFERENZE UTENTE
    ============================================ */
+
+/* ============================================
+   CONTENITORE PRINCIPALE
+   ============================================ */
+
 .floating-quotes {
   position: fixed;
-  bottom: 0px;
-  right: 20px;
   z-index: 20;
   max-width: 300px;
 }
+
+/* ============================================
+   POSIZIONI SALVATE IN LOCALSTORAGE
+   ============================================ */
+
+.floating-quotes.user-bottom-right {
+  bottom: 20px;
+  right: 20px;
+}
+
+.floating-quotes.user-bottom-left {
+  bottom: 20px;
+  left: 20px;
+  right: auto;
+}
+
+.floating-quotes.user-top-right {
+  top: 80px;
+  right: 20px;
+  bottom: auto;
+}
+
+.floating-quotes.user-top-left {
+  top: 80px;
+  left: 20px;
+  right: auto;
+  bottom: auto;
+}
+
+/* ============================================
+   BUBBLE SINGOLA
+   ============================================ */
 
 .quote-bubble {
   background: rgba(10, 10, 30, 0.9);
@@ -858,27 +893,49 @@ main {
   padding: 5px;
   margin-bottom: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(5px);
+  
+  /* Animazione di entrata */
   transform: translateX(100%);
   opacity: 0;
-  transition: transform 0.5s, opacity 0.5s;
-  backdrop-filter: blur(5px);
+  transition: transform 0.5s ease, opacity 0.5s ease;
 }
 
+/* Stato visibile */
 .quote-bubble.show {
   transform: translateX(0);
   opacity: 1;
 }
 
-.quote-text {
-  font-style: italic;
-  margin-bottom: 5px;
-  color: var(--text-light);
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+  .floating-quotes {
+    max-width: 250px;
+  }
+  
+  .floating-quotes.user-bottom-right,
+  .floating-quotes.user-bottom-left {
+    bottom: 10px;
+  }
+  
+  .floating-quotes.user-top-right,
+  .floating-quotes.user-top-left {
+    top: 60px;
+  }
 }
 
-.quote-author {
-  text-align: right;
-  font-size: 0.9rem;
-  color: var(--gold);
+@media (max-width: 480px) {
+  .floating-quotes {
+    max-width: 200px;
+  }
+  
+  .quote-bubble {
+    padding: 3px;
+    font-size: 0.9rem;
+  }
 }
 
 /* ============================================
@@ -2279,7 +2336,7 @@ mark,
 #quote-runner {
   position: fixed;
   left: 50%;
-  bottom: 250px;
+  bottom: 270px;
   transform: translateX(-50%);
   z-index: 20;
   pointer-events: none;
@@ -3044,7 +3101,7 @@ nav.menu-desktop .mega-menu {
     transform: translateX(-50%);
     background: linear-gradient(180deg, 
         var(--accent-purple) 0%,
-        var(--accent-cyan) 30%,
+        var(--a0ccent-cyan) 30%,
         var(--accent-gold) 70%,
         var(--accent-purple) 100%);
     box-shadow: 
@@ -5351,6 +5408,7 @@ body[data-accent="red"]{
   font-weight:700;
   font-size:3.5rem;
   color:transparent;
+  margin-bottom:10px;
   background:linear-gradient(
     125deg,
     var(--accent-5) 0%,
@@ -5393,7 +5451,7 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
   color: var(--accent);
   border: 1px solid var(--accent);
   border-radius: 10px;
-  padding: .6rem 1rem;
+  padding: .6rem .6rem;
 }
 :focus-visible{
   outline: 2px solid var(--ring);
@@ -6971,7 +7029,7 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 
   <!-- === FAB Dizionario === -->
 <button id="dict-fab" class="fab-with-text">
-  <span class="fab-label">📘Dizionario</span>
+  <span class="fab-label">📚 Risorse</span>
   <span class="fab-icona"></span>
 </button>
  <div hidden="True" id="search-backdrop"></div>
@@ -7482,7 +7540,82 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 <!--   Bottone atmosfera dinamica INIZIO -->
 <button id="atmosphereToggle" class="control-btn" title="Attiva o sospende le animazioni del cielo"> ✦ Sfondo stellato </button>
 <!--BOTTONE ATMOSFERA DINAMICA - FINE   -->
+<!--   -->
+<!-- Link alla home di SEP -->
+<a href="https://plato.stanford.edu/index.html" 
+   target="_blank" 
+   rel="noopener noreferrer" 
+   class="sep-home-btn" 
+   title="Vai alla home della Stanford Encyclopedia of Philosophy">
+  <span class="btn-icon">🏛️</span> 
+  <span class="btn-text">SEP Home</span>
+</a>
 
+
+
+<style>
+/* ============================================
+   PULSANTE SEP - CON BORDO ELEGANTE
+   ============================================ */
+
+.sep-home-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.2rem;
+  background: rgba(255,255,255,0.08);
+  color: #f5e9c8;
+  border-radius: 30px;
+  text-decoration: none;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  
+  /* ===== IL BORDO ===== */
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 
+    0 2px 10px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.sep-home-btn:hover {
+  background: rgba(26, 37, 47, 0.95);
+  transform: translateY(-2px);
+  box-shadow: 
+    0 6px 20px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  
+  /* ===== BORDO CHE SI ILLUMINA ===== */
+  border-color: #f1c40f;
+  color: #ffffff;
+}
+
+.sep-home-btn .btn-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.sep-home-btn .btn-text {
+  white-space: nowrap;
+}
+
+/* --- Su schermi piccoli --- */
+@media (max-width: 480px) {
+  .sep-home-btn .btn-text {
+    display: none;
+  }
+  .sep-home-btn {
+    padding: 0.4rem 0.7rem;
+  }
+}
+</style>
+
+</style>
+<!-- -->
 <div class="bar-right">
 <div class="translate-box">
 <span>🌐</span>
@@ -7517,7 +7650,7 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 
   <!-- Header -->
   <div class="dict-header">
-    <h2 class="notranslate" translate="no"> Dizionario Filosofico</h2>
+    <h2 class="notranslate" translate="no"> 📚 Risorse</h2>
     <button id="dict-close" class="dict-close-btn" aria-label="Chiudi modale">×</button>
   </div>
 
@@ -8209,7 +8342,6 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 </main>
 <!-- Citazioni filosofiche fluttuanti -->
 <div class="floating-quotes"><div class="quote-bubble"><div class="quote-text">“Conosci te stesso”</div><div class="quote-author">— Socrate</div></div><div class="quote-bubble"><div class="quote-text">“So di non sapere”</div><div class="quote-author">— Socrate</div></div><div class="quote-bubble"><div class="quote-text">“Una vita senza ricerca non è degna di essere vissuta”</div><div class="quote-author">— Socrate</div></div><div class="quote-bubble"><div class="quote-text">“La filosofia comincia con la meraviglia”</div><div class="quote-author">— Platone</div></div><div class="quote-bubble"><div class="quote-text">“La bellezza è lo splendore del vero”</div><div class="quote-author">— Platone</div></div><div class="quote-bubble"><div class="quote-text">“Siamo ciò che facciamo ripetutamente. L'eccellenza non è un atto ma un'abitudine”</div><div class="quote-author">— Aristotele</div></div><div class="quote-bubble"><div class="quote-text">“La felicità dipende da noi stessi”</div><div class="quote-author">— Aristotele</div></div><div class="quote-bubble"><div class="quote-text">“Nulla è nell'intelletto che prima non sia passato dai sensi”</div><div class="quote-author">— Aristotele</div></div><div class="quote-bubble"><div class="quote-text">“Tutto scorre”</div><div class="quote-author">— Eraclito</div></div><div class="quote-bubble"><div class="quote-text">“Il carattere è destino”</div><div class="quote-author">— Eraclito</div></div><div class="quote-bubble"><div class="quote-text">“L'uomo è misura di tutte le cose”</div><div class="quote-author">— Protagora</div></div><div class="quote-bubble"><div class="quote-text">“Vivere secondo natura”</div><div class="quote-author">— Zenone di Cizio</div></div><div class="quote-bubble"><div class="quote-text">“Non sono le cose che ci turbano, ma le opinioni che abbiamo su di esse”</div><div class="quote-author">— Epitteto</div></div><div class="quote-bubble"><div class="quote-text">“Non è la morte che dobbiamo temere, ma il non cominciare mai a vivere”</div><div class="quote-author">— Marco Aurelio</div></div><div class="quote-bubble"><div class="quote-text">“La vita è opinione”</div><div class="quote-author">— Marco Aurelio</div></div><div class="quote-bubble"><div class="quote-text">“La felicità consiste nel desiderare ciò che si ha”</div><div class="quote-author">— Seneca</div></div><div class="quote-bubble"><div class="quote-text">“Non esiste vento favorevole per il marinaio che non sa dove andare”</div><div class="quote-author">— Seneca</div></div><div class="quote-bubble"><div class="quote-text">“Il destino guida chi lo segue e trascina chi si oppone”</div><div class="quote-author">— Seneca</div></div><div class="quote-bubble"><div class="quote-text">“Vivi nascosto”</div><div class="quote-author">— Epicuro</div></div><div class="quote-bubble"><div class="quote-text">“Ama e fa' ciò che vuoi”</div><div class="quote-author">— Sant'Agostino</div></div><div class="quote-bubble"><div class="quote-text">“La fede cerca l'intelligenza”</div><div class="quote-author">— Anselmo d'Aosta</div></div><div class="quote-bubble"><div class="quote-text">“Contemplata aliis tradere”</div><div class="quote-author">— Tommaso d'Aquino</div></div><div class="quote-bubble"><div class="quote-text">“Non moltiplicare gli enti senza necessità”</div><div class="quote-author">— Guglielmo di Ockham</div></div><div class="quote-bubble"><div class="quote-text">“È meglio essere temuti che amati, se non si può essere entrambi”</div><div class="quote-author">— Niccolò Machiavelli</div></div><div class="quote-bubble"><div class="quote-text">“Cogito, ergo sum”</div><div class="quote-author">— Cartesio</div></div><div class="quote-bubble"><div class="quote-text">“Il cuore ha le sue ragioni che la ragione non conosce”</div><div class="quote-author">— Blaise Pascal</div></div><div class="quote-bubble"><div class="quote-text">“La mente è una tabula rasa”</div><div class="quote-author">— John Locke</div></div><div class="quote-bubble"><div class="quote-text">“Esse est percipi”</div><div class="quote-author">— George Berkeley</div></div><div class="quote-bubble"><div class="quote-text">“La bellezza delle cose esiste nella mente di chi le contempla”</div><div class="quote-author">— David Hume</div></div><div class="quote-bubble"><div class="quote-text">“Due cose riempiono l’animo: il cielo stellato sopra di me e la legge morale dentro di me”</div><div class="quote-author">— Immanuel Kant</div></div><div class="quote-bubble"><div class="quote-text">“Agisci in modo da trattare l’umanità sempre come fine e mai semplicemente come mezzo”</div><div class="quote-author">— Immanuel Kant</div></div><div class="quote-bubble"><div class="quote-text">“Quel che è reale è razionale”</div><div class="quote-author">— G.W.F. Hegel</div></div><div class="quote-bubble"><div class="quote-text">“La vita oscilla tra la noia e il dolore”</div><div class="quote-author">— Arthur Schopenhauer</div></div><div class="quote-bubble"><div class="quote-text">“La vita dev’essere compresa all’indietro, ma va vissuta in avanti”</div><div class="quote-author">— Søren Kierkegaard</div></div><div class="quote-bubble"><div class="quote-text">“Chi ha un perché per vivere può sopportare quasi ogni come”</div><div class="quote-author">— Friedrich Nietzsche</div></div><div class="quote-bubble"><div class="quote-text">“Diventa ciò che sei”</div><div class="quote-author">— Friedrich Nietzsche</div></div><div class="quote-bubble"><div class="quote-text">“Non esistono fatti, solo interpretazioni”</div><div class="quote-author">— Friedrich Nietzsche</div></div><div class="quote-bubble"><div class="quote-text">“Di ciò di cui non si può parlare si deve tacere”</div><div class="quote-author">— Ludwig Wittgenstein</div></div><div class="quote-bubble"><div class="quote-text">“Il significato è l’uso”</div><div class="quote-author">— Ludwig Wittgenstein</div></div><div class="quote-bubble"><div class="quote-text">“Il linguaggio è la casa dell’essere”</div><div class="quote-author">— Martin Heidegger</div></div><div class="quote-bubble"><div class="quote-text">“L’esistenza precede l’essenza”</div><div class="quote-author">— Jean‑Paul Sartre</div></div><div class="quote-bubble"><div class="quote-text">“Bisogna immaginare Sisifo felice”</div><div class="quote-author">— Albert Camus</div></div></div>
-<!-- Footer -->
 <!-- Footer -->
 <footer>
 <div class="footer-wrap">
