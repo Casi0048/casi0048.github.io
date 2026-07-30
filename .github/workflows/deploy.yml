@@ -1,12 +1,14 @@
-name: Deploy sito statico
+name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main
+      - master
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -15,26 +17,31 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy:
+  build-and-deploy:
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
+    
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
-      
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      
-      - name: Crea .nojekyll
-        run: touch _site/.nojekyll
-      
-      - name: Upload artifact
+
+      - name: Create .nojekyll
+        run: |
+          touch .nojekyll
+          echo "✅ .nojekyll created"
+
+      - name: List files
+        run: |
+          echo "📁 Files in repository:"
+          ls -la
+
+      - name: Upload to GitHub Pages
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'
-      
-      - name: Deploy to GitHub Pages
-        id: deployment
+          path: .
+
+      - name: Deploy
         uses: actions/deploy-pages@v4
+        id: deployment
