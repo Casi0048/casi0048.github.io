@@ -99,6 +99,7 @@
   <!-- <link rel="preload" as="image" href="https://www.echidisofia.org/foto/socrate.webp"> -->
 
 <style>
+
 /* ============================================
    VARIABILI GLOBALI E TEMI
    ============================================ */
@@ -718,77 +719,45 @@ main {
 }
 
 .accordion-subtitle {
-  font-size: 1.1rem;
-  color: #00FF00;   
+  font-size: 1rem;
+  color: #9ad0ff;
   font-weight: 600;
   display: inline-block;
-  animation: accordionType 3.5s ease-in-out infinite;
+  animation: accordionEffect 3s ease-in-out infinite;
   text-align: center;
-  padding: 0.5rem 1.2rem;
+  padding: 0.5rem 1rem;
   border-radius: 10px;
   background: rgba(10, 10, 30, 0.7);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(154, 208, 255, 0.1);
   box-shadow: 0 0 15px rgba(154, 208, 255, 0.3);
   margin-bottom: 2rem;
-  transition: all 0.3s ease;
-  position: relative;
 }
 
-/* Cursore lampeggiante */
-
-.accordion-subtitle::before {
-  content: '';
-  position: absolute;
-  right: -12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #9ad0ff;
-  animation: cursorBlink 1s step-end infinite;
-  opacity: 0;
-}
-
-@keyframes cursorBlink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-.accordion-subtitle:hover {
-  transform: scale(1.02);
-  box-shadow: 0 0 30px rgba(154, 208, 255, 0.5);
-  border-color: rgba(154, 208, 255, 0.3);
-}
-/*
-@keyframes accordionType {
+@keyframes accordionEffect {
   0%, 100% {
-    transform: scale(0.92);
+    transform: scaleX(0.85);
     letter-spacing: 0px;
     opacity: 0.7;
-    box-shadow: 0 0 10px rgba(154, 208, 255, 0.15);
+    background: rgba(10, 10, 30, 0.7);
+    box-shadow: 0 0 10px rgba(154, 208, 255, 0.2);
   }
-  15% {
-    transform: scale(0.95);
+  25% {
+    transform: scaleX(0.9);
     letter-spacing: 1px;
-    opacity: 0.85;
+    opacity: 0.8;
   }
-  35% {
-    transform: scale(1);
+  50% {
+    transform: scaleX(1);
     letter-spacing: 2px;
     opacity: 1;
-    box-shadow: 0 0 30px rgba(154, 208, 255, 0.5);
-  }
-  55% {
-    transform: scale(0.97);
-    letter-spacing: 1px;
-    opacity: 0.9;
+    background: rgba(20, 20, 50, 0.8);
+    box-shadow: 0 0 20px rgba(154, 208, 255, 0.5);
   }
   75% {
-    transform: scale(0.94);
-    letter-spacing: 0px;
-    opacity: 0.75;
+    transform: scaleX(0.9);
+    letter-spacing: 1px;
+    opacity: 0.8;
   }
 }
-*/
 /* Per performance migliori */
 .accordion-subtitle {
   will-change: transform, opacity;
@@ -801,7 +770,6 @@ main {
   color: #2c5282;
   border-color: rgba(44, 82, 130, 0.2);
 }
-
 /* ============================================
    TYPING EFFECT
    ============================================ */
@@ -841,50 +809,15 @@ main {
 }
 
 /* ============================================
-   FLOATING QUOTES - PREFERENZE UTENTE
+   FLOATING QUOTES
    ============================================ */
-
-/* ============================================
-   CONTENITORE PRINCIPALE
-   ============================================ */
-
 .floating-quotes {
   position: fixed;
+  bottom: 0px;
+  right: 20px;
   z-index: 20;
   max-width: 300px;
 }
-
-/* ============================================
-   POSIZIONI SALVATE IN LOCALSTORAGE
-   ============================================ */
-
-.floating-quotes.user-bottom-right {
-  bottom: 20px;
-  right: 20px;
-}
-
-.floating-quotes.user-bottom-left {
-  bottom: 20px;
-  left: 20px;
-  right: auto;
-}
-
-.floating-quotes.user-top-right {
-  top: 80px;
-  right: 20px;
-  bottom: auto;
-}
-
-.floating-quotes.user-top-left {
-  top: 80px;
-  left: 20px;
-  right: auto;
-  bottom: auto;
-}
-
-/* ============================================
-   BUBBLE SINGOLA
-   ============================================ */
 
 .quote-bubble {
   background: rgba(10, 10, 30, 0.9);
@@ -893,49 +826,27 @@ main {
   padding: 5px;
   margin-bottom: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(5px);
-  
-  /* Animazione di entrata */
   transform: translateX(100%);
   opacity: 0;
-  transition: transform 0.5s ease, opacity 0.5s ease;
+  transition: transform 0.5s, opacity 0.5s;
+  backdrop-filter: blur(5px);
 }
 
-/* Stato visibile */
 .quote-bubble.show {
   transform: translateX(0);
   opacity: 1;
 }
 
-/* ============================================
-   RESPONSIVE
-   ============================================ */
-
-@media (max-width: 768px) {
-  .floating-quotes {
-    max-width: 250px;
-  }
-  
-  .floating-quotes.user-bottom-right,
-  .floating-quotes.user-bottom-left {
-    bottom: 10px;
-  }
-  
-  .floating-quotes.user-top-right,
-  .floating-quotes.user-top-left {
-    top: 60px;
-  }
+.quote-text {
+  font-style: italic;
+  margin-bottom: 5px;
+  color: var(--text-light);
 }
 
-@media (max-width: 480px) {
-  .floating-quotes {
-    max-width: 200px;
-  }
-  
-  .quote-bubble {
-    padding: 3px;
-    font-size: 0.9rem;
-  }
+.quote-author {
+  text-align: right;
+  font-size: 0.9rem;
+  color: var(--gold);
 }
 
 /* ============================================
@@ -1518,7 +1429,7 @@ body {
   bottom: 22vh;
   left: 3.5rem;
   z-index: 2;
-  color: #426cf5;     cfe8ff;
+  color: #cfe8ff;
   opacity: .85;
   font-style: italic;
   font-weight: 700;
@@ -1655,7 +1566,7 @@ body {
   border-radius: .5rem;
   border: 1px solid rgba(255, 215, 0, .25);
   background: rgba(20, 20, 40, .78);
-  color: #fbbd53;                    
+  color: #ffd86a;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -2336,7 +2247,7 @@ mark,
 #quote-runner {
   position: fixed;
   left: 50%;
-  bottom: 270px;
+  bottom: 250px;
   transform: translateX(-50%);
   z-index: 20;
   pointer-events: none;
@@ -3067,7 +2978,7 @@ nav.menu-desktop .mega-menu {
 .timeline-title::after {
     content: '';
     display: block;
-    width: 300px;
+    width: 200px;
     height: 4px;
     background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
     margin: 1rem auto;
@@ -3101,7 +3012,7 @@ nav.menu-desktop .mega-menu {
     transform: translateX(-50%);
     background: linear-gradient(180deg, 
         var(--accent-purple) 0%,
-        var(--a0ccent-cyan) 30%,
+        var(--accent-cyan) 30%,
         var(--accent-gold) 70%,
         var(--accent-purple) 100%);
     box-shadow: 
@@ -4134,7 +4045,6 @@ html {
 [data-theme="dark"] {
   color-scheme: dark;
 }
-
 </style>
 <style>
 /* === CTA SECTION (Dopo Timeline) === */
@@ -4214,7 +4124,7 @@ html {
 /* === CTA FLOTTANTE === */
 .floating-cta {
   position: fixed;
-  bottom: 50px;
+  bottom: 90px;
   right: 355px;
   z-index: 10000;
   animation: floatBounce 3s ease-in-out infinite;
@@ -5409,7 +5319,6 @@ body[data-accent="red"]{
   font-weight:700;
   font-size:3.5rem;
   color:transparent;
-  margin-bottom:10px;
   background:linear-gradient(
     125deg,
     var(--accent-5) 0%,
@@ -5430,66 +5339,6 @@ body[data-accent="red"]{
   50%    { background-position:100% 50%; }
 }
 
-/* ===== INIZIO ANIMAZIONE TITOLO ===== */
-/* ============================================
-   ANIMAZIONE TITOLO - LIBRO CHE SI APRE
-   ============================================ */
-
-.welcome-title-themable {
-  font-family: 'Cinzel Decorative', cursive;
-  font-weight: 700;
-  font-size: 3.5rem;
-  color: transparent;
-  margin-bottom: 10px;
-  background: linear-gradient(
-    125deg,
-    var(--accent-5) 0%,
-    var(--accent) 18%,
-    var(--accent-3) 36%,
-    var(--accent) 54%,
-    var(--accent-2) 72%,
-    var(--accent-5) 100%
-  );
-  background-size: 400% 400%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  animation: welcomeSparkle 4s linear infinite 3.5s;
-  text-shadow: 0 0 10px var(--accent-glow), 0 0 20px color-mix(in oklab, var(--accent) 50%, #fff 50%);
-  opacity: 0;
-  animation: 
-    bookOpen 2.5s cubic-bezier(0.4, 0, 0.2, 1) forwards,
-    welcomeSparkle 4s linear infinite 2.5s;
-  transform-origin: center;
-}
-
-@keyframes bookOpen {
-  0% {
-    opacity: 0;
-    transform: perspective(800px) rotateY(90deg) scale(0.5);
-    filter: blur(10px);
-  }
-  25% {
-    opacity: 0.3;
-    transform: perspective(800px) rotateY(60deg) scale(0.7);
-    filter: blur(5px);
-  }
-  50% {
-    opacity: 0.7;
-    transform: perspective(800px) rotateY(30deg) scale(0.9);
-    filter: blur(2px);
-  }
-  75% {
-    opacity: 0.9;
-    transform: perspective(800px) rotateY(10deg) scale(1.02);
-    filter: blur(0px);
-  }
-  100% {
-    opacity: 1;
-    transform: perspective(800px) rotateY(0deg) scale(1);
-    filter: blur(0px);
-  }
-}
-/* ===== FINE ANIMAZIONEN DEL TITOLO ===== */
 /* ===== GLOBAL ACCENTS (links, buttons, focus, tags) ===== */
 a, .link-accent        { color: var(--accent); }
 a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%); }
@@ -5512,7 +5361,7 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
   color: var(--accent);
   border: 1px solid var(--accent);
   border-radius: 10px;
-  padding: .6rem .6rem;
+  padding: .6rem 1rem;
 }
 :focus-visible{
   outline: 2px solid var(--ring);
@@ -7015,1336 +6864,305 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
     transform: none !important;
   }
 }
-</style>
+/* ============================================
+   CONTROLLO ANIMAZIONI GLOBALE-PULSANTE SOSPENDI ANIMAZIONI
+   ============================================ */
 
-
-<style>
-#atmosphereToggle {
-    margin-left: 10px;
-    cursor: pointer;
-
-    padding: 9px 18px;
-    border-radius: 7px;
-
-    border: 1px solid rgba(255,255,255,0.35);
-    background: rgba(255,255,255,0.08);
-
-    color: #f5e9c8;
-    font-size: 15px;
-    letter-spacing: 0.4px;
-
-    backdrop-filter: blur(8px);
-
-    box-shadow:
-        0 0 12px rgba(255,220,130,0.18),
-        inset 0 0 8px rgba(255,255,255,0.08);
-
-    transition:
-        background 0.4s ease,
-        box-shadow 0.4s ease,
-        transform 0.25s ease,
-        color 0.4s ease;
-}
-
-
-/* effetto al passaggio del mouse */
-#atmosphereToggle:hover {
-    background: rgba(255,255,255,0.16);
-
-    box-shadow:
-        0 0 18px rgba(255,220,130,0.35),
-        inset 0 0 10px rgba(255,255,255,0.15);
-
-    transform: translateY(-2px);
-}
-
-
-/* quando l'atmosfera è ridotta */
-#atmosphereToggle.atmosphere-off {
-    color: #c8c8c8;
-
-    background: rgba(255,255,255,0.04);
-
-    box-shadow:
-        0 0 8px rgba(255,255,255,0.08);
-}
-
-
-/* icona più luminosa */
-#atmosphereToggle::first-letter {
-    color: #ffe9a6;
-}
-
-
-/* vecchia funzione pausa animazioni */
+/* Classe per sospendere TUTTE le animazioni */
 .animations-paused *,
 .animations-paused *::before,
 .animations-paused *::after {
-    animation-play-state: paused !important;
+  animation-play-state: paused !important;
+  animation-duration: 0s !important;
+  transition-duration: 0s !important;
+  transition-delay: 0s !important;
 }
 
-</style>
+/* Gestione specifica per stelle e comete */
+.animations-paused .star {
+  opacity: 0.15 !important;
+  animation: none !important;
+}
 
-<style>
+.animations-paused .shooting-star {
+  display: none !important;
+  animation: none !important;
+}
+
+.animations-paused .cosmic-particle {
+  animation: none !important;
+}
+
+.animations-paused .timeline::after {
+  animation: none !important;
+}
+
+.animations-paused .timeline-item.visible {
+  animation: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+.animations-paused .accordion-subtitle {
+  animation: none !important;
+  transform: scale(1) !important;
+  opacity: 1 !important;
+}
+
 /* ============================================
-   PULSANTE WORLD HISTORY ENCYCLOPEDIA
+   CONTROLLO ANIMAZIONI - CSS COMPLETO
    ============================================ */
 
-.world-history-btn {
+/* Classe per sospendere TUTTE le animazioni */
+.animations-paused *,
+.animations-paused *::before,
+.animations-paused *::after {
+  animation-play-state: paused !important;
+  animation-duration: 0s !important;
+  transition-duration: 0s !important;
+  transition-delay: 0s !important;
+}
+
+/* Gestione specifica per stelle e comete */
+.animations-paused .star {
+  opacity: 0.15 !important;
+  animation: none !important;
+}
+
+.animations-paused .shooting-star {
+  display: none !important;
+  animation: none !important;
+}
+
+.animations-paused .cosmic-particle {
+  animation: none !important;
+}
+
+.animations-paused .timeline::after {
+  animation: none !important;
+}
+
+.animations-paused .timeline-item.visible {
+  animation: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+.animations-paused .accordion-subtitle {
+  animation: none !important;
+  transform: scale(1) !important;
+  opacity: 1 !important;
+}
+
+/* ============================================
+   STILE PULSANTI
+   ============================================ */
+.animation-controls {
+  position: fixed;
+  bottom: .5rem;
+  right: 21.5rem;
+  z-index: 9999;
+  display: flex;
+  gap: 0.5rem;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.anim-toggle-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem 1.9rem;
-   margin-left: 10px; /* Aumenta questo valore per più spazio */
-  background: rgba(255,255,255,0.08);
-  color: #ecf0f1;
-  border-radius: 7px;
-  text-decoration: none;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 0.9rem;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  
-  /* ===== BORDO ELEGANTE ===== */
+  padding: 0.6rem 1rem;
   border: 1px solid rgba(255, 215, 0, 0.3);
-  box-shadow: 
-    0 2px 10px rgba(0, 0, 0, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  border-radius: 10px;
+  background: rgba(10, 10, 30, 0.85);
+  backdrop-filter: blur(12px);
+  color: #e9eef5;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  min-width: 120px;
+  justify-content: center;
 }
 
-.world-history-btn:hover {
-  background: rgba(26, 37, 47, 0.95);
+.anim-toggle-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 
-    0 6px 20px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15);
-  
-  /* ===== BORDO CHE SI ILLUMINA ===== */
-  border-color: #e6a117;
-  color: #ffffff;
+  border-color: rgba(255, 215, 0, 0.6);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 215, 0, 0.1);
 }
 
-.world-history-btn .btn-icon {
-  font-size: 1.1rem;
+.anim-toggle-btn:active {
+  transform: translateY(0px);
+}
+
+.anim-toggle-btn .icon {
+  font-size: 1.2rem;
   line-height: 1;
 }
 
-.world-history-btn .btn-text {
+.anim-toggle-btn .label {
   white-space: nowrap;
 }
 
-/* --- Su schermi piccoli, mostra solo l'icona --- */
+/* Stato attivo (animazioni sospese) */
+.anim-toggle-btn.active {
+  border-color: rgba(255, 100, 100, 0.5);
+  background: rgba(40, 10, 10, 0.85);
+  box-shadow: 0 0 20px rgba(255, 100, 100, 0.15);
+}
+
+.anim-toggle-btn.active:hover {
+  border-color: rgba(255, 100, 100, 0.8);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 100, 100, 0.2);
+}
+
+/* Badge di stato */
+.anim-status {
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  background: rgba(10, 10, 30, 0.8);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  color: #9ad0ff;
+  opacity: 0;
+  transition: all 0.4s ease;
+  pointer-events: none;
+}
+
+.anim-status.visible {
+  opacity: 1;
+}
+
+.anim-status.paused {
+  border-color: rgba(255, 100, 100, 0.4);
+  color: #ff6b6b;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .animation-controls {
+    bottom: 1rem;
+    right: 1rem;
+  }
+  
+  .anim-toggle-btn {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.75rem;
+    min-width: 100px;
+  }
+}
+
 @media (max-width: 480px) {
-  .world-history-btn .btn-text {
+  .anim-toggle-btn .label {
     display: none;
   }
-  .world-history-btn {
-    padding: 0.4rem 0.7rem;
+  
+  .anim-toggle-btn {
+    min-width: 50px;
+    padding: 0.5rem;
+    border-radius: 50%;
+    aspect-ratio: 1;
   }
 }
-/* =====================================================
-   AURORA DIURNA - TEMA LIGHT
-   Compatibile con theme-toggle
-   ===================================================== */
-
-
-/* ============================
-   VARIABILI AURORA
-   ============================ */
-
-[data-theme="light"] {
-
-    --aurora-sky-top: #79bfff;
-    --aurora-sky-mid: #bfe6ff;
-    --aurora-sky-soft: #e9f7ff;
-    --aurora-horizon: #fff3d6;
-
-    --aurora-text: #233449;
-    --aurora-blue: #1d4ed8;
-    --aurora-gold: #c98b19;
-    --aurora-cyan: #4b88c7;
-
-    --aurora-glass: rgba(255,255,255,0.82);
-    --aurora-border: rgba(59,130,246,0.25);
- --aurora-glass: rgba(255,255,255,0.82);
-    --aurora-border: rgba(59,130,246,0.25);
-
-    --aurora-haze: rgba(255,255,255,.09);
-    --aurora-air: rgba(180,220,255,.08);
-
-    color-scheme: light;
-    color-scheme: light;
-}
-
-
-
-/* ============================
-   SFONDO PRINCIPALE AURORA
-   ============================ */
-
-html[data-theme="light"],
-html[data-theme="light"] body {
-
-
-    background:
-
-    radial-gradient(
-        ellipse at 50% 100%,
-        rgba(255,215,100,0.35),
-        transparent 45%
-    ),
-
-    linear-gradient(
-        180deg,
-        var(--aurora-sky-top) 0%,
-        var(--aurora-sky-mid) 38%,
-        var(--aurora-sky-soft) 70%,
-        var(--aurora-horizon) 100%
-    ) !important;
-
-
-    background-attachment: fixed !important;
-    background-size: cover !important;
-
-    color:var(--aurora-text);
-
-}
-
-
-
-
-/* ============================
-   DISSOLVENZA CIELO NOTTURNO
-   ============================ */
-
-
-#starsContainer,
-.stars-container {
-
-    opacity:1;
-
-    transition:
-    opacity 1.8s ease;
-
-}
-
-
-[data-theme="light"] #starsContainer,
-[data-theme="light"] .stars-container {
-
-    opacity:0;
-
-    pointer-events:none;
-
-}
-
-
-
-/* ============================
-   CONTENITORI TRASPARENTI
-   ============================ */
-
-
-[data-theme="light"] main,
-[data-theme="light"] .container,
-[data-theme="light"] .content,
-[data-theme="light"] .welcome-section,
-[data-theme="light"] .timeline-container {
-
-
-    background:transparent !important;
-
-}
-
-
-
-
-/* ============================
-   PANNELLI EFFETTO VETRO
-   ============================ */
-
-
-[data-theme="light"] .top-bar,
-[data-theme="light"] .menu-container,
-[data-theme="light"] .mega-menu,
-[data-theme="light"] .articles-blob,
-[data-theme="light"] .right-box,
-[data-theme="light"] .quote-bubble,
-[data-theme="light"] .slider-vertical,
-[data-theme="light"] .slider-controls,
-[data-theme="light"] .audio-player,
-[data-theme="light"] .timeline-content {
-
-
-    background:var(--aurora-glass) !important;
-
-    backdrop-filter:blur(14px);
-    -webkit-backdrop-filter:blur(14px);
-
-    border:1px solid var(--aurora-border);
-
-}
-
-
-
-/* ============================
-   TITOLI
-   ============================ */
-
-
-[data-theme="light"] .welcome-title {
-
-
-    background:
-    linear-gradient(
-        90deg,
-        #1d4ed8,
-        #60a5fa,
-        #c98b19
-    );
-
-
-    -webkit-background-clip:text;
-    background-clip:text;
-
-    color:transparent;
-
-}
-
-
-
-[data-theme="light"] .welcome-subtitle {
-
-    color:var(--aurora-blue);
-
-}
-
-
-
-/* ============================
-   TESTO TIMELINE
-   ============================ */
-
-
-[data-theme="light"] .timeline-content h3 {
-
-    color:var(--aurora-gold);
-
-}
-
-
-
-[data-theme="light"] .timeline-content p {
-
-    color:var(--aurora-text);
-
-}
-
-
-
-[data-theme="light"] .timeline-content strong {
-
-    color:var(--aurora-blue);
-
-}
-
-
-
-/* ============================
-   MENU
-   ============================ */
-
-
-[data-theme="light"] .menu-btn,
-[data-theme="light"] nav.menu-desktop li>a {
-
-
-    color:var(--aurora-blue);
-
-}
-
-
-
-[data-theme="light"] .menu-btn:hover,
-[data-theme="light"] nav.menu-desktop li>a:hover {
-
-
-    background:rgba(59,130,246,0.12);
-
-}
-
-
-
-/* ============================
-   BOX LATERALI
-   ============================ */
-
-
-[data-theme="light"] .articles-blob h3,
-[data-theme="light"] .right-box h3 {
-
-
-    color:var(--aurora-gold);
-
-}
-
-
-[data-theme="light"] .articles-blob a,
-[data-theme="light"] .right-box a {
-
-
-    color:#426cf5;                           var(--aurora-blue);
-
-}
-
-
-
-
-/* ============================
-   PULSANTI
-   ============================ */
-
-
-[data-theme="light"] .ctrl-btn {
-
-
-    background:rgba(255,255,255,0.75);
-
-    color:var(--aurora-blue);
-
-    border-color:var(--aurora-border);
-
-}
-
-
-
-[data-theme="light"] .ctrl-btn:hover {
-
-
-    background:rgba(255,255,255,0.95);
-
-}
-
-
-
-/* ============================
-   PULSANTE TEMA
-   ============================ */
-
-
-[data-theme="light"] .theme-btn {
-
-
-    border-color:#c98b19;
-
-    color:#c98b19;
-
-    background:rgba(255,215,100,0.18);
-
-}
-
-
-
-/* ============================
-   SEARCH
-   ============================ */
-
-
-[data-theme="light"] .search-container input {
-
-
-    background:rgba(255,255,255,0.8);
-
-    color:var(--aurora-text);
-
-    border-color:var(--aurora-border);
-
-}
-
-
-
-/* ============================
-   TIMELINE
-   ============================ */
-
-
-[data-theme="light"] .timeline::before {
-
-
-    background:
-
-    linear-gradient(
-        180deg,
-        #7c3aed,
-        #4b88c7,
-        #c98b19
-    );
-
-}
-
-
-
-[data-theme="light"] .timeline-item::before {
-
-
-    background:
-
-    radial-gradient(
-        circle,
-        #ffffff 0%,
-        #c98b19 35%,
-        #4b88c7 70%
-    );
-
-}
-
-
-
-/* ============================
-   FOOTER
-   ============================ */
-
-
-[data-theme="light"] footer {
-
-
-    background:
-
-    linear-gradient(
-        135deg,
-        #e2e8f0,
-        #ffffff
-    );
-
-
-    color:var(--aurora-text);
-
-}
-
-
-[data-theme="light"] footer h3,
-[data-theme="light"] footer h4 {
-
-
-    color:var(--aurora-gold);
-
-}
-
-
-
-/* ============================
-   TRANSIZIONE TEMA
-   ============================ */
-
-
-html,
-body,
-.top-bar,
-.timeline-content,
-.menu-container,
-.ctrl-btn {
-
-    transition:
-
-    background 0.8s ease,
-    color 0.8s ease,
-    border-color 0.8s ease,
-    box-shadow 0.8s ease;
-
-}
-/* =====================================================
-   AURORA - CORREZIONE CONTRASTO TESTI ORO
-   ===================================================== */
-
-
-/* Voci desktop che erano oro nel tema notte */
-
-[data-theme="light"] nav.menu-desktop li > a,
-[data-theme="light"] .menu-btn,
-[data-theme="light"] .desktop-menu a {
-
-    color: #334155 !important;
-
-}
-
-
-/* Hover */
-
-[data-theme="light"] nav.menu-desktop li > a:hover,
-[data-theme="light"] .menu-btn:hover,
-[data-theme="light"] .desktop-menu a:hover {
-
-    color: #1d4ed8 !important;
-
-}
-
-
-/* Titoli dei menu */
-
-[data-theme="light"] .mega-menu h4 {
-
-    color: #b45309 !important;
-
-}
-
-
-/* Link nei menu aperti */
-
-[data-theme="light"] .mega-menu a {
-
-    color: #334155 !important;
-
-}
-
-
-[data-theme="light"] .mega-menu a:hover {
-
-    color: #1d4ed8 !important;
-
-}
-
-
-
-/* Elementi piccoli del desktop */
-
-[data-theme="light"] .top-bar,
-[data-theme="light"] .top-bar span,
-[data-theme="light"] .top-bar a {
-
-    color: #334155;
-
-}
-
-
-
-/* Manteniamo oro solo dove funziona bene */
-
-[data-theme="light"] .welcome-title,
-[data-theme="light"] .timeline-content h3,
-[data-theme="light"] footer h3,
-[data-theme="light"] footer h4 {
-
-    /* oro mantenuto come accento */
-
-}
-/* =====================================================
-   AURORA - ALBERO DELLA CONOSCENZA
-   Adattamento per sfondo chiaro
-   ===================================================== */
-
-
-/* Tronco */
-
-[data-theme="light"] .tree-trunk {
-
-    background:
-    linear-gradient(
-        90deg,
-        #5b3718,
-        #8b5a2b,
-        #5b3718
-    ) !important;
-
-    box-shadow:
-    0 0 12px rgba(0,0,0,0.25);
-
-}
-
-
-
-/* Rami */
-
-[data-theme="light"] .branch {
-
-    background:#6b4423 !important;
-
-    box-shadow:
-    0 0 8px rgba(0,0,0,0.25);
-
-}
-
-
-
-/* Radici */
-
-[data-theme="light"] .root {
-
-    background:#5b3718 !important;
-
-}
-
-
-
-/* Foglie simboliche */
-
-[data-theme="light"] .leaf {
-
-    color:#b45309 !important;
-
-    text-shadow:
-    0 1px 4px rgba(0,0,0,0.25);
-
-}
-
-
-
-/* Foglie più luminose */
-
-[data-theme="light"] .leaf:nth-child(3),
-[data-theme="light"] .leaf:nth-child(5),
-[data-theme="light"] .leaf:nth-child(6) {
-
-    color:#7c3aed !important;
-
-}
-
-
-
-/* Didascalia sotto l'albero */
-
-[data-theme="light"] .decoration-caption {
-
-    color:#334155 !important;
-
-}
-/* =====================================================
-   AURORA SYSTEM v1
-   ARCHITETTURA MODULARE
-   ===================================================== */
-/* ============================
-   AURORA SKY ENGINE
-   Cielo giorno
-   ============================ */
-
-html[data-theme="light"]::before {
-
-    content: "";
-
-    position: fixed;
-
-    inset: 0;
-
-    z-index: -2;
-
-    pointer-events: none;
-
-
-    opacity: 0;
-
-    filter: saturate(108%);
-
-
-    background:
-
-        /* Luce alta */
-
-        radial-gradient(
-            ellipse 140% 80% at 50% -20%,
-            rgba(255,255,255,.18),
-            transparent 60%
-        ),
-
-
-        /* Aria */
-
-        radial-gradient(
-            ellipse 170% 100% at 50% 35%,
-            rgba(185,220,255,.12),
-            transparent 78%
-        ),
-
-
-        /* Profondità */
-
-        radial-gradient(
-            ellipse 220% 140% at 50% 50%,
-            rgba(120,180,255,.08),
-            transparent 90%
-        ),
-
-
-        /* Gradiente cielo */
-
-        linear-gradient(
-            180deg,
-            var(--aurora-sky-top) 0%,
-            var(--aurora-sky-mid) 36%,
-            var(--aurora-sky-soft) 72%,
-            var(--aurora-horizon) 100%
-        );
-
-
-    animation:
-
-        auroraDawn 5s ease forwards;
-
-}
-
-
-
-/* ============================
-   TRANSIZIONE NOTTE → AURORA
-   ============================ */
-
-@keyframes auroraDawn {
-
-    from {
-
-        opacity:0;
-
-    }
-
-
-    to {
-
-        opacity:1;
-
-    }
-
-}
-
-
-
-/* ============================
-   AURORA ATMOSPHERE v2
-   Velo di luce
-   ============================ */
-
-
-html[data-theme="light"] .aurora-atmosphere {
-
-
-    position:fixed;
-
-    inset:0;
-
-
-    z-index:-1;
-
-
-    pointer-events:none;
-
-
-
-    background:
-
-
-        radial-gradient(
-            ellipse 120% 60% at 50% 0%,
-            rgba(255,255,255,.18),
-            transparent 70%
-        ),
-
-
-        radial-gradient(
-            ellipse 100% 80% at 50% 45%,
-            rgba(210,235,255,.16),
-            transparent 75%
-        ),
-
-
-        radial-gradient(
-            ellipse 120% 45% at 50% 100%,
-            rgba(255,230,170,.22),
-            transparent 70%
-        );
-
-
-
-    opacity:.95;
-
-
-    animation:
-
-        auroraBreath 18s ease-in-out infinite alternate;
-
-}
-
-
-
-
-@keyframes auroraBreath {
-
-
-    from {
-
-        opacity:.82;
-
-        transform:scale(1);
-
-    }
-
-
-    to {
-
-        opacity:1;
-
-        transform:scale(1.03);
-
-    }
-
-}
-/* ============================
-   AURORA HORIZON v1
-   Luce dell'alba
-   ============================ */
-
-
-html[data-theme="light"] .aurora-atmosphere::after {
-
-    content:"";
-
-    position:absolute;
-
-    left:0;
-    right:0;
-    bottom:0;
-
-    height:35%;
-
-
-    pointer-events:none;
-
-
-    background:
-
-        radial-gradient(
-            ellipse 80% 45% at 50% 100%,
-            rgba(255,220,150,.35),
-            transparent 70%
-        );
-
-
-    opacity:.9;
-
-
-    animation:
-
-        horizonGlow 12s ease-in-out infinite alternate;
-
-}
-
-
-
-
-@keyframes horizonGlow {
-
-
-    from {
-
-        opacity:.65;
-
-        transform:scaleX(1);
-
-    }
-
-
-    to {
-
-        opacity:.95;
-
-        transform:scaleX(1.08);
-
-    }
-
-}
-/* ============================
-   AURORA CLOUDS v1
-   Velature atmosferiche lente
-   ============================ */
-
-
-html[data-theme="light"] .aurora-atmosphere::before {
-
-    content:"";
-
-    position:absolute;
-
-    inset:-10%;
-
-
-    pointer-events:none;
-
-
-    background:
-
-        radial-gradient(
-            ellipse 60% 25% at 20% 25%,
-            rgba(255,255,255,.16),
-            transparent 70%
-        ),
-
-
-        radial-gradient(
-            ellipse 70% 30% at 75% 40%,
-            rgba(255,255,255,.12),
-            transparent 72%
-        ),
-
-
-        radial-gradient(
-            ellipse 55% 20% at 50% 65%,
-            rgba(210,235,255,.12),
-            transparent 75%
-        );
-
-
-    opacity:.55;
-
-
-    filter:blur(18px);
-
-
-    animation:
-
-        cloudDrift 45s ease-in-out infinite alternate;
-
-}
-
-
-
-
-@keyframes cloudDrift {
-
-
-    from {
-
-        transform:
-
-            translateX(-2%)
-            translateY(0);
-
-
-    }
-
-
-    to {
-
-        transform:
-
-            translateX(2%)
-            translateY(1%);
-
-
-    }
-
-}
-/* ============================
-   AURORA SUN GLOW v1
-   Luce diffusa dell'alba
-   ============================ */
-
-
-html[data-theme="light"] .aurora-atmosphere {
-
-    overflow:hidden;
-
-}
-
-
-
-
-html[data-theme="light"] .aurora-atmosphere::after {
-
-    content:"";
-
-    position:absolute;
-
-
-    width:55vw;
-
-    height:55vh;
-
-
-    left:50%;
-
-    bottom:-35%;
-
-
-    transform:translateX(-50%);
-
-
-
-    pointer-events:none;
-
-
-
-    background:
-
-        radial-gradient(
-            circle,
-            rgba(255,245,210,.38) 0%,
-            rgba(255,220,150,.22) 25%,
-            rgba(255,210,120,.10) 45%,
-            transparent 72%
-        );
-
-
-
-    filter:blur(20px);
-
-
-    opacity:.75;
-
-
-    animation:
-
-        sunGlowPulse 20s ease-in-out infinite alternate;
-
-}
-
-
-
-
-
-@keyframes sunGlowPulse {
-
-
-    from {
-
-        opacity:.55;
-
-        transform:
-
-            translateX(-50%)
-            scale(1);
-
-
-    }
-
-
-    to {
-
-        opacity:.85;
-
-        transform:
-
-            translateX(-50%)
-            scale(1.08);
-
-
-    }
-
-}
-/* ============================
-   AURORA TRANSITION STATE
-   ============================ */
-
-html.aurora-transition::before {
-
-    animation:
-        auroraDawn 4s ease forwards;
-
-}
-
-
-html.aurora-transition .stars-container,
-html.aurora-transition canvas {
-
-    opacity:1;
-
-}
-
-/* ============================
-   DISSOLVENZA STELLE
-   Notte → Giorno
-   ============================ */
-
-
-/* ============================
-   AURORA TWILIGHT TRANSITION
-   ============================ */
-
-
-.stars-container,
-canvas {
-
-    opacity:1;
-
-    transition:
-        opacity 5s ease;
-
-}
-
-
-
-html[data-theme="light"] .stars-container,
-html[data-theme="light"] canvas {
-
-    opacity:0 !important;
-
-    pointer-events:none;
-
-}
-
-</style>
-<style>
-  
-  /* ============================
-   AURORA TRANSITION ENGINE
-   ============================ */
-
-html.theme-transition .stars-container,
-html.theme-transition canvas{
-
-    transition:
-        opacity 2.2s ease;
-
-}
-
-html[data-theme="light"].theme-transition
-.stars-container,
-
-html[data-theme="light"].theme-transition
-canvas{
-
-    opacity:0;
-
-}
-/* ============================
-   AURORA CROSSFADE LAYER
-   ============================ */
-
-
-html.aurora-transition::after {
-
-    content:"";
-
-    position:fixed;
-
-    inset:0;
-
-    z-index:10;
-
-    pointer-events:none;
-
-
-    background:
-
-        linear-gradient(
-            180deg,
-            #020617 0%,
-            #0f2742 45%,
-            #7aaed8 100%
-        );
-
-
-    opacity:1;
-
-
-    animation:
-
-        nightToAurora 5s ease forwards;
-
-}
-
-
-
-
-@keyframes nightToAurora {
-
-
-    from {
-
-        opacity:1;
-
-    }
-
-
-    to {
-
-        opacity:0;
-
-    }
-
-}
- /* ============================================
-   AURORA TIMELINE CARDS
-   Override tema chiaro
+/* ============================================
+   GESTIONE COMETE - AGGIUNTA SPECIFICA
    ============================================ */
 
-html[data-theme="light"] .timeline-content {
-
-    background:
-
-        linear-gradient(
-            145deg,
-            rgba(255,255,255,.82),
-            rgba(235,245,255,.72)
-        ) !important;
-
-
-    border: 1px solid rgba(120,160,200,.35);
-
-
-    color:#1e293b;
-
-
-    box-shadow:
-
-        0 15px 35px rgba(80,120,160,.18),
-        0 0 0 1px rgba(255,255,255,.5);
-
-
-    backdrop-filter: blur(12px);
-
+/* Sospendi TUTTE le comete */
+.animations-paused .shooting-star,
+.animations-paused .shooting-star.fast,
+.animations-paused .shooting-star.slow,
+.animations-paused .shooting-star.diagonal,
+.animations-paused .shooting-star.horizontal,
+.animations-paused .shooting-star.vertical,
+.animations-paused .shooting-star.reverse,
+.animations-paused .shooting-star.micro {
+  animation-play-state: paused !important;
+  animation-duration: 0s !important;
+  animation-delay: 0s !important;
+  opacity: 0 !important; /* Nascondi le comete quando in pausa */
+  display: none !important;
 }
 
-
-/* Titolo filosofia */
-
-html[data-theme="light"] .timeline-content h3 {
-
-    color:#1e3a8a !important;
-
-    text-shadow:none;
-
+/* Se vuoi tenerle visibili ma ferme */
+.animations-paused .shooting-star.keep-visible {
+  opacity: 0.3 !important;
+  display: block !important;
+  animation: none !important;
+  transform: translateX(0) translateY(0) !important;
 }
 
-
-/* Periodo storico */
-
-html[data-theme="light"] .timeline-content .period {
-
-    color:#0369a1 !important;
-
-    background:rgba(56,189,248,.12);
-
-    border-color:rgba(56,189,248,.35);
-
-    box-shadow:none;
-
+/* Sospendi anche le particelle cosmiche */
+.animations-paused .cosmic-particle {
+  animation-play-state: paused !important;
+  animation-duration: 0s !important;
+  opacity: 0.2 !important;
 }
 
+/* Sospendi le scie delle comete */
+.animations-paused .shooting-star::before,
+.animations-paused .shooting-star::after {
+  animation-play-state: paused !important;
+  display: none !important;
+}
+/* ============================================
+   GESTIONE COMETE IN PAUSA - CSS
+   ============================================ */
 
-/* Testo */
-
-html[data-theme="light"] .timeline-content p {
-
-    color:#1e293b !important;
-
+/* Ferma TUTTE le comete quando in pausa */
+.animations-paused .shooting-star,
+.animations-paused .shooting-star.fast,
+.animations-paused .shooting-star.slow,
+.animations-paused .shooting-star.diagonal,
+.animations-paused .shooting-star.horizontal,
+.animations-paused .shooting-star.vertical,
+.animations-paused .shooting-star.reverse,
+.animations-paused .shooting-star.micro {
+  animation-play-state: paused !important;
+  animation-duration: 0s !important;
+  opacity: 0 !important;
+  display: none !important;
 }
 
+/* Ferma particelle cosmiche */
+.animations-paused .cosmic-particle {
+  animation-play-state: paused !important;
+  animation-duration: 0s !important;
+  opacity: 0.2 !important;
+}
 
-/* Parole evidenziate */
-
-html[data-theme="light"] .timeline-content strong {
-
-    color:#92400e !important;
-
-    text-shadow:none;
-
+/* Ferma stelle */
+.animations-paused .star {
+  animation-play-state: paused !important;
+  animation-duration: 0s !important;
+  opacity: 0.15 !important;
 }
 </style>
 </head>
 <body>
-<div class="aurora-atmosphere"></div>
+<!-- Se preferisci HTML invece di JS puro -->
+<div class="animation-controls">
+  <button id="animToggleBtn" class="anim-toggle-btn" aria-pressed="false">
+    <span class="icon">⏸️</span>
+    <span class="label">Sospendi animazioni</span>
+  </button>
+  <div id="animStatus" class="anim-status">▶ Animazioni attive</div>
+</div>
+
+<script>
+  // Se usi HTML, aggiungi questo script
+  document.getElementById('animToggleBtn').addEventListener('click', () => {
+    window.AnimationAPI.toggle();
+  });
+</script>
   <!-- === FAB Dizionario === -->
 <button id="dict-fab" class="fab-with-text">
-  <span class="fab-label">📚 Risorse</span>
+  <span class="fab-label">📘Dizionario</span>
   <span class="fab-icona"></span>
 </button>
  <div hidden="True" id="search-backdrop"></div>
@@ -8587,83 +7405,31 @@ html[data-theme="light"] .timeline-content strong {
 <li><a href="articoli/2nietzsche.html">Nietzsche</a></li>
 <li><a href="articoli/battaglia_maratona.html">Battaglia di Maratona</a></li>
 </ul>
-<div id="cambridge-widget-container" style="display: none;">
-<!-- INIZIO CAMBRIDGE DIZIONARIO -->
 
-<style>
-  /* Stile per il placeholder dorato */
-  input::placeholder {
-    color: #B8860B;
-    opacity: 0.8;
-  }
-
-  /* Stile principale del widget */
-  .cambridge-widget {
-    font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
-    width: 100%;
-    max-width: 320px;
-    margin: 0 auto;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    
-    /* PER SPOSTARE IL WIDGET VERTICALMENTE - SCEGLI UNA DELLE OPZIONI SOTTO */
-    
-    /* OPZIONE 1: Usando margin-top */
-    margin-top: 80px; /* Sposta il widget più in BASSO */
-    /* margin-bottom: 80px; */ /* Sposta il widget più in ALTO (se c'è spazio sotto) */
-    
-    /* OPZIONE 2: Usando position relative (alternativa) */
-    /* position: relative; */
-    /* top: 350px; */ /* Sposta GIÙ di 350px */
-    /* top: -20px; */ /* Sposta SU di 20px */
-    
-    /* OPZIONE 3: Usando transform (alternativa) */
-    /* transform: translateY(760px); */ /* Sposta GIÙ di 760px */
-  }
-
-  /* Per centrare perfettamente nella pagina (usando position absolute) */
-  /* .cambridge-widget-center {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%) translateY(40px);
-  } */
-
-  /* Per posizionare in fondo alla pagina (usando position fixed) */
-  /* .cambridge-widget-bottom {
-    position: fixed;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1000;
-  } */
-
-  /* Per posizionare in alto (usando position fixed) */
-  /* .cambridge-widget-top {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1000;
-  } */
-</style>
-
-<!-- Form di ricerca Cambridge Dictionary -->
-<form action="https://dictionary.cambridge.org/search/english/direct/" method="get" target="_blank">
-  <input type="hidden" name="utm_source" value="widget_searchbox_source">
-  <input type="hidden" name="utm_medium" value="widget_searchbox">
-  <input type="hidden" name="utm_campaign" value="widget_tracking">
-  
-  <!-- Campo di ricerca -->
-  <input type="text" name="q" placeholder="Cerca nel Cambridge Dictionary...">
-  
-  <!-- Pulsante di invio (opzionale) -->
-  <button type="submit">Cerca</button>
+  <table style='font-family:Arial,Helvetica,sans-serif;font-size:10px;background:#1D2A57;border-collapse:collapse;border-spacing:0;width:150px;top:340px;background-image:linear-gradient(to right,#0f193d,#2c2f62,#1a2753)'>
+    <caption style='display:none;'>CUP free search box</caption>
+    <tbody>
+      <tr>
+        <td colspan='2' style='padding:0;background:none;border:none;'>
+          <a href='https://dictionary.cambridge.org/' style='display:block;background:transparent url(https://dictionary.cambridge.org/external/images/freesearch/sbl.png?version=6.0.73) no-repeat 5px 6px;height:32px;'></a>
+        </td>
+      </tr>
+      <tr>
+        <!-- campo di ricerca con testo oro brillante -->
+        <td style='width:130px;background:none;border:none;padding:0;font-size:10px;border-collapse:collapse;border-spacing:0;'>
+          <input style='margin:4px;padding:0 0 0 3px;display:block;font-family:Arial,Helvetica,sans-serif;font-size:10px;border:1px solid #FFD700;border-radius:20px;box-shadow:inset 1px 1px 2px 0 rgba(0,0,0,0.1);color:#FFD700;' name='q' placeholder='Search English' type='search' title='search' dir='auto' role='textbox' autocomplete='off' aria-controls='search' aria-multiline='false' aria-expanded='false' aria-label='Search' aria-required='true' aria-invalid='false' />
+        </td>
+        
+        <!-- pulsante di ricerca giallo -->
+        <td style='width:20px;background:none;border:none;padding:0 4px 0 0;font-size:10px;border-collapse:collapse;border-spacing:0;'>
+          <button style='width:15px;height:15px;vertical-align:top;display:inline-block;border:none;border-radius:50%;text-align:center;text-transform:none;padding:0;background:#FEC400;cursor:pointer;overflow:hidden;' title='Search' type='submit'>
+            <img src='https://dictionary.cambridge.org/external/images/freesearch/search.png?version=6.0.73' style='vertical-align:-1px;border:none;height:auto;margin:0;padding:0;text-align:center;'/>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </form>
-
-<!-- FINE CAMBRIDGE DIZIONARIO -->
-  
 
 <!--FINE CAMBRIDGE DIZIONARIO-->
 </div>
@@ -8764,13 +7530,48 @@ html[data-theme="light"] .timeline-content strong {
       <span class="dot red-dot"></span>
     </button>
   </div>
-
+ <!--INIZIO  CAMBRIDGE DIZIONARIO-->
+  <form action='https://dictionary.cambridge.org/search/english/direct/' method='get' target='_blank'>
+  <input type='hidden' name='utm_source' value='widget_searchbox_source'/>
+  <input type='hidden' name='utm_medium' value='widget_searchbox'/>
+  <input type='hidden' name='utm_campaign' value='widget_tracking'/>
+  
+  <style>
+    /* Stile per il placeholder (testo segnaposto) */
+    input::placeholder {
+      color: #B8860B;  /* Oro scuro per il placeholder - più soft ma sempre dorato */
+      opacity: 0.8;
+    }
+  </style>
+  
+  <table style='font-family:Arial,Helvetica,sans-serif;font-size:10px;background:#1D2A57;border-collapse:collapse;border-spacing:0;width:150px;background-image:linear-gradient(to right,#0f193d,#2c2f62,#1a2753)'>
+    <caption style='display:none;'>CUP free search box</caption>
+    <tbody>
+      <tr>
+        <td colspan='2' style='padding:0;background:none;border:none;'>
+          <a href='https://dictionary.cambridge.org/' style='display:block;background:transparent url(https://dictionary.cambridge.org/external/images/freesearch/sbl.png?version=6.0.73) no-repeat 5px 6px;height:32px;'></a>
+        </td>
+      </tr>
+      <tr>
+        <td style='width:130px;background:none;border:none;padding:0;font-size:10px;border-collapse:collapse;border-spacing:0;'>
+          <input style='margin:4px;padding:0 0 0 3px;display:block;font-family:Arial,Helvetica,sans-serif;font-size:10px;border:1px solid #FFD700;border-radius:20px;box-shadow:inset 1px 1px 2px 0 rgba(0,0,0,0.1);color:#FFD700;' name='q' placeholder='Search English' type='search' title='search' dir='auto' role='textbox' autocomplete='off' aria-controls='search' aria-multiline='false' aria-expanded='false' aria-label='Search' aria-required='true' aria-invalid='false' />
+        </td>
+        <td style='width:20px;background:none;border:none;padding:0 4px 0 0;font-size:10px;border-collapse:collapse;border-spacing:0;'>
+          <button style='width:15px;height:15px;vertical-align:top;display:inline-block;border:none;border-radius:50%;text-align:center;text-transform:none;padding:0;background:#FEC400;cursor:pointer;overflow:hidden;' title='Search' type='submit'>
+            <img src='https://dictionary.cambridge.org/external/images/freesearch/search.png?version=6.0.73' style='vertical-align:-1px;border:none;height:auto;margin:0;padding:0;text-align:center;'/>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</form>
+  <!--FINE CAMBRIDGE DIZIONARIO-->
 <div style="position: relative;">
 <button class="ctrl-btn" id="paradigma-btn" style="
             background: rgba(20, 20, 40, 0.78);
             border: 1px solid rgba(255, 215, 0, 0.25);
             border-radius: 0.5rem;
-            padding: 0.1rem 0.5rem;
+            padding: 0.5rem 1rem;
             margin-left: 10px;
             color: #ffd86a;
             font-weight: 700;
@@ -8828,20 +7629,6 @@ html[data-theme="light"] .timeline-content strong {
 <!-- ============================================================
         TOPBAR CON DIZIONARIO
 ============================================================ -->
-
-
-
-<!-- Link a World History Encyclopedia -->
-<a href="https://www.worldhistory.org/trans/it/?utm_source=whe&utm_medium=lang_popup&utm_campaign=browser_lang_forward" 
-   target="_blank" 
-   rel="noopener noreferrer" 
-   class="world-history-btn" 
-   title="Enciclopedia della storia del mondo - World History Encyclopedia">
-  <span class="btn-icon">🏛️</span> 
-  <span class="btn-text">Storia del Mondo</span>
-</a>
-
-
 <div class="bar-right">
 <div class="translate-box">
 <span>🌐</span>
@@ -8859,9 +7646,6 @@ html[data-theme="light"] .timeline-content strong {
 <input aria-label="Cerca" id="site-search" placeholder="Cerca nel sito..." type="search"/>
 <i aria-hidden="true" class="fa-solid fa-magnifying-glass search-icon"></i>
 </div>
-<!--   Bottone atmosfera dinamica INIZIO -->
-<button id="atmosphereToggle" class="control-btn" title="Attiva o sospende le animazioni del cielo"> ✦ Sfondo stellato </button>
-<!--BOTTONE ATMOSFERA DINAMICA - FINE   -->
 <button aria-label="Cambia tema" class="ctrl-btn theme-btn" id="theme-toggle" title="Tema chiaro/scuro">
     🌙
   </button>
@@ -8879,7 +7663,7 @@ html[data-theme="light"] .timeline-content strong {
 
   <!-- Header -->
   <div class="dict-header">
-    <h2 class="notranslate" translate="no"> 📚 Risorse</h2>
+    <h2 class="notranslate" translate="no"> Dizionario Filosofico</h2>
     <button id="dict-close" class="dict-close-btn" aria-label="Chiudi modale">×</button>
   </div>
 
@@ -9572,6 +8356,7 @@ html[data-theme="light"] .timeline-content strong {
 <!-- Citazioni filosofiche fluttuanti -->
 <div class="floating-quotes"><div class="quote-bubble"><div class="quote-text">“Conosci te stesso”</div><div class="quote-author">— Socrate</div></div><div class="quote-bubble"><div class="quote-text">“So di non sapere”</div><div class="quote-author">— Socrate</div></div><div class="quote-bubble"><div class="quote-text">“Una vita senza ricerca non è degna di essere vissuta”</div><div class="quote-author">— Socrate</div></div><div class="quote-bubble"><div class="quote-text">“La filosofia comincia con la meraviglia”</div><div class="quote-author">— Platone</div></div><div class="quote-bubble"><div class="quote-text">“La bellezza è lo splendore del vero”</div><div class="quote-author">— Platone</div></div><div class="quote-bubble"><div class="quote-text">“Siamo ciò che facciamo ripetutamente. L'eccellenza non è un atto ma un'abitudine”</div><div class="quote-author">— Aristotele</div></div><div class="quote-bubble"><div class="quote-text">“La felicità dipende da noi stessi”</div><div class="quote-author">— Aristotele</div></div><div class="quote-bubble"><div class="quote-text">“Nulla è nell'intelletto che prima non sia passato dai sensi”</div><div class="quote-author">— Aristotele</div></div><div class="quote-bubble"><div class="quote-text">“Tutto scorre”</div><div class="quote-author">— Eraclito</div></div><div class="quote-bubble"><div class="quote-text">“Il carattere è destino”</div><div class="quote-author">— Eraclito</div></div><div class="quote-bubble"><div class="quote-text">“L'uomo è misura di tutte le cose”</div><div class="quote-author">— Protagora</div></div><div class="quote-bubble"><div class="quote-text">“Vivere secondo natura”</div><div class="quote-author">— Zenone di Cizio</div></div><div class="quote-bubble"><div class="quote-text">“Non sono le cose che ci turbano, ma le opinioni che abbiamo su di esse”</div><div class="quote-author">— Epitteto</div></div><div class="quote-bubble"><div class="quote-text">“Non è la morte che dobbiamo temere, ma il non cominciare mai a vivere”</div><div class="quote-author">— Marco Aurelio</div></div><div class="quote-bubble"><div class="quote-text">“La vita è opinione”</div><div class="quote-author">— Marco Aurelio</div></div><div class="quote-bubble"><div class="quote-text">“La felicità consiste nel desiderare ciò che si ha”</div><div class="quote-author">— Seneca</div></div><div class="quote-bubble"><div class="quote-text">“Non esiste vento favorevole per il marinaio che non sa dove andare”</div><div class="quote-author">— Seneca</div></div><div class="quote-bubble"><div class="quote-text">“Il destino guida chi lo segue e trascina chi si oppone”</div><div class="quote-author">— Seneca</div></div><div class="quote-bubble"><div class="quote-text">“Vivi nascosto”</div><div class="quote-author">— Epicuro</div></div><div class="quote-bubble"><div class="quote-text">“Ama e fa' ciò che vuoi”</div><div class="quote-author">— Sant'Agostino</div></div><div class="quote-bubble"><div class="quote-text">“La fede cerca l'intelligenza”</div><div class="quote-author">— Anselmo d'Aosta</div></div><div class="quote-bubble"><div class="quote-text">“Contemplata aliis tradere”</div><div class="quote-author">— Tommaso d'Aquino</div></div><div class="quote-bubble"><div class="quote-text">“Non moltiplicare gli enti senza necessità”</div><div class="quote-author">— Guglielmo di Ockham</div></div><div class="quote-bubble"><div class="quote-text">“È meglio essere temuti che amati, se non si può essere entrambi”</div><div class="quote-author">— Niccolò Machiavelli</div></div><div class="quote-bubble"><div class="quote-text">“Cogito, ergo sum”</div><div class="quote-author">— Cartesio</div></div><div class="quote-bubble"><div class="quote-text">“Il cuore ha le sue ragioni che la ragione non conosce”</div><div class="quote-author">— Blaise Pascal</div></div><div class="quote-bubble"><div class="quote-text">“La mente è una tabula rasa”</div><div class="quote-author">— John Locke</div></div><div class="quote-bubble"><div class="quote-text">“Esse est percipi”</div><div class="quote-author">— George Berkeley</div></div><div class="quote-bubble"><div class="quote-text">“La bellezza delle cose esiste nella mente di chi le contempla”</div><div class="quote-author">— David Hume</div></div><div class="quote-bubble"><div class="quote-text">“Due cose riempiono l’animo: il cielo stellato sopra di me e la legge morale dentro di me”</div><div class="quote-author">— Immanuel Kant</div></div><div class="quote-bubble"><div class="quote-text">“Agisci in modo da trattare l’umanità sempre come fine e mai semplicemente come mezzo”</div><div class="quote-author">— Immanuel Kant</div></div><div class="quote-bubble"><div class="quote-text">“Quel che è reale è razionale”</div><div class="quote-author">— G.W.F. Hegel</div></div><div class="quote-bubble"><div class="quote-text">“La vita oscilla tra la noia e il dolore”</div><div class="quote-author">— Arthur Schopenhauer</div></div><div class="quote-bubble"><div class="quote-text">“La vita dev’essere compresa all’indietro, ma va vissuta in avanti”</div><div class="quote-author">— Søren Kierkegaard</div></div><div class="quote-bubble"><div class="quote-text">“Chi ha un perché per vivere può sopportare quasi ogni come”</div><div class="quote-author">— Friedrich Nietzsche</div></div><div class="quote-bubble"><div class="quote-text">“Diventa ciò che sei”</div><div class="quote-author">— Friedrich Nietzsche</div></div><div class="quote-bubble"><div class="quote-text">“Non esistono fatti, solo interpretazioni”</div><div class="quote-author">— Friedrich Nietzsche</div></div><div class="quote-bubble"><div class="quote-text">“Di ciò di cui non si può parlare si deve tacere”</div><div class="quote-author">— Ludwig Wittgenstein</div></div><div class="quote-bubble"><div class="quote-text">“Il significato è l’uso”</div><div class="quote-author">— Ludwig Wittgenstein</div></div><div class="quote-bubble"><div class="quote-text">“Il linguaggio è la casa dell’essere”</div><div class="quote-author">— Martin Heidegger</div></div><div class="quote-bubble"><div class="quote-text">“L’esistenza precede l’essenza”</div><div class="quote-author">— Jean‑Paul Sartre</div></div><div class="quote-bubble"><div class="quote-text">“Bisogna immaginare Sisifo felice”</div><div class="quote-author">— Albert Camus</div></div></div>
 <!-- Footer -->
+<!-- Footer -->
 <footer>
 <div class="footer-wrap">
 <div class="footer-columns">
@@ -10181,7 +8966,7 @@ function softPlay(audio, volume, delay) {
       
         function search(q){
           if(!haveIndex() || !q.trim()){
-           el.style.display = "none";
+            panel.style.display = 'none';
             resultsWrap.innerHTML = '';
             return;
           }
@@ -10468,7 +9253,73 @@ document.addEventListener('DOMContentLoaded', ()=>{
 <!-- === INIZIO COMETINE ORIZZONTALI BIDIREZIONALI === -->
 
 
+<script>
 
+(function(){
+  const BODY = document.body;
+  const rnd = (min,max)=> Math.random()*(max-min)+min;
+
+  const MIN_INTERVAL = 800;
+  const MAX_INTERVAL = 2200;
+
+  function createComet(){
+    const comet = document.createElement('div');
+    comet.className = 'comet';
+
+    const y = rnd(0, window.innerHeight * 0.9);
+    const drift = rnd(-30,30);
+    const duration = rnd(3,7);
+
+    const dir = Math.random() < 0.5 ? 'ltr' : 'rtl';
+    const hue = rnd(40,240);  // oro → azzurro/blu
+
+    if(dir === 'ltr'){
+      comet.style.background = `linear-gradient(90deg,
+        hsla(${hue},100%,70%,0) 0%,
+        hsla(${hue},100%,85%,.95) 100%)`;
+      comet.style.animationName = 'comet-move-ltr';
+      comet.style.left = '0';
+      comet.style.right = 'auto';
+      comet.style.setProperty('--startY', `${y}px`);
+      comet.style.setProperty('--endY', `${y+drift}px`);
+      comet.style.setProperty('--head-pos', 'right');
+    } else {
+      comet.style.background = `linear-gradient(270deg,
+        hsla(${hue},100%,70%,0) 0%,
+        hsla(${hue},100%,85%,.95) 100%)`;
+      comet.style.animationName = 'comet-move-rtl';
+      comet.style.left = 'auto';
+      comet.style.right = '0';
+      comet.style.setProperty('--startY', `${y}px`);
+      comet.style.setProperty('--endY', `${y+drift}px`);
+      comet.style.setProperty('--head-pos', 'left');
+    }
+
+   // sposta la testolina luminosa a seconda della direzione
+comet.style.setProperty('--duration', `${duration}s`);
+comet.style.animationDuration = `${duration}s`;
+
+// Controlla la direzione e imposta la posizione della testa
+if(dir === 'rtl') {
+    // Da destra a sinistra - testa a destra
+    comet.style.setProperty('--head-position', '0px'); // right: 0
+} else {
+    // Da sinistra a destra - testa a sinistra  
+    comet.style.setProperty('--head-position', '0px'); // left: 0
+}
+    // aggiunta
+    BODY.appendChild(comet);
+    setTimeout(()=> comet.remove(), duration*1000);
+  }
+
+  function loop(){
+    createComet();
+    setTimeout(loop, rnd(MIN_INTERVAL, MAX_INTERVAL));
+  }
+
+  window.addEventListener('DOMContentLoaded', loop);
+})();
+</script>
 
 <!-- === COMETINE MULTIDIREZIONALI FINE=== -->
 <!-- Cookie Banner -->
@@ -11834,325 +10685,59 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 <script>
-/* =====================================================
-   THEME TOGGLE FUNCTIONALITY
-   TEMA NOTTE / AURORA
-   TRANSIZIONE NOTTE → ALBA → AURORA
-   ===================================================== */
-
-
-document.addEventListener('DOMContentLoaded', function () {
-
-
-    const themeToggle = document.getElementById('theme-toggle');
-
-
-    if (!themeToggle) return;
-
-
-
-    // Recupero tema salvato
-
-    const savedTheme =
-        localStorage.getItem('theme') || 'dark';
-
-
-
-    document.documentElement.setAttribute(
-        'data-theme',
-        savedTheme
-    );
-
-
-    updateToggleButton(savedTheme);
-
-
-
-
-
-    // =====================================================
-    // CAMBIO TEMA MANUALE
-    // =====================================================
-
-
-    themeToggle.addEventListener('click', function () {
-
-
-        const currentTheme =
-            document.documentElement.getAttribute(
-                'data-theme'
-            );
-
-
-
-        const newTheme =
-            currentTheme === 'dark'
-                ? 'light'
-                : 'dark';
-
-
-
-
-
-        // ===============================
-        // NOTTE → AURORA
-        // ===============================
-
-
-        if (newTheme === 'light') {
-
-
-
-            // prepara dissolvenza
-
-            document.documentElement.classList.add(
-                'aurora-transition'
-            );
-
-
-
-            // piccolo ritardo per consentire
-            // l'avvio della transizione
-
-            setTimeout(function(){
-
-
-                document.documentElement.setAttribute(
-                    'data-theme',
-                    'light'
-                );
-
-
-            },50);
-
-
-
-
-            // termina fase alba
-
-            setTimeout(function(){
-
-
-                document.documentElement.classList.remove(
-                    'aurora-transition'
-                );
-
-
-            },5200);
-
-
-
-
-
-        }
-
-
-
-        // ===============================
-        // AURORA → NOTTE
-        // ===============================
-
-
-        else {
-
-
-
-            document.documentElement.setAttribute(
-                'data-theme',
-                'dark'
-            );
-
-
-        }
-
-
-
-
-
-        // Memorizza scelta
-
-        localStorage.setItem(
-            'theme',
-            newTheme
-        );
-
-
-
-        updateToggleButton(newTheme);
-
-
-
-
-        // transizione generale elementi
-
-        document.documentElement.style.transition =
-            'background 0.8s ease, color 0.8s ease';
-
-
-
-        setTimeout(function(){
-
-
-            document.documentElement.style.transition='';
-
-
-        },800);
-
-
-
-    });
-
-
-
-
-
-
-    // =====================================================
-    // AGGIORNAMENTO PULSANTE
-    // =====================================================
-
-
-    function updateToggleButton(theme) {
-
-
-
-        if (theme === 'dark') {
-
-
-            themeToggle.innerHTML = `
-
-                <span class="theme-icon">
-                    🌙
-                </span>
-
-            `;
-
-
-            themeToggle.setAttribute(
-                'aria-label',
-                'Attiva tema Aurora'
-            );
-
-
-            themeToggle.setAttribute(
-                'title',
-                'Passa al cielo Aurora'
-            );
-
-
-
-        } else {
-
-
-
-            themeToggle.innerHTML = `
-
-                <span class="theme-icon">
-                    ☀️
-                </span>
-
-            `;
-
-
-            themeToggle.setAttribute(
-                'aria-label',
-                'Attiva tema notturno'
-            );
-
-
-            themeToggle.setAttribute(
-                'title',
-                'Ritorna al cielo stellato'
-            );
-
-
-        }
-
-
-
-
-
-        // piccolo effetto pressione
-
-        themeToggle.style.transform =
-            'scale(0.9)';
-
-
-
-        setTimeout(function(){
-
-
-            themeToggle.style.transform =
-                'scale(1)';
-
-
-        },150);
-
-
-
+/* === THEME TOGGLE FUNCTIONALITY === */
+document.addEventListener('DOMContentLoaded', function() {
+  const themeToggle = document.getElementById('theme-toggle');
+  if (!themeToggle) return;
+  
+  // Get saved theme or default to dark
+  const savedTheme = localStorage.getItem('theme') || 'dark';
+  
+  // Apply saved theme
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  updateToggleButton(savedTheme);
+  
+  // Toggle theme on click
+  themeToggle.addEventListener('click', function() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    // Apply new theme
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateToggleButton(newTheme);
+    
+    // Smooth transition
+    document.documentElement.style.transition = 'all 0.5s ease';
+    setTimeout(() => {
+      document.documentElement.style.transition = '';
+    }, 500);
+  });
+  
+  function updateToggleButton(theme) {
+    const icon = theme === 'dark' ? '🌙' : '☀️';
+    const label = theme === 'dark' ? 'Attiva tema chiaro' : 'Attiva tema scuro';
+    
+    themeToggle.innerHTML = icon;
+    themeToggle.setAttribute('aria-label', label);
+    themeToggle.setAttribute('title', label);
+    
+    // Add click feedback
+    themeToggle.style.transform = 'scale(0.9)';
+    setTimeout(() => {
+      themeToggle.style.transform = 'scale(1)';
+    }, 150);
+  }
+  
+  // Listen for system preference changes
+  const systemTheme = window.matchMedia('(prefers-color-scheme: light)');
+  systemTheme.addEventListener('change', function(e) {
+    if (!localStorage.getItem('theme')) {
+      const newTheme = e.matches ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      updateToggleButton(newTheme);
     }
-
-
-
-
-
-
-
-
-    // =====================================================
-    // CAMBIO TEMA AUTOMATICO SISTEMA
-    // =====================================================
-
-
-    const systemTheme =
-        window.matchMedia(
-            '(prefers-color-scheme: light)'
-        );
-
-
-
-    systemTheme.addEventListener(
-        'change',
-        function(event){
-
-
-
-            // solo se l'utente
-            // non ha scelto manualmente
-
-
-            if (!localStorage.getItem('theme')) {
-
-
-
-                const newTheme =
-                    event.matches
-                    ? 'light'
-                    : 'dark';
-
-
-
-                document.documentElement.setAttribute(
-                    'data-theme',
-                    newTheme
-                );
-
-
-
-                updateToggleButton(
-                    newTheme
-                );
-
-
-            }
-
-
-
-        }
-    );
-
-
-
+  });
 });
 </script>
 
@@ -12359,7 +10944,16 @@ document.addEventListener('DOMContentLoaded', function() {
         
         container.appendChild(star);
     }
-    
+
+
+
+
+
+
+
+
+
+
     function createShootingStar() {
         const shooter = document.createElement('div');
         shooter.className = 'shooting-star';
@@ -12404,7 +10998,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, duration);
     }
     
-    function createMultipleShootingStars() {
+ function createMultipleShootingStars() {
         // Crea 1-2 stelle cadenti contemporaneamente
         const count = 1 + Math.floor(Math.random() * 2);
         for (let i = 0; i < count; i++) {
@@ -12428,7 +11022,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // AVVIA SUBITO
     setTimeout(createMultipleShootingStars, 500);
 })();
+
 </script>
+
 <script>
     (function() {
         const canvas = document.getElementById("tiny-comets");
@@ -12583,6 +11179,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     })();
 </script>
+
 <script id="ultimate-explosion-fixed">
 /* === SISTEMA DI ESPLOSIONE CORRETTO === */
 document.addEventListener('DOMContentLoaded', function() {
@@ -13677,60 +12274,399 @@ document.addEventListener('DOMContentLoaded', () => {
 }
 
 </script>
+
 <script>
-document.addEventListener("DOMContentLoaded", function () {
+ // ============================================
+// CONTROLLO ANIMAZIONI - VERSIONE CON GESTIONE COMETE
+// ============================================
 
-    const button = document.getElementById("atmosphereToggle");
+(function() {
+  'use strict';
+  
+  const toggleBtn = document.getElementById('animToggleBtn');
+  const statusBadge = document.getElementById('animStatus');
+  
+  if (!toggleBtn) {
+    console.warn('Pulsante animToggleBtn non trovato!');
+    return;
+  }
+  
+  let isPaused = localStorage.getItem('animations-paused') === 'true';
+  
+  // ============================================
+  // GESTIONE COMETE
+  // ============================================
+  function handleComets(pause) {
+    const comets = document.querySelectorAll('.shooting-star');
+    
+    if (pause) {
+      comets.forEach(comet => {
+        comet.style.animationPlayState = 'paused';
+        comet.style.animationDuration = '0s';
+        comet.style.opacity = '0';
+        comet.style.display = 'none';
+      });
+    } else {
+      comets.forEach(comet => {
+        comet.style.animationPlayState = '';
+        comet.style.animationDuration = '';
+        comet.style.opacity = '';
+        comet.style.display = '';
+      });
+    }
+  }
+  
 
-    if (!button) return;
-
-    let atmosphereOn = true;
-
-    button.addEventListener("click", function () {
-
-        atmosphereOn = !atmosphereOn;
-
-        const elements = document.querySelectorAll(
-            '[class*="star"], [class*="comet"], [class*="meteor"], [class*="shoot"], [class*="particle"], [id*="star"], [id*="comet"], canvas'
-        );
-
-        elements.forEach(el => {
-
-            // lascia sempre visibile la timeline
-            if (
-                el.classList.contains("timeline") ||
-                el.closest(".timeline")
-            ) {
-                return;
-            }
-
-            el.style.display = atmosphereOn ? "" : "none";
-
-        });
 
 
-        if (atmosphereOn) {
 
-    button.innerHTML = "✦ Sfondo stellato";
-    button.title = "Riduci stelle, comete ed effetti del cielo";
-
-    // stile pulsante attivo
-    button.classList.remove("atmosphere-off");
-
-} else {
-
-    button.innerHTML = "✦ Sfondo essenziale";
-    button.title = "Mostra stelle, comete ed effetti del cielo";
-
-    // stile pulsante ridotto
-    button.classList.add("atmosphere-off");
-
-}
-
+  // ============================================
+  // GESTIONE STELLE
+  // ============================================
+  function handleStars(pause) {
+    const stars = document.querySelectorAll('.star');
+    stars.forEach(star => {
+      if (pause) {
+        star.style.animationPlayState = 'paused';
+        star.style.opacity = '0.15';
+      } else {
+        star.style.animationPlayState = '';
+        star.style.opacity = '';
+      }
     });
+  }
+  
+  // ============================================
+  // FUNZIONE PRINCIPALE TOGGLE
+  // ============================================
+  function toggleAnimations() {
+    isPaused = !isPaused;
+    
+    // 1. Applica classe al body (gestisce tutto il resto)
+    document.body.classList.toggle('animations-paused', isPaused);
+    
+    // 2. Gestione specifica comete
+    handleComets(isPaused);
+    
+    // 3. Gestione specifica stelle
+    handleStars(isPaused);
+    
+    // 4. Aggiorna pulsante
+    toggleBtn.classList.toggle('active', isPaused);
+    toggleBtn.setAttribute('aria-pressed', isPaused ? 'true' : 'false');
+    
+    const icon = toggleBtn.querySelector('.icon');
+    const label = toggleBtn.querySelector('.label');
+    
+    if (icon) {
+      icon.textContent = isPaused ? '▶️' : '⏸️';
+    }
+    
+    if (label) {
+      label.textContent = isPaused ? 'Riprendi animazioni' : 'Sospendi animazioni';
+    }
+    
+    // 5. Aggiorna badge
+    if (statusBadge) {
+      statusBadge.textContent = isPaused ? '⏸ Animazioni sospese' : '▶ Animazioni attive';
+      statusBadge.classList.toggle('paused', isPaused);
+      statusBadge.classList.add('visible');
+      
+      clearTimeout(window.statusTimeout);
+      window.statusTimeout = setTimeout(() => {
+        statusBadge.classList.remove('visible');
+      }, 3000);
+    }
+    
+    // 6. Salva stato
+    localStorage.setItem('animations-paused', isPaused ? 'true' : 'false');
+    
+    // 7. Evento custom
+    document.dispatchEvent(new CustomEvent('animationsToggled', {
+      detail: { paused: isPaused }
+    }));
+    
+    console.log(`[Animations] ${isPaused ? '⏸ Sospese' : '▶ Riprese'} tutte le animazioni`);
+  }
+  
+  // ============================================
+  // EVENTI
+  // ============================================
+  
+  toggleBtn.addEventListener('click', toggleAnimations);
+  
+  document.addEventListener('keydown', (e) => {
+    if (e.shiftKey && (e.key === 'a' || e.key === 'A')) {
+      e.preventDefault();
+      toggleAnimations();
+    }
+  });
+  
+  // ============================================
+  // APPLICA STATO INIZIALE
+  // ============================================
+  
+  if (isPaused) {
+    document.body.classList.add('animations-paused');
+    handleComets(true);
+    handleStars(true);
+    
+    toggleBtn.classList.add('active');
+    toggleBtn.setAttribute('aria-pressed', 'true');
+    
+    const icon = toggleBtn.querySelector('.icon');
+    const label = toggleBtn.querySelector('.label');
+    
+    if (icon) icon.textContent = '▶️';
+    if (label) label.textContent = 'Riprendi animazioni';
+    
+    if (statusBadge) {
+      statusBadge.textContent = '⏸ Animazioni sospese';
+      statusBadge.classList.add('paused', 'visible');
+      setTimeout(() => statusBadge.classList.remove('visible'), 3000);
+    }
+  }
+  
+  // ============================================
+  // API PUBBLICA
+  // ============================================
+  
+  window.animController = {
+    toggle: toggleAnimations,
+    pause: function() {
+      if (!isPaused) this.toggle();
+      return this;
+    },
+    resume: function() {
+      if (isPaused) this.toggle();
+      return this;
+    },
+    isPaused: function() {
+      return isPaused;
+    },
+    getState: function() {
+      return { paused: isPaused };
+    }
+  };
+  
+  console.log('[Animations] Controller inizializzato con gestione comete. Usa Shift+A per toggle.');
+  
+})();
+// ============================================
+// FORZA FERMO COMETE - DA AGGIUNGERE IN FONDO
+// ============================================
 
-});
+// Se le comete sono generate da un setInterval
+(function() {
+  // Salva i riferimenti agli intervalli
+  const originalSetInterval = window.setInterval;
+  window.setInterval = function(fn, delay) {
+    const id = originalSetInterval(fn, delay);
+    // Se l'intervallo genera comete, fermalo quando in pausa
+    if (fn.toString().includes('shooting-star') || fn.toString().includes('comet')) {
+      window._cometIntervals = window._cometIntervals || [];
+      window._cometIntervals.push(id);
+    }
+    return id;
+  };
+  
+  // Funzione per fermare tutti gli intervalli di comete
+  function stopAllCometIntervals() {
+    if (window._cometIntervals) {
+      window._cometIntervals.forEach(id => clearInterval(id));
+      window._cometIntervals = [];
+    }
+  }
+  
+  // Aggiungi alla funzione toggle
+  const originalToggle = window.animController.toggle;
+  window.animController.toggle = function() {
+    originalToggle();
+    if (this.isPaused()) {
+      stopAllCometIntervals();
+    }
+  };
+})();
+// ============================================
+// UCCISIONE TOTALE COMETE - SOLUZIONE DRASTICA
+// ============================================
 
-</script>  
+(function killAllComets() {
+  'use strict';
+  
+  // 1. Ferma TUTTI gli intervalli
+  const highestInterval = setInterval(() => {}, 99999);
+  for (let i = 0; i < highestInterval; i++) {
+    clearInterval(i);
+  }
+  
+  // 2. Ferma TUTTI i timeout
+  const highestTimeout = setTimeout(() => {}, 99999);
+  for (let i = 0; i < highestTimeout; i++) {
+    clearTimeout(i);
+  }
+  
+  // 3. Rimuovi TUTTE le comete esistenti
+  document.querySelectorAll('.shooting-star').forEach(el => {
+    el.remove();
+  });
+  
+  // 4. Impedisci nuove comete con CSS
+  const style = document.createElement('style');
+  style.textContent = `
+    .shooting-star {
+      display: none !important;
+      animation: none !important;
+      opacity: 0 !important;
+    }
+  `;
+  document.head.appendChild(style);
+  
+  console.log('[Kill Comets] Tutte le comete sono state uccise!');
+})();
+
+</script>
+<script>
+  
+  // ============================================
+// CACCIATORE DI COMETE RIBELLI
+// ============================================
+
+(function() {
+    'use strict';
+    
+    console.log('🔍 Inizio caccia alle comete ribelli...');
+    
+    // 1. Trova TUTTE le comete nel DOM
+    function findAllComets() {
+        const comets = [];
+        
+        // Cerca elementi con classe 'shooting-star'
+        document.querySelectorAll('.shooting-star').forEach(el => {
+            comets.push(el);
+        });
+        
+        // Cerca anche elementi con 'comet' nel nome
+        document.querySelectorAll('[class*="comet"]').forEach(el => {
+            comets.push(el);
+        });
+        
+        // Cerca elementi che hanno animazioni di comete
+        document.querySelectorAll('*').forEach(el => {
+            const style = getComputedStyle(el);
+            if (style.animationName && 
+                (style.animationName.includes('shoot') || 
+                 style.animationName.includes('comet') ||
+                 style.animationName.includes('star'))) {
+                comets.push(el);
+            }
+        });
+        
+        return comets;
+    }
+    
+    // 2. Analizza le comete trovate
+    function analyzeComets() {
+        const comets = findAllComets();
+        
+        console.log(`📊 Trovate ${comets.length} potenziali comete`);
+        
+        comets.forEach((comet, index) => {
+            const style = getComputedStyle(comet);
+            const rect = comet.getBoundingClientRect();
+            
+            console.log(`Cometa #${index}:`, {
+                className: comet.className,
+                tagName: comet.tagName,
+                position: `(${rect.left}, ${rect.top})`,
+                animation: style.animationName,
+                animationState: style.animationPlayState,
+                display: style.display,
+                opacity: style.opacity,
+                parent: comet.parentElement?.tagName || 'none'
+            });
+        });
+        
+        return comets;
+    }
+    
+    // 3. Uccidi le comete in modo drastico
+    function killAllComets() {
+        const comets = findAllComets();
+        let killed = 0;
+        
+        comets.forEach(comet => {
+            // Metodo 1: Rimozione diretta
+            try {
+                comet.remove();
+                killed++;
+            } catch(e) {
+                // Metodo 2: Nascondere
+                try {
+                    comet.style.display = 'none';
+                    comet.style.visibility = 'hidden';
+                    comet.style.opacity = '0';
+                    comet.style.pointerEvents = 'none';
+                    killed++;
+                } catch(e2) {
+                    console.warn('Impossibile uccidere cometa:', comet);
+                }
+            }
+        });
+        
+        console.log(`💀 Uccise ${killed} comete`);
+        return killed;
+    }
+    
+    // 4. Esegui
+    const comets = analyzeComets();
+    
+    if (comets.length > 0) {
+        console.log('🔫 Uccisione in corso...');
+        killAllComets();
+        
+        // Verifica dopo 1 secondo
+        setTimeout(() => {
+            const remaining = findAllComets();
+            if (remaining.length > 0) {
+                console.log(`⚠️ Rimangono ${remaining.length} comete! Uccisione 2° round...`);
+                killAllComets();
+            } else {
+                console.log('✅ Tutte le comete sono state uccise!');
+            }
+        }, 1000);
+    }
+    
+    // 5. Aggiungi un osservatore per bloccare nuove comete
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach(mutation => {
+            mutation.addedNodes.forEach(node => {
+                if (node.nodeType === 1) { // Elemento
+                    const isComet = 
+                        node.classList?.contains('shooting-star') ||
+                        node.className?.includes('comet') ||
+                        node.style?.animation?.includes('shoot');
+                    
+                    if (isComet) {
+                        console.log('🚫 Nuova cometa rilevata, uccisione immediata!');
+                        node.remove();
+                    }
+                }
+            });
+        });
+    });
+    
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+    
+    console.log('🛡️ Osservatore anti-comete attivato');
+    
+})();
+</script>
+<script>
+  
+</script>
 </body>
 </html>
