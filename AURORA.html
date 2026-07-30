@@ -6878,78 +6878,193 @@ a:hover {
 /* ============================================================
    🔘 FAB DIZIONARIO – Versione estesa con testo
    ============================================================ */
-
-#dict-fab {
-  position: fixed;
-  bottom: 25.4rem;
-  right: 5.2rem;
-  padding: 10px 28px;
-  border: 1px solid rgba(59, 130, 246, 0.2);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-
-  background: blue;
-  border: 1px solid rgba(255,215,0,0.55);
-  border-radius: 40px;
-
-  color: #ffd86a;
-  font-size: 1.15rem;
-  font-family: "Cinzel", serif;
-  letter-spacing: 5px;
-
-  cursor: pointer;
-  z-index: 9 !important;
-
-  box-shadow: 0 0 14px rgba(255,215,0,0.55);
-  transition: background .25s ease, transform .25s ease;
-}
-
-#dict-fab:hover {
-  background: rgba(30,30,50,0.92);
-  transform: translateY(-2px);
-}
-
-#dict-fab .fab-icona {
-  font-size: 1.45rem;
-}
-
-
 /* ============================================================
-   OVERLAY
+   MODALE LATERALE - VERSIONE COMPLETA
    ============================================================ */
-#dict-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.45);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .25s ease;
-  z-index: 999998;
-}
 
-/* ============================================================
-   MODALE LATERALE
-   ============================================================ */
+/* Contenitore - solo blur sullo sfondo */
 #dict-modal {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 360px;
-  height: 100vh;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 380px;
+    max-width: 90vw;
+    height: 100vh;
+    z-index: 999999;
+    
+    background: rgba(20, 20, 30, 0.95);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    
+    border-left: 1px solid rgba(255, 215, 0, 0.12);
+    
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    display: flex;
+    flex-direction: column;
+    box-shadow: -5px 0 40px rgba(0, 0, 0, 0.4);
+}
 
-  background: rgba(20,20,30,0.96);
-  backdrop-filter: blur(12px);
+#dict-modal.open {
+    transform: translateX(0);
+}
 
-  border-left: 1px solid rgba(255,255,255,0.15);
+/* Header - testo nitido */
+.dict-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 1.5rem;
+    border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+    flex-shrink: 0;
+    background: transparent;
+}
 
-  transform: translateX(100%);
-  transition: transform .35s ease;
+.dict-header h2 {
+    color: #ffd86a;
+    font-family: 'Cinzel', serif;
+    margin: 0;
+    font-size: 1.2rem;
+    letter-spacing: 0.5px;
+}
 
-  display: flex;
-  flex-direction: column;
+#dict-close {
+    background: rgba(255, 215, 0, 0.08);
+    border: 1px solid rgba(255, 215, 0, 0.12);
+    color: #ffd86a;
+    font-size: 1.2rem;
+    cursor: pointer;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
 
-  z-index: 999999;
+#dict-close:hover {
+    background: rgba(255, 215, 0, 0.2);
+    transform: rotate(90deg);
+}
+
+/* Contenuto - testo nitido */
+.dict-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.5rem;
+    background: transparent;
+    color: #e9eef5;
+}
+
+/* Scrollbar */
+.dict-content::-webkit-scrollbar {
+    width: 5px;
+}
+.dict-content::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 3px;
+}
+.dict-content::-webkit-scrollbar-thumb {
+    background: rgba(255, 215, 0, 0.25);
+    border-radius: 3px;
+}
+.dict-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 215, 0, 0.4);
+}
+
+/* Input ricerca */
+#dict-q {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid rgba(255, 215, 0, 0.15);
+    border-radius: 0.6rem;
+    background: rgba(255, 255, 255, 0.06);
+    color: #e9eef5;
+    font-size: 0.95rem;
+    font-family: 'Montserrat', sans-serif;
+    transition: all 0.3s ease;
+}
+
+#dict-q:focus {
+    border-color: rgba(255, 215, 0, 0.4);
+    outline: none;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.05);
+}
+
+#dict-q::placeholder {
+    color: rgba(233, 238, 245, 0.4);
+}
+
+/* Suggestioni */
+.suggestion-item {
+    padding: 0.6rem 0.8rem;
+    color: #e9eef5;
+    cursor: pointer;
+    border-radius: 0.3rem;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.suggestion-item:hover {
+    background: rgba(255, 215, 0, 0.06);
+    color: #ffd86a;
+    padding-left: 1rem;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+/* ============================================================
+   TEMA AURORA - OVERRIDE
+   ============================================================ */
+
+[data-theme="light"] #dict-modal {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-left: 1px solid rgba(59, 130, 246, 0.12);
+}
+
+[data-theme="light"] .dict-header h2 {
+    color: #1a2634;
+}
+
+[data-theme="light"] #dict-close {
+    color: #1a2634;
+    border-color: rgba(59, 130, 246, 0.12);
+    background: rgba(59, 130, 246, 0.05);
+}
+
+[data-theme="light"] #dict-close:hover {
+    background: rgba(59, 130, 246, 0.1);
+}
+
+[data-theme="light"] .dict-content {
+    color: #1a2634;
+}
+
+[data-theme="light"] #dict-q {
+    background: rgba(0, 0, 0, 0.03);
+    border-color: rgba(59, 130, 246, 0.15);
+    color: #1a2634;
+}
+
+[data-theme="light"] #dict-q:focus {
+    border-color: rgba(59, 130, 246, 0.4);
+    background: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .suggestion-item {
+    color: #1a2634;
+}
+
+[data-theme="light"] .suggestion-item:hover {
+    background: rgba(59, 130, 246, 0.06);
+    color: #1769aa;
 }
 //* ============================================
    RUSSELL BOX — AURORA BLUE
@@ -9910,7 +10025,7 @@ body {
 <div class="river-flow"></div>
 </div>
 </div>
-<p class="decoration-caption">⏳"Panta rei"🌿<br/><span class="sub-caption">💃Tutto danza nel divenire 🌊</span></p>
+<p class="decoration-caption">"Panta rei"</span></p>
 </div>
 <div class="typing-wrap">
 <div class="typing-effect"></div>
