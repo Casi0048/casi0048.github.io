@@ -1765,11 +1765,16 @@ mark.search-hit {
 /* ============================================
    FOOTER
    ============================================ */
+
+                                                         
 footer {
-  background: linear-gradient(90deg,rgba(151, 145, 184, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(0, 212, 255, 1) 100%);
+    background: linear-gradient(90deg,rgba(151, 145, 184, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(0, 212, 255, 1) 100%);
     color: #1a2634; /* Testo scuro per la leggibilità */
-    /*color: var(--aurora-text);*/   
-  color: var(--aurora-text);                    
+    /*color: var(--aurora-text);*/
+
+border-top: 1px solid rgba(255, 255, 255, 0.2);
+                                                          
+  
   margin-top: 120px;
   padding: 1.5rem 0;
   position: relative;
@@ -1825,6 +1830,7 @@ footer {
   flex-wrap: wrap;
   font-size: 0.8rem;
   justify-content: center;
+  color: #ffffff;
 }
 
 .social {
@@ -3568,7 +3574,7 @@ mark,
   padding: 0 .85rem 0 .70rem;
   border-radius: 999px;
   border: 1px solid var(--cc-border);
-  background: transparent;
+  background: linear-gradient(135deg, var(--gold), #ffeb3b); 
   cursor: pointer;
   box-shadow: 0 .8rem 1.6rem rgba(0, 0, 0, .45);
   z-index: 2147483606;
@@ -8999,70 +9005,47 @@ body {
 }
 
 /* ============================================
-   FOTO NEL FOOTER - RIDIMENSIONATE, CERCHI, SINISTRA
+   FOOTER - FOTO
    ============================================ */
 
-/* Contenitore delle colonne - già ok */
 .footer-columns {
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
     gap: 2rem;
+    flex-wrap: wrap;
 }
 
 .footer-col {
     flex: 0 0 auto;
+    text-align: left;
 }
 
-/* ============================================
-   FOTO - RIDIMENSIONATE E CERCHI
-   ============================================ */
-
 .footer-image {
-    width: 80px !important;        /* Larghezza fissa */
-    height: 80px !important;       /* Altezza fissa (stessa della larghezza per il cerchio) */
-    object-fit: cover !important;  /* Ritaglia per riempire senza deformare */
-    border-radius: 50% !important; /* FORMA CIRCOLARE */
-    display: block !important;
-    
-    /* Allineamento a sinistra */
-    margin-left: 0 !important;
-    margin-right: auto !important;
-    
-    /* Bordo e ombra */
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 50%;
     border: 2px solid rgba(255, 215, 0, 0.3);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
     transition: all 0.3s ease;
+    display: block;
+    margin-bottom: 0.5rem;
 }
 
-/* Effetto hover */
 .footer-image:hover {
     transform: scale(1.05);
     box-shadow: 0 6px 25px rgba(255, 215, 0, 0.25);
     border-color: rgba(255, 215, 0, 0.6);
 }
 
-/* Testo sotto la foto */
 .footer-col p {
-    text-align: left;
-    margin-top: 0.5rem;
+    margin: 0;
     font-size: 0.85rem;
     color: var(--text-muted, #8ab4d6);
 }
 
-/* ============================================
-   TEMA AURORA (chiaro)
-   ============================================ */
 
-[data-theme="aurora"] .footer-image {
-    border-color: rgba(23, 105, 170, 0.3);
-    box-shadow: 0 4px 15px rgba(23, 105, 170, 0.1);
-}
-
-[data-theme="aurora"] .footer-image:hover {
-    box-shadow: 0 6px 25px rgba(23, 105, 170, 0.2);
-    border-color: rgba(23, 105, 170, 0.5);
-}
 </style>
 </head>
 <body>
@@ -9507,12 +9490,12 @@ body {
 <!-- ============================================================
      BOTTONE CAMBIA MODALITA'  giorno/notte
 ============================================================ -->
-<a
-    href="index.html"
-    aria-label="Torna al cielo stellato"
-    class="ctrl-btn theme-btn"
-    title="Torna al cielo stellato">
-    🌙
+<a href="index.html" 
+   aria-label="Torna al tema scuro" 
+   class="ctrl-btn theme-btn" 
+   id="theme-toggle" 
+   title="Torna al tema scuro">
+    ☀️
 </a>
 <button class="ctrl-btn" id="btn-thunder" title="Riproduci tuono">⚡ Tuono</button>
 </div>
@@ -10259,62 +10242,48 @@ body {
 <a href="https://youtube.com/tuo_canale" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
 <a href="https://x.com/tuo_profilo" target="_blank" rel="noopener noreferrer" aria-label="X/Twitter"><i class="fa-brands fa-x-twitter"></i></a>
 </div>
-</div>
-</div>
-<!-- Foto nel footer -->
+<!-- INIZIO FOTO NEL FOOTER -->
 <div class="footer-wrap">
-        <div class="footer-columns">
-            
-            <!-- Colonna 1: Foto e descrizione -->
-            <div class="footer-col">
-                <img src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/immagini/mt.webp" 
-                     alt="Maria Teresa" 
-                     class="footer-image">
-                <p>Maria Teresa</p>
-            </div>
-            
-            <!-- Colonna 2: Altra foto e descrizione -->
-            <div class="footer-col">
-                <img src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/immagini/kk.webp" 
-                     alt="Descrizione della foto" 
-                     class="footer-image">
-                <p></p>
-            </div>
-            
-            <!-- Colonna 3: (opzionale) altro contenuto -->
-            
-            
+    <div class="footer-columns">
+        
+        <!-- Colonna 1: Foto e descrizione -->
+        <div class="footer-col">
+            <img src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/immagini/mt.webp" 
+                 alt="Maria Teresa" 
+                 class="footer-image">
+            <p>Maria Teresa</p>
         </div>
         
-        <!-- Footer legale -->
-        <div class="footer-legal">
-            <span>© <span id="year"></span> Echi di Sofia</span>
-            <span class="dot">•</span>
-            <a href="https://casi0048.github.io/pagine/privacy-policy.html">Privacy</a>
-            <span class="dot">•</span>
-            <a href="https://casi0048.github.io/pagine/credits.html">Crediti</a>
+        <!-- Colonna 2: Altra foto e descrizione -->
+        <div class="footer-col">
+            <img src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/immagini/kk.webp" 
+                 alt="Descrizione della foto" 
+                 class="footer-image">
+            <p></p>
         </div>
+        
+        <!-- Colonna 3: (opzionale) altro contenuto -->
+        <div class="footer-col">
+            <!-- Qui puoi aggiungere contenuto se vuoi -->
+        </div>
+        <!-- FINE COLONNA 3 -->
+        
     </div>
+    <!-- FINE FOOTER-COLUMNS -->
+    
+    <!-- Footer legale -->
+    <div class="footer-legal">
+        <span>© <span id="year"></span> Echi di Sofia</span>
+        <span class="dot">•</span>
+        <a href="https://casi0048.github.io/pagine/privacy-policy.html">Privacy</a>
+        <span class="dot">•</span>
+        <a href="https://casi0048.github.io/pagine/credits.html">Crediti</a>
+    </div>
+    <!-- FINE FOOTER-LEGAL -->
+    
+</div>
+<!-- FINE FOTO NEL FOOTER -->
 </footer>
-<!-- ========== CTA FLOTTANTE ========== -->
-<div class="floating-cta" id="floatingNewsletter">
-<button onclick="showNewsletterModal()">
-    📧 Filosofia in Posta
-  </button>
-</div>
-<!-- ========== MODALE NEWSLETTER ========== -->
-<div class="modal" id="newsletterModal">
-<div class="modal-content">
-<span class="close-modal" onclick="closeNewsletterModal()">×</span>
-<h3>📚 Iscriviti alla Newsletter Filosofica</h3>
-<p>Ricevi articoli esclusivi, risorse gratuite e approfondimenti direttamente nella tua email</p>
-<form id="newsletterForm">
-<input placeholder="tua.email@esempio.com" required="" type="email">
-<button type="submit">Iscriviti Ora</button>
-</form>
-<p class="privacy-note"><small>Rispettiamo la tua privacy. Cancellazione sempre possibile.</small></p>
-</div>
-</div>
 <script>
 // === PERFORMANCE & ERROR HANDLING - VERSIONE PULITA ===
 
@@ -13879,3 +13848,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
