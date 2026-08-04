@@ -5192,52 +5192,36 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
     font-size: 0.85rem;
     color: var(--text-muted, #8ab4d6);
 }
+
+
 /* ============================================
-   ANIMAZIONE COSMICA - TITOLO
-   ============================================ */
-/* ============================================
-   TITOLO PRINCIPALE - AURORA
+   ANIMAZIONE LETTERE CHE CADONO
+   (con supporto per <br/>)
    ============================================ */
 
+/* Contenitore principale del titolo */
 .welcome-title-themable {
-    position: relative;
-    display: inline-block;
-    width: 100%;
-    text-align: center;
-
     font-family: 'Cinzel Decorative', cursive;
     font-weight: 700;
     font-size: 3.5rem;
     margin-bottom: 0.5rem;
-
-    color: transparent;
-    background: linear-gradient(
-        125deg,
-        var(--accent-5) 0%,
-        var(--accent) 18%,
-        var(--accent-3) 36%,
-        var(--accent) 54%,
-        var(--accent-2) 72%,
-        var(--accent-5) 100%
-    );
-    background-size: 400% 400%;
-    -webkit-background-clip: text;
-    background-clip: text;
-
-    text-shadow: 0 0 10px var(--accent-glow);
+    text-align: center;
+    width: 100%;
+    line-height: 1.3;
+    
+    /* Nascondi il testo inizialmente */
+    visibility: hidden;
+    animation: titleReady 0.01s forwards;
+    animation-delay: 0.05s;
 }
 
-/* ============================================
-   ANIMAZIONE LETTERE CHE CADONO
-   ============================================ */
-
+/* Ogni carattere del titolo */
 .welcome-title-themable .char {
     display: inline-block;
     opacity: 0;
-
     animation: letterFall 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     animation-delay: calc(var(--i, 0) * 0.06s);
-
+    
     color: transparent;
     background: linear-gradient(
         125deg,
@@ -5251,12 +5235,35 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
     background-size: 400% 400%;
     -webkit-background-clip: text;
     background-clip: text;
+    white-space: pre;
 }
 
+/* Spazi tra le parole */
 .welcome-title-themable .char-space {
     display: inline-block;
     width: 0.3em;
 }
+
+/* ============================================
+   GESTIONE DEL <br/> - IMPORTANTE!
+   ============================================ */
+
+/* Il <br/> diventa un blocco che forza il ritorno a capo */
+.welcome-title-themable .char-linebreak {
+    display: block;
+    height: 0;
+    content: '';
+}
+
+/* Oppure: usa un elemento div per il ritorno a capo */
+.welcome-title-themable .line-break {
+    display: block;
+    height: 0.3em; /* Spaziatura tra le righe */
+}
+
+/* ============================================
+   ANIMAZIONE CADUTA LETTERE
+   ============================================ */
 
 @keyframes letterFall {
     0% {
@@ -5264,17 +5271,14 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
         transform: translateY(-180px) rotate(15deg) scale(0.3);
         filter: blur(8px) brightness(0.2);
     }
-
     50% {
         opacity: 1;
         transform: translateY(8px) rotate(-3deg) scale(1.08);
         filter: blur(0) brightness(1.15);
     }
-
     75% {
         transform: translateY(-3px) rotate(1deg) scale(0.99);
     }
-
     100% {
         opacity: 1;
         transform: translateY(0) rotate(0) scale(1);
@@ -5283,52 +5287,15 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 }
 
 /* ============================================
-   SCINTILLA DECORATIVA
+   RENDE VISIBILE IL TITOLO
    ============================================ */
-
-.welcome-title-themable::after {
-    content: '✦';
-    position: absolute;
-    top: -18px;
-    right: -24px;
-
-    font-size: 1.4rem;
-    color: var(--accent);
-
-    opacity: 0;
-    animation: sparkleFloat 4s ease-in-out infinite;
-    animation-delay: 1.8s;
-}
-
-@keyframes sparkleFloat {
-    0%, 100% {
-        opacity: 0;
-        transform: translateY(0) scale(0.5);
-    }
-
-    50% {
-        opacity: 1;
-        transform: translateY(-10px) scale(1.15);
-        text-shadow: 0 0 20px var(--accent-glow);
-    }
-}
-
-
-
-
-
-.welcome-title-themable {
-    opacity: 1;
-    visibility: hidden;
-    animation: titleReady 0.01s forwards;
-    animation-delay: 0.05s;
-}
 
 @keyframes titleReady {
     to {
         visibility: visible;
     }
 }
+
 /* ============================================
    SOTTOTITOLO
    ============================================ */
@@ -5338,18 +5305,13 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
     font-size: 1.5rem;
     font-style: italic;
     letter-spacing: 0.08em;
-
     color: var(--text-accent);
-
     background: transparent;
     border: none;
     box-shadow: none;
-
     padding: 0.5rem 1rem;
     margin-top: 0.5rem;
-
     opacity: 0;
-
     animation: subtitleFadeIn 1.2s ease forwards;
     animation-delay: 2.6s;
 }
@@ -5360,7 +5322,6 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
         transform: translateY(20px) scale(0.94);
         filter: blur(4px);
     }
-
     100% {
         opacity: 1;
         transform: translateY(0) scale(1);
@@ -5780,15 +5741,16 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 ============================================================ -->
 <div class="bar-right">
 <div class="translate-box">
-<span>🌐</span>
-<select aria-label="Traduci pagina" class="translate-select" id="customTranslate">
-<option value="it">Italiano</option>
-<option value="en">English</option>
-<option value="fr">Français</option>
-<option value="de">Deutsch</option>
-<option value="es">Español</option>
-<option value="pl">Polski</option>
-</select>
+
+ <span>🌐</span>
+        <select aria-label="Traduci pagina" class="translate-select" id="customTranslate">
+            <option value="it">Italiano</option>
+            <option value="en">English</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="es">Español</option>
+            <option value="pl">Polski</option>
+        </select>
 <div aria-hidden="true" id="google_translate_element" style="position:fixed;bottom:0;right:0;width:1px;height:1px;opacity:0;pointer-events:none;overflow:hidden"></div>
 </div>
 <div class="search-container" role="search">
@@ -6342,8 +6304,21 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 </div>
 <p class="decoration-caption">Contemplata aliis tradere</p>
 </div>
-<h1 class="welcome-title-themable" id="welcomeTitle">Benvenuto in<br/>Echi di Sofia</h1>
-<div class="accordion-subtitle">Un viaggio tra storia, stelle e pensiero</div>
+
+<!-- ============================================================
+        TITOLO E SOTTOTITOLO
+============================================================ -->
+<div class="hero">
+    <h1 class="welcome-title-themable notranslate"
+        id="welcomeTitle"
+        translate="no">
+        Benvenuto in<br/>Echi di Sofia
+    </h1>
+
+    <div class="accordion-subtitle">
+        Un viaggio tra storia, stelle e pensiero
+    </div>
+</div>
 <div class="welcome-decoration right">
 <div class="heraclitus-clock">
 <div class="clock-face">
@@ -10359,6 +10334,266 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+ </script>
+
+
+ <script>
+  // ============================================
+// TRADUZIONI
+// ============================================
+
+const translations = {
+    it: {
+        subtitle: 'Un viaggio tra storia, stelle e pensiero'
+    },
+    en: {
+        subtitle: 'A journey through history, stars and thought'
+    },
+    pl: {
+        subtitle: 'Podróż przez historię, gwiazdy i myśl'
+    },
+    fr: {
+        subtitle: 'Un voyage à travers l’histoire, les étoiles et la pensée'
+    },
+    es: {
+        subtitle: 'Un viaje a través de la historia, las estrellas y el pensamiento'
+    },
+    de: {
+        subtitle: 'Eine Reise durch Geschichte, Sterne und Denken'
+    }
+};
+
+// ============================================
+// VARIABILE GLOBALE PER TRACCIARE LO STATO
+// ============================================
+
+let isAnimating = false;
+let currentLanguage = 'it';
+
+// ============================================
+// FUNZIONE: SCOMPOSIZIONE IN CARATTERI (UNA SOLA VOLTA)
+// ============================================
+
+function splitTextIntoChars(selector) {
+    const element = document.querySelector(selector);
+    if (!element) return;
+    
+    // Salva l'HTML originale
+    const html = element.innerHTML;
+    element.innerHTML = '';
+    
+    let charIndex = 0;
+    
+    function addChar(char) {
+        const span = document.createElement('span');
+        span.style.setProperty('--i', charIndex);
+        
+        if (char === ' ') {
+            span.className = 'char-space';
+        } else if (/[.,!?;:()\-–—"']/.test(char)) {
+            span.className = 'char';
+            span.textContent = char;
+            span.style.color = 'var(--accent)';
+            span.style.background = 'none';
+            span.style.webkitBackgroundClip = 'unset';
+            span.style.backgroundClip = 'unset';
+        } else {
+            span.className = 'char';
+            span.textContent = char;
+        }
+        
+        element.appendChild(span);
+        charIndex++;
+    }
+    
+    function addLineBreak() {
+        const br = document.createElement('span');
+        br.className = 'char-linebreak';
+        element.appendChild(br);
+    }
+    
+    const temp = document.createElement('div');
+    temp.innerHTML = html;
+    
+    temp.childNodes.forEach(node => {
+        if (node.nodeType === Node.TEXT_NODE) {
+            const text = node.textContent;
+            for (let i = 0; i < text.length; i++) {
+                addChar(text[i]);
+            }
+        } else if (node.nodeType === Node.ELEMENT_NODE) {
+            if (node.tagName === 'BR') {
+                addLineBreak();
+            } else {
+                const text = node.textContent;
+                for (let i = 0; i < text.length; i++) {
+                    addChar(text[i]);
+                }
+            }
+        }
+    });
+}
+
+// ============================================
+// FUNZIONE: AGGIORNA TITOLO CON TRADUZIONE
+// ============================================
+
+function updateTitleWithTranslation(newText) {
+    const title = document.querySelector('.welcome-title-themable');
+    if (!title) return;
+    
+    // === PASSO 1: Rimuovi TUTTE le animazioni ===
+    title.style.animation = 'none';
+    title.style.visibility = 'hidden';
+    
+    // === PASSO 2: Forza il reflow ===
+    void title.offsetHeight;
+    
+    // === PASSO 3: Pulisci il contenuto ===
+    title.innerHTML = '';
+    
+    // === PASSO 4: Imposta il nuovo HTML ===
+    title.innerHTML = newText;
+    
+    // === PASSO 5: Riapplica la scomposizione ===
+    const html = title.innerHTML;
+    title.innerHTML = '';
+    
+    let charIndex = 0;
+    
+    function addChar(char) {
+        const span = document.createElement('span');
+        span.style.setProperty('--i', charIndex);
+        
+        if (char === ' ') {
+            span.className = 'char-space';
+        } else if (/[.,!?;:()\-–—"']/.test(char)) {
+            span.className = 'char';
+            span.textContent = char;
+            span.style.color = 'var(--accent)';
+            span.style.background = 'none';
+            span.style.webkitBackgroundClip = 'unset';
+            span.style.backgroundClip = 'unset';
+        } else {
+            span.className = 'char';
+            span.textContent = char;
+        }
+        
+        title.appendChild(span);
+        charIndex++;
+    }
+    
+    function addLineBreak() {
+        const br = document.createElement('span');
+        br.className = 'char-linebreak';
+        title.appendChild(br);
+    }
+    
+    const temp = document.createElement('div');
+    temp.innerHTML = html;
+    
+    temp.childNodes.forEach(node => {
+        if (node.nodeType === Node.TEXT_NODE) {
+            const text = node.textContent;
+            for (let i = 0; i < text.length; i++) {
+                addChar(text[i]);
+            }
+        } else if (node.nodeType === Node.ELEMENT_NODE) {
+            if (node.tagName === 'BR') {
+                addLineBreak();
+            } else {
+                const text = node.textContent;
+                for (let i = 0; i < text.length; i++) {
+                    addChar(text[i]);
+                }
+            }
+        }
+    });
+    
+    // === PASSO 6: Riavvio dell'animazione ===
+    title.style.animation = 'none';
+    void title.offsetHeight;
+    title.style.animation = '';
+    title.style.visibility = 'visible';
+}
+
+// ============================================
+// FUNZIONE: CAMBIA LINGUA
+// ============================================
+
+function setLanguage(langCode) {
+    // Evita di riavviare se è già in corso
+    if (isAnimating) return;
+    isAnimating = true;
+
+    const translation = translations[langCode];
+    if (!translation) {
+        console.error('Lingua non supportata:', langCode);
+        isAnimating = false;
+        return;
+    }
+
+    // Aggiorna il select
+    const select = document.getElementById('customTranslate');
+    if (select) {
+        select.value = langCode;
+    }
+
+    // Salva la lingua corrente
+    currentLanguage = langCode;
+
+    // === AGGIORNA SOLO IL SOTTOTITOLO ===
+    if (translation.subtitle) {
+        const subtitle = document.querySelector('.accordion-subtitle');
+        if (subtitle) {
+            subtitle.style.animation = 'none';
+            subtitle.style.opacity = '0';
+
+            subtitle.textContent = translation.subtitle;
+
+            setTimeout(() => {
+                subtitle.style.animation = 'subtitleFadeIn 1.2s ease forwards';
+                subtitle.style.animationDelay = '0.3s';
+            }, 50);
+        }
+    }
+
+    setTimeout(() => {
+        isAnimating = false;
+    }, 500);
+}
+    
+    // Sblocca dopo un breve delay
+    setTimeout(() => {
+        isAnimating = false;
+    }, 500);
+}
+
+// ============================================
+// INIZIALIZZA ALL'AVVIO
+// ============================================
+
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. Scompone il titolo iniziale
+    splitTextIntoChars('.welcome-title-themable');
+    
+    // 2. Collega il select
+    const translateSelect = document.getElementById('customTranslate');
+    if (translateSelect) {
+        translateSelect.value = 'it';
+        
+        translateSelect.addEventListener('change', function() {
+            const lang = this.value;
+            setLanguage(lang);
+        });
+    }
+});
+
+// ============================================
+// ESPONI LA FUNZIONE GLOBALMENTE
+// ============================================
+
+window.setLanguage = setLanguage;
  </script>
 </body>
 </html>
