@@ -2321,32 +2321,39 @@ mark,
 }
 
 /* ============================================
-   QUOTE RUNNER
+   QUOTE RUNNER - CITAZIONI SCORREVOLI
    ============================================ */
-#quote-runner,
-#quote-runner * {
-  pointer-events: none !important;
-}
 
-#quote-runner {
-  z-index: 20 !important;
-}
-
+/* Nascondi il vecchio sistema di citazioni */
 .floating-quotes {
   display: none !important;
   pointer-events: none !important;
   z-index: 20 !important;
 }
 
+/* ============================================
+   CONTENITORE PRINCIPALE
+   ============================================ */
+
 #quote-runner {
   position: fixed;
   left: 50%;
-  bottom: 270px;
+  bottom: 300px;
   transform: translateX(-50%);
   z-index: 20;
   pointer-events: none;
   max-width: min(86vw, 680px);
 }
+
+/* Escludi il contenuto dal pointer-events per permettere click sotto */
+#quote-runner,
+#quote-runner * {
+  pointer-events: none !important;
+}
+
+/* ============================================
+   BUBBLE DELLA CITAZIONE
+   ============================================ */
 
 #quote-runner .quote-bubble {
   position: relative;
@@ -2364,6 +2371,10 @@ mark,
 #quote-runner .quote-bubble .quote-author {
   margin-top: .25rem;
 }
+
+/* ============================================
+   ANIMAZIONE SLIDE IN/OUT
+   ============================================ */
 
 #quote-runner .slide-in {
   animation: quoteSlideInOut 9s cubic-bezier(.2, 1, .2, 1) forwards;
@@ -2388,6 +2399,88 @@ mark,
   100% {
     transform: translateX(-55vw);
     opacity: 0;
+  }
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+  #quote-runner {
+    bottom: 120px;
+    max-width: min(92vw, 500px);
+  }
+  
+  #quote-runner .quote-bubble .quote-text {
+    font-size: 0.95rem;
+  }
+  
+  @keyframes quoteSlideInOut {
+    0% {
+      transform: translateX(60vw);
+      opacity: 0;
+    }
+    18% {
+      opacity: 1;
+    }
+    40% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    70% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(-60vw);
+      opacity: 0;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  #quote-runner {
+    bottom: 580px;
+    max-width: min(96vw, 360px);
+  }
+  
+  #quote-runner .quote-bubble .quote-text {
+    font-size: 0.85rem;
+  }
+  
+  @keyframes quoteSlideInOut {
+    0% {
+      transform: translateX(65vw);
+      opacity: 0;
+    }
+    18% {
+      opacity: 1;
+    }
+    40% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    70% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(-65vw);
+      opacity: 0;
+    }
+  }
+}
+
+/* ============================================
+   ACCESSIBILITÀ - RIDUZIONE MOVIMENTI
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  #quote-runner .slide-in {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
 
@@ -7192,6 +7285,7 @@ footer,
     font-size: 3.5rem;
     color: transparent;
     margin-bottom: 0.5rem;
+     margin-top: -30px;  /* ← MODIFICA QUESTO VALORE */
     background: linear-gradient(125deg, var(--accent-5) 0%, var(--accent) 18%, var(--accent-3) 36%, var(--accent) 54%, var(--accent-2) 72%, var(--accent-5) 100%);
     background-size: 400% 400%;
     -webkit-background-clip: text;
