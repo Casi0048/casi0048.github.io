@@ -8418,11 +8418,11 @@ footer,
                 <hr style="border: none; border-top: 1px solid rgba(212, 165, 116, 0.15); margin: 18px 0 12px 0;">
 
                 <p style="font-size: 0.95rem; line-height: 1.8;">
-                    
+                 <a href="https://casi0048.github.io/pagine/benvenuti.html" role="menuitem"> 🗝️ INCIPIT</a><br>   
                     <!-- 🔒 PRIVACY POLICY -->
                     <a href="https://casi0048.github.io/pagine/privacy-policy.html" target="_blank" rel="noopener noreferrer">🔒 Privacy Policy</a><br/>
                     
-              
+                   
                     
                     <!-- ©️ CREDITI E COPYRIGHT -->
                     <a href="https://casi0048.github.io/pagine/credits.html" target="_blank" rel="noopener noreferrer">©️ Crediti e Copyright</a>
@@ -9082,221 +9082,7 @@ function softPlay(audio, volume, delay) {
         loadIndex().then(()=>{ if (input.value.trim()) search(input.value); });
       })();
     </script>
-<script>
-// ============================================================
-// SCRIPT 1: APERTURA/CHIUSURA MODALE
-// ============================================================
 
-document.addEventListener('DOMContentLoaded', function() {
-    const dictFab = document.getElementById('dict-fab');
-    const dictModal = document.getElementById('dict-modal');
-    const dictOverlay = document.getElementById('dict-overlay');
-    const dictClose = document.getElementById('dict-close');
-    const dictQ = document.getElementById('dict-q');
-    const dictSearch = document.getElementById('dict-search');
-    const dictClear = document.getElementById('dict-clear');
-    const openAll = document.getElementById('open-all');
-    const suggestions = document.getElementById('dict-suggestions');
-    
-    if (!dictFab || !dictModal || !dictOverlay || !dictClose) {
-        console.warn('❌ Elementi essenziali del dizionario non trovati');
-        return;
-    }
-    
-    function openDictionary() {
-        dictModal.classList.add('open');
-        dictOverlay.classList.add('active');
-        document.body.style.overflow = 'hidden';
-        setTimeout(() => { if (dictQ) dictQ.focus(); }, 100);
-        console.log('📘 Dizionario aperto');
-    }
-    
-    function closeDictionary() {
-        dictModal.classList.remove('open');
-        dictOverlay.classList.remove('active');
-        document.body.style.overflow = '';
-        console.log('📘 Dizionario chiuso');
-    }
-    
-    dictFab.addEventListener('click', function(e) {
-        e.preventDefault();
-        openDictionary();
-    });
-    
-    dictClose.addEventListener('click', closeDictionary);
-    dictOverlay.addEventListener('click', closeDictionary);
-    
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && dictModal.classList.contains('open')) {
-            closeDictionary();
-        }
-    });
-    
-    // Gestione "X" per cancellare input
-    if (dictQ && dictClear) {
-        function updateClearButton() {
-            dictClear.style.display = dictQ.value.trim().length > 0 ? 'flex' : 'none';
-        }
-        updateClearButton();
-        dictQ.addEventListener('input', updateClearButton);
-        
-        dictClear.addEventListener('click', function() {
-            dictQ.value = '';
-            dictQ.focus();
-            updateClearButton();
-            dictQ.dispatchEvent(new Event('input', { bubbles: true }));
-        });
-        
-        dictQ.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && dictQ.value.trim().length > 0) {
-                e.preventDefault();
-                dictQ.value = '';
-                updateClearButton();
-                dictQ.dispatchEvent(new Event('input', { bubbles: true }));
-            }
-        });
-    }
-    
-    // Funzione di ricerca (trigger manuale)
-    function performSearch() {
-        const query = dictQ ? dictQ.value.trim() : '';
-        if (!query) {
-            alert('✍️ Inserisci un termine da cercare');
-            if (dictQ) dictQ.focus();
-            return;
-        }
-        
-        const form = document.getElementById('dict-form');
-        if (form) {
-            const checks = form.querySelectorAll(".sources input[type='checkbox']:checked");
-            if (!checks.length) {
-                alert('📚 Seleziona almeno una fonte');
-                return;
-            }
-            
-            const event = new Event('submit', { cancelable: true });
-            form.dispatchEvent(event);
-        }
-    }
-    
-    if (dictSearch) {
-        dictSearch.addEventListener('click', performSearch);
-    }
-    
-    if (dictQ) {
-        dictQ.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                performSearch();
-            }
-        });
-    }
-    
-    if (openAll) {
-        openAll.addEventListener('click', function() {
-            const query = dictQ ? dictQ.value.trim() : 'filosofia';
-            const encoded = encodeURIComponent(query);
-            const allSources = document.querySelectorAll('.sources input');
-            
-            console.log(`🌐 Apertura di tutte le fonti per: "${query}"`);
-            
-            allSources.forEach((source, index) => {
-                const url = source.getAttribute('data-url');
-                if (url) {
-                    const finalURL = url.replace('{q}', encoded);
-                    setTimeout(() => {
-                        window.open(finalURL, '_blank', 'noopener,noreferrer');
-                    }, index * 150);
-                }
-            });
-        });
-    }
-    
-    // Suggerimenti automatici
-    if (dictQ && suggestions) {
-        const terms = [
-            'metafisica', 'epistemologia', 'etica', 'estetica', 'logica',
-            'ontologia', 'fenomenologia', 'ermeneutica', 'esistenzialismo',
-            'stoicismo', 'epicureismo', 'scetticismo', 'razionalismo', 'empirismo',
-            'idealismo', 'materialismo', 'pragmatismo', 'strutturalismo',
-            'post-strutturalismo', 'decostruzionismo', 'filosofia analitica',
-            'filosofia continentale'
-        ];
-        
-        dictQ.addEventListener('input', function() {
-            const query = this.value.trim().toLowerCase();
-            
-            if (query.length < 2) {
-                suggestions.innerHTML = '';
-                return;
-            }
-            
-            const filtered = terms.filter(term => 
-                term.includes(query) || term.startsWith(query)
-            ).slice(0, 5);
-            
-            suggestions.innerHTML = filtered.map(term => 
-                `<div class="suggestion-item" data-term="${term}">${term}</div>`
-            ).join('');
-            
-            suggestions.querySelectorAll('.suggestion-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    dictQ.value = this.getAttribute('data-term');
-                    suggestions.innerHTML = '';
-                    if (dictSearch) dictSearch.click();
-                });
-            });
-        });
-    }
-    
-    dictModal.classList.remove('open');
-    dictOverlay.classList.remove('active');
-    document.body.style.overflow = '';
-    
-    console.log('✅ Dizionario filosofico inizializzato correttamente');
-});
-
-// ============================================================
-// SCRIPT 2: RICERCA (submit del form)
-// ============================================================
-
-document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById("dict-form");
-    const input = document.getElementById("dict-q");
-    
-    if (!form || !input) return;
-    
-    form.addEventListener("submit", (e) => {
-        e.preventDefault();
-        
-        const q = input.value.trim();
-        if (!q) return;
-        
-        const checks = form.querySelectorAll(".sources input[type='checkbox']:checked");
-        if (!checks.length) return;
-        
-        checks.forEach((chk) => {
-            const tpl = chk.dataset.url || "";
-            let finalURL = "";
-            
-            /* Treccani */
-            if (/treccani\.it/i.test(tpl)) {
-                const enc = encodeURIComponent(q);
-                finalURL = "https://www.treccani.it/enciclopedia/ricerca/" + enc + "/?search=" + enc;
-            }
-            /* Wikipedia */
-            else if (/wikipedia\.org/i.test(tpl)) {
-                finalURL = "https://it.wikipedia.org/wiki/" + encodeURIComponent(q.replace(/\s+/g, "_"));
-            }
-            /* Altri motori */
-            else {
-                finalURL = tpl.replace("{q}", encodeURIComponent(q));
-            }
-            
-            window.open(finalURL, "_blank", "noopener");
-        });
-    });
-});
-</script>
 
 
 <script id="thunder-toggle-fix">
@@ -9507,11 +9293,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
   sync();
 });
 </script>
-
-
-
-
-
 
 <!-- Cookie Banner -->
 <div aria-label="Impostazioni cookie" aria-live="polite" class="cc-banner" id="cookie-banner" role="dialog" aria-modal="true">
