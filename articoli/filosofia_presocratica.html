@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filosofia Presocratica - Le Origini del Pensiero Occidentale</title>
+    <meta name="description" content="Scopri la filosofia presocratica: i primi pensatori che hanno gettato le basi del pensiero occidentale, dai Milesi ai Pluralisti.">
+    <meta name="keywords" content="filosofia presocratica, Talete, Anassimandro, Eraclito, Parmenide, Pitagora, filosofia antica, filosofia greca">
+    <style>
+        :root {
+            --filosofico-bg: #f5f5f5;
+            --filosofico-text: #333;
+            --filosofico-accent: #8B4513;
+            
+            --contemplativo-bg: #e8f4f8;
+            --contemplativo-text: #2c3e50;
+            --contemplativo-accent: #3498db;
+            
+            --notturno-bg: #1a1a2e;
+            --notturno-text: #e6e6e6;
+            --notturno-accent: #9b59b6;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: var(--filosofico-bg);
+            color: var(--filosofico-text);
+        }
+        
+        body.contemplativo {
+            background-color: var(--contemplativo-bg);
+            color: var(--contemplativo-text);
+        }
+        
+        body.notturno {
+            background-color: var(--notturno-bg);
+            color: var(--notturno-text);
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            border-bottom: 2px solid;
+            border-color: var(--filosofico-accent);
+            margin-bottom: 30px;
+        }
+        
+        .contemplativo header {
+            border-color: var(--contemplativo-accent);
+        }
+        
+        .notturno header {
+            border-color: var(--notturno-accent);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            font-style: italic;
+            color: #666;
+        }
+        
+        .contemplativo .subtitle {
+            color: #5d6d7e;
+        }
+        
+        .notturno .subtitle {
+            color: #bdc3c7;
+        }
+        
+        .theme-selector {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .theme-btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .theme-filosofico {
+            background-color: var(--filosofico-accent);
+            color: white;
+        }
+        
+        .theme-contemplativo {
+            background-color: var(--contemplativo-accent);
+            color: white;
+        }
+        
+        .theme-notturno {
+            background-color: var(--notturno-accent);
+            color: white;
+        }
+        
+        .toc {
+            background-color: rgba(0,0,0,0.05);
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+        
+        .contemplativo .toc {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+        
+        .notturno .toc {
+            background-color: rgba(155, 89, 182, 0.1);
+        }
+        
+        .toc h2 {
+            margin-bottom: 10px;
+        }
+        
+        .toc ul {
+            list-style-type: none;
+        }
+        
+        .toc li {
+            margin-bottom: 8px;
+        }
+        
+        .toc a {
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            align-items: center;
+        }
+        
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        
+        section {
+            margin-bottom: 40px;
+            border-left: 3px solid;
+            border-color: var(--filosofico-accent);
+            padding-left: 15px;
+        }
+        
+        .contemplativo section {
+            border-color: var(--contemplativo-accent);
+        }
+        
+        .notturno section {
+            border-color: var(--notturno-accent);
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .toggle-btn {
+            background: none;
+            border: 1px solid;
+            border-color: inherit;
+            color: inherit;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .section-content {
+            overflow: hidden;
+            max-height: 1000px;
+            transition: max-height 0.5s ease;
+        }
+        
+        .section-content.collapsed {
+            max-height: 0;
+        }
+        
+        .philosopher-card {
+            background-color: rgba(0,0,0,0.03);
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .contemplativo .philosopher-card {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+        
+        .notturno .philosopher-card {
+            background-color: rgba(155, 89, 182, 0.1);
+        }
+        
+        .philosopher-name {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        
+        .quote {
+            font-style: italic;
+            margin: 15px 0;
+            padding-left: 15px;
+            border-left: 2px solid;
+            border-color: inherit;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+            border-top: 1px solid;
+            border-color: inherit;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            .theme-selector {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body class="filosofico">
+    <header>
+        <h1>Filosofia Presocratica</h1>
+        <p class="subtitle">Le origini del pensiero occidentale e la ricerca dell'arché</p>
+        
+        <div class="theme-selector">
+            <button class="theme-btn theme-filosofico" data-theme="filosofico">Tema Filosofico</button>
+            <button class="theme-btn theme-contemplativo" data-theme="contemplativo">Tema Contemplativo</button>
+            <button class="theme-btn theme-notturno" data-theme="notturno">Tema Notturno</button>
+        </div>
+    </header>
+    
+    <nav class="toc">
+        <h2>Indice</h2>
+        <ul>
+            <li><a href="#introduzione">Introduzione</a></li>
+            <li><a href="#scuola-mileto">Scuola di Mileto</a></li>
+            <li><a href="#pitagorici">Pitagorici</a></li>
+            <li><a href="#eraclito">Eraclito</a></li>
+            <li><a href="#eleati">Eleati</a></li>
+            <li><a href="#pluralisti">Pluralisti</a></li>
+            <li><a href="#atomisti">Atomisti</a></li>
+            <li><a href="#eredita">Eredità</a></li>
+        </ul>
+    </nav>
+    
+    <main>
+        <section id="introduzione">
+            <h2>
+                Introduzione
+                <button class="toggle-btn">Mostra meno</button>
+            </h2>
+            <div class="section-content">
+                <p>La filosofia presocratica rappresenta la fase iniziale del pensiero filosofico occidentale, sviluppatasi nella Grecia antica tra il VII e il V secolo a.C. prima di Socrate. Questi primi pensatori, spesso chiamati "fisici" o "fisiologi", si concentrarono principalmente sulla comprensione della natura (physis) e sul principio fondamentale (arché) che governa il cosmo.</p>
+                
+                <p>I Presocratici segnano il passaggio dal mito al logos, dal racconto mitologico alla spiegazione razionale della realtà. Abbandonando le spiegazioni soprannaturali, cercarono di comprendere l'universo attraverso l'osservazione e la ragione.</p>
+                
+                <div class="philosopher-card">
+                    <div class="philosopher-name">Caratteristiche principali:</div>
+                    <ul>
+                        <li>Ricerca dell'arché (principio originario)</li>
+                        <li>Approccio razionale e naturalistico</li>
+                        <li>Interesse per la cosmologia e la fisica</li>
+                        <li>Superamento della visione mitologica</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <section id="scuola-mileto">
+            <h2>
+                Scuola di Mileto
+                <button class="toggle-btn">Mostra meno</button>
+            </h2>
+            <div class="section-content">
+                <p>La Scuola di Mileto, nella Ionia (attuale Turchia), è considerata la culla della filosofia occidentale. I suoi esponenti furono i primi a cercare una spiegazione razionale dell'universo, identificando un principio materiale come origine di tutte le cose.</p>
+                
+                <div class="philosopher-card">
+                    <div class="philosopher-name">Talete (c. 624-546 a.C.)</div>
+                    <p>Considerato il primo filosofo, Talete identificò l'acqua come arché, il principio fondamentale di tutte le cose. Sosteneva che "tutto è pieno di dèi", indicando una visione panteistica della realtà.</p>
+                    <p class="quote">"L'acqua è il principio di tutte le cose."</p>
+                </div>
+                
+                <div class="philosopher-card">
+                    <div class="philosopher-name">Anassimandro (c. 610-546 a.C.)</div>
+                    <p>Discepolo di Talete, Anassimandro propose come arché l'ápeiron (l'indefinito, l'illimitato), un principio indeterminato da cui tutte le cose si generano e a cui tutte ritornano.</p>
+                    <p class="quote">"Il principio degli esseri è l'ápeiron... da dove infatti gli esseri hanno la loro origine, ivi hanno anche la distruzione secondo necessità."</p>
+                </div>
+                
+                <div class="philosopher-card">
+                    <div class="philosopher-name">Anassimene (c. 585-528 a.C.)</div>
+                    <p>Allievo di Anassimandro, identificò l'aria come principio fondamentale. Secondo lui, tutti gli elementi derivano dall'aria attraverso processi di rarefazione e condensazione.</p>
+                    <p class="quote">"Come l'anima nostra, che è aria, ci sostiene, così il soffio e l'aria circondano tutto il mondo."</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="pitagorici">
+            <h2>
+                Pitagorici
+                <button class="toggle-btn">Mostra meno</button>
+            </h2>
+            <div class="section-content">
+                <p>La scuola pitagorica, fondata da Pitagora a Crotone, in Magna Grecia, sviluppò una filosofia basata sulla matematica e sulla mistica dei numeri, vedendo nell'armonia numerica il principio ordinatore del cosmo.</p>
+                
+                <div class="philosopher-card">
+                    <div class="philosopher-name">Pitagora (c. 570-495 a.C.)</div>
+                    <p>Fondatore della scuola pitagorica, sostenne che "tutto è numero". I pitagorici svilupparono una visione del mondo in cui le relazioni matematiche governano la realtà, dalla musica all'astronomia.</p>
+                    <p class="quote">"Tutto è numero."</p>
+                </div>
+                
+                <div class="philosopher-card">
+                    <div class="philosopher-name">Dottrine pitagoriche</div>
+                    <ul>
+                        <li>Metempsicosi: trasmigrazione delle anime</li>
+                        <li>Armonia delle sfere: i corpi celesti producono suoni armonici</li>
+                        <li>Dualismo tra limite e illimitato</li>
+                        <li>Importanza della purificazione dell'anima</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <section id="eraclito">
+            <h2>
+                Eraclito
+                <button class="toggle-btn">Mostra meno</button>
+            </h2>
+            <div class="section-content">
+                <p>Eraclito di Efeso, noto come "l'Oscuro" per il suo stile enigmatico, sviluppò una filosofia del divenire, contrapponendosi all'essere parmenideo.</p>
+                
+                <div class="philosopher-card">
+                    <div class="philosopher-name">Eraclito (c. 535-475 a.C.)</div>
+                    <p>Per Eraclito, il fuoco è l'arché, simbolo del perpetuo divenire. La sua filosofia si basa sul concetto che tutto scorre (panta rhei) e che la realtà è caratterizzata dalla tensione tra opposti.</p>
+                    <p class="quote">"Non si può discendere due volte nel medesimo fiume."</p>
+                    <p class="quote">"La guerra è madre di tutte le cose."</p>
+                    <p class="quote">"Tutto avviene secondo contesa e necessità."</p>
+                </div>
+                
+                <p>Il logos eracliteo rappresenta la legge razionale che governa il divenire cosmico, l'unità sottostante all'apparente contraddizione degli opposti.</p>
+            </div>
+        </section>
+        
+        <section id="eleati">
+            <h2>
+                Eleati
+                <button class="toggle-btn">Mostra meno</button>
+            </h2>
+            <div class="section-content">
+                <p>La scuola eleatica, sviluppatasi a Elea (nell'Italia meridionale), si concentrò sull'essere e sulla ragione come unico strumento di conoscenza della realtà, contrapponendosi all'empirismo dei sensi.</p>
+                
+                <div class="philosopher-card">
+                    <div class="philosopher-name">Parmenide (c. 515-450 a.C.)</div>
+                    <p>Parmenide formulò il principio fondamentale dell'essere: "l'essere è, il non-essere non è". Per lui, l'essere è eterno, immutabile, unico e omogeneo, mentre il divenire è solo apparenza ingannevole.</p>
+                    <p class="quote">"L'essere è, il non-essere non è."</p>
+                </div>
+                
+                <div class="philosopher-card">
+                    <div class="philosopher-name">Zenone di Elea (c. 490-430 a.C.)</div>
+                    <p>Discepolo di Parmenide, Zenone sviluppò i celebri paradossi (come quello di Achille e la tartaruga) per dimostrare l'inconsistenza del molteplice e del movimento, difendendo così la dottrina dell'unità dell'essere.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="pluralisti">
+            <h2>
+                Pluralisti
+                <button class="toggle-btn">Mostra meno</button>
+            </h2>
+            <div class="section-content">
+                <p>I filosofi pluralisti tentarono di conciliare l'essere parmenideo con il divenire eracliteo, postulando l'esistenza di più principi fondamentali.</p>
+                
+                <div class="philosopher-card">
+                    <div class="philosopher-name">Empedocle (c. 495-435 a.C.)</div>
+                    <p>Empedocle identificò quattro radici (terra, acqua, aria, fuoco) e due forze cosmiche (Amore e Odio) che mescolano e separano gli elementi, generando il divenire cosmico.</p>
+                    <p class="quote">"Doppio è il racconto che esporrò: ora infatti crebbero per essere uno solo da molti, ora di nuovo si divisero per essere molti da uno."</p>
+                </div>
+                
+                <div class="philosopher-card">
+                    <div class="philosopher-name">Anassagora (c. 500-428 a.C.)</div>
+                    <p>Anassagora propose una teoria secondo cui tutte le cose sono composte da "semi" (omeomerie) infinitamente divisibili, ordinati dall'intelletto (nous) cosmico.</p>
+                    <p class="quote">"Tutto era insieme, poi venne l'intelletto e le ordinò."</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="atomisti">
+            <h2>
+                Atomisti
+                <button class="toggle-btn">Mostra meno</button>
+            </h2>
+            <div class="section-content">
+                <p>La scuola atomista rappresenta l'ultima grande risposta presocratica al problema dell'arché, proponendo una visione meccanicistica della realtà.</p>
+                
+                <div class="philosopher-card">
+                    <div class="philosopher-name">Leucippo (V secolo a.C.)</div>
+                    <p>Fondatore dell'atomismo, Leucippo sostenne che la realtà è composta da atomi (indivisibili) e vuoto. Gli atomi, eterni e immutabili, si muovono nel vuoto dando origine a tutti i fenomeni.</p>
+                </div>
+                
+                <div class="philosopher-card">
+                    <div class="philosopher-name">Democrito (c. 460-370 a.C.)</div>
+                    <p>Discepolo di Leucippo, Democrito sviluppò compiutamente la teoria atomistica, sostenendo che tutte le cose sono composte da atomi che si differenziano per forma, ordine e posizione.</p>
+                    <p class="quote">"Per convenzione il dolce, per convenzione l'amaro, per convenzione il caldo, per convenzione il freddo, per convenzione il colore; in realtà atomi e vuoto."</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="eredita">
+            <h2>
+                Eredità
+                <button class="toggle-btn">Mostra meno</button>
+            </h2>
+            <div class="section-content">
+                <p>I Presocratici gettarono le basi per tutta la filosofia occidentale successiva, ponendo questioni fondamentali che sarebbero state riprese da Platone, Aristotele e oltre.</p>
+                
+                <div class="philosopher-card">
+                    <div class="philosopher-name">Contributi fondamentali:</div>
+                    <ul>
+                        <li>Nascita del pensiero razionale e scientifico</li>
+                        <li>Problematizzazione dei concetti di essere e divenire</li>
+                        <li>Distinzione tra apparenza e realtà</li>
+                        <li>Sviluppo del metodo dialettico</li>
+                        <li>Prime teorie sulla struttura della materia</li>
+                    </ul>
+                </div>
+                
+                <p>Nonostante la frammentarietà delle loro opere, i Presocratici rappresentano una tappa fondamentale nell'evoluzione del pensiero umano, segnando il passaggio dalla spiegazione mitica a quella razionale del mondo.</p>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <p>Articolo enciclopedico sulla Filosofia Presocratica - Realizzato per scopi didattici</p>
+        <p>Fonti: Diogene Laerzio, Hermann Diels, Giovanni Reale, Edward Zeller</p>
+    </footer>
+
+    <script>
+        // Gestione dei bottoni mostra più/mostra meno
+        document.querySelectorAll('.toggle-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const sectionContent = this.parentElement.nextElementSibling;
+                const isCollapsed = sectionContent.classList.contains('collapsed');
+                
+                if (isCollapsed) {
+                    sectionContent.classList.remove('collapsed');
+                    this.textContent = 'Mostra meno';
+                } else {
+                    sectionContent.classList.add('collapsed');
+                    this.textContent = 'Mostra più';
+                }
+            });
+        });
+        
+        // Gestione dei temi di lettura
+        document.querySelectorAll('.theme-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const theme = this.getAttribute('data-theme');
+                document.body.className = theme;
+                
+                // Aggiorna tutti i bottoni di toggle per mantenere la coerenza
+                document.querySelectorAll('.toggle-btn').forEach(btn => {
+                    const content = btn.parentElement.nextElementSibling;
+                    if (content.classList.contains('collapsed')) {
+                        btn.textContent = 'Mostra più';
+                    } else {
+                        btn.textContent = 'Mostra meno';
+                    }
+                });
+            });
+        });
+        
+        // Inizializzazione: tutte le sezioni aperte
+        document.querySelectorAll('.toggle-btn').forEach(button => {
+            button.textContent = 'Mostra meno';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <title>Presentazione – Echi di Sofia</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <style>
+    body, html {
+      margin: 0; padding: 0; height: 100%;
+      overflow-x: hidden;
+      font-family: 'Georgia', serif;
+      color: #f8f4e9;
+      background: #000;
+      position: relative;
+      user-select: none;
+    }
+    #nebula1, #nebula2 {
+      position: fixed;
+      top: -20%;
+      left: -20%;
+      width: 140vw;
+      height: 140vh;
+      background: radial-gradient(circle at center, rgba(58, 91, 65, 0.3) 0%, transparent 70%);
+      filter: blur(150px);
+      pointer-events: none;
+      z-index: 0;
+      mix-blend-mode: screen;
+    }
+    #nebula2 {
+      top: -10%;
+      left: 10%;
+      background: radial-gradient(circle at center, rgba(120, 170, 140, 0.15) 0%, transparent 80%);
+      filter: blur(200px);
+      animation: slowMove 80s linear infinite alternate;
+    }
+    @keyframes slowMove {
+      0% { transform: translate(0,0); }
+      100% { transform: translate(40px,30px); }
+    }
+    #starfield, #comets {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      background: transparent;
+      z-index: 1;
+    }
+    .container {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      padding: 40px;
+      pointer-events: auto;
+    }
+    h1 {
+      font-size: 3em;
+      margin-bottom: 0.5em;
+      opacity: 0;
+      text-shadow: 0 0 10px #aadeff, 0 0 20px #5bb8ff;
+    }
+    .subtitle {
+      font-size: 1.5em;
+      font-style: italic;
+      color: #cce6ffcc;
+      margin-bottom: 2em;
+      opacity: 0;
+      text-shadow: 0 0 6px #99bbcc;
+    }
+    .intro-text {
+      max-width: 700px;
+      font-size: 1.2em;
+      line-height: 1.6;
+      opacity: 0;
+      text-shadow: 0 0 4px #445566;
+      margin-bottom: 1rem;
+    }
+    .back-button {
+      margin-top: 3em;
+      padding: 10px 20px;
+      font-size: 1em;
+      color: #fff;
+      background: #2a4b3a;
+      border: none;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: background 0.3s ease;
+      user-select: none;
+      box-shadow: 0 0 10px #2a4b3a;
+    }
+    .back-button:hover {
+      background: #3a6d52;
+      box-shadow: 0 0 20px #3a6d52;
+    }
+  </style>
+</head>
+<body>
+  <div id="nebula1"></div>
+  <div id="nebula2"></div>
+  <canvas id="starfield"></canvas>
+  <canvas id="comets"></canvas>
+  <div class="container">
+    <h1 id="main-title">Benvenuto negli Echi di Sofia</h1>
+    <div class="subtitle" id="subtitle">Un viaggio attraverso la filosofia, i secoli e le stelle</div>
+    <p class="intro-text" id="intro">
+      
+    <p class="intro-text" id="intro">
+ Echi di Sofia nasce da una convinzione semplice: la filosofia non appartiene al passato. Vive ogni volta che una domanda autentica prende forma nella mente di una donna o di un uomo.
+
+Prima delle parole, prima delle dottrine, prima ancora delle risposte, vi fu un istante di meraviglia. Qualcuno alzò lo sguardo verso il cielo, osservò il mondo e si domandò, forse per la prima volta: perché?
+
+Da quel momento il pensiero non ha più smesso di interrogare la realtà.
+
+«Dall'oscurità del non-sapere, una scintilla: il primo perché che illuminò la coscienza umana.»
+
+Da oltre duemilacinquecento anni quella scintilla continua a propagarsi. Le voci di Talete, Eraclito, Socrate, Platone, Aristotele e di tutti coloro che hanno cercato di comprendere il senso dell'esistenza non appartengono soltanto alla storia: continuano a risuonare nel nostro presente.
+
+Da qui nasce il nome Echi di Sofia.
+
+Un'eco non ripete semplicemente una voce: la raccoglie, la trasforma, la consegna a chi ascolta dopo. Così accade anche alle grandi idee della filosofia. Attraversano i secoli, cambiano linguaggio, incontrano epoche diverse, ma continuano a porre le stesse domande fondamentali sull'uomo, sulla libertà, sulla verità, sulla giustizia, sulla felicità e sul destino.
+
+Questo portale non desidera offrire verità definitive né sostituirsi al pensiero del lettore.
+
+Vuole essere uno spazio di incontro, di riflessione e di ricerca; un luogo in cui la filosofia dialoga con la storia, la scienza, l'arte, la letteratura e con le domande della vita quotidiana.
+
+Perché la filosofia non è soltanto una disciplina da studiare.
+
+È, prima di tutto, un modo di guardare il mondo.
+
+Se queste pagine sapranno suscitare anche una sola domanda in più, avranno raggiunto il loro scopo.
+
+Benvenuto. Il dialogo comincia ora.
+</p>
+<a href="/" class="back-button">🏠 Entra nel Portale</a>
+
+   
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script>
+    const canvas = document.getElementById('starfield');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+    const maxStars = 150;
+    const cometCanvas = document.getElementById('comets');
+    const cometCtx = cometCanvas.getContext('2d');
+    let comets = [];
+    const maxComets = 5;
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      cometCanvas.width = window.innerWidth;
+      cometCanvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+    function randomRange(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+    class Star {
+      constructor() {
+        this.reset();
+        this.pulseDir = Math.random() < 0.5 ? 1 : -1;
+        this.pulseSpeed = randomRange(0.002, 0.007);
+      }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = randomRange(0.5, 1.5);
+        this.speedY = randomRange(0.02, 0.08);
+        this.opacity = randomRange(0.2, 1);
+      }
+      update() {
+        this.y += this.speedY;
+        if (this.y > canvas.height) this.y = 0;
+        this.opacity += this.pulseSpeed * this.pulseDir;
+        if (this.opacity >= 1) this.pulseDir = -1;
+        if (this.opacity <= 0.2) this.pulseDir = 1;
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity.toFixed(2)})`;
+        ctx.shadowColor = 'white';
+        ctx.shadowBlur = 6;
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+    class Comet {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = -50 - Math.random() * 200;
+        this.y = Math.random() * window.innerHeight * 0.6;
+        this.length = randomRange(80, 150);
+        this.speed = randomRange(6, 12);
+        this.opacity = 0;
+        this.fadeIn = true;
+      }
+      update() {
+        this.x += this.speed;
+        if (this.fadeIn) {
+          this.opacity += 0.02;
+          if (this.opacity >= 1) this.fadeIn = false;
+        } else {
+          this.opacity -= 0.005;
+        }
+        if (this.x - this.length > window.innerWidth || this.opacity <= 0) {
+          this.reset();
+        }
+      }
+      draw() {
+        const grad = cometCtx.createLinearGradient(this.x, this.y, this.x - this.length, this.y);
+        grad.addColorStop(0, `rgba(255, 255, 255, ${this.opacity})`);
+        grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        cometCtx.strokeStyle = grad;
+        cometCtx.lineWidth = 2;
+        cometCtx.shadowColor = 'white';
+        cometCtx.shadowBlur = 10;
+        cometCtx.beginPath();
+        cometCtx.moveTo(this.x, this.y);
+        cometCtx.lineTo(this.x - this.length, this.y);
+        cometCtx.stroke();
+        cometCtx.beginPath();
+        cometCtx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+        cometCtx.shadowColor = 'white';
+        cometCtx.shadowBlur = 20;
+        cometCtx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+        cometCtx.fill();
+      }
+    }
+    function initStars() {
+      stars = [];
+      for (let i = 0; i < maxStars; i++) {
+        stars.push(new Star());
+      }
+    }
+    function initComets() {
+      comets = [];
+      for (let i = 0; i < maxComets; i++) {
+        comets.push(new Comet());
+      }
+    }
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      cometCtx.clearRect(0, 0, cometCanvas.width, cometCanvas.height);
+      for (const star of stars) {
+        star.update();
+        star.draw();
+      }
+      for (const comet of comets) {
+        comet.update();
+        comet.draw();
+      }
+      requestAnimationFrame(animate);
+    }
+    initStars();
+    initComets();
+    animate();
+    window.addEventListener("DOMContentLoaded", () => {
+      gsap.timeline()
+        .to("#main-title", { opacity: 1, y: -10, duration: 1, ease: "power3.out" })
+        .to("#subtitle", { opacity: 1, y: -10, duration: 1, ease: "power3.out" }, "-=0.5")
+        .to("#intro", { opacity: 1, y: -10, duration: 1.5, ease: "power2.out" }, "-=0.4");
+    });
+  </script>
+</body>
+</html>

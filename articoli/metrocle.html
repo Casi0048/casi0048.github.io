@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metrocle di Maronea - Il Cinico Convertito</title>
+    <style>
+        :root {
+            --primary-color: #8D6E63;
+            --secondary-color: #A1887F;
+            --text-color: #4E342E;
+            --bg-color: #EFEBE9;
+            --accent-color: #D7CCC8;
+            --font-main: 'Garamond', 'Times New Roman', serif;
+            --font-alt: 'Palatino Linotype', 'Book Antiqua', serif;
+        }
+
+        body {
+            font-family: var(--font-main);
+            line-height: 1.8;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            transition: all 0.5s ease;
+        }
+
+        /* Stili per le modalità di lettura */
+        .cinico {
+            --primary-color: #5D4037;
+            --secondary-color: #3E2723;
+            --text-color: #3E2723;
+            --bg-color: #D7CCC8;
+            --accent-color: #8D6E63;
+            font-family: 'Courier New', monospace;
+        }
+
+        .trasformativo {
+            --primary-color: #6A1B9A;
+            --secondary-color: #9C27B0;
+            --text-color: #4A148C;
+            --bg-color: #F3E5F5;
+            --accent-color: #E1BEE7;
+        }
+
+        .antico {
+            --primary-color: #5D4037;
+            --secondary-color: #3E2723;
+            --text-color: #4E342E;
+            --bg-color: #EFEBE9;
+            --accent-color: #D7CCC8;
+            font-family: 'Trajan Pro', 'Times New Roman', serif;
+        }
+
+        .filosofico {
+            --primary-color: #1565C0;
+            --secondary-color: #1976D2;
+            --text-color: #0D47A1;
+            --bg-color: #E3F2FD;
+            --accent-color: #BBDEFB;
+        }
+
+        h1, h2, h3 {
+            color: var(--primary-color);
+            font-family: var(--font-alt);
+            position: relative;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.8em;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+
+        h1::before, h1::after {
+            content: "⚔";
+            color: var(--secondary-color);
+            padding: 0 15px;
+        }
+
+        h2 {
+            margin-top: 40px;
+            font-size: 1.8em;
+            padding-left: 15px;
+            border-left: 5px solid var(--secondary-color);
+        }
+
+        .mode-selector {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .mode-btn {
+            padding: 10px 20px;
+            border: 2px solid var(--primary-color);
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: var(--font-alt);
+            background-color: transparent;
+            color: var(--primary-color);
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mode-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+            transition: 0.5s;
+        }
+
+        .mode-btn:hover {
+            color: var(--text-color);
+            border-color: var(--accent-color);
+        }
+
+        .mode-btn:hover::before {
+            left: 100%;
+        }
+
+        /* Stili per i bottoni di sezione */
+        .section-container {
+            margin: 40px 0;
+            border: 1px solid var(--accent-color);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .section-toggle {
+            position: relative;
+            width: 100%;
+            padding: 20px;
+            text-align: left;
+            border: none;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            font-size: 1.3em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-toggle:hover {
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+        }
+
+        .section-toggle::after {
+            content: '⌄';
+            font-size: 1.5em;
+            transition: transform 0.3s ease;
+        }
+
+        .section-toggle.active::after {
+            transform: rotate(-180deg);
+        }
+
+        .section-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease, padding 0.3s ease;
+            background-color: white;
+        }
+
+        .section-content.show {
+            max-height: 5000px;
+            padding: 30px;
+            border-top: 1px solid var(--accent-color);
+        }
+
+        .section-content p {
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .quote {
+            font-style: italic;
+            padding: 20px;
+            background-color: var(--accent-color);
+            border-radius: 8px;
+            margin: 25px 0;
+            position: relative;
+        }
+
+        .quote::before {
+            content: '❞';
+            font-size: 4em;
+            position: absolute;
+            left: 10px;
+            top: 0;
+            color: rgba(0,0,0,0.1);
+            font-family: serif;
+            line-height: 1;
+        }
+
+        .quote-author {
+            text-align: right;
+            font-weight: bold;
+            margin-top: 15px;
+            font-style: normal;
+            color: var(--secondary-color);
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 50px;
+            margin: 40px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background-color: var(--primary-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .timeline-year {
+            position: absolute;
+            left: -45px;
+            top: 0;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.8em;
+        }
+
+        .timeline-content {
+            padding: 15px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-left: 20px;
+            border: 1px solid var(--accent-color);
+        }
+
+        .transformation-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 40px 0;
+        }
+
+        .transformation-step {
+            width: 80%;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+            margin: 15px 0;
+            position: relative;
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .transformation-step::after {
+            content: '↓';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--primary-color);
+            font-size: 1.5em;
+        }
+
+        .transformation-step:last-child::after {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2em;
+            }
+            
+            .section-toggle {
+                padding: 15px;
+                font-size: 1.1em;
+            }
+            
+            .section-content.show {
+                padding: 20px;
+            }
+            
+            .transformation-step {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Metrocle di Maronea</h1>
+        <p style="text-align: center; font-style: italic; font-size: 1.2em;">Dal fallimento alla filosofia cinica</p>
+        
+        <div class="mode-selector">
+            <button class="mode-btn" onclick="setMode('default')">Classico</button>
+            <button class="mode-btn" onclick="setMode('cinico')">Cinico</button>
+            <button class="mode-btn" onclick="setMode('trasformativo')">Trasformativo</button>
+            <button class="mode-btn" onclick="setMode('antico')">Antico</button>
+            <button class="mode-btn" onclick="setMode('filosofico')">Filosofico</button>
+        </div>
+    </header>
+
+    <main>
+        <div class="section-container">
+            <button class="section-toggle" onclick="toggleSection('biografia')">Biografia</button>
+            <div class="section-content" id="biografia">
+                <p>Metrocle di Maronea (IV-III secolo a.C.) fu un filosofo cinico, fratello della più famosa Ipparchia. Nato a Maronea in Tracia, inizialmente studiò presso la scuola peripatetica di Teofrasto, per poi convertirsi al cinismo sotto l'influenza di Cratete di Tebe, che in seguito divenne suo cognato sposando sua sorella Ipparchia.</p>
+                
+                <div class="quote">
+                    "Metrocle, dopo un iniziale fallimento come retore, bruciò i suoi scritti e si convertì alla filosofia cinica."
+                    <div class="quote-author">- Diogene Laerzio, Vite dei filosofi</div>
+                </div>
+                
+                <p>La sua conversione al cinismo avvenne dopo un umiliante incidente durante una performance retorica, quando si lasciò sfuggire un peto e cadde in depressione. Cratete lo aiutò a superare la vergogna insegnandogli a disprezzare le convenzioni sociali.</p>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-year">330 a.C.</div>
+                        <div class="timeline-content">Nascita di Metrocle a Maronea</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">310 a.C.</div>
+                        <div class="timeline-content">Studi presso Teofrasto al Liceo</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">305 a.C.</div>
+                        <div class="timeline-content">Conversione al cinismo grazie a Cratete</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">300 a.C.</div>
+                        <div class="timeline-content">Matrimonio di sua sorella Ipparchia con Cratete</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">280 a.C.</div>
+                        <div class="timeline-content">Morte di Metrocle</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-container">
+            <button class="section-toggle" onclick="toggleSection('conversione')">La Conversione Filosofica</button>
+            <div class="section-content" id="conversione">
+                <div class="transformation-container">
+                    <div class="transformation-step">
+                        <h3>1. L'Incidente</h3>
+                        <p>Durante un discorso pubblico, Metrocle si lasciò sfuggire un peto e, sopraffatto dalla vergogna, si rinchiuse in casa decidendo di lasciarsi morire di fame.</p>
+                    </div>
+                    <div class="transformation-step">
+                        <h3>2. L'Intervento di Cratete</h3>
+                        <p>Cratete venne a trovarlo e, per dimostrare l'insignificanza dell'accaduto, mangiò delle fave (notoriamente flatulente) e gli disse: "Vedi? Non è successo nulla di grave".</p>
+                    </div>
+                    <div class="transformation-step">
+                        <h3>3. La Rivelazione</h3>
+                        <p>Cratete spiegò che la vergogna di Metrocle derivava dalle false convenzioni sociali, non dalla natura umana, convincendolo ad abbracciare la filosofia cinica.</p>
+                    </div>
+                    <div class="transformation-step">
+                        <h3>4. Il Gesto Simbolico</h3>
+                        <p>Metrocle bruciò tutti i suoi scritti retorici, dichiarando: "Queste sono le vane chimere che mi hanno allontanato dalla verità".</p>
+                    </div>
+                    <div class="transformation-step">
+                        <h3>5. La Nuova Vita</h3>
+                        <p>Adottò lo stile di vita cinico, rinunciando alle ricchezze e vivendo in povertà volontaria con Cratete e sua sorella Ipparchia.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-container">
+            <button class="section-toggle" onclick="toggleSection('filosofia')">Insegnamenti Filosofici</button>
+            <div class="section-content" id="filosofia">
+                <h3>Critica alla Retorica</h3>
+                <p>Metrocle sosteneva che la retorica tradizionale fosse vuota e ingannevole, preferendo un linguaggio diretto e sincero, tipico dello stile cinico.</p>
+                
+                <div class="quote">
+                    "La vera eloquenza consiste nel dire ciò che si pensa e nel pensare ciò che si dice."
+                    <div class="quote-author">- Metrocle secondo Diogene Laerzio</div>
+                </div>
+                
+                <h3>Liberazione dalle Convenzioni</h3>
+                <p>Insegnava che la vera libertà si ottiene liberandosi dalla vergogna imposta dalla società e accettando la natura umana in tutte le sue manifestazioni.</p>
+                
+                <h3>Autosufficienza</h3>
+                <p>Come tutti i cinici, Metrocle promuoveva l'autarchia (autosufficienza) e la riduzione dei bisogni al minimo indispensabile.</p>
+                
+                <h3>Unione di Teoria e Pratica</h3>
+                <p>Insisteva sull'importanza di vivere secondo i principi filosofici, non solo di professarli a parole.</p>
+            </div>
+        </div>
+
+        <div class="section-container">
+            <button class="section-toggle" onclick="toggleSection('eredita')">Eredità e Influenza</button>
+            <div class="section-content" id="eredita">
+                <h3>Nella Scuola Cinica</h3>
+                <p>Metrocle contribuì a diffondere il cinismo attraverso:</p>
+                <ul>
+                    <li>La sua conversione, divenuta un esempio della trasformazione possibile attraverso la filosofia</li>
+                    <li>L'introduzione di sua sorella Ipparchia alla vita cinica</li>
+                    <li>Gli scritti che influenzarono i cinici successivi</li>
+                </ul>
+                
+                <h3>Nella Filosofia Successiva</h3>
+                <p>Il suo approccio anti-accademico e basato sull'esperienza anticipò elementi dello stoicismo e dello scetticismo.</p>
+                
+                <div class="quote">
+                    "La storia di Metrocle dimostra come un apparente fallimento possa diventare l'inizio di una vita autentica."
+                    <div class="quote-author">- Michel Foucault, filosofo moderno</div>
+                </div>
+                
+                <h3>Nella Cultura Moderna</h3>
+                <p>La sua vicenda è stata interpretata come:</p>
+                <ul>
+                    <li>Un esempio di resilienza e trasformazione personale</li>
+                    <li>Una critica alle ipocrisie sociali</li>
+                    <li>Un modello di autenticità esistenziale</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section-container">
+            <button class="section-toggle" onclick="toggleSection('citazioni')">Citazioni Attribuite</button>
+            <div class="section-content" id="citazioni">
+                <div class="quote">
+                    "Ho sprecato molto tempo nell'arte di dire bene le cose false, ora imparo l'arte di dire male le cose vere."
+                    <div class="quote-author">- Dopo la conversione al cinismo</div>
+                </div>
+                
+                <div class="quote">
+                    "La vergogna è la catena più pesante, perché è fatta di aria."
+                    <div class="quote-author">- Sull'incidente che cambiò la sua vita</div>
+                </div>
+                
+                <div class="quote">
+                    "Meglio un peto libero che un discorso imprigionato nelle convenzioni."
+                    <div class="quote-author">- Risposta a chi lo prendeva in giro</div>
+                </div>
+                
+                <div class="quote">
+                    "Non esistono fallimenti, solo lezioni troppo costose."
+                    <div class="quote-author">- Sul valore degli errori</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>Documentazione filosofica su Metrocle di Maronea - Il Cinico Convertito</p>
+        <p>© 2023 - Tutti i diritti riservati</p>
+    </footer>
+
+    <script>
+        // Funzione per attivare/disattivare le sezioni
+        function toggleSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            const button = document.querySelector(`[onclick="toggleSection('${sectionId}')"]`);
+            
+            section.classList.toggle('show');
+            button.classList.toggle('active');
+        }
+
+        // Funzione per cambiare modalità di lettura
+        function setMode(mode) {
+            document.body.className = mode;
+            
+            // Salva la preferenza
+            localStorage.setItem('readingMode', mode);
+            
+            // Animazione di transizione
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 300);
+        }
+
+        // Al caricamento della pagina, applica la modalità salvata
+        window.onload = function() {
+            const savedMode = localStorage.getItem('readingMode');
+            if (savedMode) {
+                setMode(savedMode);
+            }
+            
+            // Apri la prima sezione di default
+            toggleSection('biografia');
+        }
+    </script>
+</body>
+</html>

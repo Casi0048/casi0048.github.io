@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wilhelm Dilthey: Filosofo della Comprensione Umana</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #7f8c8d;
+            --accent: #3498db;
+            --text: #2c3e50;
+            --background: #ecf0f1;
+            --card-bg: #ffffff;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --header-bg: linear-gradient(135deg, #2c3e50 0%, #4a6491 100%);
+            --font-title: 'Playfair Display', serif;
+            --font-body: 'Raleway', sans-serif;
+        }
+
+        .theme-night {
+            --primary: #dfe6e9;
+            --secondary: #b2bec3;
+            --accent: #6c5ce7;
+            --text: #f5f6fa;
+            --background: #1e272e;
+            --card-bg: #2d3436;
+            --shadow: rgba(0, 0, 0, 0.4);
+            --header-bg: linear-gradient(135deg, #1e272e 0%, #485460 100%);
+        }
+
+        .theme-philosophical {
+            --primary: #3d3d3d;
+            --secondary: #7d5ba6;
+            --accent: #fc7753;
+            --text: #333333;
+            --background: #f2f2f2;
+            --card-bg: #e8e8e8;
+            --shadow: rgba(0, 0, 0, 0.15);
+            --header-bg: linear-gradient(135deg, #3d3d3d 0%, #7d5ba6 100%);
+        }
+
+        .theme-contemplative {
+            --primary: #2d5a5a;
+            --secondary: #7d9a4f;
+            --accent: #d49c6b;
+            --text: #2d5a5a;
+            --background: #f5f9f5;
+            --card-bg: #e6f0e6;
+            --shadow: rgba(45, 90, 90, 0.1);
+            --header-bg: linear-gradient(135deg, #2d5a5a 0%, #7d9a4f 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.5s, color 0.5s, transform 0.3s;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.7;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 30px;
+            background: var(--header-bg);
+            border-radius: 16px;
+            box-shadow: 0 15px 30px var(--shadow);
+            position: relative;
+            color: white;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.6;
+        }
+
+        h1 {
+            font-family: var(--font-title);
+            font-size: 3.2rem;
+            margin-bottom: 10px;
+            position: relative;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            font-weight: 300;
+            margin-bottom: 25px;
+            opacity: 0.9;
+        }
+
+        .theme-selector {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .theme-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .theme-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(0, 0, 0, 0.2);
+        }
+
+        .theme-btn.active {
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        }
+
+        .intro {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 50px;
+            font-size: 1.2rem;
+            color: var(--secondary);
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 8px 20px var(--shadow);
+        }
+
+        .accordion {
+            margin-bottom: 40px;
+        }
+
+        .accordion-item {
+            background: var(--card-bg);
+            border-radius: 14px;
+            margin-bottom: 25px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .accordion-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .accordion-header {
+            padding: 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .accordion-header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s;
+            opacity: 0;
+        }
+
+        .accordion-header:hover::before {
+            animation: shine 1.5s infinite;
+            opacity: 1;
+        }
+
+        @keyframes shine {
+            0% {
+                left: -50%;
+            }
+            100% {
+                left: 150%;
+            }
+        }
+
+        .accordion-header h2 {
+            margin: 0;
+            font-size: 1.7rem;
+            font-weight: 600;
+            font-family: var(--font-title);
+            z-index: 1;
+        }
+
+        .accordion-icon {
+            font-size: 1.5rem;
+            transition: transform 0.5s;
+            z-index: 1;
+        }
+
+        .accordion-content {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.7s ease, padding 0.7s ease;
+        }
+
+        .accordion-content-inner {
+            padding: 30px;
+        }
+
+        .accordion-item.active .accordion-content {
+            max-height: 3000px;
+            padding: 0;
+        }
+
+        .accordion-item.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        .quote {
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin: 25px 0;
+            font-style: italic;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .quote::before {
+            content: """;
+            font-size: 8rem;
+            position: absolute;
+            top: -30px;
+            left: 10px;
+            opacity: 0.15;
+            font-family: serif;
+        }
+
+        .quote::after {
+            content: """;
+            font-size: 8rem;
+            position: absolute;
+            bottom: -50px;
+            right: 10px;
+            opacity: 0.15;
+            font-family: serif;
+            transform: rotate(180deg);
+        }
+
+        .image-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .dilthey-img {
+            max-width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px var(--shadow);
+            transition: transform 0.5s;
+        }
+
+        .dilthey-img:hover {
+            transform: scale(1.02);
+        }
+
+        .caption {
+            color: var(--secondary);
+            font-size: 1rem;
+            margin-top: 15px;
+            font-style: italic;
+        }
+
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            margin: 40px 0;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background: linear-gradient(to bottom, var(--accent), var(--primary));
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+            border-radius: 10px;
+        }
+
+        .timeline-item {
+            padding: 15px 40px;
+            position: relative;
+            width: 50%;
+            align-self: flex-start;
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.8s;
+        }
+
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .timeline-item:nth-child(even) {
+            align-self: flex-end;
+            transform: translateX(50px);
+        }
+
+        .timeline-item:nth-child(even).visible {
+            transform: translateX(0);
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background-color: var(--card-bg);
+            border: 5px solid var(--accent);
+            border-radius: 50%;
+            top: 20px;
+            right: -17px;
+            z-index: 1;
+            box-shadow: 0 0 15px var(--accent);
+        }
+
+        .timeline-item:nth-child(even)::after {
+            left: -17px;
+        }
+
+        .timeline-content {
+            padding: 25px;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 8px 20px var(--shadow);
+            position: relative;
+        }
+
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--card-bg);
+            top: 20px;
+            right: -10px;
+            transform: rotate(45deg);
+        }
+
+        .timeline-item:nth-child(even) .timeline-content::before {
+            left: -10px;
+            right: auto;
+        }
+
+        .timeline-date {
+            font-weight: bold;
+            color: var(--accent);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 30px;
+            color: var(--secondary);
+            font-size: 1rem;
+            background: var(--card-bg);
+            border-radius: 14px;
+            box-shadow: 0 5px 15px var(--shadow);
+        }
+
+        .reference {
+            margin-top: 40px;
+            padding: 25px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 5px 15px var(--shadow);
+        }
+
+        .reference h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-family: var(--font-title);
+        }
+
+        @media (max-width: 768px) {
+            .timeline::after {
+                left: 31px;
+            }
+
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+
+            .timeline-item:nth-child(even) {
+                align-self: flex-start;
+            }
+
+            .timeline-item::after {
+                left: 18px;
+            }
+
+            .timeline-item:nth-child(even)::after {
+                left: 18px;
+            }
+
+            .timeline-content::before {
+                left: -10px;
+                right: auto;
+            }
+        }
+    </style>
+</head>
+<body class="theme-normal">
+    <header>
+        <h1>Wilhelm Dilthey</h1>
+        <p class="subtitle">Filosofo della comprensione e delle scienze dello spirito</p>
+        
+        <div class="theme-selector">
+            <button class="theme-btn active" data-theme="normal"><i class="fas fa-sun"></i> Normale</button>
+            <button class="theme-btn" data-theme="night"><i class="fas fa-moon"></i> Notturno</button>
+            <button class="theme-btn" data-theme="philosophical"><i class="fas fa-brain"></i> Filosofico</button>
+            <button class="theme-btn" data-theme="contemplative"><i class="fas fa-leaf"></i> Contemplativo</button>
+        </div>
+    </header>
+
+    <div class="intro">
+        <p>Wilhelm Dilthey (1833-1911) è stato un filosofo, psicologo e pedagogista tedesco, considerato uno dei massimi esponenti dello storicismo e fondatore dell'ermeneutica filosofica moderna. Il suo lavoro ha gettato le basi per la distinzione tra scienze della natura e scienze dello spirito.</p>
+    </div>
+
+    <div class="image-container">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Dilthey.jpg/800px-Dilthey.jpg" alt="Ritratto di Wilhelm Dilthey" class="dilthey-img">
+        <p class="caption">Wilhelm Dilthey (1833-1911), filosofo tedesco</p>
+    </div>
+
+    <div class="accordion">
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <h2><i class="fas fa-book-open" style="margin-right: 15px;"></i> Biografia e Formazione</h2>
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </div>
+            <div class="accordion-content">
+                <div class="accordion-content-inner">
+                    <p>Nato a Biebrich sul Reno nel 1833, Dilthey studiò teologia e filosofia a Heidelberg e Berlino. Inizialmente influenzato dall'hegelismo, sviluppò poi un pensiero originale che univa elementi dello storicismo, del romanticismo e del positivismo.</p>
+                    
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">1833</div>
+                            <div class="timeline-content">Nascita a Biebrich sul Reno</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">1852-1856</div>
+                            <div class="timeline-content">Studi di teologia e filosofia a Heidelberg e Berlino</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">1864</div>
+                            <div class="timeline-content">Dottorato con una tesi sull'etica di Schleiermacher</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">1866-1882</div>
+                            <div class="timeline-content">Professore a Basilea, Kiel e Breslavia</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">1883</div>
+                            <div class="timeline-content">Pubblica "Introduzione alle scienze dello spirito"</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">1882-1905</div>
+                            <div class="timeline-content">Professore all'Università di Berlino</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">1911</div>
+                            <div class="timeline-content">Morte a Siusi, in Alto Adige</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <h2><i class="fas fa-brain" style="margin-right: 15px;"></i> Scienze dello Spirito vs Scienze della Natura</h2>
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </div>
+            <div class="accordion-content">
+                <div class="accordion-content-inner">
+                    <p>Il contributo fondamentale di Dilthey consiste nella distinzione tra scienze della natura (Naturwissenschaften) e scienze dello spirito (Geisteswissenschaften). Mentre le prime studiano fenomeni esterni attraverso l'osservazione e la spiegazione causale, le seconde si occupano della realtà storico-sociale umana, che richiede comprensione (Verstehen) e interpretazione.</p>
+                    
+                    <div class="quote">
+                        "Noi spieghiamo la natura, ma comprendiamo la vita psichica."
+                    </div>
+                    
+                    <p>Per Dilthey, le scienze dello spirito hanno un carattere autonomo e irriducibile, poiché il loro oggetto - l'uomo nella sua storicità - è radicalmente diverso dagli oggetti naturali. La comprensione (Verstehen) diventa così il metodo specifico delle scienze umane, basato sull'introspezione, sull'empatia e sulla condivisione dell'esperienza vissuta (Erlebnis).</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <h2><i class="fas fa-compass" style="margin-right: 15px;"></i> Ermeneutica e Comprensione</h2>
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </div>
+            <div class="accordion-content">
+                <div class="accordion-content-inner">
+                    <p>Dilthey sviluppò un'ermeneutica filosofica come metodologia fondamentale per le scienze dello spirito. L'ermeneutica non è solo l'arte di interpretare testi, ma la disciplina che studia le condizioni di possibilità della comprensione della realtà storica e culturale.</p>
+                    
+                    <p>Secondo Dilthey, la comprensione avviene attraverso:</p>
+                    <ul>
+                        <li>L'esperienza vissuta (Erlebnis) come fondamento della conoscenza</li>
+                        <li>L'espressione (Ausdruck) come esteriorizzazione della vita interiore</li>
+                        <li>La comprensione (Verstehen) come ricostruzione del senso</li>
+                    </ul>
+                    
+                    <div class="quote">
+                        "L'individuo è un crocevia di sistemi culturali, un punto di intersezione di diverse sfere della società."
+                    </div>
+                    
+                    <p>Il circolo ermeneutico diltheyano descrive il processo per cui la comprensione delle parti dipende dalla precomprensione del tutto, e viceversa, in un movimento continuo che arricchisce progressivamente l'interpretazione.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <h2><i class="fas fa-history" style="margin-right: 15px;"></i> Storicismo e Vita</h2>
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </div>
+            <div class="accordion-content">
+                <div class="accordion-content-inner">
+                    <p>Dilthey radicalizza lo storicismo affermando che l'uomo è un essere storico attraverso e attraverso. La vita umana è sempre situata in un contesto storico determinato, e la coscienza umana è essa stessa un prodotto storico.</p>
+                    
+                    <p>Il concetto di "vita" (Leben) diventa centrale nella filosofia diltheyana: non un principio biologico, ma la totalità dell'esperienza umana nella sua concretezza storica, sociale e culturale. La vita è il fondamento ultimo di ogni conoscenza e il punto di partenza di ogni filosofia.</p>
+                    
+                    <div class="quote">
+                        "La vita è il fondamento che non può essere abbassato a semplice oggetto del pensiero; essa sta alla base di ogni pensiero."
+                    </div>
+                    
+                    <p>La filosofia diventa così "filosofia della vita" (Lebensphilosophie), un riflettere sulla vita a partire dalla vita stessa, che cerca di comprendere il senso dell'esistenza umana nella sua storicità.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <h2><i class="fas fa-book" style="margin-right: 15px;"></i> Opere Principali</h2>
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </div>
+            <div class="accordion-content">
+                <div class="accordion-content-inner">
+                    <ul>
+                        <li><strong>Introduzione alle scienze dello spirito</strong> (1883) - L'opera fondamentale in cui Dilthey delinea la distinzione tra scienze della natura e scienze dello spirito.</li>
+                        <li><strong>L'origine della ermeneutica</strong> (1900) - Saggio in cui Dilthey sviluppa la sua teoria dell'interpretazione.</li>
+                        <li><strong>L'edificazione del mondo storico nelle scienze dello spirito</strong> (1910) - Opera della maturità in cui approfondisce il rapporto tra esperienza, espressione e comprensione.</li>
+                        <li><strong>Essenza della filosofia</strong> (1907) - Saggio in cui Dilthey riflette sulla natura e la funzione della filosofia.</li>
+                        <li><strong>Vita e poesia</strong> (1905) - Studio sulla relazione tra esperienza vissuta e creazione poetica.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <div class="accordion-header">
+                <h2><i class="fas fa-lightbulb" style="margin-right: 15px;"></i> Influenza e Eredità</h2>
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </div>
+            <div class="accordion-content">
+                <div class="accordion-content-inner">
+                    <p>L'opera di Dilthey ha esercitato un'influenza profonda sulla filosofia del Novecento, in particolare sull'ermeneutica di Heidegger e Gadamer, sulla sociologia comprensiva di Max Weber, e sulla fenomenologia di Husserl.</p>
+                    
+                    <p>La sua distinzione tra spiegazione e comprensione ha segnato profondamente la metodologia delle scienze umane e sociali, influenzando campi come la psicologia, la storiografia, la sociologia e l'antropologia.</p>
+                    
+                    <div class="quote">
+                        "Dilthey ha aperto la strada a una comprensione non oggettivante dell'uomo, che riconosce la storicità come dimensione costitutiva dell'esistenza umana."
+                    </div>
+                    
+                    <p>Anche la psicologia ha ricevuto un importante contributo dal pensiero diltheyano, specialmente con la sua concezione della psicologia come scienza descrittiva e analitica della vita psichica, contrapposta alla psicologia esplicativa di stampo naturalistico.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="reference">
+        <h3>Riferimenti Bibliografici</h3>
+        <p>1. Dilthey, W. (1883). <em>Introduzione alle scienze dello spirito</em>. Firenze: La Nuova Italia, 1974.</p>
+        <p>2. Dilthey, W. (1900). <em>L'origine dell'ermeneutica</em>. In: <em>Critica della ragione ermeneutica</em>, a cura di P. Rossi. Torino: Rosenberg & Sellier, 1988.</p>
+        <p>3. Marcucci, N. (2010). <em>Dilthey. Il mondo dello spirito</em>. Roma: Carocci.</p>
+        <p>4. Bianco, F. (2001). <em>Dilthey e la fondazione delle scienze dello spirito</em>. Milano: Unicopli.</p>
+    </div>
+
+    <footer>
+        <p>© 2025 - Saggio su Wilhelm Dilthey | Realizzato con passione per la filosofia e le scienze umane</p>
+        <p>Questo progetto esplora la vita e il pensiero di uno dei più importanti filosofi dell'Ottocento</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Accordion functionality
+            const accordionHeaders = document.querySelectorAll('.accordion-header');
+            
+            accordionHeaders.forEach(header => {
+                header.addEventListener('click', function() {
+                    const item = this.parentNode;
+                    item.classList.toggle('active');
+                });
+            });
+
+            // Theme switching functionality
+            const themeButtons = document.querySelectorAll('.theme-btn');
+            const body = document.body;
+            
+            themeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const theme = this.getAttribute('data-theme');
+                    
+                    // Remove all theme classes
+                    body.classList.remove('theme-normal', 'theme-night', 'theme-philosophical', 'theme-contemplative');
+                    
+                    // Add the selected theme class
+                    body.classList.add(`theme-${theme}`);
+                    
+                    // Update active button
+                    themeButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Timeline animation on scroll
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            
+            function checkTimelineItems() {
+                timelineItems.forEach(item => {
+                    const position = item.getBoundingClientRect();
+                    
+                    if(position.top < window.innerHeight - 100) {
+                        item.classList.add('visible');
+                    }
+                });
+            }
+            
+            window.addEventListener('scroll', checkTimelineItems);
+            checkTimelineItems(); // Check on initial load
+        });
+    </script>
+</body>
+</html>
