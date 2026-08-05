@@ -1599,6 +1599,21 @@ main {
   position: fixed;
   z-index: 20;
   max-width: 300px;
+  
+  /* === POSIZIONE DI DEFAULT (se nessuna classe è attiva) === */
+  bottom: 20px;
+  right: 20px;
+  
+  /* === TRANSIZIONE PER SPOSTAMENTI DOLCI === */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* === PERMETTERE IL DRAGGING === */
+  cursor: grab;
+  user-select: none;
+}
+
+.floating-quotes:active {
+  cursor: grabbing;
 }
 
 /* ============================================
@@ -1608,18 +1623,22 @@ main {
 .floating-quotes.user-bottom-right {
   bottom: 20px;
   right: 20px;
+  top: auto;
+  left: auto;
 }
 
 .floating-quotes.user-bottom-left {
   bottom: 20px;
   left: 20px;
   right: auto;
+  top: auto;
 }
 
 .floating-quotes.user-top-right {
   top: 80px;
   right: 20px;
   bottom: auto;
+  left: auto;
 }
 
 .floating-quotes.user-top-left {
@@ -1630,12 +1649,92 @@ main {
 }
 
 /* ============================================
+   SUPPORTO PER SPOSTAMENTO CON DRAG
+   (se usi JavaScript per il drag)
+   ============================================ */
+
+.floating-quotes.dragging {
+  transition: none !important;
+  cursor: grabbing;
+  opacity: 0.9;
+  transform: scale(1.02);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================
+   SPOSTAMENTO VERTICALE CON PULSANTI
+   (se usi bottoni su/giù)
+   ============================================ */
+
+.floating-quotes.move-up {
+  transform: translateY(-20px);
+}
+
+.floating-quotes.move-down {
+  transform: translateY(20px);
+}
+
+/* ============================================
+   RESPONSIVE - POSIZIONI ADATTIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+  .floating-quotes {
+    max-width: 220px;
+  }
+  
+  .floating-quotes.user-bottom-right,
+  .floating-quotes.user-bottom-left {
+    bottom: 15px;
+  }
+  
+  .floating-quotes.user-top-right,
+  .floating-quotes.user-top-left {
+    top: 70px;
+  }
+  
+  /* Su mobile, riduci la dimensione e sposta leggermente */
+  .floating-quotes {
+    transform: scale(0.9);
+    transform-origin: bottom right;
+  }
+  
+  .floating-quotes.user-bottom-left {
+    transform-origin: bottom left;
+  }
+  
+  .floating-quotes.user-top-right {
+    transform-origin: top right;
+  }
+  
+  .floating-quotes.user-top-left {
+    transform-origin: top left;
+  }
+}
+
+@media (max-width: 480px) {
+  .floating-quotes {
+    max-width: 180px;
+  }
+  
+  .floating-quotes.user-bottom-right,
+  .floating-quotes.user-bottom-left {
+    bottom: 10px;
+  }
+  
+  .floating-quotes.user-top-right,
+  .floating-quotes.user-top-left {
+    top: 60px;
+  }
+}
+
+/* ============================================
    BUBBLE SINGOLA
    ============================================ */
 
 .quote-bubble {
   background: transparent; 
-  color:#0010ff;             rgba(10, 10, 30, 0.9);
+  color:#0010ff;            
   border: 1px solid var(--menu-border);
   border-radius: 15px;
   padding: 5px;
@@ -3361,32 +3460,39 @@ mark,
 }
 
 /* ============================================
-   QUOTE RUNNER
+   QUOTE RUNNER - CITAZIONI SCORREVOLI
    ============================================ */
-#quote-runner,
-#quote-runner * {
-  pointer-events: none !important;
-}
 
-#quote-runner {
-  z-index: 20 !important;
-}
-
+/* Nascondi il vecchio sistema di citazioni */
 .floating-quotes {
   display: none !important;
   pointer-events: none !important;
   z-index: 20 !important;
 }
 
+/* ============================================
+   CONTENITORE PRINCIPALE
+   ============================================ */
+
 #quote-runner {
   position: fixed;
   left: 50%;
-  bottom: 270px;
+  bottom: 250px;
   transform: translateX(-50%);
   z-index: 20;
   pointer-events: none;
   max-width: min(86vw, 680px);
 }
+
+/* Escludi il contenuto dal pointer-events per permettere click sotto */
+#quote-runner,
+#quote-runner * {
+  pointer-events: none !important;
+}
+
+/* ============================================
+   BUBBLE DELLA CITAZIONE
+   ============================================ */
 
 #quote-runner .quote-bubble {
   position: relative;
@@ -3404,6 +3510,10 @@ mark,
 #quote-runner .quote-bubble .quote-author {
   margin-top: .25rem;
 }
+
+/* ============================================
+   ANIMAZIONE SLIDE IN/OUT
+   ============================================ */
 
 #quote-runner .slide-in {
   animation: quoteSlideInOut 9s cubic-bezier(.2, 1, .2, 1) forwards;
@@ -3431,6 +3541,87 @@ mark,
   }
 }
 
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+  #quote-runner {
+    bottom: 120px;
+    max-width: min(92vw, 500px);
+  }
+  
+  #quote-runner .quote-bubble .quote-text {
+    font-size: 0.95rem;
+  }
+  
+  @keyframes quoteSlideInOut {
+    0% {
+      transform: translateX(60vw);
+      opacity: 0;
+    }
+    18% {
+      opacity: 1;
+    }
+    40% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    70% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(-60vw);
+      opacity: 0;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  #quote-runner {
+    bottom: 80px;
+    max-width: min(96vw, 360px);
+  }
+  
+  #quote-runner .quote-bubble .quote-text {
+    font-size: 0.85rem;
+  }
+  
+  @keyframes quoteSlideInOut {
+    0% {
+      transform: translateX(65vw);
+      opacity: 0;
+    }
+    18% {
+      opacity: 1;
+    }
+    40% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    70% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(-65vw);
+      opacity: 0;
+    }
+  }
+}
+
+/* ============================================
+   ACCESSIBILITÀ - RIDUZIONE MOVIMENTI
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  #quote-runner .slide-in {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
 /* ============================================
    Z-INDEX FIXES
    ============================================ */
@@ -8833,24 +9024,7 @@ a:hover {
     color: #e8ddff;
 }
 
-/* ============================
-   FOOTER
-   ============================ */
 
-[data-theme="light"] footer {
-    background:
-        linear-gradient(
-            135deg,
-            #e2e8f0,
-            #ffffff
-        );
-    color: var(--aurora-text);
-}
-
-[data-theme="light"] footer h3,
-[data-theme="light"] footer h4 {
-    color: var(--aurora-gold);
-}
 
 /* ============================
    ALBERO DELLA CONOSCENZA
@@ -8910,99 +9084,7 @@ body{
 
 }
 
-/* ============================================
-   SFONDO DIURNO BASE
-   ============================================ */
 
-   /* ============================================
-   SPEED CONTROL - AURORA BLUE
-   ============================================ */
-
-/* Label e testo */
-.speed-label {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    color: #1769aa;
-    font-weight: 600;
-    font-size: 0.9rem;
-}
-
-.speed-label .speed-label-text {
-    color: #1769aa;
-    font-weight: 600;
-    min-width: 7rem;
-}
-
-/* Slider Speed - Stile Blu */
-#slider-speed {
-    -webkit-appearance: none;
-    width: 160px;
-    height: 6px;
-    border-radius: 999px;
-    background: linear-gradient(90deg, rgba(23, 105, 170, 0.25), rgba(23, 105, 170, 0.55));
-    box-shadow: inset 0 0 0 1px rgba(23, 105, 170, 0.15);
-    outline: none;
-    transition: all 0.3s ease;
-}
-
-#slider-speed::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: #ffffff;
-    border: 2px solid #1769aa;
-    box-shadow: 0 0 8px rgba(23, 105, 170, 0.25);
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-#slider-speed::-webkit-slider-thumb:hover {
-    box-shadow: 0 0 14px rgba(23, 105, 170, 0.4);
-    transform: scale(1.1);
-}
-
-#slider-speed::-moz-range-track {
-    height: 6px;
-    border-radius: 999px;
-    background: linear-gradient(90deg, rgba(23, 105, 170, 0.25), rgba(23, 105, 170, 0.55));
-    box-shadow: inset 0 0 0 1px rgba(23, 105, 170, 0.15);
-}
-
-#slider-speed::-moz-range-thumb {
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: #ffffff;
-    border: 2px solid #1769aa;
-    box-shadow: 0 0 8px rgba(23, 105, 170, 0.25);
-    cursor: pointer;
-}
-
-#slider-speed:focus {
-    outline: none;
-}
-
-#slider-speed:focus::-webkit-slider-runnable-track {
-    box-shadow: inset 0 0 0 1px rgba(23, 105, 170, 0.35), 0 0 12px rgba(23, 105, 170, 0.15);
-}
-
-/* Speed Readout (valore numerico) */
-#speed-readout {
-    display: inline-block;
-    min-width: 2.5ch;
-    padding: 0.1rem 0.5rem;
-    border-radius: 0.4rem;
-    background: rgba(23, 105, 170, 0.08);
-    color: #1769aa;
-    font-weight: 700;
-    font-size: 0.85rem;
-    text-align: center;
-    border: 1px solid rgba(23, 105, 170, 0.15);
-}
-
-/
 
 /* ============================================
    FOOTER - FOTO
@@ -9055,6 +9137,8 @@ body{
     font-size: 3.5rem;
     color: transparent;
     margin-bottom: 0.5rem;
+    margin-top: -150px;  /* ← MODIFICA QUESTO VALORE */
+    
     background: linear-gradient(125deg, var(--accent-5) 0%, var(--accent) 18%, var(--accent-3) 36%, var(--accent) 54%, var(--accent-2) 72%, var(--accent-5) 100%);
     background-size: 400% 400%;
     -webkit-background-clip: text;
