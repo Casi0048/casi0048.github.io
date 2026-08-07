@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Storia della Filosofia — Echi di Sofia</title>
+  <link rel="icon" type="image/png" href="/favicon_io/favicon-32x32.png">
+
+  <style>
+    /* ============================================================
+       STILE ECHI DI SOFIA - STORIA DELLA FILOSOFIA
+       ============================================================ */
+
+    :root {
+      --bg: #0a0a1a;
+      --text: #e9eef5;
+      --gold: #ffd86a;
+      --gold-dim: rgba(255, 216, 106, 0.15);
+      --cyan: #9ad0ff;
+      --panel: rgba(10, 10, 30, 0.9);
+      --border: rgba(255, 215, 0, 0.12);
+      --font-serif: 'Cormorant Garamond', 'Georgia', serif;
+      --font-display: 'Cinzel Decorative', 'Georgia', serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-serif);
+      line-height: 1.7;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    .container {
+      max-width: 880px;
+      margin: 0 auto;
+    }
+
+    /* ============================================================
+       TOPBAR
+       ============================================================ */
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5rem 0 1.5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .topbar .brand {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      color: var(--gold);
+      text-decoration: none;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .topbar .brand:hover {
+      color: #fff;
+    }
+
+    .topbar .back-link {
+      color: var(--cyan);
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: color 0.3s ease;
+    }
+
+    .topbar .back-link:hover {
+      color: #fff;
+      text-decoration: underline;
+    }
+
+    /* ============================================================
+       TITOLO
+       ============================================================ */
+
+    .page-title {
+      font-family: var(--font-display);
+      font-size: 2.6rem;
+      color: var(--gold);
+      text-align: center;
+      margin-bottom: 0.3rem;
+      line-height: 1.2;
+      letter-spacing: 1px;
+    }
+
+    .page-subtitle {
+      text-align: center;
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.6);
+      font-style: italic;
+      margin-bottom: 2.5rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1.5rem;
+    }
+
+    /* ============================================================
+       INTRODUZIONE
+       ============================================================ */
+
+    .intro {
+      background: var(--panel);
+      border-left: 3px solid var(--gold);
+      padding: 1.5rem 2rem;
+      border-radius: 0 12px 12px 0;
+      margin-bottom: 2.5rem;
+    }
+
+    .intro p {
+      margin-bottom: 0.5rem;
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .intro p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* ============================================================
+       INDICE
+       ============================================================ */
+
+    .indice {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem 2rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .indice h2 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      color: var(--gold);
+      margin-bottom: 0.8rem;
+      letter-spacing: 0.5px;
+    }
+
+    .indice-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.3rem 1.5rem;
+    }
+
+    .indice-grid a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.95rem;
+      padding: 0.2rem 0;
+      border-bottom: 1px solid transparent;
+      transition: color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .indice-grid a:hover {
+      color: var(--gold);
+      border-bottom-color: var(--gold);
+    }
+
+    /* ============================================================
+       EPOCHE
+       ============================================================ */
+
+    .epoca {
+      margin-bottom: 3.5rem;
+      scroll-margin-top: 1.5rem;
+    }
+
+    .epoca-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      border-bottom: 2px solid var(--gold-dim);
+      padding-bottom: 0.5rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .epoca-header h2 {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      color: var(--gold);
+      letter-spacing: 0.5px;
+    }
+
+    .epoca-header .periodo {
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.4);
+      font-style: italic;
+    }
+
+    .epoca-intro {
+      font-size: 1.05rem;
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 1.2rem;
+      padding-left: 0.5rem;
+      border-left: 2px solid var(--gold-dim);
+      padding-left: 1rem;
+    }
+
+    /* ============================================================
+       TABELLE FILOSOFI
+       ============================================================ */
+
+    .tabella-filosofi {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0 1.2rem;
+      font-size: 0.95rem;
+    }
+
+    .tabella-filosofi thead th {
+      text-align: left;
+      padding: 0.5rem 0.8rem;
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--gold);
+      border-bottom: 1px solid var(--gold-dim);
+      font-weight: 400;
+    }
+
+    .tabella-filosofi tbody td {
+      padding: 0.4rem 0.8rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .tabella-filosofi tbody tr:hover td {
+      background: rgba(255, 215, 0, 0.04);
+    }
+
+    .tabella-filosofi .filosofo {
+      color: var(--cyan);
+      font-weight: 500;
+    }
+
+    /* ============================================================
+       CITAZIONI
+       ============================================================ */
+
+    .quote-block {
+      background: var(--panel);
+      border-left: 3px solid var(--gold);
+      padding: 1.2rem 1.8rem;
+      margin: 1.5rem 0;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .quote-block p {
+      font-size: 1.1rem;
+      font-style: italic;
+      color: rgba(255, 255, 255, 0.85);
+      margin-bottom: 0.2rem;
+    }
+
+    .quote-block cite {
+      font-size: 0.9rem;
+      color: var(--gold);
+      font-style: normal;
+      display: block;
+      text-align: right;
+    }
+
+    /* ============================================================
+       SEZIONE "CONTINUA CON"
+       ============================================================ */
+
+    .continua {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.2rem 1.8rem;
+      margin: 2rem 0;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.6);
+      font-style: italic;
+    }
+
+    /* ============================================================
+       LINEA DEL TEMPO (testo)
+       ============================================================ */
+
+    .linee-pensiero {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem 2rem;
+      margin: 2.5rem 0;
+    }
+
+    .linee-pensiero h2 {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      letter-spacing: 0.5px;
+    }
+
+    .linea-item {
+      display: flex;
+      gap: 1.2rem;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .linea-item:last-child {
+      border-bottom: none;
+    }
+
+    .linea-item .label {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      color: var(--gold);
+      min-width: 140px;
+      letter-spacing: 0.3px;
+    }
+
+    .linea-item .desc {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    /* ============================================================
+       BUSSOLA / CHIUSURA
+       ============================================================ */
+
+    .bussola {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem 2rem;
+      margin: 2.5rem 0;
+      text-align: center;
+    }
+
+    .bussola p {
+      font-size: 1.05rem;
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 0.5rem;
+    }
+
+    .bussola .highlight {
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    /* ============================================================
+       QUOTE FINALE
+       ============================================================ */
+
+    .quote-finale {
+      text-align: center;
+      padding: 2rem 1.5rem;
+      margin: 2.5rem 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .quote-finale p {
+      font-size: 1.4rem;
+      font-style: italic;
+      color: var(--gold);
+      line-height: 1.5;
+      margin-bottom: 0.5rem;
+    }
+
+    .quote-finale cite {
+      color: rgba(255, 255, 255, 0.4);
+      font-style: normal;
+      font-size: 1rem;
+      letter-spacing: 1px;
+    }
+
+    /* ============================================================
+       LINK COLLEGAMENTI
+       ============================================================ */
+
+    .link-collegamenti {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem 1.8rem;
+      margin: 2rem 0 3rem;
+      padding: 1rem 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .link-collegamenti a {
+      color: var(--cyan);
+      text-decoration: none;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+    }
+
+    .link-collegamenti a:hover {
+      color: var(--gold);
+      text-decoration: underline;
+    }
+
+    /* ============================================================
+       BACK BUTTON
+       ============================================================ */
+
+    .back-button {
+      display: inline-block;
+      margin: 1rem 0 2rem;
+      padding: 0.6rem 1.5rem;
+      background: rgba(255, 215, 0, 0.08);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+    }
+
+    .back-button:hover {
+      background: rgba(255, 215, 0, 0.15);
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+
+    .page-footer {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: rgba(255, 255, 255, 0.3);
+      font-size: 0.9rem;
+    }
+
+    .page-footer strong {
+      color: var(--gold);
+      font-family: var(--font-display);
+      font-weight: 400;
+    }
+
+    .page-footer .copyright {
+      margin-top: 0.3rem;
+      font-size: 0.8rem;
+    }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+
+    @media (max-width: 768px) {
+      body {
+        padding: 1.2rem 1rem 2.5rem;
+      }
+
+      .page-title {
+        font-size: 1.8rem;
+      }
+
+      .page-subtitle {
+        font-size: 1rem;
+      }
+
+      .indice-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .epoca-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.2rem;
+      }
+
+      .epoca-header h2 {
+        font-size: 1.4rem;
+      }
+
+      .tabella-filosofi {
+        font-size: 0.85rem;
+      }
+
+      .tabella-filosofi thead th,
+      .tabella-filosofi tbody td {
+        padding: 0.3rem 0.5rem;
+      }
+
+      .quote-block p {
+        font-size: 1rem;
+      }
+
+      .linea-item {
+        flex-direction: column;
+        gap: 0.2rem;
+      }
+
+      .linea-item .label {
+        min-width: unset;
+      }
+
+      .quote-finale p {
+        font-size: 1.1rem;
+      }
+
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+
+      .continua {
+        font-size: 0.9rem;
+        padding: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .page-title {
+        font-size: 1.5rem;
+      }
+
+      .intro {
+        padding: 1rem 1.2rem;
+      }
+
+      .indice,
+      .linee-pensiero,
+      .bussola {
+        padding: 1rem 1.2rem;
+      }
+
+      .tabella-filosofi {
+        font-size: 0.75rem;
+      }
+
+      .tabella-filosofi thead th,
+      .tabella-filosofi tbody td {
+        padding: 0.2rem 0.4rem;
+      }
+
+      .link-collegamenti {
+        gap: 0.6rem 1rem;
+      }
+
+      .link-collegamenti a {
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- ============================================================
+       TOPBAR
+       ============================================================ -->
+
+    <div class="topbar">
+      <a href="/index.html" class="brand">
+        <span>🏛️</span> Echi di Sofia
+      </a>
+      <a href="/index.html" class="back-link">🏠 Torna al Portale</a>
+    </div>
+
+    <!-- ============================================================
+       TITOLO
+       ============================================================ -->
+
+    <h1 class="page-title">La lunga avventura del pensiero</h1>
+    <p class="page-subtitle">Una cronologia essenziale della filosofia occidentale</p>
+
+    <!-- ============================================================
+       INTRODUZIONE
+       ============================================================ -->
+
+    <div class="intro">
+      <p>La filosofia non è una collezione di nomi, ma una conversazione che attraversa i secoli. Ogni filosofo riceve domande antiche, le trasforma e le consegna al futuro. Da Talete a Heidegger, da Platone a Kant, da Aristotele a Nietzsche, la storia della filosofia è il racconto di un'umanità che ha cercato di comprendere il mondo, se stessa e il significato dell'esistenza.</p>
+      <p>Questa pagina è una mappa orientativa. Non pretende di essere completa, ma vuole mostrare il filo che unisce le grandi epoche del pensiero occidentale: la nascita della ragione in Grecia, la ricerca della felicità nell'Ellenismo, l'incontro tra fede e ragione nel Medioevo, la rivoluzione della modernità, la critica dell'Ottocento e le inquietudini del mondo contemporaneo.</p>
+    </div>
+
+    <!-- ============================================================
+       INDICE
+       ============================================================ -->
+
+    <div class="indice">
+      <h2>📑 Indice delle epoche</h2>
+      <div class="indice-grid">
+        <a href="#grecia-arcaica">1. Grecia arcaica (VII–V secolo a.C.)</a>
+        <a href="#grecia-classica">2. Grecia classica (V–IV secolo a.C.)</a>
+        <a href="#ellenistica">3. Età ellenistica (III–I secolo a.C.)</a>
+        <a href="#romana">4. Età romana (I secolo a.C. – II secolo d.C.)</a>
+        <a href="#tarda-antichita">5. Tarda antichità (III–VI secolo)</a>
+        <a href="#medievale">6. Filosofia medievale (V–XV secolo)</a>
+        <a href="#rinascimento">7. Rinascimento (XV–XVI secolo)</a>
+        <a href="#moderna">8. Età moderna (XVII secolo)</a>
+        <a href="#illuminismo">9. Illuminismo (XVIII secolo)</a>
+        <a href="#idealismo">10. Idealismo e Romanticismo (XVIII–XIX secolo)</a>
+        <a href="#ottocento">11. XIX secolo</a>
+        <a href="#novecento">12. XX secolo</a>
+        <a href="#ventunesimo">13. XXI secolo</a>
+      </div>
+    </div>
+
+    <!-- ============================================================
+       GRECIA ARCAICA
+       ============================================================ -->
+
+    <section class="epoca" id="grecia-arcaica">
+      <div class="epoca-header">
+        <h2>🏛️ Grecia arcaica</h2>
+        <span class="periodo">VII–V secolo a.C.</span>
+      </div>
+      <div class="epoca-intro">
+        <strong>Il passaggio dal mito al logos</strong> — La filosofia occidentale nasce quando il mito non basta più a spiegare il mondo. I primi pensatori della Ionia cercano un principio originario (<em>arché</em>) capace di rendere intelligibile la natura. Con loro prende forma il passaggio decisivo dal racconto mitico alla ricerca razionale.
+      </div>
+
+      <table class="tabella-filosofi">
+        <thead>
+          <tr>
+            <th>Filosofo</th>
+            <th>Date</th>
+            <th>Tema fondamentale</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="filosofo">Talete di Mileto</td><td>624–546 a.C.</td><td>L'acqua come principio</td></tr>
+          <tr><td class="filosofo">Anassimandro</td><td>610–546 a.C.</td><td>L'apeiron</td></tr>
+          <tr><td class="filosofo">Anassimene</td><td>586–526 a.C.</td><td>L'aria</td></tr>
+          <tr><td class="filosofo">Pitagora</td><td>570–495 a.C.</td><td>Numero e armonia</td></tr>
+          <tr><td class="filosofo">Eraclito</td><td>535–475 a.C.</td><td>Divenire e logos</td></tr>
+          <tr><td class="filosofo">Parmenide</td><td>515–450 a.C.</td><td>L'essere immutabile</td></tr>
+          <tr><td class="filosofo">Zenone di Elea</td><td>490–430 a.C.</td><td>Paradossi del movimento</td></tr>
+          <tr><td class="filosofo">Empedocle</td><td>494–434 a.C.</td><td>I quattro elementi</td></tr>
+          <tr><td class="filosofo">Anassagora</td><td>500–428 a.C.</td><td>Il Nous</td></tr>
+          <tr><td class="filosofo">Democrito</td><td>460–370 a.C.</td><td>Atomismo</td></tr>
+        </tbody>
+      </table>
+
+      <p style="color: rgba(255,255,255,0.6); font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
+        Con Eraclito e Parmenide si apre una delle tensioni fondamentali della filosofia: il mondo è divenire o permanenza? Tutta la metafisica successiva nascerà, in un modo o nell'altro, da questo confronto.
+      </p>
+
+      <div class="quote-block">
+        <p>«L'inizio della filosofia è la meraviglia.»</p>
+        <cite>— Aristotele</cite>
+      </div>
+    </section>
+
+    <!-- ============================================================
+       GRECIA CLASSICA
+       ============================================================ -->
+
+    <section class="epoca" id="grecia-classica">
+      <div class="epoca-header">
+        <h2>🏛️ Grecia classica</h2>
+        <span class="periodo">V–IV secolo a.C.</span>
+      </div>
+      <div class="epoca-intro">
+        <strong>L'uomo al centro della filosofia</strong> — Con Socrate, Platone e Aristotele la filosofia raggiunge una forma che segnerà tutta la tradizione occidentale. Le domande non riguardano più soltanto la natura, ma anche l'uomo, la giustizia, la conoscenza, la politica e il senso della vita.
+      </div>
+
+      <table class="tabella-filosofi">
+        <thead>
+          <tr>
+            <th>Filosofo</th>
+            <th>Date</th>
+            <th>Tema fondamentale</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="filosofo">Protagora</td><td>490–420 a.C.</td><td>L'uomo misura di tutte le cose</td></tr>
+          <tr><td class="filosofo">Gorgia</td><td>483–375 a.C.</td><td>Retorica e relativismo</td></tr>
+          <tr><td class="filosofo">Socrate</td><td>469–399 a.C.</td><td>Conoscenza di sé e ricerca del bene</td></tr>
+          <tr><td class="filosofo">Platone</td><td>427–347 a.C.</td><td>Idee, anima e giustizia</td></tr>
+          <tr><td class="filosofo">Aristotele</td><td>384–322 a.C.</td><td>Metafisica, logica ed etica</td></tr>
+        </tbody>
+      </table>
+
+      <p style="color: rgba(255,255,255,0.6); font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
+        Socrate non ha lasciato opere scritte: la sua filosofia vive nei dialoghi di Platone e nella memoria dei suoi discepoli. Con lui nasce l'idea che la filosofia sia anzitutto un esercizio dell'anima.
+      </p>
+
+      <div class="quote-block">
+        <p>«Una vita senza ricerca non è degna di essere vissuta.»</p>
+        <cite>— Socrate</cite>
+      </div>
+    </section>
+
+    <!-- ============================================================
+       ETÀ ELLENISTICA
+       ============================================================ -->
+
+    <section class="epoca" id="ellenistica">
+      <div class="epoca-header">
+        <h2>🌿 Età ellenistica</h2>
+        <span class="periodo">III–I secolo a.C.</span>
+      </div>
+      <div class="epoca-intro">
+        <strong>Filosofia come arte del vivere</strong> — Dopo la morte di Alessandro Magno il mondo greco si espande e si frammenta. La polis perde il suo ruolo centrale e la filosofia si trasforma in una ricerca di serenità interiore. Le principali scuole sono il Cinismo, l'Epicureismo, lo Stoicismo e lo Scetticismo.
+      </div>
+
+      <table class="tabella-filosofi">
+        <thead>
+          <tr>
+            <th>Filosofo</th>
+            <th>Date</th>
+            <th>Tema fondamentale</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="filosofo">Diogene</td><td>412–323 a.C.</td><td>Libertà dalle convenzioni</td></tr>
+          <tr><td class="filosofo">Epicuro</td><td>341–270 a.C.</td><td>Atarassia e amicizia</td></tr>
+          <tr><td class="filosofo">Zenone di Cizio</td><td>334–262 a.C.</td><td>Virtù e accordo con la natura</td></tr>
+          <tr><td class="filosofo">Crisippo</td><td>279–206 a.C.</td><td>Logica stoica</td></tr>
+          <tr><td class="filosofo">Pirrone</td><td>360–270 a.C.</td><td>Epoché e serenità</td></tr>
+        </tbody>
+      </table>
+
+      <p style="color: rgba(255,255,255,0.6); font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
+        L'Ellenismo sposta il centro della filosofia dall'organizzazione della città alla cura dell'individuo. La domanda fondamentale diventa: come vivere bene in un mondo incerto?
+      </p>
+
+      <div class="quote-block">
+        <p>«Non sono le cose a turbare gli uomini, ma i giudizi che essi formulano sulle cose.»</p>
+        <cite>— Epitteto</cite>
+      </div>
+    </section>
+
+    <!-- ============================================================
+       CONTINUA
+       ============================================================ -->
+
+    <div class="continua">
+      Continua con: Età romana, Tarda antichità, Filosofia medievale, Rinascimento, Età moderna, Illuminismo, Idealismo, XIX secolo, XX secolo e XXI secolo.
+    </div>
+
+    <!-- ============================================================
+       ETÀ ROMANA
+       ============================================================ -->
+
+    <section class="epoca" id="romana">
+      <div class="epoca-header">
+        <h2>🏛️ Età romana</h2>
+        <span class="periodo">I secolo a.C. – II secolo d.C.</span>
+      </div>
+      <div class="epoca-intro">
+        <strong>La filosofia come disciplina interiore</strong> — Con la conquista romana del mondo mediterraneo, la filosofia greca viene assimilata, trasformata e orientata sempre più verso la formazione morale dell'individuo. Il filosofo non è soltanto un teorico, ma un uomo che esercita quotidianamente la propria libertà interiore.
+      </div>
+
+      <table class="tabella-filosofi">
+        <thead>
+          <tr>
+            <th>Filosofo</th>
+            <th>Date</th>
+            <th>Tema fondamentale</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="filosofo">Cicerone</td><td>106–43 a.C.</td><td>Filosofia e vita politica</td></tr>
+          <tr><td class="filosofo">Lucrezio</td><td>99–55 a.C.</td><td>Epicureismo e natura</td></tr>
+          <tr><td class="filosofo">Seneca</td><td>4 a.C.–65 d.C.</td><td>Etica stoica</td></tr>
+          <tr><td class="filosofo">Epitteto</td><td>50–135 d.C.</td><td>Libertà interiore</td></tr>
+          <tr><td class="filosofo">Marco Aurelio</td><td>121–180 d.C.</td><td>Meditazione e dovere</td></tr>
+        </tbody>
+      </table>
+
+      <p style="color: rgba(255,255,255,0.6); font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
+        Seneca insegna che la ricchezza più grande è la padronanza di sé. Epitteto distingue con chiarezza ciò che dipende da noi da ciò che non dipende da noi. Marco Aurelio, imperatore e filosofo, trasforma la riflessione stoica in un dialogo silenzioso con la propria coscienza.
+      </p>
+
+      <div class="quote-block">
+        <p>«La felicità della tua vita dipende dalla qualità dei tuoi pensieri.»</p>
+        <cite>— Marco Aurelio</cite>
+      </div>
+    </section>
+
+    <!-- ============================================================
+       TARDA ANTICHITÀ
+       ============================================================ -->
+
+    <section class="epoca" id="tarda-antichita">
+      <div class="epoca-header">
+        <h2>🔮 Tarda antichità</h2>
+        <span class="periodo">III–VI secolo</span>
+      </div>
+      <div class="epoca-intro">
+        <strong>L'ascesa del neoplatonismo</strong> — Tra il III e il VI secolo la filosofia antica raggiunge una straordinaria profondità metafisica. Il platonismo viene reinterpretato come un cammino di elevazione spirituale. La realtà è concepita come una gerarchia che procede dall'Uno, principio assoluto e ineffabile.
+      </div>
+
+      <table class="tabella-filosofi">
+        <thead>
+          <tr>
+            <th>Filosofo</th>
+            <th>Date</th>
+            <th>Tema fondamentale</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="filosofo">Plotino</td><td>204–270</td><td>L'Uno e l'emanazione</td></tr>
+          <tr><td class="filosofo">Porfirio</td><td>234–305</td><td>Gerarchia dell'essere</td></tr>
+          <tr><td class="filosofo">Giamblico</td><td>245–325</td><td>Teurgia</td></tr>
+          <tr><td class="filosofo">Proclo</td><td>412–485</td><td>Sistema neoplatonico</td></tr>
+          <tr><td class="filosofo">Alessandro di Afrodisia</td><td>II–III secolo</td><td>Interpretazione di Aristotele</td></tr>
+        </tbody>
+      </table>
+
+      <p style="color: rgba(255,255,255,0.6); font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
+        Plotino descrive il ritorno dell'anima verso l'Uno come un itinerario interiore. La filosofia diventa contemplazione e trasformazione dell'essere. Alessandro di Afrodisia svolge un ruolo decisivo nella trasmissione del pensiero aristotelico. Le sue interpretazioni influenzeranno sia la filosofia araba sia la scolastica medievale.
+      </p>
+
+      <div class="quote-block">
+        <p>«L'anima vede se stessa quando ritorna alla sua origine.»</p>
+        <cite>— Plotino</cite>
+      </div>
+    </section>
+
+    <!-- ============================================================
+       FILOSOFIA MEDIEVALE
+       ============================================================ -->
+
+    <section class="epoca" id="medievale">
+      <div class="epoca-header">
+        <h2>⛪ Filosofia medievale</h2>
+        <span class="periodo">V–XV secolo</span>
+      </div>
+      <div class="epoca-intro">
+        <strong>L'incontro tra ragione e fede</strong> — Il Medioevo non è un'interruzione della filosofia, ma una sua profonda trasformazione. La domanda fondamentale diventa: quale rapporto esiste tra la ragione umana e la rivelazione? La filosofia dialoga con la teologia, ma conserva una propria autonomia argomentativa. Nascono le grandi università europee e la scolastica costruisce un metodo rigoroso di analisi concettuale.
+      </div>
+
+      <h4 style="font-family: var(--font-display); color: var(--gold); font-size: 1rem; letter-spacing: 0.5px; margin: 1rem 0 0.5rem;">Patristica</h4>
+      <table class="tabella-filosofi">
+        <thead>
+          <tr>
+            <th>Filosofo</th>
+            <th>Date</th>
+            <th>Tema fondamentale</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="filosofo">Agostino d'Ippona</td><td>354–430</td><td>Tempo, memoria e interiorità</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-family: var(--font-display); color: var(--gold); font-size: 1rem; letter-spacing: 0.5px; margin: 1rem 0 0.5rem;">Scolastica</h4>
+      <table class="tabella-filosofi">
+        <thead>
+          <tr>
+            <th>Filosofo</th>
+            <th>Date</th>
+            <th>Tema fondamentale</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="filosofo">Anselmo d'Aosta</td><td>1033–1109</td><td>Prova ontologica</td></tr>
+          <tr><td class="filosofo">Averroè</td><td>1126–1198</td><td>Aristotelismo</td></tr>
+          <tr><td class="filosofo">Maimonide</td><td>1138–1204</td><td>Ragione e tradizione</td></tr>
+          <tr><td class="filosofo">Tommaso d'Aquino</td><td>1225–1274</td><td>Sintesi di fede e ragione</td></tr>
+          <tr><td class="filosofo">Bonaventura</td><td>1217–1274</td><td>Illuminazione divina</td></tr>
+          <tr><td class="filosofo">Duns Scoto</td><td>1266–1308</td><td>Primato della volontà</td></tr>
+          <tr><td class="filosofo">Guglielmo di Ockham</td><td>1287–1347</td><td>Nominalismo</td></tr>
+        </tbody>
+      </table>
+
+      <p style="color: rgba(255,255,255,0.6); font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
+        Tommaso d'Aquino rappresenta il punto più alto della sintesi medievale. Aristotele viene reinterpretato all'interno di una visione cristiana dell'essere. La ragione è capace di conoscere molte verità sul mondo e su Dio, pur senza esaurire il mistero. Con Ockham si apre una nuova stagione. Il suo nominalismo riduce la portata degli universali e prepara, indirettamente, alcune condizioni della filosofia moderna.
+      </p>
+
+      <div class="quote-block">
+        <p>«Comprendo per credere e credo per comprendere.»</p>
+        <cite>— Agostino</cite>
+      </div>
+    </section>
+
+    <!-- ============================================================
+       RINASCIMENTO
+       ============================================================ -->
+
+    <section class="epoca" id="rinascimento">
+      <div class="epoca-header">
+        <h2>🎨 Rinascimento</h2>
+        <span class="periodo">XV–XVI secolo</span>
+      </div>
+      <div class="epoca-intro">
+        <strong>La riscoperta dell'uomo e della natura</strong> — Tra il XV e il XVI secolo l'Europa riscopre il mondo classico e inaugura una nuova immagine dell'uomo. La filosofia si confronta con l'umanesimo, con le grandi scoperte geografiche e con la nascita della scienza moderna. L'uomo non è più soltanto creatura inserita in un ordine teologico: diventa <strong>soggetto creativo</strong>, capace di trasformare il mondo attraverso la conoscenza, l'arte e l'azione politica.
+      </div>
+
+      <table class="tabella-filosofi">
+        <thead>
+          <tr>
+            <th>Filosofo</th>
+            <th>Date</th>
+            <th>Tema fondamentale</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="filosofo">Nicola Cusano</td><td>1401–1464</td><td>Dotta ignoranza</td></tr>
+          <tr><td class="filosofo">Marsilio Ficino</td><td>1433–1499</td><td>Platonismo rinascimentale</td></tr>
+          <tr><td class="filosofo">Pico della Mirandola</td><td>1463–1494</td><td>Dignità dell'uomo</td></tr>
+          <tr><td class="filosofo">Niccolò Machiavelli</td><td>1469–1527</td><td>Politica e virtù</td></tr>
+          <tr><td class="filosofo">Giordano Bruno</td><td>1548–1600</td><td>Infinito e universo</td></tr>
+        </tbody>
+      </table>
+
+      <p style="color: rgba(255,255,255,0.6); font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
+        Pico celebra la libertà umana come possibilità di autoformazione. Machiavelli separa la politica dalla morale tradizionale, inaugurando una nuova analisi del potere. Bruno immagina un universo infinito, popolato da infiniti mondi, anticipando una visione cosmologica radicalmente nuova.
+      </p>
+
+      <div class="quote-block">
+        <p>«L'uomo è artefice del proprio destino.»</p>
+        <cite>— Pico della Mirandola</cite>
+      </div>
+    </section>
+
+    <!-- ============================================================
+       ETÀ MODERNA
+       ============================================================ -->
+
+    <section class="epoca" id="moderna">
+      <div class="epoca-header">
+        <h2>⚡ Età moderna</h2>
+        <span class="periodo">XVII secolo</span>
+      </div>
+      <div class="epoca-intro">
+        <strong>La rivoluzione del metodo</strong> — Il XVII secolo segna una svolta decisiva. La nascita della scienza moderna impone alla filosofia una nuova domanda: <strong>come è possibile una conoscenza certa?</strong> La ricerca del metodo diventa il centro della riflessione. Da un lato il <strong>razionalismo</strong>, che affida alla ragione il fondamento della verità; dall'altro l'<strong>empirismo</strong>, che pone nell'esperienza l'origine della conoscenza.
+      </div>
+
+      <h4 style="font-family: var(--font-display); color: var(--gold); font-size: 1rem; letter-spacing: 0.5px; margin: 1rem 0 0.5rem;">Razionalismo</h4>
+      <table class="tabella-filosofi">
+        <thead>
+          <tr>
+            <th>Filosofo</th>
+            <th>Date</th>
+            <th>Tema fondamentale</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="filosofo">René Descartes</td><td>1596–1650</td><td>Il cogito e il metodo</td></tr>
+          <tr><td class="filosofo">Baruch Spinoza</td><td>1632–1677</td><td>La sostanza unica</td></tr>
+          <tr><td class="filosofo">Gottfried Wilhelm Leibniz</td><td>1646–1716</td><td>Le monadi e l'armonia</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-family: var(--font-display); color: var(--gold); font-size: 1rem; letter-spacing: 0.5px; margin: 1rem 0 0.5rem;">Empirismo</h4>
+      <table class="tabella-filosofi">
+        <thead>
+          <tr>
+            <th>Filosofo</th>
+            <th>Date</th>
+            <th>Tema fondamentale</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="filosofo">Francesco Bacone</td><td>1561–1626</td><td>Metodo sperimentale</td></tr>
+          <tr><td class="filosofo">Thomas Hobbes</td><td>1588–1679</td><td>Contratto sociale</td></tr>
+          <tr><td class="filosofo">John Locke</td><td>1632–1704</td><td>Esperienza e conoscenza</td></tr>
+          <tr><td class="filosofo">George Berkeley</td><td>1685–1753</td><td>Idealismo empirico</td></tr>
+          <tr><td class="filosofo">David Hume</td><td>1711–1776</td><td>Critica della causalità</td></tr>
+        </tbody>
+      </table>
+
+      <p style="color: rgba(255,255,255,0.6); font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
+        Cartesio cerca un punto assolutamente certo da cui ricostruire tutto il sapere. Il <strong>cogito</strong> diventa il principio della filosofia moderna. Spinoza identifica Dio e natura in un'unica sostanza infinita. Leibniz immagina il mondo come una molteplicità di centri spirituali, le monadi, coordinate da un'armonia prestabilita. Hume porta l'empirismo alle sue conseguenze più radicali, mostrando che molte delle nostre certezze derivano dall'abitudine più che dalla dimostrazione.
+      </p>
+
+      <div class="quote-block">
+        <p>«Penso, dunque sono.»</p>
+        <cite>— Cartesio</cite>
+      </div>
+    </section>
+
+    <!-- ============================================================
+       ILLUMINISMO
+       ============================================================ -->
+
+    <section class="epoca" id="illuminismo">
+      <div class="epoca-header">
+        <h2>💡 Illuminismo</h2>
+        <span class="periodo">XVIII secolo</span>
+      </div>
+      <div class="epoca-intro">
+        <strong>Il coraggio della ragione</strong> — Il XVIII secolo è il secolo della critica, della tolleranza e del progresso. Gli illuministi combattono il pregiudizio, il fanatismo e l'autorità non giustificata dalla ragione. La filosofia diventa un progetto di emancipazione dell'umanità.
+      </div>
+
+      <table class="tabella-filosofi">
+        <thead>
+          <tr>
+            <th>Filosofo</th>
+            <th>Date</th>
+            <th>Tema fondamentale</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="filosofo">Montesquieu</td><td>1689–1755</td><td>Separazione dei poteri</td></tr>
+          <tr><td class="filosofo">Voltaire</td><td>1694–1778</td><td>Tolleranza e libertà</td></tr>
+          <tr><td class="filosofo">Jean-Jacques Rousseau</td><td>1712–1778</td><td>Volontà generale</td></tr>
+          <tr><td class="filosofo">Denis Diderot</td><td>1713–1784</td><td>Enciclopedia</td></tr>
+          <tr><td class="filosofo">Immanuel Kant</td><td>1724–1804</td><td>Critica della ragione</td></tr>
+        </tbody>
+      </table>
+
+      <p style="color: rgba(255,255,255,0.6); font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
+        Rousseau riflette sulle origini della disuguaglianza e sul fondamento della sovranità popolare. Diderot vede nella diffusione del sapere uno strumento di liberazione. Con Kant l'Illuminismo raggiunge il suo vertice filosofico. La sua domanda non è soltanto <strong>che cosa possiamo conoscere</strong>, ma anche <strong>che cosa dobbiamo fare</strong> e <strong>che cosa possiamo sperare</strong>. Kant mostra che la mente non è un semplice spettatore del mondo: contribuisce attivamente alla costituzione dell'esperienza. La filosofia critica segna il passaggio decisivo verso il pensiero contemporaneo.
+      </p>
+
+      <div class="quote-block">
+        <p>«Abbi il coraggio di servirti della tua propria intelligenza.»</p>
+        <cite>— Kant, <em>Che cos'è l'Illuminismo?</em></cite>
+      </div>
+    </section>
+
+    <!-- ============================================================
+       IDEALISMO E ROMANTICISMO
+       ============================================================ -->
+
+    <section class="epoca" id="idealismo">
+      <div class="epoca-header">
+        <h2>🌌 Idealismo e Romanticismo</h2>
+        <span class="periodo">XVIII–XIX secolo</span>
+      </div>
+      <div class="epoca-intro">
+        <strong>La storia come manifestazione dello spirito</strong> — Tra la fine del XVIII e l'inizio del XIX secolo la filosofia tedesca inaugura una nuova visione della realtà. Dopo Kant, il problema non è più soltanto come conosciamo il mondo, ma <strong>come il mondo e la coscienza si sviluppano nella storia</strong>. L'Idealismo interpreta la realtà come un processo dinamico, in cui lo spirito prende progressivamente coscienza di sé.
+      </div>
+
+      <table class="tabella-filosofi">
+        <thead>
+          <tr>
+            <th>Filosofo</th>
+            <th>Date</th>
+            <th>Tema fondamentale</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="filosofo">Johann Gottlieb Fichte</td><td>1762–1814</td><td>L'Io come principio</td></tr>
+          <tr><td class="filosofo">Friedrich Schelling</td><td>1775–1854</td><td>Natura e spirito</td></tr>
+          <tr><td class="filosofo">Georg Wilhelm Friedrich Hegel</td><td>1770–1831</td><td>Dialettica e storia</td></tr>
+        </tbody>
+      </table>
+
+      <p style="color: rgba(255,255,255,0.6); font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
+        Fichte pone l'Io al centro dell'attività conoscitiva. Schelling cerca l'unità profonda tra natura e spirito. Hegel costruisce il più ambizioso sistema filosofico dell'età moderna: la storia è il luogo in cui la libertà si realizza attraverso il conflitto e il superamento delle contraddizioni. La <strong>dialettica</strong> diventa il movimento fondamentale del pensiero e della realtà.
+      </p>
+
+      <div class="quote-block">
+        <p>«Ciò che è razionale è reale, e ciò che è reale è razionale.»</p>
+        <cite>— Hegel</cite>
+      </div>
+    </section>
+
+    <!-- ============================================================
+       XIX SECOLO
+       ============================================================ -->
+
+    <section class="epoca" id="ottocento">
+      <div class="epoca-header">
+        <h2>⚔️ XIX secolo</h2>
+        <span class="periodo">1800–1900</span>
+      </div>
+      <div class="epoca-intro">
+        <strong>Le grandi critiche della modernità</strong> — L'Ottocento è il secolo in cui il sistema idealistico viene sottoposto a profonde critiche. La filosofia si confronta con il dolore, l'esistenza individuale, la società industriale e la crisi dei valori tradizionali.
+      </div>
+
+      <table class="tabella-filosofi">
+        <thead>
+          <tr>
+            <th>Filosofo</th>
+            <th>Date</th>
+            <th>Tema fondamentale</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="filosofo">Arthur Schopenhauer</td><td>1788–1860</td><td>La volontà e il pessimismo</td></tr>
+          <tr><td class="filosofo">Søren Kierkegaard</td><td>1813–1855</td><td>L'esistenza e la scelta</td></tr>
+          <tr><td class="filosofo">Karl Marx</td><td>1818–1883</td><td>Alienazione e storia</td></tr>
+          <tr><td class="filosofo">Friedrich Nietzsche</td><td>1844–1900</td><td>Morte di Dio e trasvalutazione</td></tr>
+          <tr><td class="filosofo">Auguste Comte</td><td>1798–1857</td><td>Positivismo</td></tr>
+        </tbody>
+      </table>
+
+      <p style="color: rgba(255,255,255,0.6); font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
+        Schopenhauer descrive il mondo come manifestazione di una volontà irrazionale e incessante. Kierkegaard pone al centro il singolo individuo, con le sue angosce, le sue decisioni e la sua responsabilità. Marx interpreta la storia come lotta tra classi e analizza i meccanismi economici dell'alienazione. Nietzsche annuncia la crisi della metafisica occidentale e invita a creare nuovi valori. Con Nietzsche la filosofia diventa genealogia, critica della morale e interrogazione radicale sul significato della cultura.
+      </p>
+
+      <div class="quote-block">
+        <p>«Diventa ciò che sei.»</p>
+        <cite>— Nietzsche</cite>
+      </div>
+    </section>
+
+    <!-- ============================================================
+       XX SECOLO
+       ============================================================ -->
+
+    <section class="epoca" id="novecento">
+      <div class="epoca-header">
+        <h2>🌀 XX secolo</h2>
+        <span class="periodo">1900–2000</span>
+      </div>
+      <div class="epoca-intro">
+        <strong>L'età della crisi e della ricerca</strong> — Il Novecento è attraversato da guerre mondiali, rivoluzioni scientifiche, totalitarismi e trasformazioni tecnologiche. La filosofia si frammenta in molte tradizioni, ma continua a interrogare le condizioni dell'esperienza, del linguaggio, della politica e dell'esistenza.
+      </div>
+
+      <h4 style="font-family: var(--font-display); color: var(--gold); font-size: 1rem; letter-spacing: 0.5px; margin: 1rem 0 0.5rem;">Fenomenologia</h4>
+      <table class="tabella-filosofi">
+        <thead>
+          <tr>
+            <th>Filosofo</th>
+            <th>Date</th>
+            <th>Tema fondamentale</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="filosofo">Edmund Husserl</td><td>1859–1938</td><td>Intenzionalità della coscienza</td></tr>
+          <tr><td class="filosofo">Max Scheler</td><td>1874–1928</td><td>Gerarchia dei valori</td></tr>
+          <tr><td class="filosofo">Edith Stein</td><td>1891–1942</td><td>Persona ed empatia</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-family: var(--font-display); color: var(--gold); font-size: 1rem; letter-spacing: 0.5px; margin: 1rem 0 0.5rem;">Esistenzialismo</h4>
+      <table class="tabella-filosofi">
+        <thead>
+          <tr>
+            <th>Filosofo</th>
+            <th>Date</th>
+            <th>Tema fondamentale</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="filosofo">Martin Heidegger</td><td>1889–1976</td><td>Essere e tempo</td></tr>
+          <tr><td class="filosofo">Karl Jaspers</td><td>1883–1969</td><td>Esistenza e trascendenza</td></tr>
+          <tr><td class="filosofo">Jean-Paul Sartre</td><td>1905–1980</td><td>Libertà e responsabilità</td></tr>
+          <tr><td class="filosofo">Simone de Beauvoir</td><td>1908–1986</td><td>Alterità e condizione umana</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-family: var(--font-display); color: var(--gold); font-size: 1rem; letter-spacing: 0.5px; margin: 1rem 0 0.5rem;">Filosofia analitica</h4>
+      <table class="tabella-filosofi">
+        <thead>
+          <tr>
+            <th>Filosofo</th>
+            <th>Date</th>
+            <th>Tema fondamentale</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="filosofo">Gottlob Frege</td><td>1848–1925</td><td>Logica e linguaggio</td></tr>
+          <tr><td class="filosofo">Bertrand Russell</td><td>1872–1970</td><td>Analisi logica</td></tr>
+          <tr><td class="filosofo">Ludwig Wittgenstein</td><td>1889–1951</td><td>Significato e linguaggio</td></tr>
+          <tr><td class="filosofo">Willard Van Orman Quine</td><td>1908–2000</td><td>Critica dell'empirismo</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-family: var(--font-display); color: var(--gold); font-size: 1rem; letter-spacing: 0.5px; margin: 1rem 0 0.5rem;">Ermeneutica e teoria critica</h4>
+      <table class="tabella-filosofi">
+        <thead>
+          <tr>
+            <th>Filosofo</th>
+            <th>Date</th>
+            <th>Tema fondamentale</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="filosofo">Hans-Georg Gadamer</td><td>1900–2002</td><td>Comprensione e tradizione</td></tr>
+          <tr><td class="filosofo">Paul Ricoeur</td><td>1913–2005</td><td>Interpretazione e simbolo</td></tr>
+          <tr><td class="filosofo">Hannah Arendt</td><td>1906–1975</td><td>Politica e totalitarismo</td></tr>
+          <tr><td class="filosofo">Karl Popper</td><td>1902–1994</td><td>Falsificabilità</td></tr>
+          <tr><td class="filosofo">Jürgen Habermas</td><td>1929–</td><td>Agire comunicativo</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-family: var(--font-display); color: var(--gold); font-size: 1rem; letter-spacing: 0.5px; margin: 1rem 0 0.5rem;">Genealogia e post-strutturalismo</h4>
+      <table class="tabella-filosofi">
+        <thead>
+          <tr>
+            <th>Filosofo</th>
+            <th>Date</th>
+            <th>Tema fondamentale</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="filosofo">Michel Foucault</td><td>1926–1984</td><td>Potere e sapere</td></tr>
+          <tr><td class="filosofo">Jacques Derrida</td><td>1930–2004</td><td>Decostruzione</td></tr>
+        </tbody>
+      </table>
+
+      <p style="color: rgba(255,255,255,0.6); font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
+        Il Novecento non produce un unico sistema filosofico dominante. Piuttosto, apre una pluralità di percorsi che continuano ancora oggi: fenomenologia, analitica, ermeneutica, teoria critica, filosofia politica, filosofia della mente, bioetica e riflessione sulla tecnica.
+      </p>
+
+      <div class="quote-block">
+        <p>«I limiti del mio linguaggio significano i limiti del mio mondo.»</p>
+        <cite>— Wittgenstein</cite>
+      </div>
+    </section>
+
+    <!-- ============================================================
+       XXI SECOLO
+       ============================================================ -->
+
+    <section class="epoca" id="ventunesimo">
+      <div class="epoca-header">
+        <h2>🚀 XXI secolo</h2>
+        <span class="periodo">2000–oggi</span>
+      </div>
+      <div class="epoca-intro">
+        <strong>Le nuove frontiere del pensiero</strong> — La filosofia contemporanea non è dominata da una sola scuola. Le grandi tradizioni del Novecento continuano a dialogare con le sfide di un mondo radicalmente trasformato: intelligenza artificiale, neuroscienze, biotecnologie, crisi ecologica, globalizzazione, identità culturali e nuove forme del potere. Le domande fondamentali restano antiche, ma assumono forme inedite.
+      </div>
+
+      <table class="tabella-filosofi">
+        <thead>
+          <tr>
+            <th>Ambito</th>
+            <th>Questioni principali</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="font-weight: 500; color: var(--cyan);">Filosofia della mente</td><td>coscienza, intelligenza artificiale</td></tr>
+          <tr><td style="font-weight: 500; color: var(--cyan);">Bioetica</td><td>vita, morte, medicina, genetica</td></tr>
+          <tr><td style="font-weight: 500; color: var(--cyan);">Etica ambientale</td><td>crisi climatica e responsabilità</td></tr>
+          <tr><td style="font-weight: 500; color: var(--cyan);">Filosofia politica</td><td>democrazia, diritti, migrazioni</td></tr>
+          <tr><td style="font-weight: 500; color: var(--cyan);">Filosofia della tecnica</td><td>rapporto tra uomo e tecnologia</td></tr>
+          <tr><td style="font-weight: 500; color: var(--cyan);">Filosofia interculturale</td><td>dialogo tra tradizioni filosofiche</td></tr>
+        </tbody>
+      </table>
+
+      <p style="color: rgba(255,255,255,0.6); font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
+        Tra i pensatori più influenti della contemporaneità si possono ricordare Martha Nussbaum, Charles Taylor, Peter Singer, Judith Butler, Byung-Chul Han, Thomas Nagel e molti altri che continuano a interrogare il significato della libertà, della giustizia e della dignità umana. La filosofia del XXI secolo è meno sistematica e più dialogica. Si muove tra discipline diverse, confrontandosi con la scienza, l'economia, la psicologia e le trasformazioni tecnologiche.
+      </p>
+
+      <div class="quote-block">
+        <p>«La filosofia continua ogni volta che una domanda autentica prende forma nella mente di una donna o di un uomo.»</p>
+        <cite>— Echi di Sofia</cite>
+      </div>
+    </section>
+
+    <!-- ============================================================
+       LE GRANDI LINEE DEL PENSIERO
+       ============================================================ -->
+
+    <div class="linee-pensiero">
+      <h2>📜 Le grandi linee del pensiero</h2>
+
+      <div class="linea-item">
+        <span class="label">Dal mondo greco alla metafisica</span>
+        <span class="desc">Parmenide → Platone → Plotino → Agostino — L'idea di una realtà superiore e intelligibile attraversa tutta la tradizione platonica.</span>
+      </div>
+
+      <div class="linea-item">
+        <span class="label">La linea aristotelica</span>
+        <span class="desc">Aristotele → Alessandro di Afrodisia → Averroè → Tommaso d'Aquino — L'analisi dell'essere, della natura e della logica costituisce uno dei fili più duraturi della filosofia occidentale.</span>
+      </div>
+
+      <div class="linea-item">
+        <span class="label">La nascita della modernità</span>
+        <span class="desc">Cartesio → Spinoza → Leibniz — La ragione diventa il fondamento del sapere.</span>
+      </div>
+
+      <div class="linea-item">
+        <span class="label">L'empirismo</span>
+        <span class="desc">Bacone → Locke → Berkeley → Hume — L'esperienza viene posta al centro della conoscenza.</span>
+      </div>
+
+      <div class="linea-item">
+        <span class="label">La filosofia critica</span>
+        <span class="desc">Hume → Kant → Fichte → Hegel — La riflessione sulle condizioni della conoscenza conduce alla filosofia della storia e dello spirito.</span>
+      </div>
+
+      <div class="linea-item">
+        <span class="label">Le grandi critiche</span>
+        <span class="desc">Hegel → Marx · Hegel → Kierkegaard · Schopenhauer → Nietzsche — L'Ottocento mette in discussione il sistema idealistico da prospettive economiche, esistenziali e genealogiche.</span>
+      </div>
+
+      <div class="linea-item">
+        <span class="label">Il Novecento</span>
+        <span class="desc">Nietzsche → Heidegger → Foucault → Derrida — La critica della metafisica apre nuove analisi del linguaggio, del potere e della soggettività.</span>
+      </div>
+    </div>
+
+    <!-- ============================================================
+       BUSSOLA
+       ============================================================ -->
+
+    <div class="bussola">
+      <p>Ogni epoca ha cercato una risposta diversa alla stessa domanda: <span class="highlight">come deve vivere l'essere umano?</span></p>
+      <p style="font-size: 0.95rem; color: rgba(255,255,255,0.5);">
+        I Presocratici hanno interrogato la natura. Socrate ha interrogato la coscienza. Platone ha cercato la giustizia. Aristotele la felicità. Gli Stoici la libertà interiore. Agostino il tempo dell'anima. Tommaso l'armonia tra ragione e fede. Cartesio la certezza. Kant i limiti della ragione. Hegel il senso della storia. Nietzsche la creazione dei valori. Heidegger il significato dell'essere. La filosofia contemporanea continua a interrogare il rapporto tra uomo, tecnica e mondo.
+      </p>
+      <p style="margin-top: 1rem; font-style: italic; color: rgba(255,255,255,0.4);">Questa cronologia non è un punto d'arrivo. È un invito a entrare in una conversazione che non si è mai conclusa.</p>
+    </div>
+
+    <!-- ============================================================
+       QUOTE FINALE
+       ============================================================ -->
+
+    <div class="quote-finale">
+      <p>«La filosofia non appartiene al passato. Vive ogni volta che una domanda autentica prende forma nella mente di una donna o di un uomo.»</p>
+      <cite>Echi di Sofia</cite>
+    </div>
+
+    <!-- ============================================================
+       LINK COLLEGAMENTI
+       ============================================================ -->
+
+    <div class="link-collegamenti">
+      <a href="/pagine/linea_del_tempo.html">⏳ Linea del Tempo della Filosofia</a>
+      <a href="/pagine/mappa_concettuale.html">🗺️ Mappa Concettuale</a>
+      <a href="#dict-fab">📚 Dizionario Filosofico</a>
+      <a href="/articoli/#lista-articoli">📖 Tutti gli articoli</a>
+    </div>
+
+    <!-- ============================================================
+       BACK BUTTON
+       ============================================================ -->
+
+    <a class="back-button" href="/index.html">🏠 Torna al Portale</a>
+
+    <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+
+    <footer class="page-footer">
+      <p><strong>Echi di Sofia</strong></p>
+      <p>Tra pensiero e stelle: un percorso attraverso le grandi domande della filosofia.</p>
+      <p class="copyright">© Echi di Sofia – La lunga avventura del pensiero</p>
+    </footer>
+
+  </div>
+
+</body>
+</html>
