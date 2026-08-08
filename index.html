@@ -1337,46 +1337,137 @@ body {
 
 /* ============================================
    ARTICLES BLOB
-   ============================================ */
+   ============================================ */  
+
 .articles-blob {
   position: fixed;
   right: 1.25rem;
-  top: 12.5rem;
+  top: 10.5rem;
   width: 20rem;
   z-index: 90;
-  background: radial-gradient(120% 150% at 100% 0%, rgba(50, 120, 255, .16), rgba(10, 10, 30, .82));
-  border: 1px solid rgba(255, 255, 255, .08);
+
+  /* Pannello luminoso */
+  background: radial-gradient(120% 150% at 100% 0%, rgba(50, 120, 255, .16), rgba(10, 10, 30, .82))
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 1rem;
-  padding: .88rem 1rem;
-  box-shadow: 0 .94rem 1.88rem rgba(0, 0, 0, .35);
+
+  padding: 0.9rem 1rem;
+
+  box-shadow:
+    0 15px 32px rgba(0, 0, 0, 0.18),
+    0 0 0 1px rgba(255,255,255,0.08) inset;
+
+  animation: slideBlob 8s ease-in-out infinite alternate;
 }
 
+/* Titolo */
+
 .articles-blob h3 {
-  margin: 0 0 .5rem;
+  margin: 0 0 0.6rem;
   font-family: 'Cinzel', serif;
+  font-size: 1.05rem;
   color: #ffd86a;
+  letter-spacing: 0.3px;
 }
+
+/* Lista */
 
 .articles-blob ul {
   list-style: none;
   margin: 0;
   padding: 0;
+
+  max-height: 320px;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 .articles-blob li {
-  margin: .25rem 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 0.25rem 0;
+  opacity: 1;
+  transform: none;
 }
 
+/* Link */
+
 .articles-blob a {
-  color: var(--gold);                 
+  color: var(--gold);                        
   text-decoration: none;
   font-weight: 700;
   transition: color 0.2s ease;
 }
 
 .articles-blob a:hover {
-  color: #fff;
+  color: #b22222;
   text-decoration: underline;
+}
+
+/* ============================================
+   ANIMAZIONE
+   ============================================ */
+
+@keyframes slideBlob {
+
+  0%, 5% {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+
+  20%, 80% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  95%, 100% {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+}
+
+/* ============================================
+   MOBILE
+   ============================================ */
+
+@media (max-width: 980px) {
+
+  .slider-vertical,
+  .articles-blob {
+    display: none;
+  }
+
+  .welcome-title {
+    font-size: 2.3rem;
+  }
+
+  .mega-menu {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .bar-right {
+    gap: 6px;
+  }
+
+  #google_translate_element {
+    min-width: 120px;
+  }
+
+  .ctrl-btn {
+    padding: 0.35rem 0.5rem;
+  }
+
+  .quotes-bar {
+    width: 92%;
+  }
 }
 
 /* ============================================
@@ -7260,7 +7351,7 @@ footer,
     font-size: 3.5rem;
     color: transparent;
     margin-bottom: 0.5rem;
-     margin-top: 1px;  /* ← MODIFICA QUESTO VALORE */
+     margin-top: -51px;  /* ← MODIFICA QUESTO VALORE */
     background: linear-gradient(125deg, var(--accent-5) 0%, var(--accent) 18%, var(--accent-3) 36%, var(--accent) 54%, var(--accent-2) 72%, var(--accent-5) 100%);
     background-size: 400% 400%;
     -webkit-background-clip: text;
@@ -7823,20 +7914,15 @@ footer,
 <audio id="myAudio" playsinline="True" preload="auto" src="https://casi0048.github.io/suoni/Strauss.mp3"></audio>
 </div>
 <aside aria-label="Ultimi articoli" class="articles-blob">
-<h3>📰 Ultimi articoli</h3>
-<ul>
-<li><a href="articoli/circolo_di_vienna.html">Circolo di Vienna</a></li>
-<li><a href="articoli/ipazia.html">Ipàzia di Alessandria</a></li>
-<li><a href="articoli/platone_mito_caverna.html">Il Mito della Caverna di Platone</a></li>
-<li><a href="articoli/parmenide1.html">Parmenide di Elea</a></li>
-<li><a href="articoli/2nietzsche.html">Nietzsche</a></li>
-<li><a href="articoli/battaglia_maratona.html">Battaglia di Maratona</a></li>
-</ul>
-<div id="cambridge-widget-container" style="display: none;">
-
-
-
-</div>
+  <h3>📰 Ultimi articoli</h3>
+  <ul>
+    <li><a href="articoli/circolo_di_vienna.html">Circolo di Vienna</a></li>
+    <li><a href="articoli/ipazia.html">Ipàzia di Alessandria</a></li>
+    <li><a href="articoli/platone_mito_caverna.html">Il Mito della Caverna di Platone</a></li>
+    <li><a href="articoli/parmenide1.html">Parmenide di Elea</a></li>
+    <li><a href="articoli/2nietzsche.html">Nietzsche</a></li>
+    <li><a href="articoli/battaglia_maratona.html">Battaglia di Maratona</a></li>
+  </ul>
 </aside>
 <!-- Enciclopedia filosofica (IEP tradotta) -->
 <div class="right-box" id="iep-linkbox">
