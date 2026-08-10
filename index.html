@@ -749,7 +749,7 @@ main {
    TYPING EFFECT
    ============================================ */
 .typing-wrap {
-  margin: 1.25rem 0;
+  margin: 0 0;
   display: flex;
   justify-content: center;
   min-height: 3.2em;
@@ -882,34 +882,194 @@ main {
 }
 
 /* ============================================
-   SEARCH PANEL
+   SEARCH PANEL - BOTTONE CHIUDI ANIMATO
    ============================================ */
-#search-panel {
-  font-family: 'Montserrat', sans-serif;
-}
 
 #search-panel .search-close {
+  /* Posizionamento */
   position: absolute;
   top: 6px;
   right: 8px;
-  background: transparent;
-  border: 1px solid rgba(255, 215, 0, .35);
-  color: #e9eef5;
-  border-radius: 6px;
-  padding: 2px 8px;
+  
+  /* Aspetto */
+  background: rgba(255, 215, 0, 0.08);
+  border: 1px solid rgba(255, 215, 0, 0.25);
+  color: #ffd86a;
+  border-radius: 8px;
+  padding: 4px 14px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: 'Montserrat', sans-serif;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  
+  /* Interazione */
   cursor: pointer;
-  font-size: .85rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Supporto Safari */
+  -webkit-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  
+  /* Ombra */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  
+  /* Allineamento testo */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 60px;
+  min-height: 28px;
 }
 
+/* ===== HOVER ===== */
 #search-panel .search-close:hover {
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 215, 0, 0.18);
+  border-color: rgba(255, 215, 0, 0.5);
+  color: #fff;
+  transform: scale(1.05) translateY(-1px);
+  box-shadow: 0 4px 16px rgba(255, 215, 0, 0.15);
 }
 
-mark.search-hit {
-  background: rgba(255, 215, 0, 0.35);
-  padding: 0 .15em;
-  border-radius: .2em;
+/* ===== ACTIVE (click) ===== */
+#search-panel .search-close:active {
+  transform: scale(0.92) translateY(0px);
+  background: rgba(255, 215, 0, 0.25);
+  box-shadow: 0 1px 4px rgba(255, 215, 0, 0.1);
+  transition-duration: 0.08s;
 }
+
+/* ===== FOCUS (accessibilità) ===== */
+#search-panel .search-close:focus-visible {
+  outline: 2px solid rgba(255, 215, 0, 0.5);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   ANIMAZIONE DI ENTRATA (opzionale)
+   ============================================ */
+
+#search-panel .search-close {
+  animation: closeButtonAppear 0.4s ease-out forwards;
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+@keyframes closeButtonAppear {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) rotate(-10deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* ============================================
+   ANIMAZIONE PULSAZIONE (opzionale - attira attenzione)
+   ============================================ */
+
+#search-panel .search-close {
+  animation: closeButtonAppear 0.4s ease-out forwards, pulseGlow 2.5s ease-in-out 0.5s infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.05);
+  }
+  50% {
+    box-shadow: 0 2px 16px rgba(255, 215, 0, 0.15);
+    border-color: rgba(255, 215, 0, 0.35);
+  }
+}
+
+/* ============================================
+   VARIANTE CON ICONA ✕ (consigliata)
+   ============================================ */
+
+/* Se vuoi aggiungere l'icona "✕" prima del testo */
+#search-panel .search-close::before {
+  content: "✕";
+  font-size: 0.85rem;
+  font-weight: 300;
+  margin-right: 2px;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+#search-panel .search-close:hover::before {
+  opacity: 1;
+}
+
+/* Oppure solo icona (senza testo) */
+#search-panel .search-close.icon-only {
+  font-size: 0;
+  min-width: 32px;
+  padding: 4px 8px;
+}
+
+#search-panel .search-close.icon-only::before {
+  font-size: 1.1rem;
+  margin-right: 0;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+  #search-panel .search-close {
+    top: 4px;
+    right: 6px;
+    padding: 3px 10px;
+    font-size: 0.7rem;
+    min-height: 24px;
+    min-width: 50px;
+    border-radius: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  #search-panel .search-close {
+    top: 3px;
+    right: 4px;
+    padding: 2px 8px;
+    font-size: 0.65rem;
+    min-height: 20px;
+    min-width: 40px;
+    border-radius: 4px;
+  }
+}
+
+/* ============================================
+   SUPPORTO SAFARI (webkit)
+   ============================================ */
+
+/* Safari specific fixes */
+@media not all and (min-resolution: 0.001dpcm) {
+  #search-panel .search-close {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  #search-panel .search-close:hover {
+    -webkit-transform: scale(1.05) translateY(-1px);
+    transform: scale(1.05) translateY(-1px);
+  }
+  
+  #search-panel .search-close:active {
+    -webkit-transform: scale(0.92) translateY(0px);
+    transform: scale(0.92) translateY(0px);
+  }
+}
+/* ============================================
+   FINE SEARCH PANEL - BOTTONE CHIUDI ANIMATO
+   ============================================ */
+
 
 /* ============================================
    COLOR DOTS (Theme Switcher)
@@ -5163,7 +5323,7 @@ exploding-text {
 
 .philosophy-tree {
     font-size: 0.8rem;
-    margin-bottom: 1rem;
+    margin-bottom: 4rem;
     filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.3));
 }
 
@@ -5293,7 +5453,7 @@ exploding-text {
 }
 
 .decoration-caption {
-    margin-top: 1rem;
+    margin-top: 0rem;
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
     font-size: 1.2rem;
@@ -5389,10 +5549,11 @@ exploding-text {
 }
 .heraclitus-clock {
     font-size: 0.8rem;
+    
     margin-bottom: 1rem;
     filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.3));
+    -webkit-filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.3)); /* Safari */
 }
-
 .clock-face {
     position: relative;
     width: 120px;
@@ -7617,7 +7778,7 @@ footer,
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1) !important;
+  background: #ff0000;    rgba(255, 255, 255, 0.1) !important;
   border: 1px solid rgba(255, 215, 0, 0.2);
   padding: 0;
   margin: 0;
@@ -7632,6 +7793,7 @@ footer,
 .clear-search:hover {
   background: rgba(255, 215, 0, 0.2) !important;
   transform: translateY(-50%) scale(1.1);
+
 }
 
 .clear-search::before {
@@ -7643,7 +7805,7 @@ footer,
   height: 14px;
   font-size: 12px;
   font-weight: 700;
-  color: var(--gold, #d4af37);
+  color: background: var(--gold, #d4af37);
   line-height: 1;
 }
 
@@ -8860,7 +9022,7 @@ footer,
 <div class="river-flow"></div>
 </div>
 </div>
-<p class="decoration-caption">⏳"Panta rei"<br/><span class="sub-caption">💃Tutto danza nel divenire </span></p>
+<p class="decoration-caption">"Panta rei" </span></p>
 </div>
 <div class="typing-wrap">
 <div class="typing-effect"></div>
@@ -11570,120 +11732,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <button aria-label="Torna all'inizio" class="back-to-top floating glow" id="backToTop">
     ↑
 </button>
-<script>
-// === GENERATORE DI STELLE - VERSIONE CORRETTA ===
-(function() {
-    const container = document.getElementById('starsContainer');
-    if (!container) return;
-    
-    // Crea stelle normali - CORRETTO
-    const baseStars = Math.floor((window.innerWidth * window.innerHeight) / 800);
-    const starCount = Math.min(600, Math.max(150, baseStars));
-    
-    // CREA LE STELLE NORMALI - QUESTA RIGA MANCAVA COMPLETAMENTE!
-    for (let i = 0; i < starCount; i++) {
-        createStar();
-    }
-    
-    // Crea stelle cadenti immediatamente
-    createMultipleShootingStars();
-    
-    // Programma la creazione continua
-    setInterval(createMultipleShootingStars, 4000);
-    
-    function createStar() {
-        const star = document.createElement('div');
-        star.className = 'star';
-        
-        const sizes = ['small', 'medium', 'large', 'xlarge'];
-        const size = sizes[Math.floor(Math.random() * sizes.length)];
-        star.classList.add(size);
-        
-        // RIMUOVI QUESTE RIGHE CHE SOVRASCRIVONO LE DURATE CSS
-        // star.style.setProperty('--duration', (4 + Math.random() * 8) + 's');
-        // star.style.setProperty('--delay', (Math.random() * 15) + 's');
-        
-        // 75% di stelle colorate
-        if (Math.random() < 0.75) {
-            const colors = ['color-blue', 'color-gold', 'color-purple'];
-            star.classList.add(colors[Math.floor(Math.random() * colors.length)]);
-        }
-        
-        star.style.left = Math.random() * 100 + '%';
-        star.style.top = Math.random() * 100 + '%';
-        
-        container.appendChild(star);
-    }
-    
-    function createShootingStar() {
-        const shooter = document.createElement('div');
-        shooter.className = 'shooting-star';
-        
-        // SELEZIONA DIREZIONE CASUALE
-        const directions = ['diagonal', 'horizontal', 'vertical', 'reverse'];
-        const direction = directions[Math.floor(Math.random() * directions.length)];
-        shooter.classList.add(direction);
-        
-        // VARIETÀ DI VELOCITÀ
-        if (Math.random() < 0.3) shooter.classList.add('fast');
-        if (Math.random() < 0.2) shooter.classList.add('slow');
-        
-        // POSIZIONE IN BASE ALLA DIREZIONE
-        if (direction === 'diagonal') {
-            shooter.style.left = '-150px';
-            shooter.style.top = Math.random() * 300 + 'px';
-        } else if (direction === 'horizontal') {
-            shooter.style.left = '-150px';
-            shooter.style.top = (Math.random() * window.innerHeight) + 'px';
-        } else if (direction === 'vertical') {
-            shooter.style.left = (Math.random() * window.innerWidth) + 'px';
-            shooter.style.top = '-150px';
-        } else if (direction === 'reverse') {
-            shooter.style.left = (window.innerWidth + 150) + 'px';
-            shooter.style.top = Math.random() * 300 + 'px';
-        }
-        
-        // RITARDO E DURATA
-        shooter.style.animationDelay = (Math.random() * 3) + 's';
-        
-        container.appendChild(shooter);
-        
-        // RIMUOVI DOPO L'ANIMAZIONE
-        const duration = shooter.classList.contains('fast') ? 8000 : 
-                        shooter.classList.contains('slow') ? 15000 : 12000;
-        
-        setTimeout(() => {
-            if (shooter.parentNode) {
-                shooter.parentNode.removeChild(shooter);
-            }
-        }, duration);
-    }
-    
-    function createMultipleShootingStars() {
-        // Crea 1-2 stelle cadenti contemporaneamente
-        const count = 1 + Math.floor(Math.random() * 2);
-        for (let i = 0; i < count; i++) {
-            setTimeout(() => createShootingStar(), i * 1000);
-        }
-    }
-    
-    // RESIZE HANDLER CORRETTO
-    let resizeTimeout;
-    window.addEventListener('resize', () => {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(() => {
-            container.innerHTML = '';
-            const newBaseStars = Math.floor((window.innerWidth * window.innerHeight) / 800);
-            const newStarCount = Math.min(600, Math.max(150, newBaseStars));
-            for (let i = 0; i < newStarCount; i++) createStar();
-            createMultipleShootingStars();
-        }, 250);
-    });
-    
-    // AVVIA SUBITO
-    setTimeout(createMultipleShootingStars, 500);
-})();
-</script>
+
 
 <script id="ultimate-explosion-fixed">
 /* === SISTEMA DI ESPLOSIONE CORRETTO === */
