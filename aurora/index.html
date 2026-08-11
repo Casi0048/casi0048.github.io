@@ -1960,7 +1960,7 @@ footer {
     color: #1a2634; /* Testo scuro per la leggibilità */
     /*color: var(--aurora-text);*/
 
-border-top: 1px solid rgba(255, 255, 255, 0.2);
+border-top: 2px solid rgba(255, 255, 255, 0.2);
                                                           
   
   margin-top: 20px;
@@ -1988,7 +1988,7 @@ border-top: 1px solid rgba(255, 255, 255, 0.2);
 .footer-columns h4 {
   margin: 0.1rem 0 0.3rem;
   color: #ffd86a;
-  font-family: 'Cinzel Decorative', cursive;                font-family: 'Cinzel', serif;
+  font-family: 'Cinzel Decorative', cursive;              
   letter-spacing: 0.2px;
   font-size: 0.9rem;
 }
@@ -9730,13 +9730,331 @@ footer,
     }
 }
 
+    <style>
+        /* ============================================================
+           CSS PER SFONDO SVG
+           ============================================================ */
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #f0f2f5;
+        }
 
-
-
-</style>
+        #cosmic-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            display: block;
+            pointer-events: none;
+        }
+    </style>
 </head>
 
-  <!-- === FAB Dizionario === -->
+<body>
+
+    <!-- ============================================================
+         SVG — NEBULOSA E GENERATORE STELLARE
+         ============================================================ -->
+    <svg id="cosmic-background"
+         xmlns="http://www.w3.org/2000/svg"
+         viewBox="0 0 1920 1080"
+         preserveAspectRatio="xMidYMid slice">
+
+        <defs>
+            <!-- Sfumature per la nebulosa -->
+            <radialGradient id="nebulaGrad1" cx="30%" cy="40%" r="60%">
+                <stop offset="0%" stop-color="#b0c4de" stop-opacity="0.25" />
+                <stop offset="100%" stop-color="#b0c4de" stop-opacity="0" />
+            </radialGradient>
+            <radialGradient id="nebulaGrad2" cx="70%" cy="70%" r="50%">
+                <stop offset="0%" stop-color="#a9c2d9" stop-opacity="0.20" />
+                <stop offset="100%" stop-color="#a9c2d9" stop-opacity="0" />
+            </radialGradient>
+            <radialGradient id="nebulaGrad3" cx="50%" cy="20%" r="40%">
+                <stop offset="0%" stop-color="#c0d0e0" stop-opacity="0.15" />
+                <stop offset="100%" stop-color="#c0d0e0" stop-opacity="0" />
+            </radialGradient>
+
+            <!-- Filtri di sfocatura per la nebulosa -->
+            <filter id="nebulaBlur">
+                <feGaussianBlur stdDeviation="60" />
+            </filter>
+            <filter id="nebulaBlur2">
+                <feGaussianBlur stdDeviation="40" />
+            </filter>
+        </defs>
+
+        <!-- Sfondo base -->
+        <rect x="0" y="0" width="1920" height="1080" fill="#f0f2f5" />
+
+        <!-- Nebulosa: velature morbide -->
+        <ellipse cx="600" cy="400" rx="800" ry="600" fill="url(#nebulaGrad1)" filter="url(#nebulaBlur)" />
+        <ellipse cx="1400" cy="700" rx="700" ry="500" fill="url(#nebulaGrad2)" filter="url(#nebulaBlur)" />
+        <ellipse cx="960" cy="200" rx="600" ry="400" fill="url(#nebulaGrad3)" filter="url(#nebulaBlur2)" />
+
+        <!-- Contenitore per le stelle generate -->
+        <g id="star-container"></g>
+
+    </svg>
+
+    <!-- ============================================================
+         JAVASCRIPT — GENERATORE STELLARE V2.1
+         ============================================================ -->
+
+
+<script>
+(function () {
+
+    "use strict";
+
+    var container = document.getElementById("star-container");
+
+    if (!container) {
+        console.error("❌ #star-container non trovato");
+        return;
+    }
+
+    var NS = "http://www.w3.org/2000/svg";
+
+    /* ============================================================
+       V2.3 — CAMPO STELLARE + STELLE CON BRACCI DELICATI
+       ============================================================ */
+
+    var seed = 271828;
+
+    function random() {
+        seed = (seed * 1664525 + 1013904223) >>> 0;
+        return seed / 4294967296;
+    }
+
+    /* ============================================================
+       STELLA NORMALE
+       ============================================================ */
+
+    function createStar(x, y, radius, opacity, color) {
+
+        var star = document.createElementNS(NS, "circle");
+
+        star.setAttribute("cx", x);
+        star.setAttribute("cy", y);
+        star.setAttribute("r", radius);
+        star.setAttribute("fill", color);
+        star.setAttribute("opacity", opacity);
+
+        container.appendChild(star);
+    }
+
+    /* ============================================================
+       STELLA SPECIALE
+       
+       Piccolo nucleo + quattro bracci sottilissimi.
+       I bracci non devono dominare la stella.
+       ============================================================ */
+
+    function createArmStar(x, y, scale, rotation, warm) {
+
+        var group = document.createElementNS(NS, "g");
+
+        group.setAttribute(
+            "transform",
+            "translate(" + x + " " + y + ") rotate(" + rotation + ") scale(" + scale + ")"
+        );
+
+        var armColor = warm ? "#9b8061" : "#607992";
+        var coreColor = warm ? "#80684d" : "#455f79";
+
+        /* alone molto discreto */
+
+        var glow = document.createElementNS(NS, "circle");
+
+        glow.setAttribute("cx", 0);
+        glow.setAttribute("cy", 0);
+        glow.setAttribute("r", 3.2);
+        glow.setAttribute("fill", armColor);
+        glow.setAttribute("opacity", "0.10");
+
+        group.appendChild(glow);
+
+        /* braccio verticale */
+
+        var v = document.createElementNS(NS, "rect");
+
+        v.setAttribute("x", "-0.12");
+        v.setAttribute("y", "-4.2");
+        v.setAttribute("width", "0.24");
+        v.setAttribute("height", "8.4");
+        v.setAttribute("rx", "0.12");
+        v.setAttribute("fill", armColor);
+        v.setAttribute("opacity", "0.28");
+
+        group.appendChild(v);
+
+        /* braccio orizzontale */
+
+        var h = document.createElementNS(NS, "rect");
+
+        h.setAttribute("x", "-3.5");
+        h.setAttribute("y", "-0.12");
+        h.setAttribute("width", "7");
+        h.setAttribute("height", "0.24");
+        h.setAttribute("rx", "0.12");
+        h.setAttribute("fill", armColor);
+        h.setAttribute("opacity", "0.22");
+
+        group.appendChild(h);
+
+        /* nucleo */
+
+        var core = document.createElementNS(NS, "circle");
+
+        core.setAttribute("cx", 0);
+        core.setAttribute("cy", 0);
+        core.setAttribute("r", 1.05);
+        core.setAttribute("fill", coreColor);
+        core.setAttribute("opacity", "0.90");
+
+        group.appendChild(core);
+
+        container.appendChild(group);
+    }
+
+    /* ============================================================
+       CAMPO STELLARE
+       ============================================================ */
+
+    var columns = 22;
+    var rows = 16;
+
+    var cellW = 1920 / columns;
+    var cellH = 1080 / rows;
+
+    for (var row = 0; row < rows; row++) {
+
+        for (var col = 0; col < columns; col++) {
+
+            var x =
+                (col + 0.5) * cellW +
+                (random() - 0.5) * cellW * 0.82;
+
+            var y =
+                (row + 0.5) * cellH +
+                (random() - 0.5) * cellH * 0.82;
+
+            x = Math.max(3, Math.min(1917, x));
+            y = Math.max(3, Math.min(1077, y));
+
+            var type = random();
+
+            var radius;
+            var opacity;
+            var color;
+
+            /* quasi invisibili */
+
+            if (type < 0.38) {
+
+                radius = 0.35 + random() * 0.22;
+                opacity = 0.12 + random() * 0.12;
+                color = "#8996a4";
+
+            }
+
+            /* minuscole */
+
+            else if (type < 0.68) {
+
+                radius = 0.55 + random() * 0.25;
+                opacity = 0.20 + random() * 0.15;
+                color = "#77899b";
+
+            }
+
+            /* piccole */
+
+            else if (type < 0.86) {
+
+                radius = 0.82 + random() * 0.30;
+                opacity = 0.30 + random() * 0.18;
+                color = "#687f96";
+
+            }
+
+            /* medie */
+
+            else if (type < 0.965) {
+
+                radius = 1.15 + random() * 0.38;
+                opacity = 0.42 + random() * 0.20;
+                color = "#58718b";
+
+            }
+
+            /* poche grandi */
+
+            else {
+
+                radius = 1.65 + random() * 0.45;
+                opacity = 0.62 + random() * 0.22;
+                color = "#405a74";
+            }
+
+            createStar(x, y, radius, opacity, color);
+        }
+    }
+
+    /* ============================================================
+       DUE STELLE CALDE SEMPLICI
+       ============================================================ */
+
+    createStar(570, 470, 1.55, 0.64, "#9a805f");
+    createStar(1460, 730, 1.35, 0.56, "#a18868");
+
+    /* ============================================================
+       STELLE SPECIALI CON BRACCI
+       
+       Poche.
+       Posizioni distribuite.
+       Dimensioni contenute.
+       ============================================================ */
+
+    createArmStar(300, 230, 0.72, 18, false);
+    createArmStar(820, 315, 0.58, -23, false);
+    createArmStar(1280, 245, 0.68, 31, false);
+    createArmStar(1600, 520, 0.55, -14, false);
+
+    createArmStar(610, 700, 0.52, 27, false);
+
+    /* una sola calda con bracci */
+
+    createArmStar(1450, 760, 0.62, -18, true);
+
+    console.log(
+        "⭐ V2.3 — " +
+        container.children.length +
+        " elementi stellari creati"
+    );
+
+})();
+</script>
+
+
+
+
+
+
+
+
+
+
+<!-- === FINE SFONDO SVG === -->
+         <!-- === FAB Dizionario === -->
 <button id="dict-fab" class="fab-with-text">
   <span class="fab-label">📕      Risorse</span>
   <span class="fab-icona"></span>
@@ -13800,7 +14118,7 @@ function topRelated(query, exclude, limit = 3) {
   if(!document.querySelector('.fx-layer')){
     const layer = document.createElement('div');
     layer.className = 'fx-layer';
-    layer.innerHTML = '<div class="fx-flash"></div><div class="fx-shock"></div><div class="fx-smoke"></div>;
+    layer.innerHTML = '<div class="fx-flash"></div><div class="fx-shock"></div><div class="fx-smoke"'></div>;
     document.body.appendChild(layer);
   }
   const layer = document.querySelector('.fx-layer');
