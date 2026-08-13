@@ -7600,22 +7600,36 @@ footer,
 ============================================================ */
 
 .footer-quote {
-    max-width: 700px;
-    margin-top: -7rem;
+    max-width: 760px;
+    margin-top: -10rem;          /* sposta più in alto */
     margin-right: auto;
-    margin-bottom: 0.1rem;
+    margin-bottom: 2rem;         /* più spazio sotto */
     margin-left: auto;
-    padding: 0.5rem 1.5rem;
+    padding: 1.8rem 2.5rem;      /* più spazio interno */
     text-align: center;
-    border-top: 1px solid rgba(212, 165, 116, 0.15);
-    border-bottom: 1px solid rgba(212, 165, 116, 0.15);
-    background: rgba(255, 215, 0, 0.02);
-    border-radius: 8px;
+    border-top: 2px solid rgba(212, 165, 116, 0.2);
+    border-bottom: 2px solid rgba(212, 165, 116, 0.2);
+    background: rgba(255, 215, 0, 0.04);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
 .footer-quote blockquote {
     margin: 0;
     padding: 0;
+    font-size: 1.3rem;
+    line-height: 1.7;
+    font-style: italic;
+    color: var(--text-light, #e9eef5);
+}
+
+.footer-quote .attribution {
+    display: block;
+    margin-top: 0.8rem;
+    font-size: 0.9rem;
+    font-style: normal;
+    opacity: 0.7;
+}
 }
 
 .footer-quote p {
@@ -8217,27 +8231,53 @@ Pulsazione con "effetto gemma"
     </radialGradient>
 
     <!-- Nebulosa -->
-    <filter id="nebulaBase" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB">
-      <feGaussianBlur stdDeviation="85"/>
-    </filter>
-    <filter id="nebulaCore" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB">
-      <feGaussianBlur stdDeviation="45"/>
-    </filter>
-    <filter id="nebulaEdge" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB">
-      <feGaussianBlur stdDeviation="20"/>
-    </filter>
+<filter id="nebulaBase"
+        x="-50%" y="-50%"
+        width="200%" height="200%"
+        color-interpolation-filters="sRGB">
+  <feGaussianBlur stdDeviation="85"/>
+</filter>
 
-    <filter id="glowMajor" x="-100%" y="-100%" width="300%" height="300%" color-interpolation-filters="sRGB">
-      <feGaussianBlur stdDeviation="1.8" result="blur"/>
-      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
-    <filter id="glowMinor" x="-100%" y="-100%" width="300%" height="300%" color-interpolation-filters="sRGB">
-      <feGaussianBlur stdDeviation="0.9" result="blur"/>
-      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
+<filter id="nebulaCore"
+        x="-50%" y="-50%"
+        width="200%" height="200%"
+        color-interpolation-filters="sRGB">
+  <feGaussianBlur stdDeviation="45"/>
+</filter>
+
+<filter id="nebulaEdge"
+        x="-50%" y="-50%"
+        width="200%" height="200%"
+        color-interpolation-filters="sRGB">
+  <feGaussianBlur stdDeviation="20"/>
+</filter>
+
+<!-- Glow stelle principali -->
+<filter id="glowMajor"
+        x="-100%" y="-100%"
+        width="300%" height="300%"
+        color-interpolation-filters="sRGB">
+  <feGaussianBlur stdDeviation="2.2" result="blur"/>
+  <feMerge>
+    <feMergeNode in="blur"/>
+    <feMergeNode in="SourceGraphic"/>
+  </feMerge>
+</filter>
+
+<!-- Glow stelle piccole -->
+<filter id="glowMinor"
+        x="-100%" y="-100%"
+        width="300%" height="300%"
+        color-interpolation-filters="sRGB">
+  <feGaussianBlur stdDeviation="1.05" result="blur"/>
+  <feMerge>
+    <feMergeNode in="blur"/>
+    <feMergeNode in="SourceGraphic"/>
+  </feMerge>
+</filter>
 
     <g id="starMain">
-      <circle cx="0" cy="0" r="3.0" fill="#dceaff" opacity="0.13" filter="url(#glowMajor)" />
+      <circle cx="0" cy="0" r="3.0" fill="#dceaff" opacity="0.14" filter="url(#glowMajor)" />
       <circle cx="0" cy="0" r="1.35" fill="#f5f9ff" />
       <rect x="-0.28" y="-5.5" width="0.56" height="11" rx="0.28" fill="#c9ddff" opacity="0.27" />
       <rect x="-4.2" y="-0.25" width="8.4" height="0.5" rx="0.25" fill="#c9ddff" opacity="0.21" />
@@ -8256,11 +8296,11 @@ Pulsazione con "effetto gemma"
       <rect x="-0.13" y="-1.8" width="0.26" height="3.6" rx="0.13" fill="#ffdca8" opacity="0.035" transform="rotate(-51)" />
     </g>
 
-    <g id="s1"><circle cx="0" cy="0" r="1.30" fill="#f7fbff" opacity="0.64" filter="url(#glowMinor)" /></g>
-    <g id="s2"><circle cx="0" cy="0" r="1.05" fill="#dceaff" opacity="0.57" filter="url(#glowMinor)" /></g>
-    <g id="s3"><circle cx="0" cy="0" r="0.82" fill="#a9c5e8" opacity="0.48" /></g>
-    <g id="s4"><circle cx="0" cy="0" r="0.58" fill="#718fb9" opacity="0.39" /></g>
-    <g id="s5"><circle cx="0" cy="0" r="0.38" fill="#58769b" opacity="0.28" /></g>
+  <g id="s1"><circle cx="0" cy="0" r="1.30" fill="#f7fbff" opacity="0.70" filter="url(#glowMinor)" /></g>
+<g id="s2"><circle cx="0" cy="0" r="1.05" fill="#dceaff" opacity="0.63" filter="url(#glowMinor)" /></g>
+<g id="s3"><circle cx="0" cy="0" r="0.82" fill="#b8cbe3" opacity="0.54" filter="url(#glowMinor)" /></g>
+<g id="s4"><circle cx="0" cy="0" r="0.58" fill="#879bb8" opacity="0.47" filter="url(#glowMinor)" /></g>
+<g id="s5"><circle cx="0" cy="0" r="0.38" fill="#756b70" opacity="0.36" /></g>
   </defs>
 
   <rect width="1920" height="1080" fill="url(#spaceGrad)" />
@@ -8313,7 +8353,7 @@ Pulsazione con "effetto gemma"
         // ----- Funzioni di generazione -----
         function generateStarField() {
             const points = [];
-            const targetAreas = 600;
+            const targetAreas = 1000;
             const aspect = CONFIG.width / CONFIG.height;
             const rows = Math.ceil(Math.sqrt(targetAreas / aspect));
             const cols = Math.ceil(targetAreas / rows);
@@ -8465,9 +8505,9 @@ Pulsazione con "effetto gemma"
                 clone.removeAttribute("id");
 
                 let scale = 1;
-                if (point.id !== 's1') {
-                    scale = 0.85 + Math.random() * 0.3;
-                }
+              if (point.id !== 's1') {
+    scale = 1.0 + Math.random() * 0.5;  // Invece di 0.85 + 0.3
+}
 
                 placeElement(clone, point.x, point.y, scale, 0);
                 container.appendChild(clone);
@@ -9693,7 +9733,6 @@ Pulsazione con "effetto gemma"
 </main>
 <!-- Citazioni filosofiche fluttuanti -->
 <div class="floating-quotes"><div class="quote-bubble"><div class="quote-text">“Conosci te stesso”</div><div class="quote-author">— Socrate</div></div><div class="quote-bubble"><div class="quote-text">“So di non sapere”</div><div class="quote-author">— Socrate</div></div><div class="quote-bubble"><div class="quote-text">“Una vita senza ricerca non è degna di essere vissuta”</div><div class="quote-author">— Socrate</div></div><div class="quote-bubble"><div class="quote-text">“La filosofia comincia con la meraviglia”</div><div class="quote-author">— Platone</div></div><div class="quote-bubble"><div class="quote-text">“La bellezza è lo splendore del vero”</div><div class="quote-author">— Platone</div></div><div class="quote-bubble"><div class="quote-text">“Siamo ciò che facciamo ripetutamente. L'eccellenza non è un atto ma un'abitudine”</div><div class="quote-author">— Aristotele</div></div><div class="quote-bubble"><div class="quote-text">“La felicità dipende da noi stessi”</div><div class="quote-author">— Aristotele</div></div><div class="quote-bubble"><div class="quote-text">“Nulla è nell'intelletto che prima non sia passato dai sensi”</div><div class="quote-author">— Aristotele</div></div><div class="quote-bubble"><div class="quote-text">“Tutto scorre”</div><div class="quote-author">— Eraclito</div></div><div class="quote-bubble"><div class="quote-text">“Il carattere è destino”</div><div class="quote-author">— Eraclito</div></div><div class="quote-bubble"><div class="quote-text">“L'uomo è misura di tutte le cose”</div><div class="quote-author">— Protagora</div></div><div class="quote-bubble"><div class="quote-text">“Vivere secondo natura”</div><div class="quote-author">— Zenone di Cizio</div></div><div class="quote-bubble"><div class="quote-text">“Non sono le cose che ci turbano, ma le opinioni che abbiamo su di esse”</div><div class="quote-author">— Epitteto</div></div><div class="quote-bubble"><div class="quote-text">“Non è la morte che dobbiamo temere, ma il non cominciare mai a vivere”</div><div class="quote-author">— Marco Aurelio</div></div><div class="quote-bubble"><div class="quote-text">“La vita è opinione”</div><div class="quote-author">— Marco Aurelio</div></div><div class="quote-bubble"><div class="quote-text">“La felicità consiste nel desiderare ciò che si ha”</div><div class="quote-author">— Seneca</div></div><div class="quote-bubble"><div class="quote-text">“Non esiste vento favorevole per il marinaio che non sa dove andare”</div><div class="quote-author">— Seneca</div></div><div class="quote-bubble"><div class="quote-text">“Il destino guida chi lo segue e trascina chi si oppone”</div><div class="quote-author">— Seneca</div></div><div class="quote-bubble"><div class="quote-text">“Vivi nascosto”</div><div class="quote-author">— Epicuro</div></div><div class="quote-bubble"><div class="quote-text">“Ama e fa' ciò che vuoi”</div><div class="quote-author">— Sant'Agostino</div></div><div class="quote-bubble"><div class="quote-text">“La fede cerca l'intelligenza”</div><div class="quote-author">— Anselmo d'Aosta</div></div><div class="quote-bubble"><div class="quote-text">“Contemplata aliis tradere”</div><div class="quote-author">— Tommaso d'Aquino</div></div><div class="quote-bubble"><div class="quote-text">“Non moltiplicare gli enti senza necessità”</div><div class="quote-author">— Guglielmo di Ockham</div></div><div class="quote-bubble"><div class="quote-text">“È meglio essere temuti che amati, se non si può essere entrambi”</div><div class="quote-author">— Niccolò Machiavelli</div></div><div class="quote-bubble"><div class="quote-text">“Cogito, ergo sum”</div><div class="quote-author">— Cartesio</div></div><div class="quote-bubble"><div class="quote-text">“Il cuore ha le sue ragioni che la ragione non conosce”</div><div class="quote-author">— Blaise Pascal</div></div><div class="quote-bubble"><div class="quote-text">“La mente è una tabula rasa”</div><div class="quote-author">— John Locke</div></div><div class="quote-bubble"><div class="quote-text">“Esse est percipi”</div><div class="quote-author">— George Berkeley</div></div><div class="quote-bubble"><div class="quote-text">“La bellezza delle cose esiste nella mente di chi le contempla”</div><div class="quote-author">— David Hume</div></div><div class="quote-bubble"><div class="quote-text">“Due cose riempiono l’animo: il cielo stellato sopra di me e la legge morale dentro di me”</div><div class="quote-author">— Immanuel Kant</div></div><div class="quote-bubble"><div class="quote-text">“Agisci in modo da trattare l’umanità sempre come fine e mai semplicemente come mezzo”</div><div class="quote-author">— Immanuel Kant</div></div><div class="quote-bubble"><div class="quote-text">“Quel che è reale è razionale”</div><div class="quote-author">— G.W.F. Hegel</div></div><div class="quote-bubble"><div class="quote-text">“La vita oscilla tra la noia e il dolore”</div><div class="quote-author">— Arthur Schopenhauer</div></div><div class="quote-bubble"><div class="quote-text">“La vita dev’essere compresa all’indietro, ma va vissuta in avanti”</div><div class="quote-author">— Søren Kierkegaard</div></div><div class="quote-bubble"><div class="quote-text">“Chi ha un perché per vivere può sopportare quasi ogni come”</div><div class="quote-author">— Friedrich Nietzsche</div></div><div class="quote-bubble"><div class="quote-text">“Diventa ciò che sei”</div><div class="quote-author">— Friedrich Nietzsche</div></div><div class="quote-bubble"><div class="quote-text">“Non esistono fatti, solo interpretazioni”</div><div class="quote-author">— Friedrich Nietzsche</div></div><div class="quote-bubble"><div class="quote-text">“Di ciò di cui non si può parlare si deve tacere”</div><div class="quote-author">— Ludwig Wittgenstein</div></div><div class="quote-bubble"><div class="quote-text">“Il significato è l’uso”</div><div class="quote-author">— Ludwig Wittgenstein</div></div><div class="quote-bubble"><div class="quote-text">“Il linguaggio è la casa dell’essere”</div><div class="quote-author">— Martin Heidegger</div></div><div class="quote-bubble"><div class="quote-text">“L’esistenza precede l’essenza”</div><div class="quote-author">— Jean‑Paul Sartre</div></div><div class="quote-bubble"><div class="quote-text">“Bisogna immaginare Sisifo felice”</div><div class="quote-author">— Albert Camus</div></div></div>
-<!-- Footer -->
 <!-- ============================================================
    FOOTER COMPLETO - CON VOCI LEGAL SPOSTATE
 ============================================================ -->
@@ -9794,6 +9833,7 @@ Pulsazione con "effetto gemma"
             
         </div>
     </div>
+    </div>
     <div class="footer-quote">
     <blockquote>
         <p>«L'uomo è padrone delle proprie azioni e con la ragione può scegliere tra alternative possibili; in questo senso è libero.»</p>
@@ -9801,6 +9841,7 @@ Pulsazione con "effetto gemma"
     </blockquote>
 </div>
 </footer>
+
 <!-- ========== CTA FLOTTANTE ========== -->
 <div class="floating-cta" id="floatingNewsletter">
 <button onclick="showNewsletterModal()">
