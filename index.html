@@ -317,23 +317,47 @@ a:hover {
   z-index: 2900;
 }
 
-.top-bar {
-  position: fixed;
-  top: 0px;
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  padding: 0.4rem 0.8rem;
+/* ============================================================
+   TOP BAR — BORDO ACCORCIATO
+   ============================================================ */
 
-  background: var(--menu-bg);
-  backdrop-filter: blur(0.6rem);
-  -webkit-backdrop-filter: blur(0.6rem);
-  border-bottom: 1px solid var(--menu-border);
-  z-index: 2000;
-  transition: transform 0.3s ease;
+.top-bar {
+    position: fixed;
+    top: 0px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0.4rem 0.8rem;
+    background: transparent;  var(--menu-bg, rgba(10, 10, 30, 0.98));
+    z-index: 2000;
+    transition: transform 0.3s ease;
+    /* RIMUOVI border-bottom qui */
 }
+
+/* Linea decorativa più corta */
+.top-bar::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 70%;                    /* Larghezza della linea */
+    height: 1px;
+    margin: 0 auto;               /* Centra la linea */
+    background: color-mix(in srgb, var(--accent, #ffd700) 25%, transparent);
+    border-radius: 2px;
+    /* Assicura che la linea sia visibile anche su sfondi trasparenti */
+    pointer-events: none;
+}
+
+
+
+
+
+
+
 
 .top-bar.hidden {
   transform: translateY(-100%);
@@ -396,19 +420,33 @@ a:hover {
    ============================================ */
 
 .menu-container {
-  position: fixed;
-  top: 4.5rem;
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  z-index: 1900;
-  padding: 0.5rem 0;
-  background: rgba(10, 10, 30, 0.9);
-  /* backdrop-filter: blur(0.5rem);  ← RIMOSSO */
-  border-bottom: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
-  transition: top 0.3s ease;
-  transform: none !important;
+    position: fixed;
+    top: 4.5rem;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    z-index: 1900;
+    padding: 0.5rem 0;
+    background: rgba(10, 10, 30, 0.9);
+    transition: top 0.3s ease;
+    transform: none !important;
+    
+    /* RIMUOVI border-bottom qui */
+    /* border-bottom: ... */
+}
+
+/* Linea decorativa più corta */
+.menu-container::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70%;                    /* Larghezza della linea (modifica qui) */
+    height: 1px;
+    background: color-mix(in srgb, var(--accent) 25%, transparent);
+    border-radius: 2px;
 }
 
 .menu-container.hidden {
@@ -981,13 +1019,14 @@ main {
    COLOR DOTS (Theme Switcher)
    ============================================ */
 .color-dot {
-  width: 36px;
-  height: 36px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.3);
   background: transparent;
   display: flex;
-  margin-left: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
   align-items: center;
   justify-content: center;
   cursor: pointer;
@@ -1014,8 +1053,8 @@ main {
 
 .brand + .welcome-switcher {
   display: inline-flex;
-  gap: .4rem;
-  margin-left: .75rem;
+  gap: .2rem;
+  margin-left: .15rem;
   align-items: center;
 }
 
@@ -1312,7 +1351,7 @@ body {
   border: 1px solid rgba(255, 215, 0, .22);
   border-radius: .62rem;
   padding: .5rem;
-  z-index: 80;
+  z-index: 1950;
 }
 
 .ctrl-btn {
@@ -6378,7 +6417,7 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 12px 110px;
+  padding: 12px 90px;
   
   /* Aspetto */
   background: linear-gradient(135deg, var(--gold), #ffeb3b);
@@ -6388,6 +6427,7 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
   
   /* Tipografia */
   font-family: 'Cinzel Decorative', cursive;
+  letter-spacing: 0.3rem !important;
   font-weight: 600;
   font-size: 0.95rem;
   letter-spacing: 0.3px;
@@ -6939,37 +6979,30 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem 0.2rem;
-   margin-left: 10px; /* Aumenta questo valore per più spazio */
-  background: rgba(255,255,255,0.08);
-  color: #f3d98b;
-  border-radius: 7px;
-  text-decoration: none;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 0.9rem;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  
-  /* ===== BORDO ELEGANTE ===== */
-  border: 1px solid rgba(255, 215, 0, 0.3);
-  box-shadow: 
-    0 2px 10px rgba(0, 0, 0, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+     gap: 6px;
+    padding: 8px 4px;
+    background: #0a0a1a;
+    color: #f3d98b;
+    font-family: Georgia, serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    border-radius:  0.62rem;
+    border: 1px solid var(--menu-border);
+    margin-left: 5px;
+    text-decoration: none;
+    text-transform: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 20px rgba(200, 180, 255, 0.03);
 }
+    
 
 .world-history-btn:hover {
-  background: rgba(26, 37, 47, 0.95);
-  transform: translateY(-2px);
-  box-shadow: 
-    0 6px 20px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15);
-  
-  /* ===== BORDO CHE SI ILLUMINA ===== */
-  border-color: #e6a117;
-  color: #ffffff;
+ background: #1a1a2a;
+    border-color: rgba(200, 180, 255, 0.5);  /* Bordo più visibile al hover */
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 0 40px rgba(200, 180, 255, 0.08);
+    color: #e8ddff;
 }
 
 .world-history-btn .btn-icon {
@@ -6977,9 +7010,6 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
   line-height: 1;
 }
 
-.world-history-btn .btn-text {
-  white-space: nowrap;
-}
 
 /* --- Su schermi piccoli, mostra solo l'icona --- */
 @media (max-width: 480px) {
@@ -6990,7 +7020,6 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
     padding: 0.4rem 0.7rem;
   }
 }
-
 
 
 /* ============================================================
@@ -7281,78 +7310,38 @@ footer,
 }
 
 
-/* ============================================================
+
+    /* ============================================================
    PULSANTE STORIA DELLA FILOSOFIA
    ============================================================ */
 
 .filosofia-btn {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-
+     gap: 6px;
     padding: 8px 4px;
-
-    background: rgba(255, 255, 255, 0.08);
+    background: #0a0a1a;
     color: #f3d98b;
-
-    border: 1px solid rgba(243, 217, 139, 0.35);
-    border-radius: 8px;
-
-    text-decoration: none;
-    font-size: 0.9rem;
+    font-family: Georgia, serif;
+    font-size: 0.95rem;
     font-weight: 600;
-
-    letter-spacing: 0.3px;
-
-    backdrop-filter: blur(8px);
-
-    transition:
-        background 0.3s ease,
-        border-color 0.3s ease,
-        transform 0.3s ease,
-        color 0.3s ease;
+    letter-spacing: 0.5px;
+    border-radius:  0.62rem;
+    border: 1px solid var(--menu-border);
+    text-decoration: none;
+    text-transform: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 20px rgba(200, 180, 255, 0.03);
 }
-
-
-/* icona */
-.filosofia-btn .btn-icon {
-    font-size: 0.9rem;
-}
-
-
-/* testo */
-.filosofia-btn .btn-text {
-    white-space: nowrap;
-}
-
 
 /* effetto hover */
 .filosofia-btn:hover {
 
-    background: rgba(243, 217, 139, 0.15);
-
-    border-color: rgba(243, 217, 139, 0.75);
-
-    color: #fff2c4;
-
-    transform: translateY(-2px);
-
-    box-shadow:
-        0 4px 18px rgba(243, 217, 139, 0.18);
-}
-
-
-/* versione mobile */
-@media (max-width: 700px) {
-
-    .filosofia-btn {
-        padding: 7px 3px;
-        font-size: 0.82rem;
-    }
-
-    .filosofia-btn .btn-icon {
-        font-size: 0.95rem;
-    }
+    background: #1a1a2a;
+    border-color: rgba(200, 180, 255, 0.5);  /* Bordo più visibile al hover */
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 0 40px rgba(200, 180, 255, 0.08);
+    color: #e8ddff;
 }
 
 /* ============================================
@@ -7808,7 +7797,7 @@ Pulsazione con "effetto gemma"
   0% {
     transform: scale(1);
     box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
-    background: linear-gradient(135deg, var(--gold), #ffeb3b);
+    background:  linear-gradient(135deg, var(--gold), #ffeb3b);
   }
   25% {
     transform: scale(1.04);
@@ -7835,6 +7824,154 @@ Pulsazione con "effetto gemma"
 #dict-fab:hover {
   animation-play-state: paused;
   /* mantieni il tuo hover esistente */
+}
+
+/* ============================================================
+   PULSANTE "MAESTRI DEL PENSIERO"
+   ============================================================ */
+
+#paradigma-btn {
+    /* Layout */
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    
+    /* Aspetto */
+    background: #0a0a1a;
+    color: #f3d98b;
+    border: 1px solid var(--menu-border, rgba(255, 215, 0, 0.25));
+    border-radius: 0.62rem;
+    padding: 6px 6px;
+    
+    /* Tipografia */
+    font-family: Georgia, serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: none;
+    text-decoration: none;
+    
+    /* Effetti */
+    box-shadow: 0 0 20px rgba(200, 180, 255, 0.03);
+    
+    /* Transizione */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Interazione */
+    cursor: pointer;
+}
+
+/* ============================================================
+   HOVER — Basato sul modello .filosofico-btn
+   ============================================================ */
+
+#paradigma-btn:hover {
+    background: #1a1a2a;
+    border-color: rgba(200, 180, 255, 0.5);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 0 40px rgba(200, 180, 255, 0.08);
+    color: #e8ddff;
+}
+
+/* ============================================================
+   ICONA DENTRO IL PULSANTE
+   ============================================================ */
+
+#paradigma-btn .icon {
+    font-size: 1.5em;
+    line-height: 1;
+}
+
+/* ============================================================
+   OVERLAY DEI 4 FILOSOFI
+   ============================================================ */
+
+#filosofi-overlay {
+    display: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    background: linear-gradient(to bottom, rgba(10, 10, 30, 0.95), rgba(10, 10, 30, 0.9));
+    border-radius: 10px;
+    max-width: 800px;
+    width: 600px;
+    padding: 15px 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    z-index: 9999;
+    backdrop-filter: blur(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#filosofi-overlay.active {
+    display: block;
+    animation: fadeInDown 0.3s ease;
+}
+
+/* Animazione di apertura */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================================
+   STILE PER I 4 FILOSOFI (migliorato)
+   ============================================================ */
+
+#filosofi-overlay h3 {
+    color: #ffd86a;
+    margin-bottom: 20px;
+    font-family: 'Cinzel', serif;
+    text-align: center;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+
+}
+
+#filosofi-overlay .filosofo {
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+#filosofi-overlay .filosofo:hover {
+    transform: translateY(-4px);
+}
+
+#filosofi-overlay .filosofo img {
+    width: 100%;
+    max-width: 80px;
+    border-radius: 50%;
+    border: 3px solid #d4af37;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#filosofi-overlay .filosofo:hover img {
+    border-color: #ffd86a;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+}
+
+#filosofi-overlay .filosofo .nome {
+    margin-top: 10px;
+    color: #e9eef5;
+    font-weight: bold;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+}
+
+#filosofi-overlay .filosofo .citazione {
+    font-style: italic;
+    color: #9ad0ff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    line-height: 1.4;
 }
     </style>
   
@@ -8185,7 +8322,7 @@ Pulsazione con "effetto gemma"
 
   <!-- === FAB Dizionario === -->
 <button id="dict-fab" class="fab-with-text">
-  <span class="fab-label">📚 Risorse</span>
+  <span class="fab-label">📚   Risorse</span>
   <span class="fab-icona"></span>
 </button>
  <div hidden="True" id="search-backdrop"></div>
@@ -8528,65 +8665,55 @@ Pulsazione con "effetto gemma"
     </button>
   </div>
 </div>
-
 <div style="position: relative;">
-<button class="ctrl-btn" id="paradigma-btn" style="
-            background: rgba(20, 20, 40, 0.78);
-            border: 1px solid rgba(255, 215, 0, 0.25);
-            border-radius: 0.5rem;
-            padding: 0.1rem 0.5rem;
-            margin-left: 10px;
-            color: #ffd86a;
-            font-weight: 700;
-            cursor: pointer;
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.1rem;
-            white-space: nowrap;">
-            🗿 Maestri del Pensiero <span style="font-size: 1.5em; color: #00ccff;"></span>
-</button>
-<!-- Overlay 4 Filosofi -->
-<div id="filosofi-overlay" style="
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            margin-top: 10px;
-            background: linear-gradient(to bottom, rgba(10, 10, 30, 0.95), rgba(10, 10, 30, 0.9));
-            border-radius: 10px;
-            max-width: 800px;
-            width: 600px;
-            padding: 15px 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            z-index: 9999;
-            backdrop-filter: blur(10px);">
-<h3 style="color: #ffd86a; margin-bottom: 20px; font-family: 'Cinzel', serif; text-align: center;">
-                I Filosofi che hanno cambiato il paradigma
-                <span style="font-size: 1.5em; color: #00ccff;">▾</span>
-</h3>
-<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
-<div style="text-align: center;">
-<img alt="Socrate" decoding="async" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/socrate.webp" style="width: 100%; max-width: 80px; border-radius: 50%; border: 3px solid #d4af37;">
-<p style="margin-top: 10px; color: #e9eef5; font-weight: bold; font-family: 'Cormorant Garamond', serif;">Socrate</p>
-<p style="font-style: italic; color: #9ad0ff; font-size: 0.85rem;font-weight: 700;">"So di non sapere."</p>
-</div>
-<div style="text-align: center;">
-<img alt="Platone" decoding="async" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/aristotele.webp" style="width: 100%; max-width: 80px; border-radius: 50%; border: 3px solid #d4af37;">
-<p style="margin-top: 10px; color: #e9eef5; font-weight: bold; font-family: 'Cormorant Garamond', serif;">Platone</p>
-<p style="font-style: italic; color: #9ad0ff; font-size: 0.85rem;font-weight: 700;">"La realtà è un'ombra delle Idee." - Tradotto: "Come il «mondo vero» divenne favola"</p>
-</div>
-<div style="text-align: center;">
-<img alt="Kant" decoding="async" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/immagini%20per%20sito/kant.webp" style="width: 100%; max-width: 80px; border-radius: 50%; border: 3px solid #d4af37;">
-<p style="margin-top: 10px; color: #e9eef5; font-weight: bold; font-family: 'Cormorant Garamond', serif;">Kant</p>
-<p style="font-style: italic; color: #9ad0ff; font-size: 0.85rem;font-weight: 700;">"Sapere aude! Abbi il coraggio di servirti della tua propria intelligenza!"</p>
-</div>
-<div style="text-align: center;">
-<img alt="Nietzsche" decoding="async" loading="lazy" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/immagini%20per%20sito/friedrich-nietzsche.jpg" style="width: 100%; max-width: 80px; border-radius: 50%; border: 3px solid #d4af37;">
-<p style="margin-top: 10px; color: #e9eef5; font-weight: bold; font-family: 'Cormorant Garamond', serif;">Nietzsche</p>
-<p style="font-style: italic; color: #9ad0ff; font-size: 0.85rem;font-weight: 700;">"Dio è morto! Dio resta morto! E noi lo abbiamo ucciso!"</p>
-</div>
-</div>
-</div>
+    <!-- PULSANTE -->
+    <button class="ctrl-btn" id="paradigma-btn">
+        <span class="icon">🗿</span>
+        Maestri del Pensiero
+    </button>
+
+    <!-- OVERLAY 4 FILOSOFI -->
+    <div id="filosofi-overlay">
+        <h3>
+            I Filosofi che hanno cambiato il paradigma
+            <span style="font-size: 1.5em; color: #00ccff;">▾</span>
+        </h3>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
+            
+            <!-- SOCRATE -->
+            <div class="filosofo">
+                <img src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/socrate.webp" 
+                     alt="Socrate" loading="lazy" decoding="async">
+                <p class="nome">Socrate</p>
+                <p class="citazione">"So di non sapere."</p>
+            </div>
+
+            <!-- PLATONE -->
+            <div class="filosofo">
+                <img src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/foto/aristotele.webp" 
+                     alt="Platone" loading="lazy" decoding="async">
+                <p class="nome">Platone</p>
+                <p class="citazione">"La realtà è un'ombra delle Idee."</p>
+            </div>
+
+            <!-- KANT -->
+            <div class="filosofo">
+                <img src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/immagini%20per%20sito/kant.webp" 
+                     alt="Kant" loading="lazy" decoding="async">
+                <p class="nome">Kant</p>
+                <p class="citazione">"Sapere aude! Abbi il coraggio di servirti della tua propria intelligenza!"</p>
+            </div>
+
+            <!-- NIETZSCHE -->
+            <div class="filosofo">
+                <img src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/immagini%20per%20sito/friedrich-nietzsche.jpg" 
+                     alt="Nietzsche" loading="lazy" decoding="async">
+                <p class="nome">Nietzsche</p>
+                <p class="citazione">"Dio è morto! Dio resta morto! E noi lo abbiamo ucciso!"</p>
+            </div>
+
+        </div>
+    </div>
 </div>
   
 <!-- ============================================================
@@ -8654,7 +8781,7 @@ Pulsazione con "effetto gemma"
 <!-- ====== OVERLAY DIZIONARIO ====== -->
 <div id="dict-overlay" class="dict-overlay"></div>
 
-<<!-- ====== MODALE DIZIONARIO ====== -->
+<!-- ====== MODALE DIZIONARIO ====== -->
 <div id="dict-modal" class="dict-modal notranslate" translate="no">
 
   <!-- Header -->
