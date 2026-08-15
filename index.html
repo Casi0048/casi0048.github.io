@@ -352,13 +352,6 @@ a:hover {
     pointer-events: none;
 }
 
-
-
-
-
-
-
-
 .top-bar.hidden {
   transform: translateY(-100%);
 }
@@ -7972,6 +7965,375 @@ Pulsazione con "effetto gemma"
     font-weight: 700;
     line-height: 1.4;
 }
+
+
+  /* ============================================================
+   TOP-BAR - BRAND CON ONDE CONCENTRICHE
+   ============================================================ */
+
+/* ===== BRAND (wrapper relativo per le onde) ===== */
+.brand {
+    position: relative;           /* Necessario per le onde assolute */
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+    color: var(--accent, #ffd700);
+    fill: var(--accent, #ffd700);
+    stroke: var(--accent, #ffd700);
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.brand:hover {
+    transform: scale(1.03);
+}
+
+/* ============================================================
+   ONDE CONCENTRICHE (posizionate dietro il logo)
+   ============================================================ */
+
+.waves-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 48px;
+    height: 48px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.wave {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid var(--accent, rgba(255, 215, 0, 0.6));
+    border-radius: 50%;
+    animation: waveExpand 4s ease-out infinite;
+    opacity: 0;
+    box-shadow: 0 0 10px color-mix(in oklab, var(--accent, #ffd700) 20%, transparent);
+}
+
+/* Onde con ritardi diversi */
+.wave:nth-child(1) {
+    animation-delay: 0s;
+    border-color: var(--accent, rgba(255, 215, 0, 0.8));
+}
+.wave:nth-child(2) {
+    animation-delay: 1s;
+    border-color: color-mix(in oklab, var(--accent, #ffd700) 60%, #333);
+}
+.wave:nth-child(3) {
+    animation-delay: 2s;
+    border-color: color-mix(in oklab, var(--accent, #ffd700) 40%, #555);
+}
+.wave:nth-child(4) {
+    animation-delay: 3s;
+    border-color: color-mix(in oklab, var(--accent, #ffd700) 25%, #777);
+}
+
+/* ===== ANIMAZIONE ONDE ===== */
+@keyframes waveExpand {
+    0% {
+        width: 10px;
+        height: 10px;
+        opacity: 1;
+        border-width: 3px;
+    }
+    50% {
+        opacity: 0.7;
+        border-width: 2px;
+    }
+    100% {
+        width: 350px;
+        height: 350px;
+        opacity: 0;
+        border-width: 0.5px;
+    }
+}
+
+/* ===== GLOW PULSANTE ===== */
+@keyframes waveGlow {
+    0%, 100% {
+        box-shadow: 0 0 5px color-mix(in oklab, var(--accent, #ffd700) 20%, transparent);
+    }
+    50% {
+        box-shadow: 
+            0 0 20px color-mix(in oklab, var(--accent, #ffd700) 40%, transparent),
+            0 0 60px color-mix(in oklab, var(--accent, #ffd700) 15%, transparent);
+    }
+}
+
+.wave {
+    animation: waveExpand 4s ease-out infinite, waveGlow 4s ease-in-out infinite;
+}
+
+/* ===== HOVER: onde accelerano ===== */
+.brand:hover .wave {
+    animation-duration: 2.5s;
+    border-color: var(--accent, #ffd700);
+}
+
+
+ /* ============================================================
+    ECHI DI SOFIA — TEMA SCURO
+    ONDE DORATE DA CLICK
+    ============================================================ */
+
+.echo-ripple {
+    position: fixed;
+    left: 0;
+    top: 0;
+
+    width: 460px;
+    height: 460px;
+
+    pointer-events: none;
+    z-index: 99999;
+
+    transform: translate(-50%, -50%);
+
+    opacity: 1;
+}
+
+.echo-ripple svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+.echo-ripple path {
+    fill: none;
+
+    stroke: #ffd76a;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+
+    /*
+     * Fondamentale:
+     * la scala deve avvenire rispetto al centro
+     * del viewBox SVG, non rispetto al bounding box
+     * individuale del path.
+     */
+    transform-box: view-box;
+    transform-origin: 50% 50%;
+
+    filter:
+        drop-shadow(
+            0 0 3px rgba(255, 215, 106, 0.35)
+        )
+        drop-shadow(
+            0 0 10px rgba(255, 215, 106, 0.12)
+        );
+}
+
+/* ============================================================
+   PRIMA CRESTA
+   ============================================================ */
+
+.echo-ripple .ripple-1 {
+    stroke-width: 1px;
+    opacity: .82;
+    transform: scale(.02);
+}
+
+.echo-ripple .ripple-1.start {
+    animation:
+        darkRipple1
+        3.8s
+        cubic-bezier(.12,.55,.25,1)
+        forwards;
+}
+
+@keyframes darkRipple1 {
+
+    0% {
+        opacity: .82;
+        transform: scale(.02);
+    }
+
+    3% {
+        opacity: .82;
+    }
+
+    25% {
+        opacity: .60;
+    }
+
+    55% {
+        opacity: .25;
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(5.8);
+    }
+}
+
+
+/* ============================================================
+   SECONDA CRESTA
+   ============================================================ */
+
+.echo-ripple .ripple-2 {
+
+    stroke-width: .75px;
+
+    animation:
+        darkRipple2
+        3.8s
+        cubic-bezier(.12,.55,.25,1)
+        .22s
+        forwards;
+}
+
+@keyframes darkRipple2 {
+
+    0% {
+        opacity: 0;
+        transform: scale(.05);
+    }
+
+    10% {
+        opacity: .46;
+    }
+
+    35% {
+        opacity: .28;
+    }
+
+    65% {
+        opacity: .10;
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(5.0);
+    }
+}
+
+
+/* ============================================================
+   TERZA CRESTA
+   ============================================================ */
+
+.echo-ripple .ripple-3 {
+
+    stroke-width: .55px;
+
+    animation:
+        darkRipple3
+        3.8s
+        cubic-bezier(.12,.55,.25,1)
+        .44s
+        forwards;
+}
+
+@keyframes darkRipple3 {
+
+    0% {
+        opacity: 0;
+        transform: scale(.05);
+    }
+
+    12% {
+        opacity: .30;
+    }
+
+    40% {
+        opacity: .15;
+    }
+
+    70% {
+        opacity: .045;
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(4.3);
+    }
+}
+
+
+
+
+.echo-ripple .ripple-1 {
+    stroke-width: 1px;
+    opacity: .82;
+    transform: scale(.02);
+}
+
+.echo-ripple .ripple-1.start {
+    animation:
+        darkRipple1
+        3.8s
+        cubic-bezier(.12,.55,.25,1)
+        forwards;
+}
+
+@keyframes darkRipple1 {
+
+    0% {
+        opacity: .82;
+        transform: scale(.02);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(5.8);
+    }
+}
+
+/* ============================================================
+   IMPULSO IMMEDIATO DEL CLICK
+   ============================================================ */
+
+.echo-origin {
+    position: fixed;
+
+    width: 5px;
+    height: 5px;
+
+    margin-left: -2.5px;
+    margin-top: -2.5px;
+
+    border-radius: 50%;
+
+    background: #ffd76a;
+
+    pointer-events: none;
+    z-index: 100000;
+
+    box-shadow:
+        0 0 5px rgba(255, 215, 106, .75),
+        0 0 14px rgba(255, 215, 106, .35);
+
+    animation: echoOrigin .28s ease-out forwards;
+}
+
+@keyframes echoOrigin {
+
+    0% {
+        opacity: .95;
+        transform: scale(.7);
+    }
+
+    35% {
+        opacity: .75;
+        transform: scale(1.4);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(2.4);
+    }
+}
     </style>
   
 </head>
@@ -8639,14 +9001,24 @@ Pulsazione con "effetto gemma"
 <div aria-hidden="true" class="stars-container" id="starsContainer"></div>
 <!-- Top Bar -->
 <div class="top-bar">
-<a class="brand" href="/">
-<svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24">
-<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-<polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-<line x1="12" x2="12" y1="22.08" y2="12"></line>
-</svg>
-<span>Echi di Sofia</span>
-</a>
+    <a class="brand" href="/">
+        <!-- Container per le onde -->
+        <div class="waves-container">
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+        </div>
+        
+        <!-- Logo -->
+        <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+            <line x1="12" x2="12" y1="22.08" y2="12"></line>
+        </svg>
+        <span>Echi di Sofia</span>
+    </a>
+
 <div aria-label="Cambia colore tema" class="welcome-switcher" style="display:inline-flex;flex-direction:column;align-items:center;gap:.3rem;">
   <span class="switcher-label" style="font-size:0.6rem;color:var(--text-muted,#888);letter-spacing:0.5px;text-transform:uppercase;font-weight:600;">Cambia colore</span>
   <div style="display:inline-flex;gap:.4rem;align-items:center;">
@@ -13082,5 +13454,177 @@ if (document.readyState === 'loading') {
 
   </div>
 </div>
+
+
+
+  
+ <script>
+
+/* ============================================================
+   ECHI DI SOFIA — TEMA SCURO
+   ONDE ORGANICHE DORATE
+   ============================================================ */
+
+document.addEventListener('click', function (event) {
+
+    /* ========================================================
+       IMPULSO IMMEDIATO NEL PUNTO DEL CLICK
+       ======================================================== */
+
+    const origin = document.createElement('div');
+
+    origin.className = 'echo-origin';
+
+    origin.style.left = event.clientX + 'px';
+    origin.style.top = event.clientY + 'px';
+
+    document.body.appendChild(origin);
+
+    origin.addEventListener('animationend', function () {
+        origin.remove();
+    });
+
+
+    /* ========================================================
+       CONTENITORE DELLE ONDE
+       ======================================================== */
+
+    const ripple = document.createElement('div');
+
+    ripple.className = 'echo-ripple';
+
+    ripple.style.left = event.clientX + 'px';
+    ripple.style.top = event.clientY + 'px';
+
+
+    /* ========================================================
+       GENERATORE DI CRESTE ORGANICHE
+       ======================================================== */
+
+    function createOrganicWave(radius, irregularity, phase) {
+
+        const points = [];
+        const segments = 72;
+        const center = 230;
+
+        for (let i = 0; i < segments; i++) {
+
+            const angle =
+                (Math.PI * 2 * i) / segments;
+
+            const variation =
+                Math.sin(angle * 3 + phase) * irregularity +
+                Math.sin(angle * 5 - phase * 1.7) *
+                    irregularity * 0.45 +
+                Math.sin(angle * 7 + phase * 0.8) *
+                    irregularity * 0.20;
+
+            const r = radius + variation;
+
+            const x =
+                center +
+                Math.cos(angle) * r;
+
+            const y =
+                center +
+                Math.sin(angle) * r;
+
+            points.push([x, y]);
+        }
+
+        let d =
+            `M ${points[0][0]} ${points[0][1]}`;
+
+        for (let i = 1; i < points.length; i++) {
+
+            d +=
+                ` L ${points[i][0]} ${points[i][1]}`;
+        }
+
+        d += ' Z';
+
+        return d;
+    }
+
+
+    /* ========================================================
+       TRE CRESTE
+       ======================================================== */
+
+    ripple.innerHTML = `
+        <svg
+            viewBox="0 0 460 460"
+            xmlns="http://www.w3.org/2000/svg">
+
+            <path
+                class="ripple-1"
+                d="${createOrganicWave(36, 2.4, 0.4)}"
+            />
+
+            <path
+                class="ripple-2"
+                d="${createOrganicWave(36, 2.0, 2.1)}"
+            />
+
+            <path
+                class="ripple-3"
+                d="${createOrganicWave(36, 1.6, 4.0)}"
+            />
+
+        </svg>
+    `;
+
+
+    /* ========================================================
+       INSERIMENTO IMMEDIATO
+       ======================================================== */
+
+    document.body.appendChild(ripple);
+
+
+    /* ========================================================
+       PRIMA CRESTA
+       Parte dal punto del click
+       ======================================================== */
+
+    const firstWave =
+        ripple.querySelector('.ripple-1');
+
+    firstWave.style.opacity = '0.82';
+    firstWave.style.transform = 'scale(.02)';
+
+
+    /* ========================================================
+       AVVIO DELL'ESPANSIONE
+       ======================================================== */
+
+    requestAnimationFrame(() => {
+
+        firstWave.classList.add('start');
+
+    });
+
+
+    /* ========================================================
+       RIMOZIONE AUTOMATICA
+       ======================================================== */
+
+    ripple.addEventListener(
+        'animationend',
+        function (event) {
+
+            if (event.animationName === 'darkRipple1') {
+
+                ripple.remove();
+
+            }
+
+        }
+    );
+
+});
+
+</script>
+
 </body>
 </html>
