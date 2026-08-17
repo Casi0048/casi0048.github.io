@@ -2698,10 +2698,6 @@ body {
   border: 0;
 }
 
-
-
-
-
 /* ============================================
    RUSSELL BOX - AURORA DAY
    ============================================ */
@@ -2771,7 +2767,7 @@ body {
 
 #russell-hint {
     position: fixed;
-    bottom: 22vh;
+    bottom: 20vh;
     left: 3.5rem;
     z-index: 2;
     color: blue;
@@ -4179,7 +4175,7 @@ nav.menu-desktop .mega-menu {
   border-radius: 50%;
   background: #ffffff;
   border: 2px solid var(--black, #d4af37);
-  margin-top: -4px;
+  margin-top: -2px;
   box-shadow: 0 0 6px rgba(255, 215, 0, .4);
 }
 
@@ -7485,71 +7481,80 @@ body[data-accent="red"] {
     border-bottom: none;
 }
 
-
-//* ============================================
-   RUSSELL BOX — AURORA BLUE
+/* ============================================
+   RUSSELL BOX — AURORA
    ============================================ */
 
 #russell-box {
     position: fixed;
-    bottom: 8vh;
+    bottom: 11vh;
     left: 2rem;
     z-index: 9;
-    background: rgba(255, 255, 255, 0.92);
-    border: 1px solid rgba(59, 130, 246, 0.3);
-    border-radius: 0.75rem;
-    padding: 1rem 1.2rem;
+
+    padding: .35rem .55rem;
     max-width: 25rem;
+
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.97),
+        rgba(241, 248, 255, 0.94)
+    );
+    border: 1px solid rgba(59, 130, 246, 0.28);
+    border-radius: 0.9rem;
+    line-height: 1.2;
+    font-size: .85rem;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; /* Aggiunto */
     color: #1e293b;
-    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.12);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+
+    box-shadow:
+        0 10px 30px rgba(23, 80, 130, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.95);
+
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+
     cursor: pointer;
     contain: layout style paint;
-    transition: all 0.3s ease;
-}
 
-#russell-box:hover {
-    box-shadow: 0 12px 35px rgba(59, 130, 246, 0.18);
-    transform: translateY(-2px);
-}
+    transition:
+        box-shadow 0.3s ease,
+        transform 0.3s ease;
 
-/* ============================================
-   RUSSELL BUTTON
-   ============================================ */
 
-#russell-btn {
-    display: block;
-    cursor: pointer;
-    color: #1769aa;
-    font-weight: 600;
-    line-height: 1.4;
-    font-family: inherit;
-    font-size: inherit;
-    background: none;
-    border: none;
-    padding: 0;
-    margin: 0;
-    text-shadow: 0 0 8px rgba(23, 105, 170, 0.15);
-    transition: color 0.3s ease, text-shadow 0.3s ease;
-}
+   /* Da 1.4s a 2.5s - movimento più lento e visibile */
+ animation: russellLife 7s cubic-bezier(.16, 1, .3, 1) both;
 
-#russell-btn:hover {
-    color: #1a7fc9;
-    text-shadow: 0 0 16px rgba(23, 105, 170, 0.25);
+    will-change: transform, opacity;
 }
 
 /* ============================================
-   RUSSELL BOX — ANIMAZIONE CLICK
+   RUSSELL BOX — ENTRATA (OTTIMIZZATA)
    ============================================ */
 
-.russell-box {
-    cursor: pointer;
+@keyframes russellLife {
+    0% {
+        transform: translateX(-350%);
+        opacity: 0;
+    }
+    15% {
+        transform: translateX(12px);
+        opacity: 1;
+    }
+    20% {
+        transform: translateX(-6px);
+    }
+    25% {
+        transform: translateX(0);
+    }
+    25%, 100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
 
-.russell-box:active {
-    animation: shakeSoft 0.45s ease-out;
-}
+/* ============================================
+   RUSSELL BOX — CLICK (UNA SOLA DEFINIZIONE)
+   ============================================ */
 
 @keyframes shakeSoft {
     0%   { transform: rotate(0deg); }
@@ -7559,192 +7564,21 @@ body[data-accent="red"] {
     100% { transform: rotate(0deg); }
 }
 
-/* ============================================
-   RUSSELL HINT
-   ============================================ */
-
-#russell-hint {
-    position: fixed;
-    bottom: 22vh;
-    left: 3.5rem;
-    z-index: 2;
-    color: #1769aa;
-    opacity: 0.85;
-    font-style: italic;
-    font-weight: 700;
-    font-size: 0.95rem;
-    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.5);
+#russell-box:active {
+    animation: shakeSoft 0.45s ease-out;
 }
 
 /* ============================================
-   RUSSELL FLASH
+   RUSSELL BOX — HOVER
    ============================================ */
 
-#russell-flash {
-    position: fixed;
-    inset: 0;
-    opacity: 0;
-    pointer-events: none;
-    z-index: 9998;
-    background: radial-gradient(
-        circle at center,
-        rgba(59, 130, 246, 0.15),
-        rgba(23, 105, 170, 0.05),
-        transparent 70%
-    );
-    filter: blur(20px);
-    transition: opacity 0.3s ease;
+#russell-box:hover {
+    box-shadow:
+        0 15px 38px rgba(23, 105, 170, 0.16),
+        0 0 24px rgba(0, 204, 255, 0.07),
+        inset 0 1px 0 rgba(255, 255, 255, 1);
+    transform: translateY(-2px);
 }
-
-
-
-/* ============================================
-   RUSSELL BOX — RESPONSIVE
-   ============================================ */
-
-@media (max-width: 768px) {
-    #russell-box {
-        left: 1rem;
-        max-width: 18rem;
-        padding: 0.75rem 1rem;
-        bottom: 6vh;
-    }
-    
-    #russell-hint {
-        display: none;
-    }
-}
-
-@media (max-width: 480px) {
-    #russell-box {
-        left: 0.5rem;
-        max-width: 14rem;
-        padding: 0.5rem 0.75rem;
-        font-size: 0.85rem;
-        bottom: 4vh;
-    }
-}
-/* ================================
-   EFFETTI
-================================ */
-
-.russell-shock,
-.russell-shock2,
-.russell-bolt,
-.russell-branch,
-.russell-ripple,
-.russell-ring,
-.russell-fog {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    border-radius: 50%;
-}
-
-/* Shockwave 1 */
-.russell-shock {
-    border: 2px solid var(--accent-3);
-    opacity: 0;
-    transform: scale(0.1);
-}
-
-/* Shockwave 2 */
-.russell-shock2 {
-    border: 2px solid var(--accent);
-    opacity: 0;
-    transform: scale(0.18);
-}
-
-/* Fulmine principale */
-.russell-bolt {
-    width: 4px;
-    height: 110%;
-
-    background: linear-gradient(
-        to bottom,
-        white,
-        color-mix(in srgb, var(--accent) 65%, transparent),
-        transparent
-    );
-
-    left: 50%;
-    transform: translateX(-50%) scaleY(0);
-    opacity: 0;
-
-    filter: drop-shadow(0 0 14px var(--accent-2));
-}
-
-/* Ramo del fulmine */
-.russell-branch {
-    width: 3px;
-    height: 70px;
-
-    background: linear-gradient(
-        to bottom,
-        white,
-        color-mix(in srgb, var(--accent-2) 55%, transparent),
-        transparent
-    );
-
-    left: 25%;
-    top: 5%;
-    opacity: 0;
-}
-
-/* Ripple */
-.russell-ripple {
-    border: 1px solid var(--accent-2);
-    opacity: 0;
-    transform: scale(0.22);
-}
-
-/* Anelli */
-.russell-ring {
-    border: 1px solid var(--accent);
-    opacity: 0;
-    transform: scale(0.45);
-}
-
-/* Sparks */
-.russell-spark {
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--accent);
-    filter: drop-shadow(0 0 8px var(--accent-3));
-}
-
-/* Nebbia */
-.russell-fog {
-    background: radial-gradient(
-        circle,
-        color-mix(in srgb, var(--accent) 28%, transparent),
-        transparent 70%
-    );
-    opacity: 0;
-}
-.russell-inner {
-  display: inline-block;
-  transition: transform 180ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Animazione click */
-.russell-box:active .russell-inner {
-  animation: shakeSoft 0.45s ease-out;
-}
-
-@keyframes shakeSoft {
-  0%   { transform: rotate(0deg); }
-  25%  { transform: rotate(1.5deg); }
-  50%  { transform: rotate(-1.5deg); }
-  75%  { transform: rotate(1deg); }
-  100% { transform: rotate(0deg); }
-}
-</style>
-  <style>
-  
-  
     /* Effetti per gli stati del FAB */
 #cookie-fab.accepted {
     animation: pulse-green 1s ease;
