@@ -470,9 +470,9 @@ nav.menu-desktop li > a {
   border: none;
   cursor: pointer;
   color: var(--accent-5);
-  font-family: 'Cormorant Garamond', serif;
-  font-weight: 700;
-  font-size: 1.2rem;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 400;
+  font-size: 1.1rem;
   padding: 0.45rem 0.7rem;
   border-radius: 0.38rem;
   text-shadow: 0 0 0.38rem color-mix(in srgb, var(--accent) 45%, transparent);
@@ -762,30 +762,6 @@ main {
   bottom: auto;
 }
 
-/* ============================================
-   BUBBLE SINGOLA
-   ============================================ */
-
-.quote-bubble {
-  background: rgba(10, 10, 30, 0.9);
-  border: 1px solid var(--menu-border);
-  border-radius: 15px;
-  padding: 5px;
-  margin-bottom: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(5px);
-  
-  /* Animazione di entrata */
-  transform: translateX(100%);
-  opacity: 0;
-  transition: transform 0.5s ease, opacity 0.5s ease;
-}
-
-/* Stato visibile */
-.quote-bubble.show {
-  transform: translateX(0);
-  opacity: 1;
-}
 
 /* ============================================
    RESPONSIVE
@@ -1354,21 +1330,21 @@ body {
   min-height: 2rem;
   margin-bottom: 2px;
   padding: .38rem .62rem;
-  font-weight: 600;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 200;
+  color: var(--gold, #ffd86a);  /* ← Usa la variabile con fallback */
   cursor: pointer;
   border-radius: .5rem;
   border: 1px solid rgba(255, 215, 0, .25);
   background: rgba(20, 20, 40, .7);
-  color: #ffd86a;
   transition: all 0.2s ease;
 }
-
 .ctrl-btn:hover {
   background: rgba(255, 215, 0, .15);
   border-color: rgba(255, 215, 0, .5);
   transform: scale(1.02);
 }
-
 /* ============================================
    AUDIO PLAYER
    ============================================ */
@@ -1389,7 +1365,8 @@ body {
 }
 
 .audio-title {
-  font-weight: 600;
+  font-weight: 400;
+  color: var(--gold);
 }
 
 .audio-player .controls {
@@ -1501,7 +1478,7 @@ body {
 .articles-blob a {
   color: var(--gold);                        
   text-decoration: none;
-  font-weight: 700;
+  font-weight: 400;
   transition: color 0.2s ease;
 }
 
@@ -1601,7 +1578,7 @@ body {
   background: rgba(10, 10, 30, .8);
   border: 1px solid rgba(255, 215, 0, .25);
   border-radius: .5rem;           /* Leggermente più piccolo */
-  padding: .35rem .75rem;         /* Ridotto il padding verticale (era .62rem) */
+  padding: .35rem .55rem;         /* Ridotto il padding verticale (era .62rem) */
   max-width: 22rem;               /* Leggermente più stretto */
   box-shadow: 0 .35rem 1rem rgba(0, 0, 0, .35);
   line-height: 1.2;              /* Riduce l'altezza del testo */
@@ -1612,9 +1589,9 @@ body {
   all: unset;
   cursor: pointer;
   display: block;
-  color: var(--gold);
-  font-size: .85rem;              /* Dimensioni testo compatte */
-  line-height: 1.2;              /* Altezza riga ridotta */
+  color: var(--gold) !important;
+  font-size: .9rem;              /* Dimensioni testo compatte */
+  line-height: 1.2rem;              /* Altezza riga ridotta */
   transition: color 160ms cubic-bezier(0.4, 0, 0.2, 1),
               text-shadow 160ms cubic-bezier(0.4, 0, 0.2, 1),
               opacity 160ms cubic-bezier(0.4, 0, 0.2, 1),
@@ -1632,7 +1609,6 @@ body {
   50% { text-shadow: 0 0 15px rgba(255, 224, 138, 0.6), 0 0 25px rgba(255, 215, 0, 0.3); }
   100% { text-shadow: 0 0 10px rgba(255, 215, 0, 0.45); }
 }
-
 .russell-box {
   cursor: pointer;
 }
@@ -1673,7 +1649,68 @@ body {
   mix-blend-mode: screen;
   filter: blur(22px);
 }
+/* ============================================================
+   RUSSELL BOX — ENTRATA ORIZZONTALE
+   ============================================================ */
 
+#russell-box {
+  animation: russellLife 8s cubic-bezier(.16, 1, .3, 1) both;
+  will-change: transform, opacity;
+}
+
+@keyframes russellLife {
+
+  0% {
+    transform: translateX(-200%);
+    opacity: 0;
+  }
+
+  10% {
+    transform: translateX(8px);
+    opacity: 1;
+  }
+
+  13% {
+    transform: translateX(-3px);
+  }
+
+  16% {
+    transform: translateX(0);
+  }
+
+  16%, 72% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  78% {
+    transform: translateX(5px);
+  }
+
+  84% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+  /* RITORNO */
+/* PICCOLO RESPIRO */
+78% {
+  transform: translateX(5px);
+}
+
+84% {
+  transform: translateX(0);
+}
+
+/* FINALE */
+100% {
+  transform: translateX(0);
+  opacity: 1;
+}
 /* ============================================
    LIGHTNING EFFECTS
    ============================================ */
@@ -1728,7 +1765,8 @@ body {
   right: 1.25rem;
   width: 20rem;
   z-index: 25;
-  background: rgba(10, 10, 30, .86);
+
+ background: rgba(10, 10, 30, .86);
   border: 1px solid rgba(255, 215, 0, .25);
   border-radius: .75rem;
   padding: .62rem .75rem;
@@ -1738,7 +1776,7 @@ body {
 .right-box h3 {
   margin: .1rem 0 .4rem;
   font-family: 'Cinzel', serif;
-  color: #ffd86a;
+  color: var(--gold) !important;                          color: #ffd86a;
   font-size: 1rem;
 }
 
@@ -3234,46 +3272,6 @@ nav.menu-desktop .mega-menu {
 }
 
 /* ============================================
-   RUSSELL BOX ANIMATION
-   ============================================ */
-#russell-box {
-  transition: box-shadow 220ms ease, transform 220ms ease, background-color 220ms ease, filter 220ms ease;
-  will-change: box-shadow, transform, filter;
-}
-
-#russell-box.ping {
-  box-shadow: 0 0 0 2px rgba(255, 215, 0, .40), 0 0 28px rgba(255, 215, 0, .55);
-  transform: translateY(-2px) scale(1.015);
-  background-color: rgba(20, 20, 40, .88);
-  filter: brightness(2.10) saturate(2.08);
-  z-index: 2147483600;
-}
-
-#russell-btn {
-  transition: color 160ms ease, text-shadow 160ms ease, opacity 160ms ease;
-}
-
-#russell-btn.ping {
- color: #ffe08a;
-  text-shadow: 0 0 10px rgba(255, 215, 0, .45);
-  opacity: 1;
-}
-
-#russell-box:active {
-  box-shadow: 0 0 0 2px rgba(255, 215, 0, .35), 0 0 22px rgba(255, 215, 0, .55);
-  filter: brightness(1.04);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  #russell-box {
-    transition: box-shadow 220ms ease, background-color 220ms ease, filter 220ms ease;
-  }
-  #russell-box.ping {
-    transform: none;
-  }
-}
-
-/* ============================================
    JSON-LD (non-CSS, mantenuto per compatibilità)
    ============================================ */
 </style>
@@ -4699,7 +4697,7 @@ document.addEventListener('DOMContentLoaded', function(){
         rgba(0, 204, 255, 0.05),
         rgba(185, 103, 255, 0.08));
     border: 1px solid rgba(255, 215, 0, 0.3);
-    color: #3DDC84;
+    color: var(--gold);
     backdrop-filter: blur(10px);
     transition: all 0.3s ease;
     display: inline-block;
@@ -4907,25 +4905,38 @@ exploding-text {
 
 </style>
 <style id="explosion-theater-css">
-/* === EXPLOSION THEATER (conservative, layered) === */
+/* ============================================================
+   EXPLOSION THEATER - MOTTO
+   ============================================================ */
 
-/* Stabilizza il box motto per evitare "respiro" al caricamento */
-.motto{
-  display:inline-block;
-  white-space:nowrap;
-  contain:inline-size;
-  line-height:1;
-  --motto-ch: 26; /* aggiorna se cambi testo */
-  min-width: calc(var(--motto-ch) * 1ch);
+/* ============================================================
+   EXPLOSION THEATER - MOTTO
+   ============================================================ */
+
+:root {
+    --motto-ch: 26; /* Numero di caratteri del motto (spazi inclusi) */
 }
-.motto .m-text{
-  display:inline-block;
-  white-space:nowrap;
-  font-size-adjust: 0.52;
+
+.motto {
+    display: inline-block;
+    white-space: nowrap;
+    contain: inline-size;
+    line-height: 1;
+    min-width: calc(var(--motto-ch) * 1ch);
 }
-.motto .m-icon, .motto .m-sep, .motto .char{
-  line-height:1;
-  vertical-align:baseline;
+
+.motto .m-text {
+    display: inline-block;
+    white-space: nowrap;
+    color: var(--gold, #ffd700);
+    /* font-size-adjust: 0.52; */  /* Commentato per compatibilità */
+}
+
+.motto .m-icon,
+.motto .m-sep,
+.motto .char {
+    line-height: 1;
+    vertical-align: baseline;
 }
 
 /* Layer di effetti */
@@ -5562,7 +5573,7 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 
 #russell-box {
     position: fixed;
-    bottom: 10vh;
+    bottom: 13vh;
     left: 2rem;
     z-index: 9;
 
@@ -5573,25 +5584,13 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
     padding: 1rem 1.2rem;
     max-width: 25rem;
 
-    color: var(--accent-5);
+    color: var(--gold);
     box-shadow: 0 0 14px var(--accent-2);
 
     backdrop-filter: blur(6px);
     cursor: pointer;
 
     contain: layout style paint;
-}
-
-#russell-btn {
-    all: unset;
-    display: block;
-    cursor: pointer;
-
-    color: var(--accent-5);
-    font-weight: 600;
-    line-height: 1.4;
-
-    text-shadow: 0 0 8px var(--accent-3);
 }
 
 /* ================================
@@ -5611,106 +5610,7 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
     border-radius: 50%;
 }
 
-/* Shockwave 1 */
-.russell-shock {
-    border: 2px solid var(--accent-3);
-    opacity: 0;
-    transform: scale(0.1);
-}
 
-/* Shockwave 2 */
-.russell-shock2 {
-    border: 2px solid var(--accent);
-    opacity: 0;
-    transform: scale(0.18);
-}
-
-/* Fulmine principale */
-.russell-bolt {
-    width: 4px;
-    height: 110%;
-
-    background: linear-gradient(
-        to bottom,
-        white,
-        color-mix(in srgb, var(--accent) 65%, transparent),
-        transparent
-    );
-
-    left: 50%;
-    transform: translateX(-50%) scaleY(0);
-    opacity: 0;
-
-    filter: drop-shadow(0 0 14px var(--accent-2));
-}
-
-/* Ramo del fulmine */
-.russell-branch {
-    width: 3px;
-    height: 70px;
-
-    background: linear-gradient(
-        to bottom,
-        white,
-        color-mix(in srgb, var(--accent-2) 55%, transparent),
-        transparent
-    );
-
-    left: 25%;
-    top: 5%;
-    opacity: 0;
-}
-
-/* Ripple */
-.russell-ripple {
-    border: 1px solid var(--accent-2);
-    opacity: 0;
-    transform: scale(0.22);
-}
-
-/* Anelli */
-.russell-ring {
-    border: 1px solid var(--accent);
-    opacity: 0;
-    transform: scale(0.45);
-}
-
-/* Sparks */
-.russell-spark {
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--accent);
-    filter: drop-shadow(0 0 8px var(--accent-3));
-}
-
-/* Nebbia */
-.russell-fog {
-    background: radial-gradient(
-        circle,
-        color-mix(in srgb, var(--accent) 28%, transparent),
-        transparent 70%
-    );
-    opacity: 0;
-}
-.russell-inner {
-  display: inline-block;
-  transition: transform 180ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Animazione click */
-.russell-box:active .russell-inner {
-  animation: shakeSoft 0.45s ease-out;
-}
-
-@keyframes shakeSoft {
-  0%   { transform: rotate(0deg); }
-  25%  { transform: rotate(1.5deg); }
-  50%  { transform: rotate(-1.5deg); }
-  75%  { transform: rotate(1deg); }
-  100% { transform: rotate(0deg); }
-}
 </style>
   <style>
   
@@ -6093,7 +5993,7 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
   }
 
   .accordion-subtitle {
-    font-size: .95rem;
+    font-size: 1.1rem;
     padding: .4rem .8rem;
   }
 
@@ -6128,9 +6028,8 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 
   /* Russell box più discreto */
   #russell-box {
-    font-size: .95rem;
+    font-size: .8rem;
   }
-
   /* ---------------------------------
      6) DISATTIVA DECORAZIONI PESANTI
   ---------------------------------- */
@@ -6423,9 +6322,9 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
   color: #0a0a1a;
   
   /* Tipografia */
-  font-family: 'Cinzel Decorative', cursive;
+   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   letter-spacing: 0.3rem !important;
-  font-weight: 600;
+  font-weight: 400;
   font-size: 0.95rem;
   letter-spacing: 0.3px;
   
@@ -6456,7 +6355,7 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
 }
 
 .fab-label {
-  font-size: 1.05em;
+  font-size: 1em;
   white-space: nowrap;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
@@ -6982,7 +6881,7 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
     color: #f3d98b;
     font-family: Georgia, serif;
     font-size: 0.95rem;
-    font-weight: 600;
+    font-weight: 400;
     letter-spacing: 0.5px;
     border-radius:  0.62rem;
     border: 1px solid var(--menu-border);
@@ -7034,7 +6933,7 @@ a:hover                { color: color-mix(in oklab, var(--accent) 80%, #fff 20%)
     color: #f3d98b;
     font-family: Georgia, serif;
     font-size: 0.95rem;
-    font-weight: 600;
+    font-weight: 400;
     letter-spacing: 0.5px;
     border-radius:  0.62rem;
     border: 1px solid var(--menu-border);
@@ -7220,10 +7119,11 @@ footer,
 
 .accordion-subtitle {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.5rem;
+    font-size: 1.1rem;
     font-style: italic;
+    font-weight: 600;
     letter-spacing: 0.08em;
-     color: var(--accent-3);                      
+     color: var(--gold);
     border: none;
     box-shadow: none;
     padding: 0.5rem 1rem;
@@ -7321,7 +7221,7 @@ footer,
     color: #f3d98b;
     font-family: Georgia, serif;
     font-size: 0.95rem;
-    font-weight: 600;
+    font-weight: 400;
     letter-spacing: 0.5px;
     border-radius:  0.62rem;
     border: 1px solid var(--menu-border);
@@ -7467,10 +7367,6 @@ footer,
   display: flex;
 }
 
-
-
-
-
 .clear-search {
   visibility: hidden;  /* Invece di display: none */
   opacity: 0;
@@ -7483,6 +7379,18 @@ footer,
   opacity: 1;
   display: flex;  /* Rimane flex per il layout */
 }
+
+
+
+
+
+
+
+
+
+
+
+
 /* ============================================================
    NEWSLETTER MODAL - ECHI DI SOFIA
    ============================================================ */
@@ -7632,7 +7540,7 @@ footer,
             margin: 0;
             padding: 0;
             overflow: hidden; /* Nasconde le barre di scorrimento */
-            font-family: 'Georgia', serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;    font-family: 'Georgia', serif;
         }
 
         /* ============================================
@@ -7844,7 +7752,7 @@ Pulsazione con "effetto gemma"
     /* Tipografia */
     font-family: Georgia, serif;
     font-size: 0.95rem;
-    font-weight: 600;
+    font-weight: 400;
     letter-spacing: 0.5px;
     text-transform: none;
     text-decoration: none;
@@ -7876,7 +7784,7 @@ Pulsazione con "effetto gemma"
    ============================================================ */
 
 #paradigma-btn .icon {
-    font-size: 1.5em;
+    font-size: 1em;
     line-height: 1;
 }
 
@@ -7927,7 +7835,7 @@ Pulsazione con "effetto gemma"
     margin-bottom: 20px;
     font-family: 'Cinzel', serif;
     text-align: center;
-    font-weight: 600;
+    font-weight: 400;
     letter-spacing: 0.5px;
 
 }
@@ -7966,7 +7874,7 @@ Pulsazione con "effetto gemma"
     font-style: italic;
     color: #9ad0ff;
     font-size: 0.85rem;
-    font-weight: 700;
+    font-weight: 400;
     line-height: 1.4;
 }
 
@@ -8338,15 +8246,14 @@ Pulsazione con "effetto gemma"
         transform: scale(2.4);
     }
 }
-    </style>
+
+   </style>
   
 </head>
 
 <body>
 
-   
-
-<svg id="cosmic-background" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="100%" height="100%">
+ <svg id="cosmic-background" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="100%" height="100%">
   
   <defs>
     <!-- Sfondo -->
@@ -9051,7 +8958,7 @@ Pulsazione con "effetto gemma"
     <div id="filosofi-overlay">
         <h3>
             I Filosofi che hanno cambiato il paradigma
-            <span style="font-size: 1.5em; color: #00ccff;">▾</span>
+            <span style="font-size: 1em; color: #00ccff;">▾</span>
         </h3>
         <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
             
