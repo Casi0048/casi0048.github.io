@@ -893,7 +893,7 @@ mark,
 
 .menu-container {
     position: fixed;
-    top: 4.5rem;
+    top: 4rem;
     left: 0;
     width: 100%;
     display: flex;
@@ -8134,6 +8134,156 @@ Pulsazione con "effetto gemma"
     }
 }
 
+
+/* ============================================================
+   ECHI DI SOFIA — COLONNA VIVENTE
+   ============================================================ */
+
+.second-column {
+    position: fixed;
+
+    left: 15.5rem;
+    top: 5.5rem;
+
+    width: 13.5rem;
+    min-height: 20rem;
+
+    z-index: 80;
+
+    padding: 1rem;
+   box-sizing: border-box;
+
+   background-image:
+        url("https://casi0048.github.io/colonna2/socrate.webp");
+
+    background-position: center center;
+    background-size: 75% auto;
+    background-repeat: no-repeat;
+
+    border: 1px solid rgba(255, 215, 0, .18);
+    border-radius: .75rem;
+
+    backdrop-filter: blur(.38rem);
+    -webkit-backdrop-filter: blur(.38rem);
+
+    box-shadow:
+        0 .5rem 1.5rem rgba(0, 0, 0, .35);
+
+    overflow: hidden;
+}
+
+
+/* ============================================================
+   VELO SULL'IMMAGINE
+   ============================================================ */
+
+#echo-column::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background: rgba(8, 10, 25, .58);
+
+    z-index: 1;
+
+    pointer-events: none;
+}
+
+
+/* ============================================================
+   TITOLO
+   ============================================================ */
+
+#echo-title {
+    display: block;
+
+    position: relative;
+    z-index: 2;
+
+    margin-top: 3rem;
+    margin-bottom: .7rem;
+
+    padding: 0;
+
+    font-family: 'Cinzel Decorative', serif;
+    font-size: .9rem;
+    font-weight: 600;
+    line-height: 1.4;
+
+    color: #f3d37a;
+
+    text-align: center;
+
+    text-shadow:
+        0 1px 4px rgba(0, 0, 0, .85);
+
+    transition: opacity 1.2s ease;
+}
+
+
+/* ============================================================
+   NOME DEL FILOSOFO
+   ============================================================ */
+
+#echo-name {
+    display: block;
+
+    position: relative;
+    z-index: 2;
+
+    margin-bottom: .6rem;
+
+    font-family: 'Cinzel', serif;
+    font-size: .9rem;
+    font-weight: 600;
+
+    color: #f3d37a;
+
+    text-align: center;
+
+    text-shadow:
+        0 1px 4px rgba(0, 0, 0, .9);
+
+    transition: opacity 1.2s ease;
+}
+
+
+/* ============================================================
+   PENSIERO
+   ============================================================ */
+
+#echo-text {
+    position: relative;
+    z-index: 2;
+
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    line-height: 1.5;
+
+    color: var(--gold);                            #color: #fff2cf;
+
+    text-align: center;
+
+    opacity: .95;
+
+    text-shadow:
+        0 1px 5px rgba(0, 0, 0, .9);
+
+    transition:
+        opacity 1.2s ease,
+        transform 1.2s ease;
+}
+
+
+/* ============================================================
+   TRANSIZIONE ECHI
+   ============================================================ */
+
+.echo-changing {
+    opacity: 0 !important;
+    transform: translateY(5px);
+}
    </style>
   
 </head>
@@ -8740,6 +8890,40 @@ Pulsazione con "effetto gemma"
     </audio>
 
 </div>
+
+<div class="second-column" id="echo-column">
+
+    <div class="second-column-title" id="echo-title">
+        ✦ Echi
+    </div>
+
+    <div class="echo-name" id="echo-name"></div>
+
+    <div class="second-column-text" id="echo-text">
+        A volte una domanda
+        non cerca una risposta.<br>
+        Cerca qualcuno
+        che abbia il coraggio
+        di ascoltarla.
+    </div>
+
+</div>
+
+
+<script>
+document.getElementById('echo-portrait').style.display = 'block';
+document.getElementById('echo-portrait').style.opacity = '1';
+document.getElementById('echo-portrait').style.position = 'absolute';
+document.getElementById('echo-portrait').style.width = '100%';
+document.getElementById('echo-portrait').style.height = '100%';
+document.getElementById('echo-portrait').style.zIndex = '100';
+</script>
+
+
+
+
+
+
 <aside aria-label="Ultimi articoli" class="articles-blob">
   <h3>📰 Ultimi articoli</h3>
   <ul>
@@ -13397,9 +13581,7 @@ document.addEventListener('click', function (event) {
 
         </svg>
     `;
-
-
-    /* ========================================================
+/* ========================================================
        INSERIMENTO IMMEDIATO
        ======================================================== */
 
@@ -13447,7 +13629,223 @@ document.addEventListener('click', function (event) {
     );
 
 });
+</script>
+<script>
+/* ============================================================
+   ECHI DI SOFIA — COLONNA VIVENTE
+   ============================================================ */
 
+console.log("ECHI DI SOFIA — SCRIPT PARTITO");
+
+(function () {
+
+    const title = document.getElementById('echo-title');
+    const name = document.getElementById('echo-name');
+    const text = document.getElementById('echo-text');
+    const echoColumn = document.getElementById('echo-column');
+
+    if (!title || !name || !text || !echoColumn) {
+        console.warn("ECHI DI SOFIA — elementi mancanti");
+        return;
+    }
+
+
+    const echoes = [
+
+        {
+    title: '✦ UNA DOMANDA',
+    name: '',
+    text: 'È possibile essere liberi<br>senza sapere<br>che cosa desideriamo?'
+},
+
+{
+    title: '✦ UNA DOMANDA',
+    name: '',
+    text: 'Se nessuno ci osservasse,<br>cambieremmo<br>il modo di vivere?'
+},
+
+{
+    title: '📜 UN FRAMMENTO',
+    name: '',
+    text: 'Una risposta può chiudere<br>una domanda.<br><br>Una buona domanda<br>può aprire una vita.'
+},
+
+{
+    title: '📜 UN FRAMMENTO',
+    name: '',
+    text: 'Non ogni silenzio è vuoto.<br><br>Alcuni silenzi<br>stanno ancora pensando.'
+},
+        {
+            title: '🏛 IL FILOSOFO',
+            name: 'SOCRATE',
+            portrait: 'https://casi0048.github.io/colonna2/socrate.webp',
+            text: 'Non lasciò libri.<br>Lasciò domande.'
+        },
+
+        {
+            title: '🏛 IL FILOSOFO',
+            name: 'EPICURO',
+            portrait: 'https://casi0048.github.io/colonna2/epicuro.webp',
+            text: 'La felicità non è avere tutto.<br>È imparare a desiderare<br>ciò che basta.'
+        },
+
+        {
+            title: '🏛 IL FILOSOFO',
+            name: 'PLATONE',
+            portrait: 'https://casi0048.github.io/colonna2/platone.webp',
+            text: 'Cercare la verità<br>significa imparare<br>a guardare oltre le apparenze.'
+        },
+
+        {
+            title: '🏛 IL FILOSOFO',
+            name: 'ERACLITO',
+            portrait: 'https://casi0048.github.io/colonna2/eraclito.webp',
+            text: 'Tutto scorre.<br><br>Ma proprio nel mutamento<br>cerchiamo ciò che permane.'
+        },
+
+        {
+            title: '🏛 IL FILOSOFO',
+            name: 'MARCO AURELIO',
+            portrait: 'https://casi0048.github.io/colonna2/marco_aurelio.webp',
+            text: 'Hai potere sulla tua mente,<br>non sugli eventi esterni.<br><br>Ricordalo.'
+        },
+
+        {
+            title: '🏛 IL FILOSOFO',
+            name: 'NIETZSCHE',
+            portrait: 'https://casi0048.github.io/colonna2/nietzsche.webp',
+            text: 'Diventa ciò che sei.<br><br>Ma prima<br>abbi il coraggio di cercarti.'
+        },
+
+        {
+            title: '🏛 IL FILOSOFO',
+            name: 'KANT',
+            portrait: 'https://casi0048.github.io/colonna2/kant.webp',
+            text: 'Abbi il coraggio<br>di servirti della tua<br>propria ragione.'
+        },
+
+{
+    title: '🏛 IL FILOSOFO',
+    name: 'DIogene',
+    text: 'Possedere meno<br>può significare<br>avere più libertà.'
+},
+
+{
+    title: '🏛 IL FILOSOFO',
+    name: 'SENECA',
+    text: 'Non abbiamo poco tempo.<br><br>Ne perdiamo molto.'
+},
+
+{
+    title: '🏛 IL FILOSOFO',
+    name: 'MONTaIGNE',
+    text: 'Imparare a vivere<br>significa anche<br>imparare a dubitare.'
+},
+
+{
+    title: '🏛 IL FILOSOFO',
+    name: 'SPINOZA',
+    text: 'La libertà non è fare<br>ciò che vogliamo.<br><br>È comprendere<br>ciò che siamo.'
+},
+
+{
+    title: '🏛 IL FILOSOFO',
+    name: 'KIERKEGAARD',
+    text: 'La vita può essere compresa<br>solo guardando indietro.<br><br>Ma deve essere vissuta<br>guardando avanti.'
+},
+        {
+            title: '🌌 UN ECO',
+            text: 'Forse non cerchiamo risposte.<br><br>Cerchiamo domande<br>abbastanza profonde<br>da poterci abitare.'
+        },
+
+        {
+            title: '🌌 UN ECO',
+            text: 'Ogni filosofia comincia<br>nel momento in cui qualcosa<br>che sembrava ovvio<br>smette di esserlo.'
+        }
+
+    ];
+
+
+    let index = 0;
+
+
+    /* ========================================================
+       AGGIORNA IMMAGINE DI SFONDO
+       ======================================================== */
+
+  function updatePortrait() {
+
+    const current = echoes[index];
+
+    if (current.portrait) {
+
+        echoColumn.style.setProperty(
+            'background-image',
+            `url("${current.portrait}")`,
+            'important'
+        );
+
+        console.log(
+            "ECHI — cambio ritratto:",
+            current.name || "nessun filosofo",
+            current.portrait
+        );
+
+    } else {
+
+        echoColumn.style.setProperty(
+            'background-image',
+            'none',
+            'important'
+        );
+
+        console.log("ECHI — nessun ritratto");
+    }
+}
+
+
+    /* ========================================================
+       CAMBIO ECO
+       ======================================================== */
+
+    function changeEcho() {
+
+        title.classList.add('echo-changing');
+        name.classList.add('echo-changing');
+        text.classList.add('echo-changing');
+
+        setTimeout(() => {
+
+            index = (index + 1) % echoes.length;
+
+            title.innerHTML = echoes[index].title;
+            name.innerHTML = echoes[index].name || '';
+            text.innerHTML = echoes[index].text;
+
+            updatePortrait();
+
+            title.classList.remove('echo-changing');
+            name.classList.remove('echo-changing');
+            text.classList.remove('echo-changing');
+
+        }, 1200);
+    }
+
+
+    /* ========================================================
+       STATO INIZIALE
+       ======================================================== */
+
+    updatePortrait();
+
+
+    /* ========================================================
+       CICLO AUTOMATICO
+       ======================================================== */
+
+    setInterval(changeEcho, 10000);
+
+})();
 </script>
 
 </body>
