@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Filosofia Medievale — Echi di Sofia</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+/* ============================================================
+   ECHI DI SOFIA — FILOSOFIA MEDIEVALE
+   ============================================================ */
+
+:root {
+    --bg-primary: #080b14;
+    --bg-card: rgba(18, 20, 42, .82);
+    --bg-card-hover: rgba(27, 30, 58, .96);
+
+    --text-primary: rgba(239, 240, 244, .92);
+    --text-secondary: rgba(181, 192, 211, .78);
+    --text-muted: rgba(120, 132, 153, .65);
+
+    --gold: #f3d37a;
+    --gold-soft: rgba(243, 211, 122, .68);
+    --gold-dim: rgba(243, 211, 122, .10);
+
+    --gold-border: rgba(243, 211, 122, .17);
+    --gold-border-hover: rgba(243, 211, 122, .42);
+
+    --shadow: 0 16px 45px rgba(0, 0, 0, .42);
+
+    --radius: .75rem;
+    --transition: .28s cubic-bezier(.22, 1, .36, 1);
+}
+
+
+/* ============================================================
+   RESET
+   ============================================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
+    background: var(--bg-primary);
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            ellipse at 50% 0%,
+            rgba(32, 63, 88, .16),
+            transparent 48%
+        ),
+        linear-gradient(
+            180deg,
+            #080b14 0%,
+            #090d17 55%,
+            #070a11 100%
+        );
+
+    color: var(--text-primary);
+
+    font-family:
+        'Inter',
+        -apple-system,
+        BlinkMacSystemFont,
+        sans-serif;
+
+    line-height: 1.6;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--gold-border);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--gold);
+}
+
+
+/* ============================================================
+   CONTENITORE
+   ============================================================ */
+
+.page {
+    width: min(1180px, calc(100% - 48px));
+    margin: 0 auto;
+    padding: 2.2rem 0 5rem;
+}
+
+
+/* ============================================================
+   NAVIGAZIONE
+   ============================================================ */
+
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 4.5rem;
+
+    font-family: 'Inter', sans-serif;
+    font-size: .67rem;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+}
+
+.topbar a {
+    color: var(--gold-soft);
+    transition: color var(--transition);
+}
+
+.topbar a:hover {
+    color: var(--gold);
+}
+
+.topbar .back {
+    opacity: .72;
+}
+
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+.page-header {
+    margin-bottom: 3.3rem;
+
+    border-bottom: 1px solid var(--gold-border);
+    padding-bottom: 1.8rem;
+}
+
+.page-title {
+    font-family: 'Cinzel', serif;
+
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 600;
+
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+
+    color: var(--gold);
+
+    text-shadow:
+        0 0 35px rgba(243, 211, 122, .08);
+
+    margin-bottom: .5rem;
+}
+
+.page-subtitle {
+    max-width: 780px;
+
+    padding-left: 1.35rem;
+
+    border-left: 2px solid rgba(243, 211, 122, .65);
+
+    color: var(--text-secondary);
+
+    font-family: 'Cormorant Garamond', serif;
+
+    font-size: 1.2rem;
+    font-style: italic;
+    line-height: 1.55;
+}
+
+
+/* ============================================================
+   GRIGLIA
+   ============================================================ */
+
+.schools-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 1.4rem;
+
+    align-items: start;
+}
+
+
+/* ============================================================
+   CARD
+   ============================================================ */
+
+.school-card {
+    position: relative;
+    overflow: hidden;
+
+    padding: 1.45rem 1.45rem 1.25rem;
+
+    background: var(--bg-card);
+
+    border: 1px solid var(--gold-border);
+    border-radius: var(--radius);
+
+    backdrop-filter: blur(5px);
+
+    transition:
+        transform var(--transition),
+        background var(--transition),
+        border-color var(--transition),
+        box-shadow var(--transition);
+}
+
+.school-card::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 2px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--gold),
+            transparent
+        );
+
+    opacity: 0;
+
+    transition: opacity var(--transition);
+}
+
+.school-card:hover {
+    transform: translateY(-3px);
+
+    background: var(--bg-card-hover);
+
+    border-color: var(--gold-border-hover);
+
+    box-shadow: var(--shadow);
+}
+
+.school-card:hover::before {
+    opacity: .9;
+}
+
+
+/* ============================================================
+   TITOLO CARD
+   ============================================================ */
+
+.school-name {
+    display: flex;
+    align-items: center;
+
+    gap: .65rem;
+
+    margin-bottom: 1rem;
+
+    font-family: 'Cinzel', serif;
+
+    font-size: 1rem;
+    font-weight: 600;
+
+    letter-spacing: .35px;
+
+    color: var(--gold);
+}
+
+.school-icon {
+    font-size: 1.15rem;
+    opacity: .82;
+    flex-shrink: 0;
+}
+
+
+/* ============================================================
+   FILOSOFI
+   ============================================================ */
+
+.philosophers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .38rem;
+}
+
+.philosopher {
+    display: inline-block;
+
+    padding: .23rem .62rem;
+
+    border: 1px solid rgba(255,255,255,.055);
+    border-radius: 999px;
+
+    background: rgba(255,255,255,.035);
+
+    color: var(--text-secondary);
+
+    font-family: 'Inter', sans-serif;
+
+    font-size: .82rem;
+    font-weight: 400;
+
+    transition:
+        color var(--transition),
+        background var(--transition),
+        border-color var(--transition),
+        transform var(--transition);
+}
+
+.philosopher:hover {
+    color: #fff;
+
+    background: var(--gold-dim);
+
+    border-color: var(--gold-border);
+
+    transform: translateY(-1px);
+}
+
+
+/* ============================================================
+   SEZIONI MULTIPLE NELLA STESSA CARD
+   ============================================================ */
+
+.subsection + .subsection {
+    margin-top: 1.35rem;
+    padding-top: 1.15rem;
+
+    border-top:
+        1px solid rgba(243,211,122,.10);
+}
+
+.subsection-title {
+    margin-bottom: .7rem;
+
+    font-family: 'Cinzel', serif;
+
+    font-size: .72rem;
+    font-weight: 600;
+
+    letter-spacing: .08em;
+    text-transform: uppercase;
+
+    color: var(--gold-soft);
+}
+
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+
+.footer {
+    margin-top: 5rem;
+
+    padding-top: 1.2rem;
+
+    border-top:
+        1px solid rgba(243,211,122,.08);
+
+    text-align: center;
+
+    color: var(--text-muted);
+
+    font-family: 'Inter', sans-serif;
+
+    font-size: .62rem;
+
+    letter-spacing: .14em;
+    text-transform: uppercase;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 980px) {
+
+    .schools-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 680px) {
+
+    .page {
+        width: calc(100% - 30px);
+        padding-top: 1.5rem;
+    }
+
+    .topbar {
+        margin-bottom: 3.2rem;
+    }
+
+    .schools-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .page-title {
+        font-size: 1.8rem;
+        letter-spacing: 1.5px;
+    }
+
+    .page-subtitle {
+        font-size: 1.05rem;
+    }
+}
+
+
+/* ============================================================
+   ACCESSIBILITÀ
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        transition: none !important;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="page">
+
+
+    <!-- ========================================================
+         NAVIGAZIONE
+         ======================================================== -->
+
+    <nav class="topbar">
+
+        <a class="back" href="../index.html">
+            ← Incipit
+        </a>
+
+        <a href="../index.html">
+            Echi di Sofia
+        </a>
+
+    </nav>
+
+
+    <!-- ========================================================
+         TESTATA
+         ======================================================== -->
+
+    <header class="page-header">
+
+        <h1 class="page-title">
+            Filosofia Medievale
+        </h1>
+
+        <p class="page-subtitle">
+            Tra fede e ragione, eredità antiche e nuove visioni del mondo:
+            il pensiero medievale cerca nella filosofia una via
+            verso Dio, l'uomo e l'ordine della realtà.
+        </p>
+
+    </header>
+
+
+    <!-- ========================================================
+         SCUOLE E CORRENTI
+         ======================================================== -->
+
+    <main class="schools-grid">
+
+
+        <!-- SCOLASTICA -->
+
+        <section class="school-card">
+
+            <h2 class="school-name">
+                <span class="school-icon">⛪</span>
+                Scolastica
+            </h2>
+
+            <div class="philosophers">
+
+                <a class="philosopher" href="../articoli/eriugena.html">
+                    Giovanni Scoto Eriugena
+                </a>
+
+                <a class="philosopher" href="../articoli/anselmo.html">
+                    Sant'Anselmo d'Aosta
+                </a>
+
+                <a class="philosopher" href="../articoli/abelardo.html">
+                    Pietro Abelardo
+                </a>
+
+                <a class="philosopher" href="../articoli/alberto-m.html">
+                    Alberto Magno
+                </a>
+
+                <a class="philosopher" href="../articoli/tommaso%20d'aquino.html">
+                    Tommaso d'Aquino
+                </a>
+
+                <a class="philosopher" href="../articoli/bonaventura.html">
+                    Bonaventura da Bagnoregio
+                </a>
+
+                <a class="philosopher" href="../articoli/duns%20scoto.html">
+                    Duns Scoto
+                </a>
+
+                <a class="philosopher" href="../articoli/ockham.html">
+                    Guglielmo di Ockham
+                </a>
+
+                <a class="philosopher" href="../articoli/buridano.html">
+                    Giovanni Buridano
+                </a>
+
+                <a class="philosopher" href="../articoli/oresome.html">
+                    Nicola d'Oresme
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- PATRISTICA -->
+
+        <section class="school-card">
+
+            <h2 class="school-name">
+                <span class="school-icon">✦</span>
+                Patristica
+            </h2>
+
+            <div class="philosophers">
+
+                <a class="philosopher" href="../articoli/clemente.html">
+                    Clemente Alessandrino
+                </a>
+
+                <a class="philosopher" href="../articoli/tertulliano.html">
+                    Tertulliano
+                </a>
+
+                <a class="philosopher" href="../articoli/origene.html">
+                    Origene
+                </a>
+
+                <a class="philosopher" href="../articoli/cipriano.html">
+                    Cipriano di Cartagine
+                </a>
+
+                <a class="philosopher" href="../articoli/atanasio.html">
+                    Atanasio di Alessandria
+                </a>
+
+                <a class="philosopher" href="../articoli/basilio.html">
+                    Basilio di Cesarea
+                </a>
+
+                <a class="philosopher" href="../articoli/gregorio-di-nazianzo.html">
+                    Gregorio di Nazianzo
+                </a>
+
+                <a class="philosopher" href="../articoli/gregorio-di-nizza.html">
+                    Gregorio di Nissa
+                </a>
+
+                <a class="philosopher" href="../articoli/ambrogio.html">
+                    Ambrogio di Milano
+                </a>
+
+                <a class="philosopher" href="../articoli/girolamo.html">
+                    Girolamo
+                </a>
+
+                <a class="philosopher" href="../articoli/agostino.html">
+                    Agostino
+                </a>
+
+                <a class="philosopher" href="../articoli/pseudo-dionigi.html">
+                    Pseudo-Dionigi Areopagita
+                </a>
+
+                <a class="philosopher" href="../articoli/boezio.html">
+                    Boezio
+                </a>
+
+                <!-- Nel menu originale il collegamento era
+                     erroneamente al file alberto-m.html.
+                     Se esiste il file corretto, sostituirlo qui. -->
+
+                <a class="philosopher" href="../articoli/gregorio-magno.html">
+                    Gregorio Magno
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- MISTICA + ISLAMICA -->
+
+        <section class="school-card">
+
+            <div class="subsection">
+
+                <h2 class="school-name">
+                    <span class="school-icon">🌙</span>
+                    Mistica
+                </h2>
+
+                <div class="philosophers">
+
+                    <a class="philosopher" href="../articoli/ildegarda.html">
+                        Ildegarda di Bingen
+                    </a>
+
+                    <a class="philosopher" href="../articoli/eckhart.html">
+                        Meister Eckhart
+                    </a>
+
+                    <a class="philosopher" href="../articoli/caterina.html">
+                        Caterina da Siena
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="subsection">
+
+                <h2 class="subsection-title">
+                    Filosofia islamica
+                </h2>
+
+                <div class="philosophers">
+
+                    <a class="philosopher" href="../articoli/avicenna.html">
+                        Avicenna
+                    </a>
+
+                    <a class="philosopher" href="../articoli/averroe.html">
+                        Averroè
+                    </a>
+
+                    <a class="philosopher" href="../articoli/al-farabi.html">
+                        Al-Farabi
+                    </a>
+
+                    <a class="philosopher" href="../articoli/al-ghazali.html">
+                        Al-Ghazali
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- FILOSOFIA EBRAICA -->
+
+        <section class="school-card">
+
+            <h2 class="school-name">
+                <span class="school-icon">✡</span>
+                Filosofia ebraica
+            </h2>
+
+            <div class="philosophers">
+
+                <a class="philosopher" href="../articoli/maimonide.html">
+                    Maimonide
+                </a>
+
+                <a class="philosopher" href="../articoli/saadia%20goan.html">
+                    Saadia Gaon
+                </a>
+
+                <a class="philosopher" href="../articoli/gersonide.html">
+                    Gersonide
+                </a>
+
+                <a class="philosopher" href="../articoli/hasdai%20crescas.html">
+                    Hasdai Crescas
+                </a>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+    <!-- ========================================================
+         FOOTER
+         ======================================================== -->
+
+    <footer class="footer">
+        Echi di Sofia · Filosofia medievale
+    </footer>
+
+
+</div>
+
+</body>
+</html>
