@@ -1,15 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="it">
-
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>Filosofia Moderna — Echi di Sofia</title>
+<title>Filosofia Antica — Echi di Sofia</title>
 <!-- ==================== FAVICONS & MANIFEST (PWA READY) ==================== -->
   <link rel="icon" type="image/svg+xml" href="/favicon_io/favicon.svg">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon_io/favicon-32x32.png">
@@ -18,618 +13,632 @@
   <link rel="manifest" href="/favicon_io/site.webmanifest">
   <meta name="theme-color" content="#0b0f19">
   <meta name="msapplication-TileColor" content="#0b0f19">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- ============================================================
-         FONT
-         ============================================================ -->
+<style>
 
-    <link rel="preconnect"
-          href="https://fonts.googleapis.com">
+/* ============================================================
+   ECHI DI SOFIA — FILOSOFIA ANTICA
+   CARD EDITORIAL V1
+   ============================================================ */
 
-    <link rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossorigin>
+:root {
+    --bg-primary: #080b14;
+    --bg-secondary: #101326;
 
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,600&family=Inter:wght@300;400;500;600;700&display=swap"
-          rel="stylesheet">
+    --bg-card: rgba(18, 20, 42, .82);
+    --bg-card-hover: rgba(27, 30, 58, .96);
 
+    --text-primary: rgba(239, 240, 244, .92);
+    --text-secondary: rgba(181, 192, 211, .78);
+    --text-muted: rgba(120, 132, 153, .65);
 
-    <style>
+    --gold: #f3d37a;
+    --gold-soft: rgba(243, 211, 122, .68);
+    --gold-dim: rgba(243, 211, 122, .10);
 
-        /* ============================================================
-           VARIABILI
-           ============================================================ */
+    --gold-border: rgba(243, 211, 122, .17);
+    --gold-border-hover: rgba(243, 211, 122, .42);
 
-        :root {
+    --shadow:
+        0 16px 45px rgba(0, 0, 0, .42);
 
-            --bg-primary: #0a0a1a;
-            --bg-secondary: #12122a;
+    --radius: .75rem;
 
-            --bg-card: rgba(20, 20, 45, 0.85);
-            --bg-card-hover: rgba(30, 30, 60, 0.95);
+    --transition:
+        .28s cubic-bezier(.22, 1, .36, 1);
+}
 
-            --text-primary: #e9eef5;
-            --text-secondary: #a8b8d0;
-            --text-muted: #6a7a90;
 
-            --gold: #ffd86a;
+/* ============================================================
+   RESET
+   ============================================================ */
 
-            --gold-dim:
-                rgba(255, 215, 0, 0.10);
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-            --gold-border:
-                rgba(255, 215, 0, 0.18);
+html {
+    min-height: 100%;
+    background: var(--bg-primary);
 
-            --gold-border-hover:
-                rgba(255, 215, 0, 0.45);
+    scroll-behavior: smooth;
+}
 
-            --shadow:
-                0 12px 40px rgba(0, 0, 0, 0.6);
+body {
+    min-height: 100vh;
 
-            --radius:
-                0.75rem;
+    background:
+        radial-gradient(
+            ellipse at 50% 0%,
+            rgba(32, 63, 88, .16),
+            transparent 48%
+        ),
+        linear-gradient(
+            180deg,
+            #080b14 0%,
+            #090d17 55%,
+            #070a11 100%
+        );
 
-            --transition:
-                0.3s cubic-bezier(.22, 1, .36, 1);
-        }
+    color: var(--text-primary);
 
+    font-family:
+        'Inter',
+        -apple-system,
+        BlinkMacSystemFont,
+        sans-serif;
 
-        /* ============================================================
-           RESET
-           ============================================================ */
+    line-height: 1.6;
+}
 
-        * {
+a {
+    color: inherit;
+    text-decoration: none;
+}
 
-            margin: 0;
-            padding: 0;
 
-            box-sizing: border-box;
-        }
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
 
+::-webkit-scrollbar {
+    width: 5px;
+}
 
-        html,
-        body {
+::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+}
 
-            background:
-                var(--bg-primary);
+::-webkit-scrollbar-thumb {
+    background: var(--gold-border);
+    border-radius: 4px;
+}
 
-            color:
-                var(--text-primary);
+::-webkit-scrollbar-thumb:hover {
+    background: var(--gold);
+}
 
-            font-family:
-                'Inter',
-                -apple-system,
-                BlinkMacSystemFont,
-                sans-serif;
 
-            font-size:
-                16px;
+/* ============================================================
+   CONTENITORE PRINCIPALE
+   ============================================================ */
 
-            line-height:
-                1.6;
+.page {
+    width: min(1180px, calc(100% - 48px));
 
-            min-height:
-                100vh;
+    margin: 0 auto;
 
-            scroll-behavior:
-                smooth;
-        }
+    padding:
+        2.2rem
+        0
+        5rem;
+}
 
 
-        a {
+/* ============================================================
+   TOP NAVIGATION
+   ============================================================ */
 
-            color:
-                var(--gold);
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-            text-decoration:
-                none;
+    margin-bottom: 4.5rem;
 
-            transition:
-                color var(--transition);
-        }
+    font-family: 'Inter', sans-serif;
 
+    font-size: .67rem;
 
-        /* ============================================================
-           SCROLLBAR
-           ============================================================ */
+    letter-spacing: .16em;
 
-        ::-webkit-scrollbar {
+    text-transform: uppercase;
+}
 
-            width:
-                5px;
+.topbar a {
+    color: var(--gold-soft);
 
-            height:
-                5px;
-        }
+    transition:
+        color var(--transition),
+        opacity var(--transition);
+}
 
+.topbar a:hover {
+    color: var(--gold);
+}
 
-        ::-webkit-scrollbar-track {
+.topbar .back {
+    opacity: .72;
+}
 
-            background:
-                var(--bg-primary);
-        }
 
+/* ============================================================
+   HEADER
+   ============================================================ */
 
-        ::-webkit-scrollbar-thumb {
+.page-header {
+    margin-bottom: 3.3rem;
 
-            background:
-                var(--gold-border);
+    border-bottom:
+        1px solid var(--gold-border);
 
-            border-radius:
-                3px;
-        }
+    padding-bottom: 1.8rem;
+}
 
+.page-title {
+    font-family: 'Cinzel', serif;
 
-        ::-webkit-scrollbar-thumb:hover {
+    font-size:
+        clamp(2rem, 4vw, 3rem);
 
-            background:
-                var(--gold);
-        }
+    font-weight: 600;
 
+    letter-spacing: 2.5px;
 
-        /* ============================================================
-           CONTENITORE
-           ============================================================ */
+    text-transform: uppercase;
 
-        .page {
+    color: var(--gold);
 
-            width:
-                min(1400px, 100%);
+    text-shadow:
+        0 0 35px rgba(243, 211, 122, .08);
 
-            margin:
-                0 auto;
+    margin-bottom: .5rem;
+}
 
-            padding:
-                4rem 3rem 5rem;
-        }
+.page-subtitle {
+    max-width: 720px;
 
+    padding-left: 1.35rem;
 
-        /* ============================================================
-           TESTATA
-           ============================================================ */
+    border-left:
+        2px solid rgba(243, 211, 122, .65);
 
-        .page-header {
+    color: var(--text-secondary);
 
-            margin-bottom:
-                3rem;
+    font-family:
+        'Cormorant Garamond',
+        serif;
 
-            padding-bottom:
-                1.8rem;
+    font-size: 1.2rem;
 
-            border-bottom:
-                1px solid var(--gold-border);
-        }
+    font-style: italic;
 
+    line-height: 1.55;
+}
 
-        .site-name {
 
-            font-family:
-                'Cinzel',
-                serif;
+/* ============================================================
+   GRIGLIA DELLE SCUOLE
+   ============================================================ */
 
-            font-size:
-                0.85rem;
+.schools-grid {
+    display: grid;
 
-            font-weight:
-                600;
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
 
-            letter-spacing:
-                0.25em;
+    gap: 1.4rem;
 
-            text-transform:
-                uppercase;
+    margin-top: .5rem;
+}
 
-            color:
-                var(--text-muted);
 
-            margin-bottom:
-                1rem;
-        }
+/* ============================================================
+   CARD
+   ============================================================ */
 
+.school-card {
+    position: relative;
 
-        .page-title {
+    overflow: hidden;
 
-            font-family:
-                'Cinzel',
-                serif;
+    padding:
+        1.45rem
+        1.45rem
+        1.25rem;
 
-            font-size:
-                clamp(2rem, 4vw, 3.2rem);
+    background: var(--bg-card);
 
-            font-weight:
-                700;
+    border:
+        1px solid var(--gold-border);
 
-            letter-spacing:
-                0.08em;
+    border-radius: var(--radius);
 
-            text-transform:
-                uppercase;
+    backdrop-filter: blur(5px);
 
-            color:
-                var(--gold);
+    transition:
+        transform var(--transition),
+        background var(--transition),
+        border-color var(--transition),
+        box-shadow var(--transition);
+}
 
-            text-shadow:
-                0 0 40px
-                rgba(255, 215, 0, 0.08);
 
-            margin-bottom:
-                0.7rem;
-        }
+/* linea luminosa superiore */
 
+.school-card::before {
+    content: "";
 
-        .page-subtitle {
+    position: absolute;
 
-            font-family:
-                'Cormorant Garamond',
-                serif;
+    top: 0;
+    left: 0;
 
-            font-size:
-                1.25rem;
+    width: 100%;
+    height: 2px;
 
-            font-style:
-                italic;
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--gold),
+            transparent
+        );
 
-            color:
-                var(--text-secondary);
+    opacity: 0;
 
-            max-width:
-                760px;
+    transition:
+        opacity var(--transition);
+}
 
-            line-height:
-                1.55;
 
-            padding-left:
-                1.3rem;
+/* hover */
 
-            border-left:
-                2px solid var(--gold);
-        }
+.school-card:hover {
+    transform: translateY(-3px);
 
+    background:
+        var(--bg-card-hover);
 
-        /* ============================================================
-           GRIGLIA
-           ============================================================ */
+    border-color:
+        var(--gold-border-hover);
 
-        .scuole-grid {
+    box-shadow:
+        var(--shadow);
+}
 
-            display:
-                grid;
+.school-card:hover::before {
+    opacity: .9;
+}
 
-            grid-template-columns:
-                repeat(3, minmax(0, 1fr));
 
-            gap:
-                1.4rem;
+/* ============================================================
+   TITOLO SCUOLA
+   ============================================================ */
 
-            align-items:
-                start;
-        }
+.school-name {
+    display: flex;
 
+    align-items: center;
 
-        /* ============================================================
-           CARD
-           ============================================================ */
+    gap: .65rem;
 
-        .scuola-card {
+    margin-bottom: 1rem;
 
-            position:
-                relative;
+    font-family:
+        'Cinzel',
+        serif;
 
-            background:
-                var(--bg-card);
+    font-size: 1rem;
 
-            border:
-                1px solid var(--gold-border);
+    font-weight: 600;
 
-            border-radius:
-                var(--radius);
+    letter-spacing: .35px;
 
-            padding:
-                1.45rem 1.45rem 1.3rem;
+    color: var(--gold);
+}
 
-            backdrop-filter:
-                blur(4px);
+.school-icon {
+    font-size: 1.15rem;
 
-            overflow:
-                hidden;
+    opacity: .82;
 
-            transition:
-                transform var(--transition),
-                background var(--transition),
-                border-color var(--transition),
-                box-shadow var(--transition);
-        }
+    flex-shrink: 0;
+}
 
 
-        .scuola-card::before {
+/* ============================================================
+   LISTA FILOSOFI
+   ============================================================ */
 
-            content:
-                '';
+.philosophers {
+    display: flex;
 
-            position:
-                absolute;
+    flex-wrap: wrap;
 
-            top:
-                0;
+    gap: .38rem;
+}
 
-            left:
-                0;
+.philosopher {
+    display: inline-block;
 
-            width:
-                100%;
+    padding:
+        .23rem
+        .62rem;
 
-            height:
-                2px;
+    border:
+        1px solid rgba(255,255,255,.055);
 
-            background:
-                linear-gradient(
-                    90deg,
-                    transparent,
-                    var(--gold),
-                    transparent
-                );
+    border-radius: 999px;
 
-            opacity:
-                0;
+    background:
+        rgba(255,255,255,.035);
 
-            transition:
-                opacity var(--transition);
-        }
+    color:
+        var(--text-secondary);
 
+    font-family:
+        'Inter',
+        sans-serif;
 
-        .scuola-card:hover {
+    font-size: .82rem;
 
-            transform:
-                translateY(-4px);
+    font-weight: 400;
 
-            background:
-                var(--bg-card-hover);
+    transition:
+        color var(--transition),
+        background var(--transition),
+        border-color var(--transition),
+        transform var(--transition);
+}
 
-            border-color:
-                var(--gold-border-hover);
+.philosopher:hover {
+    color: #fff;
 
-            box-shadow:
-                var(--shadow);
-        }
+    background:
+        var(--gold-dim);
 
+    border-color:
+        var(--gold-border);
 
-        .scuola-card:hover::before {
+    transform:
+        translateY(-1px);
+}
 
-            opacity:
-                1;
-        }
 
+/* ============================================================
+   STORIOGRAFIA
+   ============================================================ */
 
-        /* ============================================================
-           TITOLO CARD
-           ============================================================ */
+.history {
+    margin-top: 3.8rem;
 
-        .scuola-name {
+    padding-top: 1.4rem;
 
-            display:
-                flex;
+    border-top:
+        1px solid var(--gold-border);
 
-            align-items:
-                center;
+    text-align: center;
+}
 
-            gap:
-                0.6rem;
+.section-label {
+    margin-bottom: 1rem;
 
-            margin-bottom:
-                0.9rem;
+    font-family:
+        'Cinzel',
+        serif;
 
-            font-family:
-                'Cinzel',
-                serif;
+    font-size: .78rem;
 
-            font-size:
-                1rem;
+    font-weight: 600;
 
-            font-weight:
-                600;
+    letter-spacing: .15em;
 
-            letter-spacing:
-                0.03em;
+    text-transform: uppercase;
 
-            color:
-                var(--gold);
-        }
+    color: var(--gold);
+}
 
+.history-links {
+    display: flex;
 
-        .scuola-name .icon {
+    justify-content: center;
 
-            font-size:
-                1.15rem;
+    flex-wrap: wrap;
 
-            opacity:
-                0.85;
+    gap: .5rem 1.3rem;
+}
 
-            flex-shrink:
-                0;
-        }
+.history-links a {
+    color: var(--text-secondary);
 
+    font-family:
+        'Cormorant Garamond',
+        serif;
 
-        /* ============================================================
-           FILOSOFI
-           ============================================================ */
+    font-size: 1.12rem;
 
-        .filosofi-list {
+    transition:
+        color var(--transition);
+}
 
-            display:
-                flex;
+.history-links a:hover {
+    color: var(--gold);
+}
 
-            flex-wrap:
-                wrap;
 
-            gap:
-                0.35rem;
-        }
+/* ============================================================
+   APPROFONDIMENTI
+   ============================================================ */
 
+.deepening {
+    margin-top: 3.2rem;
 
-        .filosofo {
+    padding-top: 1.5rem;
 
-            display:
-                inline-block;
+    border-top:
+        1px solid var(--gold-border);
+}
 
-            font-size:
-                0.84rem;
+.deepening .section-label {
+    text-align: center;
+}
 
-            font-weight:
-                400;
+.deepening-links {
+    display: grid;
 
-            color:
-                var(--text-secondary);
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
 
-            padding:
-                0.2rem 0.58rem;
+    gap: .55rem 3rem;
+}
 
-            border-radius:
-                1.5rem;
+.deepening-links a {
+    color: var(--text-secondary);
 
-            background:
-                rgba(255, 255, 255, 0.035);
+    font-family:
+        'Cormorant Garamond',
+        serif;
 
-            border:
-                1px solid
-                rgba(255, 255, 255, 0.045);
+    font-size: 1.05rem;
 
-            transition:
-                all var(--transition);
-        }
+    transition:
+        color var(--transition),
+        transform var(--transition);
+}
 
+.deepening-links a:hover {
+    color: var(--gold);
 
-        .filosofo:hover {
+    transform:
+        translateX(3px);
+}
 
-            color:
-                #fff;
 
-            background:
-                var(--gold-dim);
+/* ============================================================
+   FOOTER
+   ============================================================ */
 
-            border-color:
-                var(--gold-border);
+.footer {
+    margin-top: 5rem;
 
-            transform:
-                scale(1.03);
-        }
+    padding-top: 1.2rem;
 
+    border-top:
+        1px solid rgba(243,211,122,.08);
 
-        /* ============================================================
-           RESPONSIVE
-           ============================================================ */
+    text-align: center;
 
-        @media (max-width: 1050px) {
+    color:
+        var(--text-muted);
 
-            .page {
+    font-family:
+        'Inter',
+        sans-serif;
 
-                padding:
-                    3rem 2rem 4rem;
-            }
+    font-size: .62rem;
 
-            .scuole-grid {
+    letter-spacing: .14em;
 
-                grid-template-columns:
-                    repeat(2, minmax(0, 1fr));
-            }
-        }
+    text-transform: uppercase;
+}
 
 
-        @media (max-width: 700px) {
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
 
-            .page {
+@media (max-width: 980px) {
 
-                padding:
-                    2rem 1rem 3rem;
-            }
+    .schools-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+}
 
-            .page-header {
+@media (max-width: 680px) {
 
-                margin-bottom:
-                    2rem;
-            }
+    .page {
+        width:
+            calc(100% - 30px);
 
-            .page-title {
+        padding-top: 1.5rem;
+    }
 
-                font-size:
-                    1.8rem;
+    .topbar {
+        margin-bottom: 3.2rem;
+    }
 
-                letter-spacing:
-                    0.05em;
-            }
+    .schools-grid {
+        grid-template-columns: 1fr;
 
-            .page-subtitle {
+        gap: 1rem;
+    }
 
-                font-size:
-                    1.05rem;
+    .page-title {
+        font-size: 1.8rem;
 
-                padding-left:
-                    0.9rem;
-            }
+        letter-spacing: 1.5px;
+    }
 
-            .scuole-grid {
+    .page-subtitle {
+        font-size: 1.05rem;
+    }
 
-                grid-template-columns:
-                    1fr;
+    .deepening-links {
+        grid-template-columns: 1fr;
+    }
+}
 
-                gap:
-                    1rem;
-            }
-        }
 
+/* ============================================================
+   RIDUZIONE MOVIMENTO
+   ============================================================ */
 
-        @media (max-width: 420px) {
+@media (prefers-reduced-motion: reduce) {
 
-            .page-title {
+    *,
+    *::before,
+    *::after {
+        transition: none !important;
+    }
 
-                font-size:
-                    1.5rem;
-            }
+}
 
-            .scuola-card {
-
-                padding:
-                    1.1rem;
-            }
-
-            .filosofo {
-
-                font-size:
-                    0.8rem;
-            }
-        }
-
-
-        /* ============================================================
-           ACCESSIBILITÀ
-           ============================================================ */
-
-        @media (prefers-reduced-motion: reduce) {
-
-            *,
-            *::before,
-            *::after {
-
-                animation-duration:
-                    0.01ms !important;
-
-                transition-duration:
-                    0.01ms !important;
-            }
-        }
-
-    </style>
-
+</style>
 </head>
+
+
 <body>
+
+
 <div class="page">
+
 <nav class="topbar">
 
-        <a
-            class="back"
-            href="../index.html">
-            ← Echi di Sofia
-        </a>
+    <a
+        class="back"
+        href="../index.html">
+        ← Echi di Sofia
+    </a>
+
+</nav>
 
     <!-- ============================================================
          HEADER
@@ -642,97 +651,58 @@
         </div>
 
         <h1 class="page-title">
-            Filosofia Moderna
+            Filosofia Antica
         </h1>
 
         <p class="page-subtitle">
-            Dalla riscoperta dell'uomo e della ragione alla nascita
-            della scienza moderna, dall'Illuminismo alle grandi
-            correnti che hanno trasformato il pensiero occidentale.
+            Dalle prime domande sulla natura e sull'origine delle cose
+            alla nascita della filosofia come ricerca dell'uomo,
+            del cosmo e della verità.
         </p>
 
     </header>
 
 
-    <!-- ============================================================
-         SCUOLE FILOSOFICHE
-         ============================================================ -->
+    <!-- ========================================================
+         SCUOLE
+         ======================================================== -->
 
-    <main class="scuole-grid">
-
-
-        <!-- ========================================================
-             RINASCIMENTO
-             ======================================================== -->
-
-        <section class="scuola-card">
-
-            <div class="scuola-name">
-
-                <span class="icon">🌿</span>
-
-                Rinascimento
-
-            </div>
+    <main class="schools-grid">
 
 
-            <div class="filosofi-list">
+        <!-- PRESOCRATICI -->
 
-                <a class="filosofo"
-                   href="../articoli/erasmo.html">
-                    Erasmo da Rotterdam
+        <section class="school-card">
+
+            <h2 class="school-name">
+                <span class="school-icon">🌿</span>
+                Presocratici
+            </h2>
+
+            <div class="philosophers">
+
+                <a
+                    class="philosopher"
+                    href="../Presocratici/talete.html">
+                    Talete
                 </a>
 
-                <a class="filosofo"
-                   href="../articoli/machiavelli.html">
-                    Niccolò Machiavelli
+                <a
+                    class="philosopher"
+                    href="../Presocratici/anassimandro.html">
+                    Anassimandro
                 </a>
 
-                <a class="filosofo"
-                   href="../articoli/moro.html">
-                    Tommaso Moro
+                <a
+                    class="philosopher"
+                    href="../Presocratici/anassimene.html">
+                    Anassimene
                 </a>
 
-                <a class="filosofo"
-                   href="../articoli/bruno.html">
-                    Giordano Bruno
-                </a>
-
-            </div>
-
-        </section>
-
-
-        <!-- ========================================================
-             RAZIONALISMO
-             ======================================================== -->
-
-        <section class="scuola-card">
-
-            <div class="scuola-name">
-
-                <span class="icon">🧠</span>
-
-                Razionalismo
-
-            </div>
-
-
-            <div class="filosofi-list">
-
-                <a class="filosofo"
-                   href="../articoli/cartesio.html">
-                    Cartesio
-                </a>
-
-                <a class="filosofo"
-                   href="../articoli/spinoza.html">
-                    Spinoza
-                </a>
-
-                <a class="filosofo"
-                   href="../articoli/leibniz.html">
-                    Leibniz
+                <a
+                    class="philosopher"
+                    href="../articoli/eraclito.html">
+                    Eraclito
                 </a>
 
             </div>
@@ -740,73 +710,39 @@
         </section>
 
 
-        <!-- ========================================================
-             EMPIRISMO
-             ======================================================== -->
+        <!-- ELEATISMO -->
 
-        <section class="scuola-card">
+        <section class="school-card">
 
-            <div class="scuola-name">
+            <h2 class="school-name">
+                <span class="school-icon">⚡</span>
+                Eleatismo
+            </h2>
 
-                <span class="icon">🔎</span>
+            <div class="philosophers">
 
-                Empirismo
-
-            </div>
-
-
-            <div class="filosofi-list">
-
-                <a class="filosofo"
-                   href="../articoli/locke.html">
-                    Locke
+                <a
+                    class="philosopher"
+                    href="../Presocratici/senofane.html">
+                    Senofane
                 </a>
 
-                <a class="filosofo"
-                   href="../articoli/hume.html">
-                    Hume
+                <a
+                    class="philosopher"
+                    href="../Presocratici/parmenide.html">
+                    Parmenide
                 </a>
 
-                <a class="filosofo"
-                   href="../articoli/berkeley.html">
-                    Berkeley
+                <a
+                    class="philosopher"
+                    href="../articoli/zenone.html">
+                    Zenone
                 </a>
 
-            </div>
-
-        </section>
-
-
-        <!-- ========================================================
-             ILLUMINISMO
-             ======================================================== -->
-
-        <section class="scuola-card">
-
-            <div class="scuola-name">
-
-                <span class="icon">💡</span>
-
-                Illuminismo
-
-            </div>
-
-
-            <div class="filosofi-list">
-
-                <a class="filosofo"
-                   href="../articoli/rousseau.html">
-                    Rousseau
-                </a>
-
-                <a class="filosofo"
-                   href="../articoli/montesquieu.html">
-                    Montesquieu
-                </a>
-
-                <a class="filosofo"
-                   href="../articoli/voltaire.html">
-                    Voltaire
+                <a
+                    class="philosopher"
+                    href="../articoli/melisso.html">
+                    Melisso
                 </a>
 
             </div>
@@ -814,41 +750,33 @@
         </section>
 
 
-        <!-- ========================================================
-             IDEALISMO
-             ======================================================== -->
+        <!-- SOFISTI -->
 
-        <section class="scuola-card">
+        <section class="school-card">
 
-            <div class="scuola-name">
+            <h2 class="school-name">
+                <span class="school-icon">🗣</span>
+                Sofisti
+            </h2>
 
-                <span class="icon">✨</span>
+            <div class="philosophers">
 
-                Idealismo
-
-            </div>
-
-
-            <div class="filosofi-list">
-
-                <a class="filosofo"
-                   href="../articoli/kant.html">
-                    Kant
+                <a
+                    class="philosopher"
+                    href="../articoli/gorgia.html">
+                    Gorgia
                 </a>
 
-                <a class="filosofo"
-                   href="../articoli/hegel.html">
-                    Hegel
+                <a
+                    class="philosopher"
+                    href="../articoli/ippia.html">
+                    Ippia
                 </a>
 
-                <a class="filosofo"
-                   href="../articoli/fichte.html">
-                    Fichte
-                </a>
-
-                <a class="filosofo"
-                   href="../articoli/schelling.html">
-                    Schelling
+                <a
+                    class="philosopher"
+                    href="../articoli/prodico.html">
+                    Prodico
                 </a>
 
             </div>
@@ -856,73 +784,45 @@
         </section>
 
 
-        <!-- ========================================================
-             MATERIALISMO
-             ======================================================== -->
+        <!-- PITAGORICI -->
 
-        <section class="scuola-card">
+        <section class="school-card">
 
-            <div class="scuola-name">
+            <h2 class="school-name">
+                <span class="school-icon">🔢</span>
+                Pitagorici
+            </h2>
 
-                <span class="icon">⚙️</span>
+            <div class="philosophers">
 
-                Materialismo
-
-            </div>
-
-
-            <div class="filosofi-list">
-
-                <a class="filosofo"
-                   href="../articoli/marx.html">
-                    Karl Marx
+                <a
+                    class="philosopher"
+                    href="../articoli/pitagora.html">
+                    Pitagora
                 </a>
 
-                <a class="filosofo"
-                   href="../articoli/engels.html">
-                    Friedrich Engels
+                <a
+                    class="philosopher"
+                    href="../articoli/filolao.html">
+                    Filolao
                 </a>
 
-                <a class="filosofo"
-                   href="../articoli/feuerbach.html">
-                    Ludwig Andreas Feuerbach
+                <a
+                    class="philosopher"
+                    href="../articoli/alcmeone.html">
+                    Alcmeone
                 </a>
 
-            </div>
-
-        </section>
-
-
-        <!-- ========================================================
-             ROMANTICISMO
-             ======================================================== -->
-
-        <section class="scuola-card">
-
-            <div class="scuola-name">
-
-                <span class="icon">🌙</span>
-
-                Romanticismo
-
-            </div>
-
-
-            <div class="filosofi-list">
-
-                <a class="filosofo"
-                   href="../articoli/schopenhauer.html">
-                    Arthur Schopenhauer
+                <a
+                    class="philosopher"
+                    href="../articoli/archita.html">
+                    Archita
                 </a>
 
-                <a class="filosofo"
-                   href="../articoli/kierkegaard.html">
-                    Søren Kierkegaard
-                </a>
-
-                <a class="filosofo"
-                   href="../articoli/goethe.html">
-                    Johann Wolfgang von Goethe
+                <a
+                    class="philosopher"
+                    href="../articoli/ippaso.html">
+                    Ippaso
                 </a>
 
             </div>
@@ -930,83 +830,45 @@
         </section>
 
 
-        <!-- ========================================================
-             POSITIVISMO
-             ======================================================== -->
+        <!-- CINICI -->
 
-        <section class="scuola-card">
+        <section class="school-card">
 
-            <div class="scuola-name">
+            <h2 class="school-name">
+                <span class="school-icon">🐕</span>
+                Scuola cinica
+            </h2>
 
-                <span class="icon">🔬</span>
+            <div class="philosophers">
 
-                Positivismo
-
-            </div>
-
-
-            <div class="filosofi-list">
-
-                <a class="filosofo"
-                   href="../articoli/comte.html">
-                    Auguste Comte
+                <a
+                    class="philosopher"
+                    href="../articoli/antistene.html">
+                    Antistene
                 </a>
 
-                <a class="filosofo"
-                   href="../articoli/mill.html">
-                    John Stuart Mill
+                <a
+                    class="philosopher"
+                    href="../articoli/diogene.html">
+                    Diogene di Sinope
                 </a>
 
-                <a class="filosofo"
-                   href="../articoli/spencer.html">
-                    Herbert Spencer
+                <a
+                    class="philosopher"
+                    href="../articoli/cratete.html">
+                    Cratete di Tebe
                 </a>
 
-                <a class="filosofo"
-                   href="../articoli/mach.html">
-                    Ernst Mach
+                <a
+                    class="philosopher"
+                    href="../articoli/iparchia.html">
+                    Ipparchia
                 </a>
 
-                <a class="filosofo"
-                   href="../articoli/adrig%C3%B2.html">
-                    Roberto Ardigò
-                </a>
-
-            </div>
-
-        </section>
-
-
-        <!-- ========================================================
-             GNOSEOLOGIA
-             ======================================================== -->
-
-        <section class="scuola-card">
-
-            <div class="scuola-name">
-
-                <span class="icon">👁️</span>
-
-                Gnoseologia
-
-            </div>
-
-
-            <div class="filosofi-list">
-
-                <a class="filosofo"
-                   href="../articoli/bacon.html">
-                    Francis Bacon
-                </a>
-
-                <a class="filosofo"
-                   href="../articoli/mill.html">
-                    John Stuart Mill
-                </a>
-
-                <a class="filosofo"
-                   href="../articoli/spencer.html">
-                    Herbert Spencer
+                <a
+                    class="philosopher"
+                    href="../articoli/metrocle.html">
+                    Metrocle di Maronea
                 </a>
 
             </div>
@@ -1014,93 +876,33 @@
         </section>
 
 
-        <!-- ========================================================
-             METAFISICA / ONTOLOGIA
-             ======================================================== -->
+        <!-- ATOMISTI -->
 
-        <section class="scuola-card">
+        <section class="school-card">
 
-            <div class="scuola-name">
+            <h2 class="school-name">
+                <span class="school-icon">⚛</span>
+                Scuola atomistica
+            </h2>
 
-                <span class="icon">∞</span>
+            <div class="philosophers">
 
-                Metafisica / Ontologia
-
-            </div>
-
-
-            <div class="filosofi-list">
-
-                <a class="filosofo"
-                   href="../articoli/spinoza.html">
-                    Spinoza
+                <a
+                    class="philosopher"
+                    href="../articoli/leucippo.html">
+                    Leucippo di Mileto
                 </a>
 
-                <a class="filosofo"
-                   href="../articoli/heidegger.html">
-                    Heidegger
+                <a
+                    class="philosopher"
+                    href="../articoli/democrito.html">
+                    Democrito di Abdera
                 </a>
 
-                <a class="filosofo"
-                   href="../articoli/severino.html">
-                    Emanuele Severino
-                </a>
-
-                <a class="filosofo"
-                   href="../articoli/quine.html">
-                    Willard Van Orman Quine
-                </a>
-
-                <a class="filosofo"
-                   href="../articoli/lewis.html">
-                    David Lewis
-                </a>
-
-            </div>
-
-        </section>
-
-
-        <!-- ========================================================
-             FILOSOFIA RUSSA
-             ======================================================== -->
-
-        <section class="scuola-card">
-
-            <div class="scuola-name">
-
-                <span class="icon">❄️</span>
-
-                Filosofia russa
-
-            </div>
-
-
-            <div class="filosofi-list">
-
-                <a class="filosofo"
-                   href="../articoli/dostoevskij.html">
-                    Fëdor Dostoevskij
-                </a>
-
-                <a class="filosofo"
-                   href="../articoli/solov'%C3%ABv.html">
-                    Vladimir Solov'ëv
-                </a>
-
-                <a class="filosofo"
-                   href="../articoli/rozanov.html">
-                    Vasilij Rozanov
-                </a>
-
-                <a class="filosofo"
-                   href="../articoli/sestov.html">
-                    Lev Šestov
-                </a>
-
-                <a class="filosofo"
-                   href="../articoli/bulgakov.html">
-                    Sergej Bulgakov
+                <a
+                    class="philosopher"
+                    href="../articoli/scuola-vai%C5%9Be%E1%B9%A3ika.html">
+                    Scuola Vaiśeṣika
                 </a>
 
             </div>
@@ -1111,28 +913,90 @@
     </main>
 
 
-    <!-- ============================================================
-         CITAZIONE FINALE
-         ============================================================ -->
+    <!-- ========================================================
+         STORIOGRAFIA
+         ======================================================== -->
 
-    <div class="page-footer-note">
+    <section class="history">
 
-        «Sapere aude! Abbi il coraggio di servirti
-        della tua propria ragione.»
+        <h2 class="section-label">
+            Storiografia greca antica
+        </h2>
 
-        <br>
+        <div class="history-links">
 
-        <span>
-            — Immanuel Kant
-        </span>
+            <a href="../articoli/erodoto.html">
+                Erodoto
+            </a>
 
-    </div>
+            <a href="../articoli/tucidide.html">
+                Tucidide
+            </a>
+
+            <a href="../articoli/senofonte.html">
+                Senofonte
+            </a>
+
+            <a href="../articoli/polibio.html">
+                Polibio
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================================================
+         APPROFONDIMENTI
+         ======================================================== -->
+
+    <section class="deepening">
+
+        <h2 class="section-label">
+            Approfondimenti
+        </h2>
+
+        <div class="deepening-links">
+
+            <a href="https://www.worldhistory.org/trans/it/1-13310/democrazia-ateniese/">
+                Democrazia ateniese
+            </a>
+
+            <a href="https://www.worldhistory.org/trans/it/2-927/donne-nellantica-grecia/">
+                Donne nell'Antica Grecia
+            </a>
+
+            <a href="https://www.worldhistory.org/trans/it/1-11373/magna-grecia/">
+                Magna Grecia
+            </a>
+
+            <a href="https://www.worldhistory.org/trans/it/1-14956/il-teatro-dellantica-grecia/">
+                Il teatro dell'Antica Grecia
+            </a>
+
+            <a href="https://www.worldhistory.org/trans/it/1-10553/la-religione-nellantica-grecia/">
+                La religione nell'Antica Grecia
+            </a>
+
+            <a href="https://www.worldhistory.org/trans/it/1-19269/la-danza-nellantica-grecia/">
+                La danza nell'Antica Grecia
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================================================
+         FOOTER
+         ======================================================== -->
+
+    <footer class="footer">
+        Echi di Sofia · Filosofia antica
+    </footer>
 
 
 </div>
 
-
 </body>
-
 </html>
-```
