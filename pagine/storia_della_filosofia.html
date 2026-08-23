@@ -1425,41 +1425,39 @@
   <!-- ============================================================
        SCRIPT PER IL PULSANTE TORNA SU
        ============================================================ -->
-  <script>
-    (function() {
-      const btn = document.getElementById('tornaSu');
-      if (!btn) return;
+  <!-- ============================================================
+     PULSANTE TORNA SU
+     ============================================================ -->
+<button class="torna-su" id="tornaSu" aria-label="Torna su" title="Torna su">↑</button>
 
-      let lastScrollY = window.scrollY;
+<script>
+(function () {
+    const btn = document.getElementById('tornaSu');
 
-      function toggleButton() {
-        const scrollY = window.scrollY;
-        const threshold = 300; // mostriamo il pulsante dopo 300px di scroll
+    if (!btn) return;
 
-        if (scrollY > threshold) {
-          btn.classList.add('visible');
+    function toggleBackToTop() {
+        if (window.scrollY > 300) {
+            btn.classList.add('visible');
         } else {
-          btn.classList.remove('visible');
+            btn.classList.remove('visible');
         }
-        lastScrollY = scrollY;
-      }
+    }
 
-      // Ascolta lo scroll
-      window.addEventListener('scroll', toggleButton, { passive: true });
+    window.addEventListener('scroll', toggleBackToTop, {
+        passive: true
+    });
 
-      // Click: scroll liscio in cima
-      btn.addEventListener('click', function(e) {
-        e.preventDefault();
+    btn.addEventListener('click', function () {
         window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
+            top: 0,
+            behavior: 'smooth'
         });
-      });
+    });
 
-      // Controlliamo subito all'avvio
-      toggleButton();
-    })();
-  </script>
+    toggleBackToTop();
+})();
+</script>
 
 </body>
 </html>
