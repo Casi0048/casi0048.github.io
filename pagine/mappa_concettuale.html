@@ -5,34 +5,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mappa Concettuale di Filosofia</title>
     <meta name="description" content="Una mappa concettuale completa della filosofia: branche, correnti, filosofi e periodi storici.">
-    <!-- ==================== FAVICONS & MANIFEST (PWA READY) ==================== -->
-  <link rel="icon" type="image/svg+xml" href="/favicon_io/favicon.svg">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon_io/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon_io/favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/favicon_io/apple-touch-icon.png">
-  <link rel="manifest" href="/favicon_io/site.webmanifest">
-  <meta name="theme-color" content="#0b0f19">
-  <meta name="msapplication-TileColor" content="#0b0f19">
+
+    <!-- Favicons & manifest (PWA ready) -->
+    <link rel="icon" type="image/svg+xml" href="/favicon_io/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon_io/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon_io/apple-touch-icon.png">
+    <link rel="manifest" href="/favicon_io/site.webmanifest">
+    <meta name="theme-color" content="#0b0f19">
+    <meta name="msapplication-TileColor" content="#0b0f19">
+
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts (serif per titoli, sans per corpo) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
+
     <style>
         /* =======================================
-           VARIABILI GLOBALI
+           VARIABILI GLOBALI (temi)
            ======================================= */
         :root {
-            --primary: #8B0000;
-            --primary-light: #a00000;
-            --gold: #FFD700;
-            --gold-light: #FFE44D;
-            --bg-dark: #1a2a6c;
-            --bg-mid: #b21f1f;
-            --bg-light: #fdbb2d;
-            --text-dark: #333;
-            --text-light: #f8f8f8;
-            --white: #ffffff;
-            --shadow: 0 8px 16px rgba(0,0,0,0.2);
-            --shadow-hover: 0 15px 30px rgba(0,0,0,0.3);
-            --radius: 12px;
-            --transition: 0.3s ease;
+            /* Font */
+            --font-serif: 'Cormorant Garamond', 'Georgia', serif;
+            --font-sans: 'Inter', 'Segoe UI', sans-serif;
+
+            /* Light theme (default) */
+            --bg-body: #f5efe8;
+            --bg-header: rgba(0, 0, 0, 0.25);
+            --bg-card: #ffffff;
+            --bg-sub: #f8f5f0;
+            --bg-timeline: rgba(255, 248, 242, 0.92);
+            --text-primary: #2c241c;
+            --text-secondary: #5a4e3e;
+            --text-muted: #7a6a5a;
+            --accent: #8B0000;
+            --accent-hover: #a00000;
+            --gold: #b8860b;
+            --gold-light: #d4a02b;
+            --border-gold: #c4a882;
+            --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 16px 40px rgba(0, 0, 0, 0.12);
+            --tag-bg: #8B0000;
+            --tag-text: #ffffff;
+            --tag-hover-bg: #b8860b;
+            --tag-hover-text: #2c241c;
+            --footer-text: #2c241c;
+            --header-text: #ffffff;
+            --back-link: #b8860b;
+            --back-hover: #d4a02b;
+            --toggle-border: rgba(255, 255, 255, 0.3);
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #0b0908;
+            --bg-header: rgba(0, 0, 0, 0.5);
+            --bg-card: rgba(30, 26, 22, 0.92);
+            --bg-sub: rgba(40, 35, 28, 0.6);
+            --bg-timeline: rgba(20, 17, 14, 0.92);
+            --text-primary: #d4c9b8;
+            --text-secondary: #b0a090;
+            --text-muted: #8a7a6a;
+            --accent: #d4a02b;
+            --accent-hover: #e6b84a;
+            --gold: #d4a02b;
+            --gold-light: #e6b84a;
+            --border-gold: #a08060;
+            --shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            --shadow-hover: 0 16px 40px rgba(0, 0, 0, 0.7);
+            --tag-bg: #b8860b;
+            --tag-text: #1a1a1a;
+            --tag-hover-bg: #d4a02b;
+            --tag-hover-text: #0b0908;
+            --footer-text: #a0907a;
+            --header-text: #d4c9b8;
+            --back-link: #d4a02b;
+            --back-hover: #e6b84a;
+            --toggle-border: rgba(200, 180, 160, 0.3);
         }
 
         /* =======================================
@@ -44,12 +94,18 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, var(--bg-dark), var(--bg-mid), var(--bg-light));
-            color: var(--text-dark);
+            font-family: var(--font-sans);
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            transition: background-color 0.5s ease, color 0.5s ease;
             min-height: 100vh;
             padding: 20px;
+            line-height: 1.6;
         }
 
         .container {
@@ -61,49 +117,76 @@
            HEADER
            ======================================= */
         header {
-    position: relative;
-    text-align: center;
-    margin-bottom: 40px;
-    color: var(--white);
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-    padding: 20px;
-    background: rgba(0,0,0,0.3);
-    border-radius: 15px;
-}
-
-header .back {
-    position: absolute;
-    top: 18px;
-    left: 20px;
-
-    color: var(--gold);
-    font-size: 1rem;
-    font-weight: 500;
-    opacity: .9;
-    letter-spacing: .04em;
-
-    text-decoration: none;
-
-    transition:
-        color .25s ease,
-        opacity .25s ease;
-}
-
-header .back:hover {
-    color: var(--gold-light);
-    opacity: 1;
-}
-        h1 {
-            font-size: clamp(2.2rem, 5vw, 3.2rem);
-            margin-bottom: 10px;
+            position: relative;
+            text-align: center;
+            padding: 28px 20px 36px;
+            background: var(--bg-header);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            color: var(--header-text);
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+            transition: background 0.5s ease;
+            border: 1px solid rgba(255, 255, 255, 0.06);
         }
 
-        .subtitle {
+        header .back {
+            position: absolute;
+            top: 18px;
+            left: 20px;
+            color: var(--back-link);
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            font-weight: 500;
+            text-decoration: none;
+            opacity: 0.9;
+            transition: color 0.25s ease, opacity 0.25s ease;
+        }
+
+        header .back:hover {
+            color: var(--back-hover);
+            opacity: 1;
+        }
+
+        header .theme-toggle {
+            position: absolute;
+            top: 18px;
+            right: 20px;
+            background: none;
+            border: 1px solid var(--toggle-border);
+            border-radius: 40px;
+            padding: 6px 14px;
+            color: var(--header-text);
+            font-size: 1rem;
+            font-family: var(--font-sans);
+            cursor: pointer;
+            transition: background 0.3s, border-color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        header .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        header h1 {
+            font-family: var(--font-serif);
+            font-size: clamp(2.2rem, 5vw, 3.4rem);
+            font-weight: 700;
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+        }
+
+        header .subtitle {
             font-size: clamp(1rem, 2vw, 1.3rem);
             font-style: italic;
-            max-width: 800px;
+            max-width: 700px;
             margin: 0 auto;
             opacity: 0.9;
+            font-weight: 400;
         }
 
         /* =======================================
@@ -116,18 +199,18 @@ header .back:hover {
         }
 
         .central-node {
-            background: var(--primary);
-            color: var(--white);
+            background: var(--accent);
+            color: #fff;
             padding: 30px 45px;
             border-radius: 50%;
             text-align: center;
             font-size: clamp(1.4rem, 2.5vw, 1.8rem);
-            font-weight: bold;
-            box-shadow: var(--shadow), 0 0 30px rgba(139,0,0,0.4);
+            font-weight: 700;
+            font-family: var(--font-serif);
+            box-shadow: 0 0 0 6px var(--gold), 0 12px 40px rgba(0, 0, 0, 0.3);
             margin-bottom: 50px;
             position: relative;
             z-index: 10;
-            border: 5px solid var(--gold);
             max-width: 320px;
             width: 100%;
             aspect-ratio: 1/1;
@@ -135,22 +218,32 @@ header .back:hover {
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            transition: transform var(--transition), box-shadow var(--transition);
+            transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.4s;
+            border: none;
+            cursor: default;
         }
 
         .central-node:hover {
-            transform: scale(1.03);
-            box-shadow: var(--shadow-hover), 0 0 50px rgba(255,215,0,0.3);
+            transform: scale(1.04);
+            box-shadow: 0 0 0 8px var(--gold-light), 0 20px 60px rgba(0, 0, 0, 0.4);
         }
 
         .central-node i {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            color: var(--gold);
+            font-size: 2.8rem;
+            margin-bottom: 8px;
+            color: var(--gold-light);
+        }
+
+        .central-node small {
+            font-size: 0.6em;
+            font-weight: 400;
+            opacity: 0.85;
+            font-family: var(--font-sans);
+            margin-top: 4px;
         }
 
         /* =======================================
-           BRANCHE
+           BRANCHE (card)
            ======================================= */
         .branches-container {
             display: grid;
@@ -161,13 +254,29 @@ header .back:hover {
         }
 
         .branch {
-            background: var(--white);
-            border-radius: var(--radius);
-            padding: 25px;
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 26px 28px;
             box-shadow: var(--shadow);
-            transition: transform var(--transition), box-shadow var(--transition);
-            position: relative;
             border-top: 5px solid var(--gold);
+            transition: transform 0.35s ease, box-shadow 0.35s ease, background 0.4s;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .branch:nth-child(1) { animation-delay: 0.05s; }
+        .branch:nth-child(2) { animation-delay: 0.12s; }
+        .branch:nth-child(3) { animation-delay: 0.19s; }
+        .branch:nth-child(4) { animation-delay: 0.26s; }
+        .branch:nth-child(5) { animation-delay: 0.33s; }
+        .branch:nth-child(6) { animation-delay: 0.40s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .branch:hover {
@@ -176,77 +285,103 @@ header .back:hover {
         }
 
         .branch-icon {
-            font-size: 2rem;
-            color: var(--primary);
+            font-size: 2.2rem;
+            color: var(--accent);
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            transition: color 0.3s;
+        }
+
+        .branch:hover .branch-icon {
+            color: var(--gold);
         }
 
         .branch-title {
-            font-size: 1.5rem;
-            color: var(--primary);
-            margin-bottom: 12px;
+            font-family: var(--font-serif);
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 10px;
             padding-bottom: 10px;
-            border-bottom: 2px solid var(--gold);
+            border-bottom: 2px solid var(--border-gold);
             text-align: center;
+            transition: color 0.3s, border-color 0.3s;
         }
 
         .branch-description {
-            color: #666;
+            color: var(--text-secondary);
             font-style: italic;
-            margin-bottom: 15px;
+            margin-bottom: 16px;
             text-align: center;
+            font-size: 0.95rem;
         }
 
         .branch-content {
-            line-height: 1.6;
+            line-height: 1.7;
         }
 
         .sub-branch {
             margin-top: 12px;
-            padding: 12px 15px;
-            background: #f8f8f8;
-            border-radius: 8px;
-            border-left: 4px solid var(--primary);
-            transition: background var(--transition);
+            padding: 12px 16px;
+            background: var(--bg-sub);
+            border-radius: 10px;
+            border-left: 4px solid var(--gold);
+            transition: background 0.3s, transform 0.2s;
         }
 
         .sub-branch:hover {
             background: var(--gold-light);
+            transform: translateX(4px);
         }
 
         .sub-branch-title {
-            font-weight: bold;
-            color: var(--primary);
-            margin-bottom: 4px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 2px;
+            font-size: 1rem;
         }
 
         .sub-branch-title i {
             margin-right: 8px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            opacity: 0.8;
         }
 
         .sub-branch p {
-            font-size: 0.95rem;
-            color: #555;
+            font-size: 0.92rem;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        .sub-branch p a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px dotted transparent;
+            transition: border-color 0.25s, color 0.25s;
+        }
+
+        .sub-branch p a:hover {
+            border-bottom-color: var(--gold);
+            color: var(--accent-hover);
         }
 
         /* =======================================
-           KEY PHILOSOPHERS (per ogni branca)
+           KEY PHILOSOPHERS (tag)
            ======================================= */
         .key-philosophers {
-            margin-top: 15px;
-            padding-top: 12px;
-            border-top: 1px dashed #ddd;
+            margin-top: 16px;
+            padding-top: 14px;
+            border-top: 1px dashed var(--border-gold);
         }
 
         .key-philosophers-title {
-            font-size: 0.85rem;
-            font-weight: bold;
-            color: #666;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 6px;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
         }
 
         .key-philosophers-tags {
@@ -256,169 +391,276 @@ header .back:hover {
         }
 
         .tag {
-            background: var(--primary);
-            color: var(--white);
-            padding: 2px 12px;
-            border-radius: 20px;
+            display: inline-block;
+            background: var(--tag-bg);
+            color: var(--tag-text);
+            padding: 3px 14px;
+            border-radius: 30px;
             font-size: 0.8rem;
             font-weight: 600;
-            transition: background var(--transition), transform var(--transition);
+            text-decoration: none;
+            transition: background 0.25s, color 0.25s, transform 0.2s, box-shadow 0.25s;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
         }
 
         .tag:hover {
-            background: var(--gold);
-            color: var(--primary);
+            background: var(--tag-hover-bg);
+            color: var(--tag-hover-text);
             transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
         /* =======================================
-           TIMELINE (ampliata)
+           TIMELINE & CORRENTI
            ======================================= */
         .timeline {
             margin-top: 20px;
             width: 100%;
-            background: rgba(255,255,255,0.95);
-            border-radius: var(--radius);
-            padding: 30px;
+            background: var(--bg-timeline);
+            border-radius: 16px;
+            padding: 30px 28px;
             box-shadow: var(--shadow);
+            transition: background 0.4s, box-shadow 0.4s;
+            backdrop-filter: blur(2px);
         }
 
         .timeline-title {
             text-align: center;
+            font-family: var(--font-serif);
             font-size: clamp(1.5rem, 3vw, 2rem);
-            color: var(--primary);
-            margin-bottom: 25px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--gold);
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border-gold);
+            transition: color 0.3s, border-color 0.3s;
+        }
+
+        .timeline-title i {
+            margin-right: 10px;
+            opacity: 0.8;
         }
 
         .timeline-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
             gap: 20px;
         }
 
         .era {
-            background: #f8f8f8;
-            padding: 18px 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
-            transition: transform var(--transition), box-shadow var(--transition);
+            background: var(--bg-sub);
+            padding: 18px 20px 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
             border-bottom: 4px solid var(--gold);
+            transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
         }
 
         .era:hover {
             transform: translateY(-5px);
-            box-shadow: var(--shadow);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
         }
 
         .era-title {
+            font-family: var(--font-serif);
             font-size: 1.2rem;
-            color: var(--primary);
-            margin-bottom: 12px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 10px;
             text-align: center;
-            font-weight: bold;
+            transition: color 0.3s;
         }
 
         .era-title i {
-            margin-right: 8px;
+            margin-right: 6px;
         }
 
         .philosopher {
-            margin: 6px 0;
-            padding: 4px 0 4px 12px;
-            border-left: 2px solid var(--gold);
-            font-size: 0.95rem;
-            transition: padding var(--transition);
+            margin: 5px 0;
+            padding: 3px 0 3px 12px;
+            border-left: 2px solid var(--border-gold);
+            font-size: 0.92rem;
+            transition: padding 0.2s, background 0.2s, border-left-color 0.2s;
+            color: var(--text-primary);
         }
 
         .philosopher:hover {
             padding-left: 18px;
             background: var(--gold-light);
-            border-radius: 0 4px 4px 0;
+            border-radius: 0 6px 6px 0;
+            border-left-color: var(--gold);
         }
 
         .philosopher .dates {
-            color: #888;
-            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            margin-left: 4px;
         }
 
-        /* ============================================================
-           FILOSOFI — LINK NELLA MAPPA
-           ============================================================ */
         .philosopher a {
-            color: inherit;
+            color: var(--accent);
             text-decoration: none;
-            font-weight: inherit;
-            transition: color .25s ease, text-shadow .25s ease;
+            font-weight: 600;
+            transition: color 0.25s, text-decoration 0.25s;
         }
 
         .philosopher a:hover {
-            color: var(--primary);
+            color: var(--accent-hover);
             text-decoration: underline;
             text-decoration-color: var(--gold);
             text-underline-offset: 3px;
         }
 
-        /* I tag restano visivamente identici anche quando sono link */
-        a.tag {
-            display: inline-block;
-            color: var(--white);
-            text-decoration: none;
-        }
-
-        a.tag:hover {
-            background: var(--gold);
-            color: var(--primary);
-            transform: scale(1.05);
-        }
-
-
         .philosopher strong a {
             color: inherit;
-            text-decoration: none;
             font-weight: inherit;
         }
 
         .philosopher strong a:hover {
-            color: var(--primary);
-            text-decoration: underline;
-            text-decoration-color: var(--gold);
-            text-underline-offset: 3px;
+            color: var(--accent);
+        }
+
+        /* =======================================
+           BACK TO TOP
+           ======================================= */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            transition: opacity 0.35s, transform 0.35s, background 0.3s;
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .back-to-top:hover {
+            background: var(--gold);
+            transform: scale(1.08);
         }
 
         /* =======================================
            FOOTER
            ======================================= */
         footer {
+            margin-top: 50px;
+            padding: 28px 20px 20px;
             text-align: center;
-            margin-top: 40px;
-            color: var(--white);
-            padding: 20px;
+            color: var(--footer-text);
+            border-top: 1px solid var(--border-gold);
+            font-family: var(--font-serif);
             font-style: italic;
-            opacity: 0.8;
+            font-size: 1.05rem;
+            transition: color 0.4s, border-color 0.4s;
+        }
+
+        footer .footer-motto {
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        footer .footer-motto em {
+            font-style: italic;
+        }
+
+        footer .footer-motto strong {
+            font-style: normal;
+            font-weight: 600;
+        }
+
+        footer .footer-credit {
+            font-size: 0.85rem;
+            font-family: var(--font-sans);
+            font-style: normal;
+            opacity: 0.6;
+            margin-top: 4px;
         }
 
         /* =======================================
            RESPONSIVE
            ======================================= */
+        @media (max-width: 900px) {
+            .branches-container {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 24px;
+            }
+        }
+
         @media (max-width: 768px) {
+            body {
+                padding: 12px;
+            }
+
+            header {
+                padding: 20px 16px 28px;
+            }
+
+            header .back {
+                position: static;
+                display: inline-block;
+                margin-bottom: 10px;
+                font-size: 0.9rem;
+            }
+
+            header .theme-toggle {
+                position: static;
+                display: inline-flex;
+                margin-bottom: 10px;
+                font-size: 0.85rem;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .central-node {
+                max-width: 200px;
+                padding: 24px;
+                font-size: 1.2rem;
+            }
+
+            .central-node i {
+                font-size: 2rem;
+            }
+
             .branches-container {
                 grid-template-columns: 1fr;
+                gap: 20px;
             }
 
             .timeline-container {
                 grid-template-columns: 1fr 1fr;
             }
 
-            .central-node {
-                padding: 20px 30px;
-                max-width: 200px;
-                font-size: 1.2rem;
+            .branch {
+                padding: 20px;
             }
 
-            .central-node i {
-                font-size: 1.8rem;
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 42px;
+                height: 42px;
+                font-size: 1rem;
             }
         }
 
@@ -427,38 +669,64 @@ header .back:hover {
                 grid-template-columns: 1fr;
             }
 
-            .branch {
-                padding: 18px;
-            }
-
             .central-node {
                 max-width: 160px;
-                padding: 15px 20px;
+                padding: 18px;
                 font-size: 1rem;
+            }
+
+            .central-node i {
+                font-size: 1.6rem;
+            }
+
+            .branch-title {
+                font-size: 1.3rem;
+            }
+
+            .sub-branch {
+                padding: 10px 14px;
+            }
+
+            .tag {
+                font-size: 0.7rem;
+                padding: 2px 10px;
+            }
+
+            .era {
+                padding: 14px 16px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
+
+        <!-- =============================================
+        HEADER
+        ============================================= -->
         <header>
-    <a class="back" href="/">
+            <a class="back" href="/" aria-label="Torna alla home">
+                <i class="fas fa-arrow-left"></i> Echi di Sofia
+            </a>
 
-            ← Echi di Sofia
-    </a>
-
-
+            <button class="theme-toggle" id="themeToggle" aria-label="Cambia tema">
+                <i class="fas fa-moon"></i> <span id="themeLabel">Scuro</span>
+            </button>
 
             <h1>Mappa Concettuale di Filosofia</h1>
             <p class="subtitle">Una panoramica visiva delle principali branche, concetti e periodi storici del pensiero filosofico</p>
         </header>
 
+        <!-- =============================================
+        MAPPA
+        ============================================= -->
         <div class="philosophy-map">
+
             <!-- Central Node -->
-            <div class="central-node">
+            <div class="central-node" role="img" aria-label="Filosofia, amore per la saggezza">
                 <i class="fas fa-brain"></i>
-                FILOSOFIA<br>
-                <span style="font-size: 0.7em; font-weight: normal; opacity: 0.9;">Amore per la Saggezza</span>
+                FILOSOFIA
+                <small>amore per la saggezza</small>
             </div>
 
             <!-- Branches -->
@@ -671,110 +939,77 @@ header .back:hover {
 
             </div>
 
-            <!-- ======================================= -->
-            <!-- TIMELINE AMPLIATA                       -->
-            <!-- ======================================= -->
+            <!-- =============================================
+            TIMELINE – STORIA DELLA FILOSOFIA
+            ============================================= -->
             <div class="timeline">
-                <h2 class="timeline-title"><i class="fas fa-clock" style="margin-right: 10px;"></i>Storia della Filosofia</h2>
+                <h2 class="timeline-title"><i class="fas fa-clock"></i>Storia della Filosofia</h2>
                 <div class="timeline-container">
                     <div class="era">
                         <h3 class="era-title"><i class="fas fa-scroll"></i>Filosofia Antica</h3>
-                        <div class="philosopher"><strong>Presocratici</strong> <span class="dates">VII-V sec. a.C.</span></div>
-                        <div class="philosopher"><strong><a href="../articoli/socrate.html">Socrate</a></strong> <span class="dates">469-399 a.C.</span></div>
-                        <div class="philosopher"><strong><a href="../articoli/platone.html">Platone</a></strong> <span class="dates">428-348 a.C.</span></div>
-                        <div class="philosopher"><strong><a href="../articoli/aristotele.html">Aristotele</a></strong> <span class="dates">384-322 a.C.</span></div>
-                       <div class="philosopher">
-                       <strong>
-                       <a href="../articoli/ellenismo.html">Ellenismo</a>
-                        </strong>
-                       <span class="dates">IV-I sec. a.C.</span>
-                       </div>
-                        <div class="philosopher"><strong><a href="../articoli/neoplatonismo.html">Neoplatonismo</strong> <span class="dates">III-VI sec. d.C.</span></div>
+                        <div class="philosopher"><strong>Presocratici</strong> <span class="dates">VII–V sec. a.C.</span></div>
+                        <div class="philosopher"><strong><a href="../articoli/socrate.html">Socrate</a></strong> <span class="dates">469–399 a.C.</span></div>
+                        <div class="philosopher"><strong><a href="../articoli/platone.html">Platone</a></strong> <span class="dates">428–348 a.C.</span></div>
+                        <div class="philosopher"><strong><a href="../articoli/aristotele.html">Aristotele</a></strong> <span class="dates">384–322 a.C.</span></div>
+                        <div class="philosopher"><strong><a href="../articoli/ellenismo.html">Ellenismo</a></strong> <span class="dates">IV–I sec. a.C.</span></div>
+                        <div class="philosopher"><strong><a href="../articoli/neoplatonismo.html">Neoplatonismo</a></strong> <span class="dates">III–VI sec. d.C.</span></div>
                     </div>
 
                     <div class="era">
                         <h3 class="era-title"><i class="fas fa-church"></i>Filosofia Medievale</h3>
-                        <div class="philosopher"><strong>Patristica</strong> <span class="dates">II-VIII sec.</span></div>
-                        <div class="philosopher"><strong><a href="../articoli/agostino.html">Agostino d'Ippona</a></strong> <span class="dates">354-430</span></div>
-                        <div class="philosopher"><strong>Filosofia Islamica</strong> <span class="dates">IX-XIII sec.</span></div>
-                        <div class="philosopher"><strong><a href="../articoli/anselmo.html">Anselmo d'Aosta</a></strong> <span class="dates">1033-1109</span></div>
-                        <div class="philosopher"><strong><a href="../articoli/tommaso%20d'aquino.html">Tommaso d'Aquino</a></strong> <span class="dates">1225-1274</span></div>
-                        <div class="philosopher"><strong><a href="../articoli/ockham.html">Guglielmo di Ockham</a></strong> <span class="dates">1288-1347</span></div>
+                        <div class="philosopher"><strong>Patristica</strong> <span class="dates">II–VIII sec.</span></div>
+                        <div class="philosopher"><strong><a href="../articoli/agostino.html">Agostino d'Ippona</a></strong> <span class="dates">354–430</span></div>
+                        <div class="philosopher"><strong>Filosofia Islamica</strong> <span class="dates">IX–XIII sec.</span></div>
+                        <div class="philosopher"><strong><a href="../articoli/anselmo.html">Anselmo d'Aosta</a></strong> <span class="dates">1033–1109</span></div>
+                        <div class="philosopher"><strong><a href="../articoli/tommaso%20d'aquino.html">Tommaso d'Aquino</a></strong> <span class="dates">1225–1274</span></div>
+                        <div class="philosopher"><strong><a href="../articoli/ockham.html">Guglielmo di Ockham</a></strong> <span class="dates">1288–1347</span></div>
                     </div>
 
                     <div class="era">
                         <h3 class="era-title"><i class="fas fa-pen-fancy"></i>Filosofia Moderna</h3>
-                        <div class="philosopher"><strong>Umanesimo</strong> <span class="dates">XIV-XVI sec.</span></div>
-                        <div class="philosopher"><strong><a href="../articoli/cartesio.html">Cartesio</a></strong> <span class="dates">1596-1650</span></div>
-                        <div class="philosopher"><strong><a href="../articoli/spinoza.html">Spinoza</a></strong> <span class="dates">1632-1677</span></div>
-                        <div class="philosopher"><strong>Locke, Hume</strong> <span class="dates">XVII-XVIII sec.</span></div>
-                        <div class="philosopher"><strong><a href="../articoli/kant.html">Kant</a></strong> <span class="dates">1724-1804</span></div>
-                        <div class="philosopher"><strong><a href="../articoli/hegel.html">Hegel</a></strong> <span class="dates">1770-1831</span></div>
+                        <div class="philosopher"><strong>Umanesimo</strong> <span class="dates">XIV–XVI sec.</span></div>
+                        <div class="philosopher"><strong><a href="../articoli/cartesio.html">Cartesio</a></strong> <span class="dates">1596–1650</span></div>
+                        <div class="philosopher"><strong><a href="../articoli/spinoza.html">Spinoza</a></strong> <span class="dates">1632–1677</span></div>
+                        <div class="philosopher"><strong><a href="../articoli/locke.html">Locke</a>, <a href="../articoli/hume.html">Hume</a></strong> <span class="dates">XVII–XVIII sec.</span></div>
+                        <div class="philosopher"><strong><a href="../articoli/kant.html">Kant</a></strong> <span class="dates">1724–1804</span></div>
+                        <div class="philosopher"><strong><a href="../articoli/hegel.html">Hegel</a></strong> <span class="dates">1770–1831</span></div>
                     </div>
 
                     <div class="era">
                         <h3 class="era-title"><i class="fas fa-rocket"></i>Filosofia Contemporanea</h3>
-                        <div class="philosopher"><strong><a href="../articoli/marx.html">Marx</a></strong> <span class="dates">1818-1883</span></div>
-                        <div class="philosopher"><strong><a href="../articoli/nietzsche.html">Nietzsche</a></strong> <span class="dates">1844-1900</span></div>
-                        <div class="philosopher"><strong>Esistenzialismo</strong> <span class="dates">XIX-XX sec.</span></div>
-                        <div class="philosopher"><strong><a href="../articoli/heidegger.html">Heidegger</a></strong> <span class="dates">1889-1976</span></div>
+                        <div class="philosopher"><strong><a href="../articoli/marx.html">Marx</a></strong> <span class="dates">1818–1883</span></div>
+                        <div class="philosopher"><strong><a href="../articoli/nietzsche.html">Nietzsche</a></strong> <span class="dates">1844–1900</span></div>
+                        <div class="philosopher"><strong>Esistenzialismo</strong> <span class="dates">XIX–XX sec.</span></div>
+                        <div class="philosopher"><strong><a href="../articoli/heidegger.html">Heidegger</a></strong> <span class="dates">1889–1976</span></div>
                         <div class="philosopher"><strong>Filos. Analitica</strong> <span class="dates">XX sec.</span></div>
-                        <div class="philosopher"><strong>Filos. Continentale</strong> <span class="dates">XX-XXI sec.</span></div>
+                        <div class="philosopher"><strong>Filos. Continentale</strong> <span class="dates">XX–XXI sec.</span></div>
                     </div>
                 </div>
             </div>
 
-            <!-- ======================================= -->
-            <!-- CORRENTI E SCUOLE (sezione aggiuntiva)  -->
-            <!-- ======================================= -->
+            <!-- =============================================
+            CORRENTI E SCUOLE
+            ============================================= -->
             <div class="timeline" style="margin-top: 30px;">
-                <h2 class="timeline-title"><i class="fas fa-people-arrows" style="margin-right: 10px;"></i>Correnti e Scuole Filosofiche</h2>
+                <h2 class="timeline-title"><i class="fas fa-people-arrows"></i>Correnti e Scuole Filosofiche</h2>
                 <div class="timeline-container">
-                    <div class="era" style="border-bottom-color: var(--primary);">
+                    <div class="era" style="border-bottom-color: var(--accent);">
                         <h3 class="era-title"><i class="fas fa-gem"></i>Antiche</h3>
-                        <div class="philosopher">
-                          <strong>
-                               <a href="../articoli/stoicismo.html">Stoicismo</a>
-                           </strong>
-                                  –
-                              <a href="../articoli/zenone.html">Zenone</a>,
-                    <a href="../articoli/seneca.html">Seneca</a>,
-                 <a href="../articoli/marco_aurelio.html">Marco Aurelio</a>
-           </div>
-                        <div class="philosopher">
-                    <strong>
-                      <a href="../articoli/epicureismo.html">Epicureismo</a>
-                          </strong>
-                           –
-                         <a href="../articoli/epicuro.html">Epicuro</a>,
-                           <a href="../articoli/lucrezio.html">Lucrezio</a>
-                          </div>
-                        <div class="philosopher">
-               <strong>
-                       <a href="../articoli/scetticismo.html">Scetticismo</a>
-                      </strong>
-                          –
-                          <a href="../articoli/pirrone.html">Pirrone</a>,
-                   <a href="../articoli/sesto.html">Sesto Empirico</a>
-                            </div>
-                        <div class="philosopher">
-                          <strong>
-        <a href="../articoli/cinismo.html">Cinismo</a>
-    </strong>
-    –
-    <a href="../articoli/diogene.html">Diogene di Sinope</a>
-</div>
+                        <div class="philosopher"><strong><a href="../articoli/stoicismo.html">Stoicismo</a></strong> – <a href="../articoli/zenone.html">Zenone</a>, <a href="../articoli/seneca.html">Seneca</a>, <a href="../articoli/marco_aurelio.html">Marco Aurelio</a></div>
+                        <div class="philosopher"><strong><a href="../articoli/epicureismo.html">Epicureismo</a></strong> – <a href="../articoli/epicuro.html">Epicuro</a>, <a href="../articoli/lucrezio.html">Lucrezio</a></div>
+                        <div class="philosopher"><strong><a href="../articoli/scetticismo.html">Scetticismo</a></strong> – <a href="../articoli/pirrone.html">Pirrone</a>, <a href="../articoli/sesto.html">Sesto Empirico</a></div>
+                        <div class="philosopher"><strong><a href="../articoli/cinismo.html">Cinismo</a></strong> – <a href="../articoli/diogene.html">Diogene di Sinope</a></div>
                     </div>
 
-                    <div class="era" style="border-bottom-color: var(--primary);">
+                    <div class="era" style="border-bottom-color: var(--accent);">
                         <h3 class="era-title"><i class="fas fa-university"></i>Moderne</h3>
                         <div class="philosopher"><strong>Razionalismo</strong> – <a href="../articoli/cartesio.html">Cartesio</a>, <a href="../articoli/spinoza.html">Spinoza</a>, <a href="../articoli/leibniz.html">Leibniz</a></div>
-                        <div class="philosopher"><strong>Empirismo</strong> – <a href="../articoli/locke.html">Locke</a>, <a href="../articoli/berkeley.html">Berkeley</a>, Hume</div>
-                        <div class="philosopher"><strong>Illuminismo</strong> – <a href="../articoli/voltaire.html">Voltaire</a>, <a href="../articoli/rousseau.html">Rousseau</a>, Kant</div>
-                        <div class="philosopher"><strong>Idealismo</strong> – <a href="../articoli/fichte.html">Fichte</a>, <a href="../articoli/schelling.html">Schelling</a>, Hegel</div>
+                        <div class="philosopher"><strong>Empirismo</strong> – <a href="../articoli/locke.html">Locke</a>, <a href="../articoli/berkeley.html">Berkeley</a>, <a href="../articoli/hume.html">Hume</a></div>
+                        <div class="philosopher"><strong>Illuminismo</strong> – <a href="../articoli/voltaire.html">Voltaire</a>, <a href="../articoli/rousseau.html">Rousseau</a>, <a href="../articoli/kant.html">Kant</a></div>
+                        <div class="philosopher"><strong>Idealismo</strong> – <a href="../articoli/fichte.html">Fichte</a>, <a href="../articoli/schelling.html">Schelling</a>, <a href="../articoli/hegel.html">Hegel</a></div>
                     </div>
 
-                    <div class="era" style="border-bottom-color: var(--primary);">
+                    <div class="era" style="border-bottom-color: var(--accent);">
                         <h3 class="era-title"><i class="fas fa-rocket"></i>Contemporanee</h3>
                         <div class="philosopher"><strong>Marxismo</strong> – <a href="../articoli/marx.html">Marx</a>, <a href="../articoli/engels.html">Engels</a></div>
                         <div class="philosopher"><strong>Esistenzialismo</strong> – <a href="../articoli/kierkegaard.html">Kierkegaard</a>, <a href="../articoli/sartre.html">Sartre</a>, <a href="../articoli/camus.html">Camus</a></div>
@@ -787,10 +1022,82 @@ header .back:hover {
 
         </div>
 
+        <!-- =============================================
+        FOOTER
+        ============================================= -->
         <footer>
-            <p>Mappa Concettuale di Filosofia &bull; Uno strumento visivo per orientarsi nel pensiero filosofico</p>
-            <em>(K.R. Klys)</em>
+            <div class="footer-motto">
+                <em>"L'uomo può fare ciò che vuole, ma non può volere ciò che vuole"</em>
+                <strong>— A. Schopenhauer</strong>
+            </div>
+            <div class="footer-credit">
+                Mappa Concettuale di Filosofia &bull; <span id="currentYear"></span> &bull; <em>K.R. Klys</em>
+            </div>
         </footer>
+
+        <!-- Back to Top -->
+        <button id="backToTop" class="back-to-top" aria-label="Torna su">
+            <i class="fas fa-chevron-up"></i>
+        </button>
+
     </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // ============================================
+            // TEMA CHIARO/SCURO
+            // ============================================
+            const themeToggle = document.getElementById('themeToggle');
+            const themeLabel = document.getElementById('themeLabel');
+            let currentTheme = localStorage.getItem('mapTheme') || 'light';
+
+            function applyTheme(theme) {
+                document.documentElement.setAttribute('data-theme', theme === 'dark' ? 'dark' : '');
+                currentTheme = theme;
+                localStorage.setItem('mapTheme', theme);
+                const icon = themeToggle.querySelector('i');
+                if (theme === 'dark') {
+                    icon.className = 'fas fa-sun';
+                    themeLabel.textContent = 'Chiaro';
+                } else {
+                    icon.className = 'fas fa-moon';
+                    themeLabel.textContent = 'Scuro';
+                }
+            }
+
+            themeToggle.addEventListener('click', function() {
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                applyTheme(newTheme);
+            });
+
+            applyTheme(currentTheme);
+
+            // ============================================
+            // BACK TO TOP
+            // ============================================
+            const backToTop = document.getElementById('backToTop');
+
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 400) {
+                    backToTop.classList.add('visible');
+                } else {
+                    backToTop.classList.remove('visible');
+                }
+            });
+
+            backToTop.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // ============================================
+            // ANNO NEL FOOTER
+            // ============================================
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        })();
+    </script>
+
 </body>
 </html>
