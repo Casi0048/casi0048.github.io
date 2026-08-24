@@ -72,6 +72,7 @@
 
     --gold: #b8860b;
     --gold-light: #d4a02b;
+    --gold-line: rgba(184, 134, 11, 0.22);
 
     --border-gold: #c4a882;
 
@@ -101,6 +102,9 @@
     --search-border: #c4a882;
 
     --link-underline: #e05252;
+
+    /* Player */
+    --border: rgba(0, 0, 0, 0.08);
 }
 
 
@@ -126,6 +130,7 @@
 
     --gold: #f3c64d;
     --gold-light: #ffe28a;
+    --gold-line: rgba(243, 198, 77, 0.22);
 
     --border-gold: #8f7435;
 
@@ -156,6 +161,8 @@
     --search-border: #8f7435;
 
     --link-underline: #f3c64d;
+
+    --border: rgba(255, 255, 255, 0.08);
 }
 
 
@@ -1199,68 +1206,204 @@ html[data-theme="dark"] .sub-branch:hover {
 
 
 /* ============================================================
-   BACK TO TOP
+   BACK TO TOP – STILE COERENTE CON PLAYER
    ============================================================ */
 
 .back-to-top {
-
     position: fixed;
-
-    bottom: 30px;
-    right: 30px;
-
-    background: var(--accent);
-
-    color: #fff;
-
-    border: none;
-
-    width: 48px;
-    height: 48px;
-
+    bottom: 22px;
+    right: 130px;
+    width: 46px;
+    height: 46px;
     border-radius: 50%;
-
-    font-size: 1.3rem;
-
+    border: 1px solid var(--gold-line, rgba(184, 134, 11, 0.22));
+    background: rgba(10, 12, 20, 0.94);
+    color: var(--gold, #d4a02b);
+    font-size: 1.4rem;
+    font-weight: 400;
     cursor: pointer;
-
-    box-shadow:
-        0 6px 20px rgba(0, 0, 0, 0.2);
-
-    transition:
-        opacity 0.35s,
-        transform 0.35s,
-        background 0.3s;
-
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     opacity: 0;
-
     transform: scale(0.8);
-
     pointer-events: none;
-
-    z-index: 100;
-
+    z-index: 1000;
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 }
 
 .back-to-top.visible {
-
     opacity: 1;
-
     transform: scale(1);
-
     pointer-events: auto;
 }
 
 .back-to-top:hover {
+    transform: translateY(-2px) scale(1.02);
+    border-color: rgba(255, 216, 106, 0.65);
+    background: rgba(18, 18, 42, 0.96);
+    box-shadow: 0 8px 35px rgba(0, 0, 0, 0.45);
+}
 
+.back-to-top:active {
+    transform: scale(0.92);
+}
+
+.back-to-top:focus-visible {
+    outline: 3px solid var(--gold, #d4a02b);
+    outline-offset: 4px;
+}
+
+
+/* TEMA SCURO – BACK TO TOP */
+[data-theme="dark"] .back-to-top {
+    border-color: rgba(243, 198, 77, 0.35);
+    background: rgba(10, 12, 20, 0.94);
+    color: #f3c64d;
+}
+
+[data-theme="dark"] .back-to-top:hover {
+    border-color: rgba(243, 198, 77, 0.7);
+    background: rgba(18, 18, 42, 0.96);
+}
+
+
+/* TEMA CHIARO – BACK TO TOP (mantiene lo stile originale) */
+html:not([data-theme="dark"]) .back-to-top {
+    border-color: var(--gold-line);
+    background: var(--accent);
+    color: #fff;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+html:not([data-theme="dark"]) .back-to-top:hover {
     background: var(--gold);
-
     transform: scale(1.08);
+}
+
+
+/* ============================================================
+   PLAYER MUSICALE
+   ============================================================ */
+
+.music-player {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 9999;
+    font-family: 'Inter', sans-serif;
+}
+
+.player-toggle {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: 1px solid var(--gold-line, rgba(184, 134, 11, 0.22));
+    background: rgba(10, 12, 20, 0.94);
+    color: var(--gold, #d4a02b);
+    font-size: 1.25rem;
+    cursor: pointer;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+    transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease, color 0.4s ease;
+    display: grid;
+    place-items: center;
+}
+
+[data-theme="dark"] .player-toggle {
+    background: rgba(10, 12, 20, 0.94);
+    border-color: rgba(243, 198, 77, 0.22);
+    color: #f3c64d;
+}
+
+[data-theme="dark"] .player-toggle:hover {
+    border-color: rgba(243, 198, 77, 0.65);
+    background: rgba(18, 18, 42, 0.96);
+}
+
+.player-toggle:hover {
+    transform: scale(1.05);
+    border-color: rgba(184, 134, 11, 0.65);
+    background: rgba(18, 18, 42, 0.96);
+}
+
+.player-panel {
+    position: absolute;
+    right: 0;
+    bottom: 62px;
+    width: 250px;
+    padding: 20px;
+    border: 1px solid var(--gold-line, rgba(184, 134, 11, 0.22));
+    border-radius: 14px;
+    background: rgba(12, 14, 23, 0.97);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px) scale(0.97);
+    transform-origin: bottom right;
+    transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease, background 0.4s ease, border-color 0.4s ease;
+}
+
+[data-theme="dark"] .player-panel {
+    background: rgba(12, 14, 23, 0.97);
+    border-color: rgba(243, 198, 77, 0.18);
+}
+
+.music-player.open .player-panel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+.player-title {
+    font-family: var(--font-serif);
+    font-size: 0.78rem;
+    letter-spacing: 1px;
+    color: var(--gold);
+    margin-bottom: 15px;
+    transition: color 0.4s ease;
+}
+
+.player-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.player-controls button {
+    width: 34px;
+    height: 34px;
+    border: 1px solid var(--border, rgba(0, 0, 0, 0.08));
+    border-radius: 50%;
+    background: transparent;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: border-color 0.3s ease, color 0.3s ease;
+}
+
+[data-theme="dark"] .player-controls button {
+    color: #f5f1e8;
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.player-controls button:hover {
+    border-color: var(--gold-line);
+    color: var(--gold);
+}
+
+.player-status {
+    font-size: 0.68rem;
+    color: var(--text-secondary);
+    transition: color 0.4s ease;
+}
+
+[data-theme="dark"] .player-status {
+    color: #d6d0c4;
 }
 
 
@@ -1441,13 +1584,27 @@ footer .footer-credit {
 
     .back-to-top {
 
-        bottom: 20px;
+        bottom: 70px;
         right: 20px;
-
         width: 42px;
         height: 42px;
+        font-size: 1.2rem;
+    }
 
-        font-size: 1rem;
+    .music-player {
+        right: 16px;
+        bottom: 16px;
+    }
+
+    .player-toggle {
+        width: 42px;
+        height: 42px;
+        font-size: 1.1rem;
+    }
+
+    .player-panel {
+        width: min(240px, calc(100vw - 32px));
+        bottom: 56px;
     }
 }
 
@@ -1515,7 +1672,32 @@ footer .footer-credit {
 
         font-size: 1rem;
     }
+
+    .back-to-top {
+        bottom: 62px;
+        right: 12px;
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+    }
+
+    .player-toggle {
+        width: 38px;
+        height: 38px;
+        font-size: 1rem;
+    }
+
+    .player-panel {
+        width: min(220px, calc(100vw - 24px));
+        padding: 14px;
+        bottom: 50px;
+    }
+
+    .player-title {
+        font-size: 0.7rem;
+    }
 }
+
 /* ============================================
    RIMUOVI LA X NATIVA DI CANCELLAZIONE
    ============================================ */
@@ -3100,15 +3282,36 @@ input[type="search"]::-moz-search-cancel-button {
 
 
 <!-- BACK TO TOP -->
-
-<button
-    id="backToTop"
-    class="back-to-top"
-    aria-label="Torna su">
-
+<button id="backToTop" class="back-to-top" aria-label="Torna su">
     <i class="fas fa-chevron-up"></i>
-
 </button>
+
+
+<!-- ============================================================
+     PLAYER — AUDIO
+     ============================================================ -->
+<audio id="myAudio"
+       playsinline
+       preload="auto"
+       src="https://casi0048.github.io/suoni/Strauss.mp3">
+</audio>
+
+<!-- ============================================================
+     PLAYER — HTML
+     ============================================================ -->
+<div class="music-player" id="music-player">
+    <button class="player-toggle" id="player-toggle" type="button" aria-label="Apri lettore musicale" aria-expanded="false">
+        ♪
+    </button>
+
+    <div class="player-panel">
+        <div class="player-title">MUSICA PER IL PENSIERO</div>
+        <div class="player-controls">
+            <button id="player-play" type="button" aria-label="Riproduci o pausa">▶</button>
+            <div class="player-status" id="player-status">Pronto</div>
+        </div>
+    </div>
+</div>
 
 
 </div>
@@ -3780,11 +3983,10 @@ input[type="search"]::-moz-search-cancel-button {
 
 
         console.log(
-            `🔍 Ricerca: "${rawTerm}" — Trovati ${
-                document.querySelectorAll(
-                    '.branch:not(.hidden), .era:not(.hidden)'
-                ).length
-            } elementi.`
+            '🔍 Ricerca: "' + rawTerm + '" — Trovati ' +
+            document.querySelectorAll(
+                '.branch:not(.hidden), .era:not(.hidden)'
+            ).length + ' elementi.'
         );
     }
 
@@ -3838,6 +4040,123 @@ input[type="search"]::-moz-search-cancel-button {
             searchInput.focus();
         }
     );
+
+
+    /* ============================================================
+       PLAYER MUSICALE
+       ============================================================ */
+
+    const audio = document.getElementById('myAudio');
+    const playButton = document.getElementById('player-play');
+    const playerStatus = document.getElementById('player-status');
+    const player = document.getElementById('music-player');
+    const playerToggle = document.getElementById('player-toggle');
+
+    if (audio && playButton) {
+
+        playButton.addEventListener(
+            'click',
+            function() {
+
+                if (audio.paused) {
+
+                    audio.play()
+                        .then(function() {
+
+                            playButton.textContent = '❚❚';
+
+                            if (playerStatus) {
+                                playerStatus.textContent =
+                                    'In riproduzione';
+                            }
+
+                        })
+                        .catch(function(error) {
+
+                            console.warn(
+                                'Riproduzione audio non avviata:',
+                                error
+                            );
+
+                        });
+
+                } else {
+
+                    audio.pause();
+
+                    playButton.textContent = '▶';
+
+                    if (playerStatus) {
+                        playerStatus.textContent =
+                            'In pausa';
+                    }
+
+                }
+
+            }
+        );
+
+        audio.addEventListener(
+            'ended',
+            function() {
+
+                playButton.textContent = '▶';
+
+                if (playerStatus) {
+                    playerStatus.textContent =
+                        'Pronto';
+                }
+
+            }
+        );
+
+    }
+
+    // APERTURA / CHIUSURA PLAYER
+    if (player && playerToggle) {
+
+        playerToggle.addEventListener(
+            'click',
+            function() {
+
+                var open =
+                    player.classList.toggle(
+                        'open'
+                    );
+
+                playerToggle.setAttribute(
+                    'aria-expanded',
+                    open ? 'true' : 'false'
+                );
+
+            }
+        );
+
+        document.addEventListener(
+            'click',
+            function(event) {
+
+                if (
+                    !player.contains(
+                        event.target
+                    )
+                ) {
+
+                    player.classList.remove(
+                        'open'
+                    );
+
+                    playerToggle.setAttribute(
+                        'aria-expanded',
+                        'false'
+                    );
+
+                }
+
+            }
+        );
+
+    }
 
 
     /* ============================================================
