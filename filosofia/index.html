@@ -63,20 +63,7 @@
     flex-wrap: wrap;
     gap: 0.8rem;
 }
-  .topbar .back-link {
-    color: var(--gold);
-    font-size: 1rem;
-    font-weight: 500;
-    letter-spacing: .04em;
-    text-decoration: none;
-    opacity: .9;
-    transition: color .25s ease, opacity .25s ease;
-}
 
-.topbar .back-link:hover {
-    color: var(--gold);
-    opacity: 1;
-}
     .topbar .brand {
       font-family: var(--font-display);
       font-size: 1.1rem;
@@ -460,6 +447,57 @@
     }
 
     /* ============================================================
+       PULSANTE TORNA SU
+       ============================================================ */
+
+    .torna-su {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 48px;
+      height: 48px;
+      background: var(--gold);
+      color: var(--bg);
+      border: none;
+      border-radius: 50%;
+      font-size: 1.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(255, 216, 106, 0.3);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      opacity: 0;
+      transform: scale(0.8);
+      pointer-events: none;
+      z-index: 1000;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .torna-su.visible {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: auto;
+    }
+
+    .torna-su:hover {
+      transform: scale(1.12) translateY(-4px);
+      box-shadow: 0 8px 35px rgba(255, 216, 106, 0.5);
+      background: #ffe080;
+    }
+
+    .torna-su:active {
+      transform: scale(0.92);
+    }
+
+    /* Accessibilità: focus visibile */
+    .torna-su:focus-visible {
+      outline: 3px solid var(--gold);
+      outline-offset: 4px;
+    }
+
+    /* ============================================================
        FOOTER
        ============================================================ */
 
@@ -550,6 +588,14 @@
         font-size: 0.9rem;
         padding: 1rem;
       }
+
+      .torna-su {
+        width: 42px;
+        height: 42px;
+        font-size: 1.5rem;
+        bottom: 1.2rem;
+        right: 1.2rem;
+      }
     }
 
     @media (max-width: 480px) {
@@ -583,6 +629,14 @@
       .link-collegamenti a {
         font-size: 0.85rem;
       }
+
+      .torna-su {
+        width: 38px;
+        height: 38px;
+        font-size: 1.3rem;
+        bottom: 1rem;
+        right: 1rem;
+      }
     }
   </style>
 </head>
@@ -595,9 +649,9 @@
        TOPBAR
        ============================================================ -->
 <div class="topbar">
-
-    <a href="/" class="back-link">
-        ← Echi di Sofia
+  
+ <a href="/" class="back-link">
+  ← Echi di Sofia
     </a>
 
 </div>
@@ -1361,7 +1415,51 @@
       <p class="copyright">© Echi di Sofia – La lunga avventura del pensiero</p>
     </footer>
 
-  </div>
+  </div> <!-- fine container -->
+
+  <!-- ============================================================
+       PULSANTE TORNA SU
+       ============================================================ -->
+  <button class="torna-su" id="tornaSu" aria-label="Torna su" title="Torna su">↑</button>
+
+  <!-- ============================================================
+       SCRIPT PER IL PULSANTE TORNA SU
+       ============================================================ -->
+  <script>
+    (function() {
+      const btn = document.getElementById('tornaSu');
+      if (!btn) return;
+
+      let lastScrollY = window.scrollY;
+
+      function toggleButton() {
+        const scrollY = window.scrollY;
+        const threshold = 300; // mostriamo il pulsante dopo 300px di scroll
+
+        if (scrollY > threshold) {
+          btn.classList.add('visible');
+        } else {
+          btn.classList.remove('visible');
+        }
+        lastScrollY = scrollY;
+      }
+
+      // Ascolta lo scroll
+      window.addEventListener('scroll', toggleButton, { passive: true });
+
+      // Click: scroll liscio in cima
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+
+      // Controlliamo subito all'avvio
+      toggleButton();
+    })();
+  </script>
 
 </body>
 </html>
