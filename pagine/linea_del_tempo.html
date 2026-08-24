@@ -43,7 +43,7 @@
             --accent-light: #a00000;
             --gold: #b8860b;
             --gold-light: #d4a02b;
-            --highlight-bg: #ffecb3;  /* non più usato, ora fisso per contrasto */
+            --highlight-bg: #ffecb3;
             --btn-bg: #8B0000;
             --btn-hover: #b8860b;
             --header-bg: linear-gradient(135deg, #1a2a6c, #2c3e50);
@@ -52,6 +52,10 @@
             --timeline-line: #b8860b;
             --back-link: #b8860b;
             --back-hover: #d4a02b;
+
+            /* Player */
+            --gold-line: rgba(184, 134, 11, 0.22);
+            --border: rgba(0, 0, 0, 0.08);
         }
 
         [data-theme="dark"] {
@@ -66,7 +70,7 @@
             --accent-light: #e6b84a;
             --gold: #d4a02b;
             --gold-light: #e6b84a;
-            --highlight-bg: #5a4a2a;  /* non più usato */
+            --highlight-bg: #5a4a2a;
             --btn-bg: #b8860b;
             --btn-hover: #d4a02b;
             --header-bg: linear-gradient(135deg, #0d0d0d, #1a1410);
@@ -75,6 +79,9 @@
             --timeline-line: #b8860b;
             --back-link: #d4a02b;
             --back-hover: #e6b84a;
+
+            --gold-line: rgba(184, 134, 11, 0.22);
+            --border: rgba(255, 255, 255, 0.08);
         }
 
         /* =======================================
@@ -445,16 +452,16 @@
         }
 
         /* =======================================
-           HIGHLIGHT (ricerca) – MIGLIORATO
+           HIGHLIGHT (ricerca)
            ======================================= */
         .highlight {
-            background: #FFD700;      /* giallo oro brillante */
-            color: #000000;           /* testo nero per massimo contrasto */
+            background: #FFD700;
+            color: #000000;
             font-weight: 700;
             padding: 1px 4px;
             border-radius: 4px;
-            box-shadow: 0 0 6px rgba(255, 215, 0, 0.5); /* alone leggero */
-            border: 1px solid #e6b800; /* bordo per definire meglio */
+            box-shadow: 0 0 6px rgba(255, 215, 0, 0.5);
+            border: 1px solid #e6b800;
         }
 
         /* =======================================
@@ -477,38 +484,207 @@
             color: var(--gold);
         }
 
+     /* =======================================
+   BACK TO TOP – STILE COERENTE CON PLAYER
+   ======================================= */
+
+.back-to-top {
+    position: fixed;
+    bottom: 22px;
+    right: 130px;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: 1px solid rgba(184, 134, 11, 0.25); /* bordo visibile di default */
+    background: rgba(10, 12, 20, 0.94);
+    color: var(--gold, #d4a02b);
+    font-size: 1.4rem;
+    font-weight: 400;
+    cursor: pointer;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    transform: scale(0.8);
+    pointer-events: none;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+}
+
+.back-to-top:hover {
+    transform: translateY(-2px) scale(1.02);
+    border-color: rgba(212, 160, 43, 0.7); /* hover più luminoso */
+    background: rgba(18, 18, 42, 0.96);
+    box-shadow: 0 8px 35px rgba(0, 0, 0, 0.45);
+}
+
+.back-to-top:active {
+    transform: scale(0.92);
+}
+
+.back-to-top:focus-visible {
+    outline: 3px solid var(--gold, #d4a02b);
+    outline-offset: 4px;
+}
+
+
+/* =======================================
+   TEMA SCURO – BACK TO TOP (bordo sempre visibile)
+   ======================================= */
+html[data-theme="dark"] .back-to-top {
+    border-color: rgba(212, 160, 43, 0.45); /* cerchietto visibile anche in dark */
+    background: rgba(10, 12, 20, 0.94);
+    color: #d4a02b;
+}
+
+html[data-theme="dark"] .back-to-top:hover {
+    border-color: rgba(212, 160, 43, 0.8);
+    background: rgba(18, 18, 42, 0.96);
+}
+
+
+/* =======================================
+   TEMA CHIARO – BACK TO TOP (pieno, senza bordo)
+   ======================================= */
+html:not([data-theme="dark"]) .back-to-top {
+    background: var(--accent, #8B0000);
+    color: #fff;
+    border: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+html:not([data-theme="dark"]) .back-to-top:hover {
+    background: var(--gold, #b8860b);
+    transform: scale(1.1);
+}
+
         /* =======================================
-           BACK TO TOP
+           PLAYER MUSICALE
            ======================================= */
-        .back-to-top {
+        .music-player {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: var(--accent);
-            color: #fff;
-            border: none;
-            width: 50px;
-            height: 50px;
+            right: 24px;
+            bottom: 24px;
+            z-index: 9999;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .player-toggle {
+            width: 46px;
+            height: 46px;
             border-radius: 50%;
-            font-size: 1.5rem;
+            border: 1px solid var(--gold-line);
+            background: rgba(10, 12, 20, 0.94);
+            color: var(--gold);
+            font-size: 1.25rem;
             cursor: pointer;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-            transition: opacity 0.3s, transform 0.3s, background 0.3s;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+            transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease, color 0.4s ease;
+            display: grid;
+            place-items: center;
+        }
+
+        [data-theme="dark"] .player-toggle {
+            background: rgba(10, 12, 20, 0.94);
+            border-color: rgba(184, 134, 11, 0.22);
+            color: #d4a02b;
+        }
+
+        [data-theme="dark"] .player-toggle:hover {
+            border-color: rgba(212, 160, 43, 0.65);
+            background: rgba(18, 18, 42, 0.96);
+        }
+
+        .player-toggle:hover {
+            transform: scale(1.05);
+            border-color: rgba(184, 134, 11, 0.65);
+            background: rgba(18, 18, 42, 0.96);
+        }
+
+        .player-panel {
+            position: absolute;
+            right: 0;
+            bottom: 62px;
+            width: 250px;
+            padding: 20px;
+            border: 1px solid var(--gold-line);
+            border-radius: 14px;
+            background: rgba(12, 14, 23, 0.97);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
             opacity: 0;
-            transform: scale(0.8);
-            pointer-events: none;
-            z-index: 100;
+            visibility: hidden;
+            transform: translateY(8px) scale(0.97);
+            transform-origin: bottom right;
+            transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease, background 0.4s ease, border-color 0.4s ease;
         }
 
-        .back-to-top.visible {
+        [data-theme="dark"] .player-panel {
+            background: rgba(12, 14, 23, 0.97);
+            border-color: rgba(184, 134, 11, 0.18);
+        }
+
+        .music-player.open .player-panel {
             opacity: 1;
-            transform: scale(1);
-            pointer-events: auto;
+            visibility: visible;
+            transform: translateY(0) scale(1);
         }
 
-        .back-to-top:hover {
-            background: var(--gold);
-            transform: scale(1.1);
+        .player-title {
+            font-family: var(--font-serif);
+            font-size: 0.78rem;
+            letter-spacing: 1px;
+            color: var(--gold);
+            margin-bottom: 15px;
+            transition: color 0.4s ease;
+        }
+
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .player-controls button {
+            width: 34px;
+            height: 34px;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            background: transparent;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: border-color 0.3s ease, color 0.3s ease;
+        }
+
+        [data-theme="dark"] .player-controls button {
+            color: #d4c9b8;
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .player-controls button:hover {
+            border-color: var(--gold-line);
+            color: var(--gold);
+        }
+
+        .player-status {
+            font-size: 0.68rem;
+            color: var(--text-secondary);
+            transition: color 0.4s ease;
+        }
+
+        [data-theme="dark"] .player-status {
+            color: #a0907a;
         }
 
         /* =======================================
@@ -594,6 +770,30 @@
             header {
                 padding: 20px 16px;
             }
+
+            .back-to-top {
+                bottom: 70px;
+                right: 16px;
+                width: 42px;
+                height: 42px;
+                font-size: 1.2rem;
+            }
+
+            .music-player {
+                right: 16px;
+                bottom: 16px;
+            }
+
+            .player-toggle {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+
+            .player-panel {
+                width: min(240px, calc(100vw - 32px));
+                bottom: 56px;
+            }
         }
 
         @media screen and (max-width: 480px) {
@@ -611,6 +811,30 @@
 
             .concept-list li {
                 font-size: 0.85rem;
+            }
+
+            .back-to-top {
+                bottom: 62px;
+                right: 12px;
+                width: 36px;
+                height: 36px;
+                font-size: 1rem;
+            }
+
+            .player-toggle {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            .player-panel {
+                width: min(220px, calc(100vw - 24px));
+                padding: 14px;
+                bottom: 50px;
+            }
+
+            .player-title {
+                font-size: 0.7rem;
             }
         }
 
@@ -1842,6 +2066,35 @@
 
 </div>
 
+<!-- =============================================
+     PLAYER — AUDIO
+     ============================================= -->
+<audio id="myAudio"
+       playsinline
+       preload="auto"
+       src="https://casi0048.github.io/suoni/Strauss.mp3">
+</audio>
+
+<!-- =============================================
+     PLAYER — HTML
+     ============================================= -->
+<div class="music-player" id="music-player">
+    <button class="player-toggle" id="player-toggle" type="button" aria-label="Apri lettore musicale" aria-expanded="false">
+        ♪
+    </button>
+
+    <div class="player-panel">
+        <div class="player-title">MUSICA PER IL PENSIERO</div>
+        <div class="player-controls">
+            <button id="player-play" type="button" aria-label="Riproduci o pausa">▶</button>
+            <div class="player-status" id="player-status">Pronto</div>
+        </div>
+    </div>
+</div>
+
+<!-- =============================================
+     JAVASCRIPT
+     ============================================= -->
 <script>
     (function() {
         'use strict';
@@ -1991,9 +2244,9 @@
             }
 
             console.log(
-                `🔍 Ricerca: "${searchTerm}" — ` +
-                `Trovate ${document.querySelectorAll('.era.visible').length} ` +
-                `card visibili.`
+                '🔍 Ricerca: "' + searchTerm + '" — ' +
+                'Trovate ' + document.querySelectorAll('.era.visible').length +
+                ' card visibili.'
             );
         }
 
@@ -2004,9 +2257,9 @@
 
             document
                 .querySelectorAll('.highlight')
-                .forEach(el => {
+                .forEach(function(el) {
 
-                    const parent = el.parentNode;
+                    var parent = el.parentNode;
 
                     parent.replaceChild(
                         document.createTextNode(
@@ -2030,22 +2283,22 @@
                 return;
             }
 
-            const regex =
+            var regex =
                 new RegExp(term, 'gi');
 
-            const visibleEras =
+            var visibleEras =
                 document.querySelectorAll(
                     '.era.visible'
                 );
 
-            visibleEras.forEach(era => {
+            visibleEras.forEach(function(era) {
 
-                const content =
+                var content =
                     era.querySelector(
                         '.era-content'
                     );
 
-                const walker =
+                var walker =
                     document.createTreeWalker(
                         content,
                         NodeFilter.SHOW_TEXT,
@@ -2066,12 +2319,12 @@
                         false
                     );
 
-                const nodes = [];
+                var nodes = [];
 
-                let node;
+                var node;
 
                 while (
-                    node = walker.nextNode()
+                    (node = walker.nextNode())
                 ) {
 
                     if (
@@ -2081,25 +2334,25 @@
                     }
                 }
 
-                nodes.forEach(textNode => {
+                nodes.forEach(function(textNode) {
 
-                    const parent =
+                    var parent =
                         textNode.parentNode;
 
-                    const text =
+                    var text =
                         textNode.textContent;
 
-                    const parts =
+                    var parts =
                         text.split(regex);
 
-                    const matches =
+                    var matches =
                         text.match(regex) || [];
 
-                    const fragment =
+                    var fragment =
                         document.createDocumentFragment();
 
                     parts.forEach(
-                        (part, index) => {
+                        function(part, index) {
 
                             if (part) {
 
@@ -2114,7 +2367,7 @@
                                 index < matches.length
                             ) {
 
-                                const mark =
+                                var mark =
                                     document.createElement(
                                         'span'
                                     );
@@ -2259,11 +2512,11 @@
         // ============================================
         if ('IntersectionObserver' in window) {
 
-            const observer =
+            var observer =
                 new IntersectionObserver(
-                    (entries) => {
+                    function(entries) {
 
-                        entries.forEach(entry => {
+                        entries.forEach(function(entry) {
 
                             if (
                                 entry.isIntersecting
@@ -2285,13 +2538,13 @@
                     }
                 );
 
-            eras.forEach(era => {
+            eras.forEach(function(era) {
                 observer.observe(era);
             });
 
         } else {
 
-            eras.forEach(era => {
+            eras.forEach(function(era) {
                 era.classList.add('visible');
             });
         }
@@ -2299,13 +2552,128 @@
         // ============================================
         // INIZIALIZZAZIONE
         // ============================================
-        setTimeout(() => {
+        setTimeout(function() {
 
-            eras.forEach(era => {
+            eras.forEach(function(era) {
                 era.classList.add('visible');
             });
 
         }, 100);
+
+        // ============================================
+        // PLAYER MUSICALE
+        // ============================================
+        var audio = document.getElementById('myAudio');
+        var playButton = document.getElementById('player-play');
+        var playerStatus = document.getElementById('player-status');
+        var player = document.getElementById('music-player');
+        var playerToggle = document.getElementById('player-toggle');
+
+        if (audio && playButton) {
+
+            playButton.addEventListener(
+                'click',
+                function() {
+
+                    if (audio.paused) {
+
+                        audio.play()
+                            .then(function() {
+
+                                playButton.textContent = '❚❚';
+
+                                if (playerStatus) {
+                                    playerStatus.textContent =
+                                        'In riproduzione';
+                                }
+
+                            })
+                            .catch(function(error) {
+
+                                console.warn(
+                                    'Riproduzione audio non avviata:',
+                                    error
+                                );
+
+                            });
+
+                    } else {
+
+                        audio.pause();
+
+                        playButton.textContent = '▶';
+
+                        if (playerStatus) {
+                            playerStatus.textContent =
+                                'In pausa';
+                        }
+
+                    }
+
+                }
+            );
+
+            audio.addEventListener(
+                'ended',
+                function() {
+
+                    playButton.textContent = '▶';
+
+                    if (playerStatus) {
+                        playerStatus.textContent =
+                            'Pronto';
+                    }
+
+                }
+            );
+
+        }
+
+        // APERTURA / CHIUSURA PLAYER
+        if (player && playerToggle) {
+
+            playerToggle.addEventListener(
+                'click',
+                function() {
+
+                    var open =
+                        player.classList.toggle(
+                            'open'
+                        );
+
+                    playerToggle.setAttribute(
+                        'aria-expanded',
+                        open ? 'true' : 'false'
+                    );
+
+                }
+            );
+
+            document.addEventListener(
+                'click',
+                function(event) {
+
+                    if (
+                        !player.contains(
+                            event.target
+                        )
+                    ) {
+
+                        player.classList.remove(
+                            'open'
+                        );
+
+                        playerToggle.setAttribute(
+                            'aria-expanded',
+                            'false'
+                        );
+
+                    }
+
+                }
+            );
+
+        }
 
     })();
 </script>
