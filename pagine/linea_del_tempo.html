@@ -53,7 +53,6 @@
             --back-link: #b8860b;
             --back-hover: #d4a02b;
 
-            /* Player */
             --gold-line: rgba(184, 134, 11, 0.22);
             --border: rgba(0, 0, 0, 0.08);
         }
@@ -276,14 +275,23 @@
             position: relative;
             width: 50%;
             margin-bottom: 50px;
-            opacity: 0;
-            transform: translateY(40px);
             transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        .era.visible {
+        .era.hidden {
+            opacity: 0;
+            transform: translateY(40px) scale(0.95);
+            pointer-events: none;
+            max-height: 0;
+            padding: 0 40px;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .era:not(.hidden) {
             opacity: 1;
             transform: translateY(0);
+            max-height: 2000px;
         }
 
         .era::after {
@@ -452,16 +460,26 @@
         }
 
         /* =======================================
-           HIGHLIGHT (ricerca)
+           HIGHLIGHT – VERDE BRILLANTE CON EFFETTO FASCIA
            ======================================= */
         .highlight {
-            background: #FFD700;
+            background: #39ff14;
             color: #000000;
             font-weight: 700;
-            padding: 1px 4px;
+            padding: 1px 6px;
             border-radius: 4px;
-            box-shadow: 0 0 6px rgba(255, 215, 0, 0.5);
-            border: 1px solid #e6b800;
+            border: 2px solid #1a8a00;
+            box-shadow:
+                0 0 0 1px rgba(57, 255, 20, 0.3),
+                0 0 12px rgba(57, 255, 20, 0.4);
+            transition: all 0.15s ease;
+        }
+
+        .highlight:hover {
+            background: #4aff2a;
+            border-color: #0f6e00;
+            box-shadow: 0 0 0 2px rgba(57, 255, 20, 0.5), 0 0 24px rgba(57, 255, 20, 0.6);
+            transform: scale(1.02);
         }
 
         /* =======================================
@@ -484,90 +502,81 @@
             color: var(--gold);
         }
 
-     /* =======================================
-   BACK TO TOP – STILE COERENTE CON PLAYER
-   ======================================= */
+        /* =======================================
+           BACK TO TOP
+           ======================================= */
+        .back-to-top {
+            position: fixed;
+            bottom: 22px;
+            right: 130px;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            border: 1px solid rgba(184, 134, 11, 0.25);
+            background: rgba(10, 12, 20, 0.94);
+            color: var(--gold, #d4a02b);
+            font-size: 1.4rem;
+            font-weight: 400;
+            cursor: pointer;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-.back-to-top {
-    position: fixed;
-    bottom: 22px;
-    right: 130px;
-    width: 46px;
-    height: 46px;
-    border-radius: 50%;
-    border: 1px solid rgba(184, 134, 11, 0.25); /* bordo visibile di default */
-    background: rgba(10, 12, 20, 0.94);
-    color: var(--gold, #d4a02b);
-    font-size: 1.4rem;
-    font-weight: 400;
-    cursor: pointer;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    opacity: 0;
-    transform: scale(0.8);
-    pointer-events: none;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+        .back-to-top.visible {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
 
-.back-to-top.visible {
-    opacity: 1;
-    transform: scale(1);
-    pointer-events: auto;
-}
+        .back-to-top:hover {
+            transform: translateY(-2px) scale(1.02);
+            border-color: rgba(212, 160, 43, 0.7);
+            background: rgba(18, 18, 42, 0.96);
+            box-shadow: 0 8px 35px rgba(0, 0, 0, 0.45);
+        }
 
-.back-to-top:hover {
-    transform: translateY(-2px) scale(1.02);
-    border-color: rgba(212, 160, 43, 0.7); /* hover più luminoso */
-    background: rgba(18, 18, 42, 0.96);
-    box-shadow: 0 8px 35px rgba(0, 0, 0, 0.45);
-}
+        .back-to-top:active {
+            transform: scale(0.92);
+        }
 
-.back-to-top:active {
-    transform: scale(0.92);
-}
+        .back-to-top:focus-visible {
+            outline: 3px solid var(--gold, #d4a02b);
+            outline-offset: 4px;
+        }
 
-.back-to-top:focus-visible {
-    outline: 3px solid var(--gold, #d4a02b);
-    outline-offset: 4px;
-}
+        html[data-theme="dark"] .back-to-top {
+            border-color: rgba(212, 160, 43, 0.45);
+            background: rgba(10, 12, 20, 0.94);
+            color: #d4a02b;
+        }
 
+        html[data-theme="dark"] .back-to-top:hover {
+            border-color: rgba(212, 160, 43, 0.8);
+            background: rgba(18, 18, 42, 0.96);
+        }
 
-/* =======================================
-   TEMA SCURO – BACK TO TOP (bordo sempre visibile)
-   ======================================= */
-html[data-theme="dark"] .back-to-top {
-    border-color: rgba(212, 160, 43, 0.45); /* cerchietto visibile anche in dark */
-    background: rgba(10, 12, 20, 0.94);
-    color: #d4a02b;
-}
+        html:not([data-theme="dark"]) .back-to-top {
+            background: var(--accent, #8B0000);
+            color: #fff;
+            border: none;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
 
-html[data-theme="dark"] .back-to-top:hover {
-    border-color: rgba(212, 160, 43, 0.8);
-    background: rgba(18, 18, 42, 0.96);
-}
-
-
-/* =======================================
-   TEMA CHIARO – BACK TO TOP (pieno, senza bordo)
-   ======================================= */
-html:not([data-theme="dark"]) .back-to-top {
-    background: var(--accent, #8B0000);
-    color: #fff;
-    border: none;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-}
-
-html:not([data-theme="dark"]) .back-to-top:hover {
-    background: var(--gold, #b8860b);
-    transform: scale(1.1);
-}
+        html:not([data-theme="dark"]) .back-to-top:hover {
+            background: var(--gold, #b8860b);
+            transform: scale(1.1);
+        }
 
         /* =======================================
            PLAYER MUSICALE
@@ -2093,589 +2102,321 @@ html:not([data-theme="dark"]) .back-to-top:hover {
 </div>
 
 <!-- =============================================
-     JAVASCRIPT
+     JAVASCRIPT – NUOVA VERSIONE AVANZATA
      ============================================= -->
 <script>
-    (function() {
-        'use strict';
+(function() {
+    'use strict';
 
-        // ============================================
-        // ELEMENTI DOM
-        // ============================================
-        const eras = document.querySelectorAll('.era');
-        const searchInput = document.getElementById('searchInput');
-        const searchButton = document.getElementById('searchButton');
-        const clearSearchBtn = document.getElementById('clearSearch');
-        const noResults = document.getElementById('noResults');
-        const searchTermDisplay = document.getElementById('searchTermDisplay');
-        const backToTop = document.getElementById('backToTop');
-        const themeToggle = document.getElementById('themeToggle');
-        const themeLabel = document.getElementById('themeLabel');
+    // ============================================
+    // TEMA CHIARO/SCURO
+    // ============================================
+    const themeToggle = document.getElementById('themeToggle');
+    const themeLabel = document.getElementById('themeLabel');
+    let currentTheme = localStorage.getItem('timelineTheme') || 'light';
 
-        // ============================================
-        // TEMA CHIARO/SCURO
-        // ============================================
-        let currentTheme = localStorage.getItem('timelineTheme') || 'light';
+    function applyTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme === 'dark' ? 'dark' : '');
+        currentTheme = theme;
+        localStorage.setItem('timelineTheme', theme);
+        const icon = themeToggle.querySelector('i');
+        if (theme === 'dark') {
+            icon.className = 'fas fa-sun';
+            themeLabel.textContent = 'Chiaro';
+        } else {
+            icon.className = 'fas fa-moon';
+            themeLabel.textContent = 'Scuro';
+        }
+    }
 
-        function applyTheme(theme) {
-            document.documentElement.setAttribute(
-                'data-theme',
-                theme === 'dark' ? 'dark' : ''
+    themeToggle.addEventListener('click', function() {
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        applyTheme(newTheme);
+    });
+    applyTheme(currentTheme);
+
+    // ============================================
+    // BACK TO TOP
+    // ============================================
+    const backToTop = document.getElementById('backToTop');
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 300) {
+            backToTop.classList.add('visible');
+        } else {
+            backToTop.classList.remove('visible');
+        }
+    });
+    backToTop.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // ============================================
+    // ANNO FOOTER
+    // ============================================
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    // ============================================
+    // ELEMENTI DOM PER LA RICERCA
+    // ============================================
+    const searchInput = document.getElementById('searchInput');
+    const searchButton = document.getElementById('searchButton');
+    const clearSearchBtn = document.getElementById('clearSearch');
+    const noResults = document.getElementById('noResults');
+    const searchTermDisplay = document.getElementById('searchTermDisplay');
+
+    const eras = document.querySelectorAll('.era');
+
+    // ============================================
+    // NORMALIZZAZIONE (per la ricerca)
+    // ============================================
+    function normalizeString(str) {
+        return str
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/[^a-z0-9\s]/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+    }
+
+    // ============================================
+    // MATCH RICERCA (token multipli)
+    // ============================================
+    function elementMatchesSearch(element, tokens) {
+        if (tokens.length === 0) return true;
+        // Usa il data-search se presente, altrimenti il testo interno
+        const searchData = element.getAttribute('data-search') || '';
+        const textContent = element.textContent || '';
+        const combined = normalizeString(searchData + ' ' + textContent);
+        let matchCount = 0;
+        tokens.forEach(token => {
+            const normalizedToken = normalizeString(token);
+            if (normalizedToken && combined.includes(normalizedToken)) {
+                matchCount++;
+            }
+        });
+        const threshold = tokens.length > 2 ? Math.ceil(tokens.length / 2) : 1;
+        return matchCount >= threshold;
+    }
+
+    // ============================================
+    // RIMOZIONE HIGHLIGHT
+    // ============================================
+    function removeHighlights() {
+        document.querySelectorAll('.highlight').forEach(el => {
+            const parent = el.parentNode;
+            parent.replaceChild(document.createTextNode(el.textContent), el);
+            parent.normalize();
+        });
+    }
+
+    // ============================================
+    // HIGHLIGHT – NUOVA VERSIONE CHE ATTRAVERSA I LINK
+    // ============================================
+    function highlightSearch(term) {
+        removeHighlights();
+        if (!term) return;
+
+        const tokens = term.toLowerCase().split(/\s+/).filter(t => t.length > 0);
+        if (tokens.length === 0) return;
+
+        const pattern = tokens.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
+        const regex = new RegExp(pattern, 'gi');
+
+        const visibleEras = document.querySelectorAll('.era:not(.hidden)');
+
+        visibleEras.forEach(el => {
+            const walker = document.createTreeWalker(
+                el,
+                NodeFilter.SHOW_TEXT,
+                {
+                    acceptNode: function(node) {
+                        if (node.parentElement && node.parentElement.classList && node.parentElement.classList.contains('highlight')) {
+                            return NodeFilter.FILTER_REJECT;
+                        }
+                        // NON escludiamo più i link
+                        return NodeFilter.FILTER_ACCEPT;
+                    }
+                },
+                false
             );
 
-            currentTheme = theme;
-            localStorage.setItem('timelineTheme', theme);
-
-            const icon = themeToggle.querySelector('i');
-
-            if (theme === 'dark') {
-                icon.className = 'fas fa-sun';
-                themeLabel.textContent = 'Chiaro';
-            } else {
-                icon.className = 'fas fa-moon';
-                themeLabel.textContent = 'Scuro';
+            const nodes = [];
+            let node;
+            while (node = walker.nextNode()) {
+                if (node.textContent.match(regex)) {
+                    nodes.push(node);
+                }
             }
+
+            nodes.forEach(textNode => {
+                const parent = textNode.parentNode;
+                const text = textNode.textContent;
+                const parts = text.split(regex);
+                const matches = text.match(regex) || [];
+                const fragment = document.createDocumentFragment();
+
+                parts.forEach((part, index) => {
+                    if (part) {
+                        fragment.appendChild(document.createTextNode(part));
+                    }
+                    if (index < matches.length) {
+                        const mark = document.createElement('span');
+                        mark.className = 'highlight';
+                        mark.textContent = matches[index];
+                        fragment.appendChild(mark);
+                    }
+                });
+
+                parent.replaceChild(fragment, textNode);
+                parent.normalize();
+            });
+        });
+    }
+
+    // ============================================
+    // RICERCA PRINCIPALE
+    // ============================================
+    let currentSearch = '';
+
+    function performSearch() {
+        const rawTerm = searchInput.value.trim();
+        const term = rawTerm.toLowerCase();
+
+        clearSearchBtn.classList.toggle('visible', term !== '');
+        removeHighlights();
+
+        if (term === '') {
+            eras.forEach(e => e.classList.remove('hidden'));
+            noResults.style.display = 'none';
+            return;
         }
 
-        themeToggle.addEventListener('click', function() {
-            const newTheme =
-                currentTheme === 'dark' ? 'light' : 'dark';
+        const tokens = term.split(/\s+/).filter(t => t.length > 0);
+        let anyVisible = false;
+        let firstVisible = null;
 
-            applyTheme(newTheme);
+        eras.forEach(era => {
+            const matches = elementMatchesSearch(era, tokens);
+            if (matches) {
+                era.classList.remove('hidden');
+                anyVisible = true;
+                if (!firstVisible) firstVisible = era;
+            } else {
+                era.classList.add('hidden');
+            }
         });
 
-        applyTheme(currentTheme);
-
-        // ============================================
-        // FUNZIONE PRINCIPALE: RICERCA
-        // ============================================
-        let currentSearch = '';
-
-        function applyFilters() {
-
-            const searchTerm =
-                currentSearch.trim().toLowerCase();
-
-            let anyVisible = false;
-            let firstVisible = null;
-
-            eras.forEach(era => {
-
-                let textMatch = true;
-
-                if (searchTerm !== '') {
-
-                    const contentText =
-                        era.querySelector('.era-content')
-                            .textContent
-                            .toLowerCase();
-
-                    textMatch =
-                        contentText.includes(searchTerm);
-                }
-
-                const visible = textMatch;
-
-                era.classList.toggle(
-                    'visible',
-                    visible
-                );
-
-                if (visible) {
-
-                    anyVisible = true;
-
-                    if (!firstVisible) {
-                        firstVisible = era;
-                    }
-                }
-            });
-
-            // ============================================
-            // GESTIONE "NESSUN RISULTATO"
-            // ============================================
-            if (searchTerm !== '' && !anyVisible) {
-
-                searchTermDisplay.textContent =
-                    searchTerm;
-
-                noResults.style.display =
-                    'block';
-
-            } else {
-
-                noResults.style.display =
-                    'none';
-            }
-
-            // ============================================
-            // PULSANTE CLEAR
-            // ============================================
-            clearSearchBtn.classList.toggle(
-                'visible',
-                searchTerm !== ''
-            );
-
-            // ============================================
-            // HIGHLIGHT
-            // ============================================
-            if (searchTerm !== '') {
-
-                highlightSearch(searchTerm);
-
-            } else {
-
-                removeHighlights();
-            }
-
-            // ============================================
-            // SCROLL AL PRIMO RISULTATO
-            // ============================================
-            if (searchTerm !== '' && firstVisible) {
-
-                setTimeout(() => {
-
-                    firstVisible.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'center'
-                    });
-
-                }, 300);
-            }
-
-            console.log(
-                '🔍 Ricerca: "' + searchTerm + '" — ' +
-                'Trovate ' + document.querySelectorAll('.era.visible').length +
-                ' card visibili.'
-            );
-        }
-
-        // ============================================
-        // RIMOZIONE HIGHLIGHT
-        // ============================================
-        function removeHighlights() {
-
-            document
-                .querySelectorAll('.highlight')
-                .forEach(function(el) {
-
-                    var parent = el.parentNode;
-
-                    parent.replaceChild(
-                        document.createTextNode(
-                            el.textContent
-                        ),
-                        el
-                    );
-
-                    parent.normalize();
-                });
-        }
-
-        // ============================================
-        // HIGHLIGHT RICERCA
-        // ============================================
-        function highlightSearch(term) {
-
-            removeHighlights();
-
-            if (term === '') {
-                return;
-            }
-
-            var regex =
-                new RegExp(term, 'gi');
-
-            var visibleEras =
-                document.querySelectorAll(
-                    '.era.visible'
-                );
-
-            visibleEras.forEach(function(era) {
-
-                var content =
-                    era.querySelector(
-                        '.era-content'
-                    );
-
-                var walker =
-                    document.createTreeWalker(
-                        content,
-                        NodeFilter.SHOW_TEXT,
-                        {
-                            acceptNode: function(node) {
-
-                                if (
-                                    node.parentElement &&
-                                    node.parentElement.tagName === 'SPAN' &&
-                                    node.parentElement.classList.contains('highlight')
-                                ) {
-                                    return NodeFilter.FILTER_REJECT;
-                                }
-
-                                return NodeFilter.FILTER_ACCEPT;
-                            }
-                        },
-                        false
-                    );
-
-                var nodes = [];
-
-                var node;
-
-                while (
-                    (node = walker.nextNode())
-                ) {
-
-                    if (
-                        node.textContent.match(regex)
-                    ) {
-                        nodes.push(node);
-                    }
-                }
-
-                nodes.forEach(function(textNode) {
-
-                    var parent =
-                        textNode.parentNode;
-
-                    var text =
-                        textNode.textContent;
-
-                    var parts =
-                        text.split(regex);
-
-                    var matches =
-                        text.match(regex) || [];
-
-                    var fragment =
-                        document.createDocumentFragment();
-
-                    parts.forEach(
-                        function(part, index) {
-
-                            if (part) {
-
-                                fragment.appendChild(
-                                    document.createTextNode(
-                                        part
-                                    )
-                                );
-                            }
-
-                            if (
-                                index < matches.length
-                            ) {
-
-                                var mark =
-                                    document.createElement(
-                                        'span'
-                                    );
-
-                                mark.className =
-                                    'highlight';
-
-                                mark.textContent =
-                                    matches[index];
-
-                                fragment.appendChild(
-                                    mark
-                                );
-                            }
-                        }
-                    );
-
-                    parent.replaceChild(
-                        fragment,
-                        textNode
-                    );
-
-                    parent.normalize();
-                });
-            });
-        }
-
-        // ============================================
-        // RICERCA LIVE
-        // ============================================
-        searchInput.addEventListener(
-            'input',
-            function() {
-
-                currentSearch =
-                    this.value;
-
-                applyFilters();
-            }
-        );
-
-        // ============================================
-        // RICERCA CON CLICK
-        // ============================================
-        searchButton.addEventListener(
-            'click',
-            function() {
-
-                currentSearch =
-                    searchInput.value;
-
-                applyFilters();
-            }
-        );
-
-        // ============================================
-        // RICERCA CON INVIO / ESC
-        // ============================================
-        searchInput.addEventListener(
-            'keydown',
-            function(e) {
-
-                if (e.key === 'Enter') {
-
-                    currentSearch =
-                        this.value;
-
-                    applyFilters();
-                }
-
-                if (e.key === 'Escape') {
-
-                    this.value = '';
-                    currentSearch = '';
-
-                    applyFilters();
-
-                    this.blur();
-                }
-            }
-        );
-
-        // ============================================
-        // PULSANTE CLEAR
-        // ============================================
-        clearSearchBtn.addEventListener(
-            'click',
-            function() {
-
-                searchInput.value = '';
-                currentSearch = '';
-
-                applyFilters();
-
-                searchInput.focus();
-            }
-        );
-
-        // ============================================
-        // BACK TO TOP
-        // ============================================
-        window.addEventListener(
-            'scroll',
-            function() {
-
-                if (window.scrollY > 300) {
-
-                    backToTop.classList.add(
-                        'visible'
-                    );
-
-                } else {
-
-                    backToTop.classList.remove(
-                        'visible'
-                    );
-                }
-            }
-        );
-
-        backToTop.addEventListener(
-            'click',
-            function() {
-
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            }
-        );
-
-        // ============================================
-        // ANNO FOOTER
-        // ============================================
-        document.getElementById(
-            'currentYear'
-        ).textContent =
-            new Date().getFullYear();
-
-        // ============================================
-        // INTERSECTION OBSERVER
-        // ============================================
-        if ('IntersectionObserver' in window) {
-
-            var observer =
-                new IntersectionObserver(
-                    function(entries) {
-
-                        entries.forEach(function(entry) {
-
-                            if (
-                                entry.isIntersecting
-                            ) {
-
-                                entry.target.classList.add(
-                                    'visible'
-                                );
-
-                                observer.unobserve(
-                                    entry.target
-                                );
-                            }
-                        });
-
-                    },
-                    {
-                        threshold: 0.1
-                    }
-                );
-
-            eras.forEach(function(era) {
-                observer.observe(era);
-            });
-
+        // Highlight
+        highlightSearch(term);
+
+        // No results
+        if (!anyVisible) {
+            searchTermDisplay.textContent = rawTerm;
+            noResults.style.display = 'block';
         } else {
+            noResults.style.display = 'none';
+        }
 
-            eras.forEach(function(era) {
-                era.classList.add('visible');
+        // Scroll al primo risultato
+        if (firstVisible) {
+            setTimeout(() => {
+                firstVisible.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 300);
+        }
+
+        console.log('🔍 Ricerca: "' + rawTerm + '" — Trovati ' +
+            document.querySelectorAll('.era:not(.hidden)').length + ' elementi.');
+    }
+
+    // ============================================
+    // EVENTI RICERCA
+    // ============================================
+    searchInput.addEventListener('input', performSearch);
+    searchButton.addEventListener('click', performSearch);
+    searchInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            performSearch();
+        }
+        if (e.key === 'Escape') {
+            this.value = '';
+            performSearch();
+            this.blur();
+        }
+    });
+    clearSearchBtn.addEventListener('click', function() {
+        searchInput.value = '';
+        performSearch();
+        searchInput.focus();
+    });
+
+    // ============================================
+    // PLAYER MUSICALE
+    // ============================================
+    const audio = document.getElementById('myAudio');
+    const playButton = document.getElementById('player-play');
+    const playerStatus = document.getElementById('player-status');
+    const player = document.getElementById('music-player');
+    const playerToggle = document.getElementById('player-toggle');
+
+    if (audio && playButton) {
+        playButton.addEventListener('click', function() {
+            if (audio.paused) {
+                audio.play()
+                    .then(function() {
+                        playButton.textContent = '❚❚';
+                        if (playerStatus) playerStatus.textContent = 'In riproduzione';
+                    })
+                    .catch(function(error) {
+                        console.warn('Riproduzione audio non avviata:', error);
+                    });
+            } else {
+                audio.pause();
+                playButton.textContent = '▶';
+                if (playerStatus) playerStatus.textContent = 'In pausa';
+            }
+        });
+        audio.addEventListener('ended', function() {
+            playButton.textContent = '▶';
+            if (playerStatus) playerStatus.textContent = 'Pronto';
+        });
+    }
+
+    if (player && playerToggle) {
+        playerToggle.addEventListener('click', function() {
+            var open = player.classList.toggle('open');
+            playerToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        document.addEventListener('click', function(event) {
+            if (!player.contains(event.target)) {
+                player.classList.remove('open');
+                playerToggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+    }
+
+    // ============================================
+    // INTERSECTION OBSERVER (animazione iniziale)
+    // ============================================
+    if ('IntersectionObserver' in window) {
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.remove('hidden');
+                    observer.unobserve(entry.target);
+                }
             });
-        }
+        }, { threshold: 0.1 });
+        eras.forEach(function(era) {
+            observer.observe(era);
+        });
+    } else {
+        eras.forEach(function(era) {
+            era.classList.remove('hidden');
+        });
+    }
 
-        // ============================================
-        // INIZIALIZZAZIONE
-        // ============================================
-        setTimeout(function() {
-
-            eras.forEach(function(era) {
-                era.classList.add('visible');
-            });
-
-        }, 100);
-
-        // ============================================
-        // PLAYER MUSICALE
-        // ============================================
-        var audio = document.getElementById('myAudio');
-        var playButton = document.getElementById('player-play');
-        var playerStatus = document.getElementById('player-status');
-        var player = document.getElementById('music-player');
-        var playerToggle = document.getElementById('player-toggle');
-
-        if (audio && playButton) {
-
-            playButton.addEventListener(
-                'click',
-                function() {
-
-                    if (audio.paused) {
-
-                        audio.play()
-                            .then(function() {
-
-                                playButton.textContent = '❚❚';
-
-                                if (playerStatus) {
-                                    playerStatus.textContent =
-                                        'In riproduzione';
-                                }
-
-                            })
-                            .catch(function(error) {
-
-                                console.warn(
-                                    'Riproduzione audio non avviata:',
-                                    error
-                                );
-
-                            });
-
-                    } else {
-
-                        audio.pause();
-
-                        playButton.textContent = '▶';
-
-                        if (playerStatus) {
-                            playerStatus.textContent =
-                                'In pausa';
-                        }
-
-                    }
-
-                }
-            );
-
-            audio.addEventListener(
-                'ended',
-                function() {
-
-                    playButton.textContent = '▶';
-
-                    if (playerStatus) {
-                        playerStatus.textContent =
-                            'Pronto';
-                    }
-
-                }
-            );
-
-        }
-
-        // APERTURA / CHIUSURA PLAYER
-        if (player && playerToggle) {
-
-            playerToggle.addEventListener(
-                'click',
-                function() {
-
-                    var open =
-                        player.classList.toggle(
-                            'open'
-                        );
-
-                    playerToggle.setAttribute(
-                        'aria-expanded',
-                        open ? 'true' : 'false'
-                    );
-
-                }
-            );
-
-            document.addEventListener(
-                'click',
-                function(event) {
-
-                    if (
-                        !player.contains(
-                            event.target
-                        )
-                    ) {
-
-                        player.classList.remove(
-                            'open'
-                        );
-
-                        playerToggle.setAttribute(
-                            'aria-expanded',
-                            'false'
-                        );
-
-                    }
-
-                }
-            );
-
-        }
-
-    })();
+})();
 </script>
 
 </body>
