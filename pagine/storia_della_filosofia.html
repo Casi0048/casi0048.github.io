@@ -1432,30 +1432,24 @@
 
 <script>
 (function () {
-    const btn = document.getElementById('tornaSu');
+  const btn = document.getElementById('tornaSu');
 
-    if (!btn) return;
+  if (!btn) return;
 
-    function toggleBackToTop() {
-        if (window.scrollY > 300) {
-            btn.classList.add('visible');
-        } else {
-            btn.classList.remove('visible');
-        }
-    }
+  function updateBackToTop() {
+    btn.classList.toggle('visible', window.scrollY > 300);
+  }
 
-    window.addEventListener('scroll', toggleBackToTop, {
-        passive: true
+  window.addEventListener('scroll', updateBackToTop, { passive: true });
+
+  btn.addEventListener('click', function () {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
     });
+  });
 
-    btn.addEventListener('click', function () {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    });
-
-    toggleBackToTop();
+  updateBackToTop();
 })();
 </script>
 
