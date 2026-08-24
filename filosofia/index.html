@@ -27,6 +27,7 @@
       --text-muted-2: rgba(255, 255, 255, 0.4);
       --gold: #ffd86a;
       --gold-dim: rgba(255, 216, 106, 0.15);
+      --gold-line: rgba(255, 216, 106, 0.22);
       --cyan: #9ad0ff;
       --border: rgba(255, 215, 0, 0.12);
       --font-serif: 'Cormorant Garamond', 'Georgia', serif;
@@ -37,6 +38,7 @@
       --torna-su-bg: var(--gold);
       --torna-su-color: var(--bg);
       --torna-su-shadow: rgba(255, 216, 106, 0.3);
+      --transition: .28s cubic-bezier(.22,1,.36,1);
     }
 
     /* TEMA CHIARO */
@@ -48,6 +50,7 @@
       --text-muted-2: rgba(0, 0, 0, 0.35);
       --gold: #b8860b;
       --gold-dim: rgba(184, 134, 11, 0.15);
+      --gold-line: rgba(184, 134, 11, 0.25);
       --cyan: #2a6fa8;
       --border: rgba(184, 134, 11, 0.12);
       --shadow: rgba(0, 0, 0, 0.08);
@@ -91,6 +94,7 @@
       margin-bottom: 2.5rem;
       flex-wrap: wrap;
       gap: 0.8rem;
+      transition: border-color 0.4s ease;
     }
 
     .topbar .brand {
@@ -102,6 +106,7 @@
       display: flex;
       align-items: center;
       gap: 8px;
+      transition: color 0.4s ease;
     }
 
     .topbar .brand:hover {
@@ -538,18 +543,20 @@
 
     .torna-su {
       position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      width: 48px;
-      height: 48px;
-      background: var(--torna-su-bg);
-      color: var(--torna-su-color);
-      border: none;
+      bottom: 1.5rem;
+      right: 6rem;
+      width: 46px;
+      height: 46px;
       border-radius: 50%;
-      font-size: 1.8rem;
-      font-weight: 700;
+      border: 1px solid rgba(255, 216, 106, .28);
+      background: rgba(10, 10, 26, .88);
+      color: var(--gold);
+      font-size: 1.4rem;
+      font-weight: 400;
       cursor: pointer;
-      box-shadow: 0 4px 20px var(--torna-su-shadow);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       opacity: 0;
       transform: scale(0.8);
@@ -568,19 +575,36 @@
     }
 
     .torna-su:hover {
-      transform: scale(1.12) translateY(-4px);
-      box-shadow: 0 8px 35px var(--torna-su-shadow);
-      filter: brightness(1.1);
+      transform: translateY(-2px) scale(1.02);
+      border-color: rgba(255, 216, 106, 0.65);
+      background: rgba(18, 18, 42, 0.96);
+      box-shadow: 0 8px 35px rgba(0, 0, 0, 0.45);
     }
 
     .torna-su:active {
       transform: scale(0.92);
     }
 
-    /* Accessibilità: focus visibile */
     .torna-su:focus-visible {
       outline: 3px solid var(--gold);
       outline-offset: 4px;
+    }
+
+    /* TEMA CHIARO — Pulsante torna su */
+    body.light-theme .torna-su {
+      background: #b8860b;
+      color: #f5f0e8;
+      border: 1px solid rgba(184, 134, 11, 0.3);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      box-shadow: 0 4px 20px rgba(184, 134, 11, 0.3);
+    }
+
+    body.light-theme .torna-su:hover {
+      transform: translateY(-2px) scale(1.02);
+      background: #a0780a;
+      border-color: rgba(184, 134, 11, 0.5);
+      box-shadow: 0 8px 35px rgba(184, 134, 11, 0.4);
     }
 
     /* ============================================================
@@ -614,6 +638,221 @@
       font-style: italic;
       color: var(--text-muted);
       transition: color 0.4s ease;
+    }
+
+    /* ============================================================
+       PLAYER MUSICALE — MINIMAL
+       ============================================================ */
+
+    .music-player {
+        position: fixed;
+        right: 24px;
+        bottom: 24px;
+        z-index: 9999;
+        font-family: 'Inter', sans-serif;
+    }
+
+    /* Pulsante chiuso */
+    .music-toggle {
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 216, 106, .28);
+        background: rgba(10, 10, 26, .88);
+        color: var(--gold);
+        font-size: 1.25rem;
+        cursor: pointer;
+        backdrop-filter: blur(12px);
+        box-shadow: 0 8px 30px rgba(0,0,0,.35);
+        transition: transform .25s ease, border-color .25s ease, background .25s ease;
+    }
+
+    .music-toggle:hover {
+        transform: translateY(-2px);
+        border-color: rgba(255,216,106,.65);
+        background: rgba(18,18,42,.96);
+    }
+
+    /* TEMA CHIARO — Pulsante player */
+    body.light-theme .music-toggle {
+        background: rgba(242,237,229,.94);
+        border-color: rgba(184,134,11,.28);
+        color: #b8860b;
+        box-shadow: 0 8px 30px rgba(0,0,0,.12);
+    }
+
+    body.light-theme .music-toggle:hover {
+        border-color: rgba(184,134,11,.65);
+        background: rgba(230,225,215,.96);
+    }
+
+    /* Pannello */
+    .music-panel {
+        position: absolute;
+        right: 0;
+        bottom: 58px;
+        width: 280px;
+        padding: 16px 17px;
+        background: rgba(12,12,30,.96);
+        border: 1px solid rgba(255,216,106,.18);
+        border-radius: 12px;
+        backdrop-filter: blur(16px);
+        box-shadow: 0 18px 50px rgba(0,0,0,.55);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(8px) scale(.98);
+        transition: opacity .22s ease, transform .22s ease, visibility .22s ease;
+    }
+
+    .music-player.open .music-panel {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0) scale(1);
+    }
+
+    /* TEMA CHIARO — Pannello player */
+    body.light-theme .music-panel {
+        background: rgba(242,237,229,.97);
+        border-color: rgba(184,134,11,.18);
+        box-shadow: 0 18px 50px rgba(0,0,0,.15);
+    }
+
+    /* Intestazione */
+    .music-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 15px;
+        margin-bottom: 14px;
+    }
+
+    .music-label {
+        display: block;
+        font-size: .58rem;
+        letter-spacing: 1.4px;
+        color: rgba(255,216,106,.65);
+        margin-bottom: 3px;
+    }
+
+    body.light-theme .music-label {
+        color: rgba(184,134,11,.65);
+    }
+
+    .music-title {
+        display: block;
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.15rem;
+        color: #eee;
+    }
+
+    body.light-theme .music-title {
+        color: #1a1a2e;
+    }
+
+    .music-close {
+        border: 0;
+        background: transparent;
+        color: rgba(255,255,255,.45);
+        font-size: 1.25rem;
+        cursor: pointer;
+        line-height: 1;
+    }
+
+    body.light-theme .music-close {
+        color: rgba(0,0,0,.45);
+    }
+
+    .music-close:hover {
+        color: #fff;
+    }
+
+    body.light-theme .music-close:hover {
+        color: #1a1a2e;
+    }
+
+    /* Controlli */
+    .music-controls {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .music-play,
+    .music-volume {
+        flex: 0 0 auto;
+        border: 0;
+        background: transparent;
+        color: var(--gold);
+        cursor: pointer;
+    }
+
+    body.light-theme .music-play,
+    body.light-theme .music-volume {
+        color: #b8860b;
+    }
+
+    .music-play {
+        font-size: .95rem;
+        width: 25px;
+    }
+
+    .music-volume {
+        font-size: .85rem;
+        opacity: .8;
+    }
+
+    /* Barra */
+    .music-progress {
+        flex: 1;
+        min-width: 0;
+        height: 3px;
+        appearance: none;
+        -webkit-appearance: none;
+        background: rgba(255,255,255,.15);
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    body.light-theme .music-progress {
+        background: rgba(0,0,0,.15);
+    }
+
+    .music-progress::-webkit-slider-thumb {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--gold);
+        cursor: pointer;
+    }
+
+    body.light-theme .music-progress::-webkit-slider-thumb {
+        background: #b8860b;
+    }
+
+    .music-progress::-moz-range-thumb {
+        width: 9px;
+        height: 9px;
+        border: 0;
+        border-radius: 50%;
+        background: var(--gold);
+        cursor: pointer;
+    }
+
+    body.light-theme .music-progress::-moz-range-thumb {
+        background: #b8860b;
+    }
+
+    /* Mobile */
+    @media (max-width: 600px) {
+        .music-player {
+            right: 16px;
+            bottom: 16px;
+        }
+        .music-panel {
+            width: min(280px, calc(100vw - 32px));
+        }
     }
 
     /* ============================================================
@@ -688,8 +927,8 @@
         width: 42px;
         height: 42px;
         font-size: 1.5rem;
-        bottom: 1.2rem;
-        right: 1.2rem;
+        bottom: 5rem;
+        right: 1.5rem;
       }
 
       .theme-toggle-btn {
@@ -734,7 +973,7 @@
         width: 38px;
         height: 38px;
         font-size: 1.3rem;
-        bottom: 1rem;
+        bottom: 4.5rem;
         right: 1rem;
       }
 
@@ -745,6 +984,21 @@
       .theme-toggle-btn {
         font-size: 0.7rem;
         padding: 0.15rem 0.5rem;
+      }
+    }
+
+    /* ============================================================
+       ACCESSIBILITÀ
+       ============================================================ */
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+      *,
+      *::before,
+      *::after {
+        transition-duration: .01ms !important;
       }
     }
   </style>
@@ -841,7 +1095,7 @@
         </tbody>
       </table>
 
-      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem; transition: opacity 0.4s ease;">
+      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
         Con Eraclito e Parmenide si apre una delle tensioni fondamentali della filosofia: il mondo è divenire o permanenza? Tutta la metafisica successiva nascerà, in un modo o nell'altro, da questo confronto.
       </p>
 
@@ -881,7 +1135,7 @@
         </tbody>
       </table>
 
-      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem; transition: opacity 0.4s ease;">
+      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
         Socrate non ha lasciato opere scritte: la sua filosofia vive nei dialoghi di Platone e nella memoria dei suoi discepoli. Con lui nasce l'idea che la filosofia sia anzitutto un esercizio dell'anima.
       </p>
 
@@ -921,7 +1175,7 @@
         </tbody>
       </table>
 
-      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem; transition: opacity 0.4s ease;">
+      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
         L'Ellenismo sposta il centro della filosofia dall'organizzazione della città alla cura dell'individuo. La domanda fondamentale diventa: come vivere bene in un mondo incerto?
       </p>
 
@@ -969,7 +1223,7 @@
         </tbody>
       </table>
 
-      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem; transition: opacity 0.4s ease;">
+      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
         Seneca insegna che la ricchezza più grande è la padronanza di sé. Epitteto distingue con chiarezza ciò che dipende da noi da ciò che non dipende da noi. Marco Aurelio, imperatore e filosofo, trasforma la riflessione stoica in un dialogo silenzioso con la propria coscienza.
       </p>
 
@@ -1009,7 +1263,7 @@
         </tbody>
       </table>
 
-      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem; transition: opacity 0.4s ease;">
+      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
         Plotino descrive il ritorno dell'anima verso l'Uno come un itinerario interiore. La filosofia diventa contemplazione e trasformazione dell'essere. Alessandro di Afrodisia svolge un ruolo decisivo nella trasmissione del pensiero aristotelico. Le sue interpretazioni influenzeranno sia la filosofia araba sia la scolastica medievale.
       </p>
 
@@ -1066,7 +1320,7 @@
         </tbody>
       </table>
 
-      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem; transition: opacity 0.4s ease;">
+      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
         Tommaso d'Aquino rappresenta il punto più alto della sintesi medievale. Aristotele viene reinterpretato all'interno di una visione cristiana dell'essere. La ragione è capace di conoscere molte verità sul mondo e su Dio, pur senza esaurire il mistero. Con Ockham si apre una nuova stagione. Il suo nominalismo riduce la portata degli universali e prepara, indirettamente, alcune condizioni della filosofia moderna.
       </p>
 
@@ -1106,7 +1360,7 @@
         </tbody>
       </table>
 
-      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem; transition: opacity 0.4s ease;">
+      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
         Pico celebra la libertà umana come possibilità di autoformazione. Machiavelli separa la politica dalla morale tradizionale, inaugurando una nuova analisi del potere. Bruno immagina un universo infinito, popolato da infiniti mondi, anticipando una visione cosmologica radicalmente nuova.
       </p>
 
@@ -1163,7 +1417,7 @@
         </tbody>
       </table>
 
-      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem; transition: opacity 0.4s ease;">
+      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
         Cartesio cerca un punto assolutamente certo da cui ricostruire tutto il sapere. Il <strong>cogito</strong> diventa il principio della filosofia moderna. Spinoza identifica Dio e natura in un'unica sostanza infinita. Leibniz immagina il mondo come una molteplicità di centri spirituali, le monadi, coordinate da un'armonia prestabilita. Hume porta l'empirismo alle sue conseguenze più radicali, mostrando che molte delle nostre certezze derivano dall'abitudine più che dalla dimostrazione.
       </p>
 
@@ -1203,7 +1457,7 @@
         </tbody>
       </table>
 
-      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem; transition: opacity 0.4s ease;">
+      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
         Rousseau riflette sulle origini della disuguaglianza e sul fondamento della sovranità popolare. Diderot vede nella diffusione del sapere uno strumento di liberazione. Con Kant l'Illuminismo raggiunge il suo vertice filosofico. La sua domanda non è soltanto <strong>che cosa possiamo conoscere</strong>, ma anche <strong>che cosa dobbiamo fare</strong> e <strong>che cosa possiamo sperare</strong>. Kant mostra che la mente non è un semplice spettatore del mondo: contribuisce attivamente alla costituzione dell'esperienza. La filosofia critica segna il passaggio decisivo verso il pensiero contemporaneo.
       </p>
 
@@ -1241,7 +1495,7 @@
         </tbody>
       </table>
 
-      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem; transition: opacity 0.4s ease;">
+      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
         Fichte pone l'Io al centro dell'attività conoscitiva. Schelling cerca l'unità profonda tra natura e spirito. Hegel costruisce il più ambizioso sistema filosofico dell'età moderna: la storia è il luogo in cui la libertà si realizza attraverso il conflitto e il superamento delle contraddizioni. La <strong>dialettica</strong> diventa il movimento fondamentale del pensiero e della realtà.
       </p>
 
@@ -1281,7 +1535,7 @@
         </tbody>
       </table>
 
-      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem; transition: opacity 0.4s ease;">
+      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
         Schopenhauer descrive il mondo come manifestazione di una volontà irrazionale e incessante. Kierkegaard pone al centro il singolo individuo, con le sue angosce, le sue decisioni e la sua responsabilità. Marx interpreta la storia come lotta tra classi e analizza i meccanismi economici dell'alienazione. Nietzsche annuncia la crisi della metafisica occidentale e invita a creare nuovi valori. Con Nietzsche la filosofia diventa genealogia, critica della morale e interrogazione radicale sul significato della cultura.
       </p>
 
@@ -1387,7 +1641,7 @@
         </tbody>
       </table>
 
-      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem; transition: opacity 0.4s ease;">
+      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
         Il Novecento non produce un unico sistema filosofico dominante. Piuttosto, apre una pluralità di percorsi che continuano ancora oggi: fenomenologia, analitica, ermeneutica, teoria critica, filosofia politica, filosofia della mente, bioetica e riflessione sulla tecnica.
       </p>
 
@@ -1427,7 +1681,7 @@
         </tbody>
       </table>
 
-      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem; transition: opacity 0.4s ease;">
+      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
         Tra i pensatori più influenti della contemporaneità si possono ricordare Martha Nussbaum, Charles Taylor, Peter Singer, Judith Butler, Byung-Chul Han, Thomas Nagel e molti altri che continuano a interrogare il significato della libertà, della giustizia e della dignità umana. La filosofia del XXI secolo è meno sistematica e più dialogica. Si muove tra discipline diverse, confrontandosi con la scienza, l'economia, la psicologia e le trasformazioni tecnologiche.
       </p>
 
@@ -1531,82 +1785,207 @@
   </div> <!-- fine container -->
 
   <!-- ============================================================
+     PLAYER
+     ============================================================ -->
+
+  <audio id="myAudio"
+         playsinline
+         preload="auto"
+         src="https://casi0048.github.io/suoni/Strauss.mp3">
+  </audio>
+
+  <div class="music-player" id="musicPlayer">
+
+    <div class="music-panel">
+      <div class="music-header">
+        <div>
+          <span class="music-label">MUSICA PER LO STUDIO</span>
+          <span class="music-title">Strauss – Echi di Sofia</span>
+        </div>
+        <button class="music-close" id="musicClose" aria-label="Chiudi player">✕</button>
+      </div>
+      <div class="music-controls">
+        <button class="music-play" id="playButton" aria-label="Riproduci musica">▶</button>
+        <button class="music-volume" id="volumeToggle" aria-label="Attiva/disattiva audio">🔊</button>
+        <input type="range" class="music-progress" id="musicProgress" min="0" max="100" value="0" aria-label="Avanzamento brano">
+      </div>
+    </div>
+
+    <button class="music-toggle" id="playerToggle" aria-label="Apri lettore musicale" aria-expanded="false">
+      ♫
+    </button>
+
+  </div>
+
+  <!-- ============================================================
        PULSANTE TORNA SU
        ============================================================ -->
   <button class="torna-su" id="tornaSu" aria-label="Torna su" title="Torna su">↑</button>
 
-  <!-- ============================================================
-       SCRIPT PER IL PULSANTE TORNA SU E IL TEMA
-       ============================================================ -->
   <script>
-    (function() {
-      // ============================================================
-      // 1. PULSANTE TORNA SU
-      // ============================================================
-      const btn = document.getElementById('tornaSu');
-      if (btn) {
-        function toggleButton() {
-          const scrollY = window.scrollY;
-          // Soglia abbassata a 150px per farlo vedere prima
-          const threshold = 150;
+document.addEventListener("DOMContentLoaded", function () {
 
-          if (scrollY > threshold) {
-            btn.classList.add('visible');
-          } else {
-            btn.classList.remove('visible');
-          }
+    /* =========================================================
+       PLAYER — ECHI DI SOFIA
+       ========================================================= */
+
+    const player = document.getElementById("musicPlayer");
+    const toggle = document.getElementById("playerToggle");
+    const closeBtn = document.getElementById("musicClose");
+    const playButton = document.getElementById("playButton");
+    const progress = document.getElementById("musicProgress");
+    const volumeToggle = document.getElementById("volumeToggle");
+    const audio = document.getElementById("myAudio");
+
+    if (player && toggle && playButton && audio) {
+
+        /* APERTURA / CHIUSURA PANNELLO */
+        function openPanel() {
+            player.classList.add("open");
+            toggle.setAttribute("aria-expanded", "true");
+        }
+
+        function closePanel() {
+            player.classList.remove("open");
+            toggle.setAttribute("aria-expanded", "false");
+        }
+
+        toggle.addEventListener("click", function () {
+            if (player.classList.contains("open")) {
+                closePanel();
+            } else {
+                openPanel();
+            }
+        });
+
+        if (closeBtn) {
+            closeBtn.addEventListener("click", closePanel);
+        }
+
+        /* PLAY / PAUSA */
+        playButton.addEventListener("click", function () {
+            if (audio.paused) {
+                audio.play()
+                    .then(function () {
+                        playButton.textContent = "❚❚";
+                    })
+                    .catch(function (error) {
+                        console.error("Errore audio:", error);
+                    });
+            } else {
+                audio.pause();
+                playButton.textContent = "▶";
+            }
+        });
+
+        /* FINE BRANO */
+        audio.addEventListener("ended", function () {
+            playButton.textContent = "▶";
+        });
+
+        /* PROGRESS BAR */
+        audio.addEventListener("timeupdate", function () {
+            if (audio.duration) {
+                const percent = (audio.currentTime / audio.duration) * 100;
+                progress.value = percent;
+            }
+        });
+
+        progress.addEventListener("input", function () {
+            if (audio.duration) {
+                const time = (this.value / 100) * audio.duration;
+                audio.currentTime = time;
+            }
+        });
+
+        /* VOLUME TOGGLE (muto/attivo) */
+        let isMuted = false;
+        if (volumeToggle) {
+            volumeToggle.addEventListener("click", function () {
+                isMuted = !isMuted;
+                audio.muted = isMuted;
+                this.textContent = isMuted ? "🔇" : "🔊";
+            });
+        }
+
+        /* CHIUSURA CON ESC */
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape" && player.classList.contains("open")) {
+                closePanel();
+            }
+        });
+    }
+
+
+    /* =========================================================
+       PULSANTE TORNA SU
+       ========================================================= */
+
+    const btn = document.getElementById('tornaSu');
+    if (btn) {
+        function toggleButton() {
+            const scrollY = window.scrollY;
+            const threshold = 150;
+
+            if (scrollY > threshold) {
+                btn.classList.add('visible');
+            } else {
+                btn.classList.remove('visible');
+            }
         }
 
         window.addEventListener('scroll', toggleButton, { passive: true });
 
         btn.addEventListener('click', function(e) {
-          e.preventDefault();
-          window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-          });
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         });
 
         toggleButton();
-      }
+    }
 
-      // ============================================================
-      // 2. TEMA CHIARO/SCURO
-      // ============================================================
-      const themeToggle = document.getElementById('themeToggle');
-      const themeIcon = document.getElementById('themeIcon');
-      const themeLabel = document.getElementById('themeLabel');
 
-      if (themeToggle) {
-        // Leggi preferenza salvata
+    /* =========================================================
+       TEMA CHIARO/SCURO
+       ========================================================= */
+
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const themeLabel = document.getElementById('themeLabel');
+
+    if (themeToggle) {
         const savedTheme = localStorage.getItem('theme') || 'dark';
 
         if (savedTheme === 'light') {
-          document.body.classList.add('light-theme');
-          themeIcon.textContent = '☀️';
-          themeLabel.textContent = 'Chiaro';
+            document.body.classList.add('light-theme');
+            themeIcon.textContent = '☀️';
+            themeLabel.textContent = 'Chiaro';
         } else {
-          document.body.classList.remove('light-theme');
-          themeIcon.textContent = '🌙';
-          themeLabel.textContent = 'Scuro';
+            document.body.classList.remove('light-theme');
+            themeIcon.textContent = '🌙';
+            themeLabel.textContent = 'Scuro';
         }
 
         themeToggle.addEventListener('click', function() {
-          const isLight = document.body.classList.toggle('light-theme');
+            const isLight = document.body.classList.toggle('light-theme');
 
-          if (isLight) {
-            themeIcon.textContent = '☀️';
-            themeLabel.textContent = 'Chiaro';
-            localStorage.setItem('theme', 'light');
-          } else {
-            themeIcon.textContent = '🌙';
-            themeLabel.textContent = 'Scuro';
-            localStorage.setItem('theme', 'dark');
-          }
+            if (isLight) {
+                themeIcon.textContent = '☀️';
+                themeLabel.textContent = 'Chiaro';
+                localStorage.setItem('theme', 'light');
+            } else {
+                themeIcon.textContent = '🌙';
+                themeLabel.textContent = 'Scuro';
+                localStorage.setItem('theme', 'dark');
+            }
         });
-      }
-    })();
-  </script>
+    }
+
+});
+</script>
 
 </body>
-</html>
+</html
