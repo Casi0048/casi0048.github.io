@@ -18,16 +18,44 @@
        STILE ECHI DI SOFIA - STORIA DELLA FILOSOFIA
        ============================================================ */
 
+    /* TEMA SCURO (default) */
     :root {
       --bg: #0a0a1a;
+      --bg-panel: rgba(10, 10, 30, 0.9);
       --text: #e9eef5;
+      --text-muted: rgba(255, 255, 255, 0.6);
+      --text-muted-2: rgba(255, 255, 255, 0.4);
       --gold: #ffd86a;
       --gold-dim: rgba(255, 216, 106, 0.15);
       --cyan: #9ad0ff;
-      --panel: rgba(10, 10, 30, 0.9);
       --border: rgba(255, 215, 0, 0.12);
       --font-serif: 'Cormorant Garamond', 'Georgia', serif;
       --font-display: 'Cinzel Decorative', 'Georgia', serif;
+      --shadow: rgba(0, 0, 0, 0.4);
+      --back-link-hover: #fff;
+      --back-link-opacity: 0.9;
+      --torna-su-bg: var(--gold);
+      --torna-su-color: var(--bg);
+      --torna-su-shadow: rgba(255, 216, 106, 0.3);
+    }
+
+    /* TEMA CHIARO */
+    body.light-theme {
+      --bg: #f5f0e8;
+      --bg-panel: rgba(255, 252, 245, 0.92);
+      --text: #1a1a2e;
+      --text-muted: rgba(0, 0, 0, 0.5);
+      --text-muted-2: rgba(0, 0, 0, 0.35);
+      --gold: #b8860b;
+      --gold-dim: rgba(184, 134, 11, 0.15);
+      --cyan: #2a6fa8;
+      --border: rgba(184, 134, 11, 0.12);
+      --shadow: rgba(0, 0, 0, 0.08);
+      --back-link-hover: #b8860b;
+      --back-link-opacity: 0.7;
+      --torna-su-bg: #b8860b;
+      --torna-su-color: #f5f0e8;
+      --torna-su-shadow: rgba(184, 134, 11, 0.3);
     }
 
     * {
@@ -42,6 +70,7 @@
       font-family: var(--font-serif);
       line-height: 1.7;
       padding: 2rem 1.5rem 4rem;
+      transition: background 0.4s ease, color 0.4s ease;
     }
 
     .container {
@@ -54,15 +83,15 @@
        ============================================================ */
 
     .topbar {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 0.5rem 0 1.5rem;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 2.5rem;
-    flex-wrap: wrap;
-    gap: 0.8rem;
-}
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5rem 0 1.5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
 
     .topbar .brand {
       font-family: var(--font-display);
@@ -76,26 +105,48 @@
     }
 
     .topbar .brand:hover {
-      color: #fff;
+      color: var(--back-link-hover);
     }
 
     .topbar .back-link {
-    color: var(--gold);
-    font-size: 1rem;
-    font-weight: 500;
-    letter-spacing: .04em;
-    text-decoration: none;
-    opacity: .9;
+      color: var(--gold);
+      font-size: 1rem;
+      font-weight: 500;
+      letter-spacing: .04em;
+      text-decoration: none;
+      opacity: var(--back-link-opacity);
+      transition: color .25s ease, opacity .25s ease;
+    }
 
-    transition:
-        color .25s ease,
-        opacity .25s ease;
-}
+    .topbar .back-link:hover {
+      color: var(--back-link-hover);
+      opacity: 1;
+    }
 
-.topbar .back-link:hover {
-    color: var(--gold);
-    opacity: 1;
-}
+    /* ===== BOTTONE TEMA CHIARO/SCURO ===== */
+    .theme-toggle-btn {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      padding: 0.3rem 0.8rem;
+      font-size: 0.85rem;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: var(--font-serif);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .theme-toggle-btn:hover {
+      border-color: var(--gold);
+      transform: scale(1.05);
+    }
+
+    .theme-toggle-btn .icon {
+      font-size: 1rem;
+    }
 
     /* ============================================================
        TITOLO
@@ -109,16 +160,18 @@
       margin-bottom: 0.3rem;
       line-height: 1.2;
       letter-spacing: 1px;
+      transition: color 0.4s ease;
     }
 
     .page-subtitle {
       text-align: center;
       font-size: 1.2rem;
-      color: rgba(255, 255, 255, 0.6);
+      color: var(--text-muted);
       font-style: italic;
       margin-bottom: 2.5rem;
       border-bottom: 1px solid var(--border);
       padding-bottom: 1.5rem;
+      transition: color 0.4s ease, border-color 0.4s ease;
     }
 
     /* ============================================================
@@ -126,16 +179,19 @@
        ============================================================ */
 
     .intro {
-      background: var(--panel);
+      background: var(--bg-panel);
       border-left: 3px solid var(--gold);
       padding: 1.5rem 2rem;
       border-radius: 0 12px 12px 0;
       margin-bottom: 2.5rem;
+      transition: background 0.4s ease, border-color 0.4s ease;
     }
 
     .intro p {
       margin-bottom: 0.5rem;
-      color: rgba(255, 255, 255, 0.85);
+      color: var(--text);
+      opacity: 0.85;
+      transition: color 0.4s ease;
     }
 
     .intro p:last-child {
@@ -147,11 +203,12 @@
        ============================================================ */
 
     .indice {
-      background: var(--panel);
+      background: var(--bg-panel);
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 1.5rem 2rem;
       margin-bottom: 2.5rem;
+      transition: background 0.4s ease, border-color 0.4s ease;
     }
 
     .indice h2 {
@@ -160,6 +217,7 @@
       color: var(--gold);
       margin-bottom: 0.8rem;
       letter-spacing: 0.5px;
+      transition: color 0.4s ease;
     }
 
     .indice-grid {
@@ -198,6 +256,7 @@
       border-bottom: 2px solid var(--gold-dim);
       padding-bottom: 0.5rem;
       margin-bottom: 1.2rem;
+      transition: border-color 0.4s ease;
     }
 
     .epoca-header h2 {
@@ -205,21 +264,25 @@
       font-size: 1.8rem;
       color: var(--gold);
       letter-spacing: 0.5px;
+      transition: color 0.4s ease;
     }
 
     .epoca-header .periodo {
       font-size: 1rem;
-      color: rgba(255, 255, 255, 0.4);
+      color: var(--text-muted-2);
       font-style: italic;
+      transition: color 0.4s ease;
     }
 
     .epoca-intro {
       font-size: 1.05rem;
-      color: rgba(255, 255, 255, 0.8);
+      color: var(--text);
+      opacity: 0.8;
       margin-bottom: 1.2rem;
       padding-left: 0.5rem;
       border-left: 2px solid var(--gold-dim);
       padding-left: 1rem;
+      transition: color 0.4s ease, border-color 0.4s ease;
     }
 
     /* ============================================================
@@ -243,21 +306,25 @@
       color: var(--gold);
       border-bottom: 1px solid var(--gold-dim);
       font-weight: 400;
+      transition: color 0.4s ease, border-color 0.4s ease;
     }
 
     .tabella-filosofi tbody td {
       padding: 0.4rem 0.8rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-      color: rgba(255, 255, 255, 0.85);
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+      opacity: 0.85;
+      transition: color 0.4s ease, border-color 0.4s ease;
     }
 
     .tabella-filosofi tbody tr:hover td {
-      background: rgba(255, 215, 0, 0.04);
+      background: var(--gold-dim);
     }
 
     .tabella-filosofi .filosofo {
       color: var(--cyan);
       font-weight: 500;
+      transition: color 0.4s ease;
     }
 
     /* ============================================================
@@ -265,18 +332,21 @@
        ============================================================ */
 
     .quote-block {
-      background: var(--panel);
+      background: var(--bg-panel);
       border-left: 3px solid var(--gold);
       padding: 1.2rem 1.8rem;
       margin: 1.5rem 0;
       border-radius: 0 8px 8px 0;
+      transition: background 0.4s ease, border-color 0.4s ease;
     }
 
     .quote-block p {
       font-size: 1.1rem;
       font-style: italic;
-      color: rgba(255, 255, 255, 0.85);
+      color: var(--text);
+      opacity: 0.85;
       margin-bottom: 0.2rem;
+      transition: color 0.4s ease;
     }
 
     .quote-block cite {
@@ -285,6 +355,7 @@
       font-style: normal;
       display: block;
       text-align: right;
+      transition: color 0.4s ease;
     }
 
     /* ============================================================
@@ -292,14 +363,15 @@
        ============================================================ */
 
     .continua {
-      background: var(--panel);
+      background: var(--bg-panel);
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 1.2rem 1.8rem;
       margin: 2rem 0;
       text-align: center;
-      color: rgba(255, 255, 255, 0.6);
+      color: var(--text-muted);
       font-style: italic;
+      transition: background 0.4s ease, border-color 0.4s ease, color 0.4s ease;
     }
 
     /* ============================================================
@@ -307,11 +379,12 @@
        ============================================================ */
 
     .linee-pensiero {
-      background: var(--panel);
+      background: var(--bg-panel);
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 1.5rem 2rem;
       margin: 2.5rem 0;
+      transition: background 0.4s ease, border-color 0.4s ease;
     }
 
     .linee-pensiero h2 {
@@ -320,13 +393,15 @@
       color: var(--gold);
       margin-bottom: 1rem;
       letter-spacing: 0.5px;
+      transition: color 0.4s ease;
     }
 
     .linea-item {
       display: flex;
       gap: 1.2rem;
       padding: 0.5rem 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      border-bottom: 1px solid var(--border);
+      transition: border-color 0.4s ease;
     }
 
     .linea-item:last-child {
@@ -339,10 +414,13 @@
       color: var(--gold);
       min-width: 140px;
       letter-spacing: 0.3px;
+      transition: color 0.4s ease;
     }
 
     .linea-item .desc {
-      color: rgba(255, 255, 255, 0.8);
+      color: var(--text);
+      opacity: 0.8;
+      transition: color 0.4s ease;
     }
 
     /* ============================================================
@@ -350,23 +428,27 @@
        ============================================================ */
 
     .bussola {
-      background: var(--panel);
+      background: var(--bg-panel);
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 1.5rem 2rem;
       margin: 2.5rem 0;
       text-align: center;
+      transition: background 0.4s ease, border-color 0.4s ease;
     }
 
     .bussola p {
       font-size: 1.05rem;
-      color: rgba(255, 255, 255, 0.8);
+      color: var(--text);
+      opacity: 0.8;
       margin-bottom: 0.5rem;
+      transition: color 0.4s ease;
     }
 
     .bussola .highlight {
       color: var(--gold);
       font-weight: 500;
+      transition: color 0.4s ease;
     }
 
     /* ============================================================
@@ -379,6 +461,7 @@
       margin: 2.5rem 0;
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
+      transition: border-color 0.4s ease;
     }
 
     .quote-finale p {
@@ -387,13 +470,15 @@
       color: var(--gold);
       line-height: 1.5;
       margin-bottom: 0.5rem;
+      transition: color 0.4s ease;
     }
 
     .quote-finale cite {
-      color: rgba(255, 255, 255, 0.4);
+      color: var(--text-muted-2);
       font-style: normal;
       font-size: 1rem;
       letter-spacing: 1px;
+      transition: color 0.4s ease;
     }
 
     /* ============================================================
@@ -409,6 +494,7 @@
       padding: 1rem 0;
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
+      transition: border-color 0.4s ease;
     }
 
     .link-collegamenti a {
@@ -431,7 +517,7 @@
       display: inline-block;
       margin: 1rem 0 2rem;
       padding: 0.6rem 1.5rem;
-      background: rgba(255, 215, 0, 0.08);
+      background: var(--bg-panel);
       border: 1px solid var(--border);
       border-radius: 30px;
       color: var(--text);
@@ -441,7 +527,7 @@
     }
 
     .back-button:hover {
-      background: rgba(255, 215, 0, 0.15);
+      background: var(--gold-dim);
       border-color: var(--gold);
       color: var(--gold);
     }
@@ -456,14 +542,14 @@
       right: 2rem;
       width: 48px;
       height: 48px;
-      background: var(--gold);
-      color: var(--bg);
+      background: var(--torna-su-bg);
+      color: var(--torna-su-color);
       border: none;
       border-radius: 50%;
       font-size: 1.8rem;
       font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 4px 20px rgba(255, 216, 106, 0.3);
+      box-shadow: 0 4px 20px var(--torna-su-shadow);
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       opacity: 0;
       transform: scale(0.8);
@@ -483,8 +569,8 @@
 
     .torna-su:hover {
       transform: scale(1.12) translateY(-4px);
-      box-shadow: 0 8px 35px rgba(255, 216, 106, 0.5);
-      background: #ffe080;
+      box-shadow: 0 8px 35px var(--torna-su-shadow);
+      filter: brightness(1.1);
     }
 
     .torna-su:active {
@@ -506,19 +592,28 @@
       padding-top: 1.5rem;
       border-top: 1px solid var(--border);
       text-align: center;
-      color: rgba(255, 255, 255, 0.3);
+      color: var(--text-muted-2);
       font-size: 0.9rem;
+      transition: color 0.4s ease, border-color 0.4s ease;
     }
 
     .page-footer strong {
       color: var(--gold);
       font-family: var(--font-display);
       font-weight: 400;
+      transition: color 0.4s ease;
     }
 
     .page-footer .copyright {
       margin-top: 0.3rem;
       font-size: 0.8rem;
+    }
+
+    .footer-motto {
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--text-muted);
+      transition: color 0.4s ease;
     }
 
     /* ============================================================
@@ -579,8 +674,8 @@
       }
 
       .topbar {
-        flex-direction: column;
-        align-items: flex-start;
+        flex-direction: row;
+        align-items: center;
         gap: 0.5rem;
       }
 
@@ -595,6 +690,11 @@
         font-size: 1.5rem;
         bottom: 1.2rem;
         right: 1.2rem;
+      }
+
+      .theme-toggle-btn {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.6rem;
       }
     }
 
@@ -637,6 +737,15 @@
         bottom: 1rem;
         right: 1rem;
       }
+
+      .topbar .back-link {
+        font-size: 0.85rem;
+      }
+
+      .theme-toggle-btn {
+        font-size: 0.7rem;
+        padding: 0.15rem 0.5rem;
+      }
     }
   </style>
 </head>
@@ -648,13 +757,16 @@
     <!-- ============================================================
        TOPBAR
        ============================================================ -->
-<div class="topbar">
-  
- <a href="/" class="back-link">
-  ← Echi di Sofia
-    </a>
+    <div class="topbar">
+      <a href="/" class="back-link">
+        ← Echi di Sofia
+      </a>
+      <button class="theme-toggle-btn" id="themeToggle" aria-label="Alterna tema chiaro/scuro">
+        <span class="icon" id="themeIcon">🌙</span>
+        <span id="themeLabel">Scuro</span>
+      </button>
+    </div>
 
-</div>
     <!-- ============================================================
        TITOLO
        ============================================================ -->
@@ -729,7 +841,7 @@
         </tbody>
       </table>
 
-      <p style="color: rgba(255,255,255,0.6); font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
+      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem; transition: opacity 0.4s ease;">
         Con Eraclito e Parmenide si apre una delle tensioni fondamentali della filosofia: il mondo è divenire o permanenza? Tutta la metafisica successiva nascerà, in un modo o nell'altro, da questo confronto.
       </p>
 
@@ -769,7 +881,7 @@
         </tbody>
       </table>
 
-      <p style="color: rgba(255,255,255,0.6); font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
+      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem; transition: opacity 0.4s ease;">
         Socrate non ha lasciato opere scritte: la sua filosofia vive nei dialoghi di Platone e nella memoria dei suoi discepoli. Con lui nasce l'idea che la filosofia sia anzitutto un esercizio dell'anima.
       </p>
 
@@ -809,7 +921,7 @@
         </tbody>
       </table>
 
-      <p style="color: rgba(255,255,255,0.6); font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
+      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem; transition: opacity 0.4s ease;">
         L'Ellenismo sposta il centro della filosofia dall'organizzazione della città alla cura dell'individuo. La domanda fondamentale diventa: come vivere bene in un mondo incerto?
       </p>
 
@@ -857,7 +969,7 @@
         </tbody>
       </table>
 
-      <p style="color: rgba(255,255,255,0.6); font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
+      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem; transition: opacity 0.4s ease;">
         Seneca insegna che la ricchezza più grande è la padronanza di sé. Epitteto distingue con chiarezza ciò che dipende da noi da ciò che non dipende da noi. Marco Aurelio, imperatore e filosofo, trasforma la riflessione stoica in un dialogo silenzioso con la propria coscienza.
       </p>
 
@@ -897,7 +1009,7 @@
         </tbody>
       </table>
 
-      <p style="color: rgba(255,255,255,0.6); font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
+      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem; transition: opacity 0.4s ease;">
         Plotino descrive il ritorno dell'anima verso l'Uno come un itinerario interiore. La filosofia diventa contemplazione e trasformazione dell'essere. Alessandro di Afrodisia svolge un ruolo decisivo nella trasmissione del pensiero aristotelico. Le sue interpretazioni influenzeranno sia la filosofia araba sia la scolastica medievale.
       </p>
 
@@ -920,7 +1032,7 @@
         <strong>L'incontro tra ragione e fede</strong> — Il Medioevo non è un'interruzione della filosofia, ma una sua profonda trasformazione. La domanda fondamentale diventa: quale rapporto esiste tra la ragione umana e la rivelazione? La filosofia dialoga con la teologia, ma conserva una propria autonomia argomentativa. Nascono le grandi università europee e la scolastica costruisce un metodo rigoroso di analisi concettuale.
       </div>
 
-      <h4 style="font-family: var(--font-display); color: var(--gold); font-size: 1rem; letter-spacing: 0.5px; margin: 1rem 0 0.5rem;">Patristica</h4>
+      <h4 style="font-family: var(--font-display); color: var(--gold); font-size: 1rem; letter-spacing: 0.5px; margin: 1rem 0 0.5rem; transition: color 0.4s ease;">Patristica</h4>
       <table class="tabella-filosofi">
         <thead>
           <tr>
@@ -934,7 +1046,7 @@
         </tbody>
       </table>
 
-      <h4 style="font-family: var(--font-display); color: var(--gold); font-size: 1rem; letter-spacing: 0.5px; margin: 1rem 0 0.5rem;">Scolastica</h4>
+      <h4 style="font-family: var(--font-display); color: var(--gold); font-size: 1rem; letter-spacing: 0.5px; margin: 1rem 0 0.5rem; transition: color 0.4s ease;">Scolastica</h4>
       <table class="tabella-filosofi">
         <thead>
           <tr>
@@ -954,7 +1066,7 @@
         </tbody>
       </table>
 
-      <p style="color: rgba(255,255,255,0.6); font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
+      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem; transition: opacity 0.4s ease;">
         Tommaso d'Aquino rappresenta il punto più alto della sintesi medievale. Aristotele viene reinterpretato all'interno di una visione cristiana dell'essere. La ragione è capace di conoscere molte verità sul mondo e su Dio, pur senza esaurire il mistero. Con Ockham si apre una nuova stagione. Il suo nominalismo riduce la portata degli universali e prepara, indirettamente, alcune condizioni della filosofia moderna.
       </p>
 
@@ -994,7 +1106,7 @@
         </tbody>
       </table>
 
-      <p style="color: rgba(255,255,255,0.6); font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
+      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem; transition: opacity 0.4s ease;">
         Pico celebra la libertà umana come possibilità di autoformazione. Machiavelli separa la politica dalla morale tradizionale, inaugurando una nuova analisi del potere. Bruno immagina un universo infinito, popolato da infiniti mondi, anticipando una visione cosmologica radicalmente nuova.
       </p>
 
@@ -1017,7 +1129,7 @@
         <strong>La rivoluzione del metodo</strong> — Il XVII secolo segna una svolta decisiva. La nascita della scienza moderna impone alla filosofia una nuova domanda: <strong>come è possibile una conoscenza certa?</strong> La ricerca del metodo diventa il centro della riflessione. Da un lato il <strong>razionalismo</strong>, che affida alla ragione il fondamento della verità; dall'altro l'<strong>empirismo</strong>, che pone nell'esperienza l'origine della conoscenza.
       </div>
 
-      <h4 style="font-family: var(--font-display); color: var(--gold); font-size: 1rem; letter-spacing: 0.5px; margin: 1rem 0 0.5rem;">Razionalismo</h4>
+      <h4 style="font-family: var(--font-display); color: var(--gold); font-size: 1rem; letter-spacing: 0.5px; margin: 1rem 0 0.5rem; transition: color 0.4s ease;">Razionalismo</h4>
       <table class="tabella-filosofi">
         <thead>
           <tr>
@@ -1033,7 +1145,7 @@
         </tbody>
       </table>
 
-      <h4 style="font-family: var(--font-display); color: var(--gold); font-size: 1rem; letter-spacing: 0.5px; margin: 1rem 0 0.5rem;">Empirismo</h4>
+      <h4 style="font-family: var(--font-display); color: var(--gold); font-size: 1rem; letter-spacing: 0.5px; margin: 1rem 0 0.5rem; transition: color 0.4s ease;">Empirismo</h4>
       <table class="tabella-filosofi">
         <thead>
           <tr>
@@ -1051,7 +1163,7 @@
         </tbody>
       </table>
 
-      <p style="color: rgba(255,255,255,0.6); font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
+      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem; transition: opacity 0.4s ease;">
         Cartesio cerca un punto assolutamente certo da cui ricostruire tutto il sapere. Il <strong>cogito</strong> diventa il principio della filosofia moderna. Spinoza identifica Dio e natura in un'unica sostanza infinita. Leibniz immagina il mondo come una molteplicità di centri spirituali, le monadi, coordinate da un'armonia prestabilita. Hume porta l'empirismo alle sue conseguenze più radicali, mostrando che molte delle nostre certezze derivano dall'abitudine più che dalla dimostrazione.
       </p>
 
@@ -1091,7 +1203,7 @@
         </tbody>
       </table>
 
-      <p style="color: rgba(255,255,255,0.6); font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
+      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem; transition: opacity 0.4s ease;">
         Rousseau riflette sulle origini della disuguaglianza e sul fondamento della sovranità popolare. Diderot vede nella diffusione del sapere uno strumento di liberazione. Con Kant l'Illuminismo raggiunge il suo vertice filosofico. La sua domanda non è soltanto <strong>che cosa possiamo conoscere</strong>, ma anche <strong>che cosa dobbiamo fare</strong> e <strong>che cosa possiamo sperare</strong>. Kant mostra che la mente non è un semplice spettatore del mondo: contribuisce attivamente alla costituzione dell'esperienza. La filosofia critica segna il passaggio decisivo verso il pensiero contemporaneo.
       </p>
 
@@ -1129,7 +1241,7 @@
         </tbody>
       </table>
 
-      <p style="color: rgba(255,255,255,0.6); font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
+      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem; transition: opacity 0.4s ease;">
         Fichte pone l'Io al centro dell'attività conoscitiva. Schelling cerca l'unità profonda tra natura e spirito. Hegel costruisce il più ambizioso sistema filosofico dell'età moderna: la storia è il luogo in cui la libertà si realizza attraverso il conflitto e il superamento delle contraddizioni. La <strong>dialettica</strong> diventa il movimento fondamentale del pensiero e della realtà.
       </p>
 
@@ -1169,7 +1281,7 @@
         </tbody>
       </table>
 
-      <p style="color: rgba(255,255,255,0.6); font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
+      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem; transition: opacity 0.4s ease;">
         Schopenhauer descrive il mondo come manifestazione di una volontà irrazionale e incessante. Kierkegaard pone al centro il singolo individuo, con le sue angosce, le sue decisioni e la sua responsabilità. Marx interpreta la storia come lotta tra classi e analizza i meccanismi economici dell'alienazione. Nietzsche annuncia la crisi della metafisica occidentale e invita a creare nuovi valori. Con Nietzsche la filosofia diventa genealogia, critica della morale e interrogazione radicale sul significato della cultura.
       </p>
 
@@ -1192,7 +1304,7 @@
         <strong>L'età della crisi e della ricerca</strong> — Il Novecento è attraversato da guerre mondiali, rivoluzioni scientifiche, totalitarismi e trasformazioni tecnologiche. La filosofia si frammenta in molte tradizioni, ma continua a interrogare le condizioni dell'esperienza, del linguaggio, della politica e dell'esistenza.
       </div>
 
-      <h4 style="font-family: var(--font-display); color: var(--gold); font-size: 1rem; letter-spacing: 0.5px; margin: 1rem 0 0.5rem;">Fenomenologia</h4>
+      <h4 style="font-family: var(--font-display); color: var(--gold); font-size: 1rem; letter-spacing: 0.5px; margin: 1rem 0 0.5rem; transition: color 0.4s ease;">Fenomenologia</h4>
       <table class="tabella-filosofi">
         <thead>
           <tr>
@@ -1208,7 +1320,7 @@
         </tbody>
       </table>
 
-      <h4 style="font-family: var(--font-display); color: var(--gold); font-size: 1rem; letter-spacing: 0.5px; margin: 1rem 0 0.5rem;">Esistenzialismo</h4>
+      <h4 style="font-family: var(--font-display); color: var(--gold); font-size: 1rem; letter-spacing: 0.5px; margin: 1rem 0 0.5rem; transition: color 0.4s ease;">Esistenzialismo</h4>
       <table class="tabella-filosofi">
         <thead>
           <tr>
@@ -1225,7 +1337,7 @@
         </tbody>
       </table>
 
-      <h4 style="font-family: var(--font-display); color: var(--gold); font-size: 1rem; letter-spacing: 0.5px; margin: 1rem 0 0.5rem;">Filosofia analitica</h4>
+      <h4 style="font-family: var(--font-display); color: var(--gold); font-size: 1rem; letter-spacing: 0.5px; margin: 1rem 0 0.5rem; transition: color 0.4s ease;">Filosofia analitica</h4>
       <table class="tabella-filosofi">
         <thead>
           <tr>
@@ -1242,7 +1354,7 @@
         </tbody>
       </table>
 
-      <h4 style="font-family: var(--font-display); color: var(--gold); font-size: 1rem; letter-spacing: 0.5px; margin: 1rem 0 0.5rem;">Ermeneutica e teoria critica</h4>
+      <h4 style="font-family: var(--font-display); color: var(--gold); font-size: 1rem; letter-spacing: 0.5px; margin: 1rem 0 0.5rem; transition: color 0.4s ease;">Ermeneutica e teoria critica</h4>
       <table class="tabella-filosofi">
         <thead>
           <tr>
@@ -1260,7 +1372,7 @@
         </tbody>
       </table>
 
-      <h4 style="font-family: var(--font-display); color: var(--gold); font-size: 1rem; letter-spacing: 0.5px; margin: 1rem 0 0.5rem;">Genealogia e post-strutturalismo</h4>
+      <h4 style="font-family: var(--font-display); color: var(--gold); font-size: 1rem; letter-spacing: 0.5px; margin: 1rem 0 0.5rem; transition: color 0.4s ease;">Genealogia e post-strutturalismo</h4>
       <table class="tabella-filosofi">
         <thead>
           <tr>
@@ -1275,7 +1387,7 @@
         </tbody>
       </table>
 
-      <p style="color: rgba(255,255,255,0.6); font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
+      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem; transition: opacity 0.4s ease;">
         Il Novecento non produce un unico sistema filosofico dominante. Piuttosto, apre una pluralità di percorsi che continuano ancora oggi: fenomenologia, analitica, ermeneutica, teoria critica, filosofia politica, filosofia della mente, bioetica e riflessione sulla tecnica.
       </p>
 
@@ -1306,16 +1418,16 @@
           </tr>
         </thead>
         <tbody>
-          <tr><td style="font-weight: 500; color: var(--cyan);">Filosofia della mente</td><td>coscienza, intelligenza artificiale</td></tr>
-          <tr><td style="font-weight: 500; color: var(--cyan);">Bioetica</td><td>vita, morte, medicina, genetica</td></tr>
-          <tr><td style="font-weight: 500; color: var(--cyan);">Etica ambientale</td><td>crisi climatica e responsabilità</td></tr>
-          <tr><td style="font-weight: 500; color: var(--cyan);">Filosofia politica</td><td>democrazia, diritti, migrazioni</td></tr>
-          <tr><td style="font-weight: 500; color: var(--cyan);">Filosofia della tecnica</td><td>rapporto tra uomo e tecnologia</td></tr>
-          <tr><td style="font-weight: 500; color: var(--cyan);">Filosofia interculturale</td><td>dialogo tra tradizioni filosofiche</td></tr>
+          <tr><td style="font-weight: 500; color: var(--cyan); transition: color 0.4s ease;">Filosofia della mente</td><td>coscienza, intelligenza artificiale</td></tr>
+          <tr><td style="font-weight: 500; color: var(--cyan); transition: color 0.4s ease;">Bioetica</td><td>vita, morte, medicina, genetica</td></tr>
+          <tr><td style="font-weight: 500; color: var(--cyan); transition: color 0.4s ease;">Etica ambientale</td><td>crisi climatica e responsabilità</td></tr>
+          <tr><td style="font-weight: 500; color: var(--cyan); transition: color 0.4s ease;">Filosofia politica</td><td>democrazia, diritti, migrazioni</td></tr>
+          <tr><td style="font-weight: 500; color: var(--cyan); transition: color 0.4s ease;">Filosofia della tecnica</td><td>rapporto tra uomo e tecnologia</td></tr>
+          <tr><td style="font-weight: 500; color: var(--cyan); transition: color 0.4s ease;">Filosofia interculturale</td><td>dialogo tra tradizioni filosofiche</td></tr>
         </tbody>
       </table>
 
-      <p style="color: rgba(255,255,255,0.6); font-size: 0.95rem; margin: 0.5rem 0 0.8rem;">
+      <p style="opacity: 0.6; font-size: 0.95rem; margin: 0.5rem 0 0.8rem; transition: opacity 0.4s ease;">
         Tra i pensatori più influenti della contemporaneità si possono ricordare Martha Nussbaum, Charles Taylor, Peter Singer, Judith Butler, Byung-Chul Han, Thomas Nagel e molti altri che continuano a interrogare il significato della libertà, della giustizia e della dignità umana. La filosofia del XXI secolo è meno sistematica e più dialogica. Si muove tra discipline diverse, confrontandosi con la scienza, l'economia, la psicologia e le trasformazioni tecnologiche.
       </p>
 
@@ -1374,10 +1486,10 @@
 
     <div class="bussola">
       <p>Ogni epoca ha cercato una risposta diversa alla stessa domanda: <span class="highlight">come deve vivere l'essere umano?</span></p>
-      <p style="font-size: 0.95rem; color: rgba(255,255,255,0.5);">
+      <p style="font-size: 0.95rem; opacity: 0.5;">
         I Presocratici hanno interrogato la natura. Socrate ha interrogato la coscienza. Platone ha cercato la giustizia. Aristotele la felicità. Gli Stoici la libertà interiore. Agostino il tempo dell'anima. Tommaso l'armonia tra ragione e fede. Cartesio la certezza. Kant i limiti della ragione. Hegel il senso della storia. Nietzsche la creazione dei valori. Heidegger il significato dell'essere. La filosofia contemporanea continua a interrogare il rapporto tra uomo, tecnica e mondo.
       </p>
-      <p style="margin-top: 1rem; font-style: italic; color: rgba(255,255,255,0.4);">Questa cronologia non è un punto d'arrivo. È un invito a entrare in una conversazione che non si è mai conclusa.</p>
+      <p style="margin-top: 1rem; font-style: italic; opacity: 0.4;">Questa cronologia non è un punto d'arrivo. È un invito a entrare in una conversazione che non si è mai conclusa.</p>
     </div>
 
     <!-- ============================================================
@@ -1396,7 +1508,8 @@
     <div class="link-collegamenti">
       <a href="/pagine/linea_del_tempo.html">⏳ Linea del Tempo della Filosofia</a>
       <a href="/pagine/mappa_concettuale.html">🗺️ Mappa Concettuale</a>
-<a href="https://www.treccani.it/enciclopedia/elenco-opere/Dizionario_di_filosofia/">📚 Dizionario Filosofico</a>      <a href="/articoli/#lista-articoli">📖 Tutti gli articoli</a>
+      <a href="https://www.treccani.it/enciclopedia/elenco-opere/Dizionario_di_filosofia/">📚 Dizionario Filosofico</a>
+      <a href="/articoli/#lista-articoli">📖 Tutti gli articoli</a>
     </div>
 
     <!-- ============================================================
@@ -1411,7 +1524,7 @@
 
     <footer class="page-footer">
       <p><strong>Echi di Sofia</strong></p>
-      <p>Tra pensiero e stelle: un percorso attraverso le grandi domande della filosofia.</p>
+      <p class="footer-motto">"La filosofia non è un tempio, ma un cantiere." – Georges Canguilhem</p>
       <p class="copyright">© Echi di Sofia – La lunga avventura del pensiero</p>
     </footer>
 
@@ -1423,41 +1536,75 @@
   <button class="torna-su" id="tornaSu" aria-label="Torna su" title="Torna su">↑</button>
 
   <!-- ============================================================
-       SCRIPT PER IL PULSANTE TORNA SU
+       SCRIPT PER IL PULSANTE TORNA SU E IL TEMA
        ============================================================ -->
   <script>
     (function() {
+      // ============================================================
+      // 1. PULSANTE TORNA SU
+      // ============================================================
       const btn = document.getElementById('tornaSu');
-      if (!btn) return;
+      if (btn) {
+        function toggleButton() {
+          const scrollY = window.scrollY;
+          // Soglia abbassata a 150px per farlo vedere prima
+          const threshold = 150;
 
-      let lastScrollY = window.scrollY;
-
-      function toggleButton() {
-        const scrollY = window.scrollY;
-        const threshold = 300; // mostriamo il pulsante dopo 300px di scroll
-
-        if (scrollY > threshold) {
-          btn.classList.add('visible');
-        } else {
-          btn.classList.remove('visible');
+          if (scrollY > threshold) {
+            btn.classList.add('visible');
+          } else {
+            btn.classList.remove('visible');
+          }
         }
-        lastScrollY = scrollY;
+
+        window.addEventListener('scroll', toggleButton, { passive: true });
+
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+        });
+
+        toggleButton();
       }
 
-      // Ascolta lo scroll
-      window.addEventListener('scroll', toggleButton, { passive: true });
+      // ============================================================
+      // 2. TEMA CHIARO/SCURO
+      // ============================================================
+      const themeToggle = document.getElementById('themeToggle');
+      const themeIcon = document.getElementById('themeIcon');
+      const themeLabel = document.getElementById('themeLabel');
 
-      // Click: scroll liscio in cima
-      btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
+      if (themeToggle) {
+        // Leggi preferenza salvata
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+
+        if (savedTheme === 'light') {
+          document.body.classList.add('light-theme');
+          themeIcon.textContent = '☀️';
+          themeLabel.textContent = 'Chiaro';
+        } else {
+          document.body.classList.remove('light-theme');
+          themeIcon.textContent = '🌙';
+          themeLabel.textContent = 'Scuro';
+        }
+
+        themeToggle.addEventListener('click', function() {
+          const isLight = document.body.classList.toggle('light-theme');
+
+          if (isLight) {
+            themeIcon.textContent = '☀️';
+            themeLabel.textContent = 'Chiaro';
+            localStorage.setItem('theme', 'light');
+          } else {
+            themeIcon.textContent = '🌙';
+            themeLabel.textContent = 'Scuro';
+            localStorage.setItem('theme', 'dark');
+          }
         });
-      });
-
-      // Controlliamo subito all'avvio
-      toggleButton();
+      }
     })();
   </script>
 
