@@ -1181,29 +1181,42 @@ html[data-theme="dark"] .sub-branch:hover {
 
 
 /* ============================================================
-   HIGHLIGHT – MIGLIORATO PER MASSIMO CONTRASTO
+   HIGHLIGHT – VERDE BRILLANTE CON EFFETTO FASCIA
    ============================================================ */
 
 .highlight {
+    /* Colore di sfondo verde brillante (fisso per entrambi i temi) */
+    background: #39ff14;
 
-    /* colore di sfondo fisso per entrambi i temi */
-    background: #FFD700;
-
-    /* testo nero per massimo contrasto */
+    /* Testo nero per massimo contrasto */
     color: #000000;
 
     font-weight: 700;
 
-    padding:
-        1px 4px;
+    /* Padding per creare l'effetto "fascia" intorno alle parole */
+    padding: 1px 6px;
 
     border-radius: 4px;
 
-    border: 1px solid #e6b800;    /* bordo per definire meglio */
+    /* Bordo più spesso per l'effetto rettangolo */
+    border: 2px solid #1a8a00;
 
-    box-shadow: 0 0 6px rgba(255, 215, 0, 0.5); /* alone */
+    /* Ombra esterna per far risaltare la fascia */
+    box-shadow:
+        0 0 0 1px rgba(57, 255, 20, 0.3),  /* bordo esterno più leggero */
+        0 0 12px rgba(57, 255, 20, 0.4);   /* alone luminoso */
+
+    /* Transizione morbida per eventuali cambiamenti */
+    transition: all 0.15s ease;
 }
 
+/* (Opzionale) Se vuoi un effetto ancora più marcato quando il mouse passa sopra l'highlight */
+.highlight:hover {
+    background: #4aff2a;
+    border-color: #0f6e00;
+    box-shadow: 0 0 0 2px rgba(57, 255, 20, 0.5), 0 0 24px rgba(57, 255, 20, 0.6);
+    transform: scale(1.02);
+}
 
 /* ============================================================
    BACK TO TOP – STILE COERENTE CON PLAYER
@@ -3322,730 +3335,269 @@ input[type="search"]::-moz-search-cancel-button {
      ============================================================ -->
 
 <script>
-
 (function() {
-
     'use strict';
-
 
     /* ============================================================
        TEMA CHIARO / SCURO
        ============================================================ */
-
-    const themeToggle =
-        document.getElementById('themeToggle');
-
-    const themeLabel =
-        document.getElementById('themeLabel');
-
-    let currentTheme =
-        localStorage.getItem('mapTheme') || 'light';
-
+    const themeToggle = document.getElementById('themeToggle');
+    const themeLabel = document.getElementById('themeLabel');
+    let currentTheme = localStorage.getItem('mapTheme') || 'light';
 
     function applyTheme(theme) {
-
-        document.documentElement.setAttribute(
-            'data-theme',
-            theme === 'dark' ? 'dark' : ''
-        );
-
+        document.documentElement.setAttribute('data-theme', theme === 'dark' ? 'dark' : '');
         currentTheme = theme;
-
-        localStorage.setItem(
-            'mapTheme',
-            theme
-        );
-
-
-        const icon =
-            themeToggle.querySelector('i');
-
-
+        localStorage.setItem('mapTheme', theme);
+        const icon = themeToggle.querySelector('i');
         if (theme === 'dark') {
-
-            icon.className =
-                'fas fa-sun';
-
-            themeLabel.textContent =
-                'Chiaro';
-
+            icon.className = 'fas fa-sun';
+            themeLabel.textContent = 'Chiaro';
         } else {
-
-            icon.className =
-                'fas fa-moon';
-
-            themeLabel.textContent =
-                'Scuro';
+            icon.className = 'fas fa-moon';
+            themeLabel.textContent = 'Scuro';
         }
     }
 
-
-    themeToggle.addEventListener(
-        'click',
-        function() {
-
-            const newTheme =
-                currentTheme === 'dark'
-                    ? 'light'
-                    : 'dark';
-
-            applyTheme(newTheme);
-        }
-    );
-
-
+    themeToggle.addEventListener('click', function() {
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        applyTheme(newTheme);
+    });
     applyTheme(currentTheme);
-
 
     /* ============================================================
        BACK TO TOP
        ============================================================ */
-
-    const backToTop =
-        document.getElementById('backToTop');
-
-
-    window.addEventListener(
-        'scroll',
-        function() {
-
-            if (window.scrollY > 400) {
-
-                backToTop.classList.add(
-                    'visible'
-                );
-
-            } else {
-
-                backToTop.classList.remove(
-                    'visible'
-                );
-            }
+    const backToTop = document.getElementById('backToTop');
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 400) {
+            backToTop.classList.add('visible');
+        } else {
+            backToTop.classList.remove('visible');
         }
-    );
-
-
-    backToTop.addEventListener(
-        'click',
-        function() {
-
-            window.scrollTo({
-
-                top: 0,
-
-                behavior: 'smooth'
-
-            });
-        }
-    );
-
+    });
+    backToTop.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
 
     /* ============================================================
        ANNO
        ============================================================ */
-
-    document.getElementById(
-        'currentYear'
-    ).textContent =
-        new Date().getFullYear();
-
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
 
     /* ============================================================
-       RICERCA
+       RICERCA — NUOVA VERSIONE CON HIGHLIGHT NEI LINK
        ============================================================ */
+    const searchInput = document.getElementById('searchInput');
+    const searchButton = document.getElementById('searchButton');
+    const clearSearchBtn = document.getElementById('clearSearch');
+    const noResults = document.getElementById('noResults');
+    const searchTermDisplay = document.getElementById('searchTermDisplay');
 
-    const searchInput =
-        document.getElementById('searchInput');
+    const branches = document.querySelectorAll('.branch');
+    const eras = document.querySelectorAll('.era');
+    const timelines = document.querySelectorAll('.timeline');
 
-    const searchButton =
-        document.getElementById('searchButton');
-
-    const clearSearchBtn =
-        document.getElementById('clearSearch');
-
-    const noResults =
-        document.getElementById('noResults');
-
-    const searchTermDisplay =
-        document.getElementById('searchTermDisplay');
-
-
-    const branches =
-        document.querySelectorAll('.branch');
-
-    const eras =
-        document.querySelectorAll('.era');
-
-    const timelines =
-        document.querySelectorAll('.timeline');
-
-
-    /* ============================================================
+    /* ------------------------------------------------------------
        NORMALIZZAZIONE
-       ============================================================ */
-
+       ------------------------------------------------------------ */
     function normalizeString(str) {
-
         return str
-
             .toLowerCase()
-
             .normalize("NFD")
-
-            .replace(
-                /[\u0300-\u036f]/g,
-                ''
-            )
-
-            .replace(
-                /[^a-z0-9\s]/g,
-                ' '
-            )
-
-            .replace(
-                /\s+/g,
-                ' '
-            )
-
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/[^a-z0-9\s]/g, ' ')
+            .replace(/\s+/g, ' ')
             .trim();
     }
 
-
-    /* ============================================================
+    /* ------------------------------------------------------------
        MATCH RICERCA
-       ============================================================ */
-
-    function elementMatchesSearch(
-        element,
-        tokens
-    ) {
-
-        if (tokens.length === 0)
-            return true;
-
-
-        const searchData =
-            element.getAttribute(
-                'data-search'
-            ) || '';
-
-
-        const textContent =
-            element.textContent || '';
-
-
-        const combined =
-            normalizeString(
-                searchData +
-                ' ' +
-                textContent
-            );
-
-
+       ------------------------------------------------------------ */
+    function elementMatchesSearch(element, tokens) {
+        if (tokens.length === 0) return true;
+        const searchData = element.getAttribute('data-search') || '';
+        const textContent = element.textContent || '';
+        const combined = normalizeString(searchData + ' ' + textContent);
         let matchCount = 0;
-
-
-        tokens.forEach(
-            token => {
-
-                const normalizedToken =
-                    normalizeString(token);
-
-
-                if (
-                    normalizedToken &&
-                    combined.includes(
-                        normalizedToken
-                    )
-                ) {
-
-                    matchCount++;
-                }
+        tokens.forEach(token => {
+            const normalizedToken = normalizeString(token);
+            if (normalizedToken && combined.includes(normalizedToken)) {
+                matchCount++;
             }
-        );
-
-
-        const threshold =
-            tokens.length > 2
-                ? Math.ceil(tokens.length / 2)
-                : 1;
-
-
+        });
+        const threshold = tokens.length > 2 ? Math.ceil(tokens.length / 2) : 1;
         return matchCount >= threshold;
     }
 
-
-    /* ============================================================
+    /* ------------------------------------------------------------
        RIMOZIONE HIGHLIGHT
-       ============================================================ */
-
+       ------------------------------------------------------------ */
     function removeHighlights() {
+        document.querySelectorAll('.highlight').forEach(el => {
+            const parent = el.parentNode;
+            // Sostituisci lo span con il suo contenuto testuale
+            parent.replaceChild(document.createTextNode(el.textContent), el);
+            parent.normalize();
+        });
+    }
 
-        document
-            .querySelectorAll('.highlight')
-            .forEach(el => {
+    /* ------------------------------------------------------------
+       HIGHLIGHT — NUOVA VERSIONE (EVIDENZIA ANCHE NEI LINK)
+       ------------------------------------------------------------ */
+    function highlightSearch(term) {
+        removeHighlights();
+        if (!term) return;
 
-                const parent =
-                    el.parentNode;
+        const tokens = term.toLowerCase().split(/\s+/).filter(t => t.length > 0);
+        if (tokens.length === 0) return;
 
-                parent.replaceChild(
-                    document.createTextNode(
-                        el.textContent
-                    ),
-                    el
-                );
+        // Crea un'espressione regolare per tutti i token
+        const pattern = tokens.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
+        const regex = new RegExp(pattern, 'gi');
 
+        // Prendi tutti gli elementi visibili (branch ed era)
+        const visibleElements = document.querySelectorAll('.branch:not(.hidden), .era:not(.hidden)');
+
+        visibleElements.forEach(el => {
+            // Usa un TreeWalker per scorrere TUTTI i nodi di testo, compresi quelli dentro i link
+            const walker = document.createTreeWalker(
+                el,
+                NodeFilter.SHOW_TEXT,
+                {
+                    acceptNode: function(node) {
+                        // Salta i nodi che sono già stati evidenziati
+                        if (node.parentElement && node.parentElement.classList && node.parentElement.classList.contains('highlight')) {
+                            return NodeFilter.FILTER_REJECT;
+                        }
+                        // ✅ RIMOSSA LA CONDIZIONE CHE ESCLUDEVA I LINK
+                        return NodeFilter.FILTER_ACCEPT;
+                    }
+                },
+                false
+            );
+
+            const nodes = [];
+            let node;
+            while (node = walker.nextNode()) {
+                if (node.textContent.match(regex)) {
+                    nodes.push(node);
+                }
+            }
+
+            nodes.forEach(textNode => {
+                const parent = textNode.parentNode;
+                const text = textNode.textContent;
+                const parts = text.split(regex);
+                const matches = text.match(regex) || [];
+                const fragment = document.createDocumentFragment();
+
+                parts.forEach((part, index) => {
+                    if (part) {
+                        fragment.appendChild(document.createTextNode(part));
+                    }
+                    if (index < matches.length) {
+                        const mark = document.createElement('span');
+                        mark.className = 'highlight';
+                        mark.textContent = matches[index];
+                        fragment.appendChild(mark);
+                    }
+                });
+
+                parent.replaceChild(fragment, textNode);
                 parent.normalize();
             });
+        });
     }
 
-
-    /* ============================================================
-       HIGHLIGHT
-       ============================================================ */
-
-    function highlightSearch(term) {
-
-        removeHighlights();
-
-
-        if (!term)
-            return;
-
-
-        const tokens =
-            term
-                .toLowerCase()
-                .split(/\s+/)
-                .filter(
-                    t => t.length > 0
-                );
-
-
-        if (tokens.length === 0)
-            return;
-
-
-        const pattern =
-            tokens
-                .map(
-                    t =>
-                        t.replace(
-                            /[.*+?^${}()|[\]\\]/g,
-                            '\\$&'
-                        )
-                )
-                .join('|');
-
-
-        const regex =
-            new RegExp(
-                pattern,
-                'gi'
-            );
-
-
-        const visibleElements =
-            document.querySelectorAll(
-                '.branch:not(.hidden), .era:not(.hidden)'
-            );
-
-
-        visibleElements.forEach(
-            el => {
-
-                const walker =
-                    document.createTreeWalker(
-                        el,
-                        NodeFilter.SHOW_TEXT,
-                        {
-
-                            acceptNode:
-                                function(node) {
-
-                                    if (
-                                        node.parentElement &&
-                                        node.parentElement.tagName === 'SPAN' &&
-                                        node.parentElement.classList.contains('highlight')
-                                    ) {
-
-                                        return NodeFilter.FILTER_REJECT;
-                                    }
-
-
-                                    if (
-                                        node.parentElement &&
-                                        node.parentElement.tagName === 'A'
-                                    ) {
-
-                                        return NodeFilter.FILTER_REJECT;
-                                    }
-
-
-                                    return NodeFilter.FILTER_ACCEPT;
-                                }
-
-                        },
-                        false
-                    );
-
-
-                const nodes = [];
-
-                let node;
-
-
-                while (
-                    node = walker.nextNode()
-                ) {
-
-                    if (
-                        node.textContent.match(
-                            regex
-                        )
-                    ) {
-
-                        nodes.push(node);
-                    }
-                }
-
-
-                nodes.forEach(
-                    textNode => {
-
-                        const parent =
-                            textNode.parentNode;
-
-                        const text =
-                            textNode.textContent;
-
-
-                        const parts =
-                            text.split(regex);
-
-
-                        const matches =
-                            text.match(regex) || [];
-
-
-                        const fragment =
-                            document.createDocumentFragment();
-
-
-                        parts.forEach(
-                            (part, index) => {
-
-                                if (part) {
-
-                                    fragment.appendChild(
-                                        document.createTextNode(
-                                            part
-                                        )
-                                    );
-                                }
-
-
-                                if (
-                                    index <
-                                    matches.length
-                                ) {
-
-                                    const mark =
-                                        document.createElement(
-                                            'span'
-                                        );
-
-
-                                    mark.className =
-                                        'highlight';
-
-
-                                    mark.textContent =
-                                        matches[index];
-
-
-                                    fragment.appendChild(
-                                        mark
-                                    );
-                                }
-                            }
-                        );
-
-
-                        parent.replaceChild(
-                            fragment,
-                            textNode
-                        );
-
-
-                        parent.normalize();
-                    }
-                );
-            }
-        );
-    }
-
-
-    /* ============================================================
+    /* ------------------------------------------------------------
        RICERCA PRINCIPALE
-       ============================================================ */
-
+       ------------------------------------------------------------ */
     function performSearch() {
-
-        const rawTerm =
-            searchInput.value.trim();
-
-
-        const term =
-            rawTerm.toLowerCase();
-
-
+        const rawTerm = searchInput.value.trim();
+        const term = rawTerm.toLowerCase();
         let anyVisible = false;
 
-
-        clearSearchBtn.classList.toggle(
-            'visible',
-            term !== ''
-        );
-
-
+        clearSearchBtn.classList.toggle('visible', term !== '');
         removeHighlights();
 
-
         if (term === '') {
-
-            branches.forEach(
-                b =>
-                    b.classList.remove(
-                        'hidden'
-                    )
-            );
-
-
-            eras.forEach(
-                e =>
-                    e.classList.remove(
-                        'hidden'
-                    )
-            );
-
-
-            timelines.forEach(
-                t =>
-                    t.classList.remove(
-                        'hidden'
-                    )
-            );
-
-
-            noResults.style.display =
-                'none';
-
-
+            branches.forEach(b => b.classList.remove('hidden'));
+            eras.forEach(e => e.classList.remove('hidden'));
+            timelines.forEach(t => t.classList.remove('hidden'));
+            noResults.style.display = 'none';
             return;
         }
 
+        const tokens = term.split(/\s+/).filter(t => t.length > 0);
 
-        const tokens =
-            term
-                .split(/\s+/)
-                .filter(
-                    t => t.length > 0
-                );
+        // Branche
+        branches.forEach(branch => {
+            const matches = elementMatchesSearch(branch, tokens);
+            branch.classList.toggle('hidden', !matches);
+            if (matches) anyVisible = true;
+        });
 
+        // Era
+        eras.forEach(era => {
+            const matches = elementMatchesSearch(era, tokens);
+            era.classList.toggle('hidden', !matches);
+            if (matches) anyVisible = true;
+        });
 
-        /* --------------------------------------------------------
-           BRANCHE
-           -------------------------------------------------------- */
+        // Timeline vuote
+        timelines.forEach(timeline => {
+            const visibleEras = timeline.querySelectorAll('.era:not(.hidden)');
+            timeline.classList.toggle('hidden', visibleEras.length === 0);
+        });
 
-        branches.forEach(
-            branch => {
-
-                const matches =
-                    elementMatchesSearch(
-                        branch,
-                        tokens
-                    );
-
-
-                branch.classList.toggle(
-                    'hidden',
-                    !matches
-                );
-
-
-                if (matches)
-                    anyVisible = true;
-            }
-        );
-
-
-        /* --------------------------------------------------------
-           ERA
-           -------------------------------------------------------- */
-
-        eras.forEach(
-            era => {
-
-                const matches =
-                    elementMatchesSearch(
-                        era,
-                        tokens
-                    );
-
-
-                era.classList.toggle(
-                    'hidden',
-                    !matches
-                );
-
-
-                if (matches)
-                    anyVisible = true;
-            }
-        );
-
-
-        /* --------------------------------------------------------
-           TIMELINE VUOTA
-           -------------------------------------------------------- */
-
-        timelines.forEach(
-            timeline => {
-
-                const visibleEras =
-                    timeline.querySelectorAll(
-                        '.era:not(.hidden)'
-                    );
-
-
-                timeline.classList.toggle(
-                    'hidden',
-                    visibleEras.length === 0
-                );
-            }
-        );
-
-
-        /* --------------------------------------------------------
-           HIGHLIGHT
-           -------------------------------------------------------- */
-
+        // Highlight
         highlightSearch(term);
 
-
-        /* --------------------------------------------------------
-           NO RESULTS
-           -------------------------------------------------------- */
-
+        // No results
         if (!anyVisible) {
-
-            searchTermDisplay.textContent =
-                rawTerm;
-
-            noResults.style.display =
-                'block';
-
+            searchTermDisplay.textContent = rawTerm;
+            noResults.style.display = 'block';
         } else {
-
-            noResults.style.display =
-                'none';
+            noResults.style.display = 'none';
         }
 
-
-        /* --------------------------------------------------------
-           SCROLL
-           -------------------------------------------------------- */
-
-        const firstVisible =
-            document.querySelector(
-                '.branch:not(.hidden), .era:not(.hidden)'
-            );
-
-
+        // Scroll al primo risultato
+        const firstVisible = document.querySelector('.branch:not(.hidden), .era:not(.hidden)');
         if (firstVisible) {
-
-            setTimeout(
-                () => {
-
-                    firstVisible.scrollIntoView({
-
-                        behavior: 'smooth',
-
-                        block: 'center'
-
-                    });
-
-                },
-                300
-            );
+            setTimeout(() => {
+                firstVisible.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 300);
         }
 
-
-        console.log(
-            '🔍 Ricerca: "' + rawTerm + '" — Trovati ' +
-            document.querySelectorAll(
-                '.branch:not(.hidden), .era:not(.hidden)'
-            ).length + ' elementi.'
-        );
+        console.log('🔍 Ricerca: "' + rawTerm + '" — Trovati ' +
+            document.querySelectorAll('.branch:not(.hidden), .era:not(.hidden)').length + ' elementi.');
     }
 
-
-    /* ============================================================
+    /* ------------------------------------------------------------
        EVENTI
-       ============================================================ */
-
-    searchInput.addEventListener(
-        'input',
-        performSearch
-    );
-
-
-    searchButton.addEventListener(
-        'click',
-        performSearch
-    );
-
-
-    searchInput.addEventListener(
-        'keydown',
-        function(e) {
-
-            if (e.key === 'Enter') {
-
-                performSearch();
-            }
-
-
-            if (e.key === 'Escape') {
-
-                this.value = '';
-
-                performSearch();
-
-                this.blur();
-            }
-        }
-    );
-
-
-    clearSearchBtn.addEventListener(
-        'click',
-        function() {
-
-            searchInput.value = '';
-
+       ------------------------------------------------------------ */
+    searchInput.addEventListener('input', performSearch);
+    searchButton.addEventListener('click', performSearch);
+    searchInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
             performSearch();
-
-            searchInput.focus();
         }
-    );
-
+        if (e.key === 'Escape') {
+            this.value = '';
+            performSearch();
+            this.blur();
+        }
+    });
+    clearSearchBtn.addEventListener('click', function() {
+        searchInput.value = '';
+        performSearch();
+        searchInput.focus();
+    });
 
     /* ============================================================
        PLAYER MUSICALE
        ============================================================ */
-
     const audio = document.getElementById('myAudio');
     const playButton = document.getElementById('player-play');
     const playerStatus = document.getElementById('player-status');
@@ -4053,153 +3605,52 @@ input[type="search"]::-moz-search-cancel-button {
     const playerToggle = document.getElementById('player-toggle');
 
     if (audio && playButton) {
-
-        playButton.addEventListener(
-            'click',
-            function() {
-
-                if (audio.paused) {
-
-                    audio.play()
-                        .then(function() {
-
-                            playButton.textContent = '❚❚';
-
-                            if (playerStatus) {
-                                playerStatus.textContent =
-                                    'In riproduzione';
-                            }
-
-                        })
-                        .catch(function(error) {
-
-                            console.warn(
-                                'Riproduzione audio non avviata:',
-                                error
-                            );
-
-                        });
-
-                } else {
-
-                    audio.pause();
-
-                    playButton.textContent = '▶';
-
-                    if (playerStatus) {
-                        playerStatus.textContent =
-                            'In pausa';
-                    }
-
-                }
-
-            }
-        );
-
-        audio.addEventListener(
-            'ended',
-            function() {
-
+        playButton.addEventListener('click', function() {
+            if (audio.paused) {
+                audio.play()
+                    .then(function() {
+                        playButton.textContent = '❚❚';
+                        if (playerStatus) playerStatus.textContent = 'In riproduzione';
+                    })
+                    .catch(function(error) {
+                        console.warn('Riproduzione audio non avviata:', error);
+                    });
+            } else {
+                audio.pause();
                 playButton.textContent = '▶';
-
-                if (playerStatus) {
-                    playerStatus.textContent =
-                        'Pronto';
-                }
-
+                if (playerStatus) playerStatus.textContent = 'In pausa';
             }
-        );
-
+        });
+        audio.addEventListener('ended', function() {
+            playButton.textContent = '▶';
+            if (playerStatus) playerStatus.textContent = 'Pronto';
+        });
     }
 
-    // APERTURA / CHIUSURA PLAYER
     if (player && playerToggle) {
-
-        playerToggle.addEventListener(
-            'click',
-            function() {
-
-                var open =
-                    player.classList.toggle(
-                        'open'
-                    );
-
-                playerToggle.setAttribute(
-                    'aria-expanded',
-                    open ? 'true' : 'false'
-                );
-
+        playerToggle.addEventListener('click', function() {
+            var open = player.classList.toggle('open');
+            playerToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        document.addEventListener('click', function(event) {
+            if (!player.contains(event.target)) {
+                player.classList.remove('open');
+                playerToggle.setAttribute('aria-expanded', 'false');
             }
-        );
-
-        document.addEventListener(
-            'click',
-            function(event) {
-
-                if (
-                    !player.contains(
-                        event.target
-                    )
-                ) {
-
-                    player.classList.remove(
-                        'open'
-                    );
-
-                    playerToggle.setAttribute(
-                        'aria-expanded',
-                        'false'
-                    );
-
-                }
-
-            }
-        );
-
+        });
     }
-
 
     /* ============================================================
        INIZIALIZZAZIONE
        ============================================================ */
-
-    setTimeout(
-        () => {
-
-            branches.forEach(
-                b =>
-                    b.classList.remove(
-                        'hidden'
-                    )
-            );
-
-
-            eras.forEach(
-                e =>
-                    e.classList.remove(
-                        'hidden'
-                    )
-            );
-
-
-            timelines.forEach(
-                t =>
-                    t.classList.remove(
-                        'hidden'
-                    )
-            );
-
-
-            noResults.style.display =
-                'none';
-
-        },
-        100
-    );
-
+    setTimeout(function() {
+        branches.forEach(b => b.classList.remove('hidden'));
+        eras.forEach(e => e.classList.remove('hidden'));
+        timelines.forEach(t => t.classList.remove('hidden'));
+        noResults.style.display = 'none';
+    }, 100);
 
 })();
-
 </script>
 
 
