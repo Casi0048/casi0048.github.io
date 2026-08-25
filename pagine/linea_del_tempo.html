@@ -507,8 +507,8 @@
            ======================================= */
         .back-to-top {
             position: fixed;
-            bottom: 22px;
-            right: 130px;
+            bottom: 80px;
+            right: 24px;
             width: 46px;
             height: 46px;
             border-radius: 50%;
@@ -579,11 +579,11 @@
         }
 
         /* =======================================
-           PLAYER MUSICALE
+           PLAYER MUSICALE – STILE UNIFICATO
            ======================================= */
         .music-player {
             position: fixed;
-            right: 60px;
+            right: 24px;
             bottom: 24px;
             z-index: 9999;
             font-family: 'Inter', sans-serif;
@@ -626,8 +626,8 @@
             position: absolute;
             right: 0;
             bottom: 62px;
-            width: 250px;
-            padding: 20px;
+            width: 280px;
+            padding: 16px 17px;
             border: 1px solid var(--gold-line);
             border-radius: 14px;
             background: rgba(12, 14, 23, 0.97);
@@ -650,40 +650,131 @@
             transform: translateY(0) scale(1);
         }
 
-        .player-title {
-            font-family: var(--font-serif);
-            font-size: 0.78rem;
-            letter-spacing: 1px;
-            color: var(--gold);
-            margin-bottom: 15px;
-            transition: color 0.4s ease;
+        .music-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 14px;
         }
 
-        .player-controls {
+        .music-label {
+            display: block;
+            font-size: 0.58rem;
+            letter-spacing: 1.4px;
+            color: rgba(255, 216, 106, 0.65);
+            margin-bottom: 3px;
+        }
+
+        [data-theme="dark"] .music-label {
+            color: rgba(184, 134, 11, 0.65);
+        }
+
+        .music-title {
+            display: block;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.15rem;
+            color: #eee;
+        }
+
+        [data-theme="dark"] .music-title {
+            color: #d4c9b8;
+        }
+
+        .music-close {
+            border: 0;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.45);
+            font-size: 1.25rem;
+            cursor: pointer;
+            line-height: 1;
+            transition: color 0.3s;
+        }
+
+        [data-theme="dark"] .music-close {
+            color: rgba(255, 255, 255, 0.45);
+        }
+
+        .music-close:hover {
+            color: #fff;
+        }
+
+        [data-theme="dark"] .music-close:hover {
+            color: #d4c9b8;
+        }
+
+        .music-controls {
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .player-controls button {
-            width: 34px;
-            height: 34px;
-            border: 1px solid var(--border);
-            border-radius: 50%;
+        .music-play,
+        .music-volume {
+            flex: 0 0 auto;
+            border: 0;
             background: transparent;
-            color: var(--text-primary);
-            cursor: pointer;
-            transition: border-color 0.3s ease, color 0.3s ease;
-        }
-
-        [data-theme="dark"] .player-controls button {
-            color: #d4c9b8;
-            border-color: rgba(255, 255, 255, 0.08);
-        }
-
-        .player-controls button:hover {
-            border-color: var(--gold-line);
             color: var(--gold);
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        [data-theme="dark"] .music-play,
+        [data-theme="dark"] .music-volume {
+            color: #d4a02b;
+        }
+
+        .music-play {
+            font-size: 0.95rem;
+            width: 25px;
+        }
+
+        .music-volume {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        .music-progress {
+            flex: 1;
+            min-width: 0;
+            height: 3px;
+            appearance: none;
+            -webkit-appearance: none;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        [data-theme="dark"] .music-progress {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .music-progress::-webkit-slider-thumb {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--gold);
+            cursor: pointer;
+        }
+
+        [data-theme="dark"] .music-progress::-webkit-slider-thumb {
+            background: #d4a02b;
+        }
+
+        .music-progress::-moz-range-thumb {
+            width: 9px;
+            height: 9px;
+            border: 0;
+            border-radius: 50%;
+            background: var(--gold);
+            cursor: pointer;
+        }
+
+        [data-theme="dark"] .music-progress::-moz-range-thumb {
+            background: #d4a02b;
         }
 
         .player-status {
@@ -2085,7 +2176,7 @@
 </audio>
 
 <!-- =============================================
-     PLAYER — HTML
+     PLAYER — HTML (aggiornato)
      ============================================= -->
 <div class="music-player" id="music-player">
     <button class="player-toggle" id="player-toggle" type="button" aria-label="Apri lettore musicale" aria-expanded="false">
@@ -2093,18 +2184,24 @@
     </button>
 
     <div class="player-panel">
-        <div class="player-title">MUSICA PER IL PENSIERO</div>
-        <div class="player-controls">
-            <button id="player-play" type="button" aria-label="Riproduci o pausa">▶</button>
+        <div class="music-header">
+            <div>
+                <span class="music-label">MUSICA PER LO STUDIO</span>
+                <span class="music-title">Strauss – Sul bel Danubio blu</span>
+            </div>
+            <button class="music-close" id="musicClose" aria-label="Chiudi player">✕</button>
+        </div>
+        <div class="music-controls">
+            <button class="music-play" id="player-play" aria-label="Riproduci musica">▶</button>
             <button class="music-volume" id="volumeToggle" aria-label="Attiva/disattiva audio">🔊</button>
-        <input type="range" class="music-progress" id="musicProgress" min="0" max="100" value="0" aria-label="Avanzamento brano">
+            <input type="range" class="music-progress" id="musicProgress" min="0" max="100" value="0" aria-label="Avanzamento brano">
             <div class="player-status" id="player-status">Pronto</div>
         </div>
     </div>
 </div>
 
 <!-- =============================================
-     JAVASCRIPT – NUOVA VERSIONE AVANZATA
+     JAVASCRIPT – avanzato (con player)
      ============================================= -->
 <script>
 (function() {
@@ -2186,7 +2283,6 @@
     // ============================================
     function elementMatchesSearch(element, tokens) {
         if (tokens.length === 0) return true;
-        // Usa il data-search se presente, altrimenti il testo interno
         const searchData = element.getAttribute('data-search') || '';
         const textContent = element.textContent || '';
         const combined = normalizeString(searchData + ' ' + textContent);
@@ -2213,7 +2309,7 @@
     }
 
     // ============================================
-    // HIGHLIGHT – NUOVA VERSIONE CHE ATTRAVERSA I LINK
+    // HIGHLIGHT – attraversa i link
     // ============================================
     function highlightSearch(term) {
         removeHighlights();
@@ -2236,7 +2332,6 @@
                         if (node.parentElement && node.parentElement.classList && node.parentElement.classList.contains('highlight')) {
                             return NodeFilter.FILTER_REJECT;
                         }
-                        // NON escludiamo più i link
                         return NodeFilter.FILTER_ACCEPT;
                     }
                 },
@@ -2279,8 +2374,6 @@
     // ============================================
     // RICERCA PRINCIPALE
     // ============================================
-    let currentSearch = '';
-
     function performSearch() {
         const rawTerm = searchInput.value.trim();
         const term = rawTerm.toLowerCase();
@@ -2309,10 +2402,8 @@
             }
         });
 
-        // Highlight
         highlightSearch(term);
 
-        // No results
         if (!anyVisible) {
             searchTermDisplay.textContent = rawTerm;
             noResults.style.display = 'block';
@@ -2320,7 +2411,6 @@
             noResults.style.display = 'none';
         }
 
-        // Scroll al primo risultato
         if (firstVisible) {
             setTimeout(() => {
                 firstVisible.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -2331,9 +2421,6 @@
             document.querySelectorAll('.era:not(.hidden)').length + ' elementi.');
     }
 
-    // ============================================
-    // EVENTI RICERCA
-    // ============================================
     searchInput.addEventListener('input', performSearch);
     searchButton.addEventListener('click', performSearch);
     searchInput.addEventListener('keydown', function(e) {
@@ -2353,13 +2440,16 @@
     });
 
     // ============================================
-    // PLAYER MUSICALE
+    // PLAYER MUSICALE – con chiusura
     // ============================================
     const audio = document.getElementById('myAudio');
     const playButton = document.getElementById('player-play');
     const playerStatus = document.getElementById('player-status');
     const player = document.getElementById('music-player');
     const playerToggle = document.getElementById('player-toggle');
+    const musicClose = document.getElementById('musicClose');
+    const progress = document.getElementById('musicProgress');
+    const volumeToggle = document.getElementById('volumeToggle');
 
     if (audio && playButton) {
         playButton.addEventListener('click', function() {
@@ -2385,15 +2475,65 @@
     }
 
     if (player && playerToggle) {
+        function openPanel() {
+            player.classList.add('open');
+            playerToggle.setAttribute('aria-expanded', 'true');
+        }
+        function closePanel() {
+            player.classList.remove('open');
+            playerToggle.setAttribute('aria-expanded', 'false');
+        }
+
         playerToggle.addEventListener('click', function() {
-            var open = player.classList.toggle('open');
-            playerToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+            if (player.classList.contains('open')) {
+                closePanel();
+            } else {
+                openPanel();
+            }
         });
+
+        if (musicClose) {
+            musicClose.addEventListener('click', closePanel);
+        }
+
         document.addEventListener('click', function(event) {
             if (!player.contains(event.target)) {
-                player.classList.remove('open');
-                playerToggle.setAttribute('aria-expanded', 'false');
+                closePanel();
             }
+        });
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && player.classList.contains('open')) {
+                closePanel();
+            }
+        });
+    }
+
+    // ============================================
+    // PROGRESS BAR
+    // ============================================
+    if (audio && progress) {
+        audio.addEventListener('timeupdate', function() {
+            if (audio.duration) {
+                progress.value = (audio.currentTime / audio.duration) * 100;
+            }
+        });
+        progress.addEventListener('input', function() {
+            if (audio.duration) {
+                audio.currentTime = (this.value / 100) * audio.duration;
+            }
+        });
+    }
+
+    // ============================================
+    // VOLUME TOGGLE
+    // ============================================
+    let isMuted = false;
+    if (volumeToggle && audio) {
+        volumeToggle.addEventListener('click', function() {
+            isMuted = !isMuted;
+            audio.muted = isMuted;
+            this.textContent = isMuted ? '🔇' : '🔊';
         });
     }
 
