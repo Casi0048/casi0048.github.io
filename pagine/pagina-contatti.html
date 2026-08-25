@@ -28,6 +28,35 @@
 
     <style>
         /* ============================================================
+           VARIABILI (come nelle altre pagine)
+           ============================================================ */
+        :root {
+            --bg: #080a12;
+            --bg-soft: #0d101a;
+            --text: #e8e7e2;
+            --text-soft: #a9abb5;
+            --text-muted: #737681;
+            --gold: #d8b56a;
+            --gold-line: rgba(216,181,106,0.22);
+            --border: rgba(255,255,255,0.08);
+            --transition: .28s cubic-bezier(.22,1,.36,1);
+            --font-serif: 'Cormorant Garamond', Georgia, serif;
+            --font-display: 'Cinzel', Georgia, serif;
+            --font-sans: 'Inter', Arial, sans-serif;
+        }
+
+        body.light-theme {
+            --bg: #f2ede5;
+            --bg-soft: #e8e2d8;
+            --text: #1a1a2e;
+            --text-soft: #3a3a4e;
+            --text-muted: #6a6a7e;
+            --gold: #b8860b;
+            --gold-line: rgba(184,134,11,0.25);
+            --border: rgba(0,0,0,0.08);
+        }
+
+        /* ============================================================
            RESET & BASE
            ============================================================ */
         * {
@@ -295,6 +324,141 @@
         }
 
         /* ============================================================
+           PLAYER FLOTTANTE (stile coerente)
+           ============================================================ */
+
+        .music-player {
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            z-index: 9999;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .player-toggle {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            border: 1px solid var(--gold-line, rgba(216,181,106,0.22));
+            background: rgba(10, 12, 20, 0.94);
+            color: var(--gold, #d8b56a);
+            font-size: 1.25rem;
+            cursor: pointer;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+            transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease, color 0.4s ease;
+            display: grid;
+            place-items: center;
+        }
+
+        .player-toggle:hover {
+            transform: scale(1.05);
+            border-color: rgba(255, 216, 106, 0.65);
+            background: rgba(18, 18, 42, 0.96);
+        }
+
+        .player-panel {
+            position: absolute;
+            right: 0;
+            bottom: 62px;
+            width: 280px;
+            padding: 16px 17px;
+            background: rgba(12, 12, 30, 0.96);
+            border: 1px solid rgba(255, 216, 106, 0.18);
+            border-radius: 12px;
+            backdrop-filter: blur(16px);
+            box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(8px) scale(0.98);
+            transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease;
+        }
+
+        .music-player.open .player-panel {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+
+        .music-label {
+            display: block;
+            font-size: 0.58rem;
+            letter-spacing: 1.4px;
+            color: rgba(255, 216, 106, 0.65);
+            margin-bottom: 3px;
+        }
+
+        .music-title {
+            display: block;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.15rem;
+            color: #eee;
+        }
+
+        .music-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .music-controls button {
+            width: 34px;
+            height: 34px;
+            border: 1px solid var(--border, rgba(255,255,255,0.08));
+            border-radius: 50%;
+            background: transparent;
+            color: var(--text, #e8e7e2);
+            cursor: pointer;
+            transition: border-color 0.3s ease, color 0.3s ease;
+        }
+
+        .music-controls button:hover {
+            border-color: var(--gold-line);
+            color: var(--gold);
+        }
+
+        .music-controls .music-volume {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        .music-progress {
+            flex: 1;
+            min-width: 0;
+            height: 3px;
+            appearance: none;
+            -webkit-appearance: none;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .music-progress::-webkit-slider-thumb {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--gold, #d8b56a);
+            cursor: pointer;
+        }
+
+        .music-progress::-moz-range-thumb {
+            width: 9px;
+            height: 9px;
+            border: 0;
+            border-radius: 50%;
+            background: var(--gold, #d8b56a);
+            cursor: pointer;
+        }
+
+        .player-status {
+            font-size: 0.68rem;
+            color: var(--text-muted, #737681);
+        }
+
+        /* ============================================================
            RESPONSIVE
            ============================================================ */
         @media (max-width: 768px) {
@@ -324,6 +488,15 @@
             .submit-btn {
                 font-size: 0.8rem;
                 padding: 12px;
+            }
+
+            .music-player {
+                right: 16px;
+                bottom: 16px;
+            }
+
+            .player-panel {
+                width: min(280px, calc(100vw - 32px));
             }
         }
 
@@ -452,6 +625,38 @@
     </footer>
 
     <!-- ============================================================
+         PLAYER
+         ============================================================ -->
+
+    <audio id="myAudio"
+           playsinline
+           preload="auto"
+           src="https://casi0048.github.io/suoni/Strauss.mp3">
+    </audio>
+
+    <div class="music-player" id="musicPlayer">
+
+        <div class="player-panel">
+            <div>
+                <span class="music-label">MUSICA PER LO STUDIO</span>
+                <span class="music-title">Strauss – Sul bel Danubio blu</span>
+            </div>
+
+            <div class="music-controls">
+                <button id="playButton" aria-label="Riproduci musica">▶</button>
+                <button class="music-volume" id="volumeToggle" aria-label="Attiva/disattiva audio">🔊</button>
+                <input type="range" class="music-progress" id="musicProgress" min="0" max="100" value="0" aria-label="Avanzamento brano">
+                <span class="player-status" id="playerStatus">In pausa</span>
+            </div>
+        </div>
+
+        <button class="player-toggle" id="playerToggle" aria-label="Apri lettore musicale" aria-expanded="false">
+            ♫
+        </button>
+
+    </div>
+
+    <!-- ============================================================
          GSAP ANIMATION
          ============================================================ -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js">
@@ -505,7 +710,7 @@
             });
 
             /* =========================================================
-               FORM HANDLER (ESEMPIO)
+               FORM HANDLER
                ========================================================= */
             const form = document.getElementById('contactForm');
 
@@ -521,7 +726,6 @@
                     return;
                 }
 
-                // Simula invio
                 const btn = form.querySelector('.submit-btn');
                 const originalText = btn.innerHTML;
                 btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Invio...';
@@ -534,6 +738,79 @@
                     btn.disabled = false;
                 }, 1500);
             });
+
+            /* =========================================================
+               PLAYER — ECHI DI SOFIA
+               ========================================================= */
+            const player = document.getElementById("musicPlayer");
+            const toggle = document.getElementById("playerToggle");
+            const playButton = document.getElementById("playButton");
+            const status = document.getElementById("playerStatus");
+            const audio = document.getElementById("myAudio");
+            const progress = document.getElementById("musicProgress");
+            const volumeToggle = document.getElementById("volumeToggle");
+
+            if (player && toggle && playButton && status && audio) {
+                toggle.addEventListener("click", function() {
+                    const isOpen = player.classList.toggle("open");
+                    toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+                });
+
+                playButton.addEventListener("click", function() {
+                    if (audio.paused) {
+                        audio.play()
+                            .then(function() {
+                                playButton.textContent = "❚❚";
+                                status.textContent = "In riproduzione";
+                            })
+                            .catch(function() {
+                                status.textContent = "Impossibile avviare";
+                            });
+                    } else {
+                        audio.pause();
+                        playButton.textContent = "▶";
+                        status.textContent = "In pausa";
+                    }
+                });
+
+                audio.addEventListener("ended", function() {
+                    playButton.textContent = "▶";
+                    status.textContent = "In pausa";
+                });
+
+                // Aggiorna la barra di progresso
+                audio.addEventListener("timeupdate", function() {
+                    if (audio.duration) {
+                        var percent = (audio.currentTime / audio.duration) * 100;
+                        progress.value = percent;
+                    }
+                });
+
+                progress.addEventListener("input", function() {
+                    if (audio.duration) {
+                        var time = (this.value / 100) * audio.duration;
+                        audio.currentTime = time;
+                    }
+                });
+
+                // Volume toggle
+                var isMuted = false;
+                if (volumeToggle) {
+                    volumeToggle.addEventListener("click", function() {
+                        isMuted = !isMuted;
+                        audio.muted = isMuted;
+                        this.textContent = isMuted ? "🔇" : "🔊";
+                    });
+                }
+
+                // Chiudi con ESC
+                document.addEventListener("keydown", function(event) {
+                    if (event.key === "Escape" && player.classList.contains("open")) {
+                        player.classList.remove("open");
+                        toggle.setAttribute("aria-expanded", "false");
+                    }
+                });
+            }
 
         });
     </script>
