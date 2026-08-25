@@ -1051,7 +1051,8 @@ body.light-theme .player-panel {
 
 body.light-theme .modal-content {
     background: #e8e2d8;
-    box-shadow: 0 30px 80px rgba(0,0,0,.15);
+    box-shadow:
+        0 30px 80px rgba(0,0,0,.15);
 }
 
 .modal-content h3 {
@@ -1095,18 +1096,26 @@ body.light-theme .modal-content {
     color: var(--text);
 }
 
+
+/* ============================================================
+   FORM NEWSLETTER
+   ============================================================ */
+
 .newsletter-form {
     display: flex;
+    flex-direction: column;
 
-    gap: 8px;
+    gap: 12px;
 
     margin-top: 24px;
 }
 
-.newsletter-form input {
-    flex: 1;
 
-    min-width: 0;
+/* CAMPO EMAIL */
+
+.newsletter-form input[type="email"] {
+    width: 100%;
+    box-sizing: border-box;
 
     padding: 11px 13px;
 
@@ -1125,18 +1134,79 @@ body.light-theme .modal-content {
         color .4s ease;
 }
 
-body.light-theme .newsletter-form input {
+body.light-theme .newsletter-form input[type="email"] {
     background: rgba(0,0,0,.04);
+
     color: var(--text);
+
     border-color: rgba(0,0,0,.1);
 }
 
-.newsletter-form input:focus {
+.newsletter-form input[type="email"]:focus {
     border-color: var(--gold-line);
 }
 
-.newsletter-form button {
-    padding: 11px 16px;
+
+/* ============================================================
+   CONSENSO PRIVACY
+   ============================================================ */
+
+.newsletter-consent {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 9px;
+
+    font-family: var(--serif);
+    font-size: .78rem;
+    line-height: 1.45;
+
+    color: var(--text-muted);
+
+    cursor: pointer;
+}
+
+.newsletter-consent input[type="checkbox"] {
+    flex: 0 0 auto;
+
+    width: 15px;
+    height: 15px;
+
+    margin: 2px 0 0;
+
+    accent-color: var(--gold);
+
+    cursor: pointer;
+}
+
+.newsletter-consent span {
+    flex: 1;
+}
+
+.newsletter-consent strong {
+    color: var(--text-soft);
+}
+
+.newsletter-consent a {
+    color: var(--gold);
+
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.newsletter-consent a:hover {
+    color: var(--text);
+}
+
+
+/* ============================================================
+   PULSANTE ISCRIVITI
+   ============================================================ */
+
+.newsletter-form button[type="submit"] {
+    align-self: flex-end;
+
+    padding: 11px 20px;
 
     border: 1px solid var(--gold-line);
     border-radius: 7px;
@@ -1153,9 +1223,26 @@ body.light-theme .newsletter-form input {
         color .4s ease;
 }
 
-body.light-theme .newsletter-form button {
+body.light-theme .newsletter-form button[type="submit"] {
     background: rgba(184,134,11,.12);
 }
+
+.newsletter-form button[type="submit"]:hover {
+    background: var(--gold);
+    border-color: var(--gold);
+
+    color: var(--bg);
+}
+
+.newsletter-form button[type="submit"]:disabled {
+    opacity: .55;
+    cursor: wait;
+}
+
+
+/* ============================================================
+   NOTA PRIVACY
+   ============================================================ */
 
 .privacy-note {
     margin-top: 14px;
@@ -1165,6 +1252,22 @@ body.light-theme .newsletter-form button {
     color: var(--text-muted) !important;
 }
 
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 520px) {
+
+    .modal-content {
+        padding: 32px 22px 26px;
+    }
+
+    .newsletter-form button[type="submit"] {
+        align-self: stretch;
+        width: 100%;
+    }
+}
 
 /* ============================================================
    PULSANTE TORNA SU — TEMA SCURO (DEFAULT)
@@ -2636,6 +2739,14 @@ body.light-theme .torna-su:hover {
 
 
 
+<!-- ============================================================
+     NEWSLETTER — FILOSOFIA IN POSTA
+     ============================================================ -->
+
+<!-- ============================================================
+     NEWSLETTER — FILOSOFIA IN POSTA
+     ============================================================ -->
+
 <div
     class="modal"
     id="newsletterModal"
@@ -2644,12 +2755,12 @@ body.light-theme .torna-su:hover {
     <div class="modal-content">
 
         <button
-    class="close-modal"
-    id="closeNewsletter"
-    type="button"
-    aria-label="Chiudi">
-    ×
-</button>
+            class="close-modal"
+            id="closeNewsletter"
+            type="button"
+            aria-label="Chiudi">
+            ×
+        </button>
 
         <h3>Filosofia in posta</h3>
 
@@ -2659,19 +2770,52 @@ body.light-theme .torna-su:hover {
             direttamente nella tua email.
         </p>
 
-        <form class="newsletter-form">
+      <form class="newsletter-form" onsubmit="return false;">
+
+            <!-- EMAIL -->
 
             <input
                 type="email"
+                name="email"
                 placeholder="La tua email"
                 aria-label="La tua email"
+                autocomplete="email"
                 required>
+
+
+            <!-- CONSENSO -->
+
+            <label class="newsletter-consent">
+
+                <input
+                    type="checkbox"
+                    id="newsletterConsent"
+                    name="newsletterConsent"
+                    required>
+
+                <span>
+                    Desidero ricevere la newsletter di
+                    <strong>Echi di Sofia</strong>.
+                    Ho letto la
+                    <a
+                        href="pagine/privacy-policy.html"
+                        target="_blank"
+                        rel="noopener">
+                        Privacy Policy
+                    </a>.
+                </span>
+
+            </label>
+
+
+            <!-- INVIO -->
 
             <button type="submit">
                 Iscriviti
             </button>
 
         </form>
+
 
         <p class="privacy-note">
             Nessuna comunicazione indesiderata.
@@ -2692,7 +2836,6 @@ document.addEventListener("DOMContentLoaded", function () {
     /* =========================================================
        PLAYER — ECHI DI SOFIA
        ========================================================= */
-
     const player = document.getElementById("musicPlayer");
     const toggle = document.getElementById("playerToggle");
     const playButton = document.getElementById("playButton");
@@ -2700,87 +2843,62 @@ document.addEventListener("DOMContentLoaded", function () {
     const audio = document.getElementById("myAudio");
 
     if (player && toggle && playButton && status && audio) {
-
-        /* APERTURA / CHIUSURA */
-
         toggle.addEventListener("click", function () {
-
             const isOpen = player.classList.toggle("open");
-
-            toggle.setAttribute(
-                "aria-expanded",
-                isOpen ? "true" : "false"
-            );
-
+            toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
         });
-
-
-        /* PLAY / PAUSA */
 
         playButton.addEventListener("click", function () {
-
             if (audio.paused) {
-
                 audio.play()
                     .then(function () {
-
                         playButton.textContent = "❚❚";
                         status.textContent = "In riproduzione";
-
                     })
-                    .catch(function (error) {
-
-                        console.error("Errore audio:", error);
+                    .catch(function () {
                         status.textContent = "Impossibile avviare";
-
                     });
-
             } else {
-
                 audio.pause();
-
                 playButton.textContent = "▶";
                 status.textContent = "In pausa";
-
             }
-
         });
-
-
-        /* FINE BRANO */
 
         audio.addEventListener("ended", function () {
-
             playButton.textContent = "▶";
             status.textContent = "In pausa";
-
         });
-
     }
 
-
     /* =========================================================
-       NEWSLETTER
-       ========================================================= */
+   NEWSLETTER — UNICO BLOCCO
+   ========================================================= */
 
-    const newsletterTrigger =
-        document.getElementById("newsletterTrigger");
+const newsletterTrigger =
+    document.getElementById("newsletterTrigger");
 
-    const newsletterModal =
-        document.getElementById("newsletterModal");
+const newsletterModal =
+    document.getElementById("newsletterModal");
 
-    const closeNewsletterButton =
-        document.getElementById("closeNewsletter");
+const closeNewsletter =
+    document.getElementById("closeNewsletter");
 
-    const newsletterForm =
-        document.querySelector(".newsletter-form");
+const newsletterForm =
+    document.querySelector(".newsletter-form");
 
 
-    /* APERTURA */
+/* =========================================================
+   APERTURA
+   ========================================================= */
 
-    if (newsletterTrigger && newsletterModal) {
+if (newsletterTrigger && newsletterModal) {
 
-        newsletterTrigger.addEventListener("click", function () {
+    newsletterTrigger.addEventListener(
+        "click",
+        function (event) {
+
+            event.preventDefault();
 
             newsletterModal.classList.add("open");
 
@@ -2789,16 +2907,23 @@ document.addEventListener("DOMContentLoaded", function () {
                 "false"
             );
 
-        });
+        }
+    );
 
-    }
+}
 
 
-    /* CHIUSURA */
+/* =========================================================
+   CHIUSURA — X
+   ========================================================= */
 
-    if (closeNewsletterButton && newsletterModal) {
+if (closeNewsletter && newsletterModal) {
 
-        closeNewsletterButton.addEventListener("click", function () {
+    closeNewsletter.addEventListener(
+        "click",
+        function (event) {
+
+            event.preventDefault();
 
             newsletterModal.classList.remove("open");
 
@@ -2807,16 +2932,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 "true"
             );
 
-        });
+        }
+    );
 
-    }
+}
 
 
-    /* CHIUSURA CLIC FUORI */
+/* =========================================================
+   CHIUSURA — CLIC FUORI
+   ========================================================= */
 
-    if (newsletterModal) {
+if (newsletterModal) {
 
-        newsletterModal.addEventListener("click", function (event) {
+    newsletterModal.addEventListener(
+        "click",
+        function (event) {
 
             if (event.target === newsletterModal) {
 
@@ -2829,122 +2959,280 @@ document.addEventListener("DOMContentLoaded", function () {
 
             }
 
-        });
+        }
+    );
 
-    }
+}
 
 
-    /* =========================================================
-       ISCRIZIONE — TEST
-       ========================================================= */
+/* =========================================================
+   INVIO — CLOUDFLARE WORKER → BREVO
+   ========================================================= */
 
-    if (newsletterForm) {
+if (newsletterForm) {
 
-        newsletterForm.addEventListener("submit", function (event) {
+    newsletterForm.addEventListener(
+        "submit",
+        async function (event) {
 
+            /* BLOCCA IL SUBMIT HTML NORMALE */
             event.preventDefault();
+            event.stopPropagation();
+
+
+            /* -------------------------------------------------
+               CAMPI
+               ------------------------------------------------- */
 
             const emailInput =
                 newsletterForm.querySelector(
                     'input[type="email"]'
                 );
 
-            if (!emailInput) return;
+            const consentInput =
+                newsletterForm.querySelector(
+                    "#newsletterConsent"
+                );
+
+
+            if (!emailInput || !consentInput) {
+
+                console.error(
+                    "Campi newsletter mancanti."
+                );
+
+                return;
+
+            }
+
+
+            /* -------------------------------------------------
+               EMAIL
+               ------------------------------------------------- */
 
             const email =
                 emailInput.value.trim();
 
-            if (!email) return;
 
-            console.log(
-                "Email newsletter:",
-                email
-            );
+            if (!email) {
 
-            alert(
-                "Grazie! Iscrizione ricevuta."
-            );
+                alert(
+                    "Inserisci un indirizzo email valido."
+                );
 
-            newsletterForm.reset();
+                emailInput.focus();
 
-            newsletterModal.classList.remove("open");
+                return;
 
-            newsletterModal.setAttribute(
-                "aria-hidden",
-                "true"
-            );
-
-        });
-
-    }
+            }
 
 
-    /* =========================================================
-       ESC
-       ========================================================= */
+            /* -------------------------------------------------
+               CONSENSO
+               ------------------------------------------------- */
 
-    document.addEventListener("keydown", function (event) {
+            if (!consentInput.checked) {
 
-        if (
-            event.key === "Escape" &&
-            newsletterModal &&
-            newsletterModal.classList.contains("open")
-        ) {
+                alert(
+                    "Per iscriverti devi accettare la Privacy Policy."
+                );
 
-            newsletterModal.classList.remove("open");
+                consentInput.focus();
 
-            newsletterModal.setAttribute(
-                "aria-hidden",
-                "true"
-            );
+                return;
+
+            }
+
+
+            /* -------------------------------------------------
+               PULSANTE
+               ------------------------------------------------- */
+
+            const submitButton =
+                newsletterForm.querySelector(
+                    'button[type="submit"]'
+                );
+
+
+            if (submitButton) {
+
+                submitButton.disabled = true;
+
+                submitButton.textContent =
+                    "Invio…";
+
+            }
+
+
+            /* -------------------------------------------------
+               INVIO AL WORKER
+               ------------------------------------------------- */
+
+            try {
+
+                const response =
+                    await fetch(
+                        "https://weathered-snowflake-65e3.sylk76.workers.dev",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify({
+                                email: email
+                            })
+                        }
+                    );
+
+
+                /* -------------------------------------------------
+                   RISPOSTA WORKER
+                   ------------------------------------------------- */
+
+                const result =
+                    await response.json();
+
+
+                console.log(
+                    "Risposta completa Worker:",
+                    result
+                );
+
+
+                /* -------------------------------------------------
+                   SUCCESSO
+                   ------------------------------------------------- */
+
+                if (
+                    response.ok &&
+                    result.success
+                ) {
+
+                    alert(
+                        "Grazie! Iscrizione ricevuta."
+                    );
+
+                    newsletterForm.reset();
+
+                    newsletterModal.classList.remove(
+                        "open"
+                    );
+
+                    newsletterModal.setAttribute(
+                        "aria-hidden",
+                        "true"
+                    );
+
+                }
+
+
+                /* -------------------------------------------------
+                   ERRORE BREVO
+                   ------------------------------------------------- */
+
+                else {
+
+                    console.error(
+                        "Errore newsletter:",
+                        result
+                    );
+
+                    alert(
+                        "ERRORE BREVO:\n\n" +
+                        (result.message ||
+                            "Errore sconosciuto.") +
+                        "\n\nDETTAGLI:\n" +
+                        (result.details ||
+                            "Nessun dettaglio restituito.")
+                    );
+
+                }
+
+
+            }
+
+
+            /* -------------------------------------------------
+               ERRORE DI CONNESSIONE
+               ------------------------------------------------- */
+
+            catch (error) {
+
+                console.error(
+                    "Errore di connessione al Worker:",
+                    error
+                );
+
+                alert(
+                    "Impossibile contattare il servizio newsletter.\n\n" +
+                    error.message
+                );
+
+            }
+
+
+            /* -------------------------------------------------
+               RIPRISTINA PULSANTE
+               ------------------------------------------------- */
+
+            finally {
+
+                if (submitButton) {
+
+                    submitButton.disabled = false;
+
+                    submitButton.textContent =
+                        "Iscriviti";
+
+                }
+
+            }
 
         }
+    );
 
+}
+    // --- CHIUSURA CON ESC ---
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape" && newsletterModal && newsletterModal.classList.contains("open")) {
+            newsletterModal.classList.remove("open");
+            newsletterModal.setAttribute("aria-hidden", "true");
+        }
     });
-
 
     /* =========================================================
        PULSANTE TORNA SU
        ========================================================= */
-
     const btn = document.getElementById('tornaSu');
     if (btn) {
         function toggleButton() {
             const scrollY = window.scrollY;
-            const threshold = 150;
-
-            if (scrollY > threshold) {
+            if (scrollY > 150) {
                 btn.classList.add('visible');
             } else {
                 btn.classList.remove('visible');
             }
         }
-
         window.addEventListener('scroll', toggleButton, { passive: true });
-
-        btn.addEventListener('click', function(e) {
+        btn.addEventListener('click', function (e) {
             e.preventDefault();
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
-
         toggleButton();
     }
-
 
     /* =========================================================
        TEMA CHIARO/SCURO
        ========================================================= */
-
     const themeToggle = document.getElementById('themeToggle');
     const themeIcon = document.getElementById('themeIcon');
     const themeLabel = document.getElementById('themeLabel');
 
     if (themeToggle) {
         const savedTheme = localStorage.getItem('theme') || 'dark';
-
         if (savedTheme === 'light') {
             document.body.classList.add('light-theme');
             themeIcon.textContent = '☀️';
@@ -2955,9 +3243,8 @@ document.addEventListener("DOMContentLoaded", function () {
             themeLabel.textContent = 'Scuro';
         }
 
-        themeToggle.addEventListener('click', function() {
+        themeToggle.addEventListener('click', function () {
             const isLight = document.body.classList.toggle('light-theme');
-
             if (isLight) {
                 themeIcon.textContent = '☀️';
                 themeLabel.textContent = 'Chiaro';
@@ -2973,168 +3260,5 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
-
-<script>
-/* ============================================================
-   ECHI DI SOFIA — ECO DA CLICK
-   1 CLICK → 3 ONDE ORGANICHE IRREGOLARI
-   ============================================================ */
-
-document.addEventListener('click', function (event) {
-
-    /* --------------------------------------------------------
-       PUNTO LUMINOSO D'ORIGINE
-       -------------------------------------------------------- */
-
-    const origin = document.createElement('div');
-
-    origin.className = 'echo-origin';
-
-    origin.style.left = event.clientX + 'px';
-    origin.style.top = event.clientY + 'px';
-
-    document.body.appendChild(origin);
-
-    origin.addEventListener('animationend', function () {
-        origin.remove();
-    });
-
-
-    /* --------------------------------------------------------
-       CONTENITORE DELL'ECO
-       -------------------------------------------------------- */
-
-    const ripple = document.createElement('div');
-
-    ripple.className = 'echo-ripple';
-
-    ripple.style.left = event.clientX + 'px';
-    ripple.style.top = event.clientY + 'px';
-
-
-    /* --------------------------------------------------------
-       GENERATORE DI ONDA ORGANICA
-       -------------------------------------------------------- */
-
-    function createOrganicWave(radius, irregularity, phase) {
-
-        const points = [];
-
-        const segments = 72;
-        const center = 230;
-
-        for (let i = 0; i < segments; i++) {
-
-            const angle =
-                (Math.PI * 2 * i) / segments;
-
-            const variation =
-                Math.sin(angle * 3 + phase) *
-                    irregularity +
-
-                Math.sin(angle * 5 - phase * 1.7) *
-                    irregularity * 0.45 +
-
-                Math.sin(angle * 7 + phase * 0.8) *
-                    irregularity * 0.20;
-
-            const r = radius + variation;
-
-            const x =
-                center +
-                Math.cos(angle) * r;
-
-            const y =
-                center +
-                Math.sin(angle) * r;
-
-            points.push([x, y]);
-        }
-
-        let d =
-            `M ${points[0][0]} ${points[0][1]}`;
-
-        for (let i = 1; i < points.length; i++) {
-
-            d +=
-                ` L ${points[i][0]} ${points[i][1]}`;
-        }
-
-        d += ' Z';
-
-        return d;
-    }
-
-
-    /* --------------------------------------------------------
-       LE TRE CRESTE
-       -------------------------------------------------------- */
-
-    ripple.innerHTML = `
-        <svg
-            viewBox="0 0 460 460"
-            xmlns="http://www.w3.org/2000/svg">
-
-            <path
-                class="ripple-1"
-                d="${createOrganicWave(34, 2.8, 0.4)}"
-            />
-
-            <path
-                class="ripple-2"
-                d="${createOrganicWave(39, 2.3, 2.1)}"
-            />
-
-            <path
-                class="ripple-3"
-                d="${createOrganicWave(44, 1.8, 4.0)}"
-            />
-
-        </svg>
-    `;
-
-
-    /* --------------------------------------------------------
-       INSERIMENTO NELLA PAGINA
-       -------------------------------------------------------- */
-
-    document.body.appendChild(ripple);
-
-
-    /* --------------------------------------------------------
-       AVVIO DELLA PRIMA ONDA
-       -------------------------------------------------------- */
-
-    const firstWave =
-        ripple.querySelector('.ripple-1');
-
-    firstWave.style.opacity = '0.82';
-    firstWave.style.transform = 'scale(.02)';
-
-
-    requestAnimationFrame(() => {
-
-        firstWave.classList.add('start');
-
-    });
-
-
-    /* --------------------------------------------------------
-       RIMOZIONE AUTOMATICA
-       -------------------------------------------------------- */
-
-    ripple.addEventListener(
-        'animationend',
-        function (event) {
-
-            if (event.animationName === 'darkRipple1') {
-                ripple.remove();
-            }
-
-        }
-    );
-
-});
-</script>
 </body>
 </html>
