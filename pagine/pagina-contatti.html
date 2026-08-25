@@ -3,102 +3,540 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contatti - Echi di Sofia</title>
+    <title>Contatti — Echi di Sofia</title>
+
+    <!-- ==================== FAVICONS & MANIFEST (PWA READY) ==================== -->
+    <link rel="icon" type="image/svg+xml" href="/favicon_io/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon_io/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon_io/apple-touch-icon.png">
+    <link rel="manifest" href="/favicon_io/site.webmanifest">
+    <meta name="theme-color" content="#0b0f19">
+    <meta name="msapplication-TileColor" content="#0b0f19">
+
+    <!-- ============================================================
+         FONT AWESOME
+         ============================================================ -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- ============================================================
+         GOOGLE FONTS
+         ============================================================ -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
     <style>
-        body {
+        /* ============================================================
+           RESET & BASE
+           ============================================================ */
+        * {
             margin: 0;
-            font-family: 'Quicksand', sans-serif;
-            background: radial-gradient(circle at center, #111 0%, #000 100%);
-            color: #eee;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Inter', Arial, sans-serif;
+            background: #080a12;
+            color: #e8e7e2;
+            background-image: radial-gradient(circle at 50% -10%, rgba(91, 104, 145, 0.10), transparent 42%);
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
         }
-        header {
-            padding: 20px;
-            text-align: center;
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* ============================================================
+           HEADER
+           ============================================================ */
+        .site-header {
+            position: relative;
+            z-index: 20;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+            background: rgba(8, 10, 18, 0.88);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            padding: 0 20px;
+        }
+
+        .header-inner {
+            max-width: 1180px;
+            margin: 0 auto;
+            min-height: 76px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+        /* ===== BACK BUTTON ===== */
+        .back-link {
+            color: #d8b56a;
+            font-size: 1rem;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            text-decoration: none;
+            opacity: 0.9;
+            transition: color 0.25s ease, opacity 0.25s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-link:hover {
             color: #fff;
-            background: rgba(0, 0, 0, 0.5);
+            opacity: 1;
         }
+
+        .back-link i {
+            font-size: 0.9rem;
+        }
+
+        /* ===== LOGO ===== */
+        .logo {
+            font-family: 'Cinzel', Georgia, serif;
+            font-size: 1rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+            color: #d8b56a;
+            white-space: nowrap;
+            transition: color 0.4s ease;
+        }
+
+        .logo-sub {
+            display: block;
+            margin-top: 2px;
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 0.78rem;
+            font-style: italic;
+            letter-spacing: 0.4px;
+            color: #737681;
+            transition: color 0.4s ease;
+        }
+
+        /* ============================================================
+           CONTENUTO PRINCIPALE
+           ============================================================ */
+        .main-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
         .contact-container {
             display: grid;
             place-items: center;
-            height: 80vh;
+            width: 100%;
+            max-width: 560px;
         }
+
+        /* ============================================================
+           FORM
+           ============================================================ */
         form {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            padding: 30px;
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 40px 38px;
             border-radius: 20px;
-            box-shadow: 0 0 20px rgba(255,255,255,0.1);
+            border: 1px solid rgba(216, 181, 106, 0.15);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
             max-width: 500px;
             width: 100%;
+            transition: border-color 0.3s ease;
         }
-        input, textarea {
+
+        form:hover {
+            border-color: rgba(216, 181, 106, 0.3);
+        }
+
+        .form-title {
+            font-family: 'Cinzel', Georgia, serif;
+            font-size: 1.6rem;
+            font-weight: 500;
+            color: #d8b56a;
+            text-align: center;
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+        }
+
+        .form-subtitle {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 1.1rem;
+            font-style: italic;
+            color: #a9abb5;
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: #a9abb5;
+            margin-bottom: 4px;
+        }
+
+        input,
+        textarea {
             width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            background: rgba(255,255,255,0.1);
-            border: none;
-            color: #fff;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 10px;
+            color: #e8e7e2;
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.3s ease, background 0.3s ease;
         }
-        button {
+
+        input:focus,
+        textarea:focus {
+            border-color: rgba(216, 181, 106, 0.5);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #737681;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* ============================================================
+           PULSANTE INVIO — BLU (STILE ORIGINALE)
+           ============================================================ */
+        .submit-btn {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             background: #2c8ad4;
             border: none;
-            color: white;
-            font-weight: 600;
             border-radius: 10px;
+            color: #ffffff;
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
             cursor: pointer;
-            transition: background 0.4s ease;
+            transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
-        button:hover {
+
+        .submit-btn:hover {
             background: #1a6eb0;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(44, 138, 212, 0.25);
         }
-        footer {
+
+        .submit-btn:active {
+            transform: scale(0.97);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: wait;
+            transform: none !important;
+        }
+
+        .submit-btn i {
+            font-size: 0.9rem;
+        }
+
+        /* ============================================================
+           FOOTER
+           ============================================================ */
+        .site-footer {
+            padding: 30px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.055);
+            background: #070910;
             text-align: center;
-            padding: 20px;
-            color: #ccc;
+            color: #737681;
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 1rem;
+            font-style: italic;
+        }
+
+        .site-footer strong {
+            color: #d8b56a;
+            font-family: 'Cinzel', Georgia, serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .site-footer .footer-motto {
+            font-size: 1.05rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 768px) {
+            .header-inner {
+                min-height: 64px;
+                flex-wrap: wrap;
+                gap: 12px;
+                justify-content: center;
+            }
+
+            .logo-sub {
+                display: none;
+            }
+
+            form {
+                padding: 30px 24px;
+            }
+
+            .form-title {
+                font-size: 1.3rem;
+            }
+
+            .back-link {
+                font-size: 0.85rem;
+            }
+
+            .submit-btn {
+                font-size: 0.8rem;
+                padding: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-inner {
+                flex-direction: column;
+                gap: 8px;
+                padding: 12px 0;
+            }
+
+            form {
+                padding: 24px 18px;
+            }
+
+            .form-title {
+                font-size: 1.1rem;
+            }
+
+            .form-subtitle {
+                font-size: 0.95rem;
+            }
+
+            input,
+            textarea {
+                font-size: 0.85rem;
+                padding: 10px 14px;
+            }
+
+            .submit-btn {
+                font-size: 0.75rem;
+                padding: 12px;
+            }
+
+            .site-footer {
+                font-size: 0.85rem;
+                padding: 20px 16px;
+            }
+
+            .site-footer .footer-motto {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* ============================================================
+           ACCESSIBILITÀ
+           ============================================================ */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                transition-duration: 0.01ms !important;
+                animation-duration: 0.01ms !important;
+            }
         }
     </style>
 </head>
+
 <body>
 
-<header>
-    <h1>Contattaci</h1>
-    <p>Domande, suggerimenti, collaborazioni</p>
-</header>
+    <!-- ============================================================
+         HEADER
+         ============================================================ -->
+    <header class="site-header">
+        <div class="header-inner">
 
-<div class="contact-container">
-    <form>
-        <input type="text" name="nome" placeholder="Il tuo nome" required>
-        <input type="email" name="email" placeholder="La tua email" required>
-        <textarea name="messaggio" rows="5" placeholder="Scrivi il tuo messaggio" required></textarea>
-        <button type="submit">Invia Messaggio</button>
-    </form>
-</div>
+            <!-- BACK BUTTON -->
+            <a class="back-link" href="/" aria-label="Torna alla home">
+                <i class="fas fa-arrow-left"></i> Echi di Sofia
+            </a>
 
-<footer>
-    © 2025 Echi di Sofia
-</footer>
+            <!-- LOGO -->
+            <a href="/" class="logo">
+                ECHI DI SOFIA
+                <span class="logo-sub">Dove il pensiero attraversa i secoli</span>
+            </a>
 
-<!-- GSAP Animation -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script>
-    gsap.from("header", {opacity: 0, y: -100, duration: 1});
-    gsap.from("form", {opacity: 0, scale: 0.8, duration: 1.2, delay: 0.5});
-    gsap.from("input, textarea, button", {
-        opacity: 0,
-        y: 50,
-        duration: 0.8,
-        stagger: 0.2,
-        delay: 0.8
-    });
-</script>
+            <!-- SPAZIO PER EQUILIBRIO (opzionale) -->
+            <div style="width: 1px; height: 1px; visibility: hidden;"></div>
+
+        </div>
+    </header>
+
+    <!-- ============================================================
+         CONTENUTO PRINCIPALE
+         ============================================================ -->
+    <main class="main-content">
+        <div class="contact-container">
+            <form id="contactForm" method="POST" action="#">
+
+                <h2 class="form-title">Contattaci</h2>
+                <p class="form-subtitle">Domande, suggerimenti, collaborazioni</p>
+
+                <div class="form-group">
+                    <label for="nome">Nome</label>
+                    <input type="text" id="nome" name="nome" placeholder="Il tuo nome" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="La tua email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="messaggio">Messaggio</label>
+                    <textarea id="messaggio" name="messaggio" rows="5" placeholder="Scrivi il tuo messaggio" required></textarea>
+                </div>
+
+                <button class="submit-btn" type="submit">
+                    <i class="fas fa-paper-plane"></i> Invia Messaggio
+                </button>
+
+            </form>
+        </div>
+    </main>
+
+    <!-- ============================================================
+         FOOTER
+         ============================================================ -->
+    <footer class="site-footer">
+        <p class="footer-motto">
+            <strong>Echi di Sofia</strong> — Dove il pensiero attraversa i secoli
+        </p>
+        <p style="margin-top: 4px; font-size: 0.85rem; font-style: normal; opacity: 0.5;">
+            &copy; 2026 Echi di Sofia
+        </p>
+    </footer>
+
+    <!-- ============================================================
+         GSAP ANIMATION
+         ============================================================ -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js">
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+            /* =========================================================
+               GSAP ANIMAZIONI
+               ========================================================= */
+            gsap.from(".site-header", {
+                opacity: 0,
+                y: -100,
+                duration: 1,
+                ease: "power3.out"
+            });
+
+            gsap.from("form", {
+                opacity: 0,
+                scale: 0.92,
+                duration: 1.2,
+                delay: 0.4,
+                ease: "power3.out"
+            });
+
+            gsap.from(".form-title, .form-subtitle", {
+                opacity: 0,
+                y: 30,
+                duration: 0.8,
+                stagger: 0.15,
+                delay: 0.6,
+                ease: "power2.out"
+            });
+
+            gsap.from(".form-group, .submit-btn", {
+                opacity: 0,
+                y: 40,
+                duration: 0.7,
+                stagger: 0.12,
+                delay: 0.9,
+                ease: "power2.out"
+            });
+
+            gsap.from(".site-footer", {
+                opacity: 0,
+                y: 30,
+                duration: 0.8,
+                delay: 1.6,
+                ease: "power2.out"
+            });
+
+            /* =========================================================
+               FORM HANDLER (ESEMPIO)
+               ========================================================= */
+            const form = document.getElementById('contactForm');
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const nome = document.getElementById('nome').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const messaggio = document.getElementById('messaggio').value.trim();
+
+                if (!nome || !email || !messaggio) {
+                    alert('Per favore, compila tutti i campi.');
+                    return;
+                }
+
+                // Simula invio
+                const btn = form.querySelector('.submit-btn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Invio...';
+                btn.disabled = true;
+
+                setTimeout(function() {
+                    alert('Grazie ' + nome + '! Il tuo messaggio è stato ricevuto.');
+                    form.reset();
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }, 1500);
+            });
+
+        });
+    </script>
 
 </body>
 </html>
-
