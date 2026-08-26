@@ -2,614 +2,696 @@
 <html lang="it">
 <head>
   <meta charset="utf-8">
-  <title>Articoli e Approfondimenti — Echi di Sofia</title>
+  <title>Articoli — Echi di Sofia</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Tutti gli articoli e gli approfondimenti pubblicati su Echi di Sofia.">
-  <link rel="canonical" href="https://www.echidisofia.org/articoli/">
+  <meta name="description" content="Tutti gli articoli di Echi di Sofia.">
   <link rel="icon" type="image/png" href="/favicon_io/favicon-32x32.png">
 
-  <!-- Preload dell'indice di ricerca -->
   <style>
-    :root{ --bg:#0a0a1a; --text:#e9eef5; --gold:#ffd86a; --cyan:#9ad0ff; --panel:rgba(10,10,30,.94); --border:rgba(255,215,0,.22); --muted:#9bb7ff; }
-    *{ box-sizing:border-box; } html{ scroll-behavior:smooth; }
-    body{ margin:0; background:var(--bg); color:var(--text); font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif; min-height:100dvh; display:flex; flex-direction:column; }
-    a{ color:var(--cyan); text-decoration:none; } a:hover{ color:#fff; text-decoration:underline; }
-    .wrap{ width:min(1200px,94vw); margin:0 auto; }
-
-    /* Topbar */
-    header.topbar{ position:sticky; top:0; z-index:50; background:rgba(18,28,58,.96); border-bottom:1px solid var(--border); backdrop-filter: blur(8px); }
-    .row{ display:flex; align-items:center; gap:.75rem; padding:.8rem 1rem; }
-    .brand{ display:flex; align-items:center; gap:.6rem; color:var(--gold); font-weight:800; text-decoration:none; }
-    .brand .logo{ width:28px; height:28px; color: currentColor; filter: drop-shadow(0 0 .35rem rgba(255,215,0,.35)); }
-    .brand span{ background:linear-gradient(90deg,#ffd700,#fff7b0,#ffd700); -webkit-background-clip:text; background-clip:text; color:transparent; letter-spacing:.04em; }
-    .spacer{ flex:1; }
-    .nav{ display:flex; gap:.5rem; flex-wrap:wrap; }
-    .nav a{ font-weight:700; color:var(--cyan); border:1px solid rgba(0,204,255,.35); padding:.45rem .7rem; border-radius:.6rem; }
-    .nav a:hover{ color:#fff; }
-    .nav a.active,[aria-current="page"]{ background: rgba(0,204,255,.12); color:#fff; border-color: rgba(0,204,255,.6); text-decoration:none; }
-
-    /* Hero */
-    .hero{ padding:1.6rem 1rem .8rem; border-bottom:1px solid rgba(255,255,255,.06); text-align:center; }
-    .hero h1{ margin:.2rem 0 .2rem; font-size:clamp(1.6rem,3.4vw,2.4rem); color:#ffeb9a; }
-    .hero p{ margin:0 auto; max-width:68ch; color:#cfe8ff; opacity:.95; }
-
-    /* CTA */
-    .cta{ padding:1rem 1rem 0; display:flex; gap:.6rem; flex-wrap:wrap; justify-content:center; }
-    .btn{ display:inline-flex; align-items:center; gap:.4rem; padding:.55rem .85rem; border-radius:.6rem; background:rgba(20,20,40,.78); font-weight:700; }
-    .btn.primary{ color:#ffdf8a; border:1px solid var(--border); }
-    .btn.secondary{ color:#9ad0ff; border:1px solid rgba(0,204,255,.35); }
-
-    main{ padding:1rem; }
-
-    /* Barra filtri */
-    .filterbar{
-      display:flex; align-items:center; gap:.6rem; flex-wrap:wrap;
-      padding:.75rem 1rem; margin:.4rem 0 1rem;
-      background:rgba(10,10,30,.9); border:1px solid rgba(255,255,255,.08); border-radius:12px;
+    :root {
+      --bg: #0a0a1a;
+      --text: #e9eef5;
+      --gold: #ffd86a;
+      --gold-dim: rgba(255,216,106,.15);
+      --cyan: #9ad0ff;
+      --panel: rgba(10,10,30,.94);
+      --border: rgba(255,215,0,.22);
+      --muted: #9bb7ff;
+      --radius: 14px;
     }
-    .filterbar label{ font-weight:700; color:#ffeb9a; margin-right:.25rem; }
-    .filterbar .meta{ color:var(--muted); opacity:.92; margin-left:auto; font-size:.95rem; }
-    .filter-select{
-      background:rgba(20,20,40,.85); color:#e9eef5; border:1px solid rgba(255,255,255,.14);
-      border-radius:10px; padding:.45rem .6rem; font-size:.95rem; outline:none;
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Inter, sans-serif;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.6;
+      padding: 1rem;
     }
-    .chips{ display:flex; gap:.4rem; flex-wrap:wrap; }
-    .chip{
-      border:1px solid rgba(0,204,255,.28); color:#9ad0ff; background:rgba(20,20,40,.78);
-      padding:.38rem .6rem; border-radius:999px; font-weight:700; font-size:.9rem; cursor:pointer;
-    }
-    .chip.active{ border-color: rgba(0,204,255,.65); color:#fff; background:rgba(0,204,255,.12); }
+    a { color: var(--cyan); text-decoration: none; }
+    a:hover { color: #fff; text-decoration: underline; }
+    .wrap { max-width: 1200px; margin: 0 auto; width: 100%; }
 
-    /* Nuovi controlli: ordinamento e visualizzazione */
+    /* HEADER */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: .8rem 1rem;
+      background: rgba(18,28,58,.96);
+      border-bottom: 1px solid var(--border);
+      border-radius: var(--radius) var(--radius) 0 0;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: .5rem;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      color: var(--gold);
+      font-weight: 800;
+      font-size: 1.2rem;
+    }
+    .brand svg { width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 2; }
+    .brand span { background: linear-gradient(90deg,#ffd700,#fff7b0); -webkit-background-clip:text; background-clip:text; color:transparent; }
+
+    .nav a {
+      color: var(--cyan);
+      padding: .4rem .8rem;
+      border-radius: 8px;
+      border: 1px solid rgba(0,204,255,.2);
+      font-weight: 600;
+      transition: all .2s;
+    }
+    .nav a:hover { background: rgba(0,204,255,.08); border-color: rgba(0,204,255,.5); text-decoration: none; }
+
+    /* HERO */
+    .hero { text-align: center; padding: 1rem 0 1.5rem; }
+    .hero h1 { color: #ffeb9a; font-size: clamp(1.8rem, 4vw, 2.6rem); }
+    .hero p { color: #cfe8ff; max-width: 60ch; margin: .2rem auto 0; }
+
+    /* BARRA RICERCA */
+    .search-box {
+      display: flex;
+      gap: .6rem;
+      max-width: 600px;
+      margin: 1rem auto;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 60px;
+      padding: .2rem .2rem .2rem 1rem;
+      transition: border-color .3s;
+    }
+    .search-box:focus-within { border-color: var(--gold); }
+    .search-box input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-size: 1rem;
+      padding: .6rem 0;
+      outline: none;
+    }
+    .search-box input::placeholder { color: var(--muted); opacity: .7; }
+    .search-box button {
+      background: var(--gold);
+      border: none;
+      border-radius: 60px;
+      padding: .5rem 1.2rem;
+      font-weight: 700;
+      color: #0a0a1a;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .search-box button:hover { background: #ffe08a; }
+
+    /* FILTRI */
+    .filterbar {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      flex-wrap: wrap;
+      padding: .6rem 1rem;
+      background: rgba(10,10,30,.7);
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: var(--radius);
+      margin: .5rem 0 .8rem;
+    }
+    .filterbar label { color: #ffeb9a; font-weight: 700; }
+    .filter-select {
+      background: rgba(20,20,40,.85);
+      color: #e9eef5;
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 8px;
+      padding: .35rem .6rem;
+      outline: none;
+    }
+    .chips { display: flex; gap: .4rem; flex-wrap: wrap; }
+    .chip {
+      border: 1px solid rgba(0,204,255,.25);
+      background: rgba(20,20,40,.78);
+      color: #9ad0ff;
+      padding: .25rem .7rem;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: .85rem;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .chip:hover { border-color: rgba(0,204,255,.5); }
+    .chip.active { background: rgba(0,204,255,.12); border-color: rgba(0,204,255,.65); color: #fff; }
+    .chip.reset { border-color: rgba(255,255,255,.1); color: var(--muted); }
+    .chip.reset:hover { border-color: rgba(255,100,100,.4); color: #ff8a8a; }
+
     .view-controls {
-      display: flex; align-items: center; gap: .8rem; flex-wrap: wrap;
-      padding: .75rem 1rem; margin: .4rem 0 1rem;
-      background: rgba(10,10,30,.7); border: 1px solid rgba(255,255,255,.06); border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      flex-wrap: wrap;
+      padding: .4rem 1rem;
+      background: rgba(10,10,30,.5);
+      border: 1px solid rgba(255,255,255,.04);
+      border-radius: var(--radius);
+      margin-bottom: 1rem;
     }
-    .view-controls label { font-weight: 700; color: #ffeb9a; margin-right: .25rem; }
-    .view-toggle { display: flex; gap: .3rem; }
+    .view-controls label { color: #ffeb9a; font-weight: 700; font-size: .9rem; }
     .view-toggle-btn {
-      border: 1px solid rgba(0,204,255,.28); color: #9ad0ff; background: rgba(20,20,40,.78);
-      padding: .4rem .7rem; border-radius: 8px; font-weight: 700; font-size: .9rem; cursor: pointer;
+      border: 1px solid rgba(0,204,255,.2);
+      background: rgba(20,20,40,.78);
+      color: #9ad0ff;
+      padding: .3rem .6rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all .2s;
     }
-    .view-toggle-btn.active {
-      border-color: rgba(0,204,255,.65); color: #fff; background: rgba(0,204,255,.12);
-    }
+    .view-toggle-btn.active { background: rgba(0,204,255,.12); border-color: rgba(0,204,255,.5); color: #fff; }
+    .view-toggle-btn svg { width: 16px; height: 16px; fill: currentColor; vertical-align: middle; }
 
-    /* Griglia articoli */
-    #lista-articoli { scroll-margin: 120px; }
-    @media (max-width: 768px){ #lista-articoli{ scroll-margin-top: 140px; } }
-    .grid{ display:grid; gap:1rem; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); }
+    /* GRIGLIA */
+    .grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
     .list { display: flex; flex-direction: column; gap: 1rem; }
-    .card{ background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:1rem; display:flex; flex-direction:column; gap:.55rem; box-shadow:0 1.2rem 2.2rem rgba(0,0,0,.25); }
-    .list .card { flex-direction: row; align-items: flex-start; }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: .4rem;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 1rem 2.5rem rgba(0,0,0,.3); }
+    .list .card { flex-direction: row; align-items: flex-start; gap: 1rem; }
     .list .card .card-content { flex: 1; }
-    .list .card .badge { align-self: flex-start; }
-    .card h3{ color:#ffeb9a; margin:.2rem 0 0; } .card p{ color:#cfe2ff; opacity:.95; line-height:1.35; }
-    .badge{ display:inline-block; font-size:.78rem; padding:.12rem .5rem; border-radius:999px; color:#0b1022; background:linear-gradient(90deg,#ffd86a,#ffeb9a); font-weight:800; }
-    .more{ margin-top:auto; } .more a{ font-weight:800; }
-    .list .more { margin-top: .5rem; }
+    .card h3 { color: #ffeb9a; font-size: 1.1rem; }
+    .card p { color: #cfe2ff; opacity: .9; font-size: .95rem; margin: .2rem 0; }
+    .badge {
+      display: inline-block;
+      font-size: .7rem;
+      font-weight: 800;
+      padding: .1rem .5rem;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #ffd86a, #ffeb9a);
+      color: #0b1022;
+      align-self: flex-start;
+    }
+    .more { margin-top: auto; }
+    .more a { font-weight: 700; }
+    .more a::after { content: " →"; transition: transform .2s; display: inline-block; }
+    .more a:hover::after { transform: translateX(4px); }
 
-    /* Paginazione */
+    /* PAGINAZIONE */
     .pagination {
-      display: flex; justify-content: center; align-items: center; gap: .5rem;
-      margin: 2rem 0 1rem; padding: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: .4rem;
+      flex-wrap: wrap;
+      margin: 2rem 0 1rem;
     }
     .pagination button {
-      border: 1px solid rgba(0,204,255,.28); color: #9ad0ff; background: rgba(20,20,40,.78);
-      padding: .5rem .8rem; border-radius: 8px; font-weight: 700; cursor: pointer;
+      border: 1px solid rgba(0,204,255,.2);
+      background: rgba(20,20,40,.78);
+      color: #9ad0ff;
+      padding: .4rem .8rem;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
     }
-    .pagination button:hover:not(:disabled) {
-      border-color: rgba(0,204,255,.65); color: #fff; background: rgba(0,204,255,.12);
-    }
-    .pagination button:disabled {
-      opacity: .5; cursor: not-allowed;
-    }
-    .pagination-info {
-      color: var(--muted); margin: 0 .8rem; font-size: .9rem;
+    .pagination button:hover:not(:disabled) { background: rgba(0,204,255,.08); border-color: rgba(0,204,255,.5); }
+    .pagination button:disabled { opacity: .4; cursor: not-allowed; }
+    .pagination button.active-page { border-color: var(--gold); color: var(--gold); background: rgba(255,216,106,.08); }
+    .pagination-info { color: var(--muted); font-size: .9rem; }
+
+    /* EVIDENZIAZIONE RICERCA */
+    mark {
+      background: rgba(173,216,230,.5);
+      color: #1a3a4a;
+      padding: .05rem .25rem;
+      border-radius: 4px;
+      font-weight: 700;
     }
 
-    footer{ margin-top:auto; padding:1rem; text-align:center; color:#9ec3ff; border-top:1px solid rgba(255,255,255,.06); }
+    /* STATO VUOTO */
+    .empty { text-align: center; padding: 2rem 0; color: var(--muted); }
 
-    /* Overlay di ricerca */
-    .search-overlay{ position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,.55); backdrop-filter: blur(6px); display: none; }
-    .search-overlay.is-open{ display:block; }
-    .search-panel{
-      position: absolute; left: 50%; top: 8%; transform: translateX(-50%);
-      width: min(900px, 92vw); background: rgba(10,10,30,.96);
-      border: 1px solid rgba(255,215,0,.22); border-radius: 14px; box-shadow: 0 1.4rem 2.4rem rgba(0,0,0,.45); color: #e9eef5;
+    footer {
+      margin-top: auto;
+      padding: 1.5rem 0 .5rem;
+      text-align: center;
+      color: var(--muted);
+      border-top: 1px solid rgba(255,255,255,.04);
     }
-    .search-header{ display:flex; align-items:center; gap:.6rem; padding:.9rem 1rem; border-bottom:1px solid rgba(255,255,255,.08); }
-    .search-header input{ flex:1; background: rgba(20,20,40,.85); color:#e9eef5; border:1px solid rgba(255,255,255,.14); border-radius: 10px; padding:.7rem .9rem; font-size:1rem; outline:none; }
-    .search-close{ appearance:none; border:1px solid rgba(255,255,0,.18); background: rgba(20,20,40,.85); color:#ffdf8a; font-weight:800; border-radius:10px; padding:.55rem .75rem; cursor:pointer; }
-    .search-hint{ padding:.4rem 1rem .7rem; opacity:.85; font-size:.92rem; }
-    .search-results{ padding: .8rem 1rem 1rem; display:grid; gap:.75rem; max-height: 60vh; overflow:auto; }
-    .search-card{ background: rgba(15,15,35,.92); border:1px solid rgba(255,215,0,.16); border-radius: 12px; padding: .9rem; }
-    .search-card .title{ color:#cfefff; font-weight:800; text-decoration:none; font-size:1.05rem; }
-    .search-card .title:hover{ color:#fff; text-decoration:underline; }
-    .search-card .url{ font-size:.85rem; color:#9bb7ff; opacity:.9; margin:.25rem 0 .35rem; word-break: break-all; }
-    .search-card .desc{ color:#cfe2ff; opacity:.95; line-height:1.35; }
 
-   /* Evidenziazione — verde acceso + testo rosso */
-mark {
-  background: #39ff14;   /* verde lime brillante */
-  color: #cc0000;        /* rosso intenso */
-  padding: .1em .3em;
-  border-radius: .25em;
-  border: 1px solid #1a8a00;
-  box-shadow: 0 0 8px rgba(57, 255, 20, 0.3);
-  font-weight: 700;
-}
-
-    /* Accessibilità */
-    a:focus-visible,button:focus-visible,input:focus-visible{ outline:2px solid var(--cyan); outline-offset:2px; border-radius:2px; }
-
-    /* Stato caricamento */
-    .loading { opacity: 0.7; pointer-events: none; position: relative; }
-    .loading::after {
-      content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-      width: 24px; height: 24px; border: 2px solid rgba(255,215,0,.3); border-top: 2px solid var(--gold);
-      border-radius: 50%; animation: spin 1s linear infinite;
+    /* RESPONSIVE */
+    @media (max-width: 640px) {
+      .topbar { flex-direction: column; align-items: stretch; text-align: center; }
+      .nav { justify-content: center; }
+      .filterbar, .view-controls { flex-direction: column; align-items: stretch; }
+      .filterbar .meta { text-align: right; }
+      .grid { grid-template-columns: 1fr; }
+      .list .card { flex-direction: column; }
+      .search-box { flex-wrap: wrap; border-radius: 20px; padding: .5rem; }
+      .search-box button { width: 100%; }
     }
-    @keyframes spin { 0% { transform: translate(-50%, -50%) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg); } }
   </style>
-
-  <!-- Preload dell'indice di ricerca -->
-  <link rel="preload"
-        href="/search-index.json?v=20251122"
-        as="fetch"
-        type="application/json">
-
-  <!-- Configurazione UNICA della ricerca -->
-  <script id="search-config-root">
-    (function () {
-      const VERSION = '20251122';
-      const cacheBuster = Date.now();
-      window.SEARCH_INDEX_URLS = [
-        `/search-index.json?v=${VERSION}`,
-        `/search-index.json?v=${cacheBuster}`,
-        '/search-index.json'
-      ];
-      window.SEARCH_CONFIG = {
-        indexUrls: window.SEARCH_INDEX_URLS,
-        debounceTime: 300,
-        minQueryLength: 2,
-        version: VERSION
-      };
-    })();
-  </script>
 </head>
-
 <body>
 
-  <!-- TOP BAR -->
-  <header class="topbar">
-    <div class="wrap row">
-      <a class="brand" href="/" aria-label="Echi di Sofia – Home">
-        <svg class="logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-          <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-          <line x1="12" y1="22.08" x2="12" y2="12"></line>
-        </svg>
-        <span>Echi di Sofia</span>
-      </a>
-      <div class="spacer"></div>
-      <!--
-      <nav class="nav">
-        <a class="active" aria-current="page" href="/articoli/">Articoli</a>
-        <a href="/cerca.html">🔎 Cerca</a>
-        <a href="/">🏠 Portale</a>
-      </nav>
-      -->
-    </div>
-  </header>
+<div class="wrap">
 
-  <!-- HERO -->
-  <section class="hero wrap">
-    <h1>Articoli e Approfondimenti</h1>
-    <p>La raccolta completa dei contenuti pubblicati su Echi di Sofia.</p>
-    <div class="cta">
-      <a class="btn primary" href="/cerca.html" aria-label="Apri la pagina di ricerca">🔎 Cerca</a>
-      <a class="btn secondary" href="/" aria-label="Torna alla home (Incipit)">🏠 Torna al Portale</a>
-    </div>
-  </section>
-
-  <!-- FILTRI -->
-  <section class="wrap">
-    <div class="filterbar" role="region" aria-label="Filtra per categoria">
-      <label for="filter-select">Categoria:</label>
-      <select id="filter-select" class="filter-select" aria-label="Seleziona categoria">
-        <option value="">Tutte</option>
-      </select>
-      <div class="chips" id="filter-chips" aria-label="Categorie"></div>
-      <div class="meta" id="filter-meta">0 risultati</div>
-    </div>
-    
-    <!-- Nuovi controlli: ordinamento e visualizzazione -->
-    <div class="view-controls" role="region" aria-label="Opzioni di visualizzazione">
-      <div>
-        <label for="sort-select">Ordina per:</label>
-        <select id="sort-select" class="filter-select" aria-label="Seleziona criterio di ordinamento">
-          <option value="title">Titolo (A-Z)</option>
-          <option value="title-desc">Titolo (Z-A)</option>
-          <option value="category">Categoria</option>
-        </select>
-      </div>
-      
-      <div class="view-toggle" role="group" aria-label="Tipo di visualizzazione">
-        <button class="view-toggle-btn active" id="view-grid" aria-label="Visualizzazione a griglia">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-            <rect x="1" y="1" width="6" height="6" rx="1"></rect>
-            <rect x="9" y="1" width="6" height="6" rx="1"></rect>
-            <rect x="1" y="9" width="6" height="6" rx="1"></rect>
-            <rect x="9" y="9" width="6" height="6" rx="1"></rect>
-          </svg>
-        </button>
-        <button class="view-toggle-btn" id="view-list" aria-label="Visualizzazione a lista">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-            <rect x="1" y="1" width="14" height="2" rx="1"></rect>
-            <rect x="1" y="7" width="14" height="2" rx="1"></rect>
-            <rect x="1" y="13" width="14" height="2" rx="1"></rect>
-          </svg>
-        </button>
-      </div>
-    </div>
-  </section>
-
-  <!-- GRIGLIA -->
-  <main class="wrap">
-    <h2 style="margin:.8rem 0 1rem; color:#ffeb9a;">Tutti gli articoli</h2>
-    <div class="grid" id="lista-articoli">
-      <p style="opacity:.8">Caricamento articoli…</p>
-    </div>
-    
-    <!-- Paginazione -->
-    <div class="pagination" id="pagination" style="display: none;">
-      <button id="prev-page" disabled>Precedente</button>
-      <span class="pagination-info" id="page-info">Pagina 1 di 1</span>
-      <button id="next-page" disabled>Successiva</button>
-    </div>
-  </main>
-
-  <footer>© 2025 Echi di Sofia</footer>
-
-  <!-- OVERLAY DI RICERCA -->
-  <div class="search-overlay" id="search-overlay" aria-hidden="true">
-    <div class="search-panel" role="dialog" aria-modal="true" aria-labelledby="search-title">
-      <div class="search-header">
-        <strong id="search-title">Cerca</strong>
-        <input id="site-search" type="search" placeholder="Cerca… (es. Platone, Ipazia, Talete)" autocomplete="off" spellcheck="false">
-        <button class="search-close" id="close-search" type="button" aria-label="Chiudi">✕</button>
-      </div>
-      <div class="search-hint">Suggerimento: puoi cercare per <em>titolo</em> o parole nella <em>descrizione</em>. Premi <kbd>Esc</kbd> per chiudere.</div>
-      <div id="search-results" class="search-results" role="list" aria-live="polite"></div>
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <a class="brand" href="/">
+      <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+      <span>Echi di Sofia</span>
+    </a>
+    <div class="nav">
+      <a href="/">🏠 Home</a>
+      <a href="/filosofia/">📚 Filosofia</a>
+      <a href="/articoli/" style="background:rgba(0,204,255,.12);border-color:rgba(0,204,255,.6);color:#fff;text-decoration:none;">📖 Articoli</a>
     </div>
   </div>
 
-  <!-- SCRIPT: griglia + filtri + overlay -->
-  <script>
-  (function(){
-    const SOURCES = (window.SEARCH_INDEX_URLS && window.SEARCH_INDEX_URLS.length)
-      ? window.SEARCH_INDEX_URLS
-      : ['/search-index.json','/assets/search-index.json'];
+  <!-- HERO -->
+  <div class="hero">
+    <h1>Articoli e Approfondimenti</h1>
+    <p>Esplora tutti i contenuti pubblicati su Echi di Sofia.</p>
+  </div>
 
-    const GRID   = document.getElementById('lista-articoli');
-    const META   = document.getElementById('filter-meta');
-    const SELECT = document.getElementById('filter-select');
-    const CHIPS  = document.getElementById('filter-chips');
-    const SORT_SELECT = document.getElementById('sort-select');
-    const VIEW_GRID = document.getElementById('view-grid');
-    const VIEW_LIST = document.getElementById('view-list');
-    const PAGINATION = document.getElementById('pagination');
-    const PREV_BUTTON = document.getElementById('prev-page');
-    const NEXT_BUTTON = document.getElementById('next-page');
-    const PAGE_INFO = document.getElementById('page-info');
+  <!-- RICERCA -->
+  <div class="search-box" role="search">
+    <input type="text" id="searchInput" placeholder="Cerca articoli…" aria-label="Cerca negli articoli">
+    <button id="clearSearchBtn" style="background:transparent;color:var(--muted);padding:.5rem;font-size:1.1rem;display:none;">✕</button>
+    <button id="searchBtn">Cerca</button>
+  </div>
 
-    let DATA = [];        // articoli normalizzati
-    let TAGS = [];        // [categoria, count]
-    let CURRENT = '';     // filtro attivo
-    let SORT_BY = 'title'; // criterio ordinamento
-    let VIEW_MODE = 'grid'; // modalità visualizzazione
-    let CURRENT_PAGE = 1; // pagina corrente
-    const ITEMS_PER_PAGE = 12; // articoli per pagina
+  <!-- FILTRI -->
+  <div class="filterbar" id="filterbar">
+    <label for="filterSelect">Categoria:</label>
+    <select id="filterSelect" class="filter-select"></select>
+    <div class="chips" id="chipsContainer"></div>
+    <div style="margin-left:auto;color:var(--muted);font-size:.9rem;" id="resultCount">0 articoli</div>
+  </div>
 
-    // 🔒 Escludi per sempre le 6 "Sezioni del portale"
-    const EXCLUDE_URLS = new Set([
-      '/articoli/cinismo.html',
-      '/articoli/epicureismo.html',
-      '/articoli/filosofia-indiana.html',
-      '/articoli/platonismo.html',
-      '/articoli/scetticismo.html',
-      '/articoli/stoicismo.html'
-    ]);
-    const EXCLUDE_DIRS = /^(\/)?(Sezioni|pagine)(\/|$)/i;
+  <!-- CONTROLLI VISTA -->
+  <div class="view-controls">
+    <label for="sortSelect">Ordina per:</label>
+    <select id="sortSelect" class="filter-select">
+      <option value="title">Titolo (A-Z)</option>
+      <option value="title-desc">Titolo (Z-A)</option>
+      <option value="category">Categoria</option>
+    </select>
+    <div class="view-toggle">
+      <button class="view-toggle-btn active" id="viewGrid" aria-label="Griglia">
+        <svg viewBox="0 0 16 16"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg>
+      </button>
+      <button class="view-toggle-btn" id="viewList" aria-label="Lista">
+        <svg viewBox="0 0 16 16"><rect x="1" y="1" width="14" height="2" rx="1"/><rect x="1" y="7" width="14" height="2" rx="1"/><rect x="1" y="13" width="14" height="2" rx="1"/></svg>
+      </button>
+    </div>
+  </div>
 
-    function href(u){ if(!u) return '#'; if(/^https?:\/\//i.test(u)) return u; if(u.startsWith('/')) return u; return '/' + u.replace(/^\.\//,''); }
-    function getCat(it){ return (it.category || it.categoria || it.section || it.tag || it.type || '').toString().trim(); }
-    function shouldKeep(it){
-      const u = (it.url||'').toString();
-      const d = (it.description || it.desc || '').toString();
-      const c = getCat(it).toLowerCase();
-      if (!/\.html?(\?|#|$)/i.test(u)) return false;
-      if (EXCLUDE_URLS.has(u)) return false;
-      if (EXCLUDE_DIRS.test(u)) return false;
-      if (/sezione del portale/i.test(d)) return false;
-      if (c === 'sezione') return false;
-      return true;
+  <!-- RISULTATI -->
+  <div id="articlesContainer" class="grid" role="list"></div>
+
+  <!-- PAGINAZIONE -->
+  <div class="pagination" id="pagination"></div>
+
+  <footer>© 2026 Echi di Sofia</footer>
+
+</div>
+
+<script>
+  (function() {
+    'use strict';
+
+    // ============================================================
+    // DATI DEGLI ARTICOLI (inline – sostituisci con i tuoi)
+    // ============================================================
+    const ARTICLES = [
+      { title: "Il mito della caverna di Platone", category: "Antica", description: "Un'analisi approfondita del celebre mito platonico." },
+      { title: "L'etica nicomachea di Aristotele", category: "Antica", description: "La felicità come fine ultimo dell'uomo." },
+      { title: "Meditazioni di Marco Aurelio", category: "Romana", description: "Il diario filosofico dell'imperatore stoico." },
+      { title: "Il nominalismo di Guglielmo di Ockham", category: "Medievale", description: "Il rasoio di Ockham e la filosofia del linguaggio." },
+      { title: "Il Discorso sul metodo di Cartesio", category: "Moderna", description: "Il fondamento della filosofia moderna." },
+      { title: "La Critica della ragion pura di Kant", category: "Moderna", description: "I limiti della conoscenza umana." },
+      { title: "Così parlò Zarathustra di Nietzsche", category: "Contemporanea", description: "Il superuomo e la morte di Dio." },
+      { title: "L'Essere e il nulla di Sartre", category: "Contemporanea", description: "L'esistenzialismo e la libertà radicale." },
+      { title: "Stoicismo: l'arte di vivere", category: "Romana", description: "I principi dello stoicismo per una vita serena." },
+      { title: "Il Timeo di Platone", category: "Antica", description: "Il dialogo platonico sulla creazione del mondo." },
+      { title: "Le Confessioni di Agostino", category: "Medievale", description: "L'interiorità e il tempo in Agostino." },
+      { title: "Il Principe di Machiavelli", category: "Moderna", description: "La politica e il potere." },
+      { title: "La fenomenologia dello spirito di Hegel", category: "Contemporanea", description: "La dialettica del riconoscimento." },
+      { title: "Pensieri di Pascal", category: "Moderna", description: "L'uomo tra grandezza e miseria." },
+      { title: "Epicuro e la felicità", category: "Antica", description: "Il giardino e l'atarassia." },
+    ];
+
+    // ============================================================
+    // STATO
+    // ============================================================
+    let data = ARTICLES.slice();
+    let currentFilter = '';
+    let currentSort = 'title';
+    let currentView = 'grid';
+    let currentPage = 1;
+    const perPage = 9;
+
+    // ============================================================
+    // DOM REFS
+    // ============================================================
+    const container = document.getElementById('articlesContainer');
+    const filterSelect = document.getElementById('filterSelect');
+    const chipsContainer = document.getElementById('chipsContainer');
+    const sortSelect = document.getElementById('sortSelect');
+    const viewGrid = document.getElementById('viewGrid');
+    const viewList = document.getElementById('viewList');
+    const pagination = document.getElementById('pagination');
+    const resultCount = document.getElementById('resultCount');
+    const searchInput = document.getElementById('searchInput');
+    const searchBtn = document.getElementById('searchBtn');
+    const clearBtn = document.getElementById('clearSearchBtn');
+
+    let searchTerm = '';
+
+    // ============================================================
+    // UTILITY
+    // ============================================================
+    function normalize(str) {
+      return (str || '').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     }
 
-    function card(it, viewMode = 'grid'){
-      const link = href(it.url);
-      const title = it.title || 'Senza titolo';
-      const desc  = it.description || it.desc || '';
-      const cat   = getCat(it);
-      
-      if (viewMode === 'list') {
-        return `<article class="card">
-                  <span class="badge">${cat}</span>
-                  <div class="card-content">
-                    <h3>${title}</h3>
-                    ${desc ? `<p>${desc}</p>` : ``}
-                    <div class="more"><a href="${link}">Leggi →</a></div>
-                  </div>
-                </article>`;
-      } else {
-        return `<article class="card">
-                  ${cat ? `<span class="badge">${cat}</span>` : ``}
-                  <h3>${title}</h3>
-                  ${desc ? `<p>${desc}</p>` : ``}
-                  <div class="more"><a href="${link}">Leggi →</a></div>
-                </article>`;
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    function highlight(text, term) {
+      if (!term || !text) return escapeHtml(text);
+      const tokens = normalize(term).split(/\s+/).filter(Boolean);
+      if (!tokens.length) return escapeHtml(text);
+      let result = escapeHtml(text);
+      for (const t of tokens) {
+        if (t.length < 2) continue;
+        const re = new RegExp('(' + t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+        result = result.replace(re, '<mark>$1</mark>');
       }
+      return result;
     }
 
-    function render(list, page = 1, viewMode = 'grid'){
-      if(!GRID) return;
-      
-      // Calcola paginazione
-      const totalPages = Math.ceil(list.length / ITEMS_PER_PAGE);
-      const startIndex = (page - 1) * ITEMS_PER_PAGE;
-      const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, list.length);
-      const paginatedList = list.slice(startIndex, endIndex);
-      
-      // Aggiorna UI paginazione
-      if (totalPages > 1) {
-        PAGINATION.style.display = 'flex';
-        PREV_BUTTON.disabled = page <= 1;
-        NEXT_BUTTON.disabled = page >= totalPages;
-        PAGE_INFO.textContent = `Pagina ${page} di ${totalPages} (${list.length} articoli)`;
-      } else {
-        PAGINATION.style.display = 'none';
-      }
-      
-      // Renderizza articoli
-      const containerClass = viewMode === 'list' ? 'list' : 'grid';
-      GRID.className = containerClass;
-      GRID.innerHTML = paginatedList.length ? paginatedList.map(it => card(it, viewMode)).join('') : '<p style="opacity:.8">Nessun articolo trovato.</p>';
-      META.textContent = `${list.length} risultato${list.length===1?'':'i'}`;
-    }
-
-    function uniqueTags(items){
+    // ============================================================
+    // FUNZIONI PRINCIPALI
+    // ============================================================
+    function getCategories() {
       const map = new Map();
-      for(const it of items){
-        const t = getCat(it);
-        if(!t) continue;
-        map.set(t, (map.get(t)||0)+1);
+      for (const a of data) {
+        const cat = a.category || 'Altro';
+        map.set(cat, (map.get(cat) || 0) + 1);
       }
-      return Array.from(map.entries()).sort((a,b)=> a[0].localeCompare(b[0]));
+      return Array.from(map.entries()).sort((a, b) => a[0].localeCompare(b[0]));
     }
 
-    function buildFilters(){
-      // select
-      SELECT.innerHTML = `<option value="">Tutte</option>` +
-        TAGS.map(([t,c])=> `<option value="${encodeURIComponent(t)}"${t===CURRENT?' selected':''}>${t} (${c})</option>`).join('');
-      // chips
-      CHIPS.innerHTML = [`<button class="chip${!CURRENT?' active':''}" data-cat="">Tutte (${DATA.length})</button>`]
-        .concat(TAGS.map(([t,c])=> `<button class="chip${CURRENT===t?' active':''}" data-cat="${encodeURIComponent(t)}">${t} (${c})</button>`))
-        .join('');
-      CHIPS.querySelectorAll('.chip').forEach(btn=>{
-        btn.addEventListener('click', ()=>{
-          const val = decodeURIComponent(btn.getAttribute('data-cat')||'');
-          setFilter(val, {push:true});
+    function getFilteredData() {
+      let result = data;
+      if (searchTerm) {
+        const q = normalize(searchTerm);
+        result = result.filter(a => {
+          const t = normalize(a.title);
+          const d = normalize(a.description || '');
+          return t.includes(q) || d.includes(q);
+        });
+      }
+      if (currentFilter) {
+        result = result.filter(a => (a.category || 'Altro') === currentFilter);
+      }
+      // Sort
+      switch (currentSort) {
+        case 'title-desc':
+          result.sort((a, b) => (b.title || '').localeCompare(a.title || ''));
+          break;
+        case 'category':
+          result.sort((a, b) => ((a.category || 'Altro') + a.title).localeCompare((b.category || 'Altro') + b.title));
+          break;
+        default:
+          result.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+          break;
+      }
+      return result;
+    }
+
+    function render() {
+      const filtered = getFilteredData();
+      const total = filtered.length;
+      const totalPages = Math.max(1, Math.ceil(total / perPage));
+      if (currentPage > totalPages) currentPage = totalPages;
+
+      const start = (currentPage - 1) * perPage;
+      const end = Math.min(start + perPage, total);
+      const pageItems = filtered.slice(start, end);
+
+      // Aggiorna contatore
+      resultCount.textContent = `${total} articolo${total !== 1 ? 'i' : ''}`;
+
+      // Renderizza
+      const isList = currentView === 'list';
+      container.className = isList ? 'list' : 'grid';
+
+      if (pageItems.length === 0) {
+        container.innerHTML = `<div class="empty">Nessun articolo trovato.</div>`;
+      } else {
+        container.innerHTML = pageItems.map(a => {
+          const cat = a.category || 'Altro';
+          const titleHtml = highlight(a.title, searchTerm);
+          const descHtml = a.description ? highlight(a.description, searchTerm) : '';
+          const link = `/articoli/${a.title.toLowerCase().replace(/\s+/g, '-')}.html`; // placeholder
+          if (isList) {
+            return `<article class="card" role="listitem">
+              <span class="badge">${escapeHtml(cat)}</span>
+              <div class="card-content">
+                <h3>${titleHtml}</h3>
+                ${descHtml ? `<p>${descHtml}</p>` : ''}
+                <div class="more"><a href="${link}">Leggi</a></div>
+              </div>
+            </article>`;
+          } else {
+            return `<article class="card" role="listitem">
+              <span class="badge">${escapeHtml(cat)}</span>
+              <h3>${titleHtml}</h3>
+              ${descHtml ? `<p>${descHtml}</p>` : ''}
+              <div class="more"><a href="${link}">Leggi</a></div>
+            </article>`;
+          }
+        }).join('');
+      }
+
+      // Paginazione
+      pagination.innerHTML = '';
+      if (totalPages > 1) {
+        const prev = document.createElement('button');
+        prev.textContent = '‹';
+        prev.disabled = currentPage <= 1;
+        prev.addEventListener('click', () => goToPage(currentPage - 1));
+        pagination.appendChild(prev);
+
+        const pages = document.createElement('span');
+        pages.style.display = 'flex';
+        pages.style.gap = '.3rem';
+        const maxVisible = 5;
+        let startP = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+        let endP = Math.min(totalPages, startP + maxVisible - 1);
+        if (endP - startP < maxVisible - 1) startP = Math.max(1, endP - maxVisible + 1);
+
+        if (startP > 1) {
+          const b = document.createElement('button');
+          b.textContent = '1';
+          b.addEventListener('click', () => goToPage(1));
+          pages.appendChild(b);
+          if (startP > 2) { const e = document.createElement('span'); e.textContent = '…'; e.style.color = 'var(--muted)'; pages.appendChild(e); }
+        }
+        for (let i = startP; i <= endP; i++) {
+          const b = document.createElement('button');
+          b.textContent = i;
+          if (i === currentPage) b.classList.add('active-page');
+          b.addEventListener('click', () => goToPage(i));
+          pages.appendChild(b);
+        }
+        if (endP < totalPages) {
+          if (endP < totalPages - 1) { const e = document.createElement('span'); e.textContent = '…'; e.style.color = 'var(--muted)'; pages.appendChild(e); }
+          const b = document.createElement('button');
+          b.textContent = totalPages;
+          b.addEventListener('click', () => goToPage(totalPages));
+          pages.appendChild(b);
+        }
+        pagination.appendChild(pages);
+
+        const next = document.createElement('button');
+        next.textContent = '›';
+        next.disabled = currentPage >= totalPages;
+        next.addEventListener('click', () => goToPage(currentPage + 1));
+        pagination.appendChild(next);
+      }
+
+      // Aggiorna URL
+      updateURL();
+    }
+
+    function goToPage(p) {
+      const total = getFilteredData().length;
+      const max = Math.max(1, Math.ceil(total / perPage));
+      if (p < 1 || p > max) return;
+      currentPage = p;
+      render();
+      container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // ============================================================
+    // FILTRI UI
+    // ============================================================
+    function buildFilters() {
+      const cats = getCategories();
+      // Select
+      filterSelect.innerHTML = `<option value="">Tutte</option>` +
+        cats.map(([c, count]) =>
+          `<option value="${c}"${c === currentFilter ? ' selected' : ''}>${c} (${count})</option>`
+        ).join('');
+
+      // Chips
+      chipsContainer.innerHTML = `
+        <button class="chip${!currentFilter ? ' active' : ''}" data-cat="">Tutte</button>
+        ${cats.map(([c, count]) =>
+          `<button class="chip${c === currentFilter ? ' active' : ''}" data-cat="${c}">${c} (${count})</button>`
+        ).join('')}
+        <button class="chip reset" data-cat="reset">✕ Cancella</button>
+      `;
+      chipsContainer.querySelectorAll('.chip').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const val = btn.getAttribute('data-cat');
+          if (val === 'reset') setFilter('');
+          else setFilter(val);
         });
       });
     }
 
-    function sortData(data, sortBy) {
-      const sorted = [...data];
-      switch(sortBy) {
-        case 'title-desc':
-          return sorted.sort((a, b) => (b.title || '').localeCompare(a.title || ''));
-        case 'category':
-          return sorted.sort((a, b) => {
-            const catA = getCat(a) || '';
-            const catB = getCat(b) || '';
-            return catA.localeCompare(catB) || (a.title || '').localeCompare(b.title || '');
-          });
-        case 'title':
-        default:
-          return sorted.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
-      }
+    // ============================================================
+    // SETTER DI STATO
+    // ============================================================
+    function setFilter(cat, pushState = true) {
+      currentFilter = cat || '';
+      currentPage = 1;
+      filterSelect.value = cat;
+      buildFilters(); // aggiorna active
+      render();
+      if (pushState) updateURL();
     }
 
-    function filtered(){
-      let result = DATA;
-      if(CURRENT) {
-        const key = CURRENT.toLowerCase();
-        result = result.filter(it => getCat(it).toLowerCase() === key);
-      }
-      return sortData(result, SORT_BY);
+    function setSort(sort, pushState = true) {
+      currentSort = sort || 'title';
+      sortSelect.value = sort;
+      render();
+      if (pushState) updateURL();
     }
 
-    function setFilter(val, {push=false}={}){
-      CURRENT = val || '';
-      CURRENT_PAGE = 1; // Reset alla prima pagina quando cambia filtro
-      
-      // UI
-      const enc = encodeURIComponent(CURRENT);
-      Array.from(SELECT.options).forEach(o => { o.selected = (o.value === enc) || (!enc && !o.value); });
-      CHIPS.querySelectorAll('.chip').forEach(btn=> btn.classList.toggle('active', btn.getAttribute('data-cat')===enc));
-      // URL
-      const url = new URL(window.location.href);
-      if(CURRENT) url.searchParams.set('cat', CURRENT); else url.searchParams.delete('cat');
-      if(push) history.pushState({cat:CURRENT}, '', url.toString());
-      // Render
-      render( filtered(), CURRENT_PAGE, VIEW_MODE );
-      document.getElementById('lista-articoli')?.scrollIntoView({behavior:'smooth'});
+    function setView(view, pushState = true) {
+      currentView = view || 'grid';
+      viewGrid.classList.toggle('active', view === 'grid');
+      viewList.classList.toggle('active', view === 'list');
+      render();
+      if (pushState) updateURL();
     }
 
-    function setSort(sortBy, {push=false}={}) {
-      SORT_BY = sortBy || 'title';
-      SORT_SELECT.value = SORT_BY;
-      render( filtered(), CURRENT_PAGE, VIEW_MODE );
+    // ============================================================
+    // URL STATE
+    // ============================================================
+    function updateURL() {
+      const params = new URLSearchParams();
+      if (currentFilter) params.set('cat', currentFilter);
+      if (currentSort !== 'title') params.set('sort', currentSort);
+      if (currentView !== 'grid') params.set('view', currentView);
+      if (currentPage > 1) params.set('page', currentPage);
+      if (searchTerm) params.set('q', searchTerm);
+      const url = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
+      history.replaceState({ cat: currentFilter, sort: currentSort, view: currentView, page: currentPage, q: searchTerm }, '', url);
     }
 
-    function setViewMode(mode, {push=false}={}) {
-      VIEW_MODE = mode || 'grid';
-      VIEW_GRID.classList.toggle('active', VIEW_MODE === 'grid');
-      VIEW_LIST.classList.toggle('active', VIEW_MODE === 'list');
-      render( filtered(), CURRENT_PAGE, VIEW_MODE );
+    function restoreFromURL() {
+      const params = new URLSearchParams(window.location.search);
+      const cat = params.get('cat') || '';
+      const sort = params.get('sort') || 'title';
+      const view = params.get('view') || 'grid';
+      const page = parseInt(params.get('page'), 10) || 1;
+      const q = params.get('q') || '';
+      if (cat) currentFilter = cat;
+      currentSort = sort;
+      currentView = view;
+      currentPage = page;
+      searchTerm = q;
+      searchInput.value = q;
+      if (q) clearBtn.style.display = 'block';
+      else clearBtn.style.display = 'none';
+      sortSelect.value = sort;
+      viewGrid.classList.toggle('active', view === 'grid');
+      viewList.classList.toggle('active', view === 'list');
+      // I filtri verranno applicati dopo il render
     }
 
-    function setPage(page, {push=false}={}) {
-      CURRENT_PAGE = Math.max(1, Math.min(page, Math.ceil(filtered().length / ITEMS_PER_PAGE)));
-      render( filtered(), CURRENT_PAGE, VIEW_MODE );
-      document.getElementById('lista-articoli')?.scrollIntoView({behavior:'smooth'});
+    // ============================================================
+    // RICERCA
+    // ============================================================
+    function performSearch() {
+      const q = searchInput.value.trim();
+      searchTerm = q;
+      currentPage = 1;
+      clearBtn.style.display = q ? 'block' : 'none';
+      render();
+      updateURL();
     }
 
-    if(SELECT){
-      SELECT.addEventListener('change', (e)=>{
-        const val = decodeURIComponent(e.target.value||'');
-        setFilter(val, {push:true});
-      });
-    }
-
-    if(SORT_SELECT) {
-      SORT_SELECT.addEventListener('change', (e)=>{
-        setSort(e.target.value, {push:false});
-      });
-    }
-
-    if(VIEW_GRID && VIEW_LIST) {
-      VIEW_GRID.addEventListener('click', ()=> setViewMode('grid'));
-      VIEW_LIST.addEventListener('click', ()=> setViewMode('list'));
-    }
-
-    if(PREV_BUTTON && NEXT_BUTTON) {
-      PREV_BUTTON.addEventListener('click', ()=> setPage(CURRENT_PAGE - 1));
-      NEXT_BUTTON.addEventListener('click', ()=> setPage(CURRENT_PAGE + 1));
-    }
-
-    // Carica indice
-    (async () => {
-      let arr = [];
-      for(const u of SOURCES){
-        try{
-          const r = await fetch(u, { cache: 'no-store' });
-          if(!r.ok) continue;
-          const jtxt = await r.text();
-          // parser tollerante
-          let j;
-          try { j = JSON.parse(jtxt); } catch(_){
-            const s = jtxt.indexOf('['), e = jtxt.lastIndexOf(']');
-            if (s !== -1 && e !== -1 && e > s) j = JSON.parse(jtxt.slice(s,e+1));
-            else {
-              const m = jtxt.match(/"items"\s*:\s*(\[\s*\{[\s\S]*?\}\s*\])/);
-              if (m) j = {items: JSON.parse(m[1])};
-            }
-          }
-          arr = Array.isArray(j) ? j : (j && Array.isArray(j.items) ? j.items : []);
-          if (arr.length) break;
-        }catch(_){}
-      }
-
-      DATA = arr.map(it => ({
-        title: it.title || it.name || it.slug || 'Senza titolo',
-        url: (it.url || it.link || '').toString(),
-        description: it.description || it.desc || it.excerpt || it.summary || '',
-        category: it.category || it.categoria || it.section || it.tag || it.type || ''
-      })).filter(shouldKeep);
-
-      TAGS = uniqueTags(DATA);
-      buildFilters();
-
-      const fromURL = new URL(window.location.href).searchParams.get('cat');
-      if(fromURL){ CURRENT = fromURL; }
-
-      render( filtered(), CURRENT_PAGE, VIEW_MODE );
-    })();
-
-    /* Overlay ricerca (usa DATA già caricato) */
-    const $open  = document.querySelector('a[href="/cerca.html"]'); // usa il pulsante Cerca come trigger opzionale
-    const $ovl   = document.getElementById('search-overlay');
-    const $close = document.getElementById('close-search');
-    const $input = document.getElementById('site-search');
-    const $list  = document.getElementById('search-results');
-
-    function lockScroll(on){ document.documentElement.style.overflow=on?'hidden':''; }
-    function openPanel(e){ if(e) e.preventDefault(); if(!$ovl) return; $ovl.classList.add('is-open'); $ovl.setAttribute('aria-hidden','false'); lockScroll(true); setTimeout(()=> $input?.focus(), 50); }
-    function closePanel(e){ if(e) e.preventDefault(); if(!$ovl) return; $ovl.classList.remove('is-open'); $ovl.setAttribute('aria-hidden','true'); lockScroll(false); if($input){ $input.value=''; $list.innerHTML=''; } }
-
-    if($open)  $open.addEventListener('click', openPanel);
-    if($close) $close.addEventListener('click', closePanel);
-    document.addEventListener('keydown',(e)=>{ if(e.key==='Escape') closePanel(); });
-    if($ovl) $ovl.addEventListener('click',(e)=>{ if(e.target===$ovl) closePanel(e); });
-
-    const norm = s => (s||'').toString().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
-    const hl = (text, q) => {
-      if(!text) return '';
-      const tokens = norm(q).split(/\s+/).filter(Boolean);
-      if(!tokens.length) return text;
-      let out = text;
-      for(const t of tokens){
-        if(t.length<2) continue;
-        const re = new RegExp('('+t.replace(/[.*+?^${}()|[\\]\\\\]/g,'\\$&')+')','gi');
-        out = out.replace(re,'<mark>$1</mark>');
-      }
-      return out;
-    };
-    const resolve = u => /^https?:\/\//i.test(u) ? u : (u.startsWith('/') ? u : '/'+u.replace(/^\.\//,''));
-    const doSearch = (q) => {
-      const qq = norm(q); if(!qq) return [];
-      return DATA.filter(it=>{
-        const t=norm(it.title||''), d=norm(it.description||''), u=norm(it.url||'');
-        return t.includes(qq)||d.includes(qq)||u.includes(qq);
-      }).slice(0,60);
-    };
-    const renderSearch = (rows, q) => {
-      if(!$list) return;
-      if(!rows.length){ $list.innerHTML = `<p style="opacity:.8">Nessun risultato per <strong>${q}</strong>.</p>`; return; }
-      $list.innerHTML = rows.map(it => `
-        <article class="search-card" role="listitem">
-          <a class="title" href="${resolve(it.url)}">${hl(it.title, q)}</a>
-          <div class="url">${resolve(it.url)}</div>
-          ${it.description ? `<div class="desc">${hl(it.description, q)}</div>` : ''}
-        </article>
-      `).join('');
-    };
-
-    if($input){
-      let t;
-      $input.addEventListener('input', ()=>{
-        clearTimeout(t);
-        const q = $input.value.trim();
-        t = setTimeout(()=> renderSearch(doSearch(q), q), 120);
-      });
-      $input.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); renderSearch(doSearch($input.value.trim()), $input.value.trim()); } });
-    }
-
-    // Gestione back/forward del browser per ?cat=
-    window.addEventListener('popstate', ()=>{
-      const newCat = new URL(window.location.href).searchParams.get('cat') || '';
-      if(newCat !== CURRENT){
-        CURRENT = newCat;
-        const enc = encodeURIComponent(CURRENT);
-        Array.from(SELECT.options).forEach(o => { o.selected = (o.value === enc) || (!enc && !o.value); });
-        CHIPS.querySelectorAll('.chip').forEach(btn=> btn.classList.toggle('active', btn.getAttribute('data-cat')===enc));
-        render( filtered(), CURRENT_PAGE, VIEW_MODE );
-      }
+    searchInput.addEventListener('input', performSearch);
+    searchBtn.addEventListener('click', performSearch);
+    searchInput.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); performSearch(); } });
+    clearBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      performSearch();
+      searchInput.focus();
     });
+
+    // ============================================================
+    // EVENTI UI
+    // ============================================================
+    filterSelect.addEventListener('change', () => setFilter(filterSelect.value, true));
+    sortSelect.addEventListener('change', () => setSort(sortSelect.value, true));
+    viewGrid.addEventListener('click', () => setView('grid', true));
+    viewList.addEventListener('click', () => setView('list', true));
+
+    window.addEventListener('popstate', (e) => {
+      const state = e.state || {};
+      if (state.cat !== undefined) currentFilter = state.cat;
+      if (state.sort) currentSort = state.sort;
+      if (state.view) currentView = state.view;
+      if (state.page) currentPage = state.page;
+      if (state.q !== undefined) {
+        searchTerm = state.q || '';
+        searchInput.value = searchTerm;
+        clearBtn.style.display = searchTerm ? 'block' : 'none';
+      }
+      buildFilters();
+      render();
+    });
+
+    // ============================================================
+    // AVVIO
+    // ============================================================
+    restoreFromURL();
+    buildFilters();
+    render();
+
   })();
-  </script>
+</script>
+
 </body>
 </html>
