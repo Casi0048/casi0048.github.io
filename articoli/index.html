@@ -1,697 +1,1639 @@
-<!DOCTYPE html>  
+```html
+<!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="utf-8">
-  <title>Articoli — Echi di Sofia</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Tutti gli articoli di Echi di Sofia.">
-  <link rel="icon" type="image/png" href="/favicon_io/favicon-32x32.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    :root {
-      --bg: #0a0a1a;
-      --text: #e9eef5;
-      --gold: #ffd86a;
-      --gold-dim: rgba(255,216,106,.15);
-      --cyan: #9ad0ff;
-      --panel: rgba(10,10,30,.94);
-      --border: rgba(255,215,0,.22);
-      --muted: #9bb7ff;
-      --radius: 14px;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Inter, sans-serif;
-      min-height: 100dvh;
-      display: flex;
-      flex-direction: column;
-      line-height: 1.6;
-      padding: 1rem;
-    }
-    a { color: var(--cyan); text-decoration: none; }
-    a:hover { color: #fff; text-decoration: underline; }
-    .wrap { max-width: 1200px; margin: 0 auto; width: 100%; }
+<title>Articoli — Echi di Sofia</title>
 
-    /* HEADER */
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: .8rem 1rem;
-      background: rgba(18,28,58,.96);
-      border-bottom: 1px solid var(--border);
-      border-radius: var(--radius) var(--radius) 0 0;
-      margin-bottom: 1.5rem;
-      flex-wrap: wrap;
-      gap: .5rem;
-    }
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: .6rem;
-      color: var(--gold);
-      font-weight: 800;
-      font-size: 1.2rem;
-    }
-    .brand svg { width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 2; }
-    .brand span { background: linear-gradient(90deg,#ffd700,#fff7b0); -webkit-background-clip:text; background-clip:text; color:transparent; }
+<meta name="description"
+      content="Archivio degli articoli di filosofia di Echi di Sofia: filosofi, scuole, correnti e temi del pensiero occidentale e orientale.">
 
-    .nav a {
-      color: var(--cyan);
-      padding: .4rem .8rem;
-      border-radius: 8px;
-      border: 1px solid rgba(0,204,255,.2);
-      font-weight: 600;
-      transition: all .2s;
-    }
-    .nav a:hover { background: rgba(0,204,255,.08); border-color: rgba(0,204,255,.5); text-decoration: none; }
+<style>
+/* =========================================================
+   ECHI DI SOFIA — ARCHIVIO ARTICOLI
+   ========================================================= */
 
-    /* HERO */
-    .hero { text-align: center; padding: 1rem 0 1.5rem; }
-    .hero h1 { color: #ffeb9a; font-size: clamp(1.8rem, 4vw, 2.6rem); }
-    .hero p { color: #cfe8ff; max-width: 60ch; margin: .2rem auto 0; }
+:root {
+    --bg: #f5f1e8;
+    --bg-soft: #ebe4d6;
+    --surface: rgba(255,255,255,.72);
+    --surface-strong: #fffdf8;
+    --text: #25221e;
+    --text-soft: #696158;
+    --gold: #a47a2c;
+    --gold-light: #c9a85b;
+    --border: rgba(120,95,50,.20);
+    --shadow: 0 10px 35px rgba(45,35,20,.10);
+    --accent: #8b6728;
+    --input: rgba(255,255,255,.82);
+}
 
-    /* BARRA RICERCA */
-    .search-box {
-      display: flex;
-      gap: .6rem;
-      max-width: 600px;
-      margin: 1rem auto;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 60px;
-      padding: .2rem .2rem .2rem 1rem;
-      transition: border-color .3s;
-    }
-    .search-box:focus-within { border-color: var(--gold); }
-    .search-box input {
-      flex: 1;
-      background: transparent;
-      border: none;
-      color: var(--text);
-      font-size: 1rem;
-      padding: .6rem 0;
-      outline: none;
-    }
-    .search-box input::placeholder { color: var(--muted); opacity: .7; }
-    .search-box button {
-      background: var(--gold);
-      border: none;
-      border-radius: 60px;
-      padding: .5rem 1.2rem;
-      font-weight: 700;
-      color: #0a0a1a;
-      cursor: pointer;
-      transition: background .2s;
-    }
-    .search-box button:hover { background: #ffe08a; }
+html[data-theme="dark"] {
+    --bg: #101318;
+    --bg-soft: #171b22;
+    --surface: rgba(27,32,40,.86);
+    --surface-strong: #1c222b;
+    --text: #eee9df;
+    --text-soft: #aaa49a;
+    --gold: #d5b56a;
+    --gold-light: #ecd28e;
+    --border: rgba(213,181,106,.22);
+    --shadow: 0 14px 40px rgba(0,0,0,.35);
+    --accent: #d5b56a;
+    --input: rgba(27,32,40,.95);
+}
 
-    /* FILTRI */
-    .filterbar {
-      display: flex;
-      align-items: center;
-      gap: .6rem;
-      flex-wrap: wrap;
-      padding: .6rem 1rem;
-      background: rgba(10,10,30,.7);
-      border: 1px solid rgba(255,255,255,.06);
-      border-radius: var(--radius);
-      margin: .5rem 0 .8rem;
-    }
-    .filterbar label { color: #ffeb9a; font-weight: 700; }
-    .filter-select {
-      background: rgba(20,20,40,.85);
-      color: #e9eef5;
-      border: 1px solid rgba(255,255,255,.14);
-      border-radius: 8px;
-      padding: .35rem .6rem;
-      outline: none;
-    }
-    .chips { display: flex; gap: .4rem; flex-wrap: wrap; }
-    .chip {
-      border: 1px solid rgba(0,204,255,.25);
-      background: rgba(20,20,40,.78);
-      color: #9ad0ff;
-      padding: .25rem .7rem;
-      border-radius: 999px;
-      font-weight: 600;
-      font-size: .85rem;
-      cursor: pointer;
-      transition: all .2s;
-    }
-    .chip:hover { border-color: rgba(0,204,255,.5); }
-    .chip.active { background: rgba(0,204,255,.12); border-color: rgba(0,204,255,.65); color: #fff; }
-    .chip.reset { border-color: rgba(255,255,255,.1); color: var(--muted); }
-    .chip.reset:hover { border-color: rgba(255,100,100,.4); color: #ff8a8a; }
+* {
+    box-sizing: border-box;
+}
 
-    .view-controls {
-      display: flex;
-      align-items: center;
-      gap: .8rem;
-      flex-wrap: wrap;
-      padding: .4rem 1rem;
-      background: rgba(10,10,30,.5);
-      border: 1px solid rgba(255,255,255,.04);
-      border-radius: var(--radius);
-      margin-bottom: 1rem;
-    }
-    .view-controls label { color: #ffeb9a; font-weight: 700; font-size: .9rem; }
-    .view-toggle-btn {
-      border: 1px solid rgba(0,204,255,.2);
-      background: rgba(20,20,40,.78);
-      color: #9ad0ff;
-      padding: .3rem .6rem;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: all .2s;
-    }
-    .view-toggle-btn.active { background: rgba(0,204,255,.12); border-color: rgba(0,204,255,.5); color: #fff; }
-    .view-toggle-btn svg { width: 16px; height: 16px; fill: currentColor; vertical-align: middle; }
+html {
+    scroll-behavior: smooth;
+}
 
-    /* GRIGLIA */
-    .grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
-    .list { display: flex; flex-direction: column; gap: 1rem; }
-    .card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: .4rem;
-      transition: transform .2s, box-shadow .2s;
-    }
-    .card:hover { transform: translateY(-2px); box-shadow: 0 1rem 2.5rem rgba(0,0,0,.3); }
-    .list .card { flex-direction: row; align-items: flex-start; gap: 1rem; }
-    .list .card .card-content { flex: 1; }
-    .card h3 { color: #ffeb9a; font-size: 1.1rem; }
-    .card p { color: #cfe2ff; opacity: .9; font-size: .95rem; margin: .2rem 0; }
-    .badge {
-      display: inline-block;
-      font-size: .7rem;
-      font-weight: 800;
-      padding: .1rem .5rem;
-      border-radius: 999px;
-      background: linear-gradient(90deg, #ffd86a, #ffeb9a);
-      color: #0b1022;
-      align-self: flex-start;
-    }
-    .more { margin-top: auto; }
-    .more a { font-weight: 700; }
-    .more a::after { content: " →"; transition: transform .2s; display: inline-block; }
-    .more a:hover::after { transform: translateX(4px); }
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Georgia, "Times New Roman", serif;
+    color: var(--text);
+    background:
+        radial-gradient(circle at 20% 10%, rgba(196,157,76,.08), transparent 30%),
+        radial-gradient(circle at 80% 30%, rgba(120,150,180,.05), transparent 32%),
+        var(--bg);
+    transition:
+        background .35s ease,
+        color .35s ease;
+}
 
-    /* PAGINAZIONE */
-    .pagination {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: .4rem;
-      flex-wrap: wrap;
-      margin: 2rem 0 1rem;
-    }
-    .pagination button {
-      border: 1px solid rgba(0,204,255,.2);
-      background: rgba(20,20,40,.78);
-      color: #9ad0ff;
-      padding: .4rem .8rem;
-      border-radius: 6px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all .2s;
-    }
-    .pagination button:hover:not(:disabled) { background: rgba(0,204,255,.08); border-color: rgba(0,204,255,.5); }
-    .pagination button:disabled { opacity: .4; cursor: not-allowed; }
-    .pagination button.active-page { border-color: var(--gold); color: var(--gold); background: rgba(255,216,106,.08); }
-    .pagination-info { color: var(--muted); font-size: .9rem; }
+/* =========================================================
+   HEADER
+   ========================================================= */
 
-    /* EVIDENZIAZIONE RICERCA */
-    mark {
-      background: #39ff14;   /* verde lime brillante */
-      color: #cc0000;        /* rosso intenso */
-      padding: .05rem .25rem;
-      border-radius: 4px;
-      font-weight: 700;
+.site-header {
+    position: relative;
+    padding: 34px 24px 28px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+.header-inner {
+    width: min(1180px, calc(100% - 20px));
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+}
+
+.brand {
+    text-decoration: none;
+    color: var(--text);
+}
+
+.brand-title {
+    margin: 0;
+    font-size: clamp(1.65rem, 3vw, 2.45rem);
+    letter-spacing: .06em;
+    font-weight: 500;
+}
+
+.brand-subtitle {
+    margin: 6px 0 0;
+    color: var(--text-soft);
+    font-size: .93rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+.header-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.header-btn {
+    border: 1px solid var(--border);
+    background: var(--surface-strong);
+    color: var(--text);
+    padding: 9px 14px;
+    border-radius: 999px;
+    text-decoration: none;
+    cursor: pointer;
+    font: inherit;
+    font-size: .9rem;
+    transition: .2s ease;
+}
+
+.header-btn:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    transform: translateY(-1px);
+}
+
+/* =========================================================
+   INTRO
+   ========================================================= */
+
+.page {
+    width: min(1180px, calc(100% - 30px));
+    margin: auto;
+}
+
+.intro {
+    text-align: center;
+    padding: 55px 10px 30px;
+}
+
+.intro h1 {
+    margin: 0 0 13px;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 400;
+    letter-spacing: .035em;
+}
+
+.intro h1 span {
+    color: var(--gold);
+}
+
+.intro p {
+    max-width: 720px;
+    margin: auto;
+    color: var(--text-soft);
+    line-height: 1.7;
+    font-size: 1.05rem;
+}
+
+/* =========================================================
+   CONTROLLI
+   ========================================================= */
+
+.controls {
+    margin: 25px 0 20px;
+    padding: 18px;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+}
+
+.search-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.search-box {
+    position: relative;
+    flex: 1;
+}
+
+.search-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: .65;
+    pointer-events: none;
+}
+
+#searchInput {
+    width: 100%;
+    padding: 14px 45px 14px 45px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    outline: none;
+    background: var(--input);
+    color: var(--text);
+    font: inherit;
+    font-size: 1rem;
+}
+
+#searchInput:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(180,140,60,.12);
+}
+
+.clear-search {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 0;
+    background: transparent;
+    color: var(--text-soft);
+    cursor: pointer;
+    font-size: 1.1rem;
+    display: none;
+}
+
+.filter-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.filters {
+    display: flex;
+    gap: 7px;
+    flex-wrap: wrap;
+}
+
+.filter-btn,
+.sort-select,
+.view-btn {
+    border: 1px solid var(--border);
+    background: var(--surface-strong);
+    color: var(--text);
+    border-radius: 9px;
+    padding: 8px 11px;
+    font: inherit;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.filter-btn:hover,
+.filter-btn.active,
+.view-btn:hover,
+.view-btn.active {
+    border-color: var(--gold);
+    color: var(--gold);
+}
+
+.right-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.sort-select {
+    outline: none;
+}
+
+.view-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+/* =========================================================
+   INFO RISULTATI
+   ========================================================= */
+
+.results-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin: 25px 3px 16px;
+    color: var(--text-soft);
+    font-size: .92rem;
+}
+
+.results-info strong {
+    color: var(--gold);
+}
+
+/* =========================================================
+   LISTA ARTICOLI
+   ========================================================= */
+
+#lista-articoli {
+    scroll-margin-top: 30px;
+}
+
+.articles-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.articles-grid.list-view {
+    grid-template-columns: 1fr;
+}
+
+.article-card {
+    position: relative;
+    min-width: 0;
+    padding: 24px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    transition:
+        transform .22s ease,
+        border-color .22s ease,
+        background .22s ease;
+    overflow: hidden;
+}
+
+.article-card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 3px;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        transparent,
+        var(--gold),
+        transparent
+    );
+    opacity: .45;
+}
+
+.article-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(180,140,60,.42);
+}
+
+.article-card a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.article-category {
+    display: inline-block;
+    margin-bottom: 12px;
+    color: var(--gold);
+    font-family: Arial, sans-serif;
+    font-size: .68rem;
+    font-weight: 600;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+}
+
+.article-title {
+    margin: 0;
+    font-size: 1.28rem;
+    line-height: 1.25;
+    font-weight: 500;
+}
+
+.article-file {
+    margin-top: 10px;
+    color: var(--text-soft);
+    font-family: Arial, sans-serif;
+    font-size: .73rem;
+    opacity: .72;
+}
+
+.articles-grid.list-view .article-card {
+    display: grid;
+    grid-template-columns: 170px 1fr;
+    gap: 20px;
+    align-items: center;
+}
+
+.articles-grid.list-view .article-category {
+    margin: 0;
+}
+
+.articles-grid.list-view .article-file {
+    margin-top: 7px;
+}
+
+/* =========================================================
+   EVIDENZIAZIONE RICERCA
+   ========================================================= */
+
+mark {
+    background: rgba(211,176,88,.28);
+    color: inherit;
+    border-radius: 3px;
+    padding: 0 2px;
+}
+
+/* =========================================================
+   NESSUN RISULTATO
+   ========================================================= */
+
+.no-results {
+    display: none;
+    padding: 60px 20px;
+    text-align: center;
+    border: 1px dashed var(--border);
+    border-radius: 18px;
+    background: var(--surface);
+}
+
+.no-results.visible {
+    display: block;
+}
+
+.no-results-icon {
+    font-size: 2.3rem;
+    opacity: .7;
+    margin-bottom: 10px;
+}
+
+.no-results h2 {
+    font-weight: 400;
+    margin: 0 0 8px;
+}
+
+.no-results p {
+    color: var(--text-soft);
+    margin: 0;
+}
+
+/* =========================================================
+   PAGINAZIONE
+   ========================================================= */
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin: 34px 0 60px;
+}
+
+.page-btn {
+    min-width: 38px;
+    height: 38px;
+    padding: 0 10px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    font: inherit;
+    transition: .2s ease;
+}
+
+.page-btn:hover,
+.page-btn.active {
+    border-color: var(--gold);
+    color: var(--gold);
+}
+
+.page-btn:disabled {
+    opacity: .35;
+    cursor: default;
+}
+
+.page-dots {
+    color: var(--text-soft);
+    padding: 0 4px;
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.site-footer {
+    border-top: 1px solid var(--border);
+    padding: 30px 20px;
+    text-align: center;
+    color: var(--text-soft);
+    background: var(--surface);
+}
+
+.site-footer a {
+    color: var(--gold);
+    text-decoration: none;
+}
+
+.site-footer p {
+    margin: 5px 0;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+    .articles-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 650px) {
+
+    .site-header {
+        padding: 25px 16px;
     }
 
-    /* STATO VUOTO */
-    .empty { text-align: center; padding: 2rem 0; color: var(--muted); }
-
-    footer {
-      margin-top: auto;
-      padding: 1.5rem 0 .5rem;
-      text-align: center;
-      color: var(--muted);
-      border-top: 1px solid rgba(255,255,255,.04);
+    .header-inner {
+        align-items: flex-start;
+        flex-direction: column;
     }
 
-    /* RESPONSIVE */
-    @media (max-width: 640px) {
-      .topbar { flex-direction: column; align-items: stretch; text-align: center; }
-      .nav { justify-content: center; }
-      .filterbar, .view-controls { flex-direction: column; align-items: stretch; }
-      .filterbar .meta { text-align: right; }
-      .grid { grid-template-columns: 1fr; }
-      .list .card { flex-direction: column; }
-      .search-box { flex-wrap: wrap; border-radius: 20px; padding: .5rem; }
-      .search-box button { width: 100%; }
+    .header-actions {
+        justify-content: flex-start;
     }
-  </style>
+
+    .page {
+        width: min(100% - 20px, 1180px);
+    }
+
+    .intro {
+        padding-top: 38px;
+    }
+
+    .search-row {
+        flex-direction: column;
+    }
+
+    .filter-row {
+        align-items: stretch;
+    }
+
+    .right-controls {
+        width: 100%;
+    }
+
+    .sort-select {
+        flex: 1;
+    }
+
+    .articles-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .articles-grid.list-view .article-card {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .results-info {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+</style>
 </head>
+
 <body>
 
-<div class="wrap">
+<header class="site-header">
+    <div class="header-inner">
 
-  <!-- TOPBAR -->
-  <div class="topbar">
-    <a class="brand" href="/">
-      <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
-      <span>Echi di Sofia</span>
-    </a>
-    <div class="nav">
-      <a href="/">🏠 Home</a>
-      <a href="/filosofia/">📚 Filosofia</a>
-      <a href="/articoli/" style="background:rgba(0,204,255,.12);border-color:rgba(0,204,255,.6);color:#fff;text-decoration:none;">📖 Articoli</a>
+        <a class="brand" href="../index.html">
+            <h1 class="brand-title">Echi di Sofia</h1>
+            <p class="brand-subtitle">Filosofia e pensiero</p>
+        </a>
+
+        <div class="header-actions">
+            <a class="header-btn" href="../index.html">← INCIPIT</a>
+            <a class="header-btn" href="../filosofia/index.html">🏛 Filosofia</a>
+
+            <button
+                class="header-btn"
+                id="themeToggle"
+                type="button"
+                aria-label="Cambia tema">
+                ◐ Tema
+            </button>
+        </div>
+
     </div>
-  </div>
+</header>
 
-  <!-- HERO -->
-  <div class="hero">
-    <h1>Articoli e Approfondimenti</h1>
-    <p>Esplora tutti i contenuti pubblicati su Echi di Sofia.</p>
-  </div>
+<main class="page">
 
-  <!-- RICERCA -->
-  <div class="search-box" role="search">
-    <input type="text" id="searchInput" placeholder="Cerca articoli…" aria-label="Cerca negli articoli">
-    <button id="clearSearchBtn" style="background:transparent;color:var(--muted);padding:.5rem;font-size:1.1rem;display:none;">✕</button>
-    <button id="searchBtn">Cerca</button>
-  </div>
+    <section class="intro">
+        <h1>Archivio degli <span>articoli</span></h1>
+        <p>
+            Un percorso attraverso filosofi, scuole, correnti e idee:
+            dai presocratici al pensiero contemporaneo.
+        </p>
+    </section>
 
-  <!-- FILTRI -->
-  <div class="filterbar" id="filterbar">
-    <label for="filterSelect">Categoria:</label>
-    <select id="filterSelect" class="filter-select"></select>
-    <div class="chips" id="chipsContainer"></div>
-    <div style="margin-left:auto;color:var(--muted);font-size:.9rem;" id="resultCount">0 articoli</div>
-  </div>
+    <section class="controls" aria-label="Controlli archivio">
 
-  <!-- CONTROLLI VISTA -->
-  <div class="view-controls">
-    <label for="sortSelect">Ordina per:</label>
-    <select id="sortSelect" class="filter-select">
-      <option value="title">Titolo (A-Z)</option>
-      <option value="title-desc">Titolo (Z-A)</option>
-      <option value="category">Categoria</option>
-    </select>
-    <div class="view-toggle">
-      <button class="view-toggle-btn active" id="viewGrid" aria-label="Griglia">
-        <svg viewBox="0 0 16 16"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg>
-      </button>
-      <button class="view-toggle-btn" id="viewList" aria-label="Lista">
-        <svg viewBox="0 0 16 16"><rect x="1" y="1" width="14" height="2" rx="1"/><rect x="1" y="7" width="14" height="2" rx="1"/><rect x="1" y="13" width="14" height="2" rx="1"/></svg>
-      </button>
+        <div class="search-row">
+
+            <div class="search-box">
+                <span class="search-icon">🔎</span>
+
+                <input
+                    type="search"
+                    id="searchInput"
+                    placeholder="Cerca un filosofo, una scuola o un tema…"
+                    autocomplete="off"
+                    aria-label="Cerca negli articoli">
+
+                <button
+                    class="clear-search"
+                    id="clearSearch"
+                    type="button"
+                    aria-label="Cancella ricerca">
+                    ×
+                </button>
+            </div>
+
+        </div>
+
+        <div class="filter-row">
+
+            <div class="filters" id="filters">
+                <button
+                    class="filter-btn active"
+                    type="button"
+                    data-category="Tutti">
+                    Tutti
+                </button>
+
+                <button
+                    class="filter-btn"
+                    type="button"
+                    data-category="Antica">
+                    Antica
+                </button>
+
+                <button
+                    class="filter-btn"
+                    type="button"
+                    data-category="Medievale">
+                    Medievale
+                </button>
+
+                <button
+                    class="filter-btn"
+                    type="button"
+                    data-category="Moderna">
+                    Moderna
+                </button>
+
+                <button
+                    class="filter-btn"
+                    type="button"
+                    data-category="Contemporanea">
+                    Contemporanea
+                </button>
+
+                <button
+                    class="filter-btn"
+                    type="button"
+                    data-category="Altre tradizioni">
+                    Altre tradizioni
+                </button>
+            </div>
+
+            <div class="right-controls">
+
+                <select
+                    id="sortSelect"
+                    class="sort-select"
+                    aria-label="Ordina articoli">
+
+                    <option value="az">A → Z</option>
+                    <option value="za">Z → A</option>
+                    <option value="recent">Prima i più recenti</option>
+                </select>
+
+                <div class="view-buttons">
+
+                    <button
+                        class="view-btn active"
+                        type="button"
+                        id="gridView"
+                        aria-label="Vista griglia">
+                        ▦
+                    </button>
+
+                    <button
+                        class="view-btn"
+                        type="button"
+                        id="listView"
+                        aria-label="Vista lista">
+                        ☰
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+
+    <div class="results-info">
+        <div id="resultsCount"></div>
+        <div id="pageInfo"></div>
     </div>
-  </div>
 
-  <!-- RISULTATI -->
-  <div id="articlesContainer" class="grid" role="list"></div>
+    <section id="lista-articoli">
 
-  <!-- PAGINAZIONE -->
-  <div class="pagination" id="pagination"></div>
+        <div
+            class="articles-grid"
+            id="articlesGrid"
+            aria-live="polite">
+        </div>
 
-  <footer>© 2026 Echi di Sofia</footer>
+        <div
+            class="no-results"
+            id="noResults">
 
-</div>
+            <div class="no-results-icon">⌕</div>
+
+            <h2>Nessun articolo trovato</h2>
+
+            <p>
+                Prova a modificare la ricerca oppure a scegliere
+                un'altra categoria.
+            </p>
+
+        </div>
+
+    </section>
+
+    <nav
+        class="pagination"
+        id="pagination"
+        aria-label="Paginazione articoli">
+    </nav>
+
+</main>
+
+<footer class="site-footer">
+
+    <p>
+        <a href="../index.html">Echi di Sofia</a>
+        ·
+        <a href="../filosofia/index.html">Filosofia</a>
+        ·
+        <a href="../risorse.html">Risorse</a>
+    </p>
+
+    <p>Un viaggio attraverso la storia del pensiero.</p>
+
+</footer>
+
 
 <script>
-  (function() {
-    'use strict';
+/* =========================================================
+   DATABASE ARTICOLI
+   ========================================================= */
 
-    // ============================================================
-    // DATI DEGLI ARTICOLI (inline – sostituisci con i tuoi)
-    // ============================================================
-    const ARTICLES = [
-      { title: "Il mito della caverna di Platone", category: "Antica", description: "Un'analisi approfondita del celebre mito platonico." },
-      { title: "L'etica nicomachea di Aristotele", category: "Antica", description: "La felicità come fine ultimo dell'uomo." },
-      { title: "Meditazioni di Marco Aurelio", category: "Romana", description: "Il diario filosofico dell'imperatore stoico." },
-      { title: "Il nominalismo di Guglielmo di Ockham", category: "Medievale", description: "Il rasoio di Ockham e la filosofia del linguaggio." },
-      { title: "Il Discorso sul metodo di Cartesio", category: "Moderna", description: "Il fondamento della filosofia moderna." },
-      { title: "La Critica della ragion pura di Kant", category: "Moderna", description: "I limiti della conoscenza umana." },
-      { title: "Così parlò Zarathustra di Nietzsche", category: "Contemporanea", description: "Il superuomo e la morte di Dio." },
-      { title: "L'Essere e il nulla di Sartre", category: "Contemporanea", description: "L'esistenzialismo e la libertà radicale." },
-      { title: "Stoicismo: l'arte di vivere", category: "Romana", description: "I principi dello stoicismo per una vita serena." },
-      { title: "Il Timeo di Platone", category: "Antica", description: "Il dialogo platonico sulla creazione del mondo." },
-      { title: "Le Confessioni di Agostino", category: "Medievale", description: "L'interiorità e il tempo in Agostino." },
-      { title: "Il Principe di Machiavelli", category: "Moderna", description: "La politica e il potere." },
-      { title: "La fenomenologia dello spirito di Hegel", category: "Contemporanea", description: "La dialettica del riconoscimento." },
-      { title: "Pensieri di Pascal", category: "Moderna", description: "L'uomo tra grandezza e miseria." },
-      { title: "Epicuro e la felicità", category: "Antica", description: "Il giardino e l'atarassia." },
-    ];
+const articles = [
 
-    // ============================================================
-    // STATO
-    // ============================================================
-    let data = ARTICLES.slice();
-    let currentFilter = '';
-    let currentSort = 'title';
-    let currentView = 'grid';
-    let currentPage = 1;
-    const perPage = 9;
+    /* ---------------- ANTICA ---------------- */
 
-    // ============================================================
-    // DOM REFS
-    // ============================================================
-    const container = document.getElementById('articlesContainer');
-    const filterSelect = document.getElementById('filterSelect');
-    const chipsContainer = document.getElementById('chipsContainer');
-    const sortSelect = document.getElementById('sortSelect');
-    const viewGrid = document.getElementById('viewGrid');
-    const viewList = document.getElementById('viewList');
-    const pagination = document.getElementById('pagination');
-    const resultCount = document.getElementById('resultCount');
-    const searchInput = document.getElementById('searchInput');
-    const searchBtn = document.getElementById('searchBtn');
-    const clearBtn = document.getElementById('clearSearchBtn');
+    ["alcmeone.html", "Alcmeone", "Antica"],
+    ["anassagora.html", "Anassagora", "Antica"],
+    ["andronico.html", "Andronico di Rodi", "Antica"],
+    ["antistene.html", "Antistene", "Antica"],
+    ["arcesilao.html", "Arcesilao", "Antica"],
+    ["archita.html", "Archita", "Antica"],
+    ["aristippo.html", "Aristippo", "Antica"],
+    ["aristofane.html", "Aristofane", "Antica"],
+    ["aristotele.html", "Aristotele", "Antica"],
+    ["carneade.html", "Carneade", "Antica"],
+    ["cicerone.html", "Cicerone", "Antica"],
+    ["cinismo.html", "Cinismo", "Antica"],
+    ["colote.html", "Colote", "Antica"],
+    ["cratete.html", "Cratete", "Antica"],
+    ["crisippo.html", "Crisippo", "Antica"],
+    ["demetrio.html", "Demetrio", "Antica"],
+    ["democrito.html", "Democrito", "Antica"],
+    ["diogene.html", "Diogene", "Antica"],
+    ["diotima.html", "Diotima", "Antica"],
+    ["eleusi.html", "Eleusi", "Antica"],
+    ["ellenismo.html", "Ellenismo", "Antica"],
+    ["empedocle.html", "Empedocle", "Antica"],
+    ["enesidemo.html", "Enesidemo", "Antica"],
+    ["epicureismo.html", "Epicureismo", "Antica"],
+    ["epicuro.html", "Epicuro", "Antica"],
+    ["epitteto.html", "Epitteto", "Antica"],
+    ["eraclito.html", "Eraclito", "Antica"],
+    ["erodoto.html", "Erodoto", "Antica"],
+    ["eschilo.html", "Eschilo", "Antica"],
+    ["eudemo.html", "Eudemo", "Antica"],
+    ["euripide.html", "Euripide", "Antica"],
+    ["filolao.html", "Filolao", "Antica"],
+    ["gorgia.html", "Gorgia", "Antica"],
+    ["giamblico.html", "Giamblico", "Antica"],
+    ["ippaso.html", "Ippaso", "Antica"],
+    ["ippia.html", "Ippia", "Antica"],
+    ["iparchia.html", "Iparchia", "Antica"],
+    ["ipazia.html", "Ipazia", "Antica"],
+    ["leucippo.html", "Leucippo", "Antica"],
+    ["lucrezio.html", "Lucrezio", "Antica"],
+    ["melisso.html", "Melisso", "Antica"],
+    ["menandro.html", "Menandro", "Antica"],
+    ["metrocle.html", "Metrocle", "Antica"],
+    ["orfismo.html", "Orfismo", "Antica"],
+    ["panezio.html", "Panezio", "Antica"],
+    ["parmenide1.html", "Parmenide", "Antica"],
+    ["peirce.html", "Peirce", "Contemporanea"],
+    ["pirrone.html", "Pirrone", "Antica"],
+    ["pitagora.html", "Pitagora", "Antica"],
+    ["platone.html", "Platone", "Antica"],
+    ["platone_mito_caverna.html", "Platone — Il mito della caverna", "Antica"],
+    ["platonismo.html", "Platonismo", "Antica"],
+    ["plotino.html", "Plotino", "Antica"],
+    ["polibio.html", "Polibio", "Antica"],
+    ["posidonio.html", "Posidonio", "Antica"],
+    ["proclo.html", "Proclo", "Antica"],
+    ["prodico.html", "Prodico", "Antica"],
+    ["scetticismo.html", "Scetticismo", "Antica"],
+    ["seneca.html", "Seneca", "Antica"],
+    ["senocrate.html", "Senocrate", "Antica"],
+    ["senofonte.html", "Senofonte", "Antica"],
+    ["sesto.html", "Sesto Empirico", "Antica"],
+    ["simplicio.html", "Simplicio", "Antica"],
+    ["socrate.html", "Socrate", "Antica"],
+    ["sofisti.html", "Sofisti", "Antica"],
+    ["sofocle.html", "Sofocle", "Antica"],
+    ["speusippo.html", "Speusippo", "Antica"],
+    ["stoicismo.html", "Stoicismo", "Antica"],
+    ["stratone.html", "Stratone", "Antica"],
+    ["teofrasto.html", "Teofrasto", "Antica"],
+    ["timone.html", "Timone", "Antica"],
+    ["tucidide.html", "Tucidide", "Antica"],
+    ["zenone.html", "Zenone", "Antica"],
+    ["zenone_di_sidone.html", "Zenone di Sidone", "Antica"],
 
-    let searchTerm = '';
+    /* ---------------- MEDIEVALE ---------------- */
 
-    // ============================================================
-    // UTILITY
-    // ============================================================
-    function normalize(str) {
-      return (str || '').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    ["abelardo.html", "Abelardo", "Medievale"],
+    ["agostino.html", "Agostino d'Ippona", "Medievale"],
+    ["al-farabi.html", "Al-Farabi", "Medievale"],
+    ["al-ghazali.html", "Al-Ghazali", "Medievale"],
+    ["alessandro-afrodisia.html", "Alessandro di Afrodisia", "Medievale"],
+    ["ambrogio.html", "Ambrogio", "Medievale"],
+    ["anselmo.html", "Anselmo d'Aosta", "Medievale"],
+    ["atanasio.html", "Atanasio", "Medievale"],
+    ["averroe.html", "Averroè", "Medievale"],
+    ["avicenna.html", "Avicenna", "Medievale"],
+    ["basilio.html", "Basilio", "Medievale"],
+    ["boezio.html", "Boezio", "Medievale"],
+    ["bonaventura.html", "Bonaventura", "Medievale"],
+    ["buridano.html", "Buridano", "Medievale"],
+    ["caterina.html", "Caterina da Siena", "Medievale"],
+    ["cipriano.html", "Cipriano", "Medievale"],
+    ["clemente.html", "Clemente", "Medievale"],
+    ["duns scoto.html", "Duns Scoto", "Medievale"],
+    ["eckhart.html", "Eckhart", "Medievale"],
+    ["eriugena.html", "Eriugena", "Medievale"],
+    ["gersonide.html", "Gersonide", "Medievale"],
+    ["girolamo.html", "Girolamo", "Medievale"],
+    ["gregorio.html", "Gregorio", "Medievale"],
+    ["gregorio-di-nazianzo.html", "Gregorio di Nazianzo", "Medievale"],
+    ["gregorio-di-nizza.html", "Gregorio di Nissa", "Medievale"],
+    ["gregorio-magno.html", "Gregorio Magno", "Medievale"],
+    ["ildegarda.html", "Ildegarda di Bingen", "Medievale"],
+    ["maimonide.html", "Maimonide", "Medievale"],
+    ["origene.html", "Origene", "Medievale"],
+    ["pseudo-dionigi.html", "Pseudo-Dionigi", "Medievale"],
+    ["saadia goan.html", "Saadia Gaon", "Medievale"],
+    ["tertulliano.html", "Tertulliano", "Medievale"],
+    ["tommaso d'aquino.html", "Tommaso d'Aquino", "Medievale"],
+    ["dostoevskij.html", "Dostoevskij", "Contemporanea"],
+
+    /* ---------------- MODERNA ---------------- */
+
+    ["bacon.html", "Francis Bacon", "Moderna"],
+    ["berkeley.html", "George Berkeley", "Moderna"],
+    ["bruno.html", "Giordano Bruno", "Moderna"],
+    ["cartesio.html", "Cartesio", "Moderna"],
+    ["comte.html", "Auguste Comte", "Moderna"],
+    ["dio_spinoza.html", "Baruch Spinoza", "Moderna"],
+    ["erasmo.html", "Erasmo da Rotterdam", "Moderna"],
+    ["fichte.html", "Fichte", "Moderna"],
+    ["goethe.html", "Goethe", "Moderna"],
+    ["hegel.html", "Hegel", "Moderna"],
+    ["hobbes.html", "Hobbes", "Moderna"],
+    ["hume.html", "Hume", "Moderna"],
+    ["kant.html", "Kant", "Moderna"],
+    ["kierkegaard.html", "Kierkegaard", "Moderna"],
+    ["leibniz.html", "Leibniz", "Moderna"],
+    ["locke.html", "Locke", "Moderna"],
+    ["machiavelli.html", "Machiavelli", "Moderna"],
+    ["malinowski.html", "Malinowski", "Moderna"],
+    ["mill.html", "John Stuart Mill", "Moderna"],
+    ["montesquieu.html", "Montesquieu", "Moderna"],
+    ["moro.html", "Thomas More", "Moderna"],
+    ["rousseau.html", "Rousseau", "Moderna"],
+    ["schelling.html", "Schelling", "Moderna"],
+    ["schleiermacher.html", "Schleiermacher", "Moderna"],
+    ["schopenhauer.html", "Schopenhauer", "Moderna"],
+    ["spinoza.html", "Spinoza", "Moderna"],
+    ["voltaire.html", "Voltaire", "Moderna"],
+
+    /* ---------------- CONTEMPORANEA ---------------- */
+
+    ["2nietzsche.html", "Nietzsche — approfondimento", "Contemporanea"],
+    ["adorno.html", "Adorno", "Contemporanea"],
+    ["adrigò.html", "Adrigò", "Contemporanea"],
+    ["ajdukiewicz.html", "Ajdukiewicz", "Contemporanea"],
+    ["alberto-m.html", "Alberto M.", "Contemporanea"],
+    ["althusser.html", "Althusser", "Contemporanea"],
+    ["austin.html", "J. L. Austin", "Contemporanea"],
+    ["bauman.html", "Bauman", "Contemporanea"],
+    ["beauvoir.html", "Simone de Beauvoir", "Contemporanea"],
+    ["benjamin.html", "Walter Benjamin", "Contemporanea"],
+    ["bentham.html", "Bentham", "Moderna"],
+    ["bergson1.html", "Bergson", "Contemporanea"],
+    ["bodei.html", "Remo Bodei", "Contemporanea"],
+    ["bulgakov.html", "Bulgakov", "Contemporanea"],
+    ["butler.html", "Butler", "Contemporanea"],
+    ["cacciari.html", "Cacciari", "Contemporanea"],
+    ["camus.html", "Camus", "Contemporanea"],
+    ["cieszkowski.html", "Cieszkowski", "Contemporanea"],
+    ["circolo_di_vienna.html", "Circolo di Vienna", "Contemporanea"],
+    ["deleuze.html", "Deleuze", "Contemporanea"],
+    ["derrida.html", "Derrida", "Contemporanea"],
+    ["dewey.html", "Dewey", "Contemporanea"],
+    ["dilthey.html", "Dilthey", "Contemporanea"],
+    ["dreyfus.html", "Dreyfus", "Contemporanea"],
+    ["eco.html", "Umberto Eco", "Contemporanea"],
+    ["engels.html", "Engels", "Contemporanea"],
+    ["feuerbach.html", "Feuerbach", "Contemporanea"],
+    ["feyerabend.html", "Feyerabend", "Contemporanea"],
+    ["foucault.html", "Foucault", "Contemporanea"],
+    ["fraser.html", "Fraser", "Contemporanea"],
+    ["frege.html", "Frege", "Contemporanea"],
+    ["fromm.html", "Fromm", "Contemporanea"],
+    ["gadamer.html", "Gadamer", "Contemporanea"],
+    ["galimberti.html", "Galimberti", "Contemporanea"],
+    ["habermas.html", "Habermas", "Contemporanea"],
+    ["hasdai crescas.html", "Hasdai Crescas", "Medievale"],
+    ["heidegger.html", "Heidegger", "Contemporanea"],
+    ["horkheimer.html", "Horkheimer", "Contemporanea"],
+    ["husserl.html", "Husserl", "Contemporanea"],
+    ["ingarden.html", "Ingarden", "Contemporanea"],
+    ["james.html", "William James", "Contemporanea"],
+    ["jonas.html", "Hans Jonas", "Contemporanea"],
+    ["kolakowski.html", "Kołakowski", "Contemporanea"],
+    ["kotarbinski.html", "Tadeusz Kotarbiński", "Contemporanea"],
+    ["kuhn.html", "Thomas Kuhn", "Contemporanea"],
+    ["lakatos.html", "Lakatos", "Contemporanea"],
+    ["lewis.html", "Lewis", "Contemporanea"],
+    ["lukasiewicz.html", "Łukasiewicz", "Contemporanea"],
+    ["lyotard.html", "Lyotard", "Contemporanea"],
+    ["lévi-strauss.html", "Lévi-Strauss", "Contemporanea"],
+    ["mach.html", "Mach", "Contemporanea"],
+    ["marco_aurelio.html", "Marco Aurelio", "Antica"],
+    ["marcuse.html", "Marcuse", "Contemporanea"],
+    ["marx.html", "Marx", "Contemporanea"],
+    ["merleau-ponty.html", "Merleau-Ponty", "Contemporanea"],
+    ["mickiewicz.html", "Mickiewicz", "Contemporanea"],
+    ["moore.html", "G. E. Moore", "Contemporanea"],
+    ["neoplatonismo.html", "Neoplatonismo", "Antica"],
+    ["nietzsche.html", "Nietzsche", "Contemporanea"],
+    ["nozick.html", "Nozick", "Contemporanea"],
+    ["oresome.html", "Oresme", "Medievale"],
+    ["peirce.html", "Peirce", "Contemporanea"],
+    ["popper.html", "Popper", "Contemporanea"],
+    ["potocki.html", "Potocki", "Contemporanea"],
+    ["preti.html", "Preti", "Contemporanea"],
+    ["quine.html", "Quine", "Contemporanea"],
+    ["rawls.html", "Rawls", "Contemporanea"],
+    ["ricoeur.html", "Ricoeur", "Contemporanea"],
+    ["rorty.html", "Rorty", "Contemporanea"],
+    ["rozanov.html", "Rozanov", "Contemporanea"],
+    ["russell.html", "Russell", "Contemporanea"],
+    ["rzewuski.html", "Rzewuski", "Contemporanea"],
+    ["said.html", "Edward Said", "Contemporanea"],
+    ["sartre.html", "Sartre", "Contemporanea"],
+    ["searle.html", "Searle", "Contemporanea"],
+    ["severino.html", "Severino", "Contemporanea"],
+    ["sestov.html", "Šestov", "Contemporanea"],
+    ["singer.html", "Peter Singer", "Contemporanea"],
+    ["solov'ëv.html", "Solov'ëv", "Contemporanea"],
+    ["spencer.html", "Spencer", "Contemporanea"],
+    ["swieżawski.html", "Swieżawski", "Contemporanea"],
+    ["tarski.html", "Tarski", "Contemporanea"],
+    ["tischner.html", "Tischner", "Contemporanea"],
+    ["twardowski.html", "Twardowski", "Contemporanea"],
+    ["vattimo.html", "Vattimo", "Contemporanea"],
+    ["wittgenstein.html", "Wittgenstein", "Contemporanea"],
+    ["wojtyla.html", "Wojtyła", "Contemporanea"],
+    ["wronski.html", "Wroński", "Contemporanea"],
+
+    /* ---------------- ALTRE TRADIZIONI ---------------- */
+
+    ["filosofia-indiana.html", "Filosofia indiana", "Altre tradizioni"],
+    ["scuola-vaiśeṣika.html", "Scuola Vaiśeṣika", "Altre tradizioni"],
+
+    /* ---------------- TEMI / APPROFONDIMENTI ---------------- */
+
+    ["battaglia_maratona.html", "Battaglia di Maratona", "Antica"],
+    ["filosofia_classica.html", "Filosofia classica", "Antica"],
+    ["filosofia_ellenistica.html", "Filosofia ellenistica", "Antica"],
+    ["filosofia_presocratica.html", "Filosofia presocratica", "Antica"],
+    ["ermarco.html", "Ermarco", "Antica"]
+];
+
+
+/* =========================================================
+   CONFIGURAZIONE
+   ========================================================= */
+
+const ARTICLES_PER_PAGE = 24;
+
+let currentPage = 1;
+let currentCategory = "Tutti";
+let currentSearch = "";
+let currentSort = "az";
+let currentView = "grid";
+
+
+/* =========================================================
+   ELEMENTI DOM
+   ========================================================= */
+
+const grid = document.getElementById("articlesGrid");
+const searchInput = document.getElementById("searchInput");
+const clearSearch = document.getElementById("clearSearch");
+const resultsCount = document.getElementById("resultsCount");
+const pageInfo = document.getElementById("pageInfo");
+const pagination = document.getElementById("pagination");
+const noResults = document.getElementById("noResults");
+const sortSelect = document.getElementById("sortSelect");
+const gridView = document.getElementById("gridView");
+const listView = document.getElementById("listView");
+
+
+/* =========================================================
+   NORMALIZZAZIONE RICERCA
+   ========================================================= */
+
+function normalize(text) {
+    return String(text)
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+   ========================================================= */
+
+function escapeHtml(text) {
+    return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+/* =========================================================
+   EVIDENZIAZIONE
+   ========================================================= */
+
+function highlight(text, query) {
+
+    if (!query.trim()) {
+        return escapeHtml(text);
     }
 
-    function escapeHtml(str) {
-      const div = document.createElement('div');
-      div.textContent = str;
-      return div.innerHTML;
-    }
+    const safeText = escapeHtml(text);
+    const words = query
+        .trim()
+        .split(/\s+/)
+        .filter(Boolean)
+        .sort((a, b) => b.length - a.length);
 
-    function highlight(text, term) {
-      if (!term || !text) return escapeHtml(text);
-      const tokens = normalize(term).split(/\s+/).filter(Boolean);
-      if (!tokens.length) return escapeHtml(text);
-      let result = escapeHtml(text);
-      for (const t of tokens) {
-        if (t.length < 2) continue;
-        const re = new RegExp('(' + t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
-        result = result.replace(re, '<mark>$1</mark>');
-      }
-      return result;
-    }
+    let result = safeText;
 
-    // ============================================================
-    // FUNZIONI PRINCIPALI
-    // ============================================================
-    function getCategories() {
-      const map = new Map();
-      for (const a of data) {
-        const cat = a.category || 'Altro';
-        map.set(cat, (map.get(cat) || 0) + 1);
-      }
-      return Array.from(map.entries()).sort((a, b) => a[0].localeCompare(b[0]));
-    }
+    words.forEach(word => {
 
-    function getFilteredData() {
-      let result = data;
-      if (searchTerm) {
-        const q = normalize(searchTerm);
-        result = result.filter(a => {
-          const t = normalize(a.title);
-          const d = normalize(a.description || '');
-          return t.includes(q) || d.includes(q);
-        });
-      }
-      if (currentFilter) {
-        result = result.filter(a => (a.category || 'Altro') === currentFilter);
-      }
-      // Sort
-      switch (currentSort) {
-        case 'title-desc':
-          result.sort((a, b) => (b.title || '').localeCompare(a.title || ''));
-          break;
-        case 'category':
-          result.sort((a, b) => ((a.category || 'Altro') + a.title).localeCompare((b.category || 'Altro') + b.title));
-          break;
-        default:
-          result.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
-          break;
-      }
-      return result;
-    }
+        const escapedWord = word
+            .replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
-    function render() {
-      const filtered = getFilteredData();
-      const total = filtered.length;
-      const totalPages = Math.max(1, Math.ceil(total / perPage));
-      if (currentPage > totalPages) currentPage = totalPages;
+        try {
+            const regex = new RegExp(
+                "(" + escapedWord + ")",
+                "gi"
+            );
 
-      const start = (currentPage - 1) * perPage;
-      const end = Math.min(start + perPage, total);
-      const pageItems = filtered.slice(start, end);
+            result = result.replace(
+                regex,
+                "<mark>$1</mark>"
+            );
 
-      // Aggiorna contatore
-      resultCount.textContent = `${total} articolo${total !== 1 ? 'i' : ''}`;
-
-      // Renderizza
-      const isList = currentView === 'list';
-      container.className = isList ? 'list' : 'grid';
-
-      if (pageItems.length === 0) {
-        container.innerHTML = `<div class="empty">Nessun articolo trovato.</div>`;
-      } else {
-        container.innerHTML = pageItems.map(a => {
-          const cat = a.category || 'Altro';
-          const titleHtml = highlight(a.title, searchTerm);
-          const descHtml = a.description ? highlight(a.description, searchTerm) : '';
-          const link = `/articoli/${a.title.toLowerCase().replace(/\s+/g, '-')}.html`; // placeholder
-          if (isList) {
-            return `<article class="card" role="listitem">
-              <span class="badge">${escapeHtml(cat)}</span>
-              <div class="card-content">
-                <h3>${titleHtml}</h3>
-                ${descHtml ? `<p>${descHtml}</p>` : ''}
-                <div class="more"><a href="${link}">Leggi</a></div>
-              </div>
-            </article>`;
-          } else {
-            return `<article class="card" role="listitem">
-              <span class="badge">${escapeHtml(cat)}</span>
-              <h3>${titleHtml}</h3>
-              ${descHtml ? `<p>${descHtml}</p>` : ''}
-              <div class="more"><a href="${link}">Leggi</a></div>
-            </article>`;
-          }
-        }).join('');
-      }
-
-      // Paginazione
-      pagination.innerHTML = '';
-      if (totalPages > 1) {
-        const prev = document.createElement('button');
-        prev.textContent = '‹';
-        prev.disabled = currentPage <= 1;
-        prev.addEventListener('click', () => goToPage(currentPage - 1));
-        pagination.appendChild(prev);
-
-        const pages = document.createElement('span');
-        pages.style.display = 'flex';
-        pages.style.gap = '.3rem';
-        const maxVisible = 5;
-        let startP = Math.max(1, currentPage - Math.floor(maxVisible / 2));
-        let endP = Math.min(totalPages, startP + maxVisible - 1);
-        if (endP - startP < maxVisible - 1) startP = Math.max(1, endP - maxVisible + 1);
-
-        if (startP > 1) {
-          const b = document.createElement('button');
-          b.textContent = '1';
-          b.addEventListener('click', () => goToPage(1));
-          pages.appendChild(b);
-          if (startP > 2) { const e = document.createElement('span'); e.textContent = '…'; e.style.color = 'var(--muted)'; pages.appendChild(e); }
+        } catch (error) {
+            /* parola non valida per RegExp: ignorata */
         }
-        for (let i = startP; i <= endP; i++) {
-          const b = document.createElement('button');
-          b.textContent = i;
-          if (i === currentPage) b.classList.add('active-page');
-          b.addEventListener('click', () => goToPage(i));
-          pages.appendChild(b);
-        }
-        if (endP < totalPages) {
-          if (endP < totalPages - 1) { const e = document.createElement('span'); e.textContent = '…'; e.style.color = 'var(--muted)'; pages.appendChild(e); }
-          const b = document.createElement('button');
-          b.textContent = totalPages;
-          b.addEventListener('click', () => goToPage(totalPages));
-          pages.appendChild(b);
-        }
-        pagination.appendChild(pages);
-
-        const next = document.createElement('button');
-        next.textContent = '›';
-        next.disabled = currentPage >= totalPages;
-        next.addEventListener('click', () => goToPage(currentPage + 1));
-        pagination.appendChild(next);
-      }
-
-      // Aggiorna URL
-      updateURL();
-    }
-
-    function goToPage(p) {
-      const total = getFilteredData().length;
-      const max = Math.max(1, Math.ceil(total / perPage));
-      if (p < 1 || p > max) return;
-      currentPage = p;
-      render();
-      container.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
-    // ============================================================
-    // FILTRI UI
-    // ============================================================
-    function buildFilters() {
-      const cats = getCategories();
-      // Select
-      filterSelect.innerHTML = `<option value="">Tutte</option>` +
-        cats.map(([c, count]) =>
-          `<option value="${c}"${c === currentFilter ? ' selected' : ''}>${c} (${count})</option>`
-        ).join('');
-
-      // Chips
-      chipsContainer.innerHTML = `
-        <button class="chip${!currentFilter ? ' active' : ''}" data-cat="">Tutte</button>
-        ${cats.map(([c, count]) =>
-          `<button class="chip${c === currentFilter ? ' active' : ''}" data-cat="${c}">${c} (${count})</button>`
-        ).join('')}
-        <button class="chip reset" data-cat="reset">✕ Cancella</button>
-      `;
-      chipsContainer.querySelectorAll('.chip').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const val = btn.getAttribute('data-cat');
-          if (val === 'reset') setFilter('');
-          else setFilter(val);
-        });
-      });
-    }
-
-    // ============================================================
-    // SETTER DI STATO
-    // ============================================================
-    function setFilter(cat, pushState = true) {
-      currentFilter = cat || '';
-      currentPage = 1;
-      filterSelect.value = cat;
-      buildFilters(); // aggiorna active
-      render();
-      if (pushState) updateURL();
-    }
-
-    function setSort(sort, pushState = true) {
-      currentSort = sort || 'title';
-      sortSelect.value = sort;
-      render();
-      if (pushState) updateURL();
-    }
-
-    function setView(view, pushState = true) {
-      currentView = view || 'grid';
-      viewGrid.classList.toggle('active', view === 'grid');
-      viewList.classList.toggle('active', view === 'list');
-      render();
-      if (pushState) updateURL();
-    }
-
-    // ============================================================
-    // URL STATE
-    // ============================================================
-    function updateURL() {
-      const params = new URLSearchParams();
-      if (currentFilter) params.set('cat', currentFilter);
-      if (currentSort !== 'title') params.set('sort', currentSort);
-      if (currentView !== 'grid') params.set('view', currentView);
-      if (currentPage > 1) params.set('page', currentPage);
-      if (searchTerm) params.set('q', searchTerm);
-      const url = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
-      history.replaceState({ cat: currentFilter, sort: currentSort, view: currentView, page: currentPage, q: searchTerm }, '', url);
-    }
-
-    function restoreFromURL() {
-      const params = new URLSearchParams(window.location.search);
-      const cat = params.get('cat') || '';
-      const sort = params.get('sort') || 'title';
-      const view = params.get('view') || 'grid';
-      const page = parseInt(params.get('page'), 10) || 1;
-      const q = params.get('q') || '';
-      if (cat) currentFilter = cat;
-      currentSort = sort;
-      currentView = view;
-      currentPage = page;
-      searchTerm = q;
-      searchInput.value = q;
-      if (q) clearBtn.style.display = 'block';
-      else clearBtn.style.display = 'none';
-      sortSelect.value = sort;
-      viewGrid.classList.toggle('active', view === 'grid');
-      viewList.classList.toggle('active', view === 'list');
-      // I filtri verranno applicati dopo il render
-    }
-
-    // ============================================================
-    // RICERCA
-    // ============================================================
-    function performSearch() {
-      const q = searchInput.value.trim();
-      searchTerm = q;
-      currentPage = 1;
-      clearBtn.style.display = q ? 'block' : 'none';
-      render();
-      updateURL();
-    }
-
-    searchInput.addEventListener('input', performSearch);
-    searchBtn.addEventListener('click', performSearch);
-    searchInput.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); performSearch(); } });
-    clearBtn.addEventListener('click', () => {
-      searchInput.value = '';
-      performSearch();
-      searchInput.focus();
     });
 
-    // ============================================================
-    // EVENTI UI
-    // ============================================================
-    filterSelect.addEventListener('change', () => setFilter(filterSelect.value, true));
-    sortSelect.addEventListener('change', () => setSort(sortSelect.value, true));
-    viewGrid.addEventListener('click', () => setView('grid', true));
-    viewList.addEventListener('click', () => setView('list', true));
+    return result;
+}
 
-    window.addEventListener('popstate', (e) => {
-      const state = e.state || {};
-      if (state.cat !== undefined) currentFilter = state.cat;
-      if (state.sort) currentSort = state.sort;
-      if (state.view) currentView = state.view;
-      if (state.page) currentPage = state.page;
-      if (state.q !== undefined) {
-        searchTerm = state.q || '';
-        searchInput.value = searchTerm;
-        clearBtn.style.display = searchTerm ? 'block' : 'none';
-      }
-      buildFilters();
-      render();
+
+/* =========================================================
+   FILTRAGGIO
+   ========================================================= */
+
+function getFilteredArticles() {
+
+    const query = normalize(currentSearch);
+
+    let filtered = articles.filter(article => {
+
+        const file = article[0];
+        const title = article[1];
+        const category = article[2];
+
+        const matchesCategory =
+            currentCategory === "Tutti" ||
+            category === currentCategory;
+
+        if (!matchesCategory) {
+            return false;
+        }
+
+        if (!query) {
+            return true;
+        }
+
+        const searchable = normalize(
+            title + " " + category + " " + file
+        );
+
+        return searchable.includes(query);
     });
 
-    // ============================================================
-    // AVVIO
-    // ============================================================
-    restoreFromURL();
-    buildFilters();
-    render();
 
-  })();
+    /* ordinamento */
+
+    filtered.sort((a, b) => {
+
+        if (currentSort === "za") {
+            return normalize(b[1])
+                .localeCompare(normalize(a[1]), "it");
+        }
+
+        if (currentSort === "recent") {
+
+            /*
+             * Non abbiamo la data di modifica come dato
+             * affidabile nel browser.
+             *
+             * Manteniamo quindi l'ordine originale
+             * dell'archivio per questa modalità.
+             */
+
+            return articles.indexOf(a) - articles.indexOf(b);
+        }
+
+        return normalize(a[1])
+            .localeCompare(normalize(b[1]), "it");
+    });
+
+    return filtered;
+}
+
+
+/* =========================================================
+   RENDER ARTICOLI
+   ========================================================= */
+
+function renderArticles() {
+
+    const filtered = getFilteredArticles();
+
+    const total = filtered.length;
+
+    const totalPages =
+        Math.max(1, Math.ceil(total / ARTICLES_PER_PAGE));
+
+    if (currentPage > totalPages) {
+        currentPage = totalPages;
+    }
+
+    const start =
+        (currentPage - 1) * ARTICLES_PER_PAGE;
+
+    const visible =
+        filtered.slice(
+            start,
+            start + ARTICLES_PER_PAGE
+        );
+
+
+    grid.innerHTML = "";
+
+    grid.classList.toggle(
+        "list-view",
+        currentView === "list"
+    );
+
+
+    if (total === 0) {
+
+        noResults.classList.add("visible");
+        pagination.innerHTML = "";
+        resultsCount.innerHTML = "Nessun risultato";
+        pageInfo.textContent = "";
+
+        return;
+    }
+
+
+    noResults.classList.remove("visible");
+
+
+    visible.forEach(article => {
+
+        const [file, title, category] = article;
+
+        const card = document.createElement("article");
+
+        card.className = "article-card";
+
+
+        /*
+         * encodeURI preserva correttamente caratteri
+         * accentati e spazi nei nomi dei file.
+         */
+
+        const href =
+            "./" + encodeURI(file);
+
+
+        card.innerHTML = `
+            <a href="${href}">
+
+                <span class="article-category">
+                    ${highlight(category, currentSearch)}
+                </span>
+
+                <h2 class="article-title">
+                    ${highlight(title, currentSearch)}
+                </h2>
+
+                <div class="article-file">
+                    ${highlight(file, currentSearch)}
+                </div>
+
+            </a>
+        `;
+
+
+        grid.appendChild(card);
+    });
+
+
+    const first = start + 1;
+    const last = Math.min(
+        start + ARTICLES_PER_PAGE,
+        total
+    );
+
+
+    resultsCount.innerHTML =
+        `<strong>${total}</strong> articoli · ` +
+        `${first}–${last}`;
+
+
+    pageInfo.textContent =
+        `Pagina ${currentPage} di ${totalPages}`;
+
+
+    renderPagination(totalPages);
+}
+
+
+/* =========================================================
+   PAGINAZIONE
+   ========================================================= */
+
+function renderPagination(totalPages) {
+
+    pagination.innerHTML = "";
+
+    if (totalPages <= 1) {
+        return;
+    }
+
+
+    const previous =
+        document.createElement("button");
+
+    previous.className = "page-btn";
+    previous.textContent = "‹";
+    previous.title = "Pagina precedente";
+    previous.disabled = currentPage === 1;
+
+    previous.addEventListener("click", () => {
+
+        if (currentPage > 1) {
+            currentPage--;
+            renderArticles();
+            scrollToArticles();
+        }
+
+    });
+
+    pagination.appendChild(previous);
+
+
+    const pages = getPaginationPages(
+        currentPage,
+        totalPages
+    );
+
+
+    pages.forEach(page => {
+
+        if (page === "...") {
+
+            const dots =
+                document.createElement("span");
+
+            dots.className = "page-dots";
+            dots.textContent = "…";
+
+            pagination.appendChild(dots);
+
+            return;
+        }
+
+
+        const button =
+            document.createElement("button");
+
+        button.className = "page-btn";
+
+        if (page === currentPage) {
+            button.classList.add("active");
+        }
+
+        button.textContent = page;
+
+        button.addEventListener("click", () => {
+
+            currentPage = page;
+
+            renderArticles();
+            scrollToArticles();
+
+        });
+
+        pagination.appendChild(button);
+
+    });
+
+
+    const next =
+        document.createElement("button");
+
+    next.className = "page-btn";
+    next.textContent = "›";
+    next.title = "Pagina successiva";
+    next.disabled = currentPage === totalPages;
+
+    next.addEventListener("click", () => {
+
+        if (currentPage < totalPages) {
+            currentPage++;
+            renderArticles();
+            scrollToArticles();
+        }
+
+    });
+
+    pagination.appendChild(next);
+}
+
+
+/* =========================================================
+   PAGINE DA VISUALIZZARE
+   ========================================================= */
+
+function getPaginationPages(current, total) {
+
+    if (total <= 7) {
+        return Array.from(
+            { length: total },
+            (_, i) => i + 1
+        );
+    }
+
+    const pages = [1];
+
+    if (current > 4) {
+        pages.push("...");
+    }
+
+
+    const start =
+        Math.max(2, current - 1);
+
+    const end =
+        Math.min(total - 1, current + 1);
+
+
+    for (let i = start; i <= end; i++) {
+        pages.push(i);
+    }
+
+
+    if (current < total - 3) {
+        pages.push("...");
+    }
+
+
+    pages.push(total);
+
+    return pages;
+}
+
+
+/* =========================================================
+   SCROLL
+   ========================================================= */
+
+function scrollToArticles() {
+
+    const target =
+        document.getElementById("lista-articoli");
+
+    if (!target) return;
+
+    target.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+}
+
+
+/* =========================================================
+   RICERCA
+   ========================================================= */
+
+searchInput.addEventListener("input", () => {
+
+    currentSearch =
+        searchInput.value.trim();
+
+    currentPage = 1;
+
+    clearSearch.style.display =
+        currentSearch ? "block" : "none";
+
+    renderArticles();
+});
+
+
+clearSearch.addEventListener("click", () => {
+
+    searchInput.value = "";
+    currentSearch = "";
+    currentPage = 1;
+
+    clearSearch.style.display = "none";
+
+    searchInput.focus();
+
+    renderArticles();
+});
+
+
+/* =========================================================
+   FILTRI
+   ========================================================= */
+
+document
+    .querySelectorAll(".filter-btn")
+    .forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            document
+                .querySelectorAll(".filter-btn")
+                .forEach(btn =>
+                    btn.classList.remove("active")
+                );
+
+            button.classList.add("active");
+
+            currentCategory =
+                button.dataset.category;
+
+            currentPage = 1;
+
+            renderArticles();
+        });
+
+    });
+
+
+/* =========================================================
+   ORDINAMENTO
+   ========================================================= */
+
+sortSelect.addEventListener("change", () => {
+
+    currentSort =
+        sortSelect.value;
+
+    currentPage = 1;
+
+    renderArticles();
+});
+
+
+/* =========================================================
+   VISTA GRIGLIA / LISTA
+   ========================================================= */
+
+gridView.addEventListener("click", () => {
+
+    currentView = "grid";
+
+    gridView.classList.add("active");
+    listView.classList.remove("active");
+
+    renderArticles();
+});
+
+
+listView.addEventListener("click", () => {
+
+    currentView = "list";
+
+    listView.classList.add("active");
+    gridView.classList.remove("active");
+
+    renderArticles();
+});
+
+
+/* =========================================================
+   TEMA CHIARO / SCURO
+   ========================================================= */
+
+const themeToggle =
+    document.getElementById("themeToggle");
+
+
+function setTheme(theme) {
+
+    document.documentElement
+        .setAttribute("data-theme", theme);
+
+    localStorage.setItem(
+        "echi-articoli-theme",
+        theme
+    );
+}
+
+
+function loadTheme() {
+
+    const saved =
+        localStorage.getItem(
+            "echi-articoli-theme"
+        );
+
+    if (saved) {
+        setTheme(saved);
+        return;
+    }
+
+
+    const prefersDark =
+        window.matchMedia &&
+        window.matchMedia(
+            "(prefers-color-scheme: dark)"
+        ).matches;
+
+    setTheme(
+        prefersDark ? "dark" : "light"
+    );
+}
+
+
+themeToggle.addEventListener("click", () => {
+
+    const current =
+        document.documentElement
+            .getAttribute("data-theme");
+
+    setTheme(
+        current === "dark"
+            ? "light"
+            : "dark"
+    );
+});
+
+
+/* =========================================================
+   AVVIO
+   ========================================================= */
+
+loadTheme();
+renderArticles();
+
 </script>
 
 </body>
 </html>
+```
