@@ -1950,7 +1950,7 @@
   <script>
 document.addEventListener("DOMContentLoaded", function () {
 
-    /* =========================================================
+        /* =========================================================
        RICERCA – MOTORE POTENTE
        ========================================================= */
     const searchInput = document.getElementById('searchInput');
@@ -1980,6 +1980,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Evidenzia i token nel testo visibile
+       // Evidenzia i token nel testo visibile (incluso indice)
     function highlightSearch(term) {
       removeHighlights();
       if (!term) return;
@@ -1992,11 +1993,20 @@ document.addEventListener("DOMContentLoaded", function () {
       }).join('|');
       var regex = new RegExp(pattern, 'gi');
 
-      var visibleEpoche = document.querySelectorAll('.epoca:not(.hidden)');
+      // 🔥 Aggiungi anche gli elementi dell'indice e le aree statiche
+      var searchTargets = document.querySelectorAll(
+        '.epoca:not(.hidden), ' +
+        '.indice-grid a, ' +        // link dell'indice
+        '.indice h2, ' +            // titolo "Indice delle epoche"
+        '.intro, ' +                // introduzione
+        '.continua, ' +             // sezione "Continua con"
+        '.page-title, ' +           // titolo principale
+        '.page-subtitle'            // sottotitolo
+      );
 
-      visibleEpoche.forEach(function(epoca) {
+      searchTargets.forEach(function(el) {
         var walker = document.createTreeWalker(
-          epoca,
+          el,
           NodeFilter.SHOW_TEXT,
           {
             acceptNode: function(node) {
@@ -2004,6 +2014,8 @@ document.addEventListener("DOMContentLoaded", function () {
               if (node.parentElement && node.parentElement.classList && node.parentElement.classList.contains('highlight')) {
                 return NodeFilter.FILTER_REJECT;
               }
+              // Per l'indice, vogliamo evidenziare anche dentro i link
+              // (non c'è più l'esclusione dei link)
               return NodeFilter.FILTER_ACCEPT;
             }
           },
@@ -2063,7 +2075,8 @@ document.addEventListener("DOMContentLoaded", function () {
       epoche.forEach(function(epoca) {
         var text = epoca.textContent || '';
         var normalizedText = normalize(text);
-        var match = tokens.some(function(token) {
+        // 🔥 MODIFICA: ora richiede TUTTE le parole (every) invece di almeno una (some)
+        var match = tokens.every(function(token) {
           return normalizedText.includes(normalize(token));
         });
 
