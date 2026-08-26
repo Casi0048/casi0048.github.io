@@ -34,6 +34,7 @@
     --shadow: 0 10px 35px rgba(45,35,20,.10);
     --accent: #8b6728;
     --input: rgba(255,255,255,.82);
+    --gold-line: rgba(164, 122, 44, 0.22);
 }
 
 html[data-theme="dark"] {
@@ -49,6 +50,7 @@ html[data-theme="dark"] {
     --shadow: 0 14px 40px rgba(0,0,0,.35);
     --accent: #d5b56a;
     --input: rgba(27,32,40,.95);
+    --gold-line: rgba(213, 181, 106, 0.22);
 }
 
 * {
@@ -493,6 +495,217 @@ mark {
 }
 
 /* =========================================================
+   PLAYER MUSICALE
+   ========================================================= */
+
+.music-player {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 9999;
+    font-family: 'Inter', system-ui, sans-serif;
+}
+
+.player-toggle {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: 1px solid var(--gold-line);
+    background: rgba(10, 12, 20, 0.94);
+    color: var(--gold);
+    font-size: 1.25rem;
+    cursor: pointer;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+    transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease, color 0.4s ease;
+    display: grid;
+    place-items: center;
+}
+
+html[data-theme="dark"] .player-toggle {
+    background: rgba(10, 12, 20, 0.94);
+    border-color: rgba(213, 181, 106, 0.22);
+    color: #d5b56a;
+}
+
+html[data-theme="dark"] .player-toggle:hover {
+    border-color: rgba(213, 181, 106, 0.65);
+    background: rgba(18, 18, 42, 0.96);
+}
+
+.player-toggle:hover {
+    transform: scale(1.05);
+    border-color: rgba(164, 122, 44, 0.65);
+    background: rgba(18, 18, 42, 0.96);
+}
+
+.player-panel {
+    position: absolute;
+    right: 0;
+    bottom: 62px;
+    width: 280px;
+    padding: 16px 17px;
+    border: 1px solid var(--gold-line);
+    border-radius: 14px;
+    background: rgba(12, 14, 23, 0.97);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px) scale(0.97);
+    transform-origin: bottom right;
+    transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease, background 0.4s ease, border-color 0.4s ease;
+}
+
+html[data-theme="dark"] .player-panel {
+    background: rgba(12, 14, 23, 0.97);
+    border-color: rgba(213, 181, 106, 0.18);
+}
+
+.music-player.open .player-panel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+.music-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 14px;
+}
+
+.music-label {
+    display: block;
+    font-size: 0.58rem;
+    letter-spacing: 1.4px;
+    color: rgba(164, 122, 44, 0.65);
+    margin-bottom: 3px;
+}
+
+html[data-theme="dark"] .music-label {
+    color: rgba(213, 181, 106, 0.65);
+}
+
+.music-title {
+    display: block;
+    font-family: Georgia, serif;
+    font-size: 0.75rem;
+    color: #eee;
+}
+
+html[data-theme="dark"] .music-title {
+    color: #eee9df;
+}
+
+.music-close {
+    border: 0;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 1.25rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.3s;
+}
+
+html[data-theme="dark"] .music-close {
+    color: rgba(255, 255, 255, 0.45);
+}
+
+.music-close:hover {
+    color: #fff;
+}
+
+html[data-theme="dark"] .music-close:hover {
+    color: #eee9df;
+}
+
+.music-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.music-play,
+.music-volume {
+    flex: 0 0 auto;
+    border: 0;
+    background: transparent;
+    color: var(--gold);
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+html[data-theme="dark"] .music-play,
+html[data-theme="dark"] .music-volume {
+    color: #d5b56a;
+}
+
+.music-play {
+    font-size: 0.95rem;
+    width: 25px;
+}
+
+.music-volume {
+    font-size: 0.85rem;
+    opacity: 0.8;
+}
+
+.music-progress {
+    flex: 1;
+    min-width: 0;
+    height: 3px;
+    appearance: none;
+    -webkit-appearance: none;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+html[data-theme="dark"] .music-progress {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.music-progress::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--gold);
+    cursor: pointer;
+}
+
+html[data-theme="dark"] .music-progress::-webkit-slider-thumb {
+    background: #d5b56a;
+}
+
+.music-progress::-moz-range-thumb {
+    width: 9px;
+    height: 9px;
+    border: 0;
+    border-radius: 50%;
+    background: var(--gold);
+    cursor: pointer;
+}
+
+html[data-theme="dark"] .music-progress::-moz-range-thumb {
+    background: #d5b56a;
+}
+
+.player-status {
+    font-size: 0.68rem;
+    color: var(--text-soft);
+    transition: color 0.4s ease;
+}
+
+html[data-theme="dark"] .player-status {
+    color: #aaa49a;
+}
+
+/* =========================================================
    FOOTER
    ========================================================= */
 
@@ -574,6 +787,40 @@ mark {
     .results-info {
         align-items: flex-start;
         flex-direction: column;
+    }
+
+    .music-player {
+        right: 16px;
+        bottom: 16px;
+    }
+
+    .player-toggle {
+        width: 42px;
+        height: 42px;
+        font-size: 1.1rem;
+    }
+
+    .player-panel {
+        width: min(240px, calc(100vw - 32px));
+        bottom: 56px;
+    }
+}
+
+@media (max-width: 480px) {
+    .player-toggle {
+        width: 38px;
+        height: 38px;
+        font-size: 1rem;
+    }
+
+    .player-panel {
+        width: min(220px, calc(100vw - 24px));
+        padding: 14px;
+        bottom: 50px;
+    }
+
+    .music-title {
+        font-size: 1rem;
     }
 }
 
@@ -775,12 +1022,46 @@ mark {
         ·
         <a href="../filosofia/index.html">Filosofia</a>
         ·
-        <a href="../pagina/risorse.html">Risorse</a>
+        <a href="../pagine/risorse.html">Risorse</a>
     </p>
 
     <p>Un viaggio attraverso la storia del pensiero.</p>
 
 </footer>
+
+<!-- =========================================================
+   PLAYER — AUDIO
+   ========================================================= -->
+<audio id="myAudio"
+       playsinline
+       preload="auto"
+       src="https://casi0048.github.io/suoni/Strauss.mp3">
+</audio>
+
+<!-- =========================================================
+   PLAYER — HTML
+   ========================================================= -->
+<div class="music-player" id="music-player">
+    <button class="player-toggle" id="player-toggle" type="button" aria-label="Apri lettore musicale" aria-expanded="false">
+        ♪
+    </button>
+
+    <div class="player-panel">
+        <div class="music-header">
+            <div>
+                <span class="music-label">MUSICA PER LO STUDIO</span>
+                <span class="music-title">Strauss – 'Sul bel Danubio blu'</span>
+            </div>
+            <button class="music-close" id="musicClose" aria-label="Chiudi player">✕</button>
+        </div>
+        <div class="music-controls">
+            <button class="music-play" id="player-play" aria-label="Riproduci musica">▶</button>
+            <button class="music-volume" id="volumeToggle" aria-label="Attiva/disattiva audio">🔊</button>
+            <input type="range" class="music-progress" id="musicProgress" min="0" max="100" value="0" aria-label="Avanzamento brano">
+            <div class="player-status" id="player-status">Pronto</div>
+        </div>
+    </div>
+</div>
 
 
 <script>
@@ -1639,6 +1920,106 @@ themeToggle.addEventListener("click", () => {
 
 
 /* =========================================================
+   PLAYER MUSICALE
+   ========================================================= */
+
+const audio = document.getElementById('myAudio');
+const playButton = document.getElementById('player-play');
+const playerStatus = document.getElementById('player-status');
+const player = document.getElementById('music-player');
+const playerToggle = document.getElementById('player-toggle');
+const musicClose = document.getElementById('musicClose');
+const progress = document.getElementById('musicProgress');
+const volumeToggle = document.getElementById('volumeToggle');
+
+if (audio && playButton) {
+    playButton.addEventListener('click', function() {
+        if (audio.paused) {
+            audio.play()
+                .then(function() {
+                    playButton.textContent = '❚❚';
+                    if (playerStatus) playerStatus.textContent = 'In riproduzione';
+                })
+                .catch(function(error) {
+                    console.warn('Riproduzione audio non avviata:', error);
+                });
+        } else {
+            audio.pause();
+            playButton.textContent = '▶';
+            if (playerStatus) playerStatus.textContent = 'In pausa';
+        }
+    });
+
+    audio.addEventListener('ended', function() {
+        playButton.textContent = '▶';
+        if (playerStatus) playerStatus.textContent = 'Pronto';
+    });
+}
+
+// Apertura / chiusura pannello
+if (player && playerToggle) {
+    function openPanel() {
+        player.classList.add('open');
+        playerToggle.setAttribute('aria-expanded', 'true');
+    }
+
+    function closePanel() {
+        player.classList.remove('open');
+        playerToggle.setAttribute('aria-expanded', 'false');
+    }
+
+    playerToggle.addEventListener('click', function() {
+        if (player.classList.contains('open')) {
+            closePanel();
+        } else {
+            openPanel();
+        }
+    });
+
+    if (musicClose) {
+        musicClose.addEventListener('click', closePanel);
+    }
+
+    document.addEventListener('click', function(event) {
+        if (!player.contains(event.target)) {
+            closePanel();
+        }
+    });
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape' && player.classList.contains('open')) {
+            closePanel();
+        }
+    });
+}
+
+// Progress bar
+if (audio && progress) {
+    audio.addEventListener('timeupdate', function() {
+        if (audio.duration) {
+            progress.value = (audio.currentTime / audio.duration) * 100;
+        }
+    });
+
+    progress.addEventListener('input', function() {
+        if (audio.duration) {
+            audio.currentTime = (this.value / 100) * audio.duration;
+        }
+    });
+}
+
+// Volume toggle
+let isMuted = false;
+if (volumeToggle && audio) {
+    volumeToggle.addEventListener('click', function() {
+        isMuted = !isMuted;
+        audio.muted = isMuted;
+        this.textContent = isMuted ? '🔇' : '🔊';
+    });
+}
+
+
+/* =========================================================
    AVVIO
    ========================================================= */
 
@@ -1649,4 +2030,3 @@ renderArticles();
 
 </body>
 </html>
-
