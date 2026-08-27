@@ -1496,7 +1496,7 @@ body.light-theme .torna-su:hover {
 
 
 /* ============================================================
-   PLAYER MUSICALE — MINIMAL
+   PLAYER MUSICALE — COMPLETO (con tema chiaro/scuro)
    ============================================================ */
 
 .music-player {
@@ -1507,7 +1507,7 @@ body.light-theme .torna-su:hover {
     font-family: 'Inter', sans-serif;
 }
 
-/* Pulsante chiuso */
+/* ===== Pulsante chiuso ===== */
 
 .music-toggle {
     width: 46px;
@@ -1519,44 +1519,46 @@ body.light-theme .torna-su:hover {
     font-size: 1.25rem;
     cursor: pointer;
     backdrop-filter: blur(12px);
-    box-shadow: 0 8px 30px rgba(0,0,0,.35);
-    transition:
-        transform .25s ease,
-        border-color .25s ease,
-        background .25s ease;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, .35);
+    transition: transform .25s ease, border-color .25s ease, background .25s ease;
 }
 
 .music-toggle:hover {
     transform: translateY(-2px);
-    border-color: rgba(255,216,106,.65);
-    background: rgba(18,18,42,.96);
+    border-color: rgba(255, 216, 106, .65);
+    background: rgba(18, 18, 42, .96);
 }
 
-/* Pannello */
+/* TEMA CHIARO — Pulsante chiuso */
+body.light-theme .music-toggle {
+    background: rgba(242, 237, 229, .94);
+    border-color: rgba(184, 134, 11, .28);
+    color: #b8860b;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, .12);
+}
+
+body.light-theme .music-toggle:hover {
+    border-color: rgba(184, 134, 11, .65);
+    background: rgba(230, 225, 215, .96);
+}
+
+/* ===== Pannello ===== */
 
 .music-panel {
     position: absolute;
     right: 0;
     bottom: 58px;
-
     width: 280px;
     padding: 16px 17px;
-
-    background: rgba(12,12,30,.96);
-    border: 1px solid rgba(255,216,106,.18);
+    background: rgba(12, 12, 30, .96);
+    border: 1px solid rgba(255, 216, 106, .18);
     border-radius: 12px;
-
     backdrop-filter: blur(16px);
-    box-shadow: 0 18px 50px rgba(0,0,0,.55);
-
+    box-shadow: 0 18px 50px rgba(0, 0, 0, .55);
     opacity: 0;
     visibility: hidden;
     transform: translateY(8px) scale(.98);
-
-    transition:
-        opacity .22s ease,
-        transform .22s ease,
-        visibility .22s ease;
+    transition: opacity .22s ease, transform .22s ease, visibility .22s ease;
 }
 
 .music-player.open .music-panel {
@@ -1565,7 +1567,14 @@ body.light-theme .torna-su:hover {
     transform: translateY(0) scale(1);
 }
 
-/* Intestazione */
+/* TEMA CHIARO — Pannello */
+body.light-theme .music-panel {
+    background: rgba(242, 237, 229, .97);
+    border-color: rgba(184, 134, 11, .18);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, .15);
+}
+
+/* ===== Intestazione con crocetta ===== */
 
 .music-header {
     display: flex;
@@ -1579,31 +1588,49 @@ body.light-theme .torna-su:hover {
     display: block;
     font-size: .58rem;
     letter-spacing: 1.4px;
-    color: rgba(255,216,106,.65);
+    color: rgba(255, 216, 106, .65);
     margin-bottom: 3px;
+}
+
+body.light-theme .music-label {
+    color: rgba(184, 134, 11, .65);
 }
 
 .music-title {
     display: block;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.15rem;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 0.85rem;
     color: #eee;
+}
+
+body.light-theme .music-title {
+    color: #1a1a2e;
 }
 
 .music-close {
     border: 0;
     background: transparent;
-    color: rgba(255,255,255,.45);
+    color: rgba(255, 255, 255, .45);
     font-size: 1.25rem;
     cursor: pointer;
     line-height: 1;
+    padding: 0 0 0 4px;
+    transition: color .25s ease;
+}
+
+body.light-theme .music-close {
+    color: rgba(0, 0, 0, .45);
 }
 
 .music-close:hover {
     color: #fff;
 }
 
-/* Controlli */
+body.light-theme .music-close:hover {
+    color: #1a1a2e;
+}
+
+/* ===== Controlli ===== */
 
 .music-controls {
     display: flex;
@@ -1618,6 +1645,12 @@ body.light-theme .torna-su:hover {
     background: transparent;
     color: var(--gold);
     cursor: pointer;
+    transition: color .25s ease;
+}
+
+body.light-theme .music-play,
+body.light-theme .music-volume {
+    color: #b8860b;
 }
 
 .music-play {
@@ -1630,7 +1663,7 @@ body.light-theme .torna-su:hover {
     opacity: .8;
 }
 
-/* Barra */
+/* ===== Barra di avanzamento ===== */
 
 .music-progress {
     flex: 1;
@@ -1638,9 +1671,13 @@ body.light-theme .torna-su:hover {
     height: 3px;
     appearance: none;
     -webkit-appearance: none;
-    background: rgba(255,255,255,.15);
+    background: rgba(255, 255, 255, .15);
     border-radius: 5px;
     cursor: pointer;
+}
+
+body.light-theme .music-progress {
+    background: rgba(0, 0, 0, .15);
 }
 
 .music-progress::-webkit-slider-thumb {
@@ -1653,6 +1690,10 @@ body.light-theme .torna-su:hover {
     cursor: pointer;
 }
 
+body.light-theme .music-progress::-webkit-slider-thumb {
+    background: #b8860b;
+}
+
 .music-progress::-moz-range-thumb {
     width: 9px;
     height: 9px;
@@ -1662,10 +1703,25 @@ body.light-theme .torna-su:hover {
     cursor: pointer;
 }
 
-/* Mobile */
+body.light-theme .music-progress::-moz-range-thumb {
+    background: #b8860b;
+}
+
+/* ===== Stato ===== */
+
+.player-status {
+    font-size: .68rem;
+    color: var(--text-muted);
+    transition: color .4s ease;
+}
+
+body.light-theme .player-status {
+    color: #6a6a7e;
+}
+
+/* ===== Mobile ===== */
 
 @media (max-width: 600px) {
-
     .music-player {
         right: 16px;
         bottom: 16px;
@@ -1675,6 +1731,13 @@ body.light-theme .torna-su:hover {
         width: min(280px, calc(100vw - 32px));
     }
 
+    .music-title {
+        font-size: 1rem;
+    }
+
+    .music-close {
+        font-size: 1.1rem;
+    }
 }
 
 
@@ -2881,44 +2944,27 @@ body.light-theme .scuola-card:hover {
        src="https://casi0048.github.io/suoni/Strauss.mp3">
 </audio>
 
-
 <div class="music-player" id="musicPlayer">
 
-    <div class="player-panel">
-
-       <div>
-          <span class="music-label">MUSICA PER LO STUDIO</span>
-          <span class="music-title">Strauss – Sul bel Danubio blu</span>
+    <div class="music-panel">
+        <div class="music-header">
+            <div>
+                <span class="music-label">MUSICA PER LO STUDIO</span>
+                <span class="music-title">Strauss – 'Sul bel Danubio blu'</span>
+            </div>
+            <button class="music-close" id="musicClose" aria-label="Chiudi player">✕</button>
         </div>
 
-        <div class="player-controls">
-
-            <button
-                id="playButton"
-                aria-label="Riproduci musica">
-                ▶
-            </button>
-         <button class="music-volume" id="volumeToggle" aria-label="Attiva/disattiva audio">🔊</button>
-        <input type="range" class="music-progress" id="musicProgress" min="0" max="100" value="0" aria-label="Avanzamento brano">
-            <span
-                class="player-status"
-                id="playerStatus">
-                In pausa
-            </span>
-
+        <div class="music-controls">
+            <button class="music-play" id="playButton" aria-label="Riproduci musica">▶</button>
+            <button class="music-volume" id="volumeToggle" aria-label="Attiva/disattiva audio">🔊</button>
+            <input type="range" class="music-progress" id="musicProgress" min="0" max="100" value="0" aria-label="Avanzamento brano">
+            <span class="player-status" id="playerStatus">In pausa</span>
         </div>
-
     </div>
 
-
-    <button
-        class="player-toggle"
-        id="playerToggle"
-        aria-label="Apri lettore musicale"
-        aria-expanded="false">
-
+    <button class="music-toggle" id="playerToggle" aria-label="Apri lettore musicale" aria-expanded="false">
         ♫
-
     </button>
 
 </div>
@@ -3018,49 +3064,123 @@ body.light-theme .scuola-card:hover {
 <button class="torna-su" id="tornaSu" aria-label="Torna su" title="Torna su">↑</button>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener('DOMContentLoaded', function() {
 
-    /* =========================================================
-       PLAYER — ECHI DI SOFIA
-       ========================================================= */
-    const player = document.getElementById("musicPlayer");
-    const toggle = document.getElementById("playerToggle");
-    const playButton = document.getElementById("playButton");
-    const status = document.getElementById("playerStatus");
-    const audio = document.getElementById("myAudio");
+    /* ============================================================
+       PLAYER — GESTIONE COMPLETA
+       ============================================================ */
 
-    if (player && toggle && playButton && status && audio) {
-        toggle.addEventListener("click", function () {
-            const isOpen = player.classList.toggle("open");
-            toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
-        });
+    const player = document.getElementById('musicPlayer');
+    const playerToggle = document.getElementById('playerToggle');
+    const musicClose = document.getElementById('musicClose');
+    const playButton = document.getElementById('playButton');
+    const playerStatus = document.getElementById('playerStatus');
+    const progress = document.getElementById('musicProgress');
+    const volumeToggle = document.getElementById('volumeToggle');
+    const audio = document.getElementById('myAudio');
 
-        playButton.addEventListener("click", function () {
-            if (audio.paused) {
-                audio.play()
-                    .then(function () {
-                        playButton.textContent = "❚❚";
-                        status.textContent = "In riproduzione";
-                    })
-                    .catch(function () {
-                        status.textContent = "Impossibile avviare";
-                    });
+    if (player && playerToggle && playButton && audio) {
+
+        console.log('🎵 Player inizializzato');
+
+        // --- APERTURA ---
+        function openPanel() {
+            player.classList.add('open');
+            playerToggle.setAttribute('aria-expanded', 'true');
+        }
+
+        // --- CHIUSURA ---
+        function closePanel() {
+            player.classList.remove('open');
+            playerToggle.setAttribute('aria-expanded', 'false');
+        }
+
+        // --- TOGGLE APERTURA ---
+        playerToggle.addEventListener('click', function() {
+            if (player.classList.contains('open')) {
+                closePanel();
             } else {
-                audio.pause();
-                playButton.textContent = "▶";
-                status.textContent = "In pausa";
+                openPanel();
             }
         });
 
-        audio.addEventListener("ended", function () {
-            playButton.textContent = "▶";
-            status.textContent = "In pausa";
+        // --- CHIUSURA CON CROCETTA ---
+        if (musicClose) {
+            musicClose.addEventListener('click', closePanel);
+        }
+
+        // --- CHIUSURA CLIC FUORI ---
+        document.addEventListener('click', function(event) {
+            if (!player.contains(event.target)) {
+                closePanel();
+            }
         });
+
+        // --- CHIUSURA CON TASTO ESC ---
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && player.classList.contains('open')) {
+                closePanel();
+            }
+        });
+
+        // --- PLAY / PAUSA ---
+        playButton.addEventListener('click', function() {
+            if (audio.paused) {
+                audio.play()
+                    .then(function() {
+                        playButton.textContent = '❚❚';
+                        if (playerStatus) playerStatus.textContent = 'In riproduzione';
+                    })
+                    .catch(function(error) {
+                        console.warn('Riproduzione audio non avviata:', error);
+                    });
+            } else {
+                audio.pause();
+                playButton.textContent = '▶';
+                if (playerStatus) playerStatus.textContent = 'In pausa';
+            }
+        });
+
+        // --- FINE BRANO ---
+        audio.addEventListener('ended', function() {
+            playButton.textContent = '▶';
+            if (playerStatus) playerStatus.textContent = 'In pausa';
+        });
+
+        // --- PROGRESS BAR ---
+        if (audio && progress) {
+            audio.addEventListener('timeupdate', function() {
+                if (audio.duration) {
+                    progress.value = (audio.currentTime / audio.duration) * 100;
+                }
+            });
+            progress.addEventListener('input', function() {
+                if (audio.duration) {
+                    audio.currentTime = (this.value / 100) * audio.duration;
+                }
+            });
+        }
+
+        // --- VOLUME TOGGLE ---
+        let isMuted = false;
+        if (volumeToggle && audio) {
+            volumeToggle.addEventListener('click', function() {
+                isMuted = !isMuted;
+                audio.muted = isMuted;
+                this.textContent = isMuted ? '🔇' : '🔊';
+            });
+        }
+    } else {
+        console.warn('⚠️ Player: alcuni elementi DOM non trovati');
     }
 
     /* =========================================================
-   NEWSLETTER — UNICO BLOCCO
-   ========================================================= */
+       NEWSLETTER — UNICO BLOCCO (se presente)
+       ========================================================= */
+    // Qui puoi aggiungere il codice per la newsletter
+
+});
+</script>
 
 const newsletterTrigger =
     document.getElementById("newsletterTrigger");
