@@ -2015,90 +2015,141 @@ animation: waveMove 8s ease-in-out infinite alternate;
    SCUOLE E TRADIZIONI
    ============================================================ */
 
-.tradizioni {
-    padding: 2.5rem 0 3rem;
+/* ============================================================
+   SCUOLE E TRADIZIONI — 6 CARD COMPATTE
+   ============================================================ */
+
+.scuole {
+    padding: 0.5rem 0 3rem;
 }
 
-.tradizioni-inner {
-    padding-top: 2.2rem;
-    border-top: 1px solid rgba(255, 215, 0, 0.12);
-    text-align: center;
+.scuole-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+    margin-top: 1rem;
 }
 
-.tradizioni-heading span {
-    display: block;
-    margin-bottom: .35rem;
-    color: var(--gold);
-    font-size: 1rem;
-}
-
-.tradizioni-heading h2 {
-    margin: 0;
-
-    font-family: 'Cinzel', serif;
-    font-size: 1rem;
-    font-weight: 600;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-
-    color: var(--gold);
-}
-
-.tradizioni-heading p {
-    margin: .45rem auto 1.25rem;
-
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.05rem;
-    font-style: italic;
-
-    color: var(--text-secondary);
-}
-
-.tradizioni-links {
+.scuola-card {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    flex-wrap: wrap;
-
-    gap: .45rem .8rem;
+    text-align: center;
+    padding: 1.2rem 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    text-decoration: none;
+    color: var(--text);
+    transition: all var(--transition);
+    min-height: 140px;
+    justify-content: center;
 }
 
-.tradizioni-links a {
-    color: var(--text-secondary);
-    font-size: .82rem;
-
-    padding: .28rem .7rem;
-
-    border: 1px solid transparent;
-    border-radius: 999px;
-
-    transition:
-        color var(--transition),
-        border-color var(--transition),
-        background var(--transition),
-        transform var(--transition);
+.scuola-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--gold-line);
+    background: var(--surface-hover);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
 }
 
-.tradizioni-links a::after {
-    content: "·";
-    margin-left: .8rem;
+body.light-theme .scuola-card:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+}
+
+.scuola-icon {
+    font-size: 1.8rem;
+    margin-bottom: 0.4rem;
+    line-height: 1.2;
+}
+
+.scuola-card h3 {
+    margin: 0;
+    font-family: var(--display);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
     color: var(--gold);
-    opacity: .35;
+    transition: color var(--transition);
 }
 
-.tradizioni-links a:last-child::after {
-    display: none;
+.scuola-card p {
+    margin: 0.3rem 0 0;
+    font-family: var(--serif);
+    font-size: 0.75rem;
+    line-height: 1.3;
+    color: var(--text-soft);
+    opacity: 0.85;
+    max-width: 90%;
 }
 
-.tradizioni-links a:hover {
-    color: var(--gold);
-
-    border-color: var(--gold-border);
-
-    background: var(--gold-dim);
-
-    transform: translateY(-2px);
+.scuola-card:hover h3 {
+    color: var(--gold-light);
 }
+
+.scuola-card:hover p {
+    opacity: 1;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1024px) {
+    .scuole-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+    }
+}
+
+@media (max-width: 650px) {
+    .scuole-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .scuola-card {
+        min-height: 120px;
+        padding: 1rem 0.6rem;
+    }
+
+    .scuola-icon {
+        font-size: 1.5rem;
+    }
+
+    .scuola-card h3 {
+        font-size: 0.8rem;
+    }
+
+    .scuola-card p {
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .scuole-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .scuola-card {
+        min-height: 100px;
+        padding: 0.8rem 0.4rem;
+    }
+
+    .scuola-icon {
+        font-size: 1.3rem;
+    }
+
+    .scuola-card h3 {
+        font-size: 0.75rem;
+    }
+
+    .scuola-card p {
+        display: none; /* nasconde la descrizione su mobile per compattezza */
+    }
+}
+
 </style>
 </head>
 
@@ -2597,56 +2648,66 @@ animation: waveMove 8s ease-in-out infinite alternate;
      SCUOLE E TRADIZIONI
      ============================================================ -->
 
-<section class="tradizioni">
+<!-- ============================================================
+     SCUOLE E TRADIZIONI — 6 CARD COMPATTE
+     ============================================================ -->
+
+<section class="scuole">
 
     <div class="container">
 
-        <div class="tradizioni-inner">
+        <div class="section-heading">
+            <h2>
+                ✦ Scuole e tradizioni
+            </h2>
+            <p>
+                Sei percorsi del pensiero che hanno attraversato epoche e culture diverse.
+            </p>
+        </div>
 
-            <div class="tradizioni-heading">
+        <div class="scuole-grid">
 
-                <span>✦</span>
+            <!-- 1. CINISMO -->
+            <a href="https://casi0048.github.io/filosofia/cinismo.html" class="scuola-card">
+                <span class="scuola-icon">🐕</span>
+                <h3>Cinismo</h3>
+                <p>Libertà radicale e vita secondo natura.</p>
+            </a>
 
-                <h2>
-                    Scuole e tradizioni
-                </h2>
+            <!-- 2. EPICUREISMO -->
+            <a href="https://casi0048.github.io/filosofia/epicureismo.html" class="scuola-card">
+                <span class="scuola-icon">🍇</span>
+                <h3>Epicureismo</h3>
+                <p>Il piacere come assenza di dolore.</p>
+            </a>
 
-                <p>
-                    Percorsi del pensiero che attraversano
-                    epoche e culture diverse.
-                </p>
+            <!-- 3. STOICISMO -->
+            <a href="https://casi0048.github.io/filosofia/stoicismo.html" class="scuola-card">
+                <span class="scuola-icon">🏛️</span>
+                <h3>Stoicismo</h3>
+                <p>Virtù, destino e padronanza di sé.</p>
+            </a>
 
-            </div>
+            <!-- 4. PLATONISMO -->
+            <a href="https://casi0048.github.io/filosofia/platonismo.html" class="scuola-card">
+                <span class="scuola-icon">💡</span>
+                <h3>Platonismo</h3>
+                <p>Il mondo delle Idee e il Bene.</p>
+            </a>
 
+            <!-- 5. SCETTICISMO -->
+            <a href="https://casi0048.github.io/filosofia/scetticismo.html" class="scuola-card">
+                <span class="scuola-icon">❓</span>
+                <h3>Scetticismo</h3>
+                <p>Sospensione del giudizio per serenità.</p>
+            </a>
 
-            <nav class="tradizioni-links"
-                 aria-label="Scuole e tradizioni filosofiche">
-
-                <a href="articoli/platonismo.html">
-                    Platonismo
-                </a>
-
-                <a href="articoli/stoicismo.html">
-                    Stoicismo
-                </a>
-
-                <a href="articoli/epicureismo.html">
-                    Epicureismo
-                </a>
-
-                <a href="articoli/cinismo.html">
-                    Cinismo
-                </a>
-
-                <a href="articoli/scetticismo.html">
-                    Scetticismo
-                </a>
-
-                <a href="articoli/filosofia-indiana.html">
-                    Filosofia indiana
-                </a>
-
-            </nav>
+            <!-- 6. FILOSOFIA INDIANA -->
+            <a href="https://casi0048.github.io/filosofia/filosofia-indiana.html" class="scuola-card">
+                <span class="scuola-icon">🕉️</span>
+                <h3>Filosofia indiana</h3>
+                <p>Veda, Upanishad, Buddha e scuole.</p>
+            </a>
 
         </div>
 
