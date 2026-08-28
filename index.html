@@ -53,26 +53,26 @@
 :root {
     --bg: #080a12;
     --bg-soft: #0d101a;
-    --surface: rgba(255,255,255,.035);
-    --surface-hover: rgba(255,255,255,.055);
+    --surface: rgba(255, 255, 255, .035);
+    --surface-hover: rgba(255, 255, 255, .055);
 
     /* TESTI PIÙ VIVIDI */
-    --text: #f5f3f0;          /* bianco caldo */
-    --text-soft: #d4d0c8;     /* grigio chiaro */
-    --text-muted: #a0a0a0;    /* grigio medio */
+    --text: #f5f3f0;
+    --text-soft: #d4d0c8;
+    --text-muted: #a0a0a0;
 
     --gold: #d8b56a;
-    --gold-soft: rgba(216,181,106,.18);
-    --gold-line: rgba(216,181,106,.22);
-    --border: rgba(255,255,255,.08);
+    --gold-soft: rgba(216, 181, 106, .18);
+    --gold-line: rgba(216, 181, 106, .22);
+    --border: rgba(255, 255, 255, .08);
     --serif: "Cormorant Garamond", Georgia, serif;
     --display: "Cinzel", Georgia, serif;
     --sans: "Inter", Arial, sans-serif;
     --radius: 14px;
-    --transition: .28s cubic-bezier(.22,1,.36,1);
+    --transition: .28s cubic-bezier(.22, 1, .36, 1);
     --torna-su-bg: var(--gold);
     --torna-su-color: var(--bg);
-    --torna-su-shadow: rgba(216,181,106,0.3);
+    --torna-su-shadow: rgba(216, 181, 106, .3);
 }
 
 /* ============================================================
@@ -81,27 +81,26 @@
 body.light-theme {
     --bg: #f2ede5;
     --bg-soft: #e8e2d8;
-    --surface: rgba(0,0,0,.035);
-    --surface-hover: rgba(0,0,0,.055);
+    --surface: rgba(0, 0, 0, .035);
+    --surface-hover: rgba(0, 0, 0, .055);
 
-    /* TESTI PIÙ SCURI E DEFINITI */
-    --text: #1a1a2e;          /* blu scuro intenso */
-    --text-soft: #3a3a4e;     /* grigio blu scuro */
-    --text-muted: #6a6a7e;    /* grigio medio */
+    --text: #1a1a2e;
+    --text-soft: #3a3a4e;
+    --text-muted: #6a6a7e;
 
     --gold: #b8860b;
-    --gold-soft: rgba(184,134,11,.12);
-    --gold-line: rgba(184,134,11,.25);
-    --border: rgba(0,0,0,.08);
+    --gold-soft: rgba(184, 134, 11, .12);
+    --gold-line: rgba(184, 134, 11, .25);
+    --border: rgba(0, 0, 0, .08);
     --torna-su-bg: #b8860b;
     --torna-su-color: #f2ede5;
-    --torna-su-shadow: rgba(184,134,11,0.3);
-    --player-bg: rgba(18,18,30,.97);
+    --torna-su-shadow: rgba(184, 134, 11, .3);
+    --player-bg: rgba(18, 18, 30, .97);
     --modal-bg: #e8e2d8;
 }
 
 /* ============================================================
-   RESET
+   RESET & BASE
    ============================================================ */
 * {
     box-sizing: border-box;
@@ -114,17 +113,16 @@ html {
 }
 body {
     min-height: 100vh;
-    background: radial-gradient(circle at 50% -10%, rgba(91,104,145,.10), transparent 42%), var(--bg);
+    background: radial-gradient(circle at 50% -10%, rgba(91, 104, 145, .10), transparent 42%), var(--bg);
     color: var(--text);
     font-family: var(--sans);
     font-weight: 400;
     line-height: 1.6;
     overflow-x: hidden;
     transition: background .4s ease, color .4s ease;
-    text-shadow: 0 0 2px rgba(0,0,0,0.15);
+    text-shadow: 0 0 2px rgba(0, 0, 0, .15);
 }
 
-/* ===== CONTENUTO SOPRA LO SFONDO COSMICO ===== */
 main {
     position: relative;
     z-index: 1;
@@ -139,7 +137,14 @@ input {
     font: inherit;
 }
 
-/* ===== SFONDO COSMICO ===== */
+.container {
+    width: min(1180px, calc(100% - 48px));
+    margin: 0 auto;
+}
+
+/* ============================================================
+   SFONDO COSMICO
+   ============================================================ */
 .cosmic-sky {
     position: fixed;
     inset: 0;
@@ -153,11 +158,19 @@ body.light-theme .cosmic-sky {
     display: none;
 }
 
-/* ===== CONTENITORE ===== */
-.container {
-    width: min(1180px, calc(100% - 48px));
-    margin: 0 auto;
+/* ============================================================
+   STELLE — ANIMAZIONE GESTITA DAL JS
+   ============================================================ */
+
+.cosmic-sky use[href="#star4"],
+.cosmic-sky use[href="#starSmall"],
+.cosmic-sky use[href="#starSmallGlow"] {
+    will-change: opacity, filter;
 }
+
+
+
+
 
 /* ============================================================
    HEADER
@@ -165,16 +178,17 @@ body.light-theme .cosmic-sky {
 .site-header {
     position: relative;
     z-index: 10;
-    border-bottom: 1px solid rgba(255,255,255,.055);
-    background: rgba(8,10,18,.88);
+    border-bottom: 1px solid rgba(255, 255, 255, .055);
+    background: rgba(8, 10, 18, .88);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     transition: background .4s ease, border-color .4s ease;
 }
 body.light-theme .site-header {
-    background: rgba(242,237,229,.92);
-    border-bottom: 1px solid rgba(0,0,0,.06);
+    background: rgba(242, 237, 229, .92);
+    border-bottom: 1px solid rgba(0, 0, 0, .06);
 }
+
 .header-inner {
     min-height: 76px;
     display: flex;
@@ -236,7 +250,7 @@ body.light-theme .site-header {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 30px;
-    padding: 0.3rem 0.9rem;
+    padding: .3rem .9rem;
     font-size: .72rem;
     letter-spacing: .8px;
     color: var(--text-soft);
@@ -277,7 +291,7 @@ body.light-theme .site-header {
     letter-spacing: 4px;
     text-transform: uppercase;
     color: var(--gold);
-    opacity: 0.9;
+    opacity: .9;
     transition: color .4s ease;
 }
 .hero h1 {
@@ -288,7 +302,7 @@ body.light-theme .site-header {
     line-height: 1.05;
     color: var(--text);
     transition: color .4s ease;
-    text-shadow: 0 0 30px rgba(0,0,0,0.25);
+    text-shadow: 0 0 30px rgba(0, 0, 0, .25);
 }
 .hero h1 span {
     color: var(--gold);
@@ -302,7 +316,7 @@ body.light-theme .site-header {
     line-height: 1.55;
     color: var(--text-soft);
     transition: color .4s ease;
-    opacity: 0.85;
+    opacity: .85;
 }
 
 .hero-line {
@@ -347,25 +361,25 @@ body.light-theme .site-header {
 .thought-waves {
     position: absolute;
     left: 0;
-    top: 0px;
+    top: 0;
     width: 100%;
     height: 500px;
     pointer-events: none;
     z-index: 1;
 }
 .thought-waves path:nth-child(1) {
-    stroke: rgba(216, 181, 106, 0.50);
+    stroke: rgba(216, 181, 106, .50);
     stroke-width: 1.2;
     animation: waveMove 8s ease-in-out infinite alternate;
 }
 .thought-waves path:nth-child(2) {
-    stroke: rgba(85, 182, 255, 0.40);
-    stroke-width: 0.9;
-    animation: waveMove 6s ease-in-out 0.6s infinite alternate;
+    stroke: rgba(85, 182, 255, .40);
+    stroke-width: .9;
+    animation: waveMove 6s ease-in-out .6s infinite alternate;
 }
 .thought-waves path:nth-child(3) {
-    stroke: rgba(154, 208, 255, 0.45);
-    stroke-width: 0.7;
+    stroke: rgba(154, 208, 255, .45);
+    stroke-width: .7;
     animation: waveMove 6s ease-in-out 1.2s infinite alternate;
 }
 @keyframes waveMove {
@@ -454,19 +468,19 @@ body.light-theme .site-header {
     flex-direction: column;
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    background: linear-gradient(145deg, rgba(255,255,255,.045), rgba(255,255,255,.018));
+    background: linear-gradient(145deg, rgba(255, 255, 255, .045), rgba(255, 255, 255, .018));
     transition: transform var(--transition), border-color var(--transition), background var(--transition);
 }
 body.light-theme .epoch-card {
-    background: linear-gradient(145deg, rgba(0,0,0,.025), rgba(0,0,0,.01));
+    background: linear-gradient(145deg, rgba(0, 0, 0, .025), rgba(0, 0, 0, .01));
 }
 .epoch-card:hover {
     transform: translateY(-5px);
     border-color: var(--gold-line);
-    background: linear-gradient(145deg, rgba(216,181,106,.075), rgba(255,255,255,.02));
+    background: linear-gradient(145deg, rgba(216, 181, 106, .075), rgba(255, 255, 255, .02));
 }
 body.light-theme .epoch-card:hover {
-    background: linear-gradient(145deg, rgba(184,134,11,.06), rgba(0,0,0,.02));
+    background: linear-gradient(145deg, rgba(184, 134, 11, .06), rgba(0, 0, 0, .02));
 }
 .epoch-number {
     font-family: var(--display);
@@ -475,7 +489,7 @@ body.light-theme .epoch-card:hover {
     color: var(--text-muted);
     margin-bottom: 5px;
     transition: color .4s ease;
-    opacity: 0.85;
+    opacity: .85;
 }
 .epoch-card h3 {
     font-family: var(--display);
@@ -502,7 +516,7 @@ body.light-theme .epoch-card:hover {
     line-height: 1.45;
     color: var(--text-soft);
     transition: color .4s ease;
-    opacity: 0.9;
+    opacity: .9;
 }
 .epoch-link {
     margin-top: auto;
@@ -522,7 +536,7 @@ body.light-theme .epoch-card:hover {
    SCUOLE E TRADIZIONI — 6 CARD
    ============================================================ */
 .scuole {
-    padding: 0.5rem 0 1.5rem;
+    padding: .5rem 0 1.5rem;
 }
 .scuole-grid {
     display: grid;
@@ -535,7 +549,7 @@ body.light-theme .epoch-card:hover {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: 1.2rem 0.8rem;
+    padding: 1.2rem .8rem;
     border: 1px solid var(--border);
     border-radius: var(--radius);
     background: var(--surface);
@@ -556,26 +570,25 @@ body.light-theme .scuola-card:hover {
 }
 .scuola-icon {
     font-size: 1.8rem;
-    margin-bottom: 0.4rem;
+    margin-bottom: .4rem;
     line-height: 1.2;
 }
 .scuola-card h3 {
     margin: 0;
     font-family: var(--display);
-    font-size: 0.85rem;
+    font-size: .85rem;
     font-weight: 600;
-    letter-spacing: 0.5px;
+    letter-spacing: .5px;
     color: var(--gold);
     transition: color var(--transition);
 }
 .scuola-card p {
-    margin: 0.3rem 0 0;
+    margin: .3rem 0 0;
     font-family: var(--serif);
-    font-size: 0.92rem;
-
+    font-size: .92rem;
     line-height: 1.3;
     color: var(--text-soft);
-    opacity: 0.92;
+    opacity: .92;
     max-width: 90%;
 }
 .scuola-card:hover h3 {
@@ -1302,16 +1315,16 @@ body.light-theme .newsletter-form button[type="submit"] {
     }
     .scuola-card {
         min-height: 120px;
-        padding: 1rem 0.6rem;
+        padding: 1rem .6rem;
     }
     .scuola-icon {
         font-size: 1.5rem;
     }
     .scuola-card h3 {
-        font-size: 0.8rem;
+        font-size: .8rem;
     }
     .scuola-card p {
-        font-size: 0.7rem;
+        font-size: .7rem;
     }
 }
 @media (max-width: 650px) {
@@ -1366,7 +1379,7 @@ body.light-theme .newsletter-form button[type="submit"] {
     }
     .theme-toggle-btn {
         font-size: .65rem;
-        padding: 0.2rem 0.6rem;
+        padding: .2rem .6rem;
     }
     .theme-toggle-btn .icon {
         font-size: .75rem;
@@ -1402,18 +1415,19 @@ body.light-theme .newsletter-form button[type="submit"] {
     }
     .scuola-card {
         min-height: 100px;
-        padding: 0.8rem 0.4rem;
+        padding: .8rem .4rem;
     }
     .scuola-icon {
         font-size: 1.3rem;
     }
     .scuola-card h3 {
-        font-size: 0.75rem;
+        font-size: .75rem;
     }
     .scuola-card p {
         display: none;
     }
 }
+
 @media (prefers-reduced-motion: reduce) {
     html {
         scroll-behavior: auto;
@@ -1432,7 +1446,7 @@ body.light-theme .newsletter-form button[type="submit"] {
 <body>
 
 <!-- ============================================================
-     SFONDO COSMICO
+     SFONDO COSMICO – STELLE PICCOLE POTENZIATE
      ============================================================ -->
 <svg class="cosmic-sky" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <defs>
@@ -1459,37 +1473,84 @@ body.light-theme .newsletter-form button[type="submit"] {
         <filter id="softBlur" x="-30%" y="-30%" width="160%" height="160%">
             <feGaussianBlur stdDeviation="38"/>
         </filter>
+        <!-- STELLA GRANDE (già brillante) -->
         <g id="star4">
             <path d="M0,-8 C-1.4,-4 -1.4,-2 -4.5,0 C-1.4,2 -1.4,4 0,8 C1.4,4 1.4,2 4.5,0 C1.4,-2 1.4,-4 0,-8Z" fill="#f7efd0"/>
             <path d="M-8,0 C-4,-1.4 -2,-1.4 0,-4.5 C2,-1.4 4,-1.4 8,0 C4,1.4 2,1.4 0,4.5 C-2,1.4 -4,1.4 -8,0Z" fill="#f7efd0"/>
             <circle r="1.5" fill="#fffbe9"/>
         </g>
+        <!-- STELLA PICCOLA – ora con colore più caldo e luminoso -->
         <g id="starSmall">
-            <path d="M0,-4 L0.9,-0.9 L4,0 L0.9,0.9 L0,4 L-0.9,0.9 L-4,0 L-0.9,-0.9Z" fill="#e9e7dc"/>
+            <path d="M0,-4 L0.9,-0.9 L4,0 L0.9,0.9 L0,4 L-0.9,0.9 L-4,0 L-0.9,-0.9Z" fill="#f5f0e8"/>
+        </g>
+        <!-- Versione con glow per alcune stelle piccole (opzionale) -->
+        <g id="starSmallGlow">
+            <path d="M0,-4 L0.9,-0.9 L4,0 L0.9,0.9 L0,4 L-0.9,0.9 L-4,0 L-0.9,-0.9Z" fill="#fffbe9"/>
         </g>
     </defs>
+
+    <!-- Cielo base -->
     <rect width="1920" height="1080" fill="url(#sky)"/>
+
+    <!-- Nebulose -->
     <ellipse cx="980" cy="475" rx="820" ry="360" fill="url(#nebulaA)" filter="url(#softBlur)"/>
     <ellipse cx="380" cy="610" rx="560" ry="330" fill="url(#nebulaB)" filter="url(#softBlur)"/>
     <ellipse cx="1570" cy="360" rx="470" ry="280" fill="url(#nebulaB)" filter="url(#softBlur)" opacity=".72"/>
-    <g opacity=".65">
-        <use href="#starSmall" transform="translate(170 170) scale(.32)"/>
-        <use href="#starSmall" transform="translate(310 310) scale(.24)"/>
-        <use href="#starSmall" transform="translate(475 160) scale(.28)"/>
-        <use href="#starSmall" transform="translate(650 255) scale(.20)"/>
-        <use href="#starSmall" transform="translate(795 120) scale(.26)"/>
-        <use href="#starSmall" transform="translate(1090 175) scale(.24)"/>
-        <use href="#starSmall" transform="translate(1240 295) scale(.28)"/>
-        <use href="#starSmall" transform="translate(1415 145) scale(.22)"/>
-        <use href="#starSmall" transform="translate(1660 240) scale(.30)"/>
-        <use href="#starSmall" transform="translate(1810 150) scale(.22)"/>
-        <use href="#starSmall" transform="translate(180 760) scale(.22)"/>
-        <use href="#starSmall" transform="translate(365 900) scale(.28)"/>
-        <use href="#starSmall" transform="translate(580 780) scale(.20)"/>
-        <use href="#starSmall" transform="translate(1310 830) scale(.24)"/>
-        <use href="#starSmall" transform="translate(1510 730) scale(.28)"/>
-        <use href="#starSmall" transform="translate(1740 900) scale(.22)"/>
+
+    <!-- ============================================================
+         STELLE PICCOLE – ora più grandi, più opache e più calde
+         ============================================================ -->
+    <g fill="#f5f0e8" opacity=".88">
+        <!-- riga superiore / sparpagliate -->
+        <use href="#starSmall" transform="translate(170 170) scale(.45)"/>
+        <use href="#starSmall" transform="translate(310 310) scale(.38)"/>
+        <use href="#starSmall" transform="translate(475 160) scale(.42)"/>
+        <use href="#starSmall" transform="translate(650 255) scale(.35)"/>
+        <use href="#starSmall" transform="translate(795 120) scale(.40)"/>
+        <use href="#starSmall" transform="translate(1090 175) scale(.39)"/>
+        <use href="#starSmall" transform="translate(1240 295) scale(.44)"/>
+        <use href="#starSmall" transform="translate(1415 145) scale(.37)"/>
+        <use href="#starSmall" transform="translate(1660 240) scale(.48)"/>
+        <use href="#starSmall" transform="translate(1810 150) scale(.36)"/>
+
+        <!-- fascia inferiore -->
+        <use href="#starSmall" transform="translate(180 760) scale(.38)"/>
+        <use href="#starSmall" transform="translate(365 900) scale(.45)"/>
+        <use href="#starSmall" transform="translate(580 780) scale(.34)"/>
+        <use href="#starSmall" transform="translate(1310 830) scale(.40)"/>
+        <use href="#starSmall" transform="translate(1510 730) scale(.43)"/>
+        <use href="#starSmall" transform="translate(1740 900) scale(.37)"/>
+
+        <!-- qualche stella in più per riempire -->
+        <use href="#starSmall" transform="translate(90 480) scale(.32)"/>
+        <use href="#starSmall" transform="translate(450 430) scale(.30)"/>
+        <use href="#starSmall" transform="translate(870 580) scale(.35)"/>
+        <use href="#starSmall" transform="translate(1120 520) scale(.33)"/>
+        <use href="#starSmall" transform="translate(1560 600) scale(.36)"/>
+        <use href="#starSmall" transform="translate(1900 450) scale(.34)"/>
+        <use href="#starSmall" transform="translate(70 720) scale(.30)"/>
+        <use href="#starSmall" transform="translate(680 1020) scale(.32)"/>
+        <use href="#starSmall" transform="translate(950 960) scale(.35)"/>
+        <use href="#starSmall" transform="translate(1250 1000) scale(.33)"/>
+        <use href="#starSmall" transform="translate(1650 850) scale(.38)"/>
+        <use href="#starSmall" transform="translate(1850 1050) scale(.32)"/>
     </g>
+
+    <!-- ============================================================
+         STELLE PICCOLE CON GLOW (alcune scelte) – per extra brillantezza
+         ============================================================ -->
+    <g filter="url(#starGlow)" opacity=".45">
+        <use href="#starSmallGlow" transform="translate(475 160) scale(.30)"/>
+        <use href="#starSmallGlow" transform="translate(1090 175) scale(.28)"/>
+        <use href="#starSmallGlow" transform="translate(1660 240) scale(.35)"/>
+        <use href="#starSmallGlow" transform="translate(365 900) scale(.32)"/>
+        <use href="#starSmallGlow" transform="translate(1510 730) scale(.30)"/>
+        <use href="#starSmallGlow" transform="translate(950 960) scale(.28)"/>
+    </g>
+
+    <!-- ============================================================
+         STELLE GRANDI (4 punte) – già presenti, mantenute invariate
+         ============================================================ -->
     <g>
         <g opacity=".18" filter="url(#starGlow)">
             <circle cx="270" cy="255" r="8" fill="#fff5d5"/>
@@ -1506,27 +1567,33 @@ body.light-theme .newsletter-form button[type="submit"] {
         <use href="#star4" transform="translate(430 700) scale(.48)"/>
         <use href="#star4" transform="translate(1390 790) scale(.46)"/>
     </g>
-    <g fill="#d9deea" opacity=".50">
-        <circle cx="105" cy="410" r="1.0"/>
-        <circle cx="220" cy="535" r="0.9"/>
-        <circle cx="380" cy="110" r="0.95"/>
-        <circle cx="545" cy="350" r="0.85"/>
-        <circle cx="730" cy="420" r="0.9"/>
-        <circle cx="890" cy="180" r="0.8"/>
-        <circle cx="1040" cy="285" r="0.9"/>
-        <circle cx="1190" cy="110" r="0.9"/>
-        <circle cx="1340" cy="430" r="0.85"/>
-        <circle cx="1480" cy="540" r="0.9"/>
-        <circle cx="1610" cy="420" r="0.8"/>
-        <circle cx="1830" cy="370" r="0.95"/>
-        <circle cx="90" cy="890" r="0.85"/>
-        <circle cx="280" cy="820" r="0.9"/>
-        <circle cx="520" cy="970" r="0.85"/>
-        <circle cx="760" cy="900" r="0.9"/>
-        <circle cx="1160" cy="920" r="0.85"/>
-        <circle cx="1570" cy="960" r="0.9"/>
-        <circle cx="1810" cy="760" r="0.8"/>
+
+    <!-- ============================================================
+         STELLINE MINIME (puntini) – le ho rese leggermente più visibili
+         ============================================================ -->
+    <g fill="#d9deea" opacity=".70">
+        <circle cx="105" cy="410" r="1.2"/>
+        <circle cx="220" cy="535" r="1.1"/>
+        <circle cx="380" cy="110" r="1.15"/>
+        <circle cx="545" cy="350" r="1.0"/>
+        <circle cx="730" cy="420" r="1.1"/>
+        <circle cx="890" cy="180" r="1.0"/>
+        <circle cx="1040" cy="285" r="1.1"/>
+        <circle cx="1190" cy="110" r="1.1"/>
+        <circle cx="1340" cy="430" r="1.05"/>
+        <circle cx="1480" cy="540" r="1.1"/>
+        <circle cx="1610" cy="420" r="1.0"/>
+        <circle cx="1830" cy="370" r="1.15"/>
+        <circle cx="90" cy="890" r="1.05"/>
+        <circle cx="280" cy="820" r="1.1"/>
+        <circle cx="520" cy="970" r="1.05"/>
+        <circle cx="760" cy="900" r="1.1"/>
+        <circle cx="1160" cy="920" r="1.05"/>
+        <circle cx="1570" cy="960" r="1.1"/>
+        <circle cx="1810" cy="760" r="1.0"/>
     </g>
+
+    <!-- Vignettatura finale -->
     <radialGradient id="vignette" cx="50%" cy="48%" r="70%">
         <stop offset="55%" stop-color="#000" stop-opacity="0"/>
         <stop offset="100%" stop-color="#000" stop-opacity=".22"/>
@@ -2112,5 +2179,158 @@ document.addEventListener('click', function(event) {
     });
 });
 </script>
+
+
+
+<script>
+(function () {
+
+    function initStars() {
+
+        /* ============================================================
+           ⭐ STELLE GRANDI
+           Variazione NETTA di luminosità
+           ============================================================ */
+
+        document
+            .querySelectorAll('.cosmic-sky use[href="#star4"]')
+            .forEach(function (star) {
+
+                star.animate(
+                    [
+                        {
+                            opacity: 0.25,
+                            filter: 'brightness(0.7)'
+                        },
+
+                        {
+                            opacity: 0.40,
+                            filter: 'brightness(0.9)'
+                        },
+
+                        {
+                            opacity: 1,
+                            filter:
+                                'brightness(4) drop-shadow(0 0 10px #fff5d5)'
+                        },
+
+                        {
+                            opacity: 0.40,
+                            filter: 'brightness(0.9)'
+                        },
+
+                        {
+                            opacity: 0.25,
+                            filter: 'brightness(0.7)'
+                        }
+                    ],
+                    {
+                        duration: 3000,
+                        iterations: Infinity,
+                        easing: 'ease-in-out',
+                        delay: -Math.random() * 3000
+                    }
+                );
+
+            });
+
+
+        /* ============================================================
+           ✦ STELLE PICCOLE
+           Brillio più delicato
+           ============================================================ */
+
+        document
+            .querySelectorAll(
+                '.cosmic-sky use[href="#starSmall"], ' +
+                '.cosmic-sky use[href="#starSmallGlow"]'
+            )
+            .forEach(function (star) {
+
+                star.animate(
+                    [
+                        {
+                            opacity: 0.30,
+                            filter: 'brightness(0.9)'
+                        },
+
+                        {
+                            opacity: 0.65,
+                            filter: 'brightness(1.5)'
+                        },
+
+                        {
+                            opacity: 1,
+                            filter: 'brightness(2.8)'
+                        },
+
+                        {
+                            opacity: 0.65,
+                            filter: 'brightness(1.5)'
+                        },
+
+                        {
+                            opacity: 0.30,
+                            filter: 'brightness(0.9)'
+                        }
+                    ],
+                    {
+                        duration: 1500 + Math.random() * 700,
+                        iterations: Infinity,
+                        easing: 'ease-in-out',
+                        delay: -Math.random() * 2000
+                    }
+                );
+
+            });
+
+
+        /* ============================================================
+           CONTROLLO
+           ============================================================ */
+
+        console.log(
+            '⭐ Stelle grandi:',
+            document.querySelectorAll(
+                '.cosmic-sky use[href="#star4"]'
+            ).length
+        );
+
+        console.log(
+            '✦ Stelle piccole:',
+            document.querySelectorAll(
+                '.cosmic-sky use[href="#starSmall"], ' +
+                '.cosmic-sky use[href="#starSmallGlow"]'
+            ).length
+        );
+
+    }
+
+
+    /* ================================================================
+       AVVIO
+       ================================================================ */
+
+    if (document.readyState === 'loading') {
+
+        document.addEventListener(
+            'DOMContentLoaded',
+            initStars
+        );
+
+    } else {
+
+        initStars();
+
+    }
+
+})();
+</script>
+
+
+
+
+
+
 </body>
 </html>
