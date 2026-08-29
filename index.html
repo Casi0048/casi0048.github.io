@@ -2182,6 +2182,7 @@ document.addEventListener('click', function(event) {
 
 
 
+
 <script>
 (function () {
 
@@ -2189,7 +2190,7 @@ document.addEventListener('click', function(event) {
 
         /* ============================================================
            ⭐ STELLE GRANDI
-           Variazione NETTA di luminosità
+           Lente, nette, luminose
            ============================================================ */
 
         document
@@ -2198,37 +2199,17 @@ document.addEventListener('click', function(event) {
 
                 star.animate(
                     [
-                        {
-                            opacity: 0.25,
-                            filter: 'brightness(0.7)'
-                        },
-
-                        {
-                            opacity: 0.40,
-                            filter: 'brightness(0.9)'
-                        },
-
-                        {
-                            opacity: 1,
-                            filter:
-                                'brightness(4) drop-shadow(0 0 10px #fff5d5)'
-                        },
-
-                        {
-                            opacity: 0.40,
-                            filter: 'brightness(0.9)'
-                        },
-
-                        {
-                            opacity: 0.25,
-                            filter: 'brightness(0.7)'
-                        }
+                        { opacity: 0.30, filter: 'brightness(0.8)' },
+                        { opacity: 0.45, filter: 'brightness(1.1)' },
+                        { opacity: 1.00, filter: 'brightness(3.2)' },
+                        { opacity: 0.45, filter: 'brightness(1.1)' },
+                        { opacity: 0.30, filter: 'brightness(0.8)' }
                     ],
                     {
-                        duration: 3000,
+                        duration: 3200 + Math.random() * 1000,
                         iterations: Infinity,
                         easing: 'ease-in-out',
-                        delay: -Math.random() * 3000
+                        delay: -Math.random() * 3200
                     }
                 );
 
@@ -2236,53 +2217,91 @@ document.addEventListener('click', function(event) {
 
 
         /* ============================================================
-           ✦ STELLE PICCOLE
-           Brillio più delicato
-           ============================================================ */
+   ✦ STELLE PICCOLE
+   Una sola scintilla per volta
+   ============================================================ */
 
-        document
-            .querySelectorAll(
-                '.cosmic-sky use[href="#starSmall"], ' +
-                '.cosmic-sky use[href="#starSmallGlow"]'
-            )
-            .forEach(function (star) {
+document
+    .querySelectorAll('.cosmic-sky use[href="#starSmall"]')
+    .forEach(function (star) {
 
-                star.animate(
+        function scintilla() {
+
+            /* Lunga pausa prima della prossima scintilla */
+            var pausa = 1800 + Math.random() * 3500;
+
+            /* Una scintilla breve */
+            var durata = 500 + Math.random() * 300;
+
+            setTimeout(function () {
+
+                var animazione = star.animate(
                     [
-                        {
-                            opacity: 0.30,
-                            filter: 'brightness(0.9)'
-                        },
-
-                        {
-                            opacity: 0.65,
-                            filter: 'brightness(1.5)'
-                        },
-
-                        {
-                            opacity: 1,
-                            filter: 'brightness(2.8)'
-                        },
-
-                        {
-                            opacity: 0.65,
-                            filter: 'brightness(1.5)'
-                        },
-
-                        {
-                            opacity: 0.30,
-                            filter: 'brightness(0.9)'
-                        }
+                        { opacity: 0.15 },
+                        { opacity: 1.00 },
+                        { opacity: 0.15 }
                     ],
                     {
-                        duration: 1500 + Math.random() * 700,
-                        iterations: Infinity,
+                        duration: durata,
                         easing: 'ease-in-out',
-                        delay: -Math.random() * 2000
+                        fill: 'none'
                     }
                 );
 
-            });
+                animazione.onfinish = scintilla;
+
+            }, pausa);
+        }
+
+        /* Partenza casuale */
+        setTimeout(
+            scintilla,
+            Math.random() * 4000
+        );
+
+    });
+
+
+       /* ============================================================
+   ✨ STELLE PICCOLE CON GLOW
+   Una sola scintilla, più rara
+   ============================================================ */
+
+document
+    .querySelectorAll('.cosmic-sky use[href="#starSmallGlow"]')
+    .forEach(function (star) {
+
+        function scintillaGlow() {
+
+            var pausa = 3000 + Math.random() * 4500;
+            var durata = 550 + Math.random() * 300;
+
+            setTimeout(function () {
+
+                var animazione = star.animate(
+                    [
+                        { opacity: 0.12 },
+                        { opacity: 1.00 },
+                        { opacity: 0.12 }
+                    ],
+                    {
+                        duration: durata,
+                        easing: 'ease-in-out',
+                        fill: 'none'
+                    }
+                );
+
+                animazione.onfinish = scintillaGlow;
+
+            }, pausa);
+        }
+
+        setTimeout(
+            scintillaGlow,
+            Math.random() * 5000
+        );
+
+    });
 
 
         /* ============================================================
@@ -2290,16 +2309,22 @@ document.addEventListener('click', function(event) {
            ============================================================ */
 
         console.log(
-            '⭐ Stelle grandi:',
+            '⭐ Grandi:',
             document.querySelectorAll(
                 '.cosmic-sky use[href="#star4"]'
             ).length
         );
 
         console.log(
-            '✦ Stelle piccole:',
+            '✦ Piccole:',
             document.querySelectorAll(
-                '.cosmic-sky use[href="#starSmall"], ' +
+                '.cosmic-sky use[href="#starSmall"]'
+            ).length
+        );
+
+        console.log(
+            '✨ Piccole glow:',
+            document.querySelectorAll(
                 '.cosmic-sky use[href="#starSmallGlow"]'
             ).length
         );
@@ -2307,9 +2332,9 @@ document.addEventListener('click', function(event) {
     }
 
 
-    /* ================================================================
+    /* ============================================================
        AVVIO
-       ================================================================ */
+       ============================================================ */
 
     if (document.readyState === 'loading') {
 
@@ -2326,6 +2351,7 @@ document.addEventListener('click', function(event) {
 
 })();
 </script>
+
 
 
 
