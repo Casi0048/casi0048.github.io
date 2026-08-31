@@ -2880,6 +2880,277 @@ document.addEventListener('DOMContentLoaded', function() {
 
 })();
 </script>
+<script>
+(function () {
+    "use strict";
 
+    const svgNS = "http://www.w3.org/2000/svg";
+
+    function createOrganicWave(radius, irregularity, phase) {
+
+        const points = [];
+        const segments = 72;
+        const center = 230;
+
+        for (let i = 0; i < segments; i++) {
+
+            const angle = (Math.PI * 2 * i) / segments;
+
+            const variation =
+                Math.sin(angle * 3 + phase) * irregularity +
+                Math.sin(angle * 5 - phase * 1.7) * irregularity * 0.45 +
+                Math.sin(angle * 7 + phase * 0.8) * irregularity * 0.20;
+
+            const r = radius + variation;
+
+            const x = center + Math.cos(angle) * r;
+            const y = center + Math.sin(angle) * r;
+
+            points.push([x, y]);
+        }
+
+        let d = `M ${points[0][0]} ${points[0][1]}`;
+
+        for (let i = 1; i < points.length; i++) {
+            d += ` L ${points[i][0]} ${points[i][1]}`;
+        }
+
+        d += " Z";
+
+        return d;
+    }
+
+
+    document.addEventListener("click", function (event) {
+
+        const x = event.clientX;
+        const y = event.clientY;
+
+
+        /* ========================================================
+           PUNTO LUMINOSO
+           ======================================================== */
+
+        const origin = document.createElement("div");
+
+        origin.style.position = "fixed";
+        origin.style.left = x + "px";
+        origin.style.top = y + "px";
+        origin.style.width = "5px";
+        origin.style.height = "5px";
+        origin.style.marginLeft = "-2.5px";
+        origin.style.marginTop = "-2.5px";
+        origin.style.borderRadius = "50%";
+        origin.style.background = "#ffd76a";
+        origin.style.pointerEvents = "none";
+        origin.style.zIndex = "100000";
+        origin.style.boxShadow =
+            "0 0 5px rgba(255,215,106,.8)," +
+            "0 0 14px rgba(255,215,106,.4)";
+
+        document.body.appendChild(origin);
+
+
+        origin.animate(
+            [
+                {
+                    opacity: 0,
+                    transform: "scale(.5)"
+                },
+                {
+                    opacity: .95,
+                    transform: "scale(1.4)"
+                },
+                {
+                    opacity: .75,
+                    transform: "scale(1)"
+                },
+                {
+                    opacity: 0,
+                    transform: "scale(2.4)"
+                }
+            ],
+            {
+                duration: 650,
+                easing: "ease-out"
+            }
+        ).onfinish = function () {
+            origin.remove();
+        };
+
+
+        /* ========================================================
+           NUOVO RIPPLE — CREATO DA ZERO AD OGNI CLICK
+           ======================================================== */
+
+        const container = document.createElement("div");
+
+        container.style.position = "fixed";
+        container.style.left = x + "px";
+        container.style.top = y + "px";
+        container.style.width = "200px";
+        container.style.height = "200px";
+        container.style.pointerEvents = "none";
+        container.style.zIndex = "99999";
+        container.style.transform = "translate(-50%, -50%)";
+
+        document.body.appendChild(container);
+
+
+        const svg = document.createElementNS(svgNS, "svg");
+
+        svg.setAttribute("viewBox", "0 0 460 460");
+        svg.setAttribute("width", "200");
+        svg.setAttribute("height", "200");
+
+        svg.style.overflow = "visible";
+
+        container.appendChild(svg);
+
+
+        /* ========================================================
+           LE TRE ONDE
+           ======================================================== */
+
+        const configs = [
+
+            {
+                radius: 34,
+                irregularity: 2.8,
+                phase: .4,
+                scale: 5.8,
+                opacity: .82,
+                delay: 0,
+                duration: 3800,
+                width: 1
+            },
+
+            {
+                radius: 39,
+                irregularity: 2.3,
+                phase: 2.1,
+                scale: 5.0,
+                opacity: .46,
+                delay: 220,
+                duration: 3800,
+                width: .75
+            },
+
+            {
+                radius: 44,
+                irregularity: 1.8,
+                phase: 4,
+                scale: 4.3,
+                opacity: .30,
+                delay: 440,
+                duration: 3800,
+                width: .55
+            }
+
+        ];
+
+
+        configs.forEach(function (cfg) {
+
+            const path =
+                document.createElementNS(svgNS, "path");
+
+            path.setAttribute(
+                "d",
+                createOrganicWave(
+                    cfg.radius,
+                    cfg.irregularity,
+                    cfg.phase
+                )
+            );
+
+            path.setAttribute("fill", "none");
+
+            path.setAttribute(
+                "stroke",
+                "#ffd76a"
+            );
+
+            path.setAttribute(
+                "stroke-width",
+                cfg.width
+            );
+
+            path.setAttribute(
+                "stroke-linecap",
+                "round"
+            );
+
+            path.setAttribute(
+                "stroke-linejoin",
+                "round"
+            );
+
+            path.style.transformBox = "view-box";
+            path.style.transformOrigin = "50% 50%";
+
+            path.style.filter =
+                "drop-shadow(0 0 3px rgba(255,215,106,.35)) " +
+                "drop-shadow(0 0 10px rgba(255,215,106,.12))";
+
+            svg.appendChild(path);
+
+
+            /* ====================================================
+               ANIMAZIONE DIRETTA
+               ==================================================== */
+
+            path.animate(
+                [
+                    {
+                        opacity: 0,
+                        transform: "scale(.02)"
+                    },
+
+                    {
+                        opacity: cfg.opacity,
+                        transform: "scale(.8)"
+                    },
+
+                    {
+                        opacity: cfg.opacity * .72,
+                        transform: "scale(2.2)"
+                    },
+
+                    {
+                        opacity: cfg.opacity * .25,
+                        transform: "scale(4)"
+                    },
+
+                    {
+                        opacity: 0,
+                        transform: "scale(" + cfg.scale + ")"
+                    }
+                ],
+                {
+                    duration: cfg.duration,
+                    delay: cfg.delay,
+                    easing: "cubic-bezier(.12,.55,.25,1)",
+                    fill: "forwards"
+                }
+            );
+
+        });
+
+
+        /* ========================================================
+           ELIMINA IL RIPPLE DOPO LA FINE
+           ======================================================== */
+
+        setTimeout(function () {
+
+            container.remove();
+
+        }, 4400);
+
+    });
+
+})();
+</script>
 </body>
 </html>
