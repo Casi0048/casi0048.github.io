@@ -442,31 +442,75 @@ body.light-theme .site-header {
 
 .hero-lead {
     max-width: 650px;
-
     margin: 28px auto 0;
-
     font-family: var(--serif);
     font-size: clamp(1.15rem, 2vw, 1.45rem);
     line-height: 1.55;
-
     color: var(--text-soft);
-
     transition: color .4s ease;
+    opacity: .85;
+    animation: textWaveSync 6s ease-in-out infinite alternate;
 }
+@keyframes textWaveSync {
+    0% {
+        opacity: 0.5;
+        transform: translateY(8px);
+    }
+    50% {
+        opacity: 0.85;
+        transform: translateY(-6px);
+    }
+    100% {
+        opacity: 0.9;
+        transform: translateY(0px);
+    }
+}
+
+
+
 
 .hero-line {
     width: 60px;
     height: 1px;
-
     margin: 34px auto 0;
-
     background: var(--gold);
     opacity: .55;
-
     transition: background .4s ease;
+    position: relative;
+    overflow: hidden;
 }
 
 
+
+
+.hero-line {
+    width: 120px;
+    height: 2px;
+    margin: 34px auto 0;
+    background: linear-gradient(90deg, transparent, var(--gold), var(--gold), transparent);
+    background-size: 200% 100%;
+    opacity: 0.6;
+    border-radius: 2px;
+    animation: waveGlow 3.5s ease-in-out infinite;
+}
+
+@keyframes waveGlow {
+    0% {
+        background-position: -200% 0;
+        opacity: 0.3;
+        transform: scaleX(0.8);
+    }
+    50% {
+        background-position: 0% 0;
+        opacity: 1;
+        transform: scaleX(1.1);
+    }
+    100% {
+        background-position: 200% 0;
+        opacity: 0.3;
+        transform: scaleX(0.8);
+    }
+}
 /* ============================================================
    FILOSOFIA
    ============================================================ */
