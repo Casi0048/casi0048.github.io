@@ -48,7 +48,11 @@
 
 
 /* ============================================================
-   ROOT — TEMA SCURO (DEFAULT)
+   ECHI DI SOFIA — CSS OTTIMIZZATO E ORGANIZZATO
+   ============================================================ */
+
+/* ============================================================
+   1. ROOT — TEMA SCURO (DEFAULT)
    ============================================================ */
 :root {
     --bg: #080a12;
@@ -56,7 +60,6 @@
     --surface: rgba(255, 255, 255, .035);
     --surface-hover: rgba(255, 255, 255, .055);
 
-    /* TESTI PIÙ VIVIDI */
     --text: #f5f3f0;
     --text-soft: #d4d0c8;
     --text-muted: #a0a0a0;
@@ -65,18 +68,22 @@
     --gold-soft: rgba(216, 181, 106, .18);
     --gold-line: rgba(216, 181, 106, .22);
     --border: rgba(255, 255, 255, .08);
+
     --serif: "Cormorant Garamond", Georgia, serif;
     --display: "Cinzel", Georgia, serif;
     --sans: "Inter", Arial, sans-serif;
+
     --radius: 14px;
     --transition: .28s cubic-bezier(.22, 1, .36, 1);
+    --shadow: 0 8px 30px rgba(0, 0, 0, .35);
+
     --torna-su-bg: var(--gold);
     --torna-su-color: var(--bg);
     --torna-su-shadow: rgba(216, 181, 106, .3);
 }
 
 /* ============================================================
-   TEMA CHIARO
+   2. TEMA CHIARO
    ============================================================ */
 body.light-theme {
     --bg: #f2ede5;
@@ -92,25 +99,26 @@ body.light-theme {
     --gold-soft: rgba(184, 134, 11, .12);
     --gold-line: rgba(184, 134, 11, .25);
     --border: rgba(0, 0, 0, .08);
+
     --torna-su-bg: #b8860b;
     --torna-su-color: #f2ede5;
     --torna-su-shadow: rgba(184, 134, 11, .3);
-    --player-bg: rgba(18, 18, 30, .97);
-    --modal-bg: #e8e2d8;
 }
 
 /* ============================================================
-   RESET & BASE
+   3. RESET E BASE
    ============================================================ */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
+
 html {
     scroll-behavior: smooth;
     background: var(--bg);
 }
+
 body {
     min-height: 100vh;
     background: radial-gradient(circle at 50% -10%, rgba(91, 104, 145, .10), transparent 42%), var(--bg);
@@ -132,6 +140,7 @@ a {
     color: inherit;
     text-decoration: none;
 }
+
 button,
 input {
     font: inherit;
@@ -143,7 +152,7 @@ input {
 }
 
 /* ============================================================
-   SFONDO COSMICO
+   4. SFONDO COSMICO E STELLE
    ============================================================ */
 .cosmic-sky {
     position: fixed;
@@ -154,32 +163,23 @@ input {
     display: block;
     pointer-events: none;
 }
+
 body.light-theme .cosmic-sky {
     display: none;
 }
-
-
-
-
-
-
-
-
-/* ============================================================
-   STELLE — ANIMAZIONE GESTITA DAL JS
-   ============================================================ */
 
 .cosmic-sky use[href="#star4"],
 .cosmic-sky use[href="#starSmall"],
 .cosmic-sky use[href="#starSmallGlow"] {
     will-change: opacity, filter;
 }
-
-
-
-
+.cosmic-sky use[href="#starSmall"],
+.cosmic-sky use[href="#starSmallGlow"] {
+    opacity: 1 !important;
+    transition: none !important;
+}
 /* ============================================================
-   HEADER
+   5. HEADER
    ============================================================ */
 .site-header {
     position: relative;
@@ -231,6 +231,7 @@ body.light-theme .site-header {
     gap: 28px;
     margin-right: 4px;
 }
+
 .main-nav a {
     position: relative;
     font-size: .78rem;
@@ -238,6 +239,7 @@ body.light-theme .site-header {
     color: var(--text-soft);
     transition: color var(--transition);
 }
+
 .main-nav a::after {
     content: "";
     position: absolute;
@@ -248,9 +250,11 @@ body.light-theme .site-header {
     background: var(--gold);
     transition: width var(--transition);
 }
+
 .main-nav a:hover {
     color: var(--text);
 }
+
 .main-nav a:hover::after {
     width: 100%;
 }
@@ -271,27 +275,31 @@ body.light-theme .site-header {
     gap: 6px;
     white-space: nowrap;
 }
+
 .theme-toggle-btn:hover {
     border-color: var(--gold-line);
     color: var(--text);
     background: var(--surface-hover);
 }
+
 .theme-toggle-btn .icon {
     font-size: .9rem;
 }
 
 /* ============================================================
-   HERO
+   6. HERO
    ============================================================ */
 .hero {
     padding: clamp(90px, 13vw, 160px) 0 clamp(80px, 11vw, 130px);
     text-align: center;
     position: relative;
 }
+
 .hero .container {
     position: relative;
     z-index: 2;
 }
+
 .hero-kicker {
     margin-bottom: 18px;
     font-family: var(--sans);
@@ -303,6 +311,7 @@ body.light-theme .site-header {
     opacity: .9;
     transition: color .4s ease;
 }
+
 .hero h1 {
     font-family: var(--display);
     font-size: clamp(2.5rem, 6vw, 5.3rem);
@@ -313,10 +322,12 @@ body.light-theme .site-header {
     transition: color .4s ease;
     text-shadow: 0 0 30px rgba(0, 0, 0, .25);
 }
+
 .hero h1 span {
     color: var(--gold);
     transition: color .4s ease;
 }
+
 .hero-lead {
     max-width: 650px;
     margin: 28px auto 0;
@@ -328,6 +339,7 @@ body.light-theme .site-header {
     opacity: .85;
     animation: textWaveSync 6s ease-in-out infinite alternate;
 }
+
 @keyframes textWaveSync {
     0% {
         opacity: 0.5;
@@ -342,68 +354,8 @@ body.light-theme .site-header {
         transform: translateY(0px);
     }
 }
-.hero-line {
-    width: 100%;
-    max-width: 200px;
-    height: 30px;
-    margin: 5px auto 0;
-    position: relative;
-    overflow: visible;
-}
-.wave-svg {
-    width: 100%;
-    height: 100%;
-    display: block;
-    overflow: visible;
-}
 
-.wave-glow {
-    fill: none;
-    stroke: var(--gold);
-    stroke-width: 1;
-    stroke-linecap: round;
-    opacity: .5;
-    animation: waveSinusoidal 6s ease-in-out infinite;
-}
-
-@keyframes waveSinusoidal {
-    0%, 100% {
-        d: path("M0 15 C10 8, 30 8, 40 15 C50 22, 70 22, 80 15 C90 8, 110 8, 120 15");
-        transform: translateX(-12px);
-        opacity: .45;
-    }
-
-    50% {
-        d: path("M0 15 C10 22, 30 22, 40 15 C50 8, 70 8, 80 15 C90 22, 110 22, 120 15");
-        transform: translateX(0);
-        opacity: .75;
-    }
-}
-/* ============================================================
-    AGGIUNTA FALLBACK PER BROWSER VECCHI
-   ============================================================ */
-@keyframes waveSinusoidal {
-    0%, 100% {
-        d: path("M0 15 C10 8, 30 8, 40 15 C50 22, 70 22, 80 15 C90 8, 110 8, 120 15");
-        transform: translateX(-12px);
-        opacity: .5;
-    }
-    50% {
-        d: path("M0 15 C10 22, 30 22, 40 15 C50 8, 70 8, 80 15 C90 22, 110 22, 120 15");
-        transform: translateX(0px);
-        opacity: .8;
-    }
-}
-@supports not (d: path("M0 0")) {
-    .wave-glow {
-        animation: none; /* fallback statico */
-        d: path("M0 15 C10 8, 30 8, 40 15 C50 22, 70 22, 80 15 C90 8, 110 8, 120 15");
-    }
-}
-
-/* ============================================================
-   HERO LINE  INCRESPATURA
-   ============================================================ */
+/* HERO LINE — ONDA CON GRADIENTE */
 .hero-line {
     width: 100%;
     max-width: 300px;
@@ -426,7 +378,6 @@ body.light-theme .site-header {
     stroke-width: 2.5;
     stroke-linecap: round;
     opacity: .8;
-
     animation: waveSinusoidal 5s ease-in-out infinite;
 }
 
@@ -442,8 +393,17 @@ body.light-theme .site-header {
         opacity: .8;
     }
 }
+
+@supports not (d: path("M0 0")) {
+    .wave-glow {
+        animation: none;
+        d: path("M0 15 C10 8, 30 8, 40 15 C50 22, 70 22, 80 15 C90 8, 110 8, 120 15");
+        opacity: .5;
+    }
+}
+
 /* ============================================================
-   ONDE DEL PENSIERO
+   7. ONDE DEL PENSIERO (SFONDO)
    ============================================================ */
 .thought-waves {
     position: absolute;
@@ -454,21 +414,25 @@ body.light-theme .site-header {
     pointer-events: none;
     z-index: 1;
 }
+
 .thought-waves path:nth-child(1) {
     stroke: rgba(216, 181, 106, .50);
     stroke-width: 1.2;
     animation: waveMove 8s ease-in-out infinite alternate;
 }
+
 .thought-waves path:nth-child(2) {
     stroke: rgba(85, 182, 255, .40);
     stroke-width: .9;
     animation: waveMove 6s ease-in-out .6s infinite alternate;
 }
+
 .thought-waves path:nth-child(3) {
     stroke: rgba(154, 208, 255, .45);
     stroke-width: .7;
     animation: waveMove 6s ease-in-out 1.2s infinite alternate;
 }
+
 @keyframes waveMove {
     0% {
         transform: translateX(-80px) translateY(0);
@@ -482,7 +446,7 @@ body.light-theme .site-header {
 }
 
 /* ============================================================
-   ALBERO FILOSOFICO
+   8. ALBERO FILOSOFICO
    ============================================================ */
 .knowledge-tree {
     position: absolute;
@@ -497,12 +461,14 @@ body.light-theme .site-header {
     z-index: 2;
     pointer-events: none;
 }
+
 .knowledge-tree svg {
     display: block;
     width: 160px;
     height: auto;
     overflow: visible;
 }
+
 .tree-motto {
     margin-top: -6px;
     font-family: var(--serif);
@@ -516,15 +482,17 @@ body.light-theme .site-header {
 }
 
 /* ============================================================
-   FILOSOFIA (EPOCHE)
+   9. FILOSOFIA (EPOCHE)
    ============================================================ */
 .philosophy-section {
     padding-bottom: 60px;
 }
+
 .section-heading {
     margin-bottom: 42px;
     text-align: center;
 }
+
 .section-heading h2 {
     font-family: var(--display);
     font-size: 1.55rem;
@@ -533,6 +501,7 @@ body.light-theme .site-header {
     color: var(--gold);
     transition: color .4s ease;
 }
+
 .section-heading p {
     margin-top: 8px;
     font-family: var(--serif);
@@ -547,6 +516,7 @@ body.light-theme .site-header {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 18px;
 }
+
 .epoch-card {
     position: relative;
     min-height: 210px;
@@ -558,26 +528,31 @@ body.light-theme .site-header {
     background: linear-gradient(145deg, rgba(255, 255, 255, .045), rgba(255, 255, 255, .018));
     transition: transform var(--transition), border-color var(--transition), background var(--transition);
 }
+
 body.light-theme .epoch-card {
     background: linear-gradient(145deg, rgba(0, 0, 0, .025), rgba(0, 0, 0, .01));
 }
+
 .epoch-card:hover {
     transform: translateY(-5px);
     border-color: var(--gold-line);
     background: linear-gradient(145deg, rgba(216, 181, 106, .075), rgba(255, 255, 255, .02));
 }
+
 body.light-theme .epoch-card:hover {
     background: linear-gradient(145deg, rgba(184, 134, 11, .06), rgba(0, 0, 0, .02));
 }
+
 .epoch-number {
     font-family: var(--display);
     font-size: .68rem;
     letter-spacing: 2px;
     color: var(--text-muted);
     margin-bottom: 5px;
-    transition: color .4s ease;
     opacity: .85;
+    transition: color .4s ease;
 }
+
 .epoch-card h3 {
     font-family: var(--display);
     font-size: 1.15rem;
@@ -587,6 +562,7 @@ body.light-theme .epoch-card:hover {
     color: var(--text);
     transition: color .4s ease;
 }
+
 .epoch-card h3::after {
     content: "";
     display: block;
@@ -597,14 +573,16 @@ body.light-theme .epoch-card:hover {
     opacity: .65;
     transition: background .4s ease;
 }
+
 .epoch-card p {
     font-family: var(--serif);
     font-size: 1.07rem;
     line-height: 1.45;
     color: var(--text-soft);
-    transition: color .4s ease;
     opacity: .9;
+    transition: color .4s ease;
 }
+
 .epoch-link {
     margin-top: auto;
     padding-top: 2px;
@@ -615,22 +593,25 @@ body.light-theme .epoch-card:hover {
     opacity: .75;
     transition: opacity var(--transition), color .4s ease;
 }
+
 .epoch-card:hover .epoch-link {
     opacity: 1;
 }
 
 /* ============================================================
-   SCUOLE E TRADIZIONI — 6 CARD
+   10. SCUOLE E TRADIZIONI
    ============================================================ */
 .scuole {
     padding: .5rem 0 1.5rem;
 }
+
 .scuole-grid {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     gap: 12px;
     margin-top: 1rem;
 }
+
 .scuola-card {
     display: flex;
     flex-direction: column;
@@ -646,20 +627,24 @@ body.light-theme .epoch-card:hover {
     min-height: 140px;
     justify-content: center;
 }
+
 .scuola-card:hover {
     transform: translateY(-6px);
     border-color: var(--gold-line);
     background: var(--surface-hover);
     box-shadow: 0 8px 30px rgba(0, 0, 0, .08);
 }
+
 body.light-theme .scuola-card:hover {
     box-shadow: 0 8px 30px rgba(0, 0, 0, .06);
 }
+
 .scuola-icon {
     font-size: 1.8rem;
     margin-bottom: .4rem;
     line-height: 1.2;
 }
+
 .scuola-card h3 {
     margin: 0;
     font-family: var(--display);
@@ -669,6 +654,7 @@ body.light-theme .scuola-card:hover {
     color: var(--gold);
     transition: color var(--transition);
 }
+
 .scuola-card p {
     margin: .3rem 0 0;
     font-family: var(--serif);
@@ -678,15 +664,17 @@ body.light-theme .scuola-card:hover {
     opacity: .92;
     max-width: 90%;
 }
+
 .scuola-card:hover h3 {
     color: var(--gold);
 }
+
 .scuola-card:hover p {
     opacity: 1;
 }
 
 /* ============================================================
-   RISORSE
+   11. RISORSE
    ============================================================ */
 .resources {
     padding: 20px 0 45px;
@@ -694,15 +682,18 @@ body.light-theme .scuola-card:hover {
     border-bottom: 1px solid rgba(255, 255, 255, .055);
     transition: border-color .4s ease;
 }
+
 body.light-theme .resources {
     border-top: 1px solid rgba(0, 0, 0, .06);
     border-bottom: 1px solid rgba(0, 0, 0, .06);
 }
+
 .resources-inner {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
 }
+
 .resource {
     padding: 30px;
     border: 1px solid var(--border);
@@ -710,10 +701,12 @@ body.light-theme .resources {
     background: var(--surface);
     transition: border-color var(--transition), background var(--transition);
 }
+
 .resource:hover {
     border-color: var(--gold-line);
     background: var(--surface-hover);
 }
+
 .resource small {
     display: block;
     margin-bottom: 10px;
@@ -723,6 +716,7 @@ body.light-theme .resources {
     color: var(--gold);
     transition: color .4s ease;
 }
+
 .resource h3 {
     font-family: var(--display);
     font-size: 1.05rem;
@@ -731,6 +725,7 @@ body.light-theme .resources {
     color: var(--text);
     transition: color .4s ease;
 }
+
 .resource p {
     font-family: var(--serif);
     font-size: 1rem;
@@ -739,12 +734,13 @@ body.light-theme .resources {
 }
 
 /* ============================================================
-   NEWSLETTER
+   12. NEWSLETTER
    ============================================================ */
 .newsletter {
     padding: 55px 0;
     text-align: center;
 }
+
 .newsletter h2 {
     font-family: var(--display);
     font-size: 1.35rem;
@@ -753,6 +749,7 @@ body.light-theme .resources {
     color: var(--text);
     transition: color .4s ease;
 }
+
 .newsletter p {
     max-width: 500px;
     margin: 12px auto 26px;
@@ -761,6 +758,7 @@ body.light-theme .resources {
     color: var(--text-muted);
     transition: color .4s ease;
 }
+
 .newsletter-trigger {
     display: inline-flex;
     align-items: center;
@@ -775,13 +773,14 @@ body.light-theme .resources {
     cursor: pointer;
     transition: background var(--transition), border-color var(--transition), color .4s ease;
 }
+
 .newsletter-trigger:hover {
     background: var(--gold-soft);
     border-color: var(--gold);
 }
 
 /* ============================================================
-   FOOTER
+   13. FOOTER
    ============================================================ */
 .site-footer {
     position: relative;
@@ -791,14 +790,17 @@ body.light-theme .resources {
     background: transparent;
     transition: background .4s ease, border-color .4s ease;
 }
+
 body.light-theme .site-footer {
     border-top: 1px solid rgba(0, 0, 0, .06);
 }
+
 .footer-main {
     display: grid;
     grid-template-columns: 1.5fr 1fr 1fr;
     gap: 50px;
 }
+
 .footer-brand {
     font-family: var(--display);
     font-size: .95rem;
@@ -806,6 +808,7 @@ body.light-theme .site-footer {
     color: var(--gold);
     transition: color .4s ease;
 }
+
 .footer-about {
     max-width: 380px;
     margin-top: 12px;
@@ -814,6 +817,7 @@ body.light-theme .site-footer {
     color: var(--text-muted);
     transition: color .4s ease;
 }
+
 .footer-column h4 {
     margin-bottom: 14px;
     font-size: .7rem;
@@ -823,17 +827,20 @@ body.light-theme .site-footer {
     color: var(--text-soft);
     transition: color .4s ease;
 }
+
 .footer-column a {
     display: block;
     margin-bottom: 7px;
     font-family: var(--serif);
     font-size: .95rem;
     color: var(--text-muted);
-    transition: color var(--transition), color .4s ease;
+    transition: color var(--transition);
 }
+
 .footer-column a:hover {
     color: var(--gold);
 }
+
 .footer-bottom {
     display: flex;
     justify-content: space-between;
@@ -847,16 +854,18 @@ body.light-theme .site-footer {
     color: var(--text-muted);
     transition: border-color .4s ease, color .4s ease;
 }
+
 body.light-theme .footer-bottom {
     border-top: 1px solid rgba(0, 0, 0, .06);
 }
+
 .footer-motto {
     font-family: var(--serif);
     font-style: italic;
 }
 
 /* ============================================================
-   PULSANTE TORNA SU
+   14. PULSANTE TORNA SU
    ============================================================ */
 .torna-su {
     position: fixed;
@@ -873,7 +882,7 @@ body.light-theme .footer-bottom {
     cursor: pointer;
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, .35);
+    box-shadow: var(--shadow);
     transition: all .3s cubic-bezier(.4, 0, .2, 1);
     opacity: 0;
     transform: scale(.8);
@@ -884,24 +893,29 @@ body.light-theme .footer-bottom {
     align-items: center;
     justify-content: center;
 }
+
 .torna-su.visible {
     opacity: 1;
     transform: scale(1);
     pointer-events: auto;
 }
+
 .torna-su:hover {
     transform: translateY(-2px) scale(1.02);
     border-color: rgba(255, 216, 106, .65);
     background: rgba(18, 18, 42, .96);
     box-shadow: 0 8px 35px rgba(0, 0, 0, .45);
 }
+
 .torna-su:active {
     transform: scale(.92);
 }
+
 .torna-su:focus-visible {
     outline: 3px solid var(--gold, #d8b56a);
     outline-offset: 4px;
 }
+
 body.light-theme .torna-su {
     background: var(--gold, #b8860b);
     color: var(--bg, #f2ede5);
@@ -909,6 +923,7 @@ body.light-theme .torna-su {
     backdrop-filter: none;
     box-shadow: 0 4px 20px rgba(184, 134, 11, .3);
 }
+
 body.light-theme .torna-su:hover {
     transform: translateY(-2px) scale(1.02);
     background: #a0780a;
@@ -916,7 +931,7 @@ body.light-theme .torna-su:hover {
 }
 
 /* ============================================================
-   PLAYER MUSICALE
+   15. PLAYER MUSICALE
    ============================================================ */
 .music-player {
     position: fixed;
@@ -925,6 +940,7 @@ body.light-theme .torna-su:hover {
     z-index: 9999;
     font-family: 'Inter', sans-serif;
 }
+
 .music-toggle {
     width: 46px;
     height: 46px;
@@ -935,24 +951,28 @@ body.light-theme .torna-su:hover {
     font-size: 1.25rem;
     cursor: pointer;
     backdrop-filter: blur(12px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, .35);
+    box-shadow: var(--shadow);
     transition: transform .25s ease, border-color .25s ease, background .25s ease;
 }
+
 .music-toggle:hover {
     transform: translateY(-2px);
     border-color: rgba(255, 216, 106, .65);
     background: rgba(18, 18, 42, .96);
 }
+
 body.light-theme .music-toggle {
     background: rgba(242, 237, 229, .94);
     border-color: rgba(184, 134, 11, .28);
     color: #b8860b;
     box-shadow: 0 8px 30px rgba(0, 0, 0, .12);
 }
+
 body.light-theme .music-toggle:hover {
     border-color: rgba(184, 134, 11, .65);
     background: rgba(230, 225, 215, .96);
 }
+
 .music-panel {
     position: absolute;
     right: 0;
@@ -969,16 +989,19 @@ body.light-theme .music-toggle:hover {
     transform: translateY(8px) scale(.98);
     transition: opacity .22s ease, transform .22s ease, visibility .22s ease;
 }
+
 .music-player.open .music-panel {
     opacity: 1;
     visibility: visible;
     transform: translateY(0) scale(1);
 }
+
 body.light-theme .music-panel {
     background: rgba(242, 237, 229, .97);
     border-color: rgba(184, 134, 11, .18);
     box-shadow: 0 18px 50px rgba(0, 0, 0, .15);
 }
+
 .music-header {
     display: flex;
     align-items: flex-start;
@@ -986,6 +1009,7 @@ body.light-theme .music-panel {
     gap: 15px;
     margin-bottom: 14px;
 }
+
 .music-label {
     display: block;
     font-size: .58rem;
@@ -993,18 +1017,22 @@ body.light-theme .music-panel {
     color: rgba(255, 216, 106, .65);
     margin-bottom: 3px;
 }
+
 body.light-theme .music-label {
     color: rgba(184, 134, 11, .65);
 }
+
 .music-title {
     display: block;
     font-family: var(--serif);
-    font-size: 1.15rem;
+    font-size: 0.88rem;
     color: #eee;
 }
+
 body.light-theme .music-title {
     color: #1a1a2e;
 }
+
 .music-close {
     border: 0;
     background: transparent;
@@ -1015,20 +1043,25 @@ body.light-theme .music-title {
     padding: 0 0 0 4px;
     transition: color .25s ease;
 }
+
 body.light-theme .music-close {
     color: rgba(0, 0, 0, .45);
 }
+
 .music-close:hover {
     color: #fff;
 }
+
 body.light-theme .music-close:hover {
     color: #1a1a2e;
 }
+
 .music-controls {
     display: flex;
     align-items: center;
     gap: 10px;
 }
+
 .music-play,
 .music-volume {
     flex: 0 0 auto;
@@ -1038,18 +1071,22 @@ body.light-theme .music-close:hover {
     cursor: pointer;
     transition: color .25s ease;
 }
+
 body.light-theme .music-play,
 body.light-theme .music-volume {
     color: #b8860b;
 }
+
 .music-play {
     font-size: .95rem;
     width: 25px;
 }
+
 .music-volume {
     font-size: .85rem;
     opacity: .8;
 }
+
 .music-progress {
     flex: 1;
     min-width: 0;
@@ -1060,9 +1097,11 @@ body.light-theme .music-volume {
     border-radius: 5px;
     cursor: pointer;
 }
+
 body.light-theme .music-progress {
     background: rgba(0, 0, 0, .15);
 }
+
 .music-progress::-webkit-slider-thumb {
     appearance: none;
     -webkit-appearance: none;
@@ -1072,9 +1111,11 @@ body.light-theme .music-progress {
     background: var(--gold);
     cursor: pointer;
 }
+
 body.light-theme .music-progress::-webkit-slider-thumb {
     background: #b8860b;
 }
+
 .music-progress::-moz-range-thumb {
     width: 9px;
     height: 9px;
@@ -1083,20 +1124,23 @@ body.light-theme .music-progress::-webkit-slider-thumb {
     background: var(--gold);
     cursor: pointer;
 }
+
 body.light-theme .music-progress::-moz-range-thumb {
     background: #b8860b;
 }
+
 .player-status {
     font-size: .68rem;
     color: var(--text-muted);
     transition: color .4s ease;
 }
+
 body.light-theme .player-status {
     color: #6a6a7e;
 }
 
 /* ============================================================
-   NEWSLETTER MODALE
+   16. NEWSLETTER MODALE
    ============================================================ */
 .modal {
     position: fixed;
@@ -1110,10 +1154,12 @@ body.light-theme .player-status {
     visibility: hidden;
     transition: opacity var(--transition), visibility var(--transition);
 }
+
 .modal.open {
     opacity: 1;
     visibility: visible;
 }
+
 .modal-content {
     position: relative;
     width: min(480px, 100%);
@@ -1124,10 +1170,12 @@ body.light-theme .player-status {
     box-shadow: 0 30px 80px rgba(0, 0, 0, .65);
     transition: background .4s ease, border-color .4s ease;
 }
+
 body.light-theme .modal-content {
     background: #e8e2d8;
     box-shadow: 0 30px 80px rgba(0, 0, 0, .15);
 }
+
 .modal-content h3 {
     font-family: var(--display);
     font-size: 1.2rem;
@@ -1136,11 +1184,13 @@ body.light-theme .modal-content {
     margin-bottom: 12px;
     transition: color .4s ease;
 }
+
 .modal-content p {
     font-family: var(--serif);
     color: var(--text-soft);
     transition: color .4s ease;
 }
+
 .close-modal {
     position: absolute;
     top: 14px;
@@ -1152,19 +1202,19 @@ body.light-theme .modal-content {
     border: 0;
     transition: color .3s ease;
 }
+
 .close-modal:hover {
     color: var(--text);
 }
 
-/* ============================================================
-   FORM NEWSLETTER
-   ============================================================ */
+/* FORM NEWSLETTER */
 .newsletter-form {
     display: flex;
     flex-direction: column;
     gap: 12px;
     margin-top: 24px;
 }
+
 .newsletter-form input[type="email"] {
     width: 100%;
     box-sizing: border-box;
@@ -1176,14 +1226,17 @@ body.light-theme .modal-content {
     outline: none;
     transition: border-color .3s ease, background .4s ease, color .4s ease;
 }
+
 body.light-theme .newsletter-form input[type="email"] {
     background: rgba(0, 0, 0, .04);
     color: var(--text);
     border-color: rgba(0, 0, 0, .1);
 }
+
 .newsletter-form input[type="email"]:focus {
     border-color: var(--gold-line);
 }
+
 .newsletter-consent {
     display: flex;
     align-items: flex-start;
@@ -1194,6 +1247,7 @@ body.light-theme .newsletter-form input[type="email"] {
     color: var(--text-muted);
     cursor: pointer;
 }
+
 .newsletter-consent input[type="checkbox"] {
     flex: 0 0 auto;
     width: 15px;
@@ -1202,20 +1256,25 @@ body.light-theme .newsletter-form input[type="email"] {
     accent-color: var(--gold);
     cursor: pointer;
 }
+
 .newsletter-consent span {
     flex: 1;
 }
+
 .newsletter-consent strong {
     color: var(--text-soft);
 }
+
 .newsletter-consent a {
     color: var(--gold);
     text-decoration: underline;
     text-underline-offset: 2px;
 }
+
 .newsletter-consent a:hover {
     color: var(--text);
 }
+
 .newsletter-form button[type="submit"] {
     align-self: flex-end;
     padding: 11px 20px;
@@ -1226,18 +1285,22 @@ body.light-theme .newsletter-form input[type="email"] {
     cursor: pointer;
     transition: background .3s ease, border-color .3s ease, color .4s ease;
 }
+
 body.light-theme .newsletter-form button[type="submit"] {
     background: rgba(184, 134, 11, .12);
 }
+
 .newsletter-form button[type="submit"]:hover {
     background: var(--gold);
     border-color: var(--gold);
     color: var(--bg);
 }
+
 .newsletter-form button[type="submit"]:disabled {
     opacity: .55;
     cursor: wait;
 }
+
 .privacy-note {
     margin-top: 14px;
     font-size: .75rem;
@@ -1245,138 +1308,22 @@ body.light-theme .newsletter-form button[type="submit"] {
 }
 
 /* ============================================================
-   ECHO RIPPLE (click effect)
+   17. ECHO RIPPLE – GESTITO DA JS (CSS DI SERVIZIO)
    ============================================================ */
 .echo-ripple {
     position: fixed;
-    left: 0;
-    top: 0;
-    width: 200px;
-    height: 200px;
     pointer-events: none;
     z-index: 99999;
-    transform: translate(-50%, -50%);
-    opacity: 1;
 }
-.echo-ripple svg {
-    width: 100%;
-    height: 100%;
-    overflow: visible;
-}
-.echo-ripple path {
-    fill: none;
-    stroke: #ffd76a;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    transform-box: view-box;
-    transform-origin: 50% 50%;
-    filter: drop-shadow(0 0 3px rgba(255, 215, 106, .35)) drop-shadow(0 0 10px rgba(255, 215, 106, .12));
-}
-.echo-ripple .ripple-1 {
-    stroke-width: 1px;
-    opacity: .82;
-    transform: scale(.02);
-}
-.echo-ripple .ripple-1.start {
-    animation: darkRipple1 3.8s cubic-bezier(.12, .55, .25, 1) forwards;
-}
-@keyframes darkRipple1 {
-    0% {
-        opacity: .82;
-        transform: scale(.02);
-    }
-    3% {
-        opacity: .82;
-    }
-    25% {
-        opacity: .60;
-    }
-    55% {
-        opacity: .25;
-    }
-    100% {
-        opacity: 0;
-        transform: scale(5.8);
-    }
-}
-.echo-ripple .ripple-2 {
-    stroke-width: .75px;
-    opacity: 0;
-    animation: darkRipple2 3.8s cubic-bezier(.12, .55, .25, 1) .22s forwards;
-}
-@keyframes darkRipple2 {
-    0% {
-        opacity: 0;
-        transform: scale(.05);
-    }
-    10% {
-        opacity: .46;
-    }
-    35% {
-        opacity: .28;
-    }
-    65% {
-        opacity: .10;
-    }
-    100% {
-        opacity: 0;
-        transform: scale(5.0);
-    }
-}
-.echo-ripple .ripple-3 {
-    stroke-width: .55px;
-    opacity: 0;
-    animation: darkRipple3 3.8s cubic-bezier(.12, .55, .25, 1) .44s forwards;
-}
-@keyframes darkRipple3 {
-    0% {
-        opacity: 0;
-        transform: scale(.05);
-    }
-    12% {
-        opacity: .30;
-    }
-    40% {
-        opacity: .15;
-    }
-    70% {
-        opacity: .045;
-    }
-    100% {
-        opacity: 0;
-        transform: scale(4.3);
-    }
-}
+
 .echo-origin {
     position: fixed;
-    width: 5px;
-    height: 5px;
-    margin-left: -2.5px;
-    margin-top: -2.5px;
-    border-radius: 50%;
-    background: #ffd76a;
     pointer-events: none;
     z-index: 100000;
-    box-shadow: 0 0 5px rgba(255, 215, 106, .75), 0 0 14px rgba(255, 215, 106, .35);
-    animation: echoOrigin .28s ease-out forwards;
-}
-@keyframes echoOrigin {
-    0% {
-        opacity: .95;
-        transform: scale(.7);
-    }
-    35% {
-        opacity: .75;
-        transform: scale(1.4);
-    }
-    100% {
-        opacity: 0;
-        transform: scale(2.4);
-    }
 }
 
 /* ============================================================
-   RESPONSIVE
+   18. RESPONSIVE
    ============================================================ */
 @media (max-width: 1024px) {
     .scuole-grid {
@@ -1384,6 +1331,7 @@ body.light-theme .newsletter-form button[type="submit"] {
         gap: 14px;
     }
 }
+
 @media (max-width: 900px) {
     .epochs-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -1395,6 +1343,7 @@ body.light-theme .newsletter-form button[type="submit"] {
         grid-column: 1 / -1;
     }
 }
+
 @media (max-width: 768px) {
     .scuole-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -1414,6 +1363,7 @@ body.light-theme .newsletter-form button[type="submit"] {
         font-size: .7rem;
     }
 }
+
 @media (max-width: 650px) {
     .container {
         width: min(100% - 30px, 1180px);
@@ -1472,6 +1422,7 @@ body.light-theme .newsletter-form button[type="submit"] {
         font-size: .75rem;
     }
 }
+
 @media (max-width: 520px) {
     .modal-content {
         padding: 32px 22px 26px;
@@ -1481,6 +1432,7 @@ body.light-theme .newsletter-form button[type="submit"] {
         width: 100%;
     }
 }
+
 @media (max-width: 480px) {
     .torna-su {
         width: 38px;
@@ -1515,6 +1467,9 @@ body.light-theme .newsletter-form button[type="submit"] {
     }
 }
 
+/* ============================================================
+   19. PREFERS-REDUCED-MOTION
+   ============================================================ */
 @media (prefers-reduced-motion: reduce) {
     html {
         scroll-behavior: auto;
@@ -1525,6 +1480,65 @@ body.light-theme .newsletter-form button[type="submit"] {
         transition-duration: 0.01ms !important;
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
+    }
+    .hero-lead,
+    .wave-glow,
+    .thought-waves path {
+        animation: none !important;
+    }
+}
+
+
+
+
+
+/* ============================================================
+   ANIMAZIONE STELLE — CSS (funziona sempre)
+   ============================================================ */
+
+.cosmic-sky use[href="#starSmall"],
+.cosmic-sky use[href="#starSmallGlow"] {
+    animation: starTwinkle var(--twinkle-duration, 2s) ease-in-out infinite alternate;
+    animation-delay: var(--twinkle-delay, 0s);
+    transform-origin: center;
+    will-change: opacity;
+}
+
+.cosmic-sky use[href="#star4"] {
+    animation: starPulse 4s ease-in-out infinite alternate;
+    animation-delay: var(--pulse-delay, 0s);
+    transform-origin: center;
+    will-change: opacity, filter;
+}
+
+@keyframes starTwinkle {
+    0% {
+        opacity: 0.08;
+        filter: brightness(0.6);
+    }
+    100% {
+        opacity: 1;
+        filter: brightness(2.5);
+    }
+}
+
+@keyframes starPulse {
+    0% {
+        opacity: 0.25;
+        filter: brightness(0.7);
+    }
+    100% {
+        opacity: 1;
+        filter: brightness(3.2) drop-shadow(0 0 8px #fff5d5);
+    }
+}
+
+/* Riduci movimento per chi preferisce */
+@media (prefers-reduced-motion: reduce) {
+    .cosmic-sky use {
+        animation: none !important;
+        opacity: 0.5 !important;
+        filter: none !important;
     }
 }
 </style>
@@ -1829,23 +1843,23 @@ body.light-theme .newsletter-form button[type="submit"] {
             <a href="https://casi0048.github.io/pagine/pagina-contatti.html">CONTATTI</a>
             <button class="theme-toggle-btn" id="themeToggle" aria-label="Alterna tema chiaro/scuro">
     <span class="icon" id="themeIcon">
-        <!-- LUNA (tema scuro) -->
-        <svg id="iconMoon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-        </svg>
-        <!-- SOLE (tema chiaro) - nascosto di default -->
-        <svg id="iconSun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
-            <circle cx="12" cy="12" r="5"/>
-            <line x1="12" y1="1" x2="12" y2="3"/>
-            <line x1="12" y1="21" x2="12" y2="23"/>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-            <line x1="1" y1="12" x2="3" y2="12"/>
-            <line x1="21" y1="12" x2="23" y2="12"/>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-        </svg>
-    </span>
+    <!-- LUNA (tema scuro) -->
+    <svg id="iconMoon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+    <!-- SOLE (tema chiaro) - nascosto di default -->
+    <svg id="iconSun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+        <circle cx="12" cy="12" r="5"/>
+        <line x1="12" y1="1" x2="12" y2="3"/>
+        <line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/>
+        <line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+    </svg>
+</span>
     <span id="themeLabel">Scuro</span>
 </button>
         </nav>
@@ -2176,12 +2190,15 @@ body.light-theme .newsletter-form button[type="submit"] {
 <!-- ============================================================
      JAVASCRIPT
      ============================================================ -->
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     "use strict";
     console.log('🎵 Echi di Sofia — Avvio script');
 
-    // PLAYER
+    // ============================================================
+    // PLAYER MUSICALE
+    // ============================================================
     const player = document.getElementById('musicPlayer');
     const playerToggle = document.getElementById('playerToggle');
     const musicClose = document.getElementById('musicClose');
@@ -2251,7 +2268,9 @@ document.addEventListener('DOMContentLoaded', function() {
         console.warn('⚠️ Player: alcuni elementi DOM non trovati');
     }
 
+    // ============================================================
     // NEWSLETTER
+    // ============================================================
     const newsletterTrigger = document.getElementById('newsletterTrigger');
     const newsletterModal = document.getElementById('newsletterModal');
     const closeNewsletter = document.getElementById('closeNewsletter');
@@ -2322,7 +2341,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // ============================================================
     // TORNA SU
+    // ============================================================
     const tornaSuBtn = document.getElementById('tornaSu');
     if (tornaSuBtn) {
         function toggleTornaSu() {
@@ -2338,9 +2359,8 @@ document.addEventListener('DOMContentLoaded', function() {
         toggleTornaSu();
     }
 
-    // TEMA
-   // ============================================================
-    // 4. TEMA – VERSIONE CON SVG (corretta)
+    // ============================================================
+    // TEMA – VERSIONE CON SVG
     // ============================================================
     const themeToggle = document.getElementById('themeToggle');
     const themeLabel = document.getElementById('themeLabel');
@@ -2376,30 +2396,57 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('✅ Script inizializzato correttamente');
 });
 
+// ============================================================
+// RIPPLE – OTTIMIZZATO E PERFORMANTE
+// ============================================================
+(function() {
+    "use strict";
 
-
-// ECO DA CLICK
-document.addEventListener('click', function(event) {
     const origin = document.createElement('div');
-    origin.className = 'echo-origin';
-    origin.style.left = event.clientX + 'px';
-    origin.style.top = event.clientY + 'px';
+    origin.style.position = 'fixed';
+    origin.style.width = '6px';
+    origin.style.height = '6px';
+    origin.style.marginLeft = '-3px';
+    origin.style.marginTop = '-3px';
+    origin.style.borderRadius = '50%';
+    origin.style.background = 'radial-gradient(circle, #ffffff, #ffd76a)';
+    origin.style.pointerEvents = 'none';
+    origin.style.zIndex = '100000';
+    origin.style.boxShadow = '0 0 20px rgba(255,215,106,0.9), 0 0 60px rgba(255,215,106,0.4)';
+    origin.style.opacity = '0';
+    origin.style.transform = 'scale(0.3)';
     document.body.appendChild(origin);
-    origin.addEventListener('animationend', function() { origin.remove(); });
 
-    const ripple = document.createElement('div');
-    ripple.className = 'echo-ripple';
-    ripple.style.left = event.clientX + 'px';
-    ripple.style.top = event.clientY + 'px';
+    const rippleContainer = document.createElement('div');
+    rippleContainer.style.position = 'fixed';
+    rippleContainer.style.pointerEvents = 'none';
+    rippleContainer.style.zIndex = '99999';
+    rippleContainer.style.width = '200px';
+    rippleContainer.style.height = '200px';
+    rippleContainer.style.transform = 'translate(-50%, -50%)';
+    rippleContainer.style.opacity = '0';
+    rippleContainer.style.transition = 'opacity 0.15s ease';
+    document.body.appendChild(rippleContainer);
+
+    const svgNS = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(svgNS, 'svg');
+    svg.setAttribute('viewBox', '0 0 460 460');
+    svg.setAttribute('width', '200');
+    svg.setAttribute('height', '200');
+    svg.style.overflow = 'visible';
+    svg.style.transformOrigin = '50% 50%';
+    rippleContainer.appendChild(svg);
+
     function createOrganicWave(radius, irregularity, phase) {
         const points = [];
         const segments = 72;
         const center = 230;
         for (let i = 0; i < segments; i++) {
             const angle = (Math.PI * 2 * i) / segments;
-            const variation = Math.sin(angle * 3 + phase) * irregularity +
-                             Math.sin(angle * 5 - phase * 1.7) * irregularity * 0.45 +
-                             Math.sin(angle * 7 + phase * 0.8) * irregularity * 0.20;
+            const variation =
+                Math.sin(angle * 3 + phase) * irregularity +
+                Math.sin(angle * 5 - phase * 1.7) * irregularity * 0.45 +
+                Math.sin(angle * 7 + phase * 0.8) * irregularity * 0.20;
             const r = radius + variation;
             const x = center + Math.cos(angle) * r;
             const y = center + Math.sin(angle) * r;
@@ -2410,80 +2457,81 @@ document.addEventListener('click', function(event) {
         d += ' Z';
         return d;
     }
-    ripple.innerHTML = `
-        <svg viewBox="0 0 460 460" xmlns="http://www.w3.org/2000/svg">
-            <path class="ripple-1" d="${createOrganicWave(34, 2.8, 0.4)}" />
-            <path class="ripple-2" d="${createOrganicWave(39, 2.3, 2.1)}" />
-            <path class="ripple-3" d="${createOrganicWave(44, 1.8, 4.0)}" />
-        </svg>
-    `;
-    document.body.appendChild(ripple);
-    const firstWave = ripple.querySelector('.ripple-1');
-    firstWave.style.opacity = '0.82';
-    firstWave.style.transform = 'scale(.02)';
-    requestAnimationFrame(() => firstWave.classList.add('start'));
-    ripple.addEventListener('animationend', function(e) {
-        if (e.animationName === 'darkRipple1') ripple.remove();
+
+    const waveConfigs = [
+        { radius: 34, irregularity: 2.8, phase: 0.4, className: 'ripple-1' },
+        { radius: 39, irregularity: 2.3, phase: 2.1, className: 'ripple-2' },
+        { radius: 44, irregularity: 1.8, phase: 4.0, className: 'ripple-3' }
+    ];
+
+    waveConfigs.forEach(cfg => {
+        const path = document.createElementNS(svgNS, 'path');
+        path.setAttribute('d', createOrganicWave(cfg.radius, cfg.irregularity, cfg.phase));
+        path.setAttribute('class', cfg.className);
+        path.setAttribute('fill', 'none');
+        path.setAttribute('stroke', '#ffd76a');
+        path.setAttribute('stroke-linecap', 'round');
+        path.setAttribute('stroke-linejoin', 'round');
+        path.style.transformOrigin = '50% 50%';
+        path.style.opacity = '0';
+        path.style.transform = 'scale(0.02)';
+        path.style.filter = 'drop-shadow(0 0 3px rgba(255,215,106,0.35)) drop-shadow(0 0 10px rgba(255,215,106,0.12))';
+        svg.appendChild(path);
     });
-});
-</script>
 
+    let hideTimeout = null;
 
+    document.addEventListener('click', function(event) {
+        const x = event.clientX;
+        const y = event.clientY;
 
-<script>
-(function () {
+        // origin
+        origin.style.left = x + 'px';
+        origin.style.top = y + 'px';
+        origin.style.opacity = '1';
+        origin.style.transform = 'scale(0.3)';
+        void origin.offsetWidth;
+        origin.animate([
+            { opacity: 1, transform: 'scale(0.3)' },
+            { opacity: 0.8, transform: 'scale(1.8)' },
+            { opacity: 0, transform: 'scale(3.5)' }
+        ], {
+            duration: 400,
+            easing: 'ease-out',
+            fill: 'forwards'
+        });
 
-    function initStars() {
+        // ripple
+        rippleContainer.style.left = x + 'px';
+        rippleContainer.style.top = y + 'px';
+        rippleContainer.style.opacity = '1';
 
-        /* ============================================================
-           ⭐ STELLE GRANDI
-           Variazione NETTA di luminosità
-           ============================================================ */
-
-        document
-            .querySelectorAll('.cosmic-sky use[href="#star4"]')
-            .forEach(function (star) {
-
-                star.animate(
-                    [
-                        {
-                            opacity: 0.25,
-                            filter: 'brightness(0.7)'
-                        },
-
-                        {
-                            opacity: 0.40,
-                            filter: 'brightness(0.9)'
-                        },
-
-                        {
-                            opacity: 1,
-                            filter:
-                                'brightness(4) drop-shadow(0 0 10px #fff5d5)'
-                        },
-
-                        {
-                            opacity: 0.40,
-                            filter: 'brightness(0.9)'
-                        },
-
-                        {
-                            opacity: 0.25,
-                            filter: 'brightness(0.7)'
-                        }
-                    ],
-                    {
-                        duration: 3000,
-                        iterations: Infinity,
-                        easing: 'ease-in-out',
-                        delay: -Math.random() * 3000
-                    }
-                );
-
+        const paths = rippleContainer.querySelectorAll('path');
+        paths.forEach(path => {
+            path.getAnimations().forEach(a => a.cancel());
+            path.style.opacity = '0';
+            path.style.transform = 'scale(0.02)';
+            path.animate([
+                { opacity: 0, transform: 'scale(0.02)' },
+                { opacity: 0.82, transform: 'scale(0.8)' },
+                { opacity: 0.60, transform: 'scale(2.2)' },
+                { opacity: 0.25, transform: 'scale(4.5)' },
+                { opacity: 0, transform: 'scale(5.8)' }
+            ], {
+                duration: 3800,
+                easing: 'cubic-bezier(0.12, 0.55, 0.25, 1)',
+                fill: 'forwards'
             });
+        });
 
+        clearTimeout(hideTimeout);
+        hideTimeout = setTimeout(() => {
+            rippleContainer.style.opacity = '0';
+        }, 4200);
+    });
+})();
 
-        /* ============================================================
+/* ============================================================
            ✦ STELLE PICCOLE
            Brillio più delicato
            ============================================================ */
@@ -2553,27 +2601,8 @@ document.addEventListener('click', function(event) {
         );
 
     }
-
-
-    /* ================================================================
-       AVVIO
-       ================================================================ */
-
-    if (document.readyState === 'loading') {
-
-        document.addEventListener(
-            'DOMContentLoaded',
-            initStars
-        );
-
-    } else {
-
-        initStars();
-
-    }
-
-})();
 </script>
+
 
 </body>
 </html>
