@@ -1,9 +1,16 @@
+```html
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pietro Abelardo: Ragione e Passione nel Medioevo</title>
+
+    <title data-title-it="Pietro Abelardo: Ragione e Passione nel Medioevo"
+           data-title-pl="Piotr Abelard: Rozum i namiętność w średniowieczu"
+           data-title-en="Peter Abelard: Reason and Passion in the Middle Ages">
+        Pietro Abelardo: Ragione e Passione nel Medioevo
+    </title>
+
     <style>
         :root {
             --primary-color: #6d4c41;
@@ -54,12 +61,35 @@
             font-size: 1.2rem;
         }
 
+        .language-switcher {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin: 15px 0 30px;
+        }
+
+        .language-switcher button {
+            padding: 7px 14px;
+            border: 1px solid var(--primary-color);
+            border-radius: 20px;
+            background: transparent;
+            color: var(--primary-color);
+            cursor: pointer;
+            font-family: var(--font-main);
+            transition: all 0.3s ease;
+        }
+
+        .language-switcher button:hover,
+        .language-switcher button.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
         .section-container {
             margin: 40px 0;
             position: relative;
         }
 
-        /* Bottoni sezione a forma di pergamena arrotolata */
         .section-toggle {
             background: linear-gradient(to right, #f5f5f5 0%, #e0e0e0 100%);
             color: var(--primary-color);
@@ -131,19 +161,18 @@
         }
 
         @keyframes unfold {
-            from { 
+            from {
                 opacity: 0;
                 transform: perspective(500px) rotateX(-10deg);
                 max-height: 0;
             }
-            to { 
+            to {
                 opacity: 1;
                 transform: perspective(500px) rotateX(0);
                 max-height: 5000px;
             }
         }
 
-        /* Modalità di lettura */
         .reading-modes {
             display: flex;
             justify-content: center;
@@ -195,7 +224,6 @@
             }
         }
 
-        /* Stili specifici per ogni modalità */
         .scholastic {
             background: linear-gradient(145deg, #3e2723, #5d4037);
             color: #d7ccc8;
@@ -216,7 +244,6 @@
             color: #efebe9;
         }
 
-        /* Stili per modalità scolastica */
         body.scholastic-mode {
             --primary-color: #5d4037;
             --secondary-color: #bcaaa4;
@@ -233,7 +260,6 @@
             border-left: 8px solid #5d4037;
         }
 
-        /* Stili per modalità romantica */
         body.romantic-mode {
             --primary-color: #7e57c2;
             --secondary-color: #d1c4e9;
@@ -247,7 +273,6 @@
             background-image: url("https://www.transparenttextures.com/patterns/cream-paper.png");
         }
 
-        /* Stili per modalità dialettica */
         body.dialectic-mode {
             --primary-color: #00796b;
             --secondary-color: #80cbc4;
@@ -260,7 +285,6 @@
             background: linear-gradient(to right, #e0f2f1 0%, #b2dfdb 100%);
         }
 
-        /* Stili per modalità manoscritto */
         body.manuscript-mode {
             --primary-color: #5d4037;
             --secondary-color: #bcaaa4;
@@ -275,7 +299,6 @@
             border: 1px solid #8d6e63;
         }
 
-        /* Elementi tipografici speciali */
         blockquote {
             border-left: 5px solid var(--primary-color);
             padding: 20px;
@@ -312,7 +335,6 @@
             margin-top: 10px;
         }
 
-        /* Timeline verticale */
         .timeline {
             position: relative;
             max-width: 800px;
@@ -369,13 +391,12 @@
             z-index: 1;
         }
 
-        /* Responsive design */
         @media (max-width: 768px) {
             .reading-modes {
                 flex-direction: column;
                 align-items: center;
             }
-            
+
             .mode-btn {
                 width: 80%;
             }
@@ -398,7 +419,6 @@
             }
         }
 
-        /* Decorazioni medievali */
         .initial {
             float: left;
             font-family: 'UnifrakturMaguntia', cursive;
@@ -418,7 +438,6 @@
             letter-spacing: 10px;
         }
 
-        /* Note a margine */
         .footnote {
             font-size: 0.85rem;
             color: var(--primary-color);
@@ -427,339 +446,1275 @@
             margin-top: 30px;
             font-style: italic;
         }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid var(--secondary-color);
+            text-align: left;
+        }
+
+        th {
+            background-color: rgba(109, 76, 65, 0.08);
+        }
     </style>
+
     <link href="https://fonts.googleapis.com/css2?family=Garamond:wght@400;700&family=Trajan+Pro&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap" rel="stylesheet">
 </head>
+
 <body>
-    <div class="container">
-       <h1 data-i18n="titolo">Pietro Abelardo</h1>
-<p class="subtitle" data-i18n="sottotitolo">
-    Il filosofo che sfidò i dogmi con la ragione e l'amore
-</p>
-<div class="language-switcher">
-    <button data-lang="it">IT</button>
-    <button data-lang="pl">PL</button>
-    <button data-lang="en">EN</button>
-</div>
-        <div class="reading-modes">
-            <button class="mode-btn scholastic" onclick="setMode('scholastic')">Scolastico</button>
-            <button class="mode-btn romantic" onclick="setMode('romantic')">Romantico</button>
-            <button class="mode-btn dialectic" onclick="setMode('dialectic')">Dialettico</button>
-            <button class="mode-btn manuscript" onclick="setMode('manuscript')">Manoscritto</button>
-        </div>
+<div class="container">
 
-        <div class="section-container">
-           <button class="section-toggle" data-i18n="sezione1">
-    Vita Turbolenta di un Genio Ribelle
-</button>
-            <div class="section-content">
-                <p><span class="initial">P</span>ietro Abelardo (1079-1142) fu una delle figure più brillanti e controverse del XII secolo, filosofo, teologo e poeta la cui vita fu segnata da passioni intellettuali e amorose, trionfi e tragedie. Nato a Pallet, in Bretagna, da una famiglia nobile, rinunciò alla carriera militare per dedicarsi alla filosofia.</p>
-                
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-date">1079</div>
-                        <div class="timeline-content">
-                            <h3>Nascita di Abelardo</h3>
-                            <p>Nasce a Pallet, in Bretagna, da una famiglia della piccola nobiltà</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">1100</div>
-                        <div class="timeline-content">
-                            <h3>Studi a Parigi</h3>
-                            <p>Si trasferisce a Parigi per studiare con Guglielmo di Champeaux</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">1115</div>
-                        <div class="timeline-content">
-                            <h3>Incontro con Eloisa</h3>
-                            <p>Diventa precettore di Eloisa e nasce la loro relazione</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">1117</div>
-                        <div class="timeline-content">
-                            <h3>La tragedia</h3>
-                            <p>Castrato dallo zio di Eloisa, Fulberto, entra nell'abbazia di Saint-Denis</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">1121</div>
-                        <div class="timeline-content">
-                            <h3>Condanna a Soissons</h3>
-                            <p>Il suo trattato teologico è condannato al rogo</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">1141</div>
-                        <div class="timeline-content">
-                            <h3>Condanna a Sens</h3>
-                            <p>Bernardo di Chiaravalle ottiene la condanna delle sue dottrine</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">1142</div>
-                        <div class="timeline-content">
-                            <h3>Morte</h3>
-                            <p>Muore nel priorato di Saint-Marcel-sur-Saône</p>
-                        </div>
+    <h1 data-i18n="titolo">Pietro Abelardo</h1>
+
+    <p class="subtitle" data-i18n="sottotitolo">
+        Il filosofo che sfidò i dogmi con la ragione e l'amore
+    </p>
+
+    <div class="language-switcher">
+        <button data-lang="it">IT</button>
+        <button data-lang="pl">PL</button>
+        <button data-lang="en">EN</button>
+    </div>
+
+    <div class="reading-modes">
+
+        <button class="mode-btn scholastic"
+                onclick="setMode('scholastic')"
+                data-i18n="modo_scolastico">
+            Scolastico
+        </button>
+
+        <button class="mode-btn romantic"
+                onclick="setMode('romantic')"
+                data-i18n="modo_romantico">
+            Romantico
+        </button>
+
+        <button class="mode-btn dialectic"
+                onclick="setMode('dialectic')"
+                data-i18n="modo_dialettico">
+            Dialettico
+        </button>
+
+        <button class="mode-btn manuscript"
+                onclick="setMode('manuscript')"
+                data-i18n="modo_manoscritto">
+            Manoscritto
+        </button>
+
+    </div>
+
+
+    <!-- ============================================================
+         SEZIONE 1
+         ============================================================ -->
+
+    <div class="section-container">
+
+        <button class="section-toggle" data-i18n="sezione1">
+            Vita Turbolenta di un Genio Ribelle
+        </button>
+
+        <div class="section-content">
+
+            <p data-i18n="vita_intro">
+                <span class="initial">P</span>ietro Abelardo (1079-1142) fu una delle figure più brillanti e controverse del XII secolo, filosofo, teologo e poeta la cui vita fu segnata da passioni intellettuali e amorose, trionfi e tragedie. Nato a Pallet, in Bretagna, da una famiglia nobile, rinunciò alla carriera militare per dedicarsi alla filosofia.
+            </p>
+
+            <div class="timeline">
+
+                <div class="timeline-item">
+                    <div class="timeline-date">1079</div>
+                    <div class="timeline-content">
+                        <h3 data-i18n="nascita_titolo">Nascita di Abelardo</h3>
+                        <p data-i18n="nascita_testo">
+                            Nasce a Pallet, in Bretagna, da una famiglia della piccola nobiltà
+                        </p>
                     </div>
                 </div>
-                
-                <p>La sua relazione con Eloisa, brillante allieva e nipote del canonico Fulberto, si trasformò in una passione travolgente che portò alla nascita di un figlio, Astrolabio. Quando Fulberto scoprì la relazione, fece castrare Abelardo, evento che segnò profondamente la vita del filosofo, costringendolo a ritirarsi in monastero.</p>
-                
-                <blockquote>
-                    <p>"La nostra passione ci trascinò oltre i limiti che ci eravamo prefissati. La fama, che fino ad allora aveva celebrato il mio nome, ora si dilettava a spargerlo ovunque con questa nuova storia."</p>
-                    <footer>- Abelardo, <cite>Historia Calamitatum</cite></footer>
-                </blockquote>
-            </div>
-        </div>
 
-        <div class="section-container">
-            <button class="section-toggle" data-i18n="sezione2">
-    Opere e Pensiero Filosofico
-</button>
-            <div class="section-content">
-                <h3>Il metodo dialettico</h3>
-                <p>Abelardo rivoluzionò la filosofia medievale con il suo approccio critico e dialettico, espresso nell'opera <em>Sic et Non</em> ("Sì e No"), dove raccolse 158 questioni teologiche con argomenti pro e contro tratti dalle Scritture e dai Padri della Chiesa, senza fornire soluzioni definitive.</p>
-                
-                <h3>Concettualismo</h3>
-                <p>Nella disputa sugli universali, Abelardo elaborò una posizione intermedia tra realismo e nominalismo, nota come concettualismo:</p>
-                <ul>
-                    <li>Gli universali non esistono come realtà indipendenti (contro il realismo)</li>
-                    <li>Non sono semplici nomi, ma concetti mentali con fondamento nella realtà (contro il nominalismo radicale)</li>
-                    <li>Hanno una "status" logico e psicologico</li>
-                </ul>
-                
-                <div class="divider">✣ ✣ ✣</div>
-                
-                <h3>Opere principali</h3>
-                <ul>
-                    <li><strong>Logica</strong>: <em>Dialectica</em>, <em>Glossae super Porphyrium</em></li>
-                    <li><strong>Teologia</strong>: <em>Theologia 'Summi Boni'</em>, <em>Theologia Christiana</em>, <em>Theologia 'Scholarium'</em></li>
-                    <li><strong>Etica</strong>: <em>Scito te ipsum</em> (Conosci te stesso)</li>
-                    <li><strong>Autobiografia</strong>: <em>Historia Calamitatum</em> (Storia delle mie disgrazie)</li>
-                    <li><strong>Lettere</strong>: L'epistolario con Eloisa</li>
-                </ul>
-                
-                <blockquote>
-                    <p>"Il dubbio ci conduce alla ricerca, e attraverso la ricerca giungiamo alla verità."</p>
-                    <footer>- Abelardo, <cite>Sic et Non</cite></footer>
-                </blockquote>
-                
-                <h3>Etica dell'intenzione</h3>
-                <p>Nel suo trattato etico <em>Scito te ipsum</em>, Abelardo sviluppò una teoria morale rivoluzionaria che poneva l'accento sull'intenzione piuttosto che sull'azione:</p>
-                <ul>
-                    <li>Il peccato risiede nel consenso interiore al male</li>
-                    <li>Le azioni esterne sono moralmente neutre</li>
-                    <li>Dio giudica l'animo, non i fatti</li>
-                </ul>
-                
-                <div class="footnote">
-                    <p>Nota: La condanna delle sue opere al concilio di Sens (1141) segnò un momento cruciale nella storia del pensiero medievale.</p>
+                <div class="timeline-item">
+                    <div class="timeline-date">1100</div>
+                    <div class="timeline-content">
+                        <h3 data-i18n="parigi_titolo">Studi a Parigi</h3>
+                        <p data-i18n="parigi_testo">
+                            Si trasferisce a Parigi per studiare con Guglielmo di Champeaux
+                        </p>
+                    </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="section-container">
-           <button class="section-toggle" data-i18n="sezione3">
-    La Relazione con Eloisa
-</button>
-            <div class="section-content">
-                <h3>Un amore epistolare</h3>
-                <p>La corrispondenza tra Abelardo ed Eloisa, composta dopo la loro separazione, rappresenta uno dei più commoventi scambi epistolari della storia, che unisce passione amorosa, dibattito filosofico e riflessione spirituale.</p>
-                
-                <h3>Temi principali del carteggio</h3>
-                <ul>
-                    <li><strong>Amore e colpa</strong>: Eloisa rivendica il suo amore totale, senza pentimenti</li>
-                    <li><strong>Matrimonio e vocazione</strong>: Il conflitto tra legame coniugale e dedizione filosofica</li>
-                    <li><strong>Donna e sapere</strong>: Eloisa si presenta come intellettuale a pieno titolo</li>
-                    <li><strong>Redenzione</strong>: La trasformazione della passione in preghiera</li>
-                </ul>
-                
-                <blockquote>
-                    <p>"Se il nome di moglie sembra più sacro e più valido, a me è sempre sembrato più dolce quello di amica, o, se non ti offendessi, quello di concubina o di prostituta."</p>
-                    <footer>- Eloisa ad Abelardo, <cite>Lettere</cite></footer>
-                </blockquote>
-                
-                <h3>Eredità culturale</h3>
-                <p>La storia d'amore tra Abelardo ed Eloisa ha ispirato:</p>
-                <ul>
-                    <li>Opere letterarie (Rousseau, "La nuova Eloisa")</li>
-                    <li>Composizioni musicali (Héloïse et Abélard di Villon)</li>
-                    <li>Drammi teatrali e opere liriche</li>
-                    <li>Numerosi romanzi storici</li>
-                </ul>
-                
-                <div class="footnote">
-                    <p>Curiosità: Le loro spoglie furono sepolte insieme nel cimitero di Père-Lachaise a Parigi, diventando meta di pellegrinaggio per gli innamorati.</p>
+                <div class="timeline-item">
+                    <div class="timeline-date">1115</div>
+                    <div class="timeline-content">
+                        <h3 data-i18n="eloisa_titolo">Incontro con Eloisa</h3>
+                        <p data-i18n="eloisa_testo">
+                            Diventa precettore di Eloisa e nasce la loro relazione
+                        </p>
+                    </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="section-container">
-           <button class="section-toggle" data-i18n="sezione4">
-    Conflitti e Condanne
-</button>
-            <div class="section-content">
-                <h3>Abelardo e Bernardo di Chiaravalle</h3>
-                <p>Lo scontro tra Abelardo e Bernardo rappresenta il conflitto tra due visioni del sapere:</p>
-                <table>
-                    <tr>
-                        <th>Abelardo</th>
-                        <th>Bernardo</th>
-                    </tr>
-                    <tr>
-                        <td>Ragione dialettica</td>
-                        <td>Fede mistica</td>
-                    </tr>
-                    <tr>
-                        <td>Metodo critico</td>
-                        <td>Tradizione autoritativa</td>
-                    </tr>
-                    <tr>
-                        <td>Dubbio fecondo</td>
-                        <td>Cerchezza dogmatica</td>
-                    </tr>
-                </table>
-                
-                <h3>Le condanne</h3>
-                <ul>
-                    <li><strong>1121</strong>: Condanna al concilio di Soissons per le tesi sulla Trinità</li>
-                    <li><strong>1141</strong>: Condanna al concilio di Sens, su istigazione di Bernardo</li>
-                    <li><strong>1141</strong>: Papa Innocenzo II condanna le opere di Abelardo</li>
-                </ul>
-                
-                <blockquote>
-                    <p>"Con la sua dialettica pretende di comprendere Dio, riducendo a nulla il mistero della fede."</p>
-                    <footer>- Bernardo di Chiaravalle su Abelardo</footer>
-                </blockquote>
-                
-                <h3>Eredità intellettuale</h3>
-                <p>Nonostante le condanne, il metodo abelardiano influenzò profondamente:</p>
-                <ul>
-                    <li>Pietro Lombardo e le <em>Sentenze</em></li>
-                    <li>La scolastica del XIII secolo</li>
-                    <li>Lo sviluppo delle università</li>
-                    <li>L'umanesimo medievale</li>
-                </ul>
+                <div class="timeline-item">
+                    <div class="timeline-date">1117</div>
+                    <div class="timeline-content">
+                        <h3 data-i18n="tragedia_titolo">La tragedia</h3>
+                        <p data-i18n="tragedia_testo">
+                            Castrato dallo zio di Eloisa, Fulberto, entra nell'abbazia di Saint-Denis
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">1121</div>
+                    <div class="timeline-content">
+                        <h3 data-i18n="soissons_titolo">Condanna a Soissons</h3>
+                        <p data-i18n="soissons_testo">
+                            Il suo trattato teologico è condannato al rogo
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">1141</div>
+                    <div class="timeline-content">
+                        <h3 data-i18n="sens_titolo">Condanna a Sens</h3>
+                        <p data-i18n="sens_testo">
+                            Bernardo di Chiaravalle ottiene la condanna delle sue dottrine
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">1142</div>
+                    <div class="timeline-content">
+                        <h3 data-i18n="morte_titolo">Morte</h3>
+                        <p data-i18n="morte_testo">
+                            Muore nel priorato di Saint-Marcel-sur-Saône
+                        </p>
+                    </div>
+                </div>
+
             </div>
+
+            <p data-i18n="vita_secondo">
+                La sua relazione con Eloisa, brillante allieva e nipote del canonico Fulberto, si trasformò in una passione travolgente che portò alla nascita di un figlio, Astrolabio. Quando Fulberto scoprì la relazione, fece castrare Abelardo, evento che segnò profondamente la vita del filosofo, costringendolo a ritirarsi in monastero.
+            </p>
+
+            <blockquote>
+
+                <p data-i18n="citazione_abelardo_1">
+                    "La nostra passione ci trascinò oltre i limiti che ci eravamo prefissati. La fama, che fino ad allora aveva celebrato il mio nome, ora si dilettava a spargerlo ovunque con questa nuova storia."
+                </p>
+
+                <footer>
+                    - Abelardo, <cite>Historia Calamitatum</cite>
+                </footer>
+
+            </blockquote>
+
         </div>
     </div>
 
-    <script>
-        // Funzione per aprire/chiudere le sezioni
-        document.querySelectorAll('.section-toggle').forEach(button => {
-            button.addEventListener('click', () => {
-                button.classList.toggle('active');
-                const content = button.nextElementSibling;
-                if (content.style.display === 'block') {
-                    content.style.animation = 'unfold 0.5s ease reverse';
-                    setTimeout(() => {
-                        content.style.display = 'none';
-                    }, 450);
-                } else {
-                    content.style.display = 'block';
-                }
-            });
+
+    <!-- ============================================================
+         SEZIONE 2
+         ============================================================ -->
+
+    <div class="section-container">
+
+        <button class="section-toggle" data-i18n="sezione2">
+            Opere e Pensiero Filosofico
+        </button>
+
+        <div class="section-content">
+
+            <h3 data-i18n="metodo_titolo">Il metodo dialettico</h3>
+
+            <p data-i18n="metodo_testo">
+                Abelardo rivoluzionò la filosofia medievale con il suo approccio critico e dialettico, espresso nell'opera <em>Sic et Non</em> ("Sì e No"), dove raccolse 158 questioni teologiche con argomenti pro e contro tratti dalle Scritture e dai Padri della Chiesa, senza fornire soluzioni definitive.
+            </p>
+
+            <h3 data-i18n="concettualismo_titolo">Concettualismo</h3>
+
+            <p data-i18n="concettualismo_intro">
+                Nella disputa sugli universali, Abelardo elaborò una posizione intermedia tra realismo e nominalismo, nota come concettualismo:
+            </p>
+
+            <ul>
+                <li data-i18n="concettualismo_1">Gli universali non esistono come realtà indipendenti (contro il realismo)</li>
+                <li data-i18n="concettualismo_2">Non sono semplici nomi, ma concetti mentali con fondamento nella realtà (contro il nominalismo radicale)</li>
+                <li data-i18n="concettualismo_3">Hanno una "status" logico e psicologico</li>
+            </ul>
+
+            <div class="divider">✣ ✣ ✣</div>
+
+            <h3 data-i18n="opere_titolo">Opere principali</h3>
+
+            <ul>
+                <li data-i18n="opera_logica"><strong>Logica</strong>: <em>Dialectica</em>, <em>Glossae super Porphyrium</em></li>
+                <li data-i18n="opera_teologia"><strong>Teologia</strong>: <em>Theologia 'Summi Boni'</em>, <em>Theologia Christiana</em>, <em>Theologia 'Scholarium'</em></li>
+                <li data-i18n="opera_etica"><strong>Etica</strong>: <em>Scito te ipsum</em> (Conosci te stesso)</li>
+                <li data-i18n="opera_autobiografia"><strong>Autobiografia</strong>: <em>Historia Calamitatum</em> (Storia delle mie disgrazie)</li>
+                <li data-i18n="opera_lettere"><strong>Lettere</strong>: L'epistolario con Eloisa</li>
+            </ul>
+
+            <blockquote>
+
+                <p data-i18n="citazione_abelardo_2">
+                    "Il dubbio ci conduce alla ricerca, e attraverso la ricerca giungiamo alla verità."
+                </p>
+
+                <footer>
+                    - Abelardo, <cite>Sic et Non</cite>
+                </footer>
+
+            </blockquote>
+
+            <h3 data-i18n="etica_titolo">Etica dell'intenzione</h3>
+
+            <p data-i18n="etica_testo">
+                Nel suo trattato etico <em>Scito te ipsum</em>, Abelardo sviluppò una teoria morale rivoluzionaria che poneva l'accento sull'intenzione piuttosto che sull'azione:
+            </p>
+
+            <ul>
+                <li data-i18n="etica_1">Il peccato risiede nel consenso interiore al male</li>
+                <li data-i18n="etica_2">Le azioni esterne sono moralmente neutre</li>
+                <li data-i18n="etica_3">Dio giudica l'animo, non i fatti</li>
+            </ul>
+
+            <div class="footnote">
+                <p data-i18n="nota_sens">
+                    Nota: La condanna delle sue opere al concilio di Sens (1141) segnò un momento cruciale nella storia del pensiero medievale.
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- ============================================================
+         SEZIONE 3
+         ============================================================ -->
+
+    <div class="section-container">
+
+        <button class="section-toggle" data-i18n="sezione3">
+            La Relazione con Eloisa
+        </button>
+
+        <div class="section-content">
+
+            <h3 data-i18n="amore_titolo">Un amore epistolare</h3>
+
+            <p data-i18n="amore_testo">
+                La corrispondenza tra Abelardo ed Eloisa, composta dopo la loro separazione, rappresenta uno dei più commoventi scambi epistolari della storia, che unisce passione amorosa, dibattito filosofico e riflessione spirituale.
+            </p>
+
+            <h3 data-i18n="temi_titolo">Temi principali del carteggio</h3>
+
+            <ul>
+                <li data-i18n="tema_1"><strong>Amore e colpa</strong>: Eloisa rivendica il suo amore totale, senza pentimenti</li>
+                <li data-i18n="tema_2"><strong>Matrimonio e vocazione</strong>: Il conflitto tra legame coniugale e dedizione filosofica</li>
+                <li data-i18n="tema_3"><strong>Donna e sapere</strong>: Eloisa si presenta come intellettuale a pieno titolo</li>
+                <li data-i18n="tema_4"><strong>Redenzione</strong>: La trasformazione della passione in preghiera</li>
+            </ul>
+
+            <blockquote>
+
+                <p data-i18n="citazione_eloisa">
+                    "Se il nome di moglie sembra più sacro e più valido, a me è sempre sembrato più dolce quello di amica, o, se non ti offendessi, quello di concubina o di prostituta."
+                </p>
+
+                <footer>
+                    - Eloisa ad Abelardo, <cite>Lettere</cite>
+                </footer>
+
+            </blockquote>
+
+            <h3 data-i18n="eredita_culturale_titolo">Eredità culturale</h3>
+
+            <p data-i18n="eredita_culturale_intro">
+                La storia d'amore tra Abelardo ed Eloisa ha ispirato:
+            </p>
+
+            <ul>
+                <li data-i18n="eredita_1">Opere letterarie (Rousseau, "La nuova Eloisa")</li>
+                <li data-i18n="eredita_2">Composizioni musicali (Héloïse et Abélard di Villon)</li>
+                <li data-i18n="eredita_3">Drammi teatrali e opere liriche</li>
+                <li data-i18n="eredita_4">Numerosi romanzi storici</li>
+            </ul>
+
+            <div class="footnote">
+
+                <p data-i18n="curiosita">
+                    Curiosità: Le loro spoglie furono sepolte insieme nel cimitero di Père-Lachaise a Parigi, diventando meta di pellegrinaggio per gli innamorati.
+                </p>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- ============================================================
+         SEZIONE 4
+         ============================================================ -->
+
+    <div class="section-container">
+
+        <button class="section-toggle" data-i18n="sezione4">
+            Conflitti e Condanne
+        </button>
+
+        <div class="section-content">
+
+            <h3 data-i18n="bernardo_titolo">
+                Abelardo e Bernardo di Chiaravalle
+            </h3>
+
+            <p data-i18n="bernardo_intro">
+                Lo scontro tra Abelardo e Bernardo rappresenta il conflitto tra due visioni del sapere:
+            </p>
+
+            <table>
+
+                <tr>
+                    <th data-i18n="tabella_abelardo">Abelardo</th>
+                    <th data-i18n="tabella_bernardo">Bernardo</th>
+                </tr>
+
+                <tr>
+                    <td data-i18n="tabella_ragione">Ragione dialettica</td>
+                    <td data-i18n="tabella_fede">Fede mistica</td>
+                </tr>
+
+                <tr>
+                    <td data-i18n="tabella_metodo">Metodo critico</td>
+                    <td data-i18n="tabella_tradizione">Tradizione autoritativa</td>
+                </tr>
+
+                <tr>
+                    <td data-i18n="tabella_dubbio">Dubbio fecondo</td>
+                    <td data-i18n="tabella_dogma">Cerchezza dogmatica</td>
+                </tr>
+
+            </table>
+
+            <h3 data-i18n="condanne_titolo">Le condanne</h3>
+
+            <ul>
+                <li data-i18n="condanna_1121"><strong>1121</strong>: Condanna al concilio di Soissons per le tesi sulla Trinità</li>
+                <li data-i18n="condanna_1141_sens"><strong>1141</strong>: Condanna al concilio di Sens, su istigazione di Bernardo</li>
+                <li data-i18n="condanna_1141_papa"><strong>1141</strong>: Papa Innocenzo II condanna le opere di Abelardo</li>
+            </ul>
+
+            <blockquote>
+
+                <p data-i18n="citazione_bernardo">
+                    "Con la sua dialettica pretende di comprendere Dio, riducendo a nulla il mistero della fede."
+                </p>
+
+                <footer data-i18n="bernardo_footer">
+                    - Bernardo di Chiaravalle su Abelardo
+                </footer>
+
+            </blockquote>
+
+            <h3 data-i18n="eredita_intellettuale_titolo">
+                Eredità intellettuale
+            </h3>
+
+            <p data-i18n="eredita_intellettuale_intro">
+                Nonostante le condanne, il metodo abelardiano influenzò profondamente:
+            </p>
+
+            <ul>
+                <li data-i18n="influenza_1">Pietro Lombardo e le <em>Sentenze</em></li>
+                <li data-i18n="influenza_2">La scolastica del XIII secolo</li>
+                <li data-i18n="influenza_3">Lo sviluppo delle università</li>
+                <li data-i18n="influenza_4">L'umanesimo medievale</li>
+            </ul>
+
+        </div>
+    </div>
+
+</div>
+
+
+<script>
+
+    /* ============================================================
+       APERTURA / CHIUSURA SEZIONI
+       ============================================================ */
+
+    document.querySelectorAll('.section-toggle').forEach(button => {
+
+        button.addEventListener('click', () => {
+
+            button.classList.toggle('active');
+
+            const content = button.nextElementSibling;
+
+            if (content.style.display === 'block') {
+
+                content.style.animation = 'unfold 0.5s ease reverse';
+
+                setTimeout(() => {
+                    content.style.display = 'none';
+                }, 450);
+
+            } else {
+
+                content.style.display = 'block';
+
+            }
+
         });
 
-        // Funzioni per cambiare modalità di lettura
-        function setMode(mode) {
-            document.body.className = '';
-            if (mode !== 'scholastic') {
-                document.body.classList.add(mode + '-mode');
-            }
-            
-            // Cambia stile dei bottoni sezione in base alla modalità
-            const sectionToggles = document.querySelectorAll('.section-toggle');
-            sectionToggles.forEach(btn => {
-                btn.className = 'section-toggle'; // Resetta le classi
-                
-                if (mode === 'romantic') {
-                    btn.style.background = 'linear-gradient(to right, #f3e5f5 0%, #d1c4e9 100%)';
-                    btn.style.color = '#6a1b9a';
-                    btn.style.borderLeft = '8px solid #7e57c2';
-                } else if (mode === 'dialectic') {
-                    btn.style.background = 'linear-gradient(to right, #e0f2f1 0%, #b2dfdb 100%)';
-                    btn.style.color = '#00796b';
-                    btn.style.borderLeft = '8px solid #004d40';
-                } else if (mode === 'manuscript') {
-                    btn.style.background = 'linear-gradient(to right, #efebe9 0%, #d7ccc8 100%)';
-                    btn.style.color = '#5d4037';
-                    btn.style.borderLeft = '8px solid #3e2723';
-                } else {
-                    btn.style.background = 'linear-gradient(to right, #f5f5f5 0%, #e0e0e0 100%)';
-                    btn.style.color = '#5d4037';
-                    btn.style.borderLeft = '8px solid #3e2723';
-                }
-            });
+    });
+
+
+    /* ============================================================
+       MODALITÀ DI LETTURA
+       ============================================================ */
+
+    function setMode(mode) {
+
+        document.body.className = '';
+
+        if (mode !== 'scholastic') {
+            document.body.classList.add(mode + '-mode');
         }
 
-        // Apri la prima sezione di default
-        document.addEventListener('DOMContentLoaded', () => {
-            const firstToggle = document.querySelector('.section-toggle');
-            firstToggle.classList.add('active');
-            firstToggle.nextElementSibling.style.display = 'block';
-            
-            // Effetto ripple per i bottoni
-            const buttons = document.querySelectorAll('.mode-btn');
-            buttons.forEach(button => {
-                button.addEventListener('click', function(e) {
-                    const x = e.clientX - e.target.getBoundingClientRect().left;
-                    const y = e.clientY - e.target.getBoundingClientRect().top;
-                    
-                    const ripple = document.createElement('span');
-                    ripple.style.left = `${x}px`;
-                    ripple.style.top = `${y}px`;
-                    this.appendChild(ripple);
-                    
-                    setTimeout(() => {
-                        ripple.remove();
-                    }, 1000);
-                });
-            });
-        });
-    </script>
+        const sectionToggles =
+            document.querySelectorAll('.section-toggle');
 
-    <script>
+        sectionToggles.forEach(btn => {
+
+            btn.className = 'section-toggle';
+
+            if (mode === 'romantic') {
+
+                btn.style.background =
+                    'linear-gradient(to right, #f3e5f5 0%, #d1c4e9 100%)';
+
+                btn.style.color = '#6a1b9a';
+                btn.style.borderLeft = '8px solid #7e57c2';
+
+            } else if (mode === 'dialectic') {
+
+                btn.style.background =
+                    'linear-gradient(to right, #e0f2f1 0%, #b2dfdb 100%)';
+
+                btn.style.color = '#00796b';
+                btn.style.borderLeft = '8px solid #004d40';
+
+            } else if (mode === 'manuscript') {
+
+                btn.style.background =
+                    'linear-gradient(to right, #efebe9 0%, #d7ccc8 100%)';
+
+                btn.style.color = '#5d4037';
+                btn.style.borderLeft = '8px solid #3e2723';
+
+            } else {
+
+                btn.style.background =
+                    'linear-gradient(to right, #f5f5f5 0%, #e0e0e0 100%)';
+
+                btn.style.color = '#5d4037';
+                btn.style.borderLeft = '8px solid #3e2723';
+
+            }
+
+        });
+
+    }
+
+
+    /* ============================================================
+       APERTURA PRIMA SEZIONE
+       ============================================================ */
+
+    document.addEventListener('DOMContentLoaded', () => {
+
+        const firstToggle =
+            document.querySelector('.section-toggle');
+
+        firstToggle.classList.add('active');
+
+        firstToggle.nextElementSibling.style.display = 'block';
+
+
+        /* RIPPLE */
+
+        const buttons =
+            document.querySelectorAll('.mode-btn');
+
+        buttons.forEach(button => {
+
+            button.addEventListener('click', function(e) {
+
+                const x =
+                    e.clientX -
+                    e.target.getBoundingClientRect().left;
+
+                const y =
+                    e.clientY -
+                    e.target.getBoundingClientRect().top;
+
+                const ripple =
+                    document.createElement('span');
+
+                ripple.style.left = `${x}px`;
+                ripple.style.top = `${y}px`;
+
+                this.appendChild(ripple);
+
+                setTimeout(() => {
+                    ripple.remove();
+                }, 1000);
+
+            });
+
+        });
+
+    });
+
+</script>
+
+
+<!-- ============================================================
+     DIZIONARIO TRADUZIONI
+     ============================================================ -->
+
+<script>
+
 const translations = {
 
+    /* ============================================================
+       ITALIANO
+       ============================================================ */
+
     it: {
+
         title: "Pietro Abelardo: Ragione e Passione nel Medioevo",
+
         titolo: "Pietro Abelardo",
-        sottotitolo: "Il filosofo che sfidò i dogmi con la ragione e l'amore",
+
+        sottotitolo:
+            "Il filosofo che sfidò i dogmi con la ragione e l'amore",
+
+        modo_scolastico: "Scolastico",
+        modo_romantico: "Romantico",
+        modo_dialettico: "Dialettico",
+        modo_manoscritto: "Manoscritto",
+
         sezione1: "Vita Turbolenta di un Genio Ribelle",
         sezione2: "Opere e Pensiero Filosofico",
         sezione3: "La Relazione con Eloisa",
-        sezione4: "Conflitti e Condanne"
+        sezione4: "Conflitti e Condanne",
+
+        vita_intro:
+            "Pietro Abelardo (1079-1142) fu una delle figure più brillanti e controverse del XII secolo, filosofo, teologo e poeta la cui vita fu segnata da passioni intellettuali e amorose, trionfi e tragedie. Nato a Pallet, in Bretagna, da una famiglia nobile, rinunciò alla carriera militare per dedicarsi alla filosofia.",
+
+        nascita_titolo: "Nascita di Abelardo",
+        nascita_testo:
+            "Nasce a Pallet, in Bretagna, da una famiglia della piccola nobiltà",
+
+        parigi_titolo: "Studi a Parigi",
+        parigi_testo:
+            "Si trasferisce a Parigi per studiare con Guglielmo di Champeaux",
+
+        eloisa_titolo: "Incontro con Eloisa",
+        eloisa_testo:
+            "Diventa precettore di Eloisa e nasce la loro relazione",
+
+        tragedia_titolo: "La tragedia",
+        tragedia_testo:
+            "Castrato dallo zio di Eloisa, Fulberto, entra nell'abbazia di Saint-Denis",
+
+        soissons_titolo: "Condanna a Soissons",
+        soissons_testo:
+            "Il suo trattato teologico è condannato al rogo",
+
+        sens_titolo: "Condanna a Sens",
+        sens_testo:
+            "Bernardo di Chiaravalle ottiene la condanna delle sue dottrine",
+
+        morte_titolo: "Morte",
+        morte_testo:
+            "Muore nel priorato di Saint-Marcel-sur-Saône",
+
+        vita_secondo:
+            "La sua relazione con Eloisa, brillante allieva e nipote del canonico Fulberto, si trasformò in una passione travolgente che portò alla nascita di un figlio, Astrolabio. Quando Fulberto scoprì la relazione, fece castrare Abelardo, evento che segnò profondamente la vita del filosofo, costringendolo a ritirarsi in monastero.",
+
+        citazione_abelardo_1:
+            "\"La nostra passione ci trascinò oltre i limiti che ci eravamo prefissati. La fama, che fino ad allora aveva celebrato il mio nome, ora si dilettava a spargerlo ovunque con questa nuova storia.\"",
+
+        metodo_titolo: "Il metodo dialettico",
+
+        metodo_testo:
+            "Abelardo rivoluzionò la filosofia medievale con il suo approccio critico e dialettico, espresso nell'opera <em>Sic et Non</em> (\"Sì e No\"), dove raccolse 158 questioni teologiche con argomenti pro e contro tratti dalle Scritture e dai Padri della Chiesa, senza fornire soluzioni definitive.",
+
+        concettualismo_titolo: "Concettualismo",
+
+        concettualismo_intro:
+            "Nella disputa sugli universali, Abelardo elaborò una posizione intermedia tra realismo e nominalismo, nota come concettualismo:",
+
+        concettualismo_1:
+            "Gli universali non esistono come realtà indipendenti (contro il realismo)",
+
+        concettualismo_2:
+            "Non sono semplici nomi, ma concetti mentali con fondamento nella realtà (contro il nominalismo radicale)",
+
+        concettualismo_3:
+            "Hanno una \"status\" logico e psicologico",
+
+        opere_titolo: "Opere principali",
+
+        opera_logica:
+            "<strong>Logica</strong>: <em>Dialectica</em>, <em>Glossae super Porphyrium</em>",
+
+        opera_teologia:
+            "<strong>Teologia</strong>: <em>Theologia 'Summi Boni'</em>, <em>Theologia Christiana</em>, <em>Theologia 'Scholarium'</em>",
+
+        opera_etica:
+            "<strong>Etica</strong>: <em>Scito te ipsum</em> (Conosci te stesso)",
+
+        opera_autobiografia:
+            "<strong>Autobiografia</strong>: <em>Historia Calamitatum</em> (Storia delle mie disgrazie)",
+
+        opera_lettere:
+            "<strong>Lettere</strong>: L'epistolario con Eloisa",
+
+        citazione_abelardo_2:
+            "\"Il dubbio ci conduce alla ricerca, e attraverso la ricerca giungiamo alla verità.\"",
+
+        etica_titolo: "Etica dell'intenzione",
+
+        etica_testo:
+            "Nel suo trattato etico <em>Scito te ipsum</em>, Abelardo sviluppò una teoria morale rivoluzionaria che poneva l'accento sull'intenzione piuttosto che sull'azione:",
+
+        etica_1:
+            "Il peccato risiede nel consenso interiore al male",
+
+        etica_2:
+            "Le azioni esterne sono moralmente neutre",
+
+        etica_3:
+            "Dio giudica l'animo, non i fatti",
+
+        nota_sens:
+            "Nota: La condanna delle sue opere al concilio di Sens (1141) segnò un momento cruciale nella storia del pensiero medievale.",
+
+        amore_titolo: "Un amore epistolare",
+
+        amore_testo:
+            "La corrispondenza tra Abelardo ed Eloisa, composta dopo la loro separazione, rappresenta uno dei più commoventi scambi epistolari della storia, che unisce passione amorosa, dibattito filosofico e riflessione spirituale.",
+
+        temi_titolo: "Temi principali del carteggio",
+
+        tema_1:
+            "<strong>Amore e colpa</strong>: Eloisa rivendica il suo amore totale, senza pentimenti",
+
+        tema_2:
+            "<strong>Matrimonio e vocazione</strong>: Il conflitto tra legame coniugale e dedizione filosofica",
+
+        tema_3:
+            "<strong>Donna e sapere</strong>: Eloisa si presenta come intellettuale a pieno titolo",
+
+        tema_4:
+            "<strong>Redenzione</strong>: La trasformazione della passione in preghiera",
+
+        citazione_eloisa:
+            "\"Se il nome di moglie sembra più sacro e più valido, a me è sempre sembrato più dolce quello di amica, o, se non ti offendessi, quello di concubina o di prostituta.\"",
+
+        eredita_culturale_titolo:
+            "Eredità culturale",
+
+        eredita_culturale_intro:
+            "La storia d'amore tra Abelardo ed Eloisa ha ispirato:",
+
+        eredita_1:
+            "Opere letterarie (Rousseau, \"La nuova Eloisa\")",
+
+        eredita_2:
+            "Composizioni musicali (Héloïse et Abélard di Villon)",
+
+        eredita_3:
+            "Drammi teatrali e opere liriche",
+
+        eredita_4:
+            "Numerosi romanzi storici",
+
+        curiosita:
+            "Curiosità: Le loro spoglie furono sepolte insieme nel cimitero di Père-Lachaise a Parigi, diventando meta di pellegrinaggio per gli innamorati.",
+
+        bernardo_titolo:
+            "Abelardo e Bernardo di Chiaravalle",
+
+        bernardo_intro:
+            "Lo scontro tra Abelardo e Bernardo rappresenta il conflitto tra due visioni del sapere:",
+
+        tabella_abelardo: "Abelardo",
+        tabella_bernardo: "Bernardo",
+        tabella_ragione: "Ragione dialettica",
+        tabella_fede: "Fede mistica",
+        tabella_metodo: "Metodo critico",
+        tabella_tradizione: "Tradizione autoritativa",
+        tabella_dubbio: "Dubbio fecondo",
+        tabella_dogma: "Cerchezza dogmatica",
+
+        condanne_titolo: "Le condanne",
+
+        condanna_1121:
+            "<strong>1121</strong>: Condanna al concilio di Soissons per le tesi sulla Trinità",
+
+        condanna_1141_sens:
+            "<strong>1141</strong>: Condanna al concilio di Sens, su istigazione di Bernardo",
+
+        condanna_1141_papa:
+            "<strong>1141</strong>: Papa Innocenzo II condanna le opere di Abelardo",
+
+        citazione_bernardo:
+            "\"Con la sua dialettica pretende di comprendere Dio, riducendo a nulla il mistero della fede.\"",
+
+        bernardo_footer:
+            "- Bernardo di Chiaravalle su Abelardo",
+
+        eredita_intellettuale_titolo:
+            "Eredità intellettuale",
+
+        eredita_intellettuale_intro:
+            "Nonostante le condanne, il metodo abelardiano influenzò profondamente:",
+
+        influenza_1:
+            "Pietro Lombardo e le <em>Sentenze</em>",
+
+        influenza_2:
+            "La scolastica del XIII secolo",
+
+        influenza_3:
+            "Lo sviluppo delle università",
+
+        influenza_4:
+            "L'umanesimo medievale"
     },
+
+
+    /* ============================================================
+       POLACCO
+       ============================================================ */
 
     pl: {
-        title: "Piotr Abelard: Rozum i namiętność w średniowieczu",
+
+        title:
+            "Piotr Abelard: Rozum i namiętność w średniowieczu",
+
         titolo: "Piotr Abelard",
-        sottotitolo: "Filozof, który rzucił wyzwanie dogmatom dzięki rozumowi i miłości",
-        sezione1: "Burzliwe życie genialnego buntownika",
-        sezione2: "Dzieła i myśl filozoficzna",
-        sezione3: "Relacja z Heloizą",
-        sezione4: "Konflikty i potępienia"
+
+        sottotitolo:
+            "Filozof, który rzucił wyzwanie dogmatom dzięki rozumowi i miłości",
+
+        modo_scolastico: "Scholastyczny",
+        modo_romantico: "Romantyczny",
+        modo_dialettico: "Dialektyczny",
+        modo_manoscritto: "Manuskrypt",
+
+        sezione1:
+            "Burzliwe życie genialnego buntownika",
+
+        sezione2:
+            "Dzieła i myśl filozoficzna",
+
+        sezione3:
+            "Relacja z Heloizą",
+
+        sezione4:
+            "Konflikty i potępienia",
+
+        vita_intro:
+            "Piotr Abelard (1079-1142) był jedną z najwybitniejszych i najbardziej kontrowersyjnych postaci XII wieku, filozofem, teologiem i poetą, którego życie naznaczyły namiętności intelektualne i miłosne, triumfy i tragedie. Urodzony w Pallet w Bretanii, w rodzinie szlacheckiej, zrezygnował z kariery wojskowej, aby poświęcić się filozofii.",
+
+        nascita_titolo:
+            "Narodziny Abelarda",
+
+        nascita_testo:
+            "Urodził się w Pallet w Bretanii, w rodzinie drobnej szlachty",
+
+        parigi_titolo:
+            "Studia w Paryżu",
+
+        parigi_testo:
+            "Przeniósł się do Paryża, aby studiować u Wilhelma z Champeaux",
+
+        eloisa_titolo:
+            "Spotkanie z Heloizą",
+
+        eloisa_testo:
+            "Został nauczycielem Heloizy i rozpoczął się ich związek",
+
+        tragedia_titolo:
+            "Tragedia",
+
+        tragedia_testo:
+            "Po kastracji dokonanej przez wuja Heloizy, Fulberta, wstąpił do opactwa Saint-Denis",
+
+        soissons_titolo:
+            "Potępienie w Soissons",
+
+        soissons_testo:
+            "Jego traktat teologiczny został skazany na spalenie",
+
+        sens_titolo:
+            "Potępienie w Sens",
+
+        sens_testo:
+            "Bernard z Clairvaux doprowadził do potępienia jego doktryn",
+
+        morte_titolo:
+            "Śmierć",
+
+        morte_testo:
+            "Zmarł w klasztorze Saint-Marcel-sur-Saône",
+
+        vita_secondo:
+            "Jego związek z Heloizą, błyskotliwą uczennicą i siostrzenicą kanonika Fulberta, przerodził się w namiętną miłość, której owocem był syn Astrolabiusz. Gdy Fulbert odkrył ich związek, doprowadził do kastracji Abelarda. Wydarzenie to głęboko naznaczyło życie filozofa i zmusiło go do wycofania się do klasztoru.",
+
+        citazione_abelardo_1:
+            "\"Nasza namiętność poprowadziła nas poza granice, które sobie wyznaczyliśmy. Sława, która wcześniej głosiła moje imię, teraz z upodobaniem rozpowszechniała je wraz z tą nową historią.\"",
+
+        metodo_titolo:
+            "Metoda dialektyczna",
+
+        metodo_testo:
+            "Abelard zrewolucjonizował filozofię średniowieczną swoim krytycznym i dialektycznym podejściem, wyrażonym w dziele <em>Sic et Non</em> (\"Tak i Nie\"), w którym zebrał 158 kwestii teologicznych z argumentami za i przeciw zaczerpniętymi z Pisma Świętego i dzieł Ojców Kościoła, nie podając ostatecznych rozwiązań.",
+
+        concettualismo_titolo:
+            "Konceptualizm",
+
+        concettualismo_intro:
+            "W sporze o uniwersalia Abelard wypracował stanowisko pośrednie między realizmem a nominalizmem, znane jako konceptualizm:",
+
+        concettualismo_1:
+            "Uniwersalia nie istnieją jako niezależne rzeczywistości (przeciw realizmowi)",
+
+        concettualismo_2:
+            "Nie są jedynie nazwami, lecz pojęciami mentalnymi mającymi podstawę w rzeczywistości (przeciw radykalnemu nominalizmowi)",
+
+        concettualismo_3:
+            "Mają logiczny i psychologiczny status",
+
+        opere_titolo:
+            "Najważniejsze dzieła",
+
+        opera_logica:
+            "<strong>Logika</strong>: <em>Dialectica</em>, <em>Glossae super Porphyrium</em>",
+
+        opera_teologia:
+            "<strong>Teologia</strong>: <em>Theologia 'Summi Boni'</em>, <em>Theologia Christiana</em>, <em>Theologia 'Scholarium'</em>",
+
+        opera_etica:
+            "<strong>Etyka</strong>: <em>Scito te ipsum</em> (Poznaj samego siebie)",
+
+        opera_autobiografia:
+            "<strong>Autobiografia</strong>: <em>Historia Calamitatum</em> (Historia moich nieszczęść)",
+
+        opera_lettere:
+            "<strong>Listy</strong>: Korespondencja z Heloizą",
+
+        citazione_abelardo_2:
+            "\"Wątpliwość prowadzi nas do poszukiwania, a poprzez poszukiwanie dochodzimy do prawdy.\"",
+
+        etica_titolo:
+            "Etyka intencji",
+
+        etica_testo:
+            "W swoim traktacie etycznym <em>Scito te ipsum</em> Abelard rozwinął rewolucyjną teorię moralną, która kładła nacisk na intencję, a nie na działanie:",
+
+        etica_1:
+            "Grzech tkwi w wewnętrznym przyzwoleniu na zło",
+
+        etica_2:
+            "Działania zewnętrzne są moralnie neutralne",
+
+        etica_3:
+            "Bóg osądza duszę, a nie czyny",
+
+        nota_sens:
+            "Uwaga: Potępienie jego dzieł na soborze w Sens (1141) było przełomowym momentem w historii średniowiecznej myśli.",
+
+        amore_titolo:
+            "Miłość wyrażona w listach",
+
+        amore_testo:
+            "Korespondencja Abelarda i Heloizy, powstała po ich rozstaniu, należy do najbardziej poruszających wymian listownych w historii. Łączy namiętność miłosną, debatę filozoficzną i refleksję duchową.",
+
+        temi_titolo:
+            "Główne tematy korespondencji",
+
+        tema_1:
+            "<strong>Miłość i wina</strong>: Heloiza broni swojej całkowitej miłości, bez żalu",
+
+        tema_2:
+            "<strong>Małżeństwo i powołanie</strong>: Konflikt między więzią małżeńską a poświęceniem się filozofii",
+
+        tema_3:
+            "<strong>Kobieta i wiedza</strong>: Heloiza przedstawia się jako pełnoprawna intelektualistka",
+
+        tema_4:
+            "<strong>Odkupienie</strong>: Przemiana namiętności w modlitwę",
+
+        citazione_eloisa:
+            "\"Jeśli imię żony wydaje się bardziej święte i ważniejsze, mnie zawsze słodsze wydawało się imię przyjaciółki, a jeśli się nie obrazisz — konkubiny lub prostytutki.\"",
+
+        eredita_culturale_titolo:
+            "Dziedzictwo kulturowe",
+
+        eredita_culturale_intro:
+            "Historia miłości Abelarda i Heloizy zainspirowała:",
+
+        eredita_1:
+            "Dzieła literackie (Rousseau, \"Nowa Heloiza\")",
+
+        eredita_2:
+            "Kompozycje muzyczne (Héloïse et Abélard Villona)",
+
+        eredita_3:
+            "Dramaty teatralne i opery",
+
+        eredita_4:
+            "Liczne powieści historyczne",
+
+        curiosita:
+            "Ciekawostka: Ich szczątki pochowano razem na cmentarzu Père-Lachaise w Paryżu, który stał się miejscem pielgrzymek zakochanych.",
+
+        bernardo_titolo:
+            "Abelard i Bernard z Clairvaux",
+
+        bernardo_intro:
+            "Spór między Abelardem a Bernardem ukazuje konflikt między dwiema wizjami wiedzy:",
+
+        tabella_abelardo: "Abelard",
+        tabella_bernardo: "Bernard",
+        tabella_ragione: "Rozum dialektyczny",
+        tabella_fede: "Wiara mistyczna",
+        tabella_metodo: "Metoda krytyczna",
+        tabella_tradizione: "Tradycja autorytatywna",
+        tabella_dubbio: "Płodna wątpliwość",
+        tabella_dogma: "Dogmatyczna pewność",
+
+        condanne_titolo:
+            "Potępienia",
+
+        condanna_1121:
+            "<strong>1121</strong>: Potępienie na soborze w Soissons za tezy dotyczące Trójcy Świętej",
+
+        condanna_1141_sens:
+            "<strong>1141</strong>: Potępienie na soborze w Sens za namową Bernarda",
+
+        condanna_1141_papa:
+            "<strong>1141</strong>: Papież Innocenty II potępił dzieła Abelarda",
+
+        citazione_bernardo:
+            "\"Swoją dialektyką usiłuje zrozumieć Boga, sprowadzając tajemnicę wiary do niczego.\"",
+
+        bernardo_footer:
+            "- Bernard z Clairvaux o Abelardzie",
+
+        eredita_intellettuale_titolo:
+            "Dziedzictwo intelektualne",
+
+        eredita_intellettuale_intro:
+            "Pomimo potępień metoda Abelarda wywarła głęboki wpływ na:",
+
+        influenza_1:
+            "Piotra Lombarda i jego <em>Sentencje</em>",
+
+        influenza_2:
+            "Scholastykę XIII wieku",
+
+        influenza_3:
+            "Rozwój uniwersytetów",
+
+        influenza_4:
+            "Średniowieczny humanizm"
     },
 
+
+    /* ============================================================
+       INGLESE
+       ============================================================ */
+
     en: {
-        title: "Peter Abelard: Reason and Passion in the Middle Ages",
-        titolo: "Peter Abelard",
-        sottotitolo: "The philosopher who challenged dogmas through reason and love",
-        sezione1: "The Turbulent Life of a Rebellious Genius",
-        sezione2: "Works and Philosophical Thought",
-        sezione3: "The Relationship with Heloise",
-        sezione4: "Conflicts and Condemnations"
+
+        title:
+            "Peter Abelard: Reason and Passion in the Middle Ages",
+
+        titolo:
+            "Peter Abelard",
+
+        sottotitolo:
+            "The philosopher who challenged dogmas through reason and love",
+
+        modo_scolastico: "Scholastic",
+        modo_romantico: "Romantic",
+        modo_dialettico: "Dialectical",
+        modo_manoscritto: "Manuscript",
+
+        sezione1:
+            "The Turbulent Life of a Rebellious Genius",
+
+        sezione2:
+            "Works and Philosophical Thought",
+
+        sezione3:
+            "The Relationship with Heloise",
+
+        sezione4:
+            "Conflicts and Condemnations",
+
+        vita_intro:
+            "Peter Abelard (1079-1142) was one of the most brilliant and controversial figures of the 12th century, a philosopher, theologian and poet whose life was marked by intellectual and romantic passions, triumphs and tragedies. Born in Pallet, Brittany, into a noble family, he gave up a military career to devote himself to philosophy.",
+
+        nascita_titolo:
+            "Birth of Abelard",
+
+        nascita_testo:
+            "He was born in Pallet, Brittany, into a family of the minor nobility",
+
+        parigi_titolo:
+            "Studies in Paris",
+
+        parigi_testo:
+            "He moved to Paris to study under William of Champeaux",
+
+        eloisa_titolo:
+            "Meeting Heloise",
+
+        eloisa_testo:
+            "He became Heloise's tutor and their relationship began",
+
+        tragedia_titolo:
+            "The Tragedy",
+
+        tragedia_testo:
+            "After being castrated by Heloise's uncle, Fulbert, he entered the abbey of Saint-Denis",
+
+        soissons_titolo:
+            "Condemnation at Soissons",
+
+        soissons_testo:
+            "His theological treatise was condemned to be burned",
+
+        sens_titolo:
+            "Condemnation at Sens",
+
+        sens_testo:
+            "Bernard of Clairvaux obtained the condemnation of his doctrines",
+
+        morte_titolo:
+            "Death",
+
+        morte_testo:
+            "He died at the priory of Saint-Marcel-sur-Saône",
+
+        vita_secondo:
+            "His relationship with Heloise, a brilliant student and niece of the canon Fulbert, developed into an overwhelming passion that led to the birth of a son, Astrolabe. When Fulbert discovered the relationship, he had Abelard castrated, an event that deeply marked the philosopher's life and forced him to withdraw to a monastery.",
+
+        citazione_abelardo_1:
+            "\"Our passion carried us beyond the limits we had set for ourselves. Fame, which until then had celebrated my name, now delighted in spreading it everywhere with this new story.\"",
+
+        metodo_titolo:
+            "The Dialectical Method",
+
+        metodo_testo:
+            "Abelard revolutionized medieval philosophy with his critical and dialectical approach, expressed in the work <em>Sic et Non</em> (\"Yes and No\"), where he collected 158 theological questions with arguments for and against drawn from Scripture and the Church Fathers, without providing definitive solutions.",
+
+        concettualismo_titolo:
+            "Conceptualism",
+
+        concettualismo_intro:
+            "In the dispute over universals, Abelard developed an intermediate position between realism and nominalism, known as conceptualism:",
+
+        concettualismo_1:
+            "Universals do not exist as independent realities (against realism)",
+
+        concettualismo_2:
+            "They are not merely names, but mental concepts grounded in reality (against radical nominalism)",
+
+        concettualismo_3:
+            "They have a logical and psychological status",
+
+        opere_titolo:
+            "Major Works",
+
+        opera_logica:
+            "<strong>Logic</strong>: <em>Dialectica</em>, <em>Glossae super Porphyrium</em>",
+
+        opera_teologia:
+            "<strong>Theology</strong>: <em>Theologia 'Summi Boni'</em>, <em>Theologia Christiana</em>, <em>Theologia 'Scholarium'</em>",
+
+        opera_etica:
+            "<strong>Ethics</strong>: <em>Scito te ipsum</em> (Know Yourself)",
+
+        opera_autobiografia:
+            "<strong>Autobiography</strong>: <em>Historia Calamitatum</em> (History of My Misfortunes)",
+
+        opera_lettere:
+            "<strong>Letters</strong>: The correspondence with Heloise",
+
+        citazione_abelardo_2:
+            "\"Doubt leads us to inquiry, and through inquiry we arrive at truth.\"",
+
+        etica_titolo:
+            "Ethics of Intention",
+
+        etica_testo:
+            "In his ethical treatise <em>Scito te ipsum</em>, Abelard developed a revolutionary moral theory that emphasized intention rather than action:",
+
+        etica_1:
+            "Sin lies in the inner consent to evil",
+
+        etica_2:
+            "External actions are morally neutral",
+
+        etica_3:
+            "God judges the soul, not the deeds",
+
+        nota_sens:
+            "Note: The condemnation of his works at the Council of Sens (1141) marked a crucial moment in the history of medieval thought.",
+
+        amore_titolo:
+            "A Love Expressed Through Letters",
+
+        amore_testo:
+            "The correspondence between Abelard and Heloise, written after their separation, represents one of the most moving exchanges of letters in history, combining romantic passion, philosophical debate and spiritual reflection.",
+
+        temi_titolo:
+            "Main Themes of the Correspondence",
+
+        tema_1:
+            "<strong>Love and guilt</strong>: Heloise asserts her total love without regret",
+
+        tema_2:
+            "<strong>Marriage and vocation</strong>: The conflict between marital commitment and devotion to philosophy",
+
+        tema_3:
+            "<strong>Woman and knowledge</strong>: Heloise presents herself as an intellectual in her own right",
+
+        tema_4:
+            "<strong>Redemption</strong>: The transformation of passion into prayer",
+
+        citazione_eloisa:
+            "\"If the name of wife seems more sacred and more worthy, I have always found the name of friend sweeter, or, if you would not be offended, that of concubine or prostitute.\"",
+
+        eredita_culturale_titolo:
+            "Cultural Legacy",
+
+        eredita_culturale_intro:
+            "The love story of Abelard and Heloise inspired:",
+
+        eredita_1:
+            "Literary works (Rousseau, \"Julie, or the New Heloise\")",
+
+        eredita_2:
+            "Musical compositions (Villon's Héloïse et Abélard)",
+
+        eredita_3:
+            "Theatrical dramas and operas",
+
+        eredita_4:
+            "Numerous historical novels",
+
+        curiosita:
+            "Curiosity: Their remains were buried together in Père-Lachaise Cemetery in Paris, which became a pilgrimage site for lovers.",
+
+        bernardo_titolo:
+            "Abelard and Bernard of Clairvaux",
+
+        bernardo_intro:
+            "The conflict between Abelard and Bernard represents a clash between two visions of knowledge:",
+
+        tabella_abelardo:
+            "Abelard",
+
+        tabella_bernardo:
+            "Bernard",
+
+        tabella_ragione:
+            "Dialectical reason",
+
+        tabella_fede:
+            "Mystical faith",
+
+        tabella_metodo:
+            "Critical method",
+
+        tabella_tradizione:
+            "Authoritative tradition",
+
+        tabella_dubbio:
+            "Fruitful doubt",
+
+        tabella_dogma:
+            "Dogmatic certainty",
+
+        condanne_titolo:
+            "The Condemnations",
+
+        condanna_1121:
+            "<strong>1121</strong>: Condemnation at the Council of Soissons for his theses on the Trinity",
+
+        condanna_1141_sens:
+            "<strong>1141</strong>: Condemnation at the Council of Sens, instigated by Bernard",
+
+        condanna_1141_papa:
+            "<strong>1141</strong>: Pope Innocent II condemned Abelard's works",
+
+        citazione_bernardo:
+            "\"With his dialectic he claims to understand God, reducing the mystery of faith to nothing.\"",
+
+        bernardo_footer:
+            "- Bernard of Clairvaux on Abelard",
+
+        eredita_intellettuale_titolo:
+            "Intellectual Legacy",
+
+        eredita_intellettuale_intro:
+            "Despite the condemnations, Abelard's method had a profound influence on:",
+
+        influenza_1:
+            "Peter Lombard and the <em>Sentences</em>",
+
+        influenza_2:
+            "13th-century scholasticism",
+
+        influenza_3:
+            "The development of universities",
+
+        influenza_4:
+            "Medieval humanism"
     }
 
 };
+
 </script>
 
+
+<!-- ============================================================
+     MOTORE COMUNE DI TRADUZIONE
+     ============================================================ -->
+
 <script src="articoli-traduzione.js"></script>
+
 </body>
 </html>
+```
