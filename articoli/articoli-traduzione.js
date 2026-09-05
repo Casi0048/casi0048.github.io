@@ -1,47 +1,59 @@
 /* ================================================================
-   ECHI DI SOFIA — MOTORE COMUNE DI TRADUZIONE DEGLI ARTICOLI
+   ECHI DI SOFIA
+   MOTORE SPERIMENTALE DI TRADUZIONE ARTICOLI
    IT / PL / EN
 
-   Ogni articolo deve possedere il proprio:
-       const translations = { ... };
-
-   Il presente file gestisce esclusivamente:
-   - elementi [data-i18n]
-   - <title>
-   - attributi alt delle immagini
-   - lingua HTML
-   - pulsanti IT / PL / EN
-   - memoria della lingua scelta
+   TEST:
+   - rileva automaticamente l'articolo corrente
+   - cerca il relativo dizionario "translations"
+   - se non esiste, NON modifica nulla
+   - se esiste, applica le traduzioni disponibili
+   - gestisce titolo, testi, immagini e lingua HTML
    ================================================================ */
 
 document.addEventListener('DOMContentLoaded', function () {
 
     'use strict';
 
+    console.log('🌐 Echi di Sofia — motore traduzione avviato');
+
+
     /* ============================================================
-       CAMBIO LINGUA
+       1. VERIFICA DEL DIZIONARIO
+       ============================================================ */
+
+    if (typeof translations === 'undefined') {
+
+        console.log(
+            'ℹ️ Nessuna traduzione presente in questo articolo.'
+        );
+
+        return;
+    }
+
+
+    /* ============================================================
+       2. CAMBIO LINGUA
        ============================================================ */
 
     function changeLanguage(lang) {
 
-        /* Controlla che l'articolo abbia le traduzioni richieste */
-        if (
-            typeof translations === 'undefined' ||
-            !translations[lang]
-        ) {
+        const data = translations[lang];
+
+        if (!data) {
+
             console.warn(
-                'Traduzione non disponibile:',
+                '⚠️ Traduzione non disponibile:',
                 lang
             );
+
             return;
         }
 
-        const data = translations[lang];
 
-
-        /* ========================================================
-           1. TESTI DELL'ARTICOLO
-           ======================================================== */
+        /* --------------------------------------------------------
+           TESTI CON data-i18n
+           -------------------------------------------------------- */
 
         document
             .querySelectorAll('[data-i18n]')
@@ -50,38 +62,40 @@ document.addEventListener('DOMContentLoaded', function () {
                 const key = element.dataset.i18n;
 
                 if (data[key] !== undefined) {
+
                     element.innerHTML = data[key];
                 }
             });
 
 
-        /* ========================================================
-           2. TITOLO DELLA PAGINA
-           ======================================================== */
+        /* --------------------------------------------------------
+           TITOLO DELLA PAGINA
+           -------------------------------------------------------- */
 
-        const titleElement =
+        const title =
             document.querySelector('title');
 
-        if (titleElement) {
+        if (title) {
 
             const attribute =
                 'data-title-' + lang;
 
-            if (titleElement.hasAttribute(attribute)) {
+            if (title.hasAttribute(attribute)) {
 
                 document.title =
-                    titleElement.getAttribute(attribute);
+                    title.getAttribute(attribute);
 
             } else if (data.title) {
 
-                document.title = data.title;
+                document.title =
+                    data.title;
             }
         }
 
 
-        /* ========================================================
-           3. TESTO ALTERNATIVO DELLE IMMAGINI
-           ======================================================== */
+        /* --------------------------------------------------------
+           ALT DELLE IMMAGINI
+           -------------------------------------------------------- */
 
         document
             .querySelectorAll('img')
@@ -98,16 +112,16 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
 
-        /* ========================================================
-           4. LINGUA DEL DOCUMENTO HTML
-           ======================================================== */
+        /* --------------------------------------------------------
+           JĘZYK / LANGUAGE HTML
+           -------------------------------------------------------- */
 
         document.documentElement.lang = lang;
 
 
-        /* ========================================================
-           5. PULSANTE LINGUA ATTIVO
-           ======================================================== */
+        /* --------------------------------------------------------
+           PULSANTE ATTIVO
+           -------------------------------------------------------- */
 
         document
             .querySelectorAll('.language-switcher button')
@@ -120,19 +134,25 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
 
-        /* ========================================================
-           6. MEMORIZZA LA LINGUA SCELTA
-           ======================================================== */
+        /* --------------------------------------------------------
+           MEMORIA
+           -------------------------------------------------------- */
 
         localStorage.setItem(
             'echiLanguage',
+            lang
+        );
+
+
+        console.log(
+            '🌐 Lingua cambiata:',
             lang
         );
     }
 
 
     /* ============================================================
-       PULSANTI IT / PL / EN
+       3. PULSANTI IT / PL / EN
        ============================================================ */
 
     document
@@ -146,19 +166,33 @@ document.addEventListener('DOMContentLoaded', function () {
                     changeLanguage(
                         this.dataset.lang
                     );
-
                 }
             );
         });
 
 
     /* ============================================================
-       LINGUA INIZIALE
+       4. LINGUA INIZIALE
        ============================================================ */
 
     const savedLanguage =
         localStorage.getItem('echiLanguage') || 'it';
 
     changeLanguage(savedLanguage);
+
+
+    /* ============================================================
+       5. DIAGNOSTICA
+       ============================================================ */
+
+    console.log(
+        '🌐 Lingue disponibili:',
+        Object.keys(translations)
+    );
+
+    console.log(
+        '🌐 Elementi traducibili:',
+        document.querySelectorAll('[data-i18n]').length
+    );
 
 });
