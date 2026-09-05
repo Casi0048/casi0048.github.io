@@ -1,1 +1,925 @@
+```html
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Czytaj po polsku — Echi di Sofia</title>
+
+<meta name="description"
+      content="Jak czytać artykuły Echi di Sofia po polsku za pomocą funkcji tłumaczenia w Google Chrome i Brave.">
+
+<style>
+
+/* ============================================================
+   ECHI DI SOFIA
+   CZYTAJ PO POLSKU
+   Pagina autonoma
+   ============================================================ */
+
+:root {
+    --bg: #05070a;
+    --bg-soft: #080c11;
+
+    --text: #d9ddd9;
+    --text-soft: #aeb6b2;
+
+    --gold: #c7a96b;
+    --gold-soft: #a98d58;
+
+    --green: #9bd36a;
+    --green-soft: #6f9e50;
+
+    --cyan: #76c9c9;
+
+    --glass: rgba(255,255,255,.035);
+    --glass-hover: rgba(255,255,255,.055);
+
+    --border: rgba(199,169,107,.20);
+    --border-soft: rgba(255,255,255,.08);
+
+    --shadow: 0 20px 60px rgba(0,0,0,.45);
+
+    --display: "Cinzel", "Times New Roman", serif;
+    --body: "Cormorant Garamond", Georgia, serif;
+    --sans: "Montserrat", Arial, sans-serif;
+}
+
+
+/* ============================================================
+   BASE
+   ============================================================ */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(80,110,120,.10),
+            transparent 45%
+        ),
+        radial-gradient(
+            circle at 15% 35%,
+            rgba(100,130,80,.035),
+            transparent 35%
+        ),
+        var(--bg);
+
+    color: var(--text);
+
+    font-family: var(--body);
+    font-size: 19px;
+    line-height: 1.72;
+
+    overflow-x: hidden;
+}
+
+
+/* ============================================================
+   STELLE
+   ============================================================ */
+
+.cosmic-sky {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+
+    pointer-events: none;
+
+    opacity: .55;
+}
+
+.cosmic-sky::before,
+.cosmic-sky::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background-image:
+        radial-gradient(circle, rgba(255,255,255,.55) 1px, transparent 1px),
+        radial-gradient(circle, rgba(155,211,106,.35) 1px, transparent 1px),
+        radial-gradient(circle, rgba(118,201,201,.30) 1px, transparent 1px);
+
+    background-size:
+        170px 170px,
+        260px 260px,
+        330px 330px;
+
+    background-position:
+        20px 30px,
+        80px 140px,
+        150px 50px;
+
+    opacity: .22;
+}
+
+.cosmic-sky::after {
+    opacity: .12;
+    transform: rotate(17deg) scale(1.1);
+}
+
+
+/* ============================================================
+   CONTENITORE
+   ============================================================ */
+
+.page {
+    width: min(920px, calc(100% - 36px));
+    margin: 0 auto;
+
+    padding:
+        90px 0 100px;
+}
+
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+.page-header {
+    text-align: center;
+
+    margin-bottom: 65px;
+}
+
+.eyebrow {
+    font-family: var(--sans);
+    font-size: .68rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+
+    color: var(--green);
+
+    margin-bottom: 22px;
+
+    opacity: .85;
+}
+
+h1 {
+    margin: 0;
+
+    font-family: var(--display);
+    font-size: clamp(2.2rem, 6vw, 4rem);
+    font-weight: 400;
+    letter-spacing: 4px;
+
+    color: var(--gold);
+
+    text-shadow:
+        0 0 25px rgba(199,169,107,.10);
+}
+
+.subtitle {
+    max-width: 650px;
+    margin: 20px auto 0;
+
+    font-size: 1.35rem;
+    font-style: italic;
+
+    color: var(--text-soft);
+}
+
+.motto {
+    margin-top: 25px;
+
+    font-size: 1rem;
+    font-style: italic;
+
+    color: var(--cyan);
+
+    opacity: .82;
+}
+
+
+/* ============================================================
+   INTRO
+   ============================================================ */
+
+.intro {
+    padding: 34px 38px;
+
+    background: var(--glass);
+
+    border: 1px solid var(--border-soft);
+    border-radius: 18px;
+
+    box-shadow: var(--shadow);
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    margin-bottom: 55px;
+}
+
+.intro p {
+    margin: 0 0 15px;
+}
+
+.intro p:last-child {
+    margin-bottom: 0;
+}
+
+.intro strong {
+    color: var(--green);
+    font-weight: 500;
+}
+
+
+/* ============================================================
+   SEZIONI
+   ============================================================ */
+
+.section {
+    margin-bottom: 48px;
+
+    padding: 38px 40px;
+
+    background: rgba(255,255,255,.025);
+
+    border: 1px solid var(--border-soft);
+    border-radius: 18px;
+
+    transition:
+        border-color .35s ease,
+        background .35s ease,
+        transform .35s ease;
+}
+
+.section:hover {
+    background: var(--glass-hover);
+    border-color: var(--border);
+    transform: translateY(-2px);
+}
+
+
+/* ============================================================
+   TITOLI
+   ============================================================ */
+
+.section-number {
+    font-family: var(--sans);
+    font-size: .65rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+
+    color: var(--green);
+
+    opacity: .75;
+
+    margin-bottom: 7px;
+}
+
+h2 {
+    margin: 0 0 27px;
+
+    font-family: var(--display);
+    font-size: 1.65rem;
+    font-weight: 400;
+    letter-spacing: 2px;
+
+    color: var(--gold);
+}
+
+h3 {
+    margin: 28px 0 12px;
+
+    font-family: var(--sans);
+    font-size: .88rem;
+    font-weight: 500;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+
+    color: var(--cyan);
+}
+
+
+/* ============================================================
+   PASSAGGI
+   ============================================================ */
+
+.steps {
+    counter-reset: step;
+    list-style: none;
+
+    padding: 0;
+    margin: 0;
+}
+
+.steps li {
+    position: relative;
+
+    counter-increment: step;
+
+    padding:
+        7px 0
+        7px 0
+        7px 48px;
+
+    margin-bottom: 8px;
+}
+
+.steps li::before {
+    content: counter(step);
+
+    position: absolute;
+    left: 0;
+    top: 7px;
+
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(155,211,106,.35);
+    border-radius: 50%;
+
+    color: var(--green);
+
+    font-family: var(--sans);
+    font-size: .72rem;
+}
+
+
+/* ============================================================
+   ELEMENTI IMPORTANTI
+   ============================================================ */
+
+.browser-action {
+    display: inline-block;
+
+    padding: 2px 9px;
+
+    border-radius: 5px;
+
+    background: rgba(118,201,201,.07);
+
+    border: 1px solid rgba(118,201,201,.16);
+
+    color: var(--cyan);
+
+    font-family: var(--sans);
+    font-size: .78em;
+    letter-spacing: .3px;
+}
+
+.highlight {
+    margin: 25px 0;
+
+    padding: 18px 22px;
+
+    border-left: 2px solid var(--green);
+
+    background: rgba(155,211,106,.035);
+
+    color: var(--text-soft);
+
+    font-style: italic;
+}
+
+.highlight strong {
+    color: var(--green);
+    font-style: normal;
+}
+
+
+/* ============================================================
+   BLOCCO "FATTO"
+   ============================================================ */
+
+.done {
+    text-align: center;
+
+    margin: 65px 0 55px;
+
+    padding: 45px 30px;
+
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+}
+
+.done-symbol {
+    display: block;
+
+    margin-bottom: 15px;
+
+    font-size: 1.5rem;
+
+    color: var(--gold);
+}
+
+.done h2 {
+    margin-bottom: 15px;
+}
+
+.done p {
+    max-width: 650px;
+    margin: 0 auto;
+
+    color: var(--text-soft);
+}
+
+
+/* ============================================================
+   NOTA
+   ============================================================ */
+
+.note {
+    margin-top: 50px;
+
+    padding: 30px 34px;
+
+    border-radius: 15px;
+
+    background: rgba(199,169,107,.035);
+    border: 1px solid rgba(199,169,107,.12);
+}
+
+.note-title {
+    margin-bottom: 12px;
+
+    font-family: var(--sans);
+    font-size: .68rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+
+    color: var(--gold);
+}
+
+.note p {
+    margin: 0;
+
+    color: var(--text-soft);
+    font-size: .95em;
+}
+
+
+/* ============================================================
+   CHIUSURA
+   ============================================================ */
+
+.closing {
+    text-align: center;
+
+    margin-top: 75px;
+}
+
+.closing .line {
+    width: 45px;
+    height: 1px;
+
+    margin: 0 auto 25px;
+
+    background: var(--gold);
+
+    opacity: .55;
+}
+
+.closing p {
+    margin: 7px 0;
+
+    font-style: italic;
+
+    color: var(--text-soft);
+}
+
+.closing .final {
+    margin-top: 20px;
+
+    color: var(--gold);
+
+    font-size: 1.25rem;
+}
+
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+
+footer {
+    margin-top: 80px;
+
+    text-align: center;
+
+    font-family: var(--sans);
+    font-size: .62rem;
+    letter-spacing: 2px;
+
+    color: rgba(174,182,178,.45);
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 650px) {
+
+    body {
+        font-size: 18px;
+    }
+
+    .page {
+        width: min(100% - 24px, 920px);
+        padding-top: 55px;
+    }
+
+    .page-header {
+        margin-bottom: 40px;
+    }
+
+    h1 {
+        letter-spacing: 2px;
+    }
+
+    .subtitle {
+        font-size: 1.2rem;
+    }
+
+    .intro,
+    .section {
+        padding: 27px 23px;
+        border-radius: 15px;
+    }
+
+    .steps li {
+        padding-left: 42px;
+    }
+
+    .done {
+        padding: 35px 15px;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+<!-- ============================================================
+     SFONDO
+     ============================================================ -->
+
+<div class="cosmic-sky" aria-hidden="true"></div>
+
+
+<main class="page">
+
+    <!-- ========================================================
+         HEADER
+         ======================================================== -->
+
+    <header class="page-header">
+
+        <div class="eyebrow">
+            Echi di Sofia
+        </div>
+
+        <h1>
+            CZYTAJ PO POLSKU
+        </h1>
+
+        <div class="subtitle">
+            Jak czytać „Echi di Sofia” w języku polskim
+        </div>
+
+        <div class="motto">
+            Niech język nie będzie przeszkodą w spotkaniu z filozofią.
+        </div>
+
+    </header>
+
+
+    <!-- ========================================================
+         WPROWADZENIE
+         ======================================================== -->
+
+    <section class="intro">
+
+        <p>
+            „Echi di Sofia” jest publikowane w języku włoskim.
+            Jeśli jednak wolisz czytać artykuły po polsku,
+            możesz skorzystać z funkcji automatycznego tłumaczenia
+            dostępnej bezpośrednio w przeglądarce internetowej.
+        </p>
+
+        <p>
+            <strong>Nie musisz instalować żadnego dodatkowego programu
+            ani rozszerzenia.</strong>
+        </p>
+
+        <p>
+            Wystarczy jednorazowo skonfigurować przeglądarkę.
+            Potem każdy włoski artykuł możesz przetłumaczyć
+            na język polski za pomocą kilku kliknięć.
+        </p>
+
+    </section>
+
+
+    <!-- ========================================================
+         CHROME
+         ======================================================== -->
+
+    <section class="section">
+
+        <div class="section-number">
+            I · przeglądarka
+        </div>
+
+        <h2>
+            Google Chrome
+        </h2>
+
+
+        <h3>
+            Jednorazowa konfiguracja
+        </h3>
+
+        <ol class="steps">
+
+            <li>
+                Otwórz w Chrome
+                <span class="browser-action">
+                    Ustawienia → Języki
+                </span>.
+            </li>
+
+            <li>
+                W sekcji <strong>Google Tłumacz</strong>
+                upewnij się, że funkcja
+                <strong>„Używaj Google Tłumacza”</strong>
+                jest włączona.
+            </li>
+
+            <li>
+                Wybierz język, na który mają być tłumaczone strony,
+                i ustaw <strong>polski</strong>.
+            </li>
+
+            <li>
+                Sprawdź sekcję
+                <strong>„Nigdy nie proponuj tłumaczenia tych języków”</strong>.
+            </li>
+
+            <li>
+                Upewnij się, że <strong>włoski</strong>
+                nie znajduje się na tej liście.
+            </li>
+
+        </ol>
+
+
+        <div class="highlight">
+            To ważne — jeśli włoski jest oznaczony jako język,
+            którego Chrome nigdy nie ma proponować do tłumaczenia,
+            ikona tłumaczenia może się nie pojawić.
+        </div>
+
+
+        <h3>
+            Jak przetłumaczyć artykuł?
+        </h3>
+
+        <p>
+            Otwórz dowolny artykuł „Echi di Sofia” napisany
+            po włosku.
+        </p>
+
+        <p>
+            W pasku adresu pojawi się ikona
+            <strong>Tłumacz 🌐</strong>.
+        </p>
+
+        <p>
+            Kliknij ją i wybierz <strong>polski</strong>.
+            Cała strona zostanie automatycznie przetłumaczona.
+        </p>
+
+        <p>
+            Jeżeli ikona tłumaczenia się nie pojawi,
+            kliknij <strong>prawym przyciskiem myszy</strong>
+            w dowolnym miejscu strony i wybierz opcję
+            tłumaczenia na język polski.
+        </p>
+
+    </section>
+
+
+    <!-- ========================================================
+         BRAVE
+         ======================================================== -->
+
+    <section class="section">
+
+        <div class="section-number">
+            II · przeglądarka
+        </div>
+
+        <h2>
+            Brave
+        </h2>
+
+
+        <p>
+            Brave posiada własną, wbudowaną funkcję
+            tłumaczenia stron.
+        </p>
+
+        <div class="highlight">
+            <strong>Nie trzeba instalować Google Translate
+            ani żadnego innego rozszerzenia.</strong>
+        </div>
+
+
+        <h3>
+            Jednorazowa konfiguracja
+        </h3>
+
+        <ol class="steps">
+
+            <li>
+                Otwórz w Brave
+                <span class="browser-action">
+                    Ustawienia → Języki
+                </span>.
+            </li>
+
+            <li>
+                Upewnij się, że funkcja tłumaczenia stron
+                jest aktywna.
+            </li>
+
+            <li>
+                Ustaw <strong>język polski</strong>
+                jako język, na który mają być tłumaczone strony.
+            </li>
+
+            <li>
+                Sprawdź listę języków, których Brave
+                <strong>nigdy nie proponuje tłumaczyć</strong>.
+            </li>
+
+            <li>
+                Upewnij się, że <strong>włoski</strong>
+                nie znajduje się na tej liście.
+            </li>
+
+        </ol>
+
+
+        <h3>
+            Ważne w Brave
+        </h3>
+
+        <p>
+            Jeżeli <strong>włoski</strong> znajduje się wśród
+            preferowanych języków, Brave może nie proponować
+            automatycznego tłumaczenia.
+        </p>
+
+        <p>
+            W takim przypadku otwórz menu
+            <strong>⋮</strong> znajdujące się obok języka włoskiego
+            i włącz opcję:
+        </p>
+
+        <div class="highlight">
+            <strong>„Proponuj tłumaczenie stron w tym języku”</strong>
+        </div>
+
+        <p>
+            Dzięki temu Brave będzie mógł zaproponować
+            tłumaczenie włoskich stron na język polski.
+        </p>
+
+
+        <h3>
+            Jak przetłumaczyć artykuł?
+        </h3>
+
+        <p>
+            Otwórz artykuł „Echi di Sofia”.
+        </p>
+
+        <p>
+            W pasku adresu pojawi się funkcja
+            <strong>Tłumacz</strong>.
+        </p>
+
+        <p>
+            Wybierz <strong>polski</strong>.
+            Artykuł zostanie automatycznie przetłumaczony.
+        </p>
+
+        <p>
+            Możesz również kliknąć
+            <strong>prawym przyciskiem myszy</strong>
+            na stronie i wybrać opcję tłumaczenia.
+        </p>
+
+    </section>
+
+
+    <!-- ========================================================
+         GOTOWE
+         ======================================================== -->
+
+    <section class="done">
+
+        <span class="done-symbol">✦</span>
+
+        <h2>
+            GOTOWE
+        </h2>
+
+        <p>
+            Po jednorazowym skonfigurowaniu przeglądarki
+            możesz w ten sam sposób czytać
+            <strong>każdy artykuł „Echi di Sofia” po polsku</strong>.
+        </p>
+
+        <p>
+            Nie trzeba wykonywać konfiguracji ponownie
+            przy każdym artykule.
+        </p>
+
+    </section>
+
+
+    <!-- ========================================================
+         UWAGA
+         ======================================================== -->
+
+    <section class="note">
+
+        <div class="note-title">
+            Mała uwaga
+        </div>
+
+        <p>
+            Tłumaczenie jest wykonywane automatycznie przez
+            przeglądarkę. W przypadku tekstów filozoficznych
+            niektóre specjalistyczne terminy mogą zostać
+            przetłumaczone niedokładnie.
+            Jest to tłumaczenie automatyczne,
+            a nie profesjonalny przekład filozoficzny.
+        </p>
+
+        <p style="margin-top:15px;">
+            Mimo to funkcja ta pozwala wygodnie zapoznać się
+            z treścią artykułów również osobom,
+            które nie znają języka włoskiego.
+        </p>
+
+    </section>
+
+
+    <!-- ========================================================
+         CHIUSURA
+         ======================================================== -->
+
+    <section class="closing">
+
+        <div class="line"></div>
+
+        <p>
+            Filozofia nie ma jednego języka.
+        </p>
+
+        <p>
+            Niech więc język nie będzie przeszkodą
+            w jej czytaniu, poznawaniu i odkrywaniu.
+        </p>
+
+        <p class="final">
+            Miłej lektury. 📖
+        </p>
+
+    </section>
+
+
+    <footer>
+        ECHI DI SOFIA · PHILOSOPHIA · SOPHIA
+    </footer>
+
+</main>
+
+</body>
+</html>
+```
 
