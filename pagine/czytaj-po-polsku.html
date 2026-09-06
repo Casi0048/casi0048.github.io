@@ -79,7 +79,12 @@ body {
 
     overflow-x: hidden;
 }
-
+:root {
+    --gold: #c7a96b;
+    --text-muted: #aeb6b2;
+    --serif: "Cormorant Garamond", Georgia, serif;
+    --sans: "Montserrat", Arial, sans-serif;
+}
 
 /* ============================================================
    STELLE
@@ -597,6 +602,154 @@ footer {
     }
 }
 
+/* ============================================================
+   VARIABILI PER IL PLAYER
+   ============================================================ */
+
+:root {
+    --gold: #c7a96b;
+    --text-muted: #aeb6b2;
+    --serif: "Cormorant Garamond", Georgia, serif;
+    --sans: "Montserrat", Arial, sans-serif;
+}
+
+/* ============================================================
+   PLAYER MUSICALE
+   ============================================================ */
+
+.music-player {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 9999;
+    font-family: 'Inter', sans-serif;
+}
+.music-toggle {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 216, 106, .28);
+    background: rgba(10, 10, 26, .88);
+    color: var(--gold);
+    font-size: 1.25rem;
+    cursor: pointer;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, .35);
+    transition: transform .25s ease, border-color .25s ease, background .25s ease;
+}
+.music-toggle:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 216, 106, .65);
+    background: rgba(18, 18, 42, .96);
+}
+.music-panel {
+    position: absolute;
+    right: 0;
+    bottom: 58px;
+    width: 280px;
+    padding: 16px 17px;
+    background: rgba(12, 12, 30, .96);
+    border: 1px solid rgba(255, 216, 106, .18);
+    border-radius: 12px;
+    backdrop-filter: blur(16px);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, .55);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px) scale(.98);
+    transition: opacity .22s ease, transform .22s ease, visibility .22s ease;
+}
+.music-player.open .music-panel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+.music-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 14px;
+}
+.music-label {
+    display: block;
+    font-size: .58rem;
+    letter-spacing: 1.4px;
+    color: rgba(255, 216, 106, .65);
+    margin-bottom: 3px;
+}
+.music-title {
+    display: block;
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    color: #eee;
+}
+.music-close {
+    border: 0;
+    background: transparent;
+    color: rgba(255, 255, 255, .45);
+    font-size: 1.25rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0 0 0 4px;
+    transition: color .25s ease;
+}
+.music-close:hover {
+    color: #fff;
+}
+.music-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.music-play,
+.music-volume {
+    flex: 0 0 auto;
+    border: 0;
+    background: transparent;
+    color: var(--gold);
+    cursor: pointer;
+    transition: color .25s ease;
+}
+.music-play {
+    font-size: .95rem;
+    width: 25px;
+}
+.music-volume {
+    font-size: .85rem;
+    opacity: .8;
+}
+.music-progress {
+    flex: 1;
+    min-width: 0;
+    height: 3px;
+    appearance: none;
+    -webkit-appearance: none;
+    background: rgba(255, 255, 255, .15);
+    border-radius: 5px;
+    cursor: pointer;
+}
+.music-progress::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--gold);
+    cursor: pointer;
+}
+.music-progress::-moz-range-thumb {
+    width: 9px;
+    height: 9px;
+    border: 0;
+    border-radius: 50%;
+    background: var(--gold);
+    cursor: pointer;
+}
+.player-status {
+    font-size: .68rem;
+    color: var(--text-muted);
+    transition: color .4s ease;
+}
 </style>
 
 </head>
@@ -1093,6 +1246,99 @@ footer {
 
 
 </main>
+<!-- ============================================================
+     PLAYER MUSICALE
+     ============================================================ -->
+<audio id="myAudio" playsinline preload="auto" src="https://casi0048.github.io/suoni/Strauss.mp3"></audio>
+<div class="music-player" id="musicPlayer">
+    <div class="music-panel">
+        <div class="music-header">
+            <div>
+                <span class="music-label">MUSICA PER LO STUDIO</span>
+                <span class="music-title">Strauss – 'Sul bel Danubio blu'</span>
+            </div>
+            <button class="music-close" id="musicClose" aria-label="Chiudi player">✕</button>
+        </div>
+        <div class="music-controls">
+            <button class="music-play" id="playButton" aria-label="Riproduci musica">▶</button>
+            <button class="music-volume" id="volumeToggle" aria-label="Attiva/disattiva audio">🔊</button>
+            <input type="range" class="music-progress" id="musicProgress" min="0" max="100" value="0" aria-label="Avanzamento brano">
+            <span class="player-status" id="playerStatus">In pausa</span>
+        </div>
+    </div>
+    <button class="music-toggle" id="playerToggle" aria-label="Apri lettore musicale" aria-expanded="false">♫</button>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    "use strict";
 
+    // PLAYER
+    const player = document.getElementById('musicPlayer');
+    const playerToggle = document.getElementById('playerToggle');
+    const musicClose = document.getElementById('musicClose');
+    const playButton = document.getElementById('playButton');
+    const playerStatus = document.getElementById('playerStatus');
+    const progress = document.getElementById('musicProgress');
+    const volumeToggle = document.getElementById('volumeToggle');
+    const audio = document.getElementById('myAudio');
+
+    if (player && playerToggle && playButton && audio) {
+        function openPanel() {
+            player.classList.add('open');
+            playerToggle.setAttribute('aria-expanded', 'true');
+        }
+        function closePanel() {
+            player.classList.remove('open');
+            playerToggle.setAttribute('aria-expanded', 'false');
+        }
+        playerToggle.addEventListener('click', function() {
+            if (player.classList.contains('open')) closePanel();
+            else openPanel();
+        });
+        if (musicClose) musicClose.addEventListener('click', closePanel);
+        document.addEventListener('click', function(e) {
+            if (!player.contains(e.target)) closePanel();
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && player.classList.contains('open')) closePanel();
+        });
+        playButton.addEventListener('click', function() {
+            if (audio.paused) {
+                audio.play().then(function() {
+                    playButton.textContent = '❚❚';
+                    if (playerStatus) playerStatus.textContent = 'In riproduzione';
+                }).catch(function(err) {
+                    console.warn('Riproduzione audio non avviata:', err);
+                    if (playerStatus) playerStatus.textContent = 'Errore';
+                });
+            } else {
+                audio.pause();
+                playButton.textContent = '▶';
+                if (playerStatus) playerStatus.textContent = 'In pausa';
+            }
+        });
+        audio.addEventListener('ended', function() {
+            playButton.textContent = '▶';
+            if (playerStatus) playerStatus.textContent = 'In pausa';
+        });
+        if (audio && progress) {
+            istener('timeupdate', function() {
+                if (audio.duration) progress.value = (audio.currentTime / audio.duration) * 100;
+            });
+            progress.addEventListener('input', function() {
+                if (audio.duration) audio.currentTime = (this.value / 100) * audio.duration;
+            });
+        }
+        let isMuted = false;
+        if (volumeToggle && audio) {
+            volumeToggle.addEventListener('click', function() {
+                isMuted = !isMuted;
+                audio.muted = isMuted;
+                this.textContent = isMuted ? '🔇' : '🔊';
+            });
+        }
+    }
+});
+</script>
 </body>
 </html>
