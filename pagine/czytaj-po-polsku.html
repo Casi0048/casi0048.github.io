@@ -5,6 +5,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+
+
+
+
+
+
+
+
 <title>Czytaj po polsku — Echi di Sofia</title>
 
 <meta name="description"
@@ -541,7 +549,79 @@ h3 {
 
     transform: translateY(-2px);
 }
+/* ============================================================
+   LINK BACK — Torna alla home
+   ============================================================ */
 
+.back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+margin-left: -495px;
+    font-family: var(--sans, 'Montserrat', Arial, sans-serif);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+
+    color: var(--text-muted, #aeb6b2);
+    text-decoration: none;
+
+    padding: 10px 18px;
+
+    border: 1px solid rgba(199, 169, 107, 0.15);
+    border-radius: 30px;
+
+    background: rgba(255, 255, 255, 0.025);
+
+    transition:
+        color 0.35s ease,
+        border-color 0.35s ease,
+        background 0.35s ease,
+        transform 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+.back:hover {
+    color: var(--gold, #c7a96b);
+    border-color: rgba(199, 169, 107, 0.35);
+    background: rgba(199, 169, 107, 0.06);
+    transform: translateX(-4px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.back:active {
+    transform: scale(0.96);
+}
+
+.back:focus-visible {
+    outline: 2px solid var(--gold, #c7a96b);
+    outline-offset: 3px;
+}
+
+/* --- TEMA CHIARO (opzionale) --- */
+
+body.light-theme .back {
+    color: #5a4a3a;
+    border-color: rgba(184, 134, 11, 0.15);
+    background: rgba(255, 255, 255, 0.5);
+}
+
+body.light-theme .back:hover {
+    color: #b8860b;
+    border-color: rgba(184, 134, 11, 0.35);
+    background: rgba(184, 134, 11, 0.06);
+}
+
+/* --- MOBILE --- */
+
+@media (max-width: 600px) {
+    .back {
+        font-size: 0.58rem;
+        padding: 8px 14px;
+        letter-spacing: 1.4px;
+    }
+}
 
 /* ============================================================
    FOOTER
@@ -750,6 +830,96 @@ footer {
     color: var(--text-muted);
     transition: color .4s ease;
 }
+/* ============================================================
+   PULSANTE TORNA SU
+   ============================================================ */
+.torna-su {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 6rem;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 216, 106, .28);
+    background: rgba(10, 10, 26, .88);
+    color: var(--gold, #d8b56a);
+    font-size: 1.4rem;
+    font-weight: 400;
+    cursor: pointer;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, .35);
+    transition: all .3s cubic-bezier(.4, 0, .2, 1);
+    opacity: 0;
+    transform: scale(.8);
+    pointer-events: none;
+    z-index: 1000;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.torna-su.visible {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+}
+.torna-su:hover {
+    transform: translateY(-2px) scale(1.02);
+    border-color: rgba(255, 216, 106, .65);
+    background: rgba(18, 18, 42, .96);
+    box-shadow: 0 8px 35px rgba(0, 0, 0, .45);
+}
+.torna-su:active {
+    transform: scale(.92);
+}
+.torna-su:focus-visible {
+    outline: 3px solid var(--gold, #d8b56a);
+    outline-offset: 4px;
+}
+body.light-theme .torna-su {
+    background: var(--gold, #b8860b);
+    color: var(--bg, #f2ede5);
+    border: 1px solid rgba(184, 134, 11, .3);
+    backdrop-filter: none;
+    box-shadow: 0 4px 20px rgba(184, 134, 11, .3);
+}
+body.light-theme .torna-su:hover {
+    transform: translateY(-2px) scale(1.02);
+    background: #a0780a;
+    box-shadow: 0 8px 35px rgba(184, 134, 11, .4);
+}
+
+/* ============================================================
+   PULSANTE TORNA A ECHI IN ALTO
+   ============================================================ */
+.back-wrapper {
+    max-width: 10px;
+    margin: 0 auto;
+    padding: 0 24px;
+    text-align: left;
+}
+
+.back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    /* rimuovi margin-left */
+    font-family: var(--sans, 'Montserrat', Arial, sans-serif);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--text-muted, #aeb6b2);
+    text-decoration: none;
+    padding: 10px 0;
+    transition: color 0.35s ease, transform 0.35s ease;
+}
+
+.back:hover {
+    color: var(--gold, #c7a96b);
+    transform: translateX(-4px);
+}
 </style>
 
 </head>
@@ -765,6 +935,13 @@ footer {
      ======================================================== -->
 
 <header class="page-header">
+
+
+ <div class="back-wrapper">
+    <a class="back" href="/">← Echi di Sofia</a>
+</div>
+
+
 
     <div class="eyebrow">
         Echi di Sofia
@@ -1243,6 +1420,10 @@ footer {
 <footer>
     ECHI DI SOFIA · PHILOSOPHIA · SOPHIA
 </footer>
+<!-- ============================================================
+     PULSANTE TORNA SU
+     ============================================================ -->
+<button class="torna-su" id="tornaSu" aria-label="Torna su" title="Torna su">↑</button>
 
 
 </main>
@@ -1272,7 +1453,10 @@ footer {
 document.addEventListener('DOMContentLoaded', function() {
     "use strict";
 
-    // PLAYER
+    // ============================================================
+    // PLAYER MUSICALE
+    // ============================================================
+
     const player = document.getElementById('musicPlayer');
     const playerToggle = document.getElementById('playerToggle');
     const musicClose = document.getElementById('musicClose');
@@ -1321,14 +1505,21 @@ document.addEventListener('DOMContentLoaded', function() {
             playButton.textContent = '▶';
             if (playerStatus) playerStatus.textContent = 'In pausa';
         });
+
+        // CORREZIONE QUI: era "istener" → ora "addEventListener"
         if (audio && progress) {
-            istener('timeupdate', function() {
-                if (audio.duration) progress.value = (audio.currentTime / audio.duration) * 100;
+            audio.addEventListener('timeupdate', function() {
+                if (audio.duration) {
+                    progress.value = (audio.currentTime / audio.duration) * 100;
+                }
             });
             progress.addEventListener('input', function() {
-                if (audio.duration) audio.currentTime = (this.value / 100) * audio.duration;
+                if (audio.duration) {
+                    audio.currentTime = (this.value / 100) * audio.duration;
+                }
             });
         }
+
         let isMuted = false;
         if (volumeToggle && audio) {
             volumeToggle.addEventListener('click', function() {
@@ -1338,6 +1529,30 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     }
+
+    // ============================================================
+    // PULSANTE TORNA SU — SPOSTATO DENTRO DOMContentLoaded
+    // ============================================================
+
+    const tornaSuBtn = document.getElementById('tornaSu');
+    if (tornaSuBtn) {
+        function toggleTornaSu() {
+            const scrollY = window.scrollY;
+            if (scrollY > 150) {
+                tornaSuBtn.classList.add('visible');
+            } else {
+                tornaSuBtn.classList.remove('visible');
+            }
+        }
+        window.addEventListener('scroll', toggleTornaSu, { passive: true });
+        tornaSuBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        toggleTornaSu();
+    }
+
+    console.log('✅ Script caricato correttamente');
 });
 </script>
 </body>
