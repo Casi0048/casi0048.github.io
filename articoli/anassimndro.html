@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Anassimandro di Mileto · il principio dell'infinito</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <style>
+        /* ── Reset & Base ── */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #f8f6f1;
+            --surface: #ffffff;
+            --text: #1e1a16;
+            --text-secondary: #4a443e;
+            --border: #e0dbd2;
+            --accent: #2d5a7a;
+            --accent-light: #4a7c9e;
+            --shadow: 0 8px 32px rgba(30, 26, 22, 0.06);
+            --radius: 16px;
+            --transition: 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            --font-serif: 'Cormorant Garamond', serif;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --max-width: 820px;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            line-height: 1.7;
+            transition: background var(--transition), color var(--transition);
+            padding: 2rem 1.5rem 4rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+
+        /* ── Header ── */
+        .article-header {
+            text-align: center;
+            padding: 2.5rem 0 2rem;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 2.5rem;
+            transition: border-color var(--transition);
+            position: relative;
+        }
+
+        .article-header .badge {
+            display: inline-block;
+            font-family: var(--font-sans);
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent);
+            background: rgba(45, 90, 122, 0.08);
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            margin-bottom: 0.75rem;
+            transition: background var(--transition), color var(--transition);
+        }
+
+        .article-header h1 {
+            font-size: 3.4rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            margin-bottom: 0.2rem;
+        }
+
+        .article-header .subtitle {
+            font-size: 1.3rem;
+            font-weight: 400;
+            font-style: italic;
+            color: var(--text-secondary);
+            transition: color var(--transition);
+        }
+
+        .article-header .life {
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            font-weight: 300;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+            transition: color var(--transition);
+        }
+
+        .article-header .life span {
+            display: inline-block;
+            margin: 0 0.4rem;
+        }
+
+        /* ── Theme Controls ── */
+        .theme-controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 2rem 0 1.5rem;
+            padding: 1rem 0.5rem;
+            border-radius: var(--radius);
+            background: var(--surface);
+            box-shadow: var(--shadow);
+            transition: background var(--transition), box-shadow var(--transition);
+        }
+
+        .theme-btn {
+            font-family: var(--font-sans);
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            text-transform: lowercase;
+            padding: 0.45rem 1.1rem;
+            border: 1.5px solid var(--border);
+            border-radius: 40px;
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theme-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-1px);
+        }
+
+        .theme-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(45, 90, 122, 0.25);
+        }
+
+        .theme-btn .icon {
+            margin-right: 0.4rem;
+            opacity: 0.6;
+        }
+
+        /* ── Sections ── */
+        .section {
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 1.25rem;
+            overflow: hidden;
+            transition: background var(--transition), box-shadow var(--transition), border-color var(--transition);
+            border: 1px solid transparent;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem 1.75rem;
+            cursor: pointer;
+            user-select: none;
+            transition: background var(--transition);
+            gap: 1rem;
+        }
+
+        .section-header:hover {
+            background: rgba(45, 90, 122, 0.04);
+        }
+
+        .section-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            margin: 0;
+            transition: color var(--transition);
+        }
+
+        .section-header .toggle-icon {
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: all var(--transition);
+            color: var(--text-secondary);
+            line-height: 1;
+        }
+
+        .section-header:hover .toggle-icon {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .section.open .toggle-icon {
+            transform: rotate(180deg);
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .section-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.7s cubic-bezier(0.23, 1, 0.32, 1), padding 0.5s ease, opacity 0.4s ease;
+            opacity: 0;
+            padding: 0 1.75rem;
+        }
+
+        .section.open .section-body {
+            max-height: 3000px;
+            opacity: 1;
+            padding: 0 1.75rem 2rem;
+        }
+
+        .section-body p {
+            margin-bottom: 1.2rem;
+        }
+
+        .section-body p:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-body .quote {
+            font-style: italic;
+            font-size: 1.15rem;
+            padding: 1rem 1.5rem;
+            border-left: 4px solid var(--accent);
+            margin: 1.2rem 0;
+            background: rgba(45, 90, 122, 0.04);
+            border-radius: 0 8px 8px 0;
+            transition: border-color var(--transition), background var(--transition);
+        }
+
+        .section-body .quote cite {
+            display: block;
+            font-style: normal;
+            font-size: 0.85rem;
+            font-family: var(--font-sans);
+            font-weight: 400;
+            margin-top: 0.3rem;
+            color: var(--text-secondary);
+            transition: color var(--transition);
+        }
+
+        .section-body ul {
+            margin: 0.8rem 0 1.2rem 1.8rem;
+            list-style: none;
+        }
+
+        .section-body ul li {
+            position: relative;
+            padding-left: 1.4rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .section-body ul li::before {
+            content: "—";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            opacity: 0.6;
+            transition: color var(--transition);
+        }
+
+        /* ── Animations ── */
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section {
+            animation: fadeSlideUp 0.7s ease forwards;
+            opacity: 0;
+        }
+
+        .section:nth-child(1) { animation-delay: 0.05s; }
+        .section:nth-child(2) { animation-delay: 0.10s; }
+        .section:nth-child(3) { animation-delay: 0.15s; }
+        .section:nth-child(4) { animation-delay: 0.20s; }
+        .section:nth-child(5) { animation-delay: 0.25s; }
+        .section:nth-child(6) { animation-delay: 0.30s; }
+
+        /* ── Footer ── */
+        .article-footer {
+            text-align: center;
+            font-family: var(--font-sans);
+            font-size: 0.75rem;
+            font-weight: 300;
+            color: var(--text-secondary);
+            padding-top: 2.5rem;
+            margin-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            transition: color var(--transition), border-color var(--transition);
+            letter-spacing: 0.02em;
+        }
+
+        /* ════════════════════════════════════════════
+                   THEMES
+                   ════════════════════════════════════════════ */
+
+        /* ── NOTTURNO ── */
+        body.theme-notturno {
+            --bg: #0f0d0b;
+            --surface: #1b1714;
+            --text: #e8ddd2;
+            --text-secondary: #b0a69b;
+            --border: #3a322c;
+            --accent: #7a9eb5;
+            --accent-light: #a0c0d4;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        body.theme-notturno .theme-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #0f0d0b;
+        }
+        body.theme-notturno .section-header:hover { background: rgba(122, 158, 181, 0.08); }
+        body.theme-notturno .section-body .quote { background: rgba(122, 158, 181, 0.08); border-left-color: var(--accent); }
+        body.theme-notturno .section-body ul li::before { color: var(--accent); }
+        body.theme-notturno .article-header .badge { background: rgba(122, 158, 181, 0.15); color: var(--accent); }
+        body.theme-notturno .section-header .toggle-icon { background: #3a322c; color: #b0a69b; }
+        body.theme-notturno .section-header:hover .toggle-icon { background: var(--accent); color: #0f0d0b; }
+        body.theme-notturno .section.open .toggle-icon { background: var(--accent); color: #0f0d0b; }
+
+        /* ── FILOSOFICO ── */
+        body.theme-filosofico {
+            --bg: #f2ede4;
+            --surface: #fcf9f2;
+            --text: #2d2a24;
+            --text-secondary: #5a544a;
+            --border: #d6cec0;
+            --accent: #7d6b4b;
+            --accent-light: #a58d67;
+            --shadow: 0 8px 32px rgba(80, 70, 50, 0.10);
+        }
+
+        body.theme-filosofico .theme-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fcf9f2;
+        }
+        body.theme-filosofico .section-header:hover { background: rgba(125, 107, 75, 0.06); }
+        body.theme-filosofico .section-body .quote { background: rgba(125, 107, 75, 0.06); border-left-color: var(--accent); }
+        body.theme-filosofico .section-body ul li::before { color: var(--accent); }
+        body.theme-filosofico .article-header .badge { background: rgba(125, 107, 75, 0.10); color: var(--accent); }
+        body.theme-filosofico .section-header .toggle-icon { background: #d6cec0; color: #5a544a; }
+        body.theme-filosofico .section-header:hover .toggle-icon { background: var(--accent); color: #fcf9f2; }
+        body.theme-filosofico .section.open .toggle-icon { background: var(--accent); color: #fcf9f2; }
+
+        /* ── MISTICO ── */
+        body.theme-mistico {
+            --bg: #0e0a12;
+            --surface: #1a1423;
+            --text: #ece4f0;
+            --text-secondary: #b8aac9;
+            --border: #3d2f4a;
+            --accent: #b28cd4;
+            --accent-light: #d4b0ed;
+            --shadow: 0 8px 32px rgba(60, 30, 80, 0.4);
+        }
+
+        body.theme-mistico .theme-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #0e0a12;
+        }
+        body.theme-mistico .section-header:hover { background: rgba(178, 140, 212, 0.08); }
+        body.theme-mistico .section-body .quote { background: rgba(178, 140, 212, 0.08); border-left-color: var(--accent); }
+        body.theme-mistico .section-body ul li::before { color: var(--accent); }
+        body.theme-mistico .article-header .badge { background: rgba(178, 140, 212, 0.15); color: var(--accent); }
+        body.theme-mistico .section-header .toggle-icon { background: #3d2f4a; color: #b8aac9; }
+        body.theme-mistico .section-header:hover .toggle-icon { background: var(--accent); color: #0e0a12; }
+        body.theme-mistico .section.open .toggle-icon { background: var(--accent); color: #0e0a12; }
+
+        /* ── CONTEMPLATIVO ── */
+        body.theme-contemplativo {
+            --bg: #eef0ec;
+            --surface: #f7f8f4;
+            --text: #2b3a2e;
+            --text-secondary: #5a6b5a;
+            --border: #c8d0c2;
+            --accent: #4f7a5e;
+            --accent-light: #7aa085;
+            --shadow: 0 8px 32px rgba(60, 80, 60, 0.08);
+        }
+
+        body.theme-contemplativo .theme-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #f7f8f4;
+        }
+        body.theme-contemplativo .section-header:hover { background: rgba(79, 122, 94, 0.06); }
+        body.theme-contemplativo .section-body .quote { background: rgba(79, 122, 94, 0.06); border-left-color: var(--accent); }
+        body.theme-contemplativo .section-body ul li::before { color: var(--accent); }
+        body.theme-contemplativo .article-header .badge { background: rgba(79, 122, 94, 0.10); color: var(--accent); }
+        body.theme-contemplativo .section-header .toggle-icon { background: #c8d0c2; color: #5a6b5a; }
+        body.theme-contemplativo .section-header:hover .toggle-icon { background: var(--accent); color: #f7f8f4; }
+        body.theme-contemplativo .section.open .toggle-icon { background: var(--accent); color: #f7f8f4; }
+
+        /* ── Responsive ── */
+        @media (max-width: 640px) {
+            body { padding: 1rem 0.8rem 2.5rem; font-size: 1rem; }
+            .article-header h1 { font-size: 2.4rem; }
+            .article-header .subtitle { font-size: 1.05rem; }
+            .section-header { padding: 1rem 1.2rem; }
+            .section-header h2 { font-size: 1.2rem; }
+            .section.open .section-body { padding: 0 1.2rem 1.5rem; }
+            .section-body { padding: 0 1.2rem; }
+            .theme-controls { gap: 0.3rem; padding: 0.75rem 0.5rem; }
+            .theme-btn { font-size: 0.6rem; padding: 0.35rem 0.8rem; }
+            .theme-btn .icon { margin-right: 0.2rem; }
+            .section-body .quote { font-size: 1rem; padding: 0.8rem 1rem; }
+        }
+
+        @media (max-width: 400px) {
+            .article-header h1 { font-size: 1.9rem; }
+            .theme-controls { gap: 0.2rem; }
+            .theme-btn { font-size: 0.55rem; padding: 0.25rem 0.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- HEADER -->
+        <header class="article-header">
+            <div class="badge">✧ filosofi presocratici</div>
+            <h1>Anassimandro di Mileto</h1>
+            <div class="subtitle">Il pensatore dell'<em>apeiron</em> e dei mondi infiniti</div>
+            <div class="life">
+                <span>610 a.C. ca.</span> <span>·</span> <span>546 a.C. ca.</span>
+                <span style="margin:0 0.6rem;">|</span>
+                <span>Mileto · Ionia</span>
+            </div>
+        </header>
+
+        <!-- THEME CONTROLS -->
+        <nav class="theme-controls" aria-label="Modalità di lettura">
+            <button class="theme-btn active" data-theme="normale">
+                <span class="icon">☀</span> normale
+            </button>
+            <button class="theme-btn" data-theme="notturno">
+                <span class="icon">🌙</span> notturno
+            </button>
+            <button class="theme-btn" data-theme="filosofico">
+                <span class="icon">📜</span> filosofico
+            </button>
+            <button class="theme-btn" data-theme="mistico">
+                <span class="icon">✦</span> mistico
+            </button>
+            <button class="theme-btn" data-theme="contemplativo">
+                <span class="icon">🌿</span> contemplativo
+            </button>
+        </nav>
+
+        <!-- ARTICOLO: SEZIONI -->
+
+        <!-- 1. INTRODUZIONE -->
+        <section class="section open" id="intro">
+            <div class="section-header" role="button" tabindex="0" aria-expanded="true">
+                <h2>Introduzione</h2>
+                <span class="toggle-icon">▾</span>
+            </div>
+            <div class="section-body">
+                <p>
+                    <strong>Anassimandro di Mileto</strong> (in greco antico: Ἀναξίμανδρος; Mileto, 610 a.C. ca. – 546 a.C. ca.)
+                    è stato un filosofo, astronomo e geografo greco, allievo e successore di Talete. È considerato il
+                    secondo dei <strong>filosofi milesi</strong> e uno dei padri del pensiero scientifico occidentale.
+                </p>
+                <p>
+                    La sua innovazione più radicale fu l'identificazione del principio primo (<em>arché</em>) non in un
+                    elemento materiale particolare (come l'acqua per Talete), ma in una sostanza infinita e indeterminata
+                    che chiamò <strong>ἄπειρον (àpeiron)</strong> — l'illimitato, l'indefinito. Da questo principio
+                    scaturiscono tutti i mondi, e in esso tutti ritornano secondo un ciclo eterno di generazione e
+                    corruzione.
+                </p>
+                <div class="quote">
+                    «L'àpeiron è il principio di tutte le cose; da esso derivano i cieli e i mondi in essi contenuti.»
+                    <cite>— frammento DK 12 B 1 (da Simplicio)</cite>
+                </div>
+                <p>
+                    Anassimandro fu anche il primo a tentare una descrizione geometrica dell'universo, a elaborare una
+                    teoria dell'evoluzione della vita e a disegnare una <em>mappa del mondo</em> (la prima nota nella
+                    storia). La sua influenza si estese a tutta la filosofia greca successiva, da Pitagora ad Aristotele,
+                    fino alla scienza ellenistica.
+                </p>
+            </div>
+        </section>
+
+        <!-- 2. VITA E CONTESTO -->
+        <section class="section" id="vita">
+            <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+                <h2>Vita e contesto storico</h2>
+                <span class="toggle-icon">▾</span>
+            </div>
+            <div class="section-body">
+                <p>
+                    Anassimandro nacque a Mileto, una fiorente città ionica sulla costa dell'Asia Minore (oggi Turchia),
+                    intorno al 610 a.C. Era figlio di Prassìade e, secondo la tradizione, fu compagno o allievo di Talete,
+                    il primo filosofo della scuola milesia. Della sua vita sappiamo pochissimo: esercitò probabilmente
+                    attività politiche, guidando una colonia milesia ad Apollonia sul Mar Nero, e morì intorno al 546 a.C.,
+                    pochi anni dopo la conquista persiana di Mileto.
+                </p>
+                <p>
+                    Mileto era all'epoca un crocevia di culture e commerci, in contatto con l'Egitto, la Mesopotamia e
+                    la Fenicia. Questo ambiente cosmopolita favorì l'incontro tra saperi tecnici (astronomia babilonese,
+                    geometria egizia) e riflessione razionale, gettando le basi per la nascita della filosofia come
+                    indagine autonoma sulla natura.
+                </p>
+                <p>
+                    Anassimandro scrisse un'opera in prosa intitolata <em>Perì physeos</em> (Sulla natura), della quale
+                    ci resta un solo frammento originale, riportato da Simplicio nel VI secolo d.C. — è il primo testo
+                    filosofico greco di cui abbiamo una citazione diretta. La sua dottrina ci è nota principalmente
+                    attraverso le testimonianze di Aristotele, Teofrasto, Diogene Laerzio e degli scoliasti.
+                </p>
+            </div>
+        </section>
+
+        <!-- 3. L'APEIRON: IL PRINCIPIO INFINITO -->
+        <section class="section" id="apeiron">
+            <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+                <h2>L'àpeiron: il principio infinito</h2>
+                <span class="toggle-icon">▾</span>
+            </div>
+            <div class="section-body">
+                <p>
+                    Il concetto di <strong>àpeiron</strong> (ἄπειρον) è il cuore della filosofia di Anassimandro.
+                    Il termine significa letteralmente «senza limiti» (da <em>a-</em> privativo e <em>péras</em> = limite)
+                    e indica una sostanza <strong>infinita, eterna, ingenerata e indistruttibile</strong>, che non è
+                    identificabile con nessuno degli elementi conosciuti (acqua, aria, fuoco, terra), ma li contiene
+                    tutti in potenza.
+                </p>
+                <p>
+                    Perché Anassimandro rifiutò l'acqua di Talete e scelse un principio così astratto? La ragione è
+                    <em>logica</em>: se un elemento particolare fosse stato il principio, esso avrebbe finito per
+                    predominare sugli altri, distruggendo l'equilibrio cosmico. L'àpeiron, essendo indeterminato e
+                    neutrale, può generare tutti i contrari (caldo/freddo, secco/umido) senza essere identificato
+                    con nessuno di essi.
+                </p>
+                <div class="quote">
+                    «L'àpeiron non ha origine, perché ogni origine è un limite; esso è il principio di tutte le cose
+                    e, in quanto tale, non può essere generato da altro.»
+                    <cite>— Aristotele, Fisica III, 4</cite>
+                </div>
+                <p>
+                    Da questo principio infinito, per un processo di <strong>separazione</strong> (ἀπόκρισις),
+                    si generano le coppie di opposti che costituiscono il mondo: il caldo e il freddo, il secco e
+                    l'umido. Questi opposti, a loro volta, danno origine ai quattro elementi e, per aggregazione,
+                    a tutte le cose visibili. Alla fine, ogni cosa, dopo aver esaurito il proprio ciclo, ritorna
+                    nell'àpeiron, in un movimento circolare e giusto che Anassimandro descrive come una sorta di
+                    <em>espiazione</em> per l'ingiustizia commessa nell'esistere separatamente.
+                </p>
+            </div>
+        </section>
+
+        <!-- 4. COSMOLOGIA E MONDI INFINITI -->
+        <section class="section" id="cosmologia">
+            <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+                <h2>Cosmologia: l'ordine dei mondi</h2>
+                <span class="toggle-icon">▾</span>
+            </div>
+            <div class="section-body">
+                <p>
+                    Anassimandro fu il primo filosofo a concepire l'universo come un sistema <strong>geometrico</strong>
+                    e <strong>dinamico</strong>, retto da leggi interne e non da interventi divini. La sua cosmologia
+                    si distacca radicalmente dalle rappresentazioni mitologiche del cielo come volta solida sorretta da
+                    Atlante.
+                </p>
+                <p>
+                    Secondo la sua teoria, la Terra ha forma di un <strong>cilindro</strong> (o tamburo) largo tre volte
+                    la sua altezza, e fluttua al centro dell'universo <em>senza alcun sostegno</em>, mantenuta nella sua
+                    posizione dall'equidistanza da tutti i punti della circonferenza celeste. Questa intuizione — che la
+                    Terra non cade perché non c'è una direzione privilegiata — anticipa di secoli la nozione di
+                    gravità universale.
+                </p>
+                <p>
+                    Intorno alla Terra ruotano tre cerchi (o anelli) di fuoco, avvolti da aria e nascosti alla vista:
+                </p>
+                <ul>
+                    <li>
+                        il <strong>cerchio del Sole</strong>, il più esterno, con un'apertura attraverso cui il fuoco
+                        si manifesta come astro diurno;
+                    </li>
+                    <li>
+                        il <strong>cerchio della Luna</strong>, intermedio, con un foro che cambia dimensione generando
+                        le fasi lunari;
+                    </li>
+                    <li>
+                        il <strong>cerchio delle stelle</strong>, il più interno, con numerose aperture che vediamo come
+                        punti luminosi.
+                    </li>
+                </ul>
+                <p>
+                    Ma l'aspetto più sorprendente della cosmologia di Anassimandro è la dottrina dei <strong>mondi
+                    infiniti</strong> (ἄπειροι κόσμοι): egli sostenne che l'àpeiron genera una molteplicità illimitata
+                    di universi, ciascuno con il proprio cielo e la propria Terra, che sorgono e periscono in cicli
+                    eterni. Questa intuizione, che ritroveremo solo nella filosofia atomistica e poi nella cosmologia
+                    moderna, fa di Anassimandro un antesignano del pluralismo cosmico.
+                </p>
+            </div>
+        </section>
+
+        <!-- 5. OPERE E SCOPERTE SCIENTIFICHE -->
+        <section class="section" id="opere">
+            <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+                <h2>Opere e scoperte scientifiche</h2>
+                <span class="toggle-icon">▾</span>
+            </div>
+            <div class="section-body">
+                <p>
+                    Anassimandro non fu solo un filosofo speculativo, ma anche un <strong>scienziato</strong> nel senso
+                    moderno del termine. A lui si attribuiscono numerose innovazioni tecniche e teoriche:
+                </p>
+                <ul>
+                    <li>
+                        <strong>La prima mappa del mondo</strong> (γῆς περίοδος): disegnò una tavola geografica con
+                        la Terra vista dall'alto, in cui l'Ellade occupava il centro, circondata dall'oceano. Questa
+                        mappa influenzò Erodoto e i geografi successivi.
+                    </li>
+                    <li>
+                        <strong>Introduzione dello gnomone</strong> in Grecia: uno strumento per misurare le ore del
+                        giorno e determinare gli equinozi e i solstizi, già noto in Oriente.
+                    </li>
+                    <li>
+                        <strong>Teoria dell'origine della vita</strong>: Anassimandro ipotizzò che i primi esseri viventi
+                        fossero nati dall'umido primordiale, sotto l'azione del sole, e che l'uomo si fosse evoluto
+                        da forme animali acquatiche — una prefigurazione dell'evoluzionismo.
+                    </li>
+                    <li>
+                        <strong>Misurazioni astronomiche</strong>: calcolò le distanze e le dimensioni dei cerchi
+                        celesti, e determinò che la Terra è sferica (anche se la rappresentava come un cilindro) e
+                        che il Sole è più lontano della Luna.
+                    </li>
+                </ul>
+                <p>
+                    La sua opera principale, <em>Sulla natura</em>, era suddivisa in due parti: una cosmologica e una
+                    geografica. Purtroppo è andata perduta quasi interamente, ma le citazioni dei dossografi ne
+                    testimoniano l'ampiezza e l'originalità.
+                </p>
+                <div class="quote">
+                    «Anassimandro fu il primo a osare disegnare la Terra su una tavola, e a dire che essa è cilindrica
+                    e sospesa al centro del tutto.»
+                    <cite>— Diogene Laerzio, Vite dei filosofi II, 1</cite>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. EREDITÀ E INFLUENZA -->
+        <section class="section" id="eredita">
+            <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+                <h2>Eredità e influenza</h2>
+                <span class="toggle-icon">▾</span>
+            </div>
+            <div class="section-body">
+                <p>
+                    L'impatto di Anassimandro sulla filosofia e sulla scienza antica fu immenso. Con il suo concetto
+                    di àpeiron, egli aprì la strada a tutte le speculazioni sull'<strong>infinito</strong> e
+                    sull'<strong>indeterminato</strong>, che saranno riprese da Pitagora (con la distinzione tra
+                    limitato e illimitato), da Parmenide (che negherà il non-essere) e da Anassagora (con il nous).
+                </p>
+                <p>
+                    La sua cosmologia geometrica influenzò direttamente <strong>Anassimene</strong> (che sostituì
+                    l'àpeiron con l'aria), <strong>Senofane</strong> e i <strong>pitagorici</strong>, e indirettamente
+                    <strong>Platone</strong> e <strong>Aristotele</strong>, che pure lo criticarono. Il suo metodo —
+                    cercare spiegazioni naturali, non mitologiche, dei fenomeni — divenne il paradigma della ricerca
+                    filosofica occidentale.
+                </p>
+                <p>
+                    Nell'età moderna, la sua teoria dei mondi infiniti è stata rivalutata come un'anticipazione del
+                    <strong>principio cosmologico</strong> e del <strong>pluralismo degli universi</strong>.
+                    Filosofi come Giordano Bruno, Kant e Leibniz hanno dialogato con l'eredità di Anassimandro,
+                    riconoscendone la genialità. Oggi, a più di 2600 anni di distanza, Anassimandro resta uno dei
+                    pensatori più audaci e visionari dell'antichità.
+                </p>
+                <p>
+                    La sua frase più celebre, tramandata da Simplicio, riassume il senso della sua intera filosofia:
+                    <em>«Da dove gli esseri hanno origine, ivi devono anche perire secondo necessità; infatti essi
+                    pagano l'uno all'altro la pena e l'espiazione dell'ingiustizia secondo l'ordine del tempo.»</em>
+                    In queste parole vibra l'eco di una visione del mondo come ordine equilibrato, giusto e
+                    infinitamente rinnovato.
+                </p>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="article-footer">
+            <p>✧ Enciclopedia dei filosofi · Anassimandro di Mileto (610–546 a.C. ca.) ✧</p>
+            <p style="margin-top:0.3rem; opacity:0.6;">àpeiron · cosmologia · infinito · presocratici</p>
+        </footer>
+
+    </div>
+
+    <!-- ─── JAVASCRIPT ─── -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ── TOGGLE SEZIONI ──
+            const sections = document.querySelectorAll('.section');
+
+            sections.forEach((section) => {
+                const header = section.querySelector('.section-header');
+                const body = section.querySelector('.section-body');
+
+                if (!header || !body) return;
+
+                const toggle = () => {
+                    const isOpen = section.classList.contains('open');
+                    section.classList.toggle('open');
+                    header.setAttribute('aria-expanded', !isOpen);
+                };
+
+                header.addEventListener('click', toggle);
+                header.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        toggle();
+                    }
+                });
+            });
+
+            // ── TEMA ──
+            const themeBtns = document.querySelectorAll('.theme-btn');
+            const bodyEl = document.body;
+
+            const allThemes = ['normale', 'notturno', 'filosofico', 'mistico', 'contemplativo'];
+
+            const setTheme = (theme) => {
+                allThemes.forEach(t => bodyEl.classList.remove(`theme-${t}`));
+                if (theme !== 'normale') {
+                    bodyEl.classList.add(`theme-${theme}`);
+                }
+                themeBtns.forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.theme === theme);
+                });
+                try {
+                    localStorage.setItem('anassimandro-theme', theme);
+                } catch (_) { /* ignore */ }
+            };
+
+            themeBtns.forEach((btn) => {
+                btn.addEventListener('click', () => {
+                    const theme = btn.dataset.theme;
+                    if (theme) setTheme(theme);
+                });
+            });
+
+            // Ripristina tema da localStorage
+            try {
+                const saved = localStorage.getItem('anassimandro-theme');
+                if (saved && allThemes.includes(saved)) {
+                    setTheme(saved);
+                } else {
+                    themeBtns.forEach(btn => {
+                        if (btn.dataset.theme === 'normale') btn.classList.add('active');
+                    });
+                }
+            } catch (_) {
+                themeBtns.forEach(btn => {
+                    if (btn.dataset.theme === 'normale') btn.classList.add('active');
+                });
+            }
+
+            // Sincronizza aria-expanded per le sezioni aperte all'avvio
+            document.querySelectorAll('.section.open').forEach(sec => {
+                const hdr = sec.querySelector('.section-header');
+                if (hdr) hdr.setAttribute('aria-expanded', 'true');
+            });
+
+        })();
+    </script>
+
+</body>
+</html>

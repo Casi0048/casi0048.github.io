@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Senofane di Colofone · il critico degli dèi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <style>
+        /* ── Reset & Base ── */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #f8f6f1;
+            --surface: #ffffff;
+            --text: #1e1a16;
+            --text-secondary: #4a443e;
+            --border: #e0dbd2;
+            --accent: #8b5e3c;
+            --accent-light: #b07a4e;
+            --shadow: 0 8px 32px rgba(30, 26, 22, 0.06);
+            --radius: 16px;
+            --transition: 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            --font-serif: 'Cormorant Garamond', serif;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --max-width: 820px;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            line-height: 1.7;
+            transition: background var(--transition), color var(--transition);
+            padding: 2rem 1.5rem 4rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+
+        /* ── Header ── */
+        .article-header {
+            text-align: center;
+            padding: 2.5rem 0 2rem;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 2.5rem;
+            transition: border-color var(--transition);
+            position: relative;
+        }
+
+        .article-header .badge {
+            display: inline-block;
+            font-family: var(--font-sans);
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent);
+            background: rgba(139, 94, 60, 0.08);
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            margin-bottom: 0.75rem;
+            transition: background var(--transition), color var(--transition);
+        }
+
+        .article-header h1 {
+            font-size: 3.4rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            margin-bottom: 0.2rem;
+        }
+
+        .article-header .subtitle {
+            font-size: 1.3rem;
+            font-weight: 400;
+            font-style: italic;
+            color: var(--text-secondary);
+            transition: color var(--transition);
+        }
+
+        .article-header .life {
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            font-weight: 300;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+            transition: color var(--transition);
+        }
+
+        .article-header .life span {
+            display: inline-block;
+            margin: 0 0.4rem;
+        }
+
+        /* ── Theme Controls ── */
+        .theme-controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 2rem 0 1.5rem;
+            padding: 1rem 0.5rem;
+            border-radius: var(--radius);
+            background: var(--surface);
+            box-shadow: var(--shadow);
+            transition: background var(--transition), box-shadow var(--transition);
+        }
+
+        .theme-btn {
+            font-family: var(--font-sans);
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            text-transform: lowercase;
+            padding: 0.45rem 1.1rem;
+            border: 1.5px solid var(--border);
+            border-radius: 40px;
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theme-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-1px);
+        }
+
+        .theme-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(139, 94, 60, 0.25);
+        }
+
+        .theme-btn .icon {
+            margin-right: 0.4rem;
+            opacity: 0.6;
+        }
+
+        /* ── Sections ── */
+        .section {
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 1.25rem;
+            overflow: hidden;
+            transition: background var(--transition), box-shadow var(--transition), border-color var(--transition);
+            border: 1px solid transparent;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem 1.75rem;
+            cursor: pointer;
+            user-select: none;
+            transition: background var(--transition);
+            gap: 1rem;
+        }
+
+        .section-header:hover {
+            background: rgba(139, 94, 60, 0.04);
+        }
+
+        .section-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            margin: 0;
+            transition: color var(--transition);
+        }
+
+        .section-header .toggle-icon {
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: all var(--transition);
+            color: var(--text-secondary);
+            line-height: 1;
+        }
+
+        .section-header:hover .toggle-icon {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .section.open .toggle-icon {
+            transform: rotate(180deg);
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .section-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.7s cubic-bezier(0.23, 1, 0.32, 1), padding 0.5s ease, opacity 0.4s ease;
+            opacity: 0;
+            padding: 0 1.75rem;
+        }
+
+        .section.open .section-body {
+            max-height: 3000px;
+            opacity: 1;
+            padding: 0 1.75rem 2rem;
+        }
+
+        .section-body p {
+            margin-bottom: 1.2rem;
+        }
+
+        .section-body p:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-body .quote {
+            font-style: italic;
+            font-size: 1.15rem;
+            padding: 1rem 1.5rem;
+            border-left: 4px solid var(--accent);
+            margin: 1.2rem 0;
+            background: rgba(139, 94, 60, 0.04);
+            border-radius: 0 8px 8px 0;
+            transition: border-color var(--transition), background var(--transition);
+        }
+
+        .section-body .quote cite {
+            display: block;
+            font-style: normal;
+            font-size: 0.85rem;
+            font-family: var(--font-sans);
+            font-weight: 400;
+            margin-top: 0.3rem;
+            color: var(--text-secondary);
+            transition: color var(--transition);
+        }
+
+        .section-body ul {
+            margin: 0.8rem 0 1.2rem 1.8rem;
+            list-style: none;
+        }
+
+        .section-body ul li {
+            position: relative;
+            padding-left: 1.4rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .section-body ul li::before {
+            content: "—";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            opacity: 0.6;
+            transition: color var(--transition);
+        }
+
+        /* ── Animations ── */
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section {
+            animation: fadeSlideUp 0.7s ease forwards;
+            opacity: 0;
+        }
+
+        .section:nth-child(1) { animation-delay: 0.05s; }
+        .section:nth-child(2) { animation-delay: 0.10s; }
+        .section:nth-child(3) { animation-delay: 0.15s; }
+        .section:nth-child(4) { animation-delay: 0.20s; }
+        .section:nth-child(5) { animation-delay: 0.25s; }
+        .section:nth-child(6) { animation-delay: 0.30s; }
+
+        /* ── Footer ── */
+        .article-footer {
+            text-align: center;
+            font-family: var(--font-sans);
+            font-size: 0.75rem;
+            font-weight: 300;
+            color: var(--text-secondary);
+            padding-top: 2.5rem;
+            margin-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            transition: color var(--transition), border-color var(--transition);
+            letter-spacing: 0.02em;
+        }
+
+        /* ════════════════════════════════════════════
+                   THEMES
+                   ════════════════════════════════════════════ */
+
+        /* ── NOTTURNO ── */
+        body.theme-notturno {
+            --bg: #0f0d0b;
+            --surface: #1b1714;
+            --text: #e8ddd2;
+            --text-secondary: #b0a69b;
+            --border: #3a322c;
+            --accent: #b58a62;
+            --accent-light: #d4aa7a;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        body.theme-notturno .theme-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #0f0d0b;
+        }
+        body.theme-notturno .section-header:hover { background: rgba(181, 138, 98, 0.08); }
+        body.theme-notturno .section-body .quote { background: rgba(181, 138, 98, 0.08); border-left-color: var(--accent); }
+        body.theme-notturno .section-body ul li::before { color: var(--accent); }
+        body.theme-notturno .article-header .badge { background: rgba(181, 138, 98, 0.15); color: var(--accent); }
+        body.theme-notturno .section-header .toggle-icon { background: #3a322c; color: #b0a69b; }
+        body.theme-notturno .section-header:hover .toggle-icon { background: var(--accent); color: #0f0d0b; }
+        body.theme-notturno .section.open .toggle-icon { background: var(--accent); color: #0f0d0b; }
+
+        /* ── FILOSOFICO ── */
+        body.theme-filosofico {
+            --bg: #f2ede4;
+            --surface: #fcf9f2;
+            --text: #2d2a24;
+            --text-secondary: #5a544a;
+            --border: #d6cec0;
+            --accent: #7d6b4b;
+            --accent-light: #a58d67;
+            --shadow: 0 8px 32px rgba(80, 70, 50, 0.10);
+        }
+
+        body.theme-filosofico .theme-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fcf9f2;
+        }
+        body.theme-filosofico .section-header:hover { background: rgba(125, 107, 75, 0.06); }
+        body.theme-filosofico .section-body .quote { background: rgba(125, 107, 75, 0.06); border-left-color: var(--accent); }
+        body.theme-filosofico .section-body ul li::before { color: var(--accent); }
+        body.theme-filosofico .article-header .badge { background: rgba(125, 107, 75, 0.10); color: var(--accent); }
+        body.theme-filosofico .section-header .toggle-icon { background: #d6cec0; color: #5a544a; }
+        body.theme-filosofico .section-header:hover .toggle-icon { background: var(--accent); color: #fcf9f2; }
+        body.theme-filosofico .section.open .toggle-icon { background: var(--accent); color: #fcf9f2; }
+
+        /* ── MISTICO ── */
+        body.theme-mistico {
+            --bg: #0e0a12;
+            --surface: #1a1423;
+            --text: #ece4f0;
+            --text-secondary: #b8aac9;
+            --border: #3d2f4a;
+            --accent: #b28cd4;
+            --accent-light: #d4b0ed;
+            --shadow: 0 8px 32px rgba(60, 30, 80, 0.4);
+        }
+
+        body.theme-mistico .theme-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #0e0a12;
+        }
+        body.theme-mistico .section-header:hover { background: rgba(178, 140, 212, 0.08); }
+        body.theme-mistico .section-body .quote { background: rgba(178, 140, 212, 0.08); border-left-color: var(--accent); }
+        body.theme-mistico .section-body ul li::before { color: var(--accent); }
+        body.theme-mistico .article-header .badge { background: rgba(178, 140, 212, 0.15); color: var(--accent); }
+        body.theme-mistico .section-header .toggle-icon { background: #3d2f4a; color: #b8aac9; }
+        body.theme-mistico .section-header:hover .toggle-icon { background: var(--accent); color: #0e0a12; }
+        body.theme-mistico .section.open .toggle-icon { background: var(--accent); color: #0e0a12; }
+
+        /* ── CONTEMPLATIVO ── */
+        body.theme-contemplativo {
+            --bg: #eef0ec;
+            --surface: #f7f8f4;
+            --text: #2b3a2e;
+            --text-secondary: #5a6b5a;
+            --border: #c8d0c2;
+            --accent: #4f7a5e;
+            --accent-light: #7aa085;
+            --shadow: 0 8px 32px rgba(60, 80, 60, 0.08);
+        }
+
+        body.theme-contemplativo .theme-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #f7f8f4;
+        }
+        body.theme-contemplativo .section-header:hover { background: rgba(79, 122, 94, 0.06); }
+        body.theme-contemplativo .section-body .quote { background: rgba(79, 122, 94, 0.06); border-left-color: var(--accent); }
+        body.theme-contemplativo .section-body ul li::before { color: var(--accent); }
+        body.theme-contemplativo .article-header .badge { background: rgba(79, 122, 94, 0.10); color: var(--accent); }
+        body.theme-contemplativo .section-header .toggle-icon { background: #c8d0c2; color: #5a6b5a; }
+        body.theme-contemplativo .section-header:hover .toggle-icon { background: var(--accent); color: #f7f8f4; }
+        body.theme-contemplativo .section.open .toggle-icon { background: var(--accent); color: #f7f8f4; }
+
+        /* ── Responsive ── */
+        @media (max-width: 640px) {
+            body { padding: 1rem 0.8rem 2.5rem; font-size: 1rem; }
+            .article-header h1 { font-size: 2.4rem; }
+            .article-header .subtitle { font-size: 1.05rem; }
+            .section-header { padding: 1rem 1.2rem; }
+            .section-header h2 { font-size: 1.2rem; }
+            .section.open .section-body { padding: 0 1.2rem 1.5rem; }
+            .section-body { padding: 0 1.2rem; }
+            .theme-controls { gap: 0.3rem; padding: 0.75rem 0.5rem; }
+            .theme-btn { font-size: 0.6rem; padding: 0.35rem 0.8rem; }
+            .theme-btn .icon { margin-right: 0.2rem; }
+            .section-body .quote { font-size: 1rem; padding: 0.8rem 1rem; }
+        }
+
+        @media (max-width: 400px) {
+            .article-header h1 { font-size: 1.9rem; }
+            .theme-controls { gap: 0.2rem; }
+            .theme-btn { font-size: 0.55rem; padding: 0.25rem 0.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- HEADER -->
+        <header class="article-header">
+            <div class="badge">✧ filosofi presocratici · critica della religione</div>
+            <h1>Senofane di Colofone</h1>
+            <div class="subtitle">Il primo teologo razionale e il critico degli dèi omerici</div>
+            <div class="life">
+                <span>570 a.C. ca.</span> <span>·</span> <span>475 a.C. ca.</span>
+                <span style="margin:0 0.6rem;">|</span>
+                <span>Colofone (Ionia) · Elea</span>
+            </div>
+        </header>
+
+        <!-- THEME CONTROLS -->
+        <nav class="theme-controls" aria-label="Modalità di lettura">
+            <button class="theme-btn active" data-theme="normale">
+                <span class="icon">☀</span> normale
+            </button>
+            <button class="theme-btn" data-theme="notturno">
+                <span class="icon">🌙</span> notturno
+            </button>
+            <button class="theme-btn" data-theme="filosofico">
+                <span class="icon">📜</span> filosofico
+            </button>
+            <button class="theme-btn" data-theme="mistico">
+                <span class="icon">✦</span> mistico
+            </button>
+            <button class="theme-btn" data-theme="contemplativo">
+                <span class="icon">🌿</span> contemplativo
+            </button>
+        </nav>
+
+        <!-- ARTICOLO: SEZIONI -->
+
+        <!-- 1. INTRODUZIONE -->
+        <section class="section open" id="intro">
+            <div class="section-header" role="button" tabindex="0" aria-expanded="true">
+                <h2>Introduzione</h2>
+                <span class="toggle-icon">▾</span>
+            </div>
+            <div class="section-body">
+                <p>
+                    <strong>Senofane di Colofone</strong> (in greco antico: Ξενοφάνης ὁ Κολοφώνιος; Colofone, 570 a.C. ca. – 475 a.C. ca.)
+                    è stato un filosofo, poeta e teologo greco, considerato il fondatore della <strong>critica razionale
+                    della religione</strong> e uno dei precursori della scuola eleatica. La sua opera, trasmessa
+                    attraverso frammenti poetici, rappresenta una svolta radicale nel pensiero occidentale: per la
+                    prima volta, gli dèi tradizionali della mitologia omerica vengono sottoposti a un esame filosofico
+                    che ne denuncia l'immoralità e l'antropomorfismo.
+                </p>
+                <p>
+                    Senofane fu il primo a concepire un <strong>Dio unico, immutabile, eterno e spirituale</strong>,
+                    che non assomiglia agli uomini né nelle forme né nei costumi. Questa intuizione teologica,
+                    unita a una visione cosmologica basata sull'acqua come principio primo, ne fa una figura
+                    di transizione tra i milesi e i grandi sistemi dell'essere di Parmenide e Zenone.
+                </p>
+                <div class="quote">
+                    «Se i buoi, i cavalli e i leoni avessero mani e potessero dipingere, i cavalli dipingerebbero
+                    gli dèi a immagine di cavalli, e i buoi a immagine di buoi.»
+                    <cite>— Frammento DK 21 B 15</cite>
+                </div>
+                <p>
+                    La sua critica agli dèi omerici — che rubano, commettono adulterio e ingannano — non fu
+                    un atto di empietà, ma un tentativo di purificare il divino da ogni elemento umano,
+                    gettando le basi per una teologia razionale che avrebbe influenzato Platone, Aristotele
+                    e i Padri della Chiesa.
+                </p>
+            </div>
+        </section>
+
+        <!-- 2. VITA E CONTESTO -->
+        <section class="section" id="vita">
+            <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+                <h2>Vita e contesto storico</h2>
+                <span class="toggle-icon">▾</span>
+            </div>
+            <div class="section-body">
+                <p>
+                    Senofane nacque a Colofone, una ricca città ionica dell'Asia Minore, intorno al 570 a.C.
+                    Figlio di Dexio (o di Ortiomene, secondo alcune fonti), visse in un'epoca di grandi
+                    sconvolgimenti: la Ionia era sotto il dominio persiano, e molti intellettuali migravano
+                    verso l'Occidente greco.
+                </p>
+                <p>
+                    Senofane stesso condusse una vita di <strong>vagabondaggio</strong> per decenni, come
+                    racconta nei suoi frammenti: «Sono ormai sessantasette anni che la mia riflessione
+                    va errando per la Grecia» (DK 21 B 8). Visse a Elea (nell'Italia meridionale), dove
+                    fondò una scuola filosofica che influenzò direttamente Parmenide e Zenone. Secondo
+                    Diogene Laerzio, scrisse poemi epici, elegie e satire in esametri, e compose anche
+                    un poema sulla <em>fondazione di Colofone</em> e sull'<em>origine degli Eleati</em>.
+                </p>
+                <p>
+                    Morì in tarda età, probabilmente intorno al 475 a.C., dopo aver assistito all'ascesa
+                    della filosofia eleatica. La sua opera fu ampiamente citata da Platone, Aristotele,
+                    Sesto Empirico e dai dossografi, che ne hanno conservato circa 40 frammenti.
+                </p>
+            </div>
+        </section>
+
+        <!-- 3. LA CRITICA DEGLI DÈI OMERICI -->
+        <section class="section" id="critica">
+            <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+                <h2>La critica degli dèi omerici</h2>
+                <span class="toggle-icon">▾</span>
+            </div>
+            <div class="section-body">
+                <p>
+                    Il contributo più celebre di Senofane è la sua <strong>dura critica</strong> alla teologia
+                    tradizionale greca, così come era stata codificata da Omero e Esiodo. Egli osserva che
+                    gli dèi del mito sono rappresentati come esseri immorali, soggetti a passioni e vizi umani:
+                    rubano, commettono adulterio, ingannano e combattono tra loro.
+                </p>
+                <p>
+                    Senofane denuncia questo antropomorfismo con un argomento che sarà ripreso da tutti i
+                    critici della religione: <strong>gli uomini creano gli dèi a propria immagine</strong>.
+                    Gli Etiopi li raffigurano con il naso schiacciato e i capelli crespi, i Traci con gli
+                    occhi azzurri e i capelli rossi. Se i cavalli o i buoi potessero dipingere, dipingerebbero
+                    divinità equine o bovine.
+                </p>
+                <div class="quote">
+                    «Omero ed Esiodo hanno attribuito agli dèi tutto ciò che è vergognoso e biasimevole tra gli
+                    uomini: rubare, commettere adulterio e ingannarsi a vicenda.»
+                    <cite>— Frammento DK 21 B 11</cite>
+                </div>
+                <p>
+                    Questa critica non è un attacco alla fede, ma un tentativo di <strong>purificare il divino</strong>
+                    da ogni elemento umano. Senofane vuole mostrare che il vero Dio non può essere soggetto
+                    a mutamento, passione o ignoranza. La sua è una teologia negativa che anticipa il pensiero
+                    di Platone e dei neoplatonici.
+                </p>
+            </div>
+        </section>
+
+        <!-- 4. IL DIO UNICO E IMMUTABILE -->
+        <section class="section" id="dio">
+            <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+                <h2>Il Dio unico e immutabile</h2>
+                <span class="toggle-icon">▾</span>
+            </div>
+            <div class="section-body">
+                <p>
+                    Al posto del politeismo antropomorfo, Senofane propone una concezione radicalmente nuova
+                    del divino: <strong>un unico Dio</strong>, eterno, immutabile, spirituale e completamente
+                    diverso dagli esseri umani.
+                </p>
+                <p>
+                    I frammenti che ci restano descrivono questo Dio con una serie di attributi negativi e
+                    positivi:
+                </p>
+                <ul>
+                    <li>
+                        <strong>Uno e unico</strong>: «Un Dio, il più grande tra gli dèi e tra gli uomini,
+                        che non assomiglia agli uomini né nel corpo né nel pensiero» (DK 21 B 23).
+                    </li>
+                    <li>
+                        <strong>Immobile e immutabile</strong>: «Egli rimane sempre nello stesso luogo, senza
+                        muoversi; né gli si addice di andare vagando di qua e di là» (DK 21 B 26).
+                    </li>
+                    <li>
+                        <strong>Onnipotente e onnisciente</strong>: «Egli, senza fatica, con la sua mente,
+                        agita tutte le cose» (DK 21 B 25).
+                    </li>
+                    <li>
+                        <strong>Incorporeo e spirituale</strong>: Non ha forma né colore, non è soggetto
+                        alle passioni umane.
+                    </li>
+                </ul>
+                <p>
+                    Questa concezione è il primo esempio di <strong>teologia razionale</strong> nella storia
+                    occidentale. Senofane non ricorre alla rivelazione o al mito, ma alla ragione: il Dio
+                    deve essere perfetto, e la perfezione esclude ogni mutamento, ogni molteplicità e ogni
+                    limitazione.
+                </p>
+                <div class="quote">
+                    «Un solo Dio, il più grande tra gli dèi e tra gli uomini, che non assomiglia agli uomini
+                    né nel corpo né nel pensiero.»
+                    <cite>— Frammento DK 21 B 23</cite>
+                </div>
+                <p>
+                    È importante notare che Senofane non nega l'esistenza di altri dèi (parla di «dèi e uomini»),
+                    ma afferma la supremazia di un principio divino unico che governa il cosmo. Questa posizione,
+                    che è stata chiamata «monoteismo filosofico», sarà ripresa da Eraclito, Platone e dagli
+                    Stoici, e influenzerà profondamente la teologia cristiana.
+                </p>
+            </div>
+        </section>
+
+        <!-- 5. COSMOLOGIA E GNOSEOLOGIA -->
+        <section class="section" id="cosmologia">
+            <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+                <h2>Cosmologia e teoria della conoscenza</h2>
+                <span class="toggle-icon">▾</span>
+            </div>
+            <div class="section-body">
+                <p>
+                    Senofane non si limitò alla teologia: elaborò anche una <strong>cosmologia</strong> che
+                    integrava la speculazione milesia con le sue intuizioni religiose. Secondo la sua dottrina,
+                    l'<strong>acqua</strong> è il principio primo (come per Talete), ma egli aggiunge che la
+                    Terra è <strong>infinita</strong> e che il Sole e le stelle sono <strong>nubi accese</strong>
+                    che si formano dai vapori umidi.
+                </p>
+                <p>
+                    Questa teoria, che potrebbe sembrare ingenua, contiene un elemento di grande modernità:
+                    Senofane afferma che i fenomeni celesti non sono divini, ma naturali, e che il Sole è
+                    un corpo fisico, non un dio. Inoltre, egli sostiene che la Terra si estende all'infinito
+                    verso il basso, e che i mondi sono innumerevoli — una concezione che anticipa il pluralismo
+                    cosmico degli atomisti.
+                </p>
+                <p>
+                    Sul piano <strong>gnoseologico</strong>, Senofane è famoso per il suo scetticismo moderato:
+                </p>
+                <div class="quote">
+                    «Nessun uomo ha mai conosciuto la verità, né la conoscerà mai, su ciò che riguarda gli dèi
+                    e su tutte le cose di cui parlo. Anche se per caso dicesse la verità completa, egli stesso
+                    non saprebbe di dirla; tutto è avvolto nell'opinione.»
+                    <cite>— Frammento DK 21 B 34</cite>
+                </div>
+                <p>
+                    Questo frammento esprime una posizione di <strong>fallibilismo</strong> che lo avvicina
+                    al pensiero critico moderno: la verità assoluta è inattingibile, ma possiamo avvicinarci
+                    a essa attraverso la ricerca continua. Senofane non è un nichilista, ma un ricercatore
+                    che riconosce i limiti della conoscenza umana.
+                </p>
+            </div>
+        </section>
+
+        <!-- 6. EREDITÀ E INFLUENZA -->
+        <section class="section" id="eredita">
+            <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+                <h2>Eredità e influenza</h2>
+                <span class="toggle-icon">▾</span>
+            </div>
+            <div class="section-body">
+                <p>
+                    L'impatto di Senofane sulla filosofia antica è stato profondo e duraturo. Egli è considerato
+                    il <strong>fondatore della teologia razionale</strong> e il precursore della scuola eleatica
+                    (Parmenide e Zenone), che ripresero la sua concezione dell'essere come immutabile e uno.
+                </p>
+                <p>
+                    Platone, nel <em>Timeo</em> e nella <em>Repubblica</em>, riprende la critica di Senofane
+                    agli dèi omerici, affermando che il divino non può essere causa del male. Aristotele
+                    lo cita nella <em>Metafisica</em> come uno dei primi a concepire l'unità del principio
+                    divino.
+                </p>
+                <p>
+                    Nell'età moderna, la sua critica dell'antropomorfismo è stata rivalutata come un'anticipazione
+                    della <strong>psicologia della religione</strong> e del <strong>materialismo storico</strong>
+                    (Feuerbach, Marx). I suoi frammenti poetici, inoltre, sono apprezzati per la loro qualità
+                    letteraria e per la loro ironia, che li rende unici nel panorama della filosofia presocratica.
+                </p>
+                <p>
+                    Oggi Senofane è studiato non solo come filosofo, ma anche come <strong>poeta e critico
+                    culturale</strong>. La sua figura rappresenta il momento in cui il pensiero greco si
+                    emancipa dal mito e inizia a costruire una visione del mondo basata sulla ragione,
+                    sulla critica e sull'idea di un ordine divino giusto e immutabile.
+                </p>
+                <p>
+                    Il suo frammento più celebre, sulla relatività delle rappresentazioni divine, continua
+                    a essere citato in ogni dibattito sulla religione e sull'antropologia, a testimonianza
+                    di una lucidità che attraversa i secoli.
+                </p>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="article-footer">
+            <p>✧ Enciclopedia dei filosofi · Senofane di Colofone (570–475 a.C. ca.) ✧</p>
+            <p style="margin-top:0.3rem; opacity:0.6;">teologia razionale · critica omerica · monoteismo filosofico · presocratici</p>
+        </footer>
+
+    </div>
+
+    <!-- ─── JAVASCRIPT ─── -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ── TOGGLE SEZIONI ──
+            const sections = document.querySelectorAll('.section');
+
+            sections.forEach((section) => {
+                const header = section.querySelector('.section-header');
+                const body = section.querySelector('.section-body');
+
+                if (!header || !body) return;
+
+                const toggle = () => {
+                    const isOpen = section.classList.contains('open');
+                    section.classList.toggle('open');
+                    header.setAttribute('aria-expanded', !isOpen);
+                };
+
+                header.addEventListener('click', toggle);
+                header.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        toggle();
+                    }
+                });
+            });
+
+            // ── TEMA ──
+            const themeBtns = document.querySelectorAll('.theme-btn');
+            const bodyEl = document.body;
+
+            const allThemes = ['normale', 'notturno', 'filosofico', 'mistico', 'contemplativo'];
+
+            const setTheme = (theme) => {
+                allThemes.forEach(t => bodyEl.classList.remove(`theme-${t}`));
+                if (theme !== 'normale') {
+                    bodyEl.classList.add(`theme-${theme}`);
+                }
+                themeBtns.forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.theme === theme);
+                });
+                try {
+                    localStorage.setItem('senofane-theme', theme);
+                } catch (_) { /* ignore */ }
+            };
+
+            themeBtns.forEach((btn) => {
+                btn.addEventListener('click', () => {
+                    const theme = btn.dataset.theme;
+                    if (theme) setTheme(theme);
+                });
+            });
+
+            // Ripristina tema da localStorage
+            try {
+                const saved = localStorage.getItem('senofane-theme');
+                if (saved && allThemes.includes(saved)) {
+                    setTheme(saved);
+                } else {
+                    themeBtns.forEach(btn => {
+                        if (btn.dataset.theme === 'normale') btn.classList.add('active');
+                    });
+                }
+            } catch (_) {
+                themeBtns.forEach(btn => {
+                    if (btn.dataset.theme === 'normale') btn.classList.add('active');
+                });
+            }
+
+            // Sincronizza aria-expanded per le sezioni aperte all'avvio
+            document.querySelectorAll('.section.open').forEach(sec => {
+                const hdr = sec.querySelector('.section-header');
+                if (hdr) hdr.setAttribute('aria-expanded', 'true');
+            });
+
+        })();
+    </script>
+
+</body>
+</html>

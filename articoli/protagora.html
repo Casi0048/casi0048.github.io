@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Protagora di Abdera · l'uomo è la misura</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <style>
+        /* ── Reset & Base ── */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #f7f3ee;
+            --surface: #ffffff;
+            --text: #1e1a16;
+            --text-secondary: #4a443e;
+            --border: #ddd6cd;
+            --accent: #b5633a;
+            --accent-light: #d48a5c;
+            --shadow: 0 8px 32px rgba(30, 26, 22, 0.06);
+            --radius: 16px;
+            --transition: 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            --font-serif: 'Cormorant Garamond', serif;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --max-width: 820px;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            line-height: 1.7;
+            transition: background var(--transition), color var(--transition);
+            padding: 2rem 1.5rem 4rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+
+        /* ── Header ── */
+        .article-header {
+            text-align: center;
+            padding: 2.5rem 0 2rem;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 2.5rem;
+            transition: border-color var(--transition);
+            position: relative;
+        }
+
+        .article-header .badge {
+            display: inline-block;
+            font-family: var(--font-sans);
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent);
+            background: rgba(181, 99, 58, 0.08);
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            margin-bottom: 0.75rem;
+            transition: background var(--transition), color var(--transition);
+        }
+
+        .article-header h1 {
+            font-size: 3.4rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            margin-bottom: 0.2rem;
+        }
+
+        .article-header .subtitle {
+            font-size: 1.3rem;
+            font-weight: 400;
+            font-style: italic;
+            color: var(--text-secondary);
+            transition: color var(--transition);
+        }
+
+        .article-header .life {
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            font-weight: 300;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+            transition: color var(--transition);
+        }
+
+        .article-header .life span {
+            display: inline-block;
+            margin: 0 0.4rem;
+        }
+
+        /* ── Theme Controls ── */
+        .theme-controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 2rem 0 1.5rem;
+            padding: 1rem 0.5rem;
+            border-radius: var(--radius);
+            background: var(--surface);
+            box-shadow: var(--shadow);
+            transition: background var(--transition), box-shadow var(--transition);
+        }
+
+        .theme-btn {
+            font-family: var(--font-sans);
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            text-transform: lowercase;
+            padding: 0.45rem 1.1rem;
+            border: 1.5px solid var(--border);
+            border-radius: 40px;
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theme-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-1px);
+        }
+
+        .theme-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(181, 99, 58, 0.25);
+        }
+
+        .theme-btn .icon {
+            margin-right: 0.4rem;
+            opacity: 0.6;
+        }
+
+        /* ── Sections ── */
+        .section {
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 1.25rem;
+            overflow: hidden;
+            transition: background var(--transition), box-shadow var(--transition), border-color var(--transition);
+            border: 1px solid transparent;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem 1.75rem;
+            cursor: pointer;
+            user-select: none;
+            transition: background var(--transition);
+            gap: 1rem;
+        }
+
+        .section-header:hover {
+            background: rgba(181, 99, 58, 0.04);
+        }
+
+        .section-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            margin: 0;
+            transition: color var(--transition);
+        }
+
+        .section-header .toggle-icon {
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: all var(--transition);
+            color: var(--text-secondary);
+            line-height: 1;
+        }
+
+        .section-header:hover .toggle-icon {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .section.open .toggle-icon {
+            transform: rotate(180deg);
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .section-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.7s cubic-bezier(0.23, 1, 0.32, 1), padding 0.5s ease, opacity 0.4s ease;
+            opacity: 0;
+            padding: 0 1.75rem;
+        }
+
+        .section.open .section-body {
+            max-height: 3000px;
+            opacity: 1;
+            padding: 0 1.75rem 2rem;
+        }
+
+        .section-body p {
+            margin-bottom: 1.2rem;
+        }
+
+        .section-body p:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-body .quote {
+            font-style: italic;
+            font-size: 1.15rem;
+            padding: 1rem 1.5rem;
+            border-left: 4px solid var(--accent);
+            margin: 1.2rem 0;
+            background: rgba(181, 99, 58, 0.04);
+            border-radius: 0 8px 8px 0;
+            transition: border-color var(--transition), background var(--transition);
+        }
+
+        .section-body .quote cite {
+            display: block;
+            font-style: normal;
+            font-size: 0.85rem;
+            font-family: var(--font-sans);
+            font-weight: 400;
+            margin-top: 0.3rem;
+            color: var(--text-secondary);
+            transition: color var(--transition);
+        }
+
+        .section-body ul {
+            margin: 0.8rem 0 1.2rem 1.8rem;
+            list-style: none;
+        }
+
+        .section-body ul li {
+            position: relative;
+            padding-left: 1.4rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .section-body ul li::before {
+            content: "—";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            opacity: 0.6;
+            transition: color var(--transition);
+        }
+
+        /* ── Animations ── */
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section {
+            animation: fadeSlideUp 0.7s ease forwards;
+            opacity: 0;
+        }
+
+        .section:nth-child(1) { animation-delay: 0.05s; }
+        .section:nth-child(2) { animation-delay: 0.10s; }
+        .section:nth-child(3) { animation-delay: 0.15s; }
+        .section:nth-child(4) { animation-delay: 0.20s; }
+        .section:nth-child(5) { animation-delay: 0.25s; }
+        .section:nth-child(6) { animation-delay: 0.30s; }
+
+        /* ── Footer ── */
+        .article-footer {
+            text-align: center;
+            font-family: var(--font-sans);
+            font-size: 0.75rem;
+            font-weight: 300;
+            color: var(--text-secondary);
+            padding-top: 2.5rem;
+            margin-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            transition: color var(--transition), border-color var(--transition);
+            letter-spacing: 0.02em;
+        }
+
+        /* ════════════════════════════════════════════
+                   THEMES
+                   ════════════════════════════════════════════ */
+
+        /* ── NOTTURNO ── */
+        body.theme-notturno {
+            --bg: #0f0d0b;
+            --surface: #1b1714;
+            --text: #e8ddd2;
+            --text-secondary: #b0a69b;
+            --border: #3a322c;
+            --accent: #c47a5a;
+            --accent-light: #d99b7a;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        body.theme-notturno .theme-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #0f0d0b;
+        }
+        body.theme-notturno .section-header:hover { background: rgba(196, 122, 90, 0.08); }
+        body.theme-notturno .section-body .quote { background: rgba(196, 122, 90, 0.08); border-left-color: var(--accent); }
+        body.theme-notturno .section-body ul li::before { color: var(--accent); }
+        body.theme-notturno .article-header .badge { background: rgba(196, 122, 90, 0.15); color: var(--accent); }
+        body.theme-notturno .section-header .toggle-icon { background: #3a322c; color: #b0a69b; }
+        body.theme-notturno .section-header:hover .toggle-icon { background: var(--accent); color: #0f0d0b; }
+        body.theme-notturno .section.open .toggle-icon { background: var(--accent); color: #0f0d0b; }
+
+        /* ── FILOSOFICO ── */
+        body.theme-filosofico {
+            --bg: #f2ede4;
+            --surface: #fcf9f2;
+            --text: #2d2a24;
+            --text-secondary: #5a544a;
+            --border: #d6cec0;
+            --accent: #7d6b4b;
+            --accent-light: #a58d67;
+            --shadow: 0 8px 32px rgba(80, 70, 50, 0.10);
+        }
+
+        body.theme-filosofico .theme-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fcf9f2;
+        }
+        body.theme-filosofico .section-header:hover { background: rgba(125, 107, 75, 0.06); }
+        body.theme-filosofico .section-body .quote { background: rgba(125, 107, 75, 0.06); border-left-color: var(--accent); }
+        body.theme-filosofico .section-body ul li::before { color: var(--accent); }
+        body.theme-filosofico .article-header .badge { background: rgba(125, 107, 75, 0.10); color: var(--accent); }
+        body.theme-filosofico .section-header .toggle-icon { background: #d6cec0; color: #5a544a; }
+        body.theme-filosofico .section-header:hover .toggle-icon { background: var(--accent); color: #fcf9f2; }
+        body.theme-filosofico .section.open .toggle-icon { background: var(--accent); color: #fcf9f2; }
+
+        /* ── MISTICO ── */
+        body.theme-mistico {
+            --bg: #0e0a12;
+            --surface: #1a1423;
+            --text: #ece4f0;
+            --text-secondary: #b8aac9;
+            --border: #3d2f4a;
+            --accent: #b28cd4;
+            --accent-light: #d4b0ed;
+            --shadow: 0 8px 32px rgba(60, 30, 80, 0.4);
+        }
+
+        body.theme-mistico .theme-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #0e0a12;
+        }
+        body.theme-mistico .section-header:hover { background: rgba(178, 140, 212, 0.08); }
+        body.theme-mistico .section-body .quote { background: rgba(178, 140, 212, 0.08); border-left-color: var(--accent); }
+        body.theme-mistico .section-body ul li::before { color: var(--accent); }
+        body.theme-mistico .article-header .badge { background: rgba(178, 140, 212, 0.15); color: var(--accent); }
+        body.theme-mistico .section-header .toggle-icon { background: #3d2f4a; color: #b8aac9; }
+        body.theme-mistico .section-header:hover .toggle-icon { background: var(--accent); color: #0e0a12; }
+        body.theme-mistico .section.open .toggle-icon { background: var(--accent); color: #0e0a12; }
+
+        /* ── CONTEMPLATIVO ── */
+        body.theme-contemplativo {
+            --bg: #eef0ec;
+            --surface: #f7f8f4;
+            --text: #2b3a2e;
+            --text-secondary: #5a6b5a;
+            --border: #c8d0c2;
+            --accent: #4f7a5e;
+            --accent-light: #7aa085;
+            --shadow: 0 8px 32px rgba(60, 80, 60, 0.08);
+        }
+
+        body.theme-contemplativo .theme-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #f7f8f4;
+        }
+        body.theme-contemplativo .section-header:hover { background: rgba(79, 122, 94, 0.06); }
+        body.theme-contemplativo .section-body .quote { background: rgba(79, 122, 94, 0.06); border-left-color: var(--accent); }
+        body.theme-contemplativo .section-body ul li::before { color: var(--accent); }
+        body.theme-contemplativo .article-header .badge { background: rgba(79, 122, 94, 0.10); color: var(--accent); }
+        body.theme-contemplativo .section-header .toggle-icon { background: #c8d0c2; color: #5a6b5a; }
+        body.theme-contemplativo .section-header:hover .toggle-icon { background: var(--accent); color: #f7f8f4; }
+        body.theme-contemplativo .section.open .toggle-icon { background: var(--accent); color: #f7f8f4; }
+
+        /* ── Responsive ── */
+        @media (max-width: 640px) {
+            body { padding: 1rem 0.8rem 2.5rem; font-size: 1rem; }
+            .article-header h1 { font-size: 2.4rem; }
+            .article-header .subtitle { font-size: 1.05rem; }
+            .section-header { padding: 1rem 1.2rem; }
+            .section-header h2 { font-size: 1.2rem; }
+            .section.open .section-body { padding: 0 1.2rem 1.5rem; }
+            .section-body { padding: 0 1.2rem; }
+            .theme-controls { gap: 0.3rem; padding: 0.75rem 0.5rem; }
+            .theme-btn { font-size: 0.6rem; padding: 0.35rem 0.8rem; }
+            .theme-btn .icon { margin-right: 0.2rem; }
+            .section-body .quote { font-size: 1rem; padding: 0.8rem 1rem; }
+        }
+
+        @media (max-width: 400px) {
+            .article-header h1 { font-size: 1.9rem; }
+            .theme-controls { gap: 0.2rem; }
+            .theme-btn { font-size: 0.55rem; padding: 0.25rem 0.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- HEADER -->
+        <header class="article-header">
+            <div class="badge">✧ sofisti e retori</div>
+            <h1>Protagora di Abdera</h1>
+            <div class="subtitle">«L'uomo è la misura di tutte le cose»</div>
+            <div class="life">
+                <span>490 a.C. ca.</span> <span>·</span> <span>420 a.C. ca.</span>
+                <span style="margin:0 0.6rem;">|</span>
+                <span>Abdera · Tracia</span>
+            </div>
+        </header>
+
+        <!-- THEME CONTROLS -->
+        <nav class="theme-controls" aria-label="Modalità di lettura">
+            <button class="theme-btn active" data-theme="normale">
+                <span class="icon">☀</span> normale
+            </button>
+            <button class="theme-btn" data-theme="notturno">
+                <span class="icon">🌙</span> notturno
+            </button>
+            <button class="theme-btn" data-theme="filosofico">
+                <span class="icon">📜</span> filosofico
+            </button>
+            <button class="theme-btn" data-theme="mistico">
+                <span class="icon">✦</span> mistico
+            </button>
+            <button class="theme-btn" data-theme="contemplativo">
+                <span class="icon">🌿</span> contemplativo
+            </button>
+        </nav>
+
+        <!-- ARTICOLO: SEZIONI -->
+
+        <!-- 1. INTRODUZIONE -->
+        <section class="section open" id="intro">
+            <div class="section-header" role="button" tabindex="0" aria-expanded="true">
+                <h2>Introduzione</h2>
+                <span class="toggle-icon">▾</span>
+            </div>
+            <div class="section-body">
+                <p>
+                    <strong>Protagora di Abdera</strong> (in greco: Πρωταγόρας; Abdera, 490–485 a.C. – 420–410 a.C.)
+                    è stato un filosofo e sofista greco, considerato il più celebre e influente tra i sofisti
+                    del V secolo a.C. La sua fama è legata al celebre <strong>homo mensura</strong>:
+                    «L'uomo è misura di tutte le cose, di quelle che sono in quanto sono, di quelle che non
+                    sono in quanto non sono». Con questa affermazione, Protagora pose il soggetto umano al
+                    centro della conoscenza, inaugurando un <strong>relativismo epistemologico</strong>
+                    che avrebbe segnato profondamente la filosofia occidentale.
+                </p>
+                <p>
+                    Ma Protagora fu anche un <strong>maestro di retorica</strong> e di arte politica, il primo
+                    a insegnare l'arte della persuasione come tecnica (τέχνη) a pagamento. La sua dottrina
+                    dell'<strong>antilogia</strong> — secondo cui su ogni questione esistono due discorsi
+                    contrapposti — gettò le basi per la dialettica e per la democrazia ateniese, formando
+                    uomini politici e giuristi. Tuttavia, la sua audacia nel mettere in discussione la
+                    religione tradizionale gli valse l'accusa di empietà e la condanna al rogo dei suoi
+                    scritti.
+                </p>
+                <div class="quote">
+                    «Di tutte le cose l'uomo è misura: di quelle che sono, in quanto sono; di quelle che non sono,
+                    in quanto non sono.»
+                    <cite>— frammento DK 80 B 1 (da Platone, Teeteto)</cite>
+                </div>
+                <p>
+                    Nonostante la perdita pressoché totale delle sue opere, il pensiero di Protagora ci è
+                    noto attraverso le testimonianze di Platone, Aristotele, Sesto Empirico e Diogene Laerzio.
+                    La sua figura resta emblematica del passaggio dalla filosofia della natura alla riflessione
+                    sull'uomo e sulla politica, e la sua eredità continua a interrogare il rapporto tra verità,
+                    opinione e potere.
+                </p>
+            </div>
+        </section>
+
+        <!-- 2. VITA E CONTESTO -->
+        <section class="section" id="vita">
+            <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+                <h2>Vita e contesto storico</h2>
+                <span class="toggle-icon">▾</span>
+            </div>
+            <div class="section-body">
+                <p>
+                    Protagora nacque ad Abdera, una città della Tracia (oggi in Grecia) intorno al 490 a.C.
+                    La sua città natale era nota per essere la patria di Democrito, ma Protagora fu attivo
+                    soprattutto ad Atene, dove si recò intorno al 450 a.C. durante il periodo di massimo
+                    splendore della democrazia periclea. Qui divenne amico di Pericle e fu incaricato di
+                    redigere la costituzione della colonia di Turi (444–443 a.C.), un segno della sua
+                    influenza politica.
+                </p>
+                <p>
+                    La sua attività di <strong>sofista</strong> — termine che allora indicava un sapiente
+                    che insegnava per denaro — gli procurò fama e ricchezza. A differenza dei filosofi
+                    precedenti, Protagora non si occupò della natura (φύσις) ma dell'uomo e della vita
+                    associata (νόμος). Insegnava l'<em>arte della parola</em> (λόγων τέχνη) e la capacità
+                    di sostenere entrambe le parti di un argomento, abilità essenziale per chi volesse
+                    emergere nella vita politica ateniese.
+                </p>
+                <p>
+                    La sua carriera fu però segnata da un evento tragico: fu accusato di empietà per aver
+                    scritto un'opera intitolata <em>Sugli dèi</em>, che iniziava con la frase: «Degli dèi
+                    non posso sapere né che sono né che non sono». Secondo la tradizione, i suoi libri
+                    furono pubblicamente bruciati e Protagora fu costretto all'esilio. Morì poco dopo,
+                    forse durante un naufragio, intorno al 420 a.C.
+                </p>
+            </div>
+        </section>
+
+        <!-- 3. L'HOMO MENSURE E IL RELATIVISMO -->
+        <section class="section" id="relativismo">
+            <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+                <h2>L'homo mensura e il relativismo</h2>
+                <span class="toggle-icon">▾</span>
+            </div>
+            <div class="section-body">
+                <p>
+                    Il principio dell'<strong>uomo-misura</strong> (ἄνθρωπος μέτρον) è il nucleo del pensiero
+                    protagoreo. Esso afferma che la realtà non esiste in sé, ma è sempre <em>percepita</em>
+                    e <em>interpretata</em> da un soggetto. Ciò che è vero per un individuo può non esserlo
+                    per un altro, poiché la verità è <strong>relativa</strong> alle condizioni, alle
+                    disposizioni e alle esperienze di chi giudica.
+                </p>
+                <p>
+                    Questa posizione si contrappone radicalmente al <strong>realismo</strong> degli
+                    eleati e al <strong>naturalismo</strong> dei fisici milesi. Per Protagora, non esiste
+                    una verità assoluta o oggettiva: ogni affermazione è valida solo per il soggetto che
+                    la pronuncia in un determinato contesto. Non a caso, egli diceva che il vento può
+                    essere freddo per uno e caldo per un altro, e che entrambi hanno ragione dal loro
+                    punto di vista.
+                </p>
+                <div class="quote">
+                    «Se ogni uomo è misura di ciò che è, allora non esiste una verità comune; tutto ciò
+                    che appare a ciascuno è vero per lui.»
+                    <cite>— Platone, Teeteto (152a–c)</cite>
+                </div>
+                <p>
+                    Tuttavia, il relativismo di Protagora non è un nichilismo: egli distingue tra ciò che
+                    è <em>vero per ciascuno</em> e ciò che è <em>utile per la comunità</em>. Pur non
+                    esistendo una verità assoluta, esistono <strong>opinioni migliori</strong> di altre
+                    in base alla loro efficacia pratica. È il sofista, con la sua arte, a saper rendere
+                    più forte l'argomento più debole, non per ingannare, ma per orientare la città verso
+                    scelte più vantaggiose.
+                </p>
+            </div>
+        </section>
+
+        <!-- 4. L'ANTILOGIA E LA RETORICA -->
+        <section class="section" id="antilogia">
+            <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+                <h2>L'antilogia e l'arte della retorica</h2>
+                <span class="toggle-icon">▾</span>
+            </div>
+            <div class="section-body">
+                <p>
+                    Protagora è considerato il fondatore della <strong>logica antilogica</strong> (ἀντιλογία),
+                    ovvero la tecnica di sostenere due discorsi contrapposti su uno stesso argomento. Questa
+                    pratica, che egli insegnava come metodo di dibattito, non era fine a se stessa, ma
+                    aveva lo scopo di <em>esercitare la mente</em> e di <em>scoprire la verità</em> attraverso
+                    il confronto dialettico.
+                </p>
+                <p>
+                    Secondo Protagora, su ogni questione esistono <strong>due discorsi opposti</strong>
+                    (λόγοι ἀντικείμενοι), e il compito del sofista è di saperli sviluppare entrambi con
+                    uguale abilità. Questa dottrina influenzò profondamente la retorica greca e, attraverso
+                    di essa, la tradizione giuridica e politica occidentale. Anche Socrate, nel dialogo
+                    platonico <em>Protagora</em>, si confronta con il sofista proprio sul metodo della
+                    confutazione.
+                </p>
+                <p>
+                    La retorica protagorea non era però puro strumento di persuasione: egli riteneva che
+                    il <strong>discorso giusto</strong> (ὀρθὸς λόγος) dovesse essere fondato sulla
+                    <em>verosimiglianza</em> (εἰκός) e sulla <em>convenienza</em> (τὸ πρέπον), più che
+                    sulla verità oggettiva. In questo senso, la sua arte preparava il terreno alla
+                    <strong>filosofia del linguaggio</strong> e alla <strong>teoria dell'argomentazione</strong>
+                    che saranno sviluppate da Aristotele e dagli stoici.
+                </p>
+                <ul>
+                    <li>
+                        <strong>Esercizi retorici:</strong> Protagora componeva discorsi su temi fittizi,
+                        insegnando ai suoi allievi a difendere tesi apparentemente paradossali.
+                    </li>
+                    <li>
+                        <strong>Classificazione delle figure:</strong> Fu tra i primi a distinguere i generi
+                        del discorso (deliberativo, giudiziario, epidittico) e a studiare le forme
+                        dell'argomentazione.
+                    </li>
+                    <li>
+                        <strong>La forza del discorso:</strong> Protagora paragonava la parola a un «grande
+                        signore» capace di suscitare piacere, timore o compassione, anticipando la teoria
+                        dell'<em>ethos</em> e del <em>pathos</em>.
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 5. OPERE E FRAMMENTI -->
+        <section class="section" id="opere">
+            <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+                <h2>Opere e frammenti superstiti</h2>
+                <span class="toggle-icon">▾</span>
+            </div>
+            <div class="section-body">
+                <p>
+                    Di Protagora non ci è pervenuta alcuna opera integrale. I suoi scritti, che secondo
+                    Diogene Laerzio erano numerosi, furono distrutti in seguito alla condanna per empietà.
+                    Conosciamo i titoli di alcune opere attraverso le citazioni di autori successivi:
+                </p>
+                <ul>
+                    <li>
+                        <strong><em>Della verità</em></strong> (Ἀλήθεια): l'opera principale in cui esponeva
+                        la dottrina dell'uomo-misura. Se ne conserva il frammento iniziale (DK 80 B 1).
+                    </li>
+                    <li>
+                        <strong><em>Sugli dèi</em></strong> (Περὶ θεῶν): il libro che gli valse l'accusa di
+                        empietà. Iniziava con la celebre dichiarazione di agnosticismo.
+                    </li>
+                    <li>
+                        <strong><em>Antilogie</em></strong> (Ἀντιλογίαι): una raccolta di discorsi contrapposti
+                        su vari argomenti, utilizzati come esercizi retorici.
+                    </li>
+                    <li>
+                        <strong><em>Arte della contesa</em></strong> (Τέχνη ἐριστική): un manuale di tecnica
+                        dialettica, forse lo stesso delle <em>Antilogie</em>.
+                    </li>
+                    <li>
+                        <strong><em>Scienza della politica</em></strong> (Πολιτικὴ τέχνη): un'opera in cui
+                        affrontava il tema della virtù politica e dell'educazione dei cittadini.
+                    </li>
+                </ul>
+                <p>
+                    Oltre a questi, alcuni autori attribuiscono a Protagora anche scritti di grammatica e
+                    di critica letteraria, come <em>Sul corretto uso dei nomi</em>, in cui anticipava le
+                    riflessioni sulla corretta denominazione delle cose, tema che sarà ripreso da
+                    Aristotele e dagli stoici.
+                </p>
+                <p>
+                    La maggior parte delle nostre conoscenze su Protagora deriva dai dialoghi platonici
+                    (<em>Protagora</em>, <em>Teeteto</em>), dalle opere di Aristotele (<em>Metafisica</em>,
+                    <em>Etica nicomachea</em>), e da compilatori tardo-antichi come Sesto Empirico,
+                    Diogene Laerzio e Filodemo.
+                </p>
+            </div>
+        </section>
+
+        <!-- 6. EREDITÀ E INFLUENZA -->
+        <section class="section" id="eredita">
+            <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+                <h2>Eredità e influenza</h2>
+                <span class="toggle-icon">▾</span>
+            </div>
+            <div class="section-body">
+                <p>
+                    L'impatto di Protagora sulla filosofia e sulla cultura occidentale è difficile da
+                    sopravvalutare. Con la sua affermazione che l'uomo è il centro di tutte le cose,
+                    egli spostò l'attenzione della riflessione filosofica dalla <em>physis</em> alla
+                    <em>polis</em>, dalla natura alla politica, dalla cosmologia all'antropologia.
+                </p>
+                <p>
+                    Il suo <strong>relativismo</strong> fu ripreso, in forme diverse, dagli scettici
+                    (Pirrone, Sesto Empirico), dai sofisti minori e, in età moderna, da pensatori come
+                    Montaigne, Hume e Nietzsche. La sua difesa del <strong>pluralismo delle opinioni</strong>
+                    e la sua critica alla pretesa di una verità assoluta hanno alimentato il dibattito
+                    sul relativismo culturale e sull'oggettività della conoscenza.
+                </p>
+                <div class="quote">
+                    «Protagora è stato il primo a insegnare che su ogni cosa si possono fare due discorsi
+                    opposti, e a praticare l'arte della disputa.»
+                    <cite>— Diogene Laerzio, Vite dei filosofi IX, 51</cite>
+                </div>
+                <p>
+                    La sua <strong>tecnica retorica</strong> ha influenzato la tradizione oratoria greca
+                    e romana, passando attraverso Cicerone e Quintiliano fino alla retorica umanistica.
+                    Anche la <strong>dialettica</strong> di Platone, pur prendendo le distanze dal
+                    relativismo protagoreo, deve molto al suo metodo di confronto tra tesi opposte.
+                </p>
+                <p>
+                    Oggi, Protagora viene studiato non solo come sofista, ma come un precursore della
+                    <strong>filosofia del linguaggio</strong>, della <strong>teoria dell'argomentazione</strong>
+                    e della <strong>psicologia della percezione</strong>. La sua figura, controversa e
+                    affascinante, continua a interrogarci sul rapporto tra verità, potere e democrazia,
+                    e sul ruolo che l'educazione deve svolgere nella formazione del cittadino.
+                </p>
+            </div>
+        </section>
+
+        <!-- 7. CRITICHE E CONTROVERSIE -->
+        <section class="section" id="critiche">
+            <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+                <h2>Critiche e controversie</h2>
+                <span class="toggle-icon">▾</span>
+            </div>
+            <div class="section-body">
+                <p>
+                    Fin dall'antichità, il pensiero di Protagora è stato oggetto di aspre critiche,
+                    soprattutto da parte di Platone e Aristotele. Le obiezioni principali riguardano:
+                </p>
+                <ul>
+                    <li>
+                        <strong>Relativismo e auto-confutazione:</strong> Platone nel <em>Teeteto</em> fa
+                        notare che se la verità è relativa al singolo, allora anche la tesi di Protagora
+                        sarebbe vera solo per lui, e chi la rifiuta avrebbe altrettanto ragione. Si tratta
+                        del celebre argomento dell'<em>auto-confutazione</em> del relativismo.
+                    </li>
+                    <li>
+                        <strong>Impossibilità della conoscenza oggettiva:</strong> Aristotele rimprovera a
+                        Protagora di negare il principio di non-contraddizione, rendendo impossibile ogni
+                        discorso razionale e ogni scienza.
+                    </li>
+                    <li>
+                        <strong>Empietà e immoralità:</strong> La sua dichiarazione sugli dèi fu considerata
+                        pericolosa per la pietà religiosa e per l'ordine della città. Anche l'idea che
+                        l'uomo possa «rendere più forte l'argomento più debole» fu vista come un
+                        insegnamento cinico, volto al successo personale più che al bene comune.
+                    </li>
+                    <li>
+                        <strong>Riduzione della filosofia a tecnica:</strong> Molti filosofi hanno visto
+                        nella sofistica una degenerazione della filosofia, che si riduce a mero strumento
+                        di potere retorico, perdendo la sua vocazione alla verità.
+                    </li>
+                </ul>
+                <p>
+                    Tuttavia, i sostenitori di Protagora ribattono che il suo relativismo non è nichilista,
+                    ma un invito alla <strong>tolleranza</strong> e alla <strong>democrazia</strong>.
+                    Egli non nega che esistano opinioni migliori, ma sostiene che esse vadano giudicate
+                    sulla base della loro utilità sociale e non sulla pretesa di una verità assoluta.
+                    Inoltre, la sua arte retorica è vista come uno strumento di <strong>emancipazione</strong>
+                    per i cittadini, che possono così partecipare attivamente alla vita politica.
+                </p>
+                <p>
+                    Oggi il dibattito su Protagora rimane aperto, e la sua figura continua a essere
+                    rivalutata alla luce delle teorie contemporanee sul <strong>costruzionismo sociale</strong>,
+                    sul <strong>pragmatismo</strong> e sulla <strong>filosofia della comunicazione</strong>.
+                </p>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="article-footer">
+            <p>✧ Enciclopedia dei filosofi · Protagora di Abdera (490–420 a.C. ca.) ✧</p>
+            <p style="margin-top:0.3rem; opacity:0.6;">sofistica · relativismo · retorica · uomo-misura</p>
+        </footer>
+
+    </div>
+
+    <!-- ─── JAVASCRIPT ─── -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ── TOGGLE SEZIONI ──
+            const sections = document.querySelectorAll('.section');
+
+            sections.forEach((section) => {
+                const header = section.querySelector('.section-header');
+                const body = section.querySelector('.section-body');
+
+                if (!header || !body) return;
+
+                const toggle = () => {
+                    const isOpen = section.classList.contains('open');
+                    section.classList.toggle('open');
+                    header.setAttribute('aria-expanded', !isOpen);
+                };
+
+                header.addEventListener('click', toggle);
+                header.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        toggle();
+                    }
+                });
+            });
+
+            // ── TEMA ──
+            const themeBtns = document.querySelectorAll('.theme-btn');
+            const bodyEl = document.body;
+
+            const allThemes = ['normale', 'notturno', 'filosofico', 'mistico', 'contemplativo'];
+
+            const setTheme = (theme) => {
+                allThemes.forEach(t => bodyEl.classList.remove(`theme-${t}`));
+                if (theme !== 'normale') {
+                    bodyEl.classList.add(`theme-${theme}`);
+                }
+                themeBtns.forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.theme === theme);
+                });
+                try {
+                    localStorage.setItem('protagora-theme', theme);
+                } catch (_) { /* ignore */ }
+            };
+
+            themeBtns.forEach((btn) => {
+                btn.addEventListener('click', () => {
+                    const theme = btn.dataset.theme;
+                    if (theme) setTheme(theme);
+                });
+            });
+
+            // Ripristina tema da localStorage
+            try {
+                const saved = localStorage.getItem('protagora-theme');
+                if (saved && allThemes.includes(saved)) {
+                    setTheme(saved);
+                } else {
+                    themeBtns.forEach(btn => {
+                        if (btn.dataset.theme === 'normale') btn.classList.add('active');
+                    });
+                }
+            } catch (_) {
+                themeBtns.forEach(btn => {
+                    if (btn.dataset.theme === 'normale') btn.classList.add('active');
+                });
+            }
+
+            // Sincronizza aria-expanded per le sezioni aperte all'avvio
+            document.querySelectorAll('.section.open').forEach(sec => {
+                const hdr = sec.querySelector('.section-header');
+                if (hdr) hdr.setAttribute('aria-expanded', 'true');
+            });
+
+        })();
+    </script>
+
+</body>
+</html>

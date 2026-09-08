@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Anassimene di Mileto · l’aria come principio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <style>
+        /* ── Reset & Base ── */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #f6f4ee;
+            --surface: #ffffff;
+            --text: #1e1a16;
+            --text-secondary: #4a443e;
+            --border: #ded9cf;
+            --accent: #3f6b4c;
+            --accent-light: #618f70;
+            --shadow: 0 8px 32px rgba(30, 26, 22, 0.06);
+            --radius: 16px;
+            --transition: 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            --font-serif: 'Cormorant Garamond', serif;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --max-width: 820px;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            line-height: 1.7;
+            transition: background var(--transition), color var(--transition);
+            padding: 2rem 1.5rem 4rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+
+        /* ── Header ── */
+        .article-header {
+            text-align: center;
+            padding: 2.5rem 0 2rem;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 2.5rem;
+            transition: border-color var(--transition);
+        }
+
+        .article-header .badge {
+            display: inline-block;
+            font-family: var(--font-sans);
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent);
+            background: rgba(63, 107, 76, 0.08);
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            margin-bottom: 0.75rem;
+            transition: background var(--transition), color var(--transition);
+        }
+
+        .article-header h1 {
+            font-size: 3.4rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            margin-bottom: 0.2rem;
+        }
+
+        .article-header .subtitle {
+            font-size: 1.3rem;
+            font-weight: 400;
+            font-style: italic;
+            color: var(--text-secondary);
+            transition: color var(--transition);
+        }
+
+        .article-header .life {
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            font-weight: 300;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+            transition: color var(--transition);
+        }
+
+        .article-header .life span {
+            display: inline-block;
+            margin: 0 0.4rem;
+        }
+
+        /* ── Theme Controls ── */
+        .theme-controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 2rem 0 1.5rem;
+            padding: 1rem 0.5rem;
+            border-radius: var(--radius);
+            background: var(--surface);
+            box-shadow: var(--shadow);
+            transition: background var(--transition), box-shadow var(--transition);
+        }
+
+        .theme-btn {
+            font-family: var(--font-sans);
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            text-transform: lowercase;
+            padding: 0.45rem 1.1rem;
+            border: 1.5px solid var(--border);
+            border-radius: 40px;
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theme-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-1px);
+        }
+
+        .theme-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(63, 107, 76, 0.25);
+        }
+
+        .theme-btn .icon {
+            margin-right: 0.4rem;
+            opacity: 0.6;
+        }
+
+        /* ── Sections ── */
+        .section {
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 1.25rem;
+            overflow: hidden;
+            transition: background var(--transition), box-shadow var(--transition), border-color var(--transition);
+            border: 1px solid transparent;
+            animation: fadeSlideUp 0.7s ease forwards;
+            opacity: 0;
+        }
+
+        .section:nth-child(1) { animation-delay: 0.05s; }
+        .section:nth-child(2) { animation-delay: 0.10s; }
+        .section:nth-child(3) { animation-delay: 0.15s; }
+        .section:nth-child(4) { animation-delay: 0.20s; }
+        .section:nth-child(5) { animation-delay: 0.25s; }
+        .section:nth-child(6) { animation-delay: 0.30s; }
+
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(18px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem 1.75rem;
+            cursor: pointer;
+            user-select: none;
+            transition: background var(--transition);
+            gap: 1rem;
+        }
+
+        .section-header:hover {
+            background: rgba(63, 107, 76, 0.04);
+        }
+
+        .section-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            margin: 0;
+            transition: color var(--transition);
+        }
+
+        .section-header .toggle-icon {
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: all var(--transition);
+            color: var(--text-secondary);
+            line-height: 1;
+        }
+
+        .section-header:hover .toggle-icon {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .section.open .toggle-icon {
+            transform: rotate(180deg);
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .section-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.7s cubic-bezier(0.23, 1, 0.32, 1), padding 0.5s ease, opacity 0.4s ease;
+            opacity: 0;
+            padding: 0 1.75rem;
+        }
+
+        .section.open .section-body {
+            max-height: 3000px;
+            opacity: 1;
+            padding: 0 1.75rem 2rem;
+        }
+
+        .section-body p {
+            margin-bottom: 1.2rem;
+        }
+        .section-body p:last-child { margin-bottom: 0; }
+
+        .section-body .quote {
+            font-style: italic;
+            font-size: 1.15rem;
+            padding: 1rem 1.5rem;
+            border-left: 4px solid var(--accent);
+            margin: 1.2rem 0;
+            background: rgba(63, 107, 76, 0.04);
+            border-radius: 0 8px 8px 0;
+            transition: border-color var(--transition), background var(--transition);
+        }
+
+        .section-body .quote cite {
+            display: block;
+            font-style: normal;
+            font-size: 0.85rem;
+            font-family: var(--font-sans);
+            font-weight: 400;
+            margin-top: 0.3rem;
+            color: var(--text-secondary);
+            transition: color var(--transition);
+        }
+
+        .section-body ul {
+            margin: 0.8rem 0 1.2rem 1.8rem;
+            list-style: none;
+        }
+
+        .section-body ul li {
+            position: relative;
+            padding-left: 1.4rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .section-body ul li::before {
+            content: "—";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            opacity: 0.6;
+            transition: color var(--transition);
+        }
+
+        /* ── Footer ── */
+        .article-footer {
+            text-align: center;
+            font-family: var(--font-sans);
+            font-size: 0.75rem;
+            font-weight: 300;
+            color: var(--text-secondary);
+            padding-top: 2.5rem;
+            margin-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            transition: color var(--transition), border-color var(--transition);
+            letter-spacing: 0.02em;
+        }
+
+        /* ════════════════════════════════════════════
+                   THEMES
+                   ════════════════════════════════════════════ */
+
+        /* ── NOTTURNO ── */
+        body.theme-notturno {
+            --bg: #0f0d0b;
+            --surface: #1b1714;
+            --text: #e8ddd2;
+            --text-secondary: #b0a69b;
+            --border: #3a322c;
+            --accent: #7aa58b;
+            --accent-light: #a0c0ae;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+        body.theme-notturno .theme-btn.active { background: var(--accent); border-color: var(--accent); color: #0f0d0b; }
+        body.theme-notturno .section-header:hover { background: rgba(122, 165, 139, 0.08); }
+        body.theme-notturno .section-body .quote { background: rgba(122, 165, 139, 0.08); border-left-color: var(--accent); }
+        body.theme-notturno .section-body ul li::before { color: var(--accent); }
+        body.theme-notturno .article-header .badge { background: rgba(122, 165, 139, 0.15); color: var(--accent); }
+        body.theme-notturno .section-header .toggle-icon { background: #3a322c; color: #b0a69b; }
+        body.theme-notturno .section-header:hover .toggle-icon { background: var(--accent); color: #0f0d0b; }
+        body.theme-notturno .section.open .toggle-icon { background: var(--accent); color: #0f0d0b; }
+
+        /* ── FILOSOFICO ── */
+        body.theme-filosofico {
+            --bg: #f2ede4;
+            --surface: #fcf9f2;
+            --text: #2d2a24;
+            --text-secondary: #5a544a;
+            --border: #d6cec0;
+            --accent: #7d6b4b;
+            --accent-light: #a58d67;
+            --shadow: 0 8px 32px rgba(80, 70, 50, 0.10);
+        }
+        body.theme-filosofico .theme-btn.active { background: var(--accent); border-color: var(--accent); color: #fcf9f2; }
+        body.theme-filosofico .section-header:hover { background: rgba(125, 107, 75, 0.06); }
+        body.theme-filosofico .section-body .quote { background: rgba(125, 107, 75, 0.06); border-left-color: var(--accent); }
+        body.theme-filosofico .section-body ul li::before { color: var(--accent); }
+        body.theme-filosofico .article-header .badge { background: rgba(125, 107, 75, 0.10); color: var(--accent); }
+        body.theme-filosofico .section-header .toggle-icon { background: #d6cec0; color: #5a544a; }
+        body.theme-filosofico .section-header:hover .toggle-icon { background: var(--accent); color: #fcf9f2; }
+        body.theme-filosofico .section.open .toggle-icon { background: var(--accent); color: #fcf9f2; }
+
+        /* ── MISTICO ── */
+        body.theme-mistico {
+            --bg: #0e0a12;
+            --surface: #1a1423;
+            --text: #ece4f0;
+            --text-secondary: #b8aac9;
+            --border: #3d2f4a;
+            --accent: #b28cd4;
+            --accent-light: #d4b0ed;
+            --shadow: 0 8px 32px rgba(60, 30, 80, 0.4);
+        }
+        body.theme-mistico .theme-btn.active { background: var(--accent); border-color: var(--accent); color: #0e0a12; }
+        body.theme-mistico .section-header:hover { background: rgba(178, 140, 212, 0.08); }
+        body.theme-mistico .section-body .quote { background: rgba(178, 140, 212, 0.08); border-left-color: var(--accent); }
+        body.theme-mistico .section-body ul li::before { color: var(--accent); }
+        body.theme-mistico .article-header .badge { background: rgba(178, 140, 212, 0.15); color: var(--accent); }
+        body.theme-mistico .section-header .toggle-icon { background: #3d2f4a; color: #b8aac9; }
+        body.theme-mistico .section-header:hover .toggle-icon { background: var(--accent); color: #0e0a12; }
+        body.theme-mistico .section.open .toggle-icon { background: var(--accent); color: #0e0a12; }
+
+        /* ── CONTEMPLATIVO ── */
+        body.theme-contemplativo {
+            --bg: #eef0ec;
+            --surface: #f7f8f4;
+            --text: #2b3a2e;
+            --text-secondary: #5a6b5a;
+            --border: #c8d0c2;
+            --accent: #4f7a5e;
+            --accent-light: #7aa085;
+            --shadow: 0 8px 32px rgba(60, 80, 60, 0.08);
+        }
+        body.theme-contemplativo .theme-btn.active { background: var(--accent); border-color: var(--accent); color: #f7f8f4; }
+        body.theme-contemplativo .section-header:hover { background: rgba(79, 122, 94, 0.06); }
+        body.theme-contemplativo .section-body .quote { background: rgba(79, 122, 94, 0.06); border-left-color: var(--accent); }
+        body.theme-contemplativo .section-body ul li::before { color: var(--accent); }
+        body.theme-contemplativo .article-header .badge { background: rgba(79, 122, 94, 0.10); color: var(--accent); }
+        body.theme-contemplativo .section-header .toggle-icon { background: #c8d0c2; color: #5a6b5a; }
+        body.theme-contemplativo .section-header:hover .toggle-icon { background: var(--accent); color: #f7f8f4; }
+        body.theme-contemplativo .section.open .toggle-icon { background: var(--accent); color: #f7f8f4; }
+
+        /* ── Responsive ── */
+        @media (max-width: 640px) {
+            body { padding: 1rem 0.8rem 2.5rem; font-size: 1rem; }
+            .article-header h1 { font-size: 2.4rem; }
+            .article-header .subtitle { font-size: 1.05rem; }
+            .section-header { padding: 1rem 1.2rem; }
+            .section-header h2 { font-size: 1.2rem; }
+            .section.open .section-body { padding: 0 1.2rem 1.5rem; }
+            .section-body { padding: 0 1.2rem; }
+            .theme-controls { gap: 0.3rem; padding: 0.75rem 0.5rem; }
+            .theme-btn { font-size: 0.6rem; padding: 0.35rem 0.8rem; }
+            .theme-btn .icon { margin-right: 0.2rem; }
+            .section-body .quote { font-size: 1rem; padding: 0.8rem 1rem; }
+        }
+
+        @media (max-width: 400px) {
+            .article-header h1 { font-size: 1.9rem; }
+            .theme-controls { gap: 0.2rem; }
+            .theme-btn { font-size: 0.55rem; padding: 0.25rem 0.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- HEADER -->
+        <header class="article-header">
+            <div class="badge">✧ filosofi presocratici · scuola milesia</div>
+            <h1>Anassimene di Mileto</h1>
+            <div class="subtitle">L'aria come principio e anima del mondo</div>
+            <div class="life">
+                <span>586 a.C. ca.</span> <span>·</span> <span>528 a.C. ca.</span>
+                <span style="margin:0 0.6rem;">|</span>
+                <span>Mileto · Ionia</span>
+            </div>
+        </header>
+
+        <!-- THEME CONTROLS -->
+        <nav class="theme-controls" aria-label="Modalità di lettura">
+            <button class="theme-btn active" data-theme="normale">
+                <span class="icon">☀</span> normale
+            </button>
+            <button class="theme-btn" data-theme="notturno">
+                <span class="icon">🌙</span> notturno
+            </button>
+            <button class="theme-btn" data-theme="filosofico">
+                <span class="icon">📜</span> filosofico
+            </button>
+            <button class="theme-btn" data-theme="mistico">
+                <span class="icon">✦</span> mistico
+            </button>
+            <button class="theme-btn" data-theme="contemplativo">
+                <span class="icon">🌿</span> contemplativo
+            </button>
+        </nav>
+
+        <!-- ARTICOLO: SEZIONI -->
+
+        <!-- 1. INTRODUZIONE -->
+        <section class="section open" id="intro">
+            <div class="section-header" role="button" tabindex="0" aria-expanded="true">
+                <h2>Introduzione</h2>
+                <span class="toggle-icon">▾</span>
+            </div>
+            <div class="section-body">
+                <p>
+                    <strong>Anassimene di Mileto</strong> (in greco antico: Ἀναξιμένης; Mileto, 586 a.C. ca. – 528 a.C. ca.)
+                    è stato un filosofo e scienziato greco, il terzo e ultimo rappresentante della <strong>scuola milesia</strong>
+                    dopo Talete e Anassimandro. Con la sua dottrina dell'<strong>aria</strong> (ἀήρ) come principio primo
+                    (arché), egli portò a compimento il progetto naturalistico dei milesi, offrendo una spiegazione
+                    coerente e unitaria della realtà.
+                </p>
+                <p>
+                    Anassimene scelse l'aria perché, a differenza dell'acqua di Talete e dell'àpeiron di Anassimandro,
+                    essa possiede qualità che la rendono il <em>medium</em> ideale per spiegare i processi di
+                    trasformazione fisica: è invisibile eppure onnipresente, leggera ma capace di produrre movimento,
+                    e attraverso i processi di <strong>rarefazione</strong> e <strong>condensazione</strong> genera
+                    tutti gli altri elementi e le cose del mondo.
+                </p>
+                <div class="quote">
+                    «Anassimene dice che il principio è l'aria infinita, e che da essa derivano tutte le cose
+                    per rarefazione e condensazione.»
+                    <cite>— Simplicio, Commentario alla Fisica di Aristotele</cite>
+                </div>
+                <p>
+                    La sua filosofia segna un passo importante verso il <strong>monismo materialista</strong>
+                    e influenza profondamente il pensiero greco successivo, in particolare la fisica atomistica
+                    di Democrito e la teoria dei quattro elementi di Empedocle.
+                </p>
+            </div>
+        </section>
+
+        <!-- 2. VITA E CONTESTO -->
+        <section class="section" id="vita">
+            <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+                <h2>Vita e contesto storico</h2>
+                <span class="toggle-icon">▾</span>
+            </div>
+            <div class="section-body">
+                <p>
+                    Nato a Mileto intorno al 586 a.C., Anassimene fu contemporaneo e probabilmente allievo di
+                    Anassimandro, nonché il più giovane dei filosofi milesi. Della sua vita si sa poco: sappiamo
+                    che visse all'epoca della dominazione persiana sull'Ionia (che ebbe inizio con la conquista
+                    di Ciro il Grande nel 546 a.C.) e che scrisse un'opera in prosa intitolata <em>Sulla natura</em>,
+                    della quale restano solo frammenti indiretti.
+                </p>
+                <p>
+                    Mileto, in quel periodo, era ancora un vivace centro commerciale e culturale, ma la crescente
+                    pressione persiana e le tensioni interne segnarono il declino della polis. Anassimene, come
+                    i suoi predecessori, cercò di interpretare la natura senza ricorrere al mito, affidandosi
+                    all'osservazione e alla ragione. Le sue idee si diffusero rapidamente in tutto il mondo greco,
+                    influenzando Pitagora, Senofane e i primi filosofi della Magna Grecia.
+                </p>
+                <p>
+                    Secondo alcune fonti, Anassimene sarebbe stato il primo a distinguere tra pianeti e stelle fisse,
+                    e a sostenere che la Luna riceve la luce dal Sole. Queste intuizioni, insieme alla sua dottrina
+                    fisica, lo pongono come un ponte tra la speculazione milesia e la scienza ionica del V secolo.
+                </p>
+            </div>
+        </section>
+
+        <!-- 3. L'ARIA COME ARCHÉ -->
+        <section class="section" id="arché">
+            <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+                <h2>L'aria come principio (arché)</h2>
+                <span class="toggle-icon">▾</span>
+            </div>
+            <div class="section-body">
+                <p>
+                    Per Anassimene, il principio primo di tutte le cose è l'<strong>aria</strong> (ἀήρ), una sostanza
+                    <strong>infinita</strong> e <strong>in eterno movimento</strong>. Egli la descrisse come il
+                    «soffio vitale» che permea e sostiene l'universo, paragonandola all'anima che dà vita al corpo:
+                    «Come la nostra anima, che è aria, ci tiene insieme, così il soffio e l'aria abbracciano il mondo
+                    intero.» Questa affermazione, riportata da Plutarco, rivela una visione <em>panteistica</em> della
+                    natura, in cui il divino si identifica con l'elemento cosmico.
+                </p>
+                <p>
+                    La scelta dell'aria rispetto all'acqua o all'àpeiron è giustificata da ragioni sia empiriche che
+                    logiche. L'aria è <em>plastica</em>: può diventare fuoco quando si rarefa, vento quando si muove,
+                    nube quando si condensa in umidità, e infine acqua e terra quando si addensa ulteriormente.
+                    Attraverso i due processi opposti di <strong>rarefazione</strong> (πύκνωσις) e
+                    <strong>condensazione</strong> (μανότης), l'aria si trasforma in tutti gli elementi e in tutte
+                    le sostanze.
+                </p>
+                <div class="quote">
+                    «Rarefacendosi, l'aria diviene fuoco; condensandosi, diviene vento, poi nuvola, poi acqua,
+                    poi terra, poi pietra.»
+                    <cite>— Teofrasto, Opinioni dei fisici, fr. 2</cite>
+                </div>
+                <p>
+                    Questa teoria introduce per la prima volta il concetto di <strong>grado</strong> nella materia:
+                    gli elementi non sono qualità assolute, ma stati diversi di un'unica sostanza fondamentale.
+                    È un'anticipazione brillante del moderno concetto di <em>stati di aggregazione</em> e della
+                    trasformazione della materia per variazioni di densità.
+                </p>
+            </div>
+        </section>
+
+        <!-- 4. COSMOLOGIA E FISICA -->
+        <section class="section" id="cosmologia">
+            <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+                <h2>Cosmologia e fisica</h2>
+                <span class="toggle-icon">▾</span>
+            </div>
+            <div class="section-body">
+                <p>
+                    Anassimene costruì una cosmologia coerente con la sua fisica dell'aria. La Terra, secondo lui,
+                    è <strong>piatta</strong> e <strong>sostenuta dall'aria</strong> come un coperchio su una
+                    pentola, o come una foglia sull'acqua. Questa immagine, benché ingenua, rifiuta il sostegno
+                    mitologico e spiega la stabilità terrestre con la pressione dell'aria circostante.
+                </p>
+                <p>
+                    Il Sole, la Luna e le stelle sono anch'essi corpi <strong>infuocati</strong>, generati dalla
+                    rarefazione estrema dell'aria. Essi non sono sfere solide, ma <em>dischi</em> o <em>cerchi</em>
+                    di fuoco che ruotano intorno alla Terra, simili a foglie infiammate. Il Sole, in particolare,
+                    è piatto e leggero, e la sua luce si riflette sulla Luna. Anassimene intuì che le eclissi sono
+                    dovute all'interposizione della Luna o della Terra, e che le stelle fisse sono immobili mentre
+                    i pianeti si muovono.
+                </p>
+                <p>
+                    La sua concezione dell'universo è <strong>pneumatica</strong>: tutto è generato e governato
+                    dall'aria in movimento, che produce il calore, il freddo, l'umido e il secco. Questo dinamismo
+                    lo porta a sostenere che il mondo stesso respira, in un ciclo eterno di condensazione e
+                    rarefazione, senza inizio né fine — una visione che anticipa le teorie stoiche del
+                    <em>pneuma</em> e del <em>logos</em> immanente.
+                </p>
+            </div>
+        </section>
+
+        <!-- 5. OPERE E SCOPERTE -->
+        <section class="section" id="opere">
+            <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+                <h2>Opere e contributi scientifici</h2>
+                <span class="toggle-icon">▾</span>
+            </div>
+            <div class="section-body">
+                <p>
+                    Anassimene scrisse un libro intitolato <em>Perì physeos</em> (Sulla natura), di cui ci restano
+                    solo frammenti citati da autori successivi. A lui sono attribuite diverse scoperte e innovazioni:
+                </p>
+                <ul>
+                    <li>
+                        <strong>Distinzione tra pianeti e stelle fisse</strong>: riconobbe che alcuni astri
+                        (i pianeti) si muovono indipendentemente dalle stelle, che sono fisse sulla volta celeste.
+                    </li>
+                    <li>
+                        <strong>Teoria delle eclissi</strong>: spiegò l'eclissi solare come l'occultamento del
+                        Sole da parte della Luna, e l'eclissi lunare come l'interposizione della Terra.
+                    </li>
+                    <li>
+                        <strong>Concezione della Terra come un disco piatto</strong>: pur errata, questa ipotesi
+                        era sostenuta da argomenti razionali (la Terra è sostenuta dall'aria) e influenzò la
+                        geografia antica.
+                    </li>
+                    <li>
+                        <strong>Prima teoria quantitativa della materia</strong>: la rarefazione e condensazione
+                        sono processi graduali che permettono di spiegare la diversità qualitativa attraverso
+                        differenze quantitative — un'intuizione che sarà ripresa dagli atomisti.
+                    </li>
+                </ul>
+                <p>
+                    Le sue idee sulla <strong>meteorologia</strong> (nuvole, pioggia, neve, grandine) erano
+                    anch'esse basate sulla condensazione dell'aria, e anticipavano in parte la moderna
+                    scienza atmosferica.
+                </p>
+                <div class="quote">
+                    «Anassimene affermava che il cielo è fatto di aria, e che gli astri sono fuoco condensato
+                    che si muove in cerchio.»
+                    <cite>— Aezio, Placita philosophorum, II, 15</cite>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. EREDITÀ E INFLUENZA -->
+        <section class="section" id="eredita">
+            <div class="section-header" role="button" tabindex="0" aria-expanded="false">
+                <h2>Eredità e influenza</h2>
+                <span class="toggle-icon">▾</span>
+            </div>
+            <div class="section-body">
+                <p>
+                    Anassimene occupa un posto cruciale nella storia del pensiero: con la sua dottrina dell'aria,
+                    egli chiude il ciclo dei filosofi milesi e getta le basi per il <strong>materialismo</strong>
+                    e il <strong>fisicalismo</strong> che domineranno la filosofia greca per secoli. La sua idea
+                    che una sola sostanza, variando di densità, possa produrre tutte le cose è un'anticipazione
+                    della moderna chimica e fisica della materia.
+                </p>
+                <p>
+                    La sua influenza si estende a <strong>Empedocle</strong> (che riprese il principio dei quattro
+                    elementi), a <strong>Democrito</strong> (che sostituì l'aria con gli atomi, ma mantenne il
+                    meccanismo quantitativo) e agli <strong>stoici</strong> (che identificarono il <em>pneuma</em>
+                    con l'aria vitale divina). Anche <strong>Aristotele</strong>, pur criticandolo, riconobbe
+                    il valore della sua spiegazione causale.
+                </p>
+                <p>
+                    Nel mondo romano, Seneca e Cicerone citarono Anassimene come uno dei padri della filosofia
+                    naturale. Nell'età moderna, il suo monismo materialista fu rivalutato da filosofi come
+                    <strong>Giordano Bruno</strong> e <strong>Baruch Spinoza</strong>, che videro nell'aria
+                    un simbolo dell'unità della sostanza.
+                </p>
+                <p>
+                    Oggi Anassimene è ricordato non solo come un precursore della scienza, ma come il pensatore
+                    che per primo comprese che la <strong>qualità</strong> delle cose può essere ricondotta a
+                    <strong>quantità</strong> (densità) e <strong>movimento</strong>. La sua aria è il
+                    <em>soffio</em> che anima il mondo e la ragione che lo ordina — un'immagine che continua
+                    a ispirare filosofi e poeti.
+                </p>
+                <p>
+                    Come scrisse il poeta e critico greco Antifane: <em>«Anassimene, con la sua aria, ha reso
+                    il cielo trasparente e la terra comprensibile»</em>.
+                </p>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="article-footer">
+            <p>✧ Enciclopedia dei filosofi · Anassimene di Mileto (586–528 a.C. ca.) ✧</p>
+            <p style="margin-top:0.3rem; opacity:0.6;">aria · rarefazione · condensazione · presocratici</p>
+        </footer>
+
+    </div>
+
+    <!-- ─── JAVASCRIPT ─── -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ── TOGGLE SEZIONI ──
+            const sections = document.querySelectorAll('.section');
+
+            sections.forEach((section) => {
+                const header = section.querySelector('.section-header');
+                const body = section.querySelector('.section-body');
+
+                if (!header || !body) return;
+
+                const toggle = () => {
+                    const isOpen = section.classList.contains('open');
+                    section.classList.toggle('open');
+                    header.setAttribute('aria-expanded', !isOpen);
+                };
+
+                header.addEventListener('click', toggle);
+                header.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        toggle();
+                    }
+                });
+            });
+
+            // ── TEMA ──
+            const themeBtns = document.querySelectorAll('.theme-btn');
+            const bodyEl = document.body;
+
+            const allThemes = ['normale', 'notturno', 'filosofico', 'mistico', 'contemplativo'];
+
+            const setTheme = (theme) => {
+                allThemes.forEach(t => bodyEl.classList.remove(`theme-${t}`));
+                if (theme !== 'normale') {
+                    bodyEl.classList.add(`theme-${theme}`);
+                }
+                themeBtns.forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.theme === theme);
+                });
+                try {
+                    localStorage.setItem('anassimene-theme', theme);
+                } catch (_) { /* ignore */ }
+            };
+
+            themeBtns.forEach((btn) => {
+                btn.addEventListener('click', () => {
+                    const theme = btn.dataset.theme;
+                    if (theme) setTheme(theme);
+                });
+            });
+
+            // Ripristina tema da localStorage
+            try {
+                const saved = localStorage.getItem('anassimene-theme');
+                if (saved && allThemes.includes(saved)) {
+                    setTheme(saved);
+                } else {
+                    themeBtns.forEach(btn => {
+                        if (btn.dataset.theme === 'normale') btn.classList.add('active');
+                    });
+                }
+            } catch (_) {
+                themeBtns.forEach(btn => {
+                    if (btn.dataset.theme === 'normale') btn.classList.add('active');
+                });
+            }
+
+            // Sincronizza aria-expanded per le sezioni aperte all'avvio
+            document.querySelectorAll('.section.open').forEach(sec => {
+                const hdr = sec.querySelector('.section-header');
+                if (hdr) hdr.setAttribute('aria-expanded', 'true');
+            });
+
+        })();
+    </script>
+
+</body>
+</html>
