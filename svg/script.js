@@ -1,6 +1,9 @@
 <!-- ============================================================
      JAVASCRIPT
      ============================================================ -->
+document.addEventListener('DOMContentLoaded', function() {
+    "use strict";
+    console.log('🎵 Echi di Sofia — Avvio script');
 
  // PLAYER
     const player = document.getElementById('musicPlayer');
