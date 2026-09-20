@@ -237,9 +237,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const savedLanguage = localStorage.getItem('echiLanguage') || 'it';
     changeLanguage(savedLanguage);
 });
-</script>
 
-<script>
 document.addEventListener('DOMContentLoaded', function() {
     "use strict";
     console.log('🎵 Echi di Sofia — Avvio script');
