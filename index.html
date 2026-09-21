@@ -1642,7 +1642,7 @@ document.addEventListener('DOMContentLoaded', function() {
         toggleTornaSu();
     }
 
-    /* ---------- TEMA ---------- */
+ /* ---------- TEMA ---------- */
     const themeToggle = document.getElementById('themeToggle');
     const themeLabel = document.getElementById('themeLabel');
     const iconMoon = document.getElementById('iconMoon');
@@ -1670,7 +1670,29 @@ document.addEventListener('DOMContentLoaded', function() {
             setTheme(isLight ? 'dark' : 'light');
         });
     }
-});
+
+    /* ---------- OROLOGIO DI ERACLITO ---------- */
+    (function updateClock() {
+        const now = new Date();
+        const hours = now.getHours() % 12;
+        const minutes = now.getMinutes();
+        const seconds = now.getSeconds();
+
+        // Angolo ore: 30° per ora + 0.5° per minuto
+        const hourAngle = (hours * 30) + (minutes * 0.5);
+        // Angolo minuti: 6° per minuto + 0.1° per secondo (movimento fluido)
+        const minAngle = (minutes * 6) + (seconds * 0.1);
+
+        const hourHand = document.getElementById('hourHand');
+        const minHand = document.getElementById('minHand');
+
+        if (hourHand) hourHand.setAttribute('transform', `rotate(${hourAngle}, 100, 100)`);
+        if (minHand) minHand.setAttribute('transform', `rotate(${minAngle}, 100, 100)`);
+
+        setTimeout(updateClock, 1000);
+    })();
+
+}); // ← chiusura di DOMContentLoaded
 
 /* ============================================================
    ECO DA CLICK
