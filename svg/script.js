@@ -27,16 +27,16 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("🎵 Player inizializzato");
 
         /* ----- PLAYLIST ----- */
-        const tracks = [
-            {
-                src:   "/suoni/Strauss.mp3",
-                title: "Strauss – 'Sul bel Danubio blu'"
-            },
-            {
-                src:   "/suoni/chiaro-di-luna.mp3",
-                title: "Beethoven – Sonata 'Chiaro di luna', Op. 27 n. 2"
-            }
-        ];
+      const tracks = [
+    {
+        src:   "/suoni/Strauss.mp3",
+        title: "Strauss – 'Sul bel Danubio blu'"
+    },
+    {
+        src:   "/suoni/notturno.mp3",           // ✅ nome reale del file
+        title: "Beethoven – Sonata 'Chiaro di luna', Op. 27 n. 2"
+    }
+];
 
         let currentTrack = 0;
 
