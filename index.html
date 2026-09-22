@@ -24,7 +24,7 @@
   "url": "https://www.echidisofia.org/"
 }
 </script>
-<meta name="google-site-verification" content="PpwsR1To4InKAaDc4aFaUvzx9mNnUA34u98cfvCUrZk" />
+<meta name="google-site-verification" content="PpwsR1To4InKAaDc4aFaUvzx9mNnUA34u98cfvCUrZk">
 <!-- FAVICONS -->
 <link rel="icon" type="image/svg+xml" href="/favicon_io/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon_io/favicon-32x32.png">
@@ -43,7 +43,6 @@
 <!-- FONT AWESOME -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-<meta http-equiv="Permissions-Policy" content="compute-pressure=()">
 <!-- CSS BASE -->
   <link rel="stylesheet" href="svg/style.css">
   
@@ -139,8 +138,18 @@ body.light-theme .music-close:hover {
 }
 
 body.light-theme .music-play,
-body.light-theme .music-volume {
+body.light-theme .music-volume,
+body.light-theme .music-next {
     color: #00a86b;
+}
+
+body.light-theme .music-next {
+    border-color: rgba(0, 168, 107, 0.3);
+}
+
+body.light-theme .music-next:hover {
+    background: rgba(0, 168, 107, 0.1);
+    border-color: #00a86b;
 }
 
 body.light-theme .music-progress {
@@ -157,6 +166,28 @@ body.light-theme .music-progress::-moz-range-thumb {
 
 body.light-theme .player-status {
     color: #4a6a5a;
+}
+
+/* ============================================================
+   PULSANTE "BRANO SUCCESSIVO" — tema scuro (default)
+   ============================================================ */
+.music-next {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    background: transparent;
+    border: 1px solid rgba(212, 165, 116, 0.35);
+    border-radius: 50%;
+    color: var(--gold, #d4a574);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background .3s ease, color .3s ease, border-color .3s ease;
+}
+.music-next:hover {
+    background: rgba(212, 165, 116, 0.12);
+    border-color: var(--gold, #d4a574);
 }
 
 .resource h3 {
@@ -222,8 +253,6 @@ input {
     width: min(1180px, calc(100% - 48px));
     margin: 0 auto;
 }
-
-
 
 </style>
 </head>
@@ -813,20 +842,20 @@ input {
 <!-- ============================================================
      PLAYER MUSICALE
      ============================================================ -->
-<audio id="myAudio" playsinline preload="auto" src="https://casi0048.github.io/suoni/Strauss.mp3"></audio>
-<audio id="myAudio" playsinline preload="auto" src="https://casi0048.github.io/suoni/Moonlight.mp3"></audio>
+<audio id="myAudio" playsinline preload="metadata" src="/suoni/Strauss.mp3"></audio>
+
 <div class="music-player" id="musicPlayer">
     <div class="music-panel">
         <div class="music-header">
             <div>
                 <span class="music-label" data-i18n="musicLabel">MUSICA PER LO STUDIO</span>
-                <span class="music-title">Strauss – 'Sul bel Danubio blu'</span>
-                <span class="music-title">Bach – 'Moonlight.mp3'</span>
+                <span class="music-title" id="musicTitle">Strauss – 'Sul bel Danubio blu'</span>
             </div>
             <button class="music-close" id="musicClose" aria-label="Chiudi player">✕</button>
         </div>
         <div class="music-controls">
             <button class="music-play" id="playButton" aria-label="Riproduci musica">▶</button>
+            <button class="music-next" id="nextButton" aria-label="Brano successivo">⏭</button>
             <button class="music-volume" id="volumeToggle" aria-label="Attiva/disattiva audio">🔊</button>
             <input type="range" class="music-progress" id="musicProgress" min="0" max="100" value="0" aria-label="Avanzamento brano">
             <span class="player-status" id="playerStatus" data-i18n="musicPaused">In pausa</span>
@@ -865,17 +894,12 @@ input {
 </div>
 
 <!-- ============================================================
-     NEWSLETTER MODALE
-     ============================================================ -->
-
-
-<!-- ============================================================
      PULSANTE TORNA SU
      ============================================================ -->
 <button class="torna-su" id="tornaSu" aria-label="Torna su" title="Torna su">↑</button>
 
 <!-- ============================================================
-     JAVASCRIPT
+     JAVASCRIPT — traduzioni
      ============================================================ -->
 <script>
 const translations = {
@@ -1120,7 +1144,7 @@ document.addEventListener('DOMContentLoaded', function () {
         "use strict";
         console.log("🎵 Echi di Sofia — Avvio script");
 
-        // PLAYER
+        // PLAYER — con playlist
         const player = document.getElementById("musicPlayer");
         const playerToggle = document.getElementById("playerToggle");
         const musicClose = document.getElementById("musicClose");
@@ -1129,9 +1153,42 @@ document.addEventListener('DOMContentLoaded', function () {
         const progress = document.getElementById("musicProgress");
         const volumeToggle = document.getElementById("volumeToggle");
         const audio = document.getElementById("myAudio");
+        const musicTitle = document.getElementById("musicTitle");
+        const nextButton = document.getElementById("nextButton");
 
         if (player && playerToggle && playButton && audio) {
             console.log("🎵 Player inizializzato");
+
+            /* ----- PLAYLIST ----- */
+            const tracks = [
+                {
+                    src: "/suoni/Strauss.mp3",
+                    title: "Strauss – 'Sul bel Danubio blu'"
+                },
+                {
+                    src: "/suoni/chiaro-di-luna.mp3",
+                    title: "Beethoven – Sonata 'Chiaro di luna', Op. 27 n. 2"
+                }
+            ];
+
+            let currentTrack = 0;
+
+            // Carica un brano per indice (cicla automaticamente)
+            function loadTrack(index) {
+                currentTrack = (index + tracks.length) % tracks.length;
+                const track = tracks[currentTrack];
+                audio.src = track.src;
+                audio.load();
+                if (musicTitle) musicTitle.textContent = track.title;
+                if (progress) progress.value = 0;
+                if (playerStatus) playerStatus.textContent = "In pausa";
+                playButton.textContent = "▶";
+            }
+
+            // Carica il primo brano all'avvio
+            loadTrack(0);
+
+            /* ----- APERTURA / CHIUSURA PANNELLO ----- */
             function openPanel() {
                 player.classList.add("open");
                 playerToggle.setAttribute("aria-expanded", "true");
@@ -1151,6 +1208,8 @@ document.addEventListener('DOMContentLoaded', function () {
             document.addEventListener("keydown", function (e) {
                 if (e.key === "Escape" && player.classList.contains("open")) closePanel();
             });
+
+            /* ----- PLAY / PAUSA ----- */
             playButton.addEventListener("click", function () {
                 if (audio.paused) {
                     audio
@@ -1169,10 +1228,31 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (playerStatus) playerStatus.textContent = "In pausa";
                 }
             });
+
+            /* ----- BRANO SUCCESSIVO ----- */
+            if (nextButton) {
+                nextButton.addEventListener("click", function () {
+                    const wasPlaying = !audio.paused;
+                    loadTrack(currentTrack + 1);
+                    if (wasPlaying) {
+                        audio.play().catch(function (err) {
+                            console.warn("Riproduzione audio non avviata:", err);
+                        });
+                    }
+                });
+            }
+
+            /* ----- FINE BRANO → passa al successivo ----- */
             audio.addEventListener("ended", function () {
-                playButton.textContent = "▶";
-                if (playerStatus) playerStatus.textContent = "In pausa";
+                loadTrack(currentTrack + 1);
+                audio.play().catch(function (err) {
+                    console.warn("Autoplay bloccato:", err);
+                    playButton.textContent = "▶";
+                    if (playerStatus) playerStatus.textContent = "In pausa";
+                });
             });
+
+            /* ----- BARRA DI AVANZAMENTO ----- */
             if (audio && progress) {
                 audio.addEventListener("timeupdate", function () {
                     if (audio.duration) progress.value = (audio.currentTime / audio.duration) * 100;
@@ -1181,6 +1261,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (audio.duration) audio.currentTime = (this.value / 100) * audio.duration;
                 });
             }
+
+            /* ----- MUTE ----- */
             let isMuted = false;
             if (volumeToggle && audio) {
                 volumeToggle.addEventListener("click", function () {
@@ -1459,7 +1541,6 @@ document.addEventListener('DOMContentLoaded', function () {
         setTimeout(updateClock, 1000);
     })();
 </script>
-
 
 </body>
 </html>
