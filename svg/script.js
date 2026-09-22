@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let currentTrack = 0;
 
         // Carica un brano per indice, ciclando automaticamente
-        function loadTrack(index) {
+               function loadTrack(index) {
             currentTrack = (index + tracks.length) % tracks.length;
             const track = tracks[currentTrack];
             audio.src = track.src;
@@ -50,11 +50,47 @@ document.addEventListener("DOMContentLoaded", function () {
             if (progress)     progress.value = 0;
             if (playerStatus) playerStatus.textContent = "In pausa";
             playButton.textContent = "▶";
+            if (typeof highlightActiveTrack === "function") highlightActiveTrack();
         }
-
-        // Carica il primo brano all'avvio
+         // Carica il primo brano all'avvio
         loadTrack(0);
 
+        /* ----- POPOLA LA PLAYLIST VISIBILE ----- */
+        const playlistEl = document.getElementById("musicPlaylist");
+
+        function renderPlaylist() {
+            if (!playlistEl) return;
+            playlistEl.innerHTML = "";
+            tracks.forEach(function (track, index) {
+                const li = document.createElement("li");
+                li.textContent = track.title;
+                li.dataset.index = index;
+                li.addEventListener("click", function (e) {
+                    e.stopPropagation();
+                    const wasPlaying = !audio.paused;
+                    loadTrack(index);
+                    if (wasPlaying) {
+                        audio.play().catch(function (err) {
+                            console.warn("Riproduzione audio non avviata:", err);
+                        });
+                    }
+                });
+                playlistEl.appendChild(li);
+            });
+            highlightActiveTrack();
+        }
+
+        function highlightActiveTrack() {
+            if (!playlistEl) return;
+            playlistEl.querySelectorAll("li").forEach(function (li) {
+                li.classList.toggle("active", Number(li.dataset.index) === currentTrack);
+            });
+        }
+
+        renderPlaylist();
+
+       
+       
         /* ----- APERTURA / CHIUSURA PANNELLO ----- */
         function openPanel() {
             player.classList.add("open");
