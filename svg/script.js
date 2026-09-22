@@ -65,19 +65,21 @@ function renderPlaylist() {
         li.dataset.index = index;
         li.addEventListener("click", function (e) {
             e.stopPropagation();
-            const wasPlaying = !audio.paused;
             loadTrack(index);
-            if (wasPlaying) {
-                audio.play().catch(function (err) {
+            audio.play()
+                .then(function () {
+                    playButton.textContent = "❚❚";
+                    if (playerStatus) playerStatus.textContent = "In riproduzione";
+                })
+                .catch(function (err) {
                     console.warn("Riproduzione audio non avviata:", err);
+                    if (playerStatus) playerStatus.textContent = "Errore";
                 });
-            }
         });
         playlistEl.appendChild(li);
     });
     highlightActiveTrack();
 }
-
 function highlightActiveTrack() {
     if (!playlistEl) return;
     playlistEl.querySelectorAll("li").forEach(function (li) {
