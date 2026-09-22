@@ -20,7 +20,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const progress      = document.getElementById("musicProgress");
     const volumeToggle  = document.getElementById("volumeToggle");
     const audio         = document.getElementById("myAudio");
-    const musicTitle    = document.getElementById("musicTitle");
     const nextButton    = document.getElementById("nextButton");
 
     if (player && playerToggle && playButton && audio) {
@@ -49,7 +48,6 @@ function loadTrack(index) {
     const track = tracks[currentTrack];
     audio.src = track.src;
     audio.load();
-    if (musicTitle)   musicTitle.textContent = track.title;
     if (progress)     progress.value = 0;
     if (playerStatus) playerStatus.textContent = "In pausa";
     playButton.textContent = "▶";
