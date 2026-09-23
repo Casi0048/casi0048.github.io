@@ -1808,3 +1808,132 @@ body.light-theme .music-playlist li.active {
 body.light-theme .music-playlist li::before {
     color: #00a86b;
 }
+/* ============================================================
+   FRASI FILOSOFICHE ROTANTI
+   ============================================================ */
+.philosophy-quotes {
+    padding: 60px 0 40px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.quote-wrapper {
+    position: relative;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 20px 40px;
+}
+
+/* Virgolette decorative grandi */
+.quote-mark {
+    position: absolute;
+    font-family: var(--serif);
+    font-size: 5rem;
+    line-height: 1;
+    color: var(--gold);
+    opacity: 0.15;
+    user-select: none;
+    pointer-events: none;
+}
+.quote-mark {
+    top: -10px;
+    left: -10px;
+}
+.quote-mark-end {
+    top: auto;
+    left: auto;
+    bottom: -30px;
+    right: -10px;
+}
+
+/* Blocco citazione */
+.quote-block {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-height: 90px;             /* evita salti di layout al cambio frase */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.quote-text {
+    font-family: var(--serif);
+    font-size: clamp(1.15rem, 2.2vw, 1.55rem);
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--text-soft);
+    transition: color .4s ease;
+    margin: 0;
+}
+
+.quote-author {
+    display: block;
+    margin-top: 14px;
+    font-family: var(--display);
+    font-size: 0.78rem;
+    font-style: normal;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.85;
+    transition: color .4s ease;
+}
+
+/* Animazione: dissolvenza + piccola traslazione verticale */
+.quote-block.fade-out {
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity .8s ease, transform .8s ease;
+}
+
+.quote-block {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity .8s ease, transform .8s ease;
+}
+
+/* Adattamento tema chiaro */
+body.light-theme .quote-mark {
+    color: var(--gold);
+    opacity: 0.18;
+}
+body.light-theme .quote-text {
+    color: #1a3628;
+}
+body.light-theme .quote-author {
+    color: #00a86b;
+}
+
+/* Mobile */
+@media (max-width: 650px) {
+    .philosophy-quotes {
+        padding: 40px 0 30px;
+    }
+    .quote-wrapper {
+        padding: 15px 25px;
+    }
+    .quote-mark {
+        font-size: 3.5rem;
+        top: -5px;
+        left: -5px;
+    }
+    .quote-mark-end {
+        bottom: -20px;
+        right: -5px;
+    }
+    .quote-block {
+        min-height: 120px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .quote-block,
+    .quote-block.fade-out {
+        transition: none !important;
+        transform: none !important;
+    }
+}
