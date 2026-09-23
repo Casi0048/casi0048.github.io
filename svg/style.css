@@ -1810,14 +1810,23 @@ body.light-theme .music-playlist li::before {
 }
 /* ============================================================
    FRASI FILOSOFICHE ROTANTI
+   
+   ⚠️ IMPORTANTE: questo blocco è ora DENTRO <section class="hero">.
+   Quindi il padding-top non deve più essere grande (la hero ha
+   già il suo spazio sotto il lead e l'onda). Anche il padding-bottom
+   va ridotto, perché la hero aggiunge sotto il proprio spazio.
    ============================================================ */
+
 .philosophy-quotes {
-    padding: 10px 0 40px;
+    /* Top: piccolo — la hero è appena sopra, con la sua onda decorativa */
+    /* Bottom: 0 — lo spazio sotto è gestito dal padding-bottom della hero */
+    padding: 10px 0 0;
     text-align: center;
     position: relative;
     z-index: 2;
 }
 
+/* Contenitore interno: larghezza limitata + padding orizzontale */
 .quote-wrapper {
     position: relative;
     max-width: 780px;
@@ -1825,21 +1834,29 @@ body.light-theme .music-playlist li::before {
     padding: 20px 40px;
 }
 
-/* Virgolette decorative grandi */
+/* ------------------------------------------------------------
+   VIRGOLETTE DECORATIVE (grandi, in oro tenue)
+   ------------------------------------------------------------ */
+
+/* Stile base condiviso dalle due virgolette */
 .quote-mark {
     position: absolute;
     font-family: var(--serif);
-    font-size: 5rem;
+    font-size: 5rem;        /* molto grandi, decorative */
     line-height: 1;
     color: var(--gold);
-    opacity: 0.15;
-    user-select: none;
-    pointer-events: none;
+    opacity: 0.15;          /* molto trasparenti: non devono distrarre */
+    user-select: none;      /* non selezionabili col mouse */
+    pointer-events: none;   /* non intercettano i click */
 }
+
+/* Virgoletta di apertura: in alto a sinistra del wrapper */
 .quote-mark {
     top: -10px;
     left: -10px;
 }
+
+/* Virgoletta di chiusura: in basso a destra (override del blocco sopra) */
 .quote-mark-end {
     top: auto;
     left: auto;
@@ -1847,21 +1864,25 @@ body.light-theme .music-playlist li::before {
     right: -10px;
 }
 
-/* Blocco citazione */
+/* ------------------------------------------------------------
+   BLOCCO CITAZIONE
+   ------------------------------------------------------------ */
+
 .quote-block {
     margin: 0;
     padding: 0;
-    border: 0;
-    min-height: 90px;             /* evita salti di layout al cambio frase */
+    border: 0;                      /* rimuove il bordo di default del <blockquote> */
+    min-height: 90px;               /* evita salti di layout al cambio frase */
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: center;        /* testo centrato verticalmente */
+    align-items: center;            /* testo centrato orizzontalmente */
 }
 
+/* Testo della frase */
 .quote-text {
     font-family: var(--serif);
-    font-size: clamp(1.15rem, 2.2vw, 1.55rem);
+    font-size: clamp(1.15rem, 2.2vw, 1.55rem);  /* responsive: min 1.15rem, max 1.55rem */
     font-style: italic;
     line-height: 1.5;
     color: var(--text-soft);
@@ -1869,10 +1890,11 @@ body.light-theme .music-playlist li::before {
     margin: 0;
 }
 
+/* Autore della frase */
 .quote-author {
     display: block;
     margin-top: 14px;
-    font-family: var(--display);
+    font-family: var(--display);    /* Cinzel: elegante, con grazie */
     font-size: 0.78rem;
     font-style: normal;
     font-weight: 500;
@@ -1882,6 +1904,10 @@ body.light-theme .music-playlist li::before {
     opacity: 0.85;
     transition: color .4s ease;
 }
+
+/* ------------------------------------------------------------
+   LINEA DECORATIVA sopra la citazione (aggancio visivo con la hero)
+   ------------------------------------------------------------ */
 .philosophy-quotes::before {
     content: "";
     display: block;
@@ -1891,53 +1917,81 @@ body.light-theme .music-playlist li::before {
     background: var(--gold);
     opacity: 0.4;
 }
-/* Animazione: dissolvenza + piccola traslazione verticale */
+
+/* ------------------------------------------------------------
+   ANIMAZIONE: dissolvenza + piccola traslazione verticale
+   La classe .fade-out viene aggiunta da JS al momento del cambio.
+   ------------------------------------------------------------ */
+
+/* Stato "in uscita": trasparente e spostato in basso */
 .quote-block.fade-out {
     opacity: 0;
     transform: translateY(6px);
     transition: opacity .8s ease, transform .8s ease;
 }
 
+/* Stato normale: visibile e in posizione */
 .quote-block {
     opacity: 1;
     transform: translateY(0);
     transition: opacity .8s ease, transform .8s ease;
 }
 
-/* Adattamento tema chiaro */
+/* ------------------------------------------------------------
+   ADATTAMENTO TEMA CHIARO
+   ------------------------------------------------------------ */
+
 body.light-theme .quote-mark {
     color: var(--gold);
-    opacity: 0.18;
-}
-body.light-theme .quote-text {
-    color: #1a3628;
-}
-body.light-theme .quote-author {
-    color: #00a86b;
+    opacity: 0.18;      /* leggermente più visibile su fondo chiaro */
 }
 
-/* Mobile */
+body.light-theme .quote-text {
+    color: #1a3628;     /* verde scuro, leggibile su sfondo chiaro */
+}
+
+body.light-theme .quote-author {
+    color: #00a86b;     /* verde smeraldo brillante */
+}
+
+/* ------------------------------------------------------------
+   MOBILE (max 650px)
+   Riduce dimensioni e padding per adattarsi a schermi piccoli.
+   ------------------------------------------------------------ */
 @media (max-width: 650px) {
+
     .philosophy-quotes {
-        padding: 10px 0 30px;
+        /* Bottom più piccolo: su mobile lo spazio è prezioso */
+        padding: 8px 0 0;
     }
+
     .quote-wrapper {
+        /* Meno padding orizzontale: più spazio per il testo */
         padding: 15px 25px;
     }
+
+    /* Virgolette più piccole, altrimenti mangiano spazio */
     .quote-mark {
         font-size: 3.5rem;
         top: -5px;
         left: -5px;
     }
+
     .quote-mark-end {
         bottom: -20px;
         right: -5px;
     }
+
+    /* Altezza minima maggiore: su mobile il testo può andare su più righe */
     .quote-block {
         min-height: 120px;
     }
 }
 
+/* ------------------------------------------------------------
+   ACCESSIBILITÀ: utenti con preferenza "riduci animazioni"
+   Disattiva del tutto la dissolvenza.
+   ------------------------------------------------------------ */
 @media (prefers-reduced-motion: reduce) {
     .quote-block,
     .quote-block.fade-out {
