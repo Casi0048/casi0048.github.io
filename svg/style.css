@@ -1906,7 +1906,107 @@ body.light-theme .music-playlist li::before {
     opacity: 0.85;
     transition: color .4s ease;
 }
+/* ------------------------------------------------------------
+   FONTE DELLA CITAZIONE
+   Piccolo livello informativo, discreto e non invasivo.
+   ------------------------------------------------------------ */
 
+.quote-author-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    margin-top: 14px;
+}
+
+/*
+   Il margine superiore dell'autore viene trasferito
+   alla riga che contiene autore + icona.
+*/
+.quote-author-row .quote-author {
+    margin-top: 0;
+}
+
+/* Piccola icona informativa */
+
+.quote-info {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 18px;
+    height: 18px;
+    padding: 0;
+
+    border: 1px solid rgba(190, 150, 70, 0.42);
+    border-radius: 50%;
+
+    background: transparent;
+    color: var(--gold);
+
+    font-family: var(--serif);
+    font-size: 0.72rem;
+    line-height: 1;
+
+    cursor: pointer;
+
+    opacity: 0.65;
+
+    transition:
+        opacity .35s ease,
+        color .35s ease,
+        border-color .35s ease,
+        transform .35s ease;
+}
+
+.quote-info:hover,
+.quote-info:focus-visible {
+    opacity: 1;
+    color: var(--gold);
+    border-color: rgba(190, 150, 70, 0.8);
+    transform: scale(1.08);
+}
+
+.quote-info:focus-visible {
+    outline: 1px solid rgba(190, 150, 70, 0.45);
+    outline-offset: 3px;
+}
+
+
+/* Fonte vera e propria */
+
+.quote-source {
+    max-width: 500px;
+    margin: 8px auto 0;
+
+    padding-top: 7px;
+
+    border-top: 1px solid rgba(190, 150, 70, 0.16);
+
+    color: var(--text-soft);
+
+    font-family: var(--serif);
+    font-size: 0.88rem;
+    font-style: italic;
+    line-height: 1.4;
+    letter-spacing: 0.02em;
+    text-align: center;
+
+    opacity: 0;
+    transform: translateY(-4px);
+
+    pointer-events: none;
+
+    transition:
+        opacity .45s ease,
+        transform .45s ease;
+}
+
+.quote-source.visible {
+    opacity: 0.72;
+    transform: translateY(0);
+    pointer-events: auto;
+}
 /* ------------------------------------------------------------
    LINEA DECORATIVA sopra la citazione (aggancio visivo con la hero)
   
@@ -1985,8 +2085,20 @@ body.light-theme .quote-author {
     }
 
     /* Altezza minima maggiore: su mobile il testo può andare su più righe */
-    .quote-block {
+        .quote-block {
         min-height: 120px;
+    }
+
+    .quote-info {
+        width: 17px;
+        height: 17px;
+        font-size: 0.68rem;
+    }
+
+    .quote-source {
+        max-width: 90%;
+        font-size: 0.84rem;
+        padding-top: 6px;
     }
 }
 
