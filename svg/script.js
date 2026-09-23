@@ -483,3 +483,88 @@ document.addEventListener("click", function (event) {
 
     setTimeout(updateClock, 1000);
 })();
+/* =====================================================
+   6) FRASI FILOSOFICHE ROTANTI
+   ===================================================== */
+const quoteText   = document.getElementById("quoteText");
+const quoteAuthor = document.getElementById("quoteAuthor");
+const quoteBlock  = document.querySelector(".quote-block");
+
+if (quoteText && quoteAuthor && quoteBlock) {
+    const quotes = [
+        {
+            text: "Conosci te stesso.",
+            author: "Iscrizione del tempio di Delfi"
+        },
+        {
+            text: "L'uomo è la misura di tutte le cose.",
+            author: "Protagora"
+        },
+        {
+            text: "La meraviglia è l'inizio della filosofia.",
+            author: "Platone"
+        },
+        {
+            text: "Penso, dunque sono.",
+            author: "René Descartes"
+        },
+        {
+            text: "Il cuore ha le sue ragioni che la ragione non conosce.",
+            author: "Blaise Pascal"
+        },
+        {
+            text: "Diventa ciò che sei.",
+            author: "Friedrich Nietzsche"
+        },
+        {
+            text: "Una vita senza ricerca non è degna di essere vissuta.",
+            author: "Socrate"
+        },
+        {
+            text: "Siamo nani sulle spalle di giganti.",
+            author: "Bernardo di Chartres"
+        },
+        {
+            text: "Dove c'è dubbio, lì è la verità.",
+            author: "Karl Jaspers"
+        },
+        {
+            text: "Tutto scorre.",
+            author: "Eraclito"
+        }
+    ];
+
+    let currentQuote = 0;
+    const DURATION = 8000;   // millisecondi tra una frase e l'altra
+    const FADE     = 800;    // durata dissolvenza (deve combaciare col CSS)
+
+    function showQuote(index) {
+        const q = quotes[index];
+        quoteText.textContent   = q.text;
+        quoteAuthor.textContent = "— " + q.author;
+    }
+
+    function nextQuote() {
+        // 1) dissolvi
+        quoteBlock.classList.add("fade-out");
+
+        // 2) cambia testo a metà della dissolvenza
+        setTimeout(function () {
+            currentQuote = (currentQuote + 1) % quotes.length;
+            showQuote(currentQuote);
+            quoteBlock.classList.remove("fade-out");
+        }, FADE);
+
+        // 3) programma la prossima rotazione
+        setTimeout(nextQuote, DURATION + FADE);
+    }
+
+    // Mostra la prima frase senza dissolvenza
+    showQuote(0);
+
+    // Avvia il ciclo (rispetta prefers-reduced-motion)
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!reducedMotion && quotes.length > 1) {
+        setTimeout(nextQuote, DURATION);
+    }
+}
