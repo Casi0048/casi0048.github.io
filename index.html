@@ -354,48 +354,88 @@ input {
 
 <!-- ============================================================
      HERO
+     Contiene:
+       - kicker, titolo, lead, onda decorativa
+       - le frasi filosofiche rotanti (popolate da JS)
      ============================================================ -->
 <main>
+
+    <!-- Sezione di apertura pagina -->
     <section class="hero">
+
+        <!-- Contenitore centrato: kicker + titolo + lead + onda -->
         <div class="container">
-            <div class="hero-kicker" data-i18n="heroKicker">Filosofia · Pensiero · Cultura</div>
+
+            <!-- Sopratitolo in maiuscoletto -->
+            <div class="hero-kicker" data-i18n="heroKicker">
+                Filosofia · Pensiero · Cultura
+            </div>
+
+            <!-- Titolo principale (Sofia in <span> per il colore oro) -->
             <h1>Echi di <span>Sofia</span></h1>
-            <p class="hero-lead" data-i18n="heroLead">Un viaggio attraverso le domande che l'uomo continua a porre a se stesso, al mondo e alla verità.</p>
+
+            <!-- Frase introduttiva tradotta via data-i18n -->
+            <p class="hero-lead" data-i18n="heroLead">
+                Un viaggio attraverso le domande che l'uomo continua a porre a se stesso,
+                al mondo e alla verità.
+            </p>
+
+            <!-- Onda decorativa animata -->
             <div class="hero-line">
                 <svg class="wave-svg" viewBox="0 0 120 30" preserveAspectRatio="none" aria-hidden="true">
                     <defs>
+                        <!-- Gradiente: trasparente ai lati, oro al centro -->
                         <linearGradient id="waveGlow" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stop-color="transparent" />
-                            <stop offset="40%" stop-color="var(--gold)" />
-                            <stop offset="60%" stop-color="var(--gold)" />
+                            <stop offset="0%"   stop-color="transparent" />
+                            <stop offset="40%"  stop-color="var(--gold)" />
+                            <stop offset="60%"  stop-color="var(--gold)" />
                             <stop offset="100%" stop-color="transparent" />
                         </linearGradient>
                     </defs>
-                    <path class="wave-glow" d="M0 15 C15 5, 25 25, 40 15 C55 5, 65 25, 80 15 C95 5, 105 25, 120 15" />
+                    <!-- Tracciato dell'onda (l'animazione è definita nel CSS) -->
+                    <path class="wave-glow"
+                          d="M0 15 C15 5, 25 25, 40 15 C55 5, 65 25, 80 15 C95 5, 105 25, 120 15" />
                 </svg>
             </div>
-        </div>
+
+        </div><!-- /.container -->
+
+
         <!-- ============================================================
-     FRASI FILOSOFICHE ROTANTI
-     ============================================================ -->
-<section class="philosophy-quotes" aria-label="Frasi filosofiche">
-    <div class="container">
-        <div class="quote-wrapper">
-            <span class="quote-mark">“</span>
-            <blockquote class="quote-block">
-                <p class="quote-text" id="quoteText"></p>
-                <cite class="quote-author" id="quoteAuthor"></cite>
-            </blockquote>
-            <span class="quote-mark quote-mark-end">”</span>
-        </div>
-    </div>
-</section>
-  
-  
+             FRASI FILOSOFICHE ROTANTI
 
+             NOTA: era una <section> dentro <section>, ora è un <div>.
+             Il contenuto è popolato dinamicamente da script.js:
+               - #quoteText   → testo della frase
+               - #quoteAuthor → autore
+             ============================================================ -->
+        <div class="philosophy-quotes" aria-label="Frasi filosofiche">
 
-    
+            <div class="container">
 
+                <div class="quote-wrapper">
+
+                    <!-- Virgoletta decorativa di apertura -->
+                    <span class="quote-mark">“</span>
+
+                    <!-- Citazione (blockquote = semantica corretta) -->
+                    <blockquote class="quote-block">
+                        <p class="quote-text" id="quoteText"></p>
+                        <cite class="quote-author" id="quoteAuthor"></cite>
+                    </blockquote>
+
+                    <!-- Virgoletta decorativa di chiusura -->
+                    <span class="quote-mark quote-mark-end">”</span>
+
+                </div><!-- /.quote-wrapper -->
+
+            </div><!-- /.container -->
+
+        </div><!-- /.philosophy-quotes -->
+
+    </section><!-- /.hero -->
+
+    <!-- ...segue il resto della pagina (thought-waves, knowledge-tree, ecc.)... -->
     <!-- ONDE DEL PENSIERO -->
     <svg class="thought-waves" viewBox="0 0 1600 500" preserveAspectRatio="none" aria-hidden="true">
         <path d="M-100 360 C180 190, 460 210, 720 330 S1240 500, 1700 300" fill="none" stroke="rgba(190,160,105,.30)" stroke-width="2"/>
