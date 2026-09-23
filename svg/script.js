@@ -491,415 +491,596 @@ const quoteAuthor = document.getElementById("quoteAuthor");
 const quoteBlock  = document.querySelector(".quote-block");
 
 if (quoteText && quoteAuthor && quoteBlock) {
-    const quotes = [
+   const quotes = [
+
+    // =====================================================
+    // PRESOCRATICI
+    // =====================================================
+
     {
         text: "Conosci te stesso.",
-        author: "Iscrizione del tempio di Delfi"
+        author: "Massima delfica",
+        source: "Iscrizione del tempio di Apollo a Delfi"
     },
     {
         text: "L'uomo è misura di tutte le cose.",
-        author: "Protagora"
+        author: "Protagora",
+        source: "Frammento B1"
     },
     {
         text: "La natura ama nascondersi.",
-        author: "Eraclito"
-    },
-    {
-        text: "Tutto scorre.",
-        author: "Eraclito"
+        author: "Eraclito",
+        source: "Frammento B123"
     },
     {
         text: "Il logos è comune a tutti.",
-        author: "Eraclito"
-    },
-    {
-        text: "Non è possibile entrare due volte nello stesso fiume.",
-        author: "Eraclito"
-    },
-    {
-        text: "L'essere è, il non essere non è.",
-        author: "Parmenide"
-    },
-    {
-        text: "Pensare ed essere sono la stessa cosa.",
-        author: "Parmenide"
+        author: "Eraclito",
+        source: "Frammento B2"
     },
     {
         text: "La guerra è padre di tutte le cose.",
-        author: "Eraclito"
+        author: "Eraclito",
+        source: "Frammento B53"
+    },
+    {
+        text: "Tutto è uno.",
+        author: "Eraclito",
+        source: "Frammento B50"
+    },
+    {
+        text: "L'essere è, il non essere non è.",
+        author: "Parmenide",
+        source: "Sulla natura, frammento B6"
+    },
+    {
+        text: "Pensare ed essere sono la stessa cosa.",
+        author: "Parmenide",
+        source: "Sulla natura, frammento B3"
     },
     {
         text: "Nulla nasce dal nulla.",
-        author: "Parmenide"
+        author: "Parmenide",
+        source: "Sulla natura, frammento B8"
     },
+    {
+        text: "Le cose che sono hanno ricevuto il nome di uno.",
+        author: "Parmenide",
+        source: "Sulla natura, frammento B8"
+    },
+
+    // =====================================================
+    // SOCRATE, PLATONE E ARISTOTELE
+    // =====================================================
 
     {
         text: "Una vita senza ricerca non è degna di essere vissuta.",
-        author: "Socrate"
+        author: "Socrate",
+        source: "Platone, Apologia di Socrate, 38a"
     },
     {
-        text: "So di non sapere.",
-        author: "Socrate"
+        text: "So di non essere sapiente.",
+        author: "Socrate",
+        source: "Platone, Apologia di Socrate, 21b–d"
     },
     {
         text: "È peggio commettere ingiustizia che subirla.",
-        author: "Socrate"
+        author: "Socrate",
+        source: "Platone, Gorgia, 469b–c"
     },
     {
         text: "La meraviglia è l'inizio della filosofia.",
-        author: "Platone"
-    },
-    {
-        text: "Il tempo è l'immagine mobile dell'eternità.",
-        author: "Platone"
-    },
-    {
-        text: "L'ignoranza è la radice e il fusto di ogni male.",
-        author: "Platone"
-    },
-    {
-        text: "Il corpo è la prigione dell'anima.",
-        author: "Platone"
+        author: "Socrate",
+        source: "Platone, Teeteto, 155d"
     },
     {
         text: "Conoscere è ricordare.",
-        author: "Platone"
+        author: "Platone",
+        source: "Platone, Menone, 81c–d"
+    },
+    {
+        text: "Il tempo è l'immagine mobile dell'eternità.",
+        author: "Platone",
+        source: "Platone, Timeo, 37d"
+    },
+    {
+        text: "Il corpo è la tomba dell'anima.",
+        author: "Platone",
+        source: "Platone, Cratilo, 400c"
     },
     {
         text: "Il bene è ciò che ogni anima persegue.",
-        author: "Platone"
+        author: "Platone",
+        source: "Platone, Repubblica, VI"
     },
     {
         text: "L'uomo è per natura un animale politico.",
-        author: "Aristotele"
+        author: "Aristotele",
+        source: "Politica, I, 1253a"
     },
-
     {
-        text: "La felicità è il fine ultimo della vita.",
-        author: "Aristotele"
+        text: "La felicità è il fine ultimo della vita umana.",
+        author: "Aristotele",
+        source: "Etica Nicomachea, I, 1097b"
     },
     {
         text: "La virtù sta nel mezzo.",
-        author: "Aristotele"
-    },
-    {
-        text: "L'anima è in qualche modo tutte le cose.",
-        author: "Aristotele"
-    },
-    {
-        text: "Il tutto è maggiore della somma delle sue parti.",
-        author: "Aristotele"
+        author: "Aristotele",
+        source: "Etica Nicomachea, II, 1106b"
     },
     {
         text: "La conoscenza comincia dalla meraviglia.",
-        author: "Aristotele"
+        author: "Aristotele",
+        source: "Metafisica, I, 982b"
     },
     {
-        text: "La speranza è un sogno a occhi aperti.",
-        author: "Aristotele"
+        text: "L'anima è in qualche modo tutte le cose.",
+        author: "Aristotele",
+        source: "De anima, III, 431b"
     },
     {
-        text: "La filosofia nasce dalla meraviglia.",
-        author: "Aristotele"
+        text: "Il tutto è maggiore della somma delle parti.",
+        author: "Aristotele",
+        source: "Metafisica, V, 1023b–1024a"
     },
+    {
+        text: "Tutti gli uomini aspirano per natura al sapere.",
+        author: "Aristotele",
+        source: "Metafisica, I, 980a"
+    },
+
+    // =====================================================
+    // ELLENISMO E STOICISMO
+    // =====================================================
+
     {
         text: "La morte non è nulla per noi.",
-        author: "Epicuro"
+        author: "Epicuro",
+        source: "Lettera a Meneceo"
     },
     {
-        text: "Non si può vivere felicemente senza vivere saggiamente.",
-        author: "Epicuro"
+        text: "Non si può vivere felicemente senza vivere saggiamente, bene e giustamente.",
+        author: "Epicuro",
+        source: "Massime capitali, V"
     },
     {
         text: "Vana è la parola del filosofo che non cura alcuna sofferenza umana.",
-        author: "Epicuro"
+        author: "Epicuro",
+        source: "Frammento 221 Usener"
     },
-
+    {
+        text: "Di tutte le cose, la più grande è l'amicizia.",
+        author: "Epicuro",
+        source: "Sentenze vaticane, 23"
+    },
+    {
+        text: "Alcune cose dipendono da noi, altre non dipendono da noi.",
+        author: "Epitteto",
+        source: "Manuale, 1"
+    },
     {
         text: "Non sono le cose a turbare gli uomini, ma i giudizi che essi formulano sulle cose.",
-        author: "Epitteto"
-    },
-    {
-        text: "Nessuno è libero se non è padrone di se stesso.",
-        author: "Epitteto"
+        author: "Epitteto",
+        source: "Manuale, 5"
     },
     {
         text: "Sostieni e astieniti.",
-        author: "Epitteto"
+        author: "Epitteto",
+        source: "Manuale, 8"
+    },
+    {
+        text: "Nessuno è libero se non è padrone di se stesso.",
+        author: "Epitteto",
+        source: "Discorsi, IV"
     },
     {
         text: "Hai potere sulla tua mente, non sugli eventi esterni.",
-        author: "Marco Aurelio"
+        author: "Marco Aurelio",
+        source: "Meditazioni, V"
     },
     {
         text: "La felicità della tua vita dipende dalla qualità dei tuoi pensieri.",
-        author: "Marco Aurelio"
+        author: "Marco Aurelio",
+        source: "Meditazioni, V"
     },
     {
         text: "Ciò che non giova all'alveare non giova neppure all'ape.",
-        author: "Marco Aurelio"
+        author: "Marco Aurelio",
+        source: "Meditazioni, VI"
+    },
+    {
+        text: "La miglior vendetta è non essere come chi ha commesso l'ingiustizia.",
+        author: "Marco Aurelio",
+        source: "Meditazioni, VI"
     },
     {
         text: "Non è libero chi è schiavo delle proprie passioni.",
-        author: "Seneca"
+        author: "Seneca",
+        source: "Lettere a Lucilio"
     },
     {
         text: "Non osiamo molte cose perché sono difficili; sono difficili perché non osiamo.",
-        author: "Seneca"
+        author: "Seneca",
+        source: "Lettere a Lucilio, 104"
     },
     {
         text: "La vita è lunga abbastanza, se la si sa usare.",
-        author: "Seneca"
-    },
-    {
-        text: "La fortuna non esiste: esiste il momento in cui il talento incontra l'occasione.",
-        author: "Seneca"
+        author: "Seneca",
+        source: "De brevitate vitae, I"
     },
 
-    {
-        text: "Credo per comprendere.",
-        author: "Anselmo d'Aosta"
-    },
-    {
-        text: "Comprendi per credere.",
-        author: "Agostino d'Ippona"
-    },
+    // =====================================================
+    // TARDA ANTICHITÀ E MEDIOEVO
+    // =====================================================
+
     {
         text: "Il nostro cuore è inquieto finché non riposa in te.",
-        author: "Agostino d'Ippona"
+        author: "Agostino d'Ippona",
+        source: "Confessioni, I, 1"
     },
     {
         text: "Ama e fa' ciò che vuoi.",
-        author: "Agostino d'Ippona"
+        author: "Agostino d'Ippona",
+        source: "Commento alla Prima Lettera di Giovanni, VII, 8"
     },
     {
         text: "La verità abita nell'uomo interiore.",
-        author: "Agostino d'Ippona"
+        author: "Agostino d'Ippona",
+        source: "La vera religione, 39, 72"
     },
     {
-        text: "La ragione è una luce naturale.",
-        author: "Tommaso d'Aquino"
+        text: "Comprendi per credere, credi per comprendere.",
+        author: "Agostino d'Ippona",
+        source: "Sermone 43, 9"
     },
     {
-        text: "Temere Dio è l'inizio della sapienza.",
-        author: "Tommaso d'Aquino"
+        text: "Credo per comprendere.",
+        author: "Anselmo d'Aosta",
+        source: "Proslogion, I"
     },
     {
         text: "La grazia non distrugge la natura, ma la perfeziona.",
-        author: "Tommaso d'Aquino"
+        author: "Tommaso d'Aquino",
+        source: "Summa Theologiae, I, q. 1, a. 8"
     },
     {
         text: "La verità è l'adeguazione dell'intelletto e della cosa.",
-        author: "Tommaso d'Aquino"
+        author: "Tommaso d'Aquino",
+        source: "De veritate, q. 1, a. 1"
     },
     {
-        text: "La filosofia è ancella della teologia.",
-        author: "Tradizione scolastica"
+        text: "È meglio illuminare che brillare soltanto.",
+        author: "Tommaso d'Aquino",
+        source: "Summa Theologiae, II-II, q. 188, a. 6"
+    },
+    {
+        text: "L'essere e l'essenza sono distinti nelle creature.",
+        author: "Tommaso d'Aquino",
+        source: "De ente et essentia, IV"
+    },
+    {
+        text: "Le entità non devono essere moltiplicate oltre necessità.",
+        author: "Guglielmo di Ockham",
+        source: "Principio tradizionalmente associato al cosiddetto rasoio di Ockham"
     },
 
+    // =====================================================
+    // UMANESIMO E RINASCIMENTO
+    // =====================================================
+
     {
-        text: "La filosofia è imparare a morire.",
-        author: "Michel de Montaigne"
+        text: "L'uomo è artefice del proprio destino.",
+        author: "Giovanni Pico della Mirandola",
+        source: "Oratio de hominis dignitate, formulazione sintetica"
+    },
+    {
+        text: "La sapienza è figlia dell'esperienza.",
+        author: "Leonardo da Vinci",
+        source: "Codice Forster II, 87r"
+    },
+    {
+        text: "La natura non viola mai le proprie leggi.",
+        author: "Leonardo da Vinci",
+        source: "Pensieri e appunti, formulazione tradizionale"
+    },
+    {
+        text: "Gli uomini giudicano più dagli occhi che dalle mani.",
+        author: "Niccolò Machiavelli",
+        source: "Il Principe, XVIII"
+    },
+    {
+        text: "La fortuna è arbitra della metà delle nostre azioni.",
+        author: "Niccolò Machiavelli",
+        source: "Il Principe, XXV"
     },
     {
         text: "Che cosa so?",
-        author: "Michel de Montaigne"
+        author: "Michel de Montaigne",
+        source: "Saggi, II, 12"
     },
     {
-        text: "Il sapere è potere.",
-        author: "Francis Bacon"
+        text: "La filosofia è imparare a morire.",
+        author: "Michel de Montaigne",
+        source: "Saggi, I, 20"
+    },
+    {
+        text: "Sapere è potere.",
+        author: "Francis Bacon",
+        source: "Meditationes Sacrae, De haeresibus"
     },
     {
         text: "La conoscenza stessa è potere.",
-        author: "Francis Bacon"
+        author: "Francis Bacon",
+        source: "Meditationes Sacrae"
     },
+    {
+        text: "La natura, per essere comandata, deve essere obbedita.",
+        author: "Francis Bacon",
+        source: "Novum Organum, I, 3"
+    },
+
+    // =====================================================
+    // RAZIONALISMO
+    // =====================================================
+
     {
         text: "Penso, dunque sono.",
-        author: "René Descartes"
-    },
-    {
-        text: "Il dubbio è l'inizio della saggezza.",
-        author: "René Descartes"
+        author: "René Descartes",
+        source: "Discorso sul metodo, IV"
     },
     {
         text: "Non basta avere una buona mente; l'importante è usarla bene.",
-        author: "René Descartes"
+        author: "René Descartes",
+        source: "Discorso sul metodo, I"
     },
     {
-        text: "L'uomo è condannato a essere libero.",
-        author: "Jean-Paul Sartre"
+        text: "Dividere ciascuna delle difficoltà che esaminavo in tante parti quante fosse possibile.",
+        author: "René Descartes",
+        source: "Discorso sul metodo, II"
     },
-    {
-        text: "L'inferno sono gli altri.",
-        author: "Jean-Paul Sartre"
-    },
-    {
-        text: "L'esistenza precede l'essenza.",
-        author: "Jean-Paul Sartre"
-    },
-
     {
         text: "Il cuore ha le sue ragioni che la ragione non conosce.",
-        author: "Blaise Pascal"
+        author: "Blaise Pascal",
+        source: "Pensieri, 423"
     },
     {
         text: "L'uomo supera infinitamente l'uomo.",
-        author: "Blaise Pascal"
+        author: "Blaise Pascal",
+        source: "Pensieri, 434"
     },
     {
         text: "Tutta l'infelicità degli uomini deriva dal non saper restare tranquilli in una stanza.",
-        author: "Blaise Pascal"
+        author: "Blaise Pascal",
+        source: "Pensieri, 139"
     },
     {
-        text: "L'uomo nasce libero, ma ovunque è in catene.",
-        author: "Jean-Jacques Rousseau"
+        text: "Deus sive Natura.",
+        author: "Baruch Spinoza",
+        source: "Etica, IV, Prefazione"
     },
     {
-        text: "L'uomo è buono per natura.",
-        author: "Jean-Jacques Rousseau"
+        text: "Non piangere, non ridere, non detestare, ma comprendere.",
+        author: "Baruch Spinoza",
+        source: "Trattato politico, I, 4"
     },
+    {
+        text: "La libertà è la necessità compresa.",
+        author: "Baruch Spinoza",
+        source: "Formula interpretativa della dottrina della libertà in Spinoza"
+    },
+    {
+        text: "L'uomo libero pensa meno di ogni altra cosa alla morte.",
+        author: "Baruch Spinoza",
+        source: "Etica, IV, prop. 67"
+    },
+
+    // =====================================================
+    // ILLUMINISMO
+    // =====================================================
+
     {
         text: "Abbi il coraggio di servirti della tua propria ragione.",
-        author: "Immanuel Kant"
+        author: "Immanuel Kant",
+        source: "Risposta alla domanda: che cos'è l'Illuminismo?"
     },
     {
         text: "Il cielo stellato sopra di me e la legge morale dentro di me.",
-        author: "Immanuel Kant"
+        author: "Immanuel Kant",
+        source: "Critica della ragion pratica"
     },
     {
         text: "Agisci in modo da trattare l'umanità sempre come fine e mai semplicemente come mezzo.",
-        author: "Immanuel Kant"
+        author: "Immanuel Kant",
+        source: "Fondazione della metafisica dei costumi, II"
     },
     {
-        text: "La libertà è l'indipendenza dall'arbitrio coercitivo di un altro.",
-        author: "Immanuel Kant"
+        text: "I pensieri senza contenuto sono vuoti; le intuizioni senza concetti sono cieche.",
+        author: "Immanuel Kant",
+        source: "Critica della ragion pura, A51/B75"
     },
     {
-        text: "Sapere aude!",
-        author: "Immanuel Kant"
+        text: "La ragione umana ha il particolare destino di essere assillata da questioni che non può evitare.",
+        author: "Immanuel Kant",
+        source: "Critica della ragion pura, Prefazione"
     },
-
     {
         text: "La ragione è e deve essere schiava delle passioni.",
-        author: "David Hume"
-    },
-    {
-        text: "Le belle cose sono difficili.",
-        author: "David Hume"
+        author: "David Hume",
+        source: "Trattato sulla natura umana, II, 3, 3"
     },
     {
         text: "L'abitudine è la grande guida della vita umana.",
-        author: "David Hume"
+        author: "David Hume",
+        source: "Ricerca sull'intelletto umano, V"
     },
     {
-        text: "L'uomo è nato libero.",
-        author: "Jean-Jacques Rousseau"
+        text: "L'uomo nasce libero, ma ovunque è in catene.",
+        author: "Jean-Jacques Rousseau",
+        source: "Il contratto sociale, I, 1"
     },
     {
-        text: "L'uomo è ciò che legge.",
-        author: "Joseph de Maistre"
+        text: "La libertà è obbedire alla legge che ci siamo prescritti.",
+        author: "Jean-Jacques Rousseau",
+        source: "Il contratto sociale, I, 8"
     },
     {
-        text: "Il sonno della ragione genera mostri.",
-        author: "Francisco Goya"
+        text: "L'uomo è nato per essere libero.",
+        author: "Jean-Jacques Rousseau",
+        source: "Il contratto sociale"
     },
-    {
-        text: "La storia del mondo è il tribunale del mondo.",
-        author: "Georg Wilhelm Friedrich Hegel"
-    },
-    {
-        text: "Ciò che è razionale è reale; e ciò che è reale è razionale.",
-        author: "Georg Wilhelm Friedrich Hegel"
-    },
+
+    // =====================================================
+    // IDEALISMO E OTTOCENTO
+    // =====================================================
+
     {
         text: "La verità è l'intero.",
-        author: "Georg Wilhelm Friedrich Hegel"
-    },
-    {
-        text: "La storia universale è il progresso nella coscienza della libertà.",
-        author: "Georg Wilhelm Friedrich Hegel"
-    },
-
-    {
-        text: "La vita deve essere compresa all'indietro, ma vissuta in avanti.",
-        author: "Søren Kierkegaard"
-    },
-    {
-        text: "L'angoscia è la vertigine della libertà.",
-        author: "Søren Kierkegaard"
-    },
-    {
-        text: "La vita non è un problema da risolvere, ma una realtà da vivere.",
-        author: "Søren Kierkegaard"
-    },
-    {
-        text: "Dio è morto.",
-        author: "Friedrich Nietzsche"
-    },
-    {
-        text: "Diventa ciò che sei.",
-        author: "Friedrich Nietzsche"
-    },
-    {
-        text: "Ciò che non mi uccide mi rende più forte.",
-        author: "Friedrich Nietzsche"
-    },
-    {
-        text: "Chi ha un perché per vivere può sopportare quasi ogni come.",
-        author: "Friedrich Nietzsche"
-    },
-    {
-        text: "Bisogna avere ancora il caos dentro di sé per partorire una stella danzante.",
-        author: "Friedrich Nietzsche"
-    },
-    {
-        text: "L'uomo è qualcosa che deve essere superato.",
-        author: "Friedrich Nietzsche"
-    },
-    {
-        text: "Senza musica la vita sarebbe un errore.",
-        author: "Friedrich Nietzsche"
-    },
-
-    {
-        text: "Il limite del mio linguaggio significa il limite del mio mondo.",
-        author: "Ludwig Wittgenstein"
-    },
-    {
-        text: "Di ciò di cui non si può parlare, si deve tacere.",
-        author: "Ludwig Wittgenstein"
-    },
-    {
-        text: "Il significato di una parola è il suo uso nel linguaggio.",
-        author: "Ludwig Wittgenstein"
-    },
-    {
-        text: "La filosofia è una lotta contro l'incantamento della nostra intelligenza mediante il linguaggio.",
-        author: "Ludwig Wittgenstein"
-    },
-    {
-        text: "L'assurdo nasce dal confronto tra il bisogno umano e il silenzio irragionevole del mondo.",
-        author: "Albert Camus"
-    },
-    {
-        text: "Bisogna immaginare Sisifo felice.",
-        author: "Albert Camus"
-    },
-    {
-        text: "Nel mezzo dell'inverno ho scoperto che c'era in me un'invincibile estate.",
-        author: "Albert Camus"
-    },
-    {
-        text: "L'uomo è l'unico essere che rifiuta di essere ciò che è.",
-        author: "Albert Camus"
-    },
-    {
-        text: "L'uomo è destinato a essere libero.",
-        author: "Jean-Paul Sartre"
+        author: "Georg Wilhelm Friedrich Hegel",
+        source: "Fenomenologia dello spirito, Prefazione"
     },
     {
         text: "La filosofia è la sua epoca colta nel pensiero.",
-        author: "Georg Wilhelm Friedrich Hegel"
+        author: "Georg Wilhelm Friedrich Hegel",
+        source: "Lineamenti di filosofia del diritto, Prefazione"
+    },
+    {
+        text: "La storia del mondo è il tribunale del mondo.",
+        author: "Georg Wilhelm Friedrich Hegel",
+        source: "Lezioni sulla filosofia della storia"
+    },
+    {
+        text: "La vita deve essere compresa all'indietro, ma vissuta in avanti.",
+        author: "Søren Kierkegaard",
+        source: "Diari, 1843"
+    },
+    {
+        text: "L'angoscia è la vertigine della libertà.",
+        author: "Søren Kierkegaard",
+        source: "Il concetto dell'angoscia"
+    },
+    {
+        text: "La soggettività è la verità.",
+        author: "Søren Kierkegaard",
+        source: "Postilla conclusiva non scientifica"
+    },
+    {
+        text: "Il mondo è la mia rappresentazione.",
+        author: "Arthur Schopenhauer",
+        source: "Il mondo come volontà e rappresentazione, I"
+    },
+    {
+        text: "La vita oscilla come un pendolo tra il dolore e la noia.",
+        author: "Arthur Schopenhauer",
+        source: "Il mondo come volontà e rappresentazione, IV"
+    },
+    {
+        text: "La compassione è la base di ogni moralità.",
+        author: "Arthur Schopenhauer",
+        source: "Sul fondamento della morale"
+    },
+    {
+        text: "Il sonno della ragione genera mostri.",
+        author: "Francisco Goya",
+        source: "Los caprichos, tavola 43"
+    },
+
+    // =====================================================
+    // NIETZSCHE
+    // =====================================================
+
+    {
+        text: "Dio è morto.",
+        author: "Friedrich Nietzsche",
+        source: "La gaia scienza, §125"
+    },
+    {
+        text: "Diventa ciò che sei.",
+        author: "Friedrich Nietzsche",
+        source: "La gaia scienza, §270"
+    },
+    {
+        text: "Ciò che non mi uccide mi rende più forte.",
+        author: "Friedrich Nietzsche",
+        source: "Il crepuscolo degli idoli, Massime e frecce, §8"
+    },
+    {
+        text: "Bisogna avere ancora il caos dentro di sé per partorire una stella danzante.",
+        author: "Friedrich Nietzsche",
+        source: "Così parlò Zarathustra, Prologo"
+    },
+    {
+        text: "Senza musica la vita sarebbe un errore.",
+        author: "Friedrich Nietzsche",
+        source: "Il crepuscolo degli idoli, Massime e frecce, §33"
+    },
+    {
+        text: "L'uomo è qualcosa che deve essere superato.",
+        author: "Friedrich Nietzsche",
+        source: "Così parlò Zarathustra, Prologo"
+    },
+    {
+        text: "Non ci sono fatti, ma solo interpretazioni.",
+        author: "Friedrich Nietzsche",
+        source: "Frammenti postumi, 1886–1887"
+    },
+    {
+        text: "Chi ha un perché per vivere può sopportare quasi ogni come.",
+        author: "Friedrich Nietzsche",
+        source: "Crepuscolo degli idoli, Massime e frecce"
+    },
+
+    // =====================================================
+    // NOVECENTO
+    // =====================================================
+
+    {
+        text: "Il limite del mio linguaggio significa il limite del mio mondo.",
+        author: "Ludwig Wittgenstein",
+        source: "Tractatus logico-philosophicus, 5.6"
+    },
+    {
+        text: "Di ciò di cui non si può parlare, si deve tacere.",
+        author: "Ludwig Wittgenstein",
+        source: "Tractatus logico-philosophicus, 7"
+    },
+    {
+        text: "Il significato di una parola è il suo uso nel linguaggio.",
+        author: "Ludwig Wittgenstein",
+        source: "Ricerche filosofiche, §43"
+    },
+    {
+        text: "La filosofia è una lotta contro l'incantamento della nostra intelligenza mediante il linguaggio.",
+        author: "Ludwig Wittgenstein",
+        source: "Ricerche filosofiche, §109"
+    },
+    {
+        text: "L'esistenza precede l'essenza.",
+        author: "Jean-Paul Sartre",
+        source: "L'esistenzialismo è un umanismo"
+    },
+    {
+        text: "L'inferno sono gli altri.",
+        author: "Jean-Paul Sartre",
+        source: "A porte chiuse"
+    },
+    {
+        text: "L'uomo è condannato a essere libero.",
+        author: "Jean-Paul Sartre",
+        source: "L'essere e il nulla"
+    },
+    {
+        text: "Bisogna immaginare Sisifo felice.",
+        author: "Albert Camus",
+        source: "Il mito di Sisifo"
+    },
+    {
+        text: "L'assurdo nasce dal confronto tra il bisogno umano e il silenzio irragionevole del mondo.",
+        author: "Albert Camus",
+        source: "Il mito di Sisifo"
+    },
+    {
+        text: "Nel mezzo dell'inverno ho scoperto che c'era in me un'invincibile estate.",
+        author: "Albert Camus",
+        source: "Ritorno a Tipasa"
     }
 ];
 
