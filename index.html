@@ -290,17 +290,22 @@ input {
             <stop offset="72%" stop-color="#0b1d3c"/>
             <stop offset="100%" stop-color="#101d38"/>
         </linearGradient>
-        <radialGradient id="nebulaA" cx="50%" cy="45%" r="62%">
-            <stop offset="0%" stop-color="#718bd0" stop-opacity=".13"/>
-            <stop offset="34%" stop-color="#5269b2" stop-opacity=".08"/>
-            <stop offset="70%" stop-color="#283c78" stop-opacity=".035"/>
-            <stop offset="100%" stop-color="#162653" stop-opacity="0"/>
-        </radialGradient>
-        <radialGradient id="nebulaB" cx="40%" cy="50%" r="70%">
-            <stop offset="0%" stop-color="#9c8bc8" stop-opacity=".07"/>
-            <stop offset="48%" stop-color="#526da8" stop-opacity=".035"/>
-            <stop offset="100%" stop-color="#1b2c5c" stop-opacity="0"/>
-        </radialGradient>
+        <!-- GLOW PER LAMPO ATMOSFERICO (freddo) — centro in alto a sinistra -->
+<radialGradient id="lightningGlow" cx="30%" cy="20%" r="90%">
+    <stop offset="0%"   stop-color="#FFFFFF" stop-opacity="0.95"/>
+    <stop offset="15%"  stop-color="#DDE8FF" stop-opacity="0.70"/>
+    <stop offset="40%"  stop-color="#8FAEFF" stop-opacity="0.35"/>
+    <stop offset="70%"  stop-color="#4A6FCC" stop-opacity="0.12"/>
+    <stop offset="100%" stop-color="#2A3F7A" stop-opacity="0"/>
+</radialGradient>
+
+<!-- GLOW PER LAMPO ATMOSFERICO (caldo/rosato) — centro in alto a destra -->
+<radialGradient id="lightningGlowWarm" cx="75%" cy="30%" r="85%">
+    <stop offset="0%"   stop-color="#FFFFFF" stop-opacity="0.85"/>
+    <stop offset="18%"  stop-color="#FFE8C8" stop-opacity="0.60"/>
+    <stop offset="45%"  stop-color="#E8B888" stop-opacity="0.28"/>
+    <stop offset="100%" stop-color="#7A5030" stop-opacity="0"/>
+</radialGradient>
         <filter id="starGlow" x="-200%" y="-200%" width="400%" height="400%">
             <feGaussianBlur stdDeviation="3.2"/>
         </filter>
@@ -347,49 +352,103 @@ input {
     <ellipse cx="380" cy="610" rx="560" ry="330" fill="url(#nebulaB)" filter="url(#softBlur)"/>
     <ellipse cx="1570" cy="360" rx="470" ry="280" fill="url(#nebulaB)" filter="url(#softBlur)" opacity=".72"/>
 
-    <!-- ============================================================
-         ⚡ LAMPI ATMOSFERICI
-         Brevi impulsi di luce che accendono il cielo per ~0.5s.
-         Due lampi con cadenze diverse per un effetto naturale.
-         ============================================================ -->
-    <g class="sky-lightning">
 
-        <!-- LAMPO FREDDO — ogni 28s, 3 impulsi ravvicinati -->
-        <rect x="0" y="0" width="1920" height="1080"
-              fill="url(#lightningGlow)"
-              opacity="0"
-              style="mix-blend-mode: screen;">
-            <animate attributeName="opacity"
-                values="0; 0; 0.45; 0.06; 0.32; 0.04; 0.18; 0"
-                keyTimes="0; 0.88; 0.885; 0.892; 0.898; 0.905; 0.912; 0.92"
-                dur="28s" begin="5s" repeatCount="indefinite"/>
-        </rect>
+   <!-- ============================================================
+     ⚡ LAMPI ATMOSFERICI
+     Bagliore diffuso + fulmini a zig-zag visibili.
+     Niente mix-blend-mode (inaffidabile su SVG).
+     ============================================================ -->
+<g class="sky-lightning">
 
-        <!-- LAMPO CALDO — ogni 37s, 2 impulsi -->
-        <rect x="0" y="0" width="1920" height="1080"
-              fill="url(#lightningGlowWarm)"
-              opacity="0"
-              style="mix-blend-mode: screen;">
-            <animate attributeName="opacity"
-                values="0; 0; 0.30; 0.05; 0.20; 0"
-                keyTimes="0; 0.72; 0.725; 0.732; 0.740; 0.75"
-                dur="37s" begin="14s" repeatCount="indefinite"/>
-        </rect>
+    <!-- ============ LAMPO FREDDO — ogni 24s ============ -->
 
-        <!-- SCIA DI LUCE DIAGONALE — attraversa il cielo ogni 42s -->
-        <line x1="-200" y1="150" x2="2200" y2="1050"
-              stroke="#E8F0FF"
-              stroke-width="1.5"
+    <!-- Bagliore diffuso sul cielo -->
+    <rect x="0" y="0" width="1920" height="1080"
+          fill="url(#lightningGlow)"
+          opacity="0">
+        <animate attributeName="opacity"
+            values="0; 0; 0.85; 0.15; 0.65; 0.10; 0.40; 0"
+            keyTimes="0; 0.885; 0.890; 0.897; 0.903; 0.910; 0.917; 0.925"
+            dur="24s" begin="4s" repeatCount="indefinite"/>
+    </rect>
+
+    <!-- Fulmine principale (zig-zag) -->
+    <polyline points="480,-50 470,80 500,160 445,300 495,410 450,560 500,690 465,830 505,960 480,1080"
+              fill="none"
+              stroke="#FFFFFF"
+              stroke-width="3"
+              stroke-linejoin="round"
               stroke-linecap="round"
               opacity="0"
-              filter="url(#softBlur)">
-            <animate attributeName="opacity"
-                values="0; 0; 0.55; 0.15; 0"
-                keyTimes="0; 0.55; 0.560; 0.575; 0.590"
-                dur="42s" begin="8s" repeatCount="indefinite"/>
-        </line>
+              filter="url(#starGlow)">
+        <animate attributeName="opacity"
+            values="0; 0; 1; 0.1; 0.85; 0; 0.5; 0"
+            keyTimes="0; 0.888; 0.892; 0.897; 0.902; 0.908; 0.915; 0.925"
+            dur="24s" begin="4s" repeatCount="indefinite"/>
+    </polyline>
 
-    </g>
+    <!-- Ramo secondario del fulmine -->
+    <polyline points="495,410 560,480 540,560 590,640"
+              fill="none"
+              stroke="#E8F0FF"
+              stroke-width="1.8"
+              stroke-linejoin="round"
+              stroke-linecap="round"
+              opacity="0"
+              filter="url(#starGlow)">
+        <animate attributeName="opacity"
+            values="0; 0; 0.9; 0; 0.7; 0"
+            keyTimes="0; 0.890; 0.894; 0.899; 0.905; 0.915"
+            dur="24s" begin="4s" repeatCount="indefinite"/>
+    </polyline>
+
+    <!-- Alone luminoso attorno al punto di scoppio -->
+    <ellipse cx="480" cy="100" rx="160" ry="120"
+             fill="#FFFFFF"
+             opacity="0"
+             filter="url(#starGlow)">
+        <animate attributeName="opacity"
+            values="0; 0; 0.55; 0; 0.35; 0"
+            keyTimes="0; 0.888; 0.892; 0.897; 0.905; 0.915"
+            dur="24s" begin="4s" repeatCount="indefinite"/>
+    </ellipse>
+
+    <!-- ============ LAMPO CALDO — ogni 31s, lato opposto ============ -->
+
+    <rect x="0" y="0" width="1920" height="1080"
+          fill="url(#lightningGlowWarm)"
+          opacity="0">
+        <animate attributeName="opacity"
+            values="0; 0; 0.65; 0.10; 0.45; 0"
+            keyTimes="0; 0.720; 0.726; 0.734; 0.742; 0.752"
+            dur="31s" begin="13s" repeatCount="indefinite"/>
+    </rect>
+
+    <polyline points="1480,-50 1500,80 1460,180 1510,300 1470,420 1520,560 1480,700 1530,840 1490,980 1500,1080"
+              fill="none"
+              stroke="#FFFFFF"
+              stroke-width="2.5"
+              stroke-linejoin="round"
+              stroke-linecap="round"
+              opacity="0"
+              filter="url(#starGlow)">
+        <animate attributeName="opacity"
+            values="0; 0; 1; 0.1; 0.75; 0"
+            keyTimes="0; 0.722; 0.726; 0.732; 0.740; 0.752"
+            dur="31s" begin="13s" repeatCount="indefinite"/>
+    </polyline>
+
+    <ellipse cx="1490" cy="120" rx="140" ry="110"
+             fill="#FFE8C8"
+             opacity="0"
+             filter="url(#starGlow)">
+        <animate attributeName="opacity"
+            values="0; 0; 0.45; 0; 0.25; 0"
+            keyTimes="0; 0.722; 0.726; 0.733; 0.742; 0.752"
+            dur="31s" begin="13s" repeatCount="indefinite"/>
+    </ellipse>
+
+</g>
 
     <!-- ============================================================
          ⭐ STELLE CHE BRILLANO
