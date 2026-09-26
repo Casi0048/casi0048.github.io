@@ -254,13 +254,33 @@ input {
     margin: 0 auto;
 }
 
+/* ============================================================
+   SFONDO COSMICO — ACCESSIBILITÀ
+   Rispetta le preferenze di chi disattiva le animazioni
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+    .twinkling-stars animate,
+    .shooting-stars animate,
+    .shooting-stars animateTransform,
+    .sky-lightning animate {
+        display: none;
+    }
+}
+
 </style>
 </head>
 
 <body>
 
 <!-- ============================================================
-     SFONDO COSMICO – STELLE PICCOLE POTENZIATE
+     SFONDO COSMICO
+     Contiene nell'ordine (dal fondo verso l'alto):
+       1. cielo base
+       2. nebulose
+       3. lampi atmosferici
+       4. stelle che brillano
+       5. stelle cadenti
+       6. vignettatura finale
      ============================================================ -->
 <svg class="cosmic-sky" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <defs>
@@ -287,6 +307,36 @@ input {
         <filter id="softBlur" x="-30%" y="-30%" width="160%" height="160%">
             <feGaussianBlur stdDeviation="38"/>
         </filter>
+
+        <!-- ============================================================
+             GRADIENTE SCIA STELLA CADENTE
+             ============================================================ -->
+        <linearGradient id="shootingTrailGrad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="-120" y2="-70">
+            <stop offset="0%"   stop-color="#FFFFFF"  stop-opacity="1"/>
+            <stop offset="35%"  stop-color="#EAF1FF"  stop-opacity="0.7"/>
+            <stop offset="70%"  stop-color="#B8CFFF"  stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="#7B9CFF"  stop-opacity="0"/>
+        </linearGradient>
+
+        <!-- ============================================================
+             GLOW PER LAMPO ATMOSFERICO (freddo)
+             ============================================================ -->
+        <radialGradient id="lightningGlow" cx="50%" cy="35%" r="65%">
+            <stop offset="0%"   stop-color="#E8F0FF" stop-opacity="0.95"/>
+            <stop offset="25%"  stop-color="#B8CFFF" stop-opacity="0.55"/>
+            <stop offset="55%"  stop-color="#7B9CFF" stop-opacity="0.20"/>
+            <stop offset="100%" stop-color="#3B5BA5" stop-opacity="0"/>
+        </radialGradient>
+
+        <!-- ============================================================
+             GLOW PER LAMPO ATMOSFERICO (caldo/rosato)
+             ============================================================ -->
+        <radialGradient id="lightningGlowWarm" cx="50%" cy="40%" r="60%">
+            <stop offset="0%"   stop-color="#FFE9D6" stop-opacity="0.85"/>
+            <stop offset="30%"  stop-color="#F0C8A8" stop-opacity="0.40"/>
+            <stop offset="70%"  stop-color="#C99B7A" stop-opacity="0.15"/>
+            <stop offset="100%" stop-color="#7A5A45" stop-opacity="0"/>
+        </radialGradient>
     </defs>
 
     <!-- Cielo base -->
@@ -296,6 +346,198 @@ input {
     <ellipse cx="980" cy="475" rx="820" ry="360" fill="url(#nebulaA)" filter="url(#softBlur)"/>
     <ellipse cx="380" cy="610" rx="560" ry="330" fill="url(#nebulaB)" filter="url(#softBlur)"/>
     <ellipse cx="1570" cy="360" rx="470" ry="280" fill="url(#nebulaB)" filter="url(#softBlur)" opacity=".72"/>
+
+    <!-- ============================================================
+         ⚡ LAMPI ATMOSFERICI
+         Brevi impulsi di luce che accendono il cielo per ~0.5s.
+         Due lampi con cadenze diverse per un effetto naturale.
+         ============================================================ -->
+    <g class="sky-lightning">
+
+        <!-- LAMPO FREDDO — ogni 28s, 3 impulsi ravvicinati -->
+        <rect x="0" y="0" width="1920" height="1080"
+              fill="url(#lightningGlow)"
+              opacity="0"
+              style="mix-blend-mode: screen;">
+            <animate attributeName="opacity"
+                values="0; 0; 0.45; 0.06; 0.32; 0.04; 0.18; 0"
+                keyTimes="0; 0.88; 0.885; 0.892; 0.898; 0.905; 0.912; 0.92"
+                dur="28s" begin="5s" repeatCount="indefinite"/>
+        </rect>
+
+        <!-- LAMPO CALDO — ogni 37s, 2 impulsi -->
+        <rect x="0" y="0" width="1920" height="1080"
+              fill="url(#lightningGlowWarm)"
+              opacity="0"
+              style="mix-blend-mode: screen;">
+            <animate attributeName="opacity"
+                values="0; 0; 0.30; 0.05; 0.20; 0"
+                keyTimes="0; 0.72; 0.725; 0.732; 0.740; 0.75"
+                dur="37s" begin="14s" repeatCount="indefinite"/>
+        </rect>
+
+        <!-- SCIA DI LUCE DIAGONALE — attraversa il cielo ogni 42s -->
+        <line x1="-200" y1="150" x2="2200" y2="1050"
+              stroke="#E8F0FF"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              opacity="0"
+              filter="url(#softBlur)">
+            <animate attributeName="opacity"
+                values="0; 0; 0.55; 0.15; 0"
+                keyTimes="0; 0.55; 0.560; 0.575; 0.590"
+                dur="42s" begin="8s" repeatCount="indefinite"/>
+        </line>
+
+    </g>
+
+    <!-- ============================================================
+         ⭐ STELLE CHE BRILLANO
+         Tre livelli di luminosità con twinkle sfalsato
+         ============================================================ -->
+    <g class="twinkling-stars">
+
+        <!-- ============ STELLE DEBOLI (twinkle lento) ============ -->
+        <circle cx="140" cy="90"  r="0.7" fill="#D6E4FF" opacity="0.55"><animate attributeName="opacity" values="0.55;0.15;0.55" dur="6.2s" begin="0s"   repeatCount="indefinite"/></circle>
+        <circle cx="320" cy="180" r="0.6" fill="#FFFFFF" opacity="0.45"><animate attributeName="opacity" values="0.45;0.10;0.45" dur="7.1s" begin="1.2s" repeatCount="indefinite"/></circle>
+        <circle cx="480" cy="60"  r="0.7" fill="#FFE9B8" opacity="0.50"><animate attributeName="opacity" values="0.50;0.15;0.50" dur="5.8s" begin="2.4s" repeatCount="indefinite"/></circle>
+        <circle cx="620" cy="220" r="0.5" fill="#FFFFFF" opacity="0.40"><animate attributeName="opacity" values="0.40;0.10;0.40" dur="8.3s" begin="0.8s" repeatCount="indefinite"/></circle>
+        <circle cx="780" cy="120" r="0.6" fill="#C9D9FF" opacity="0.50"><animate attributeName="opacity" values="0.50;0.20;0.50" dur="6.7s" begin="3.1s" repeatCount="indefinite"/></circle>
+        <circle cx="900" cy="300" r="0.7" fill="#FFFFFF" opacity="0.45"><animate attributeName="opacity" values="0.45;0.10;0.45" dur="7.5s" begin="1.6s" repeatCount="indefinite"/></circle>
+        <circle cx="1060" cy="70" r="0.6" fill="#FFE9B8" opacity="0.50"><animate attributeName="opacity" values="0.50;0.15;0.50" dur="5.5s" begin="2.9s" repeatCount="indefinite"/></circle>
+        <circle cx="1220" cy="240" r="0.7" fill="#FFFFFF" opacity="0.45"><animate attributeName="opacity" values="0.45;0.15;0.45" dur="6.9s" begin="0.4s" repeatCount="indefinite"/></circle>
+        <circle cx="1380" cy="130" r="0.5" fill="#C9D9FF" opacity="0.40"><animate attributeName="opacity" values="0.40;0.10;0.40" dur="8.0s" begin="3.8s" repeatCount="indefinite"/></circle>
+        <circle cx="1560" cy="310" r="0.6" fill="#FFFFFF" opacity="0.50"><animate attributeName="opacity" values="0.50;0.15;0.50" dur="6.4s" begin="1.1s" repeatCount="indefinite"/></circle>
+        <circle cx="1720" cy="90" r="0.7" fill="#FFE9B8" opacity="0.45"><animate attributeName="opacity" values="0.45;0.10;0.45" dur="7.3s" begin="2.2s" repeatCount="indefinite"/></circle>
+        <circle cx="1850" cy="220" r="0.6" fill="#FFFFFF" opacity="0.50"><animate attributeName="opacity" values="0.50;0.20;0.50" dur="5.9s" begin="3.5s" repeatCount="indefinite"/></circle>
+
+        <circle cx="90"  cy="420" r="0.6" fill="#FFFFFF" opacity="0.45"><animate attributeName="opacity" values="0.45;0.10;0.45" dur="7.8s" begin="0.6s" repeatCount="indefinite"/></circle>
+        <circle cx="240" cy="560" r="0.7" fill="#C9D9FF" opacity="0.50"><animate attributeName="opacity" values="0.50;0.15;0.50" dur="6.1s" begin="2.7s" repeatCount="indefinite"/></circle>
+        <circle cx="400" cy="700" r="0.5" fill="#FFFFFF" opacity="0.40"><animate attributeName="opacity" values="0.40;0.10;0.40" dur="8.4s" begin="1.4s" repeatCount="indefinite"/></circle>
+        <circle cx="560" cy="480" r="0.6" fill="#FFE9B8" opacity="0.50"><animate attributeName="opacity" values="0.50;0.15;0.50" dur="5.7s" begin="3.2s" repeatCount="indefinite"/></circle>
+        <circle cx="700" cy="820" r="0.7" fill="#FFFFFF" opacity="0.45"><animate attributeName="opacity" values="0.45;0.10;0.45" dur="7.0s" begin="0.9s" repeatCount="indefinite"/></circle>
+        <circle cx="880" cy="600" r="0.6" fill="#C9D9FF" opacity="0.50"><animate attributeName="opacity" values="0.50;0.20;0.50" dur="6.6s" begin="2.0s" repeatCount="indefinite"/></circle>
+        <circle cx="1020" cy="900" r="0.5" fill="#FFFFFF" opacity="0.40"><animate attributeName="opacity" values="0.40;0.10;0.40" dur="8.1s" begin="3.6s" repeatCount="indefinite"/></circle>
+        <circle cx="1180" cy="520" r="0.7" fill="#FFE9B8" opacity="0.50"><animate attributeName="opacity" values="0.50;0.15;0.50" dur="5.6s" begin="1.8s" repeatCount="indefinite"/></circle>
+        <circle cx="1340" cy="740" r="0.6" fill="#FFFFFF" opacity="0.45"><animate attributeName="opacity" values="0.45;0.10;0.45" dur="7.4s" begin="0.3s" repeatCount="indefinite"/></circle>
+        <circle cx="1500" cy="480" r="0.7" fill="#C9D9FF" opacity="0.50"><animate attributeName="opacity" values="0.50;0.15;0.50" dur="6.3s" begin="2.6s" repeatCount="indefinite"/></circle>
+        <circle cx="1680" cy="880" r="0.5" fill="#FFFFFF" opacity="0.40"><animate attributeName="opacity" values="0.40;0.10;0.40" dur="8.2s" begin="1.5s" repeatCount="indefinite"/></circle>
+        <circle cx="1840" cy="620" r="0.6" fill="#FFE9B8" opacity="0.50"><animate attributeName="opacity" values="0.50;0.20;0.50" dur="5.8s" begin="3.9s" repeatCount="indefinite"/></circle>
+
+        <!-- ============ STELLE MEDIE (twinkle medio) ============ -->
+        <circle cx="200" cy="280" r="1.2" fill="#FFFFFF" opacity="0.75"><animate attributeName="opacity" values="0.75;0.25;0.75" dur="4.2s" begin="0s"   repeatCount="indefinite"/><animate attributeName="r" values="1.2;1.5;1.2" dur="4.2s" begin="0s" repeatCount="indefinite"/></circle>
+        <circle cx="420" cy="140" r="1.1" fill="#FFE9B8" opacity="0.70"><animate attributeName="opacity" values="0.70;0.20;0.70" dur="3.8s" begin="0.9s" repeatCount="indefinite"/><animate attributeName="r" values="1.1;1.4;1.1" dur="3.8s" begin="0.9s" repeatCount="indefinite"/></circle>
+        <circle cx="680" cy="340" r="1.3" fill="#FFFFFF" opacity="0.80"><animate attributeName="opacity" values="0.80;0.30;0.80" dur="4.6s" begin="1.8s" repeatCount="indefinite"/><animate attributeName="r" values="1.3;1.6;1.3" dur="4.6s" begin="1.8s" repeatCount="indefinite"/></circle>
+        <circle cx="960" cy="180" r="1.2" fill="#C9D9FF" opacity="0.75"><animate attributeName="opacity" values="0.75;0.25;0.75" dur="3.5s" begin="2.7s" repeatCount="indefinite"/><animate attributeName="r" values="1.2;1.5;1.2" dur="3.5s" begin="2.7s" repeatCount="indefinite"/></circle>
+        <circle cx="1140" cy="380" r="1.1" fill="#FFFFFF" opacity="0.70"><animate attributeName="opacity" values="0.70;0.20;0.70" dur="4.4s" begin="0.5s" repeatCount="indefinite"/><animate attributeName="r" values="1.1;1.4;1.1" dur="4.4s" begin="0.5s" repeatCount="indefinite"/></circle>
+        <circle cx="1320" cy="220" r="1.3" fill="#FFE9B8" opacity="0.80"><animate attributeName="opacity" values="0.80;0.30;0.80" dur="3.9s" begin="3.3s" repeatCount="indefinite"/><animate attributeName="r" values="1.3;1.6;1.3" dur="3.9s" begin="3.3s" repeatCount="indefinite"/></circle>
+        <circle cx="1520" cy="160" r="1.2" fill="#FFFFFF" opacity="0.75"><animate attributeName="opacity" values="0.75;0.25;0.75" dur="4.8s" begin="1.2s" repeatCount="indefinite"/><animate attributeName="r" values="1.2;1.5;1.2" dur="4.8s" begin="1.2s" repeatCount="indefinite"/></circle>
+        <circle cx="1740" cy="380" r="1.1" fill="#C9D9FF" opacity="0.70"><animate attributeName="opacity" values="0.70;0.20;0.70" dur="4.0s" begin="2.1s" repeatCount="indefinite"/><animate attributeName="r" values="1.1;1.4;1.1" dur="4.0s" begin="2.1s" repeatCount="indefinite"/></circle>
+
+        <circle cx="160" cy="760" r="1.2" fill="#FFFFFF" opacity="0.75"><animate attributeName="opacity" values="0.75;0.25;0.75" dur="4.3s" begin="0.7s" repeatCount="indefinite"/><animate attributeName="r" values="1.2;1.5;1.2" dur="4.3s" begin="0.7s" repeatCount="indefinite"/></circle>
+        <circle cx="380" cy="880" r="1.1" fill="#FFE9B8" opacity="0.70"><animate attributeName="opacity" values="0.70;0.20;0.70" dur="3.7s" begin="2.3s" repeatCount="indefinite"/><animate attributeName="r" values="1.1;1.4;1.1" dur="3.7s" begin="2.3s" repeatCount="indefinite"/></circle>
+        <circle cx="620" cy="640" r="1.3" fill="#FFFFFF" opacity="0.80"><animate attributeName="opacity" values="0.80;0.30;0.80" dur="4.7s" begin="1.9s" repeatCount="indefinite"/><animate attributeName="r" values="1.3;1.6;1.3" dur="4.7s" begin="1.9s" repeatCount="indefinite"/></circle>
+        <circle cx="840" cy="920" r="1.2" fill="#C9D9FF" opacity="0.75"><animate attributeName="opacity" values="0.75;0.25;0.75" dur="3.6s" begin="3.0s" repeatCount="indefinite"/><animate attributeName="r" values="1.2;1.5;1.2" dur="3.6s" begin="3.0s" repeatCount="indefinite"/></circle>
+        <circle cx="1060" cy="680" r="1.1" fill="#FFFFFF" opacity="0.70"><animate attributeName="opacity" values="0.70;0.20;0.70" dur="4.5s" begin="0.2s" repeatCount="indefinite"/><animate attributeName="r" values="1.1;1.4;1.1" dur="4.5s" begin="0.2s" repeatCount="indefinite"/></circle>
+        <circle cx="1280" cy="880" r="1.3" fill="#FFE9B8" opacity="0.80"><animate attributeName="opacity" values="0.80;0.30;0.80" dur="3.9s" begin="2.8s" repeatCount="indefinite"/><animate attributeName="r" values="1.3;1.6;1.3" dur="3.9s" begin="2.8s" repeatCount="indefinite"/></circle>
+        <circle cx="1480" cy="700" r="1.2" fill="#FFFFFF" opacity="0.75"><animate attributeName="opacity" values="0.75;0.25;0.75" dur="4.9s" begin="1.4s" repeatCount="indefinite"/><animate attributeName="r" values="1.2;1.5;1.2" dur="4.9s" begin="1.4s" repeatCount="indefinite"/></circle>
+        <circle cx="1700" cy="820" r="1.1" fill="#C9D9FF" opacity="0.70"><animate attributeName="opacity" values="0.70;0.20;0.70" dur="4.1s" begin="3.7s" repeatCount="indefinite"/><animate attributeName="r" values="1.1;1.4;1.1" dur="4.1s" begin="3.7s" repeatCount="indefinite"/></circle>
+        <circle cx="1860" cy="480" r="1.2" fill="#FFFFFF" opacity="0.75"><animate attributeName="opacity" values="0.75;0.25;0.75" dur="4.6s" begin="0.9s" repeatCount="indefinite"/><animate attributeName="r" values="1.2;1.5;1.2" dur="4.6s" begin="0.9s" repeatCount="indefinite"/></circle>
+
+        <!-- ============ STELLE BRILLANTI (twinkle veloce) ============ -->
+        <circle cx="300" cy="340" r="1.7" fill="#FFFFFF" opacity="0.95"><animate attributeName="opacity" values="0.95;0.35;0.95" dur="2.8s" begin="0s"   repeatCount="indefinite"/><animate attributeName="r" values="1.7;2.1;1.7" dur="2.8s" begin="0s" repeatCount="indefinite"/></circle>
+        <circle cx="740" cy="200" r="1.6" fill="#FFE9B8" opacity="0.90"><animate attributeName="opacity" values="0.90;0.30;0.90" dur="2.4s" begin="1.1s" repeatCount="indefinite"/><animate attributeName="r" values="1.6;2.0;1.6" dur="2.4s" begin="1.1s" repeatCount="indefinite"/></circle>
+        <circle cx="1120" cy="120" r="1.8" fill="#FFFFFF" opacity="0.95"><animate attributeName="opacity" values="0.95;0.35;0.95" dur="3.1s" begin="2.2s" repeatCount="indefinite"/><animate attributeName="r" values="1.8;2.2;1.8" dur="3.1s" begin="2.2s" repeatCount="indefinite"/></circle>
+        <circle cx="1420" cy="440" r="1.7" fill="#C9D9FF" opacity="0.90"><animate attributeName="opacity" values="0.90;0.30;0.90" dur="2.6s" begin="0.6s" repeatCount="indefinite"/><animate attributeName="r" values="1.7;2.1;1.7" dur="2.6s" begin="0.6s" repeatCount="indefinite"/></circle>
+        <circle cx="1780" cy="240" r="1.6" fill="#FFE9B8" opacity="0.95"><animate attributeName="opacity" values="0.95;0.35;0.95" dur="2.9s" begin="3.3s" repeatCount="indefinite"/><animate attributeName="r" values="1.6;2.0;1.6" dur="2.9s" begin="3.3s" repeatCount="indefinite"/></circle>
+        <circle cx="560" cy="780" r="1.7" fill="#FFFFFF" opacity="0.90"><animate attributeName="opacity" values="0.90;0.30;0.90" dur="2.7s" begin="1.7s" repeatCount="indefinite"/><animate attributeName="r" values="1.7;2.1;1.7" dur="2.7s" begin="1.7s" repeatCount="indefinite"/></circle>
+        <circle cx="1000" cy="880" r="1.8" fill="#C9D9FF" opacity="0.95"><animate attributeName="opacity" values="0.95;0.35;0.95" dur="3.0s" begin="0.3s" repeatCount="indefinite"/><animate attributeName="r" values="1.8;2.2;1.8" dur="3.0s" begin="0.3s" repeatCount="indefinite"/></circle>
+        <circle cx="1340" cy="620" r="1.6" fill="#FFFFFF" opacity="0.90"><animate attributeName="opacity" values="0.90;0.30;0.90" dur="2.5s" begin="2.9s" repeatCount="indefinite"/><animate attributeName="r" values="1.6;2.0;1.6" dur="2.5s" begin="2.9s" repeatCount="indefinite"/></circle>
+        <circle cx="1620" cy="860" r="1.7" fill="#FFE9B8" opacity="0.95"><animate attributeName="opacity" values="0.95;0.35;0.95" dur="2.8s" begin="1.4s" repeatCount="indefinite"/><animate attributeName="r" values="1.7;2.1;1.7" dur="2.8s" begin="1.4s" repeatCount="indefinite"/></circle>
+        <circle cx="220" cy="980" r="1.6" fill="#FFFFFF" opacity="0.90"><animate attributeName="opacity" values="0.90;0.30;0.90" dur="2.6s" begin="0.8s" repeatCount="indefinite"/><animate attributeName="r" values="1.6;2.0;1.6" dur="2.6s" begin="0.8s" repeatCount="indefinite"/></circle>
+
+        <!-- ============ STELLE REGINE (con glow) ============ -->
+        <circle cx="440" cy="440" r="4.5" fill="#FFE9B8" opacity="0.25" filter="url(#starGlow)"><animate attributeName="opacity" values="0.25;0.08;0.25" dur="3.2s" begin="0s" repeatCount="indefinite"/></circle>
+        <circle cx="440" cy="440" r="1.9" fill="#FFFFFF" opacity="1"><animate attributeName="opacity" values="1;0.4;1" dur="3.2s" begin="0s" repeatCount="indefinite"/><animate attributeName="r" values="1.9;2.4;1.9" dur="3.2s" begin="0s" repeatCount="indefinite"/></circle>
+
+        <circle cx="1240" cy="540" r="4.5" fill="#C9D9FF" opacity="0.25" filter="url(#starGlow)"><animate attributeName="opacity" values="0.25;0.08;0.25" dur="3.6s" begin="1.3s" repeatCount="indefinite"/></circle>
+        <circle cx="1240" cy="540" r="1.9" fill="#FFFFFF" opacity="1"><animate attributeName="opacity" values="1;0.4;1" dur="3.6s" begin="1.3s" repeatCount="indefinite"/><animate attributeName="r" values="1.9;2.4;1.9" dur="3.6s" begin="1.3s" repeatCount="indefinite"/></circle>
+
+        <circle cx="880" cy="380" r="5.0" fill="#FFE9B8" opacity="0.28" filter="url(#starGlow)"><animate attributeName="opacity" values="0.28;0.10;0.28" dur="2.9s" begin="2.4s" repeatCount="indefinite"/></circle>
+        <circle cx="880" cy="380" r="2.1" fill="#FFFFFF" opacity="1"><animate attributeName="opacity" values="1;0.4;1" dur="2.9s" begin="2.4s" repeatCount="indefinite"/><animate attributeName="r" values="2.1;2.6;2.1" dur="2.9s" begin="2.4s" repeatCount="indefinite"/></circle>
+
+        <circle cx="1580" cy="680" r="4.8" fill="#C9D9FF" opacity="0.26" filter="url(#starGlow)"><animate attributeName="opacity" values="0.26;0.08;0.26" dur="3.4s" begin="0.9s" repeatCount="indefinite"/></circle>
+        <circle cx="1580" cy="680" r="2.0" fill="#FFFFFF" opacity="1"><animate attributeName="opacity" values="1;0.4;1" dur="3.4s" begin="0.9s" repeatCount="indefinite"/><animate attributeName="r" values="2.0;2.5;2.0" dur="3.4s" begin="0.9s" repeatCount="indefinite"/></circle>
+
+    </g>
+
+    <!-- ============================================================
+         ☄️ STELLE CADENTI PERIODICHE
+         Ogni stella ha un ciclo lungo (22-31s) e si vede solo
+         per ~1.5s durante la "scivolata" attraverso il cielo.
+         ============================================================ -->
+    <g class="shooting-stars">
+
+        <!-- ☄️ STELLA CADENTE 1 — diagonale principale, ogni 22s -->
+        <g class="shooting-star">
+            <line x1="0" y1="0" x2="-120" y2="-70"
+                  stroke="url(#shootingTrailGrad)"
+                  stroke-width="2"
+                  stroke-linecap="round"/>
+            <circle cx="0" cy="0" r="2.2" fill="#FFFFFF" opacity="0.95"/>
+            <circle cx="0" cy="0" r="4" fill="#D6E4FF" opacity="0.35" filter="url(#starGlow)"/>
+
+            <animateTransform attributeName="transform" type="translate"
+                values="-300 -150; 2300 1350; 2300 1350"
+                keyTimes="0; 0.068; 1"
+                dur="22s" begin="3s" repeatCount="indefinite"/>
+
+            <animate attributeName="opacity"
+                values="0; 0; 1; 1; 0; 0"
+                keyTimes="0; 0.001; 0.010; 0.060; 0.075; 1"
+                dur="22s" begin="3s" repeatCount="indefinite"/>
+        </g>
+
+        <!-- ☄️ STELLA CADENTE 2 — traiettoria più ripida, ogni 27s -->
+        <g class="shooting-star">
+            <line x1="0" y1="0" x2="-90" y2="-100"
+                  stroke="url(#shootingTrailGrad)"
+                  stroke-width="1.7"
+                  stroke-linecap="round"/>
+            <circle cx="0" cy="0" r="1.9" fill="#FFE9B8" opacity="0.95"/>
+            <circle cx="0" cy="0" r="3.5" fill="#FFE9B8" opacity="0.3" filter="url(#starGlow)"/>
+
+            <animateTransform attributeName="transform" type="translate"
+                values="1900 -100; -300 1200; -300 1200"
+                keyTimes="0; 0.055; 1"
+                dur="27s" begin="11s" repeatCount="indefinite"/>
+
+            <animate attributeName="opacity"
+                values="0; 0; 1; 1; 0; 0"
+                keyTimes="0; 0.001; 0.008; 0.048; 0.060; 1"
+                dur="27s" begin="11s" repeatCount="indefinite"/>
+        </g>
+
+        <!-- ☄️ STELLA CADENTE 3 — piccola e veloce, ogni 31s -->
+        <g class="shooting-star">
+            <line x1="0" y1="0" x2="-70" y2="-45"
+                  stroke="url(#shootingTrailGrad)"
+                  stroke-width="1.2"
+                  stroke-linecap="round"/>
+            <circle cx="0" cy="0" r="1.5" fill="#FFFFFF" opacity="0.9"/>
+
+            <animateTransform attributeName="transform" type="translate"
+                values="-200 400; 2100 900; 2100 900"
+                keyTimes="0; 0.045; 1"
+                dur="31s" begin="19s" repeatCount="indefinite"/>
+
+            <animate attributeName="opacity"
+                values="0; 0; 1; 1; 0; 0"
+                keyTimes="0; 0.001; 0.007; 0.038; 0.048; 1"
+                dur="31s" begin="19s" repeatCount="indefinite"/>
+        </g>
+
+    </g>
 
     <!-- Vignettatura finale -->
     <radialGradient id="vignette" cx="50%" cy="48%" r="70%">
@@ -354,9 +596,6 @@ input {
 
 <!-- ============================================================
      HERO
-     Contiene:
-       - kicker, titolo, lead, onda decorativa
-       - le frasi filosofiche rotanti (popolate da JS)
      ============================================================ -->
 <main>
 
@@ -403,21 +642,7 @@ input {
 
         <!-- ============================================================
              FRASI FILOSOFICHE ROTANTI
-
-             NOTA: era una <section> dentro <section>, ora è un <div>.
-             Il contenuto è popolato dinamicamente da script.js:
-               - #quoteText   → testo della frase
-               - #quoteAuthor → autore
              ============================================================ -->
-      <!-- ============================================================
-     FRASI FILOSOFICHE ROTANTI
-
-     NOTA: il contenuto è popolato dinamicamente da script.js:
-       - #quoteText   → testo della frase
-       - #quoteAuthor → autore
-       - #quoteSource → fonte dell'opera
-       - #quoteInfo   → pulsante per mostrare/nascondere la fonte
-     ============================================================ -->
         <div class="philosophy-quotes" aria-label="Frasi filosofiche">
 
             <div class="container">
@@ -462,7 +687,6 @@ input {
 
     </section><!-- /.hero -->
 
-    <!-- ...segue il resto della pagina (thought-waves, knowledge-tree, ecc.)... -->
     <!-- ONDE DEL PENSIERO -->
     <svg class="thought-waves" viewBox="0 0 1600 500" preserveAspectRatio="none" aria-hidden="true">
         <path d="M-100 360 C180 190, 460 210, 720 330 S1240 500, 1700 300" fill="none" stroke="rgba(190,160,105,.30)" stroke-width="2"/>
@@ -950,7 +1174,7 @@ input {
         </div>
     </div>
 
-    <!-- 👇 Questo pulsante DEVE stare FUORI dal pannello, dentro .music-player -->
+    <!-- Questo pulsante DEVE stare FUORI dal pannello, dentro .music-player -->
     <button class="music-toggle" id="playerToggle" aria-label="Apri lettore musicale" aria-expanded="false">♫</button>
 </div>
 
