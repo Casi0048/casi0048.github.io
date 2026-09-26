@@ -1,4 +1,4 @@
- <head>
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Echi di Sofia — Filosofia e pensiero</title>
@@ -34,249 +34,47 @@
   <meta name="theme-color" content="#0b0f19">
   <meta name="msapplication-TileColor" content="#0b0f19">
 
-  <!-- FONT — preconnect + caricamento asincrono -->
+  <!-- FONT — caricamento normale con display=swap -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload"
-        as="style"
-        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap"
-        onload="this.onload=null;this.rel='stylesheet'">
-  <noscript>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap">
-  </noscript>
-
-  <!-- FONT AWESOME — async, non blocca il rendering -->
   <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-        media="print"
-        onload="this.media='all'">
-  <noscript>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  </noscript>
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap">
 
-  <!-- CSS BASE — async con preload -->
-  <link rel="preload" href="svg/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="svg/style.css"></noscript>
+  <!-- FONT AWESOME — caricamento normale -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <script src="svg/script.js" defer></script>
+  <!-- CSS BASE — sincrono (è sul tuo server, 0 ms) -->
+  <link rel="stylesheet" href="svg/style.css">
 
+  <!-- CRITICAL OVERRIDES — applicati DOPO style.css per forzare cielo visibile e sfondo scuro -->
   <style>
-    /* ============================================================
-       CRITICAL CSS — evita il flash bianco iniziale
-       ============================================================ */
-   html {
-  background: #080a12;
-}
-body {
-  background: #080a12;
-  color: #D9FBE8;
-  font-family: "Inter", Arial, sans-serif;
-  margin: 0;
-  min-height: 100vh;
-}
-.cosmic-sky {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 0;              /* ← MODIFICATO: era -1, ora 0 */
-  pointer-events: none;
-  display: block;
-}
-main {
-  position: relative;
-  z-index: 1;              /* ← i contenuti stanno SOPRA il cielo */
-}
-
-    /* ============================================================
-       PREVENZIONE CLS — riserva spazio per contenuti dinamici
-       ============================================================ */
-    .hero { min-height: 400px; }
-    .quote-wrapper { min-height: 180px; }
-    .music-panel { min-height: 320px; }
-    .epochs-grid,
-    .scuole-grid,
-    .resources-inner { min-height: 320px; }
-    .footer-images-row { min-height: 140px; }
-
-    /* ============================================================
-       ROOT — TEMA SCURO (DEFAULT)
-       ============================================================ */
-
-    :root {
-      --bg: #080a12;
-      --bg-soft: #0d101a;
-      --surface: rgba(255,255,255,.035);
-      --surface-hover: rgba(255,255,255,.055);
-
-      --text: #D9FBE8;
-      --text-soft: #A8D8BB;
-      --text-muted: #789987;
-
-      --gold: #45E6A1;
-      --gold-soft: rgba(69,230,161,.16);
-      --gold-line: rgba(69,230,161,.24);
-
-      --border: rgba(255,255,255,.08);
-
-      --serif: "Cormorant Garamond", Georgia, serif;
-      --display: "Cinzel", Georgia, serif;
-      --sans: "Inter", Arial, sans-serif;
-
-      --radius: 14px;
-
-      --transition:
-        .28s cubic-bezier(.22,1,.36,1);
-
-      /* Colori per il pulsante torna su */
-      --torna-su-bg: var(--gold);
-      --torna-su-color: var(--bg);
-      --torna-su-shadow: rgba(69,230,161,0.30);
-    }
-
-    /* ============================================================
-       TEMA CHIARO
-       ============================================================ */
-
-    body.light-theme {
-      --bg: #eaf2ed;
-      --bg-soft: #dce8e0;
-
-      --text: #0f1f16;
-      --text-soft: #1a3628;
-      --text-muted: #3a5a48;
-
-      --gold: #00a86b;
-      --gold-soft: rgba(0, 168, 107, 0.10);
-      --gold-line: rgba(0, 168, 107, 0.25);
-
-      --border: rgba(0, 0, 0, 0.06);
-      --surface: rgba(0, 168, 107, 0.04);
-      --surface-hover: rgba(0, 168, 107, 0.08);
-
-      --torna-su-bg: #00a86b;
-      --torna-su-color: #eaf2ed;
-      --torna-su-shadow: rgba(0, 168, 107, 0.3);
-    }
-
-    /* ============================================================
-       IMPOSTAZIONE COLORI DI PLAYER SU TEMA CHIARO
-       ============================================================ */
-    body.light-theme .music-panel {
-      background: rgba(242, 237, 229, 0.97);
-      border-color: rgba(0, 168, 107, 0.18);
-    }
-    body.light-theme .music-title { color: #0f1f16; }
-    body.light-theme .music-label { color: #3a5a48; }
-    body.light-theme .music-close { color: rgba(0, 0, 0, 0.45); }
-    body.light-theme .music-close:hover { color: #0f1f16; }
-    body.light-theme .music-play,
-    body.light-theme .music-volume,
-    body.light-theme .music-next { color: #00a86b; }
-    body.light-theme .music-next { border-color: rgba(0, 168, 107, 0.3); }
-    body.light-theme .music-next:hover {
-      background: rgba(0, 168, 107, 0.1);
-      border-color: #00a86b;
-    }
-    body.light-theme .music-progress { background: rgba(0, 0, 0, 0.12); }
-    body.light-theme .music-progress::-webkit-slider-thumb { background: #00a86b; }
-    body.light-theme .music-progress::-moz-range-thumb { background: #00a86b; }
-    body.light-theme .player-status { color: #4a6a5a; }
-
-    /* ============================================================
-       PULSANTE "BRANO SUCCESSIVO"
-       ============================================================ */
-    .music-next {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 34px;
-      height: 34px;
-      background: transparent;
-      border: 1px solid rgba(212, 165, 116, 0.35);
-      border-radius: 50%;
-      color: var(--gold, #d4a574);
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background .3s ease, color .3s ease, border-color .3s ease;
-    }
-    .music-next:hover {
-      background: rgba(212, 165, 116, 0.12);
-      border-color: var(--gold, #d4a574);
-    }
-
-    .resource h3 {
-      font-family: var(--display);
-      font-size: 1.05rem;
-      font-weight: 500;
-      margin-bottom: 8px;
-      color: #03C03C !important;
-      transition: color 0.4s ease;
-    }
-
-    .resource p {
-      font-family: var(--serif);
-      font-size: 1rem;
-      color: var(--text-soft);
-      transition: color .4s ease;
-    }
-
-    /* ============================================================
-       RESET & BASE
-       ============================================================ */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
     html {
-      scroll-behavior: smooth;
-      background: var(--bg);
+      background: #080a12;
     }
     body {
+      background: #080a12;
+      color: #D9FBE8;
+      font-family: "Inter", Arial, sans-serif;
+      margin: 0;
       min-height: 100vh;
-      background: radial-gradient(circle at 50% -10%, rgba(91, 104, 145, .10), transparent 42%), var(--bg);
-      color: var(--text);
-      font-family: var(--sans);
-      font-weight: 400;
-      line-height: 1.6;
-      overflow-x: hidden;
-      transition: background .4s ease, color .4s ease;
-      text-shadow: 0 0 2px rgba(0, 0, 0, .15);
     }
-
+    .cosmic-sky {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      display: block;
+    }
     main {
       position: relative;
       z-index: 1;
     }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-    button,
-    input {
-      font: inherit;
-    }
-
-    .container {
-      width: min(1180px, calc(100% - 48px));
-      margin: 0 auto;
-    }
-
-    /* ============================================================
-       SFONDO COSMICO — ACCESSIBILITÀ
-       ============================================================ */
-    @media (prefers-reduced-motion: reduce) {
-      .twinkling-stars animate,
-      .shooting-stars animate,
-      .shooting-stars animateTransform,
-      .sky-lightning animate {
-        display: none;
-      }
-    }
   </style>
+
+  <script src="svg/script.js" defer></script>
 </head>
   <body>
     <!-- ============================================================
