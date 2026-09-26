@@ -42,18 +42,19 @@
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap">
     </noscript>
 
-    <!-- FONT AWESOME (caricato in modo asincrono, non blocca il rendering) -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-          media="print"
-          onload="this.media='all'">
-    <noscript>
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    </noscript>
+    <!-- FONT (con display=optional per evitare CLS) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=optional"
+      onload="this.onload=null;this.rel='stylesheet'">
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=optional">
+</noscript>
 
-    <!-- CSS BASE (preload + onload per non bloccare il rendering) -->
-    <link rel="preload" href="svg/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="svg/style.css"></noscript>
+<!-- CSS BASE — SINCRONO (è locale, 0ms) -->
+<link rel="stylesheet" href="svg/style.css">
 
     <script src="svg/script.js" defer>
     </script>
@@ -81,7 +82,14 @@
         z-index: -1;
         pointer-events: none;
       }
-
+/* ============================================================
+   PREVENZIONE CLS — riserva spazio per contenuti dinamici
+   ============================================================ */
+.hero { min-height: 400px; }
+.quote-wrapper { min-height: 180px; }
+.music-panel { min-height: 320px; }
+.epochs-grid, .scuole-grid, .resources-inner { min-height: 320px; }
+.footer-images-row { min-height: 140px; }
       /* ============================================================
    ROOT — TEMA SCURO (DEFAULT)
    ============================================================ */
