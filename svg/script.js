@@ -43,12 +43,16 @@ document.addEventListener("DOMContentLoaded", function () {
 const playlistEl = document.getElementById("musicPlaylist");
 
 /* ----- FUNZIONI ----- */
-function loadTrack(index) {
+function loadTrack(index, loadAudio = true) {
     currentTrack = (index + tracks.length) % tracks.length;
     const track = tracks[currentTrack];
-    audio.src = track.src;
-    audio.load();
-    if (progress)     progress.value = 0;
+
+    if (loadAudio) {
+        audio.src = track.src;
+        audio.load();
+    }
+
+    if (progress) progress.value = 0;
     if (playerStatus) playerStatus.textContent = "In pausa";
     playButton.textContent = "▶";
     highlightActiveTrack();
@@ -124,8 +128,12 @@ loadTrack(0);       // 2) carica il primo brano (ora può evidenziarlo)
         /* ----- PLAY / PAUSA ----- */
         playButton.addEventListener("click", function (e) {
             e.stopPropagation();
-            if (audio.paused) {
-                audio.play()
+           if (audio.paused) {
+    if (!audio.src) {
+        loadTrack(currentTrack);
+    }
+
+    audio.play()
                     .then(function () {
                         playButton.textContent = "❚❚";
                         if (playerStatus) playerStatus.textContent = "In riproduzione";
