@@ -1811,5 +1811,17 @@ document.addEventListener('DOMContentLoaded', function () {
     changeLanguage(savedLanguage);
 });
       </script>
+    <script>
+  (function () {
+    // Ferma le animazioni SMIL su mobile per risparmiare CPU
+    if (window.matchMedia('(max-width: 768px)').matches) {
+      document.querySelectorAll('svg').forEach(function (svg) {
+        if (typeof svg.pauseAnimations === 'function') {
+          svg.pauseAnimations();
+        }
+      });
+    }
+  })();
+</script>
     </body>
   </html>
