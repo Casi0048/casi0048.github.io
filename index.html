@@ -1865,5 +1865,42 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   })();
 </script>
+    <script>
+  (function () {
+    // Aggiorna le lancette dell'orologio di Eraclito in base all'ora reale
+    const hourHand = document.getElementById('hourHand');
+    const minHand = document.getElementById('minHand');
+    if (!hourHand || !minHand) return;
+
+    const cx = 100, cy = 100;        // centro del quadrante
+    const hourLength = 50;            // lunghezza lancetta ore
+    const minLength = 65;             // lunghezza lancetta minuti
+
+    function updateClock() {
+      const now = new Date();
+      const h = now.getHours() % 12;
+      const m = now.getMinutes();
+
+      // Angoli in gradi (0° = ore 12, senso orario)
+      const hourAngle = (h * 30) + (m * 0.5);   // 30° per ora + 0.5° per minuto
+      const minAngle  = m * 6;                   // 6° per minuto
+
+      // Converti in radianti (0° = su, quindi -90°)
+      const hourRad = (hourAngle - 90) * Math.PI / 180;
+      const minRad  = (minAngle  - 90) * Math.PI / 180;
+
+      // Aggiorna coordinate della lancetta ore
+      hourHand.setAttribute('x2', cx + hourLength * Math.cos(hourRad));
+      hourHand.setAttribute('y2', cy + hourLength * Math.sin(hourRad));
+
+      // Aggiorna coordinate della lancetta minuti
+      minHand.setAttribute('x2', cx + minLength * Math.cos(minRad));
+      minHand.setAttribute('y2', cy + minLength * Math.sin(minRad));
+    }
+
+    updateClock();                     // posiziona subito
+    setInterval(updateClock, 1000);    // aggiorna ogni secondo
+  })();
+</script>
     </body>
   </html>
