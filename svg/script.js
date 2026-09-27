@@ -91,7 +91,7 @@ function highlightActiveTrack() {
 
 /* ----- INIZIALIZZAZIONE ----- */
 renderPlaylist();   // 1) costruisci la lista
-loadTrack(0);       // 2) carica il primo brano (ora può evidenziarlo)
+loadTrack(0, false);      // 2) carica il primo brano (ora può evidenziarlo)
         function openPanel() {
             player.classList.add("open");
             playerToggle.setAttribute("aria-expanded", "true");
