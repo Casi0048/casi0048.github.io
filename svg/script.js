@@ -203,12 +203,21 @@ loadTrack(0);       // 2) carica il primo brano (ora può evidenziarlo)
     const visioniVideo = document.getElementById("visioniVideo");
 
     if (videoPlayer && videoToggle) {
-        function openVideo() {
-            videoPlayer.classList.add("open");
-            videoToggle.setAttribute("aria-expanded", "true");
-            const panel = document.getElementById("videoPanel");
-            if (panel) panel.setAttribute("aria-hidden", "false");
+       function openVideo() {
+    videoPlayer.classList.add("open");
+    videoToggle.setAttribute("aria-expanded", "true");
+
+    const panel = document.getElementById("videoPanel");
+    if (panel) panel.setAttribute("aria-hidden", "false");
+
+    // Carica YouTube solo quando l'utente apre "Visioni"
+    if (visioniVideo && !visioniVideo.src) {
+        const videoSrc = visioniVideo.getAttribute("data-src");
+        if (videoSrc) {
+            visioniVideo.src = videoSrc;
         }
+    }
+}
         function closeVideo() {
             videoPlayer.classList.remove("open");
             videoToggle.setAttribute("aria-expanded", "false");
