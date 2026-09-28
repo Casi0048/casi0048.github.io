@@ -26,16 +26,19 @@ body.light-theme .cosmic-sky {
     -webkit-backdrop-filter: blur(14px);
     transition: background .4s ease, border-color .4s ease;
 }
+
 body.light-theme .site-header {
     background: rgba(242, 237, 229, .92);
     border-bottom: 1px solid rgba(0, 0, 0, .06);
 }
+
 .header-inner {
     display: flex;
     align-items: center;
     gap: 30px;
     flex-wrap: wrap;
 }
+
 .logo {
     margin-right: auto;
     font-family: var(--display);
@@ -46,17 +49,19 @@ body.light-theme .site-header {
     white-space: nowrap;
     transition: color .4s ease;
 }
+
 .logo-sub {
     display: block;
     margin-top: 2px;
     font-family: var(--serif);
     font-size: .78rem;
-    font-weight: 700;
+    font-weight:700;
     font-style: italic;
     letter-spacing: .4px;
     color: var(--text-muted);
     transition: color .4s ease;
 }
+
 .main-nav {
     display: flex;
     align-items: center;
@@ -86,6 +91,7 @@ body.light-theme .site-header {
 .main-nav a:hover::after {
     width: 100%;
 }
+
 .theme-toggle-btn {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -112,8 +118,10 @@ body.light-theme .site-header {
 }
 
 /* ============================================================
-   LANGUAGE SWITCHER — IT · PL · EN
+   🌐 LANGUAGE SWITCHER
+   IT · PL · EN
    ============================================================ */
+
 .language-switcher {
     display: flex;
     align-items: center;
@@ -126,33 +134,43 @@ body.light-theme .site-header {
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
 }
+
 .language-switcher button {
     appearance: none;
     border: 0;
     background: transparent;
+
     min-width: 32px;
     height: 27px;
     padding: 0 8px;
+
     border-radius: 15px;
+
     font-family: var(--body, 'Montserrat', sans-serif);
     font-size: 0.68rem;
     font-weight: 600;
     letter-spacing: 1px;
+
     color: rgba(232, 221, 208, 0.62);
+
     cursor: pointer;
+
     transition:
         color 0.35s ease,
         background 0.35s ease,
         box-shadow 0.35s ease,
         transform 0.25s ease;
 }
+
 .language-switcher button:hover {
     color: var(--text-accent, #e8ddd0);
     background: rgba(212, 165, 116, 0.08);
 }
+
 .language-switcher button:active {
     transform: scale(0.94);
 }
+
 .language-switcher button.active {
     color: #f0dfc5;
     background: rgba(212, 165, 116, 0.14);
@@ -160,17 +178,28 @@ body.light-theme .site-header {
         inset 0 0 0 1px rgba(212, 165, 116, 0.20),
         0 0 12px rgba(212, 165, 116, 0.08);
 }
-/* Accessibilità: focus visibile */
+
+/* ============================================================
+   ACCESSIBILITÀ
+   ============================================================ */
+
 .language-switcher button:focus-visible {
     outline: 1px solid rgba(212, 165, 116, 0.55);
     outline-offset: 2px;
 }
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
 @media (max-width: 600px) {
+
     .language-switcher {
         gap: 2px;
         margin-left: 6px;
         padding: 2px;
     }
+
     .language-switcher button {
         min-width: 29px;
         height: 25px;
@@ -183,8 +212,9 @@ body.light-theme .site-header {
    HERO
    ============================================================ */
 .hero {
-    /* Padding-bottom ridotto per avvicinare la sezione successiva */
+    /* Prima: padding: clamp(90px, 13vw, 160px) 0 clamp(80px, 11vw, 130px); */
     padding: clamp(90px, 13vw, 160px) 0 clamp(30px, 4vw, 50px);
+    /*                                 ↑ ridotto da 80-130 a 30-50 */
     text-align: center;
     position: relative;
 }
@@ -246,6 +276,7 @@ body.light-theme .site-header {
 /* ============================================================
    ONDA HERO — ANIMAZIONE CON FALLBACK
    ============================================================ */
+
 .hero-line {
     width: 100%;
     max-width: 300px;
@@ -254,12 +285,14 @@ body.light-theme .site-header {
     position: relative;
     overflow: visible;
 }
+
 .wave-svg {
     width: 100%;
     height: 100%;
     display: block;
     overflow: visible;
 }
+
 .wave-glow {
     fill: none;
     stroke: url(#waveGlow);
@@ -268,6 +301,8 @@ body.light-theme .site-header {
     opacity: .8;
     animation: waveSinusoidal 5s ease-in-out infinite;
 }
+
+/* ANIMAZIONE PRINCIPALE */
 @keyframes waveSinusoidal {
     0%, 100% {
         d: path("M0 15 C10 8, 30 8, 40 15 C50 22, 70 22, 80 15 C90 8, 110 8, 120 15");
@@ -280,15 +315,15 @@ body.light-theme .site-header {
         opacity: .8;
     }
 }
-/* Fallback per browser che non supportano path() nelle keyframe (Safari, ecc.) */
+
+/* FALLBACK per browser che NON supportano path() nelle keyframe (Safari, ecc.) */
 @supports not (d: path("M0 0")) {
     .wave-glow {
-        animation: none;
+        animation: none; /* disabilita l'animazione */
         d: path("M0 15 C10 8, 30 8, 40 15 C50 22, 70 22, 80 15 C90 8, 110 8, 120 15");
         opacity: .5;
     }
 }
-
 /* ============================================================
    ONDE DEL PENSIERO
    ============================================================ */
@@ -369,6 +404,31 @@ body.light-theme .site-header {
     position: absolute;
     width: 160px;
     right: 17%;
+    top: 13%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    z-index: 2;
+    pointer-events: none;
+}
+
+body.light-theme .heraclitus-clock svg circle:first-child {
+    fill: rgba(242, 237, 229, 0.6);
+}
+
+body.light-theme .clock-motto {
+    color: var(--gold);
+    opacity: .7;
+}
+/* ============================================================
+   FIUME DI ERACLITO  - OROLOGIO
+   ============================================================ */
+.heraclitus-clock {
+    position: absolute;
+    width: 160px;
+    right: 17%;
     top: 12%;
     transform: translateY(-50%);
     display: flex;
@@ -378,9 +438,11 @@ body.light-theme .site-header {
     z-index: 2;
     pointer-events: none;
 }
+
 body.light-theme .heraclitus-clock svg circle:first-child {
     fill: rgba(242, 237, 229, 0.5);
 }
+
 .clock-motto {
     margin-top: 2px;
     font-family: var(--serif);
@@ -392,11 +454,11 @@ body.light-theme .heraclitus-clock svg circle:first-child {
     opacity: .78;
     transition: color .4s ease;
 }
+
 body.light-theme .clock-motto {
     color: var(--gold);
     opacity: .7;
 }
-
 /* ============================================================
    FILOSOFIA (EPOCHE)
    ============================================================ */
@@ -423,6 +485,7 @@ body.light-theme .clock-motto {
     color: var(--text-muted);
     transition: color .4s ease;
 }
+
 .epochs-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -465,7 +528,7 @@ body.light-theme .epoch-card:hover {
     font-weight: 500;
     margin-bottom: 5px;
     letter-spacing: 1px;
-    color: var(--gold);
+     color: var(--gold);
     transition: color .4s ease;
 }
 .epoch-card h3::after {
@@ -675,11 +738,13 @@ body.light-theme .resources {
 body.light-theme .site-footer {
     border-top: 1px solid rgba(0, 0, 0, .06);
 }
+
 .footer-main {
     display: grid;
     grid-template-columns: 1.5fr 1fr 1fr;
     gap: 50px;
 }
+
 .footer-brand {
     font-family: var(--display);
     font-size: .95rem;
@@ -687,6 +752,7 @@ body.light-theme .site-footer {
     color: var(--gold);
     transition: color .4s ease;
 }
+
 .footer-about {
     max-width: 380px;
     margin-top: 12px;
@@ -695,26 +761,29 @@ body.light-theme .site-footer {
     color: var(--text-muted);
     transition: color .4s ease;
 }
+
 .footer-column h3 {
     margin-bottom: 14px;
     font-size: .7rem;
     font-weight: 500;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: var(--text-muted);
+    color: var(--text-muted);   /* ← corretto */
     transition: color .4s ease;
 }
+
 .footer-column a {
     display: block;
     margin-bottom: 7px;
     font-family: var(--serif);
     font-size: .95rem;
     color: var(--text-muted);
-    transition: color .4s ease;
+    transition: color .4s ease;   /* ← semplificato */
 }
 .footer-column a:hover {
     color: var(--gold);
 }
+
 .footer-bottom {
     display: flex;
     justify-content: space-between;
@@ -731,6 +800,7 @@ body.light-theme .site-footer {
 body.light-theme .footer-bottom {
     border-top: 1px solid rgba(0, 0, 0, .06);
 }
+
 .footer-motto {
     font-family: var(--serif);
     font-style: italic;
@@ -738,12 +808,14 @@ body.light-theme .footer-bottom {
     letter-spacing: 1px;
     font-size: 1rem;
 }
+
 .footer-motto-author {
     font-style: normal;
     font-weight: 600;
     color: #8a7a6a;
     font-size: 0.95rem;
 }
+
 .footer-images-row {
     display: flex;
     justify-content: center;
@@ -753,9 +825,11 @@ body.light-theme .footer-bottom {
     padding-top: 2rem;
     flex-wrap: wrap;
 }
+
 .footer-col {
     text-align: center;
 }
+
 .footer-image {
     display: block;
     margin: 0 auto;
@@ -764,12 +838,12 @@ body.light-theme .footer-bottom {
     height: 80px;
     object-fit: cover;
 }
+
 .footer-image-label {
     margin-top: 0.5rem;
     font-size: 0.85rem;
     color: var(--text-accent, #e8ddd0);
 }
-
 /* ============================================================
    PULSANTE TORNA SU
    ============================================================ */
@@ -911,6 +985,7 @@ body.light-theme .music-panel {
 body.light-theme .music-label {
     color: rgba(184, 134, 11, .65);
 }
+
 .music-close {
     border: 0;
     background: transparent;
@@ -935,6 +1010,7 @@ body.light-theme .music-close:hover {
     align-items: center;
     gap: 10px;
 }
+
 .music-play,
 .music-next,
 .music-volume {
@@ -945,29 +1021,35 @@ body.light-theme .music-close:hover {
     cursor: pointer;
     transition: color .25s ease, transform .2s ease;
 }
+
 body.light-theme .music-play,
 body.light-theme .music-next,
 body.light-theme .music-volume {
     color: #b8860b;
 }
+
 .music-play {
     font-size: .95rem;
     width: 25px;
 }
+
 .music-next {
     font-size: .85rem;
     width: 22px;
     opacity: .85;
 }
+
 .music-volume {
     font-size: .85rem;
     opacity: .8;
 }
+
 .music-play:hover,
 .music-next:hover,
 .music-volume:hover {
     transform: scale(1.12);
 }
+
 .music-progress {
     flex: 1;
     min-width: 0;
@@ -978,9 +1060,11 @@ body.light-theme .music-volume {
     border-radius: 5px;
     cursor: pointer;
 }
+
 body.light-theme .music-progress {
     background: rgba(0, 0, 0, .15);
 }
+
 .music-progress::-webkit-slider-thumb {
     appearance: none;
     -webkit-appearance: none;
@@ -1024,6 +1108,7 @@ body.light-theme .player-status {
     z-index: 9998;
     font-family: var(--sans);
 }
+
 .video-toggle {
     position: relative;
     width: 46px;
@@ -1039,6 +1124,7 @@ body.light-theme .player-status {
     box-shadow: 0 8px 30px rgba(0, 0, 0, .35);
     transition: transform .25s ease, border-color .25s ease, background .25s ease, box-shadow .25s ease;
 }
+
 .video-toggle::before {
     content: "";
     position: absolute;
@@ -1048,23 +1134,28 @@ body.light-theme .player-status {
     animation: visionPulse 3.8s ease-in-out infinite;
     pointer-events: none;
 }
+
 .video-toggle:hover {
     transform: translateY(-2px) scale(1.02);
     border-color: rgba(69, 230, 161, .65);
     background: rgba(18, 18, 42, .96);
     box-shadow: 0 8px 35px rgba(0, 0, 0, .45);
 }
+
 .video-toggle:active {
     transform: scale(.92);
 }
+
 .video-toggle:focus-visible {
     outline: 3px solid var(--gold);
     outline-offset: 4px;
 }
+
 @keyframes visionPulse {
     0%, 100% { opacity: .15; transform: scale(.96); }
     50% { opacity: .55; transform: scale(1.08); }
 }
+
 .video-panel {
     position: absolute;
     right: 0;
@@ -1086,12 +1177,14 @@ body.light-theme .player-status {
     transform-origin: bottom right;
     transition: opacity .24s ease, transform .24s ease, visibility .24s ease;
 }
+
 .video-player.open .video-panel {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
     transform: translateY(0) scale(1);
 }
+
 .video-header {
     display: flex;
     align-items: flex-start;
@@ -1099,6 +1192,7 @@ body.light-theme .player-status {
     gap: 15px;
     padding: 2px 3px 11px;
 }
+
 .video-label {
     display: block;
     margin-bottom: 4px;
@@ -1109,6 +1203,7 @@ body.light-theme .player-status {
     color: rgba(69, 230, 161, .72);
     text-transform: uppercase;
 }
+
 .video-title {
     display: block;
     font-family: var(--serif);
@@ -1117,6 +1212,7 @@ body.light-theme .player-status {
     letter-spacing: .3px;
     color: var(--text);
 }
+
 .video-close {
     border: 0;
     background: transparent;
@@ -1127,7 +1223,9 @@ body.light-theme .player-status {
     padding: 0 2px;
     transition: color .25s ease;
 }
+
 .video-close:hover { color: #fff; }
+
 .video-frame {
     display: block;
     width: 100%;
@@ -1137,6 +1235,7 @@ body.light-theme .player-status {
     background: #05070d;
     box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
 }
+
 .video-video-title {
     margin: 10px 3px 0;
     font-family: var(--serif);
@@ -1152,24 +1251,29 @@ body.light-theme .player-status {
     font-style: italic;
     color: var(--text-muted);
 }
+
 body.light-theme .video-toggle {
     background: rgba(242, 237, 229, .94);
     border-color: rgba(0, 168, 107, .28);
     color: #00a86b;
     box-shadow: 0 8px 30px rgba(0, 0, 0, .12);
 }
+
 body.light-theme .video-toggle::before {
     border-color: rgba(0, 168, 107, .10);
 }
+
 body.light-theme .video-toggle:hover {
     border-color: rgba(0, 168, 107, .65);
     background: rgba(230, 238, 233, .98);
 }
+
 body.light-theme .video-panel {
     background: rgba(242, 237, 229, .97);
     border-color: rgba(0, 168, 107, .18);
     box-shadow: 0 24px 70px rgba(0, 0, 0, .15);
 }
+
 body.light-theme .video-label { color: rgba(0, 168, 107, .72); }
 body.light-theme .video-close { color: rgba(0, 0, 0, .42); }
 body.light-theme .video-close:hover { color: #0f1f16; }
@@ -1179,6 +1283,7 @@ body.light-theme .video-close:hover { color: #0f1f16; }
     .video-panel { width: min(440px, calc(100vw - 30px)); }
     .torna-su { right: auto; left: 1rem; bottom: 1.2rem; }
 }
+
 @media (max-width: 480px) {
     .video-player { right: 15px; bottom: 62px; }
     .video-toggle { width: 42px; height: 42px; }
@@ -1607,7 +1712,6 @@ body.light-theme .newsletter-form button[type="submit"] {
     }
 }
 
-/* Riduzione animazioni per chi preferisce meno movimento */
 @media (prefers-reduced-motion: reduce) {
     html {
         scroll-behavior: auto;
@@ -1621,18 +1725,17 @@ body.light-theme .newsletter-form button[type="submit"] {
     }
 }
 
-/* ============================================================
-   VIDEO FRAME WRAPPER (rapporto 4:3)
-   ============================================================ */
+/* Contenitore che mantiene le proporzioni 4:3 del video */
 .video-frame-wrapper {
     position: relative;
     width: 100%;
-    padding-bottom: 75%;
+    padding-bottom: 75%; /* 3/4 * 100 = 75% per il rapporto 4:3 */
     height: 0;
     overflow: hidden;
     border-radius: 10px;
     background: #05070d;
 }
+
 .video-frame-wrapper iframe {
     position: absolute;
     top: 0;
@@ -1641,10 +1744,7 @@ body.light-theme .newsletter-form button[type="submit"] {
     height: 100%;
     border: 0;
 }
-
-/* ============================================================
-   PLAYLIST
-   ============================================================ */
+/* ---------- PLAYLIST ---------- */
 .music-playlist {
     list-style: none;
     margin: 10px 0 12px;
@@ -1691,6 +1791,8 @@ body.light-theme .newsletter-form button[type="submit"] {
     0%, 100% { opacity: 0.6; }
     50%      { opacity: 1; }
 }
+
+/* Adattamento tema chiaro */
 body.light-theme .music-playlist {
     border-color: rgba(0, 168, 107, 0.15);
 }
@@ -1708,67 +1810,93 @@ body.light-theme .music-playlist li.active {
 body.light-theme .music-playlist li::before {
     color: #00a86b;
 }
-
 /* ============================================================
    FRASI FILOSOFICHE ROTANTI
+   
+   ⚠️ IMPORTANTE: questo blocco è ora DENTRO <section class="hero">.
+   Quindi il padding-top non deve più essere grande (la hero ha
+   già il suo spazio sotto il lead e l'onda). Anche il padding-bottom
+   va ridotto, perché la hero aggiunge sotto il proprio spazio.
    ============================================================ */
+
 .philosophy-quotes {
+    /* Top: piccolo — la hero è appena sopra, con la sua onda decorativa */
+    /* Bottom: 0 — lo spazio sotto è gestito dal padding-bottom della hero */
     padding: 10px 0 0;
     text-align: center;
     position: relative;
     z-index: 2;
 }
+
+/* Contenitore interno: larghezza limitata + padding orizzontale */
 .quote-wrapper {
     position: relative;
     max-width: 780px;
     margin: 0 auto;
     padding: 20px 40px;
 }
-/* Virgolette decorative */
+
+/* ------------------------------------------------------------
+   VIRGOLETTE DECORATIVE (grandi, in oro tenue)
+   ------------------------------------------------------------ */
+
+/* Stile base condiviso dalle due virgolette */
 .quote-mark {
     position: absolute;
     font-family: var(--serif);
-    font-size: 5rem;
+    font-size: 5rem;        /* molto grandi, decorative */
     line-height: 1;
     color: var(--gold);
-    opacity: 0.15;
-    user-select: none;
-    pointer-events: none;
+    opacity: 0.15;          /* molto trasparenti: non devono distrarre */
+    user-select: none;      /* non selezionabili col mouse */
+    pointer-events: none;   /* non intercettano i click */
+}
+
+/* Virgoletta di apertura: in alto a sinistra del wrapper */
+.quote-mark {
     top: -10px;
     left: -10px;
 }
+
+/* Virgoletta di chiusura: in basso a destra (override del blocco sopra) */
 .quote-mark-end {
     top: auto;
     left: auto;
     bottom: -30px;
     right: -10px;
 }
+
+/* ------------------------------------------------------------
+   BLOCCO CITAZIONE
+   ------------------------------------------------------------ */
+
 .quote-block {
     margin: 0;
     padding: 0;
-    border: 0;
-    min-height: 90px;
+    border: 0;                      /* rimuove il bordo di default del <blockquote> */
+    min-height: 90px;               /* evita salti di layout al cambio frase */
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    opacity: 1;
-    transform: translateY(0);
-    transition: opacity .8s ease, transform .8s ease;
+    justify-content: center;        /* testo centrato verticalmente */
+    align-items: center;            /* testo centrato orizzontalmente */
 }
+
+/* Testo della frase */
 .quote-text {
     font-family: var(--serif);
-    font-size: clamp(1.15rem, 2.2vw, 1.55rem);
+    font-size: clamp(1.15rem, 2.2vw, 1.55rem);  /* responsive: min 1.15rem, max 1.55rem */
     font-style: italic;
     line-height: 1.5;
     color: var(--text-soft);
     transition: color .4s ease;
     margin: 0;
 }
+
+/* Autore della frase */
 .quote-author {
     display: block;
     margin-top: 14px;
-    font-family: var(--display);
+    font-family: var(--display);    /* Cinzel: elegante, con grazie */
     font-size: 0.78rem;
     font-style: normal;
     font-weight: 500;
@@ -1778,6 +1906,11 @@ body.light-theme .music-playlist li::before {
     opacity: 0.85;
     transition: color .4s ease;
 }
+/* ------------------------------------------------------------
+   FONTE DELLA CITAZIONE
+   Piccolo livello informativo, discreto e non invasivo.
+   ------------------------------------------------------------ */
+
 .quote-author-row {
     display: flex;
     align-items: center;
@@ -1785,31 +1918,47 @@ body.light-theme .music-playlist li::before {
     gap: 7px;
     margin-top: 14px;
 }
+
+/*
+   Il margine superiore dell'autore viene trasferito
+   alla riga che contiene autore + icona.
+*/
 .quote-author-row .quote-author {
     margin-top: 0;
 }
+
+/* Piccola icona informativa */
+
 .quote-info {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+
     width: 18px;
     height: 18px;
     padding: 0;
+
     border: 1px solid rgba(190, 150, 70, 0.42);
     border-radius: 50%;
+
     background: transparent;
     color: var(--gold);
+
     font-family: var(--serif);
     font-size: 0.72rem;
     line-height: 1;
+
     cursor: pointer;
+
     opacity: 0.65;
+
     transition:
         opacity .35s ease,
         color .35s ease,
         border-color .35s ease,
         transform .35s ease;
 }
+
 .quote-info:hover,
 .quote-info:focus-visible {
     opacity: 1;
@@ -1817,75 +1966,135 @@ body.light-theme .music-playlist li::before {
     border-color: rgba(190, 150, 70, 0.8);
     transform: scale(1.08);
 }
+
 .quote-info:focus-visible {
     outline: 1px solid rgba(190, 150, 70, 0.45);
     outline-offset: 3px;
 }
+
+
+/* Fonte vera e propria */
+
 .quote-source {
     max-width: 500px;
     margin: 8px auto 0;
+
     padding-top: 7px;
+
     border-top: 1px solid rgba(190, 150, 70, 0.16);
+
     color: var(--text-soft);
+
     font-family: var(--serif);
     font-size: 0.88rem;
     font-style: italic;
     line-height: 1.4;
     letter-spacing: 0.02em;
     text-align: center;
+
     opacity: 0;
     transform: translateY(-4px);
+
     pointer-events: none;
+
     transition:
         opacity .45s ease,
         transform .45s ease;
 }
+
 .quote-source.visible {
     opacity: 0.72;
     transform: translateY(0);
     pointer-events: auto;
 }
-/* Animazione cambio frase */
+/* ------------------------------------------------------------
+   LINEA DECORATIVA sopra la citazione (aggancio visivo con la hero)
+  
+.philosophy-quotes::before {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 1px;
+    margin: 0 auto 20px;
+    background: var(--gold);
+    opacity: 0.4;
+}
+ ------------------------------------------------------------ */
+/* ------------------------------------------------------------
+   ANIMAZIONE: dissolvenza + piccola traslazione verticale
+   La classe .fade-out viene aggiunta da JS al momento del cambio.
+   ------------------------------------------------------------ */
+
+/* Stato "in uscita": trasparente e spostato in basso */
 .quote-block.fade-out {
     opacity: 0;
     transform: translateY(8px);
     transition: opacity .8s ease, transform .8s ease;
 }
-/* Adattamento tema chiaro */
+
+/* Stato normale: visibile e in posizione */
+.quote-block {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity .8s ease, transform .8s ease;
+}
+
+/* ------------------------------------------------------------
+   ADATTAMENTO TEMA CHIARO
+   ------------------------------------------------------------ */
+
 body.light-theme .quote-mark {
     color: var(--gold);
-    opacity: 0.18;
+    opacity: 0.18;      /* leggermente più visibile su fondo chiaro */
 }
+
 body.light-theme .quote-text {
-    color: #1a3628;
+    color: #1a3628;     /* verde scuro, leggibile su sfondo chiaro */
 }
+
 body.light-theme .quote-author {
-    color: #00a86b;
+    color: #00a86b;     /* verde smeraldo brillante */
 }
+
+/* ------------------------------------------------------------
+   MOBILE (max 650px)
+   Riduce dimensioni e padding per adattarsi a schermi piccoli.
+   ------------------------------------------------------------ */
 @media (max-width: 650px) {
+
     .philosophy-quotes {
+        /* Bottom più piccolo: su mobile lo spazio è prezioso */
         padding: 8px 0 0;
     }
+
     .quote-wrapper {
+        /* Meno padding orizzontale: più spazio per il testo */
         padding: 15px 25px;
     }
+
+    /* Virgolette più piccole, altrimenti mangiano spazio */
     .quote-mark {
         font-size: 3.5rem;
         top: -5px;
         left: -5px;
     }
+
     .quote-mark-end {
         bottom: -20px;
         right: -5px;
     }
-    .quote-block {
+
+    /* Altezza minima maggiore: su mobile il testo può andare su più righe */
+        .quote-block {
         min-height: 120px;
     }
+
     .quote-info {
         width: 17px;
         height: 17px;
         font-size: 0.68rem;
     }
+
     .quote-source {
         max-width: 90%;
         font-size: 0.84rem;
@@ -1893,40 +2102,70 @@ body.light-theme .quote-author {
     }
 }
 
+/* ------------------------------------------------------------
+   ACCESSIBILITÀ: utenti con preferenza "riduci animazioni"
+   Disattiva del tutto la dissolvenza.
+   ------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+    .quote-block,
+    .quote-block.fade-out {
+        transition: none !important;
+        transform: none !important;
+    }
+}
 /* ============================================================
    OTTIMIZZAZIONE MOBILE — PERFORMANCE
    Su schermi piccoli disattivo le animazioni SVG decorative
    per ridurre il carico CPU e migliorare FCP/LCP/SI.
+   Il contenuto resta visibile, solo le animazioni si fermano.
    ============================================================ */
 @media (max-width: 768px) {
-    .cosmic-sky {
-        display: none;
-    }
-    .wave-glow {
-        animation: none !important;
-    }
-    /* Sfondo sostitutivo: nebulose statiche in CSS puro */
-    body {
-        background:
-            radial-gradient(circle at 20% 30%, rgba(49, 93, 145, .18), transparent 50%),
-            radial-gradient(circle at 80% 70%, rgba(107, 79, 145, .12), transparent 55%),
-            radial-gradient(circle at 50% -10%, rgba(91, 104, 145, .10), transparent 42%),
-            #080a12;
-        background-attachment: fixed;
-    }
-    .thought-waves path {
-        animation: none !important;
-    }
-    .knowledge-tree animate,
-    .knowledge-tree animateTransform {
-        display: none;
-    }
-    .heraclitus-clock animate,
-    .heraclitus-clock animateTransform {
-        display: none;
-    }
-    .tree-stars animate,
-    .tree-stars animateTransform {
-        display: none;
-    }
+
+  /* --- Cielo cosmico: nascosto del tutto --- */
+  .cosmic-sky {
+    display: none;
+  }
+
+  .wave-glow {
+    animation: none !important;
+  }
+
+  /* --- Sfondo sostitutivo: nebulose statiche in CSS puro --- */
+  body {
+    background:
+      radial-gradient(circle at 20% 30%, rgba(49, 93, 145, .18), transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(107, 79, 145, .12), transparent 55%),
+      radial-gradient(circle at 50% -10%, rgba(91, 104, 145, .10), transparent 42%),
+      #080a12;
+    background-attachment: fixed;
+  }
+
+  /* --- Onde del pensiero: statiche su mobile --- */
+  .thought-waves path {
+    animation: none !important;
+  }
+
+  /* --- Albero filosofico: resta visibile, ma fermo --- */
+  .knowledge-tree animate,
+  .knowledge-tree animateTransform {
+    display: none;
+  }
+
+  /* --- Orologio di Eraclito: resta visibile, ma fermo --- */
+  .heraclitus-clock animate,
+  .heraclitus-clock animateTransform {
+    display: none;
+  }
+
+  /* --- Onde del pensiero: statiche, ma le fermo per sicurezza --- */
+   /* --- Onde del pensiero: statiche su mobile --- */
+  .thought-waves path {
+    animation: none !important;
+  }
+
+  /* --- Albero di luce (foglie SMIL dentro .tree-stars) --- */
+  .tree-stars animate,
+  .tree-stars animateTransform {
+    display: none;
+  }
 }
