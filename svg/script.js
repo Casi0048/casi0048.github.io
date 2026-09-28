@@ -226,16 +226,20 @@ loadTrack(0, false);      // 2) carica il primo brano (ora può evidenziarlo)
         }
     }
 }
-        function closeVideo() {
-            videoPlayer.classList.remove("open");
-            videoToggle.setAttribute("aria-expanded", "false");
-            const panel = document.getElementById("videoPanel");
-            if (panel) panel.setAttribute("aria-hidden", "true");
-            // Se è un <video> nativo, lo mette in pausa
-            if (visioniVideo && visioniVideo.tagName === "VIDEO") {
-                visioniVideo.pause();
-            }
-        }
+       function closeVideo() {
+    videoPlayer.classList.remove("open");
+    videoToggle.setAttribute("aria-expanded", "false");
+
+    // Restituisce il focus al pulsante che apre il player
+    videoToggle.focus();
+
+    const panel = document.getElementById("videoPanel");
+    if (panel) panel.setAttribute("aria-hidden", "true");
+
+    if (visioniVideo && visioniVideo.tagName === "VIDEO") {
+        visioniVideo.pause();
+    }
+}
 
         videoToggle.addEventListener("click", function (e) {
             e.stopPropagation();
