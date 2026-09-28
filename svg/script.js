@@ -480,26 +480,7 @@ document.addEventListener("click", function (event) {
     });
 });
 
-/* =========================================================
-   OROLOGIO DI ERACLITO — lancette in tempo reale
-   ========================================================= */
-(function updateClock() {
-    const now     = new Date();
-    const hours   = now.getHours() % 12;
-    const minutes = now.getMinutes();
-    const seconds = now.getSeconds();
 
-    const hourAngle = hours * 30 + minutes * 0.5;
-    const minAngle  = minutes * 6 + seconds * 0.1;
-
-    const hourHand = document.getElementById("hourHand");
-    const minHand  = document.getElementById("minHand");
-
-    if (hourHand) hourHand.setAttribute("transform", "rotate(" + hourAngle + ", 100, 100)");
-    if (minHand)  minHand.setAttribute("transform",  "rotate(" + minAngle  + ", 100, 100)");
-
-    setTimeout(updateClock, 1000);
-})();
 /* =====================================================
    6) FRASI FILOSOFICHE ROTANTI
    ===================================================== */
