@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giovanni Taulero (1300–1361) · Echi di Sofia</title>
+
+  <!-- ========== METADATI ========== -->
+  <meta name="description" content="Giovanni Taulero (Johannes Tauler, 1300–1361), domenicano di Strasburgo, discepolo di Eckhart e predicatore della mistica renana: biografia, il fondo dell'anima, le tre nascite, gli Amici di Dio e l'eredità spirituale.">
+  <meta name="author" content="Echi di Sofia">
+  <meta name="keywords" content="Giovanni Taulero, Johannes Tauler, mistica renana, domenicani, Strasburgo, Meister Eckhart, Enrico Suso, Amici di Dio, Gottesfreunde, fondo dell'anima, nascita di Dio nell'anima, gelazenheit, distacco, Rulman Merswin, Basilea, Colonia">
+  <meta name="date" content="2026-09-29">
+  <meta property="og:title" content="Giovanni Taulero (1300–1361)">
+  <meta property="og:description" content="Il predicatore del fondo dell'anima: dalla speculazione di Eckhart alla mistica pratica e contemplativa per le monache e i laici del Reno.">
+  <meta property="og:type" content="article">
+
+  <!-- ========== FONT ========== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================================
+       VARIABILI E RESET
+       ============================================================ */
+    :root {
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+      /* Tema normale — grigio-azzurro renano, pietra e acqua */
+      --bg: #f4f5f3;
+      --bg-card: #fcfcfa;
+      --bg-elevated: #ffffff;
+      --text: #2a2e2c;
+      --text-secondary: #5e6560;
+      --text-muted: #909893;
+      --accent: #4a6b5a;
+      --accent-soft: #8fb5a0;
+      --border: #e0e4df;
+      --shadow: rgba(42, 46, 44, 0.06);
+      --glow: rgba(74, 107, 90, 0.12);
+      --radius: 18px;
+      --transition: 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+      --spark: #d4a574;
+    }
+
+    /* Tema notturno */
+    [data-theme="notturno"] {
+      --bg: #0e1210;
+      --bg-card: #161b18;
+      --bg-elevated: #1d2320;
+      --text: #e4e8e2;
+      --text-secondary: #a8b2aa;
+      --text-muted: #6b756e;
+      --accent: #8fb5a0;
+      --accent-soft: #4a6b5a;
+      --border: #28322c;
+      --shadow: rgba(0, 0, 0, 0.5);
+      --glow: rgba(143, 181, 160, 0.08);
+      --spark: #d4a574;
+    }
+
+    /* Tema filosofico */
+    [data-theme="filosofico"] {
+      --bg: #f1f0ec;
+      --bg-card: #f9f8f4;
+      --bg-elevated: #ffffff;
+      --text: #1c1b18;
+      --text-secondary: #55544e;
+      --text-muted: #8a8980;
+      --accent: #3d4f5c;
+      --accent-soft: #8fa3b0;
+      --border: #d8d6cf;
+      --shadow: rgba(28, 27, 24, 0.05);
+      --glow: rgba(61, 79, 92, 0.1);
+      --spark: #b8956a;
+    }
+
+    /* Tema mistico */
+    [data-theme="mistico"] {
+      --bg: #16121c;
+      --bg-card: #1e1828;
+      --bg-elevated: #272034;
+      --text: #e8e0f0;
+      --text-secondary: #b0a0c8;
+      --text-muted: #706090;
+      --accent: #b8a0dc;
+      --accent-soft: #6b4a9a;
+      --border: #342848;
+      --shadow: rgba(0, 0, 0, 0.55);
+      --glow: rgba(184, 160, 220, 0.12);
+      --spark: #d4b0e8;
+    }
+
+    /* Tema contemplativo */
+    [data-theme="contemplativo"] {
+      --bg: #f3f1e8;
+      --bg-card: #faf9f2;
+      --bg-elevated: #ffffff;
+      --text: #3a3628;
+      --text-secondary: #6e6855;
+      --text-muted: #9e9886;
+      --accent: #6b7a5a;
+      --accent-soft: #a8b898;
+      --border: #ded9c8;
+      --shadow: rgba(58, 54, 40, 0.04);
+      --glow: rgba(107, 122, 90, 0.1);
+      --spark: #c4a86a;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 18px;
+    }
+
+    body {
+      font-family: var(--font-serif);
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.78;
+      transition: background-color var(--transition), color var(--transition);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      min-height: 100vh;
+    }
+
+    /* ============================================================
+       LAYOUT
+       ============================================================ */
+    .container {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 6rem;
+    }
+
+    /* ============================================================
+       HERO
+       ============================================================ */
+    .hero {
+      text-align: center;
+      padding: 4.5rem 0 3.5rem;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '❧';
+      display: block;
+      font-size: 1.5rem;
+      color: var(--accent);
+      margin-bottom: 1.2rem;
+      opacity: 0.6;
+      transition: transform var(--transition);
+    }
+
+    .hero:hover::before {
+      transform: rotate(90deg) scale(1.15);
+    }
+
+    .hero::after {
+      content: '✦';
+      display: block;
+      font-size: 0.9rem;
+      color: var(--accent);
+      margin-top: 2.2rem;
+      opacity: 0.35;
+      letter-spacing: 0.7em;
+    }
+
+    .hero h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(2.3rem, 5.8vw, 3.7rem);
+      font-weight: 500;
+      line-height: 1.12;
+      letter-spacing: -0.025em;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+
+    .hero h1 .date {
+      display: block;
+      font-size: 0.42em;
+      font-weight: 400;
+      color: var(--text-secondary);
+      letter-spacing: 0.16em;
+      margin-top: 0.7rem;
+    }
+
+    .hero .subtitle {
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: var(--text-muted);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-top: 1.1rem;
+      line-height: 1.6;
+    }
+
+    /* ============================================================
+       BARRA TEMI
+       ============================================================ */
+    .theme-bar {
+      display: flex;
+      justify-content: center;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+      margin-bottom: 3.5rem;
+    }
+
+    .theme-btn {
+      font-family: var(--font-sans);
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 1.8rem;
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all var(--transition);
+      white-space: nowrap;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .theme-btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: var(--accent-soft);
+      opacity: 0.15;
+      transition: width var(--transition), height var(--transition);
+      transform: translate(-50%, -50%);
+    }
+
+    .theme-btn:hover::before {
+      width: 120%;
+      height: 300%;
+    }
+
+    .theme-btn:hover {
+      border-color: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    .theme-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--bg);
+      box-shadow: 0 2px 12px var(--glow);
+    }
+
+    .theme-btn.active::before {
+      display: none;
+    }
+
+    /* ============================================================
+       SEZIONI ESPANDIBILI — PULSANTI ORIGINALI
+       ============================================================ */
+    .section {
+      margin-bottom: 1.3rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg-card);
+      overflow: hidden;
+      transition: all var(--transition);
+      box-shadow: 0 1px 3px var(--shadow);
+      position: relative;
+    }
+
+    /* Bordo decorativo a "scintilla" */
+    .section::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0 28px 28px 0;
+      border-color: transparent var(--glow) transparent transparent;
+      transition: border-color var(--transition);
+    }
+
+    .section:hover {
+      box-shadow: 0 6px 28px var(--shadow), 0 0 50px var(--glow);
+      transform: translateY(-1px);
+    }
+
+    .section.open {
+      box-shadow: 0 8px 32px var(--shadow), 0 0 60px var(--glow);
+    }
+
+    .section.open::after {
+      border-color: transparent var(--accent-soft) transparent transparent;
+    }
+
+    /* Pulsante toggle — design a "scintilla nel fondo" */
+    .section-toggle {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.5rem 1.6rem 1.5rem 1.6rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      font-family: var(--font-serif);
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: var(--text);
+      transition: color var(--transition);
+      line-height: 1.35;
+      position: relative;
+    }
+
+    .section-toggle:hover {
+      color: var(--accent);
+    }
+
+    /* Icona scintilla / goccia */
+    .section-toggle .spark-icon {
+      flex-shrink: 0;
+      width: 2.4rem;
+      height: 2.4rem;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      transition: all var(--transition);
+      font-family: var(--font-sans);
+      position: relative;
+      background: var(--bg-card);
+    }
+
+    .section-toggle .spark-icon::before {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, var(--spark), transparent 70%);
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+
+    .section.open .section-toggle .spark-icon {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--bg);
+      box-shadow: 0 0 20px var(--glow), 0 0 8px var(--glow);
+    }
+
+    .section.open .section-toggle .spark-icon::before {
+      opacity: 1;
+    }
+
+    .section.open .section-toggle .spark-icon span {
+      position: relative;
+      z-index: 1;
+      color: var(--bg);
+      font-weight: 600;
+    }
+
+    /* Indicatore capitolo */
+    .section-toggle .chapter-mark {
+      font-family: var(--font-sans);
+      font-size: 0.6rem;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      min-width: 2.4rem;
+      opacity: 0.6;
+      transition: opacity var(--transition);
+    }
+
+    .section.open .section-toggle .chapter-mark {
+      opacity: 0.9;
+      color: var(--accent);
+    }
+
+    .section-toggle .toggle-text {
+      flex: 1;
+    }
+
+    .section-toggle .expand-hint {
+      flex-shrink: 0;
+      font-family: var(--font-sans);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      transition: color var(--transition);
+      opacity: 0.7;
+    }
+
+    .section.open .section-toggle .expand-hint {
+      color: var(--accent);
+      opacity: 1;
+    }
+
+    /* Contenuto */
+    .section-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+                  opacity 0.45s ease;
+      opacity: 0;
+    }
+
+    .section.open .section-content {
+      max-height: 2400px;
+      opacity: 1;
+    }
+
+    .section-inner {
+      padding: 0 1.6rem 2rem 5.4rem;
+      border-top: 1px solid var(--border);
+      padding-top: 1.6rem;
+      position: relative;
+    }
+
+    /* Linea verticale decorativa */
+    .section-inner::before {
+      content: '';
+      position: absolute;
+      left: 2.8rem;
+      top: 1.6rem;
+      bottom: 2rem;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--accent-soft), transparent);
+      opacity: 0.3;
+    }
+
+    /* ============================================================
+       TIPOGRAFIA CONTENUTO
+       ============================================================ */
+    .section-inner p {
+      margin-bottom: 1rem;
+      font-size: 1.03rem;
+      line-height: 1.82;
+      color: var(--text);
+    }
+
+    .section-inner p:last-child {
+      margin-bottom: 0;
+    }
+
+    .section-inner em {
+      font-style: italic;
+      color: var(--text-secondary);
+    }
+
+    .section-inner strong {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .section-inner blockquote {
+      margin: 1.6rem 0;
+      padding: 1.2rem 1.5rem;
+      border-left: 3px solid var(--accent-soft);
+      background: var(--glow);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-style: italic;
+      color: var(--text-secondary);
+      font-size: 1.02rem;
+      position: relative;
+    }
+
+    .section-inner blockquote::before {
+      content: '“';
+      position: absolute;
+      top: -0.2rem;
+      left: 0.7rem;
+      font-size: 2.8rem;
+      color: var(--accent);
+      opacity: 0.12;
+      font-family: var(--font-serif);
+      line-height: 1;
+    }
+
+    .section-inner blockquote p {
+      margin-bottom: 0.4rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-inner blockquote cite {
+      display: block;
+      font-style: normal;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+      font-family: var(--font-sans);
+      letter-spacing: 0.03em;
+    }
+
+    .section-inner .note {
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-top: 1.2rem;
+      padding-top: 0.9rem;
+      border-top: 1px dashed var(--border);
+    }
+
+    /* ============================================================
+       BACK LINK
+       ============================================================ */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.75rem 1.3rem;
+      border: 1px solid var(--border);
+      border-radius: 2rem;
+      background: var(--bg-card);
+      transition: all var(--transition);
+      margin-top: 3.5rem;
+    }
+
+    .back-link:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 24px var(--glow);
+      transform: translateX(-3px);
+    }
+
+    .back-link::before {
+      content: '←';
+      font-size: 1.1em;
+      transition: transform var(--transition);
+    }
+
+    .back-link:hover::before {
+      transform: translateX(-4px);
+    }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    .footer {
+      margin-top: 4.5rem;
+      padding-top: 2.2rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+      line-height: 1.9;
+    }
+
+    .footer .ornament {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--accent);
+      margin-bottom: 0.8rem;
+      letter-spacing: 0.55em;
+      opacity: 0.45;
+    }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width: 640px) {
+      html { font-size: 16px; }
+      .container { padding: 1rem 1rem 4rem; }
+      .hero { padding: 3rem 0 2.5rem; }
+      .section-toggle {
+        font-size: 1.04rem;
+        padding: 1.2rem 1.2rem 1.2rem 1.2rem;
+        gap: 0.7rem;
+      }
+      .section-toggle .spark-icon { width: 2rem; height: 2rem; font-size: 0.85rem; }
+      .section-toggle .chapter-mark { display: none; }
+      .section-toggle .expand-hint { display: none; }
+      .section-inner {
+        padding: 1.2rem 1.2rem 1.6rem 1.2rem;
+      }
+      .section-inner::before { display: none; }
+      .section-inner p { font-size: 0.97rem; }
+      .theme-btn { font-size: 0.6rem; padding: 0.4rem 0.7rem; }
+    }
+
+    /* ============================================================
+       REDUCED MOTION
+       ============================================================ */
+    @media (prefers-reduced-motion: reduce) {
+      * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+      .section-content { transition: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ========== HERO ========== -->
+  <header class="hero">
+    <h1>
+      Giovanni Taulero
+      <span class="date">1300 – 1361</span>
+    </h1>
+    <p class="subtitle">Domenicano · Predicatore · <em>Doctor Illuminatus</em><br>Maestro del fondo dell'anima</p>
+  </header>
+
+  <!-- ========== BARRA TEMI ========== -->
+  <nav class="theme-bar" aria-label="Modalità di lettura">
+    <button class="theme-btn active" data-theme="normale" aria-pressed="true">Normale</button>
+    <button class="theme-btn" data-theme="notturno" aria-pressed="false">Notturno</button>
+    <button class="theme-btn" data-theme="filosofico" aria-pressed="false">Filosofico</button>
+    <button class="theme-btn" data-theme="mistico" aria-pressed="false">Mistico</button>
+    <button class="theme-btn" data-theme="contemplativo" aria-pressed="false">Contemplativo</button>
+  </nav>
+
+  <!-- ========== SEZIONI ========== -->
+
+  <!-- 1. VITA -->
+  <section class="section" aria-labelledby="sec-vita">
+    <button class="section-toggle" aria-expanded="false" aria-controls="content-vita" id="sec-vita">
+      <span class="spark-icon" aria-hidden="true"><span>I</span></span>
+      <span class="chapter-mark">Cap. I</span>
+      <span class="toggle-text">La vita: un predicatore nella bufera del secolo</span>
+      <span class="expand-hint">Apri</span>
+    </button>
+    <div class="section-content" id="content-vita" role="region">
+      <div class="section-inner">
+        <p>
+          <strong>Giovanni Taulero</strong> (in tedesco <em>Johannes Tauler</em>, latinizzato <em>Taulerus</em>) nacque a Strasburgo intorno al 1300, da una famiglia benestante della borghesia cittadina, probabilmente imparentata con i <em>Taweler</em>. Entrò nell'<strong>Ordine dei Predicatori</strong> all'età di circa quindici anni, nel convento domenicano di Strasburgo, dove seguì il corso regolare degli studi e fu ordinato sacerdote intorno ai venticinque anni[reference:0].
+        </p>
+        <p>
+          La sua formazione si compì a <strong>Colonia</strong>, dove entrò in contatto con la tradizione della mistica speculativa di ascendenza platonico-cristiana, ravvivata in quegli anni dall'insegnamento di <strong>Meister Eckhart</strong>, del quale Taulero divenne discepolo[reference:1]. Non è chiaro se abbia ascoltato Eckhart direttamente a Strasburgo o a Colonia, ma l'influenza del maestro fu profonda e duratura. Intorno al 1330 iniziò la sua attività di predicatore a Strasburgo, città che contava otto conventi di domenicane e circa settanta piccole comunità di beghine: fu in questo ambiente femminile, spiritualmente vivace e culturalmente elevato, che Taulero trovò il suo uditorio privilegiato[reference:2].
+        </p>
+        <p>
+          La sua vita fu segnata dalle turbolenze del secolo. L'<strong>interdetto papale</strong> che colpì Strasburgo tra il 1329 e il 1353, insieme all'Editto di Ludovico il Bavaro del 1347, costrinse i domenicani all'esilio a <strong>Basilea</strong> (1338–1343 circa). In questo periodo Taulero strinse legami profondi con il circolo dei <strong>Gottesfreunde</strong> («Amici di Dio»), un movimento di laici e religiosi che aspirava a una vita evangelica radicale, al di fuori delle strutture istituzionali corrotte[reference:3]. A Basilea conobbe <strong>Enrico di Nördlingen</strong>, attraverso il quale entrò in contatto con la spiritualità di <strong>Matilde di Magdeburgo</strong> e delle mistiche renane[reference:4].
+        </p>
+        <p>
+          Tornato a Strasburgo nel 1343, Taulero attraversò anni di crisi: la città fu devastata da un terremoto e da un incendio nel 1346, e dal 1347 la <strong>Peste Nera</strong> decimò la popolazione. Fu in questo periodo che maturò quella che egli stesso chiamò la sua «seconda conversione», un rinnovamento interiore che lo condusse a una predicazione più intensa e a un impegno totale nella direzione spirituale delle religiose domenicane[reference:5]. Attorno a lui si strinse un circolo di mistici, tra cui <strong>Rulman Merswin</strong>, di cui fu confessore e guida spirituale[reference:6].
+        </p>
+        <p>
+          Taulero morì a Strasburgo il <strong>16 giugno 1361</strong>, nel convento domenicano dove aveva trascorso quasi tutta la sua vita. La sua opera autentica consiste in <strong>ottantatré sermoni</strong> (o ottantaquattro, secondo alcuni studiosi), trascritti dagli ascoltatori, che riflettono il suo cammino interiore e la sua maturazione teologica[reference:7]. Fu detto <em>Doctor Illuminatus</em>, «Dottore Illuminato», per la profondità della sua dottrina e la chiarezza della sua predicazione[reference:8].
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. CONTESTO -->
+  <section class="section" aria-labelledby="sec-contesto">
+    <button class="section-toggle" aria-expanded="false" aria-controls="content-contesto" id="sec-contesto">
+      <span class="spark-icon" aria-hidden="true"><span>II</span></span>
+      <span class="chapter-mark">Cap. II</span>
+      <span class="toggle-text">Il contesto: la mistica renana e gli Amici di Dio</span>
+      <span class="expand-hint">Apri</span>
+    </button>
+    <div class="section-content" id="content-contesto" role="region">
+      <div class="section-inner">
+        <p>
+          Taulero è uno dei tre grandi protagonisti della <strong>mistica renana</strong> del XIV secolo, insieme a <strong>Meister Eckhart</strong> (ca. 1260–1328) e a <strong>Enrico Suso</strong> (ca. 1295–1366). Questa corrente teologica, fiorita nei conventi domenicani della valle del Reno, si caratterizza per una sintesi originale di <strong>neoplatonismo</strong> (soprattutto attraverso lo Pseudo-Dionigi), <strong>agostinismo</strong> e spiritualità cristiana, con al centro la dottrina della <strong>divinizzazione dell'uomo</strong>: il fine dell'incarnazione è donare all'essere umano la partecipazione alla vita divina intrarinitaria, cioè la grazia[reference:9].
+        </p>
+        <p>
+          Eckhart, il maestro, aveva sviluppato una teologia audace, fondata sulla dottrina della <strong>nascita del Verbo nell'anima</strong> e sulla <strong>scintilla</strong> (<em>fünkelin</em>) come luogo dell'unione con Dio. Taulero ereditò questa dottrina, ma la tradusse in una forma più accessibile e <strong>pratica</strong>: mentre Eckhart era speculativo e talvolta oscuro, Taulero era <strong>predicatore</strong>, e la sua teologia si dispiegava nella concretezza dell'esortazione morale e della direzione spirituale[reference:10]. Come scrive la critica, egli seppe unire «la profondità intellettuale di Eckhart con la spiritualità interiore di Suso e il fervore di Bertoldo di Ratisbona»[reference:11].
+        </p>
+        <p>
+          Il movimento dei <strong>Gottesfreunde</strong> («Amici di Dio») fu il contesto vitale in cui Taulero operò. Non si trattava di un ordine religioso, ma di una rete informale di laici, religiosi e religiose legati da un comune ideale di vita evangelica, di povertà e di unione con Dio. In un'epoca segnata dalla corruzione della Chiesa, dalle lotte tra papato e impero e dalle devastazioni della peste, gli Amici di Dio cercavano un cristianesimo autentico, fondato sull'esperienza interiore più che sulle pratiche esteriori[reference:12]. Taulero ne fu la guida spirituale più autorevole: i suoi sermoni, predicati nelle lingue volgari, erano destinati a un pubblico di monache, beghine e laici desiderosi di una vita spirituale profonda.
+        </p>
+        <p>
+          Il suo magistero si svolse soprattutto nei conventi femminili di Strasburgo, Spira, Worms, Magonza, Coblenza, Bonn, Colonia e Medingen[reference:13]. Le monache domenicane, spesso di elevata cultura e di intensa vita interiore, costituivano il suo uditorio ideale: a loro Taulero si rivolgeva con un linguaggio che univa la profondità teologica alla concretezza dell'esperienza spirituale, la dottrina alla vita. La sua predicazione, lungi dall'essere astratta, era <strong>mistagogia</strong>: un accompagnamento passo dopo passo nell'itinerario verso Dio.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. OPERE -->
+  <section class="section" aria-labelledby="sec-opere">
+    <button class="section-toggle" aria-expanded="false" aria-controls="content-opere" id="sec-opere">
+      <span class="spark-icon" aria-hidden="true"><span>III</span></span>
+      <span class="chapter-mark">Cap. III</span>
+      <span class="toggle-text">Le opere: i Sermoni e la voce autentica di Taulero</span>
+      <span class="expand-hint">Apri</span>
+    </button>
+    <div class="section-content" id="content-opere" role="region">
+      <div class="section-inner">
+        <p>
+          Dell'opera di Taulero ci sono pervenute <strong>ottantatré prediche</strong> (chiamate anche <em>Sermoni</em> o <em>Lezioni</em>), trascritte dagli ascoltatori e tramandate in numerosi manoscritti. Esse costituiscono l'unica parte autentica della sua produzione: nel corso dei secoli, infatti, gli furono attribuite numerose altre opere — come il <em>Libro della povertà spirituale</em>, le <em>Divinae Institutiones</em> e gli <em>Exercitia super vitam et passionem Christi</em> — che la critica moderna ha riconosciuto come apocrife[reference:14].
+        </p>
+        <p>
+          I sermoni di Taulero non sono trascrizioni stenografiche, ma <strong>rielaborazioni</strong> redatte in un tedesco letterario di grande eleganza. Essi riflettono il suo cammino interiore a partire dalla «seconda conversione» (intorno al 1339–1346), quando la sua predicazione si fece più intensa e più profondamente radicata nell'esperienza vissuta[reference:15]. La loro struttura è spesso quella del <strong>commento allegorico</strong> di testi biblici, soprattutto del Vangelo di Giovanni e delle lettere paoline, letti come simboli di verità psicologiche e spirituali[reference:16].
+        </p>
+        <p>
+          Il tema centrale della predicazione tauleriana è la <strong>nascita di Dio nell'anima</strong>. Taulero distingue <strong>tre nascite</strong> del Verbo: la prima è la generazione eterna del Figlio nel seno del Padre; la seconda è la nascita storica di Cristo nel grembo di Maria; la terza è la nascita <strong>mistica</strong>, che avviene «ogni giorno e ogni ora» nell'anima del credente mediante la grazia e l'amore[reference:17]. Questa terza nascita è il cuore della vita cristiana: Dio non è solo un evento del passato, ma una presenza viva e operante nel profondo dell'essere umano.
+        </p>
+        <blockquote>
+          <p>«La prima e più sublime nascita avviene quando il Padre celeste genera il Figlio unigenito nell'essenza divina e nella distinzione delle Persone. La seconda nascita è la fecondità materna che in assoluta purezza toccò in sorte alla castità della Vergine. La terza nascita avviene quando Dio ogni giorno ed ogni ora nasce veramente e spiritualmente in un'anima buona mediante la grazia e l'amore.»</p>
+          <cite>— Giovanni Taulero, <em>Sermoni</em> (Predica per il Natale)</cite>
+        </blockquote>
+        <p>
+          Accanto alla predicazione, di Taulero ci resta <strong>una sola lettera</strong>, indirizzata probabilmente a una religiosa, nella quale traspare la sua profonda delusione per il formalismo della vita monastica e la sua aspirazione a una spiritualità più autentica e interiore[reference:18]. Questa lettera è una testimonianza preziosa del suo temperamento: un uomo di profonda sensibilità, insofferente alle vuote osservanze, tutto proteso verso l'essenziale.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. TEOLOGIA -->
+  <section class="section" aria-labelledby="sec-teologia">
+    <button class="section-toggle" aria-expanded="false" aria-controls="content-teologia" id="sec-teologia">
+      <span class="spark-icon" aria-hidden="true"><span>IV</span></span>
+      <span class="chapter-mark">Cap. IV</span>
+      <span class="toggle-text">La teologia: il fondo dell'anima e la scintilla</span>
+      <span class="expand-hint">Apri</span>
+    </button>
+    <div class="section-content" id="content-teologia" role="region">
+      <div class="section-inner">
+        <p>
+          Il nucleo della teologia tauleriana è la dottrina del <strong>fondo dell'anima</strong> (<em>Abgrund der Seele</em>, «abisso dell'anima»). In ogni essere umano esiste una dimensione più profonda della ragione e della volontà, un «fondo» increato o creato a immagine di Dio, nel quale l'anima può accogliere la presenza divina. È il luogo della <strong>scintilla</strong> (<em>fünkelin</em>), quel punto dell'essere spirituale che tende inesorabilmente verso Dio e non trova riposo finché non giunge all'abisso da cui proviene[reference:19].
+        </p>
+        <p>
+          Alla base di questo itinerario sta la <strong>conoscenza di sé</strong>: la scoperta del proprio «nulla», della propria radicale povertà e creaturalità. Taulero insiste sulla necessità di un serio esercizio ascetico, di una purificazione interiore che spazzi via ogni ostacolo all'azione di Dio. Il <strong>fondo</strong> dell'anima è la parte ricettiva, capace di accogliere la comunicazione divina; il <strong>gemüt</strong> è la parte dinamica, che tende verso Dio in modo semplice ed essenziale. L'unione con Dio, però, avviene solo nel fondo più interiore, e solo come dono della grazia e dell'amore divino[reference:20].
+        </p>
+        <p>
+          La via dell'unione passa attraverso la <strong><em>gelazenheit</em></strong> (o <em>gelâzenheit</em>), l'umile abbandono a Dio, il distacco radicale da ogni creatura e da se stessi. Questo concetto, affine all'<em>abegescheidenheit</em> di Eckhart, esprime l'atteggiamento dell'uomo che si è completamente svuotato di sé per lasciare spazio all'azione divina[reference:21]. Taulero lo descrive come un «deserto interiore»: l'uomo deve inoltrarsi in questo deserto, seguendo Gesù Cristo e la sua passione, per giungere alla vera povertà spirituale[reference:22].
+        </p>
+        <p>
+          La meta è la <strong>divinizzazione</strong>: l'anima, rigenerata dall'azione dello Spirito, diventa «figlia di Dio» e partecipa alla vita trinitaria. Taulero descrive questa condizione con l'immagine della luce solare che penetra l'acqua senza confondervisi: l'anima è inabissata in Dio, ma conserva la sua creaturalità[reference:23]. Questa insistenza sulla distinzione tra Creatore e creatura è ciò che distingue Taulero da Eckhart e lo tiene al riparo dalle accuse di panteismo che avevano colpito il maestro[reference:24].
+        </p>
+        <blockquote>
+          <p>«Questa scintilla vola così in alto che la capacità conoscitiva dell'uomo non è in grado di seguirla, perché non ha riposo finché non raggiunge l'abisso di Dio, da cui proviene e in cui si trovava prima della creazione.»</p>
+          <cite>— Giovanni Taulero, <em>Predica 53</em></cite>
+        </blockquote>
+        <p>
+          La cristologia di Taulero è di centrale importanza: Cristo è la <strong>figura normativa</strong> della vita spirituale, il modello del distacco e dell'abbandono. Seguire Cristo significa entrare nella sua passione, morire con lui per risorgere con lui. La croce non è solo un evento storico, ma una realtà da vivere interiormente: è la via attraverso cui l'uomo vecchio muore e l'uomo nuovo nasce[reference:25].
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. EREDITÀ -->
+  <section class="section" aria-labelledby="sec-eredita">
+    <button class="section-toggle" aria-expanded="false" aria-controls="content-eredita" id="sec-eredita">
+      <span class="spark-icon" aria-hidden="true"><span>V</span></span>
+      <span class="chapter-mark">Cap. V</span>
+      <span class="toggle-text">Eredità: da Lutero a Giovanni della Croce</span>
+      <span class="expand-hint">Apri</span>
+    </button>
+    <div class="section-content" id="content-eredita" role="region">
+      <div class="section-inner">
+        <p>
+          L'influenza di Taulero si estende ben oltre il XIV secolo. Il giovane <strong>Martin Lutero</strong> lesse i suoi sermoni con entusiasmo, trovandovi «ardite proposizioni contro la tirannia della Santa Sede» e, soprattutto, una teologia dell'impotenza umana e della fiducia esclusiva nei meriti di Cristo[reference:26]. Nel 1516 Lutero scrisse a Giovanni Lang di aver «seguito la teologia di Taulero», e in una lettera a Spalatino del 1516 affermò che i sermoni di Taulero erano per lui una guida decisiva[reference:27]. La critica moderna, tuttavia, ha ridimensionato la lettura «protestante» di Taulero: il suo sforzo fu piuttosto quello di mantenersi nel solco dell'ortodossia cattolica, evitando le posizioni panteistiche del maestro Eckhart[reference:28].
+        </p>
+        <p>
+          La sua eredità più profonda si rintraccia nella <strong>mistica moderna</strong>. I concetti di «fondo dell'anima», di «distacco», di «annichilimento dell'ego» e di «nascita del Cristo nell'anima» — tutti centrali in Taulero — esercitarono un'influenza determinante su <strong>Giovanni della Croce</strong>, che li riprese e li approfondì nella sua notte oscura[reference:29]. Attraverso la mediazione della mistica renana, Taulero è dunque uno dei padri spirituali di quella corrente che, passando per il Seicento francese, giunge fino a <strong>Paolo della Croce</strong> e alla spiritualità moderna[reference:30].
+        </p>
+        <p>
+          Taulero fu anche un <strong>maestro di lingua</strong>: i suoi sermoni, redatti in un tedesco limpido e potente, sono considerati tra i più nobili della letteratura tedesca medievale[reference:31]. Egli seppe coniugare la profondità speculativa di Eckhart con la concretezza della predicazione e la tenerezza dell'accompagnamento spirituale, rendendo accessibile a un pubblico di monache e laici ciò che nel maestro era riservato a pochi.
+        </p>
+        <p>
+          Oggi Taulero è riconosciuto come una delle voci più autentiche della <strong>mistica pratica</strong>: non un teorico dell'unione con Dio, ma un testimone che ha percorso quel cammino e lo ha indicato ad altri. La sua figura rimane un punto di riferimento per chi cerca un cristianesimo interiore, radicato nell'esperienza e non nelle sole pratiche esteriori. Come ha scritto uno studioso, Taulero «non parla di un Cristo fuori di noi e per noi, ma specialmente di un <strong>Cristo in noi</strong>»[reference:32].
+        </p>
+        <p class="note">
+          Nota bibliografica: l'edizione critica dei sermoni è <em>Die Predigten Taulers</em>, a cura di F. Vetter (Berlino, 1910). In italiano: <em>Le profondità dell'anima</em>, a cura di M. Vannini (Lorenzo de Medici Press, 2020); <em>L'esperienza profonda di Dio. Scritti scelti</em>, a cura di M. Vannini (Il Leone Verde, 2008). Tra gli studi: G. M. Colombás, <em>La tradizione mistica</em>; B. McGinn, <em>The Harvest of Mysticism in Medieval Germany</em> (New York, 2005).
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== BACK LINK ========== -->
+  <a href="../index.html" class="back-link">Torna a Echi di Sofia</a>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <span class="ornament">❧ ✦ ❧</span>
+    <p>
+      Echi di Sofia · Giovanni Taulero (1300–1361)<br>
+      Articolo enciclopedico a cura della redazione · 29 settembre 2026
+    </p>
+  </footer>
+
+</div>
+
+<!-- ========== JAVASCRIPT ========== -->
+<script>
+(function() {
+  'use strict';
+
+  /* ============================================================
+     TOGGLE SEZIONI — ACCORDION
+     ============================================================ */
+  const sections = document.querySelectorAll('.section');
+
+  sections.forEach(function(section) {
+    const toggle = section.querySelector('.section-toggle');
+    const content = section.querySelector('.section-content');
+    const hint = toggle.querySelector('.expand-hint');
+
+    toggle.addEventListener('click', function() {
+      const isOpen = section.classList.contains('open');
+
+      // Chiudi tutte le altre
+      sections.forEach(function(other) {
+        if (other !== section && other.classList.contains('open')) {
+          other.classList.remove('open');
+          other.querySelector('.section-toggle').setAttribute('aria-expanded', 'false');
+          const otherHint = other.querySelector('.expand-hint');
+          if (otherHint) otherHint.textContent = 'Apri';
+        }
+      });
+
+      // Toggle corrente
+      if (isOpen) {
+        section.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+        if (hint) hint.textContent = 'Apri';
+      } else {
+        section.classList.add('open');
+        toggle.setAttribute('aria-expanded', 'true');
+        if (hint) hint.textContent = 'Chiudi';
+        content.style.maxHeight = content.scrollHeight + 'px';
+      }
+    });
+
+    // Gestione max-height dinamico
+    content.addEventListener('transitionend', function(e) {
+      if (e.propertyName === 'max-height' && section.classList.contains('open')) {
+        content.style.maxHeight = 'none';
+      }
+    });
+
+    content.addEventListener('transitionstart', function(e) {
+      if (e.propertyName === 'max-height' && !section.classList.contains('open')) {
+        content.style.maxHeight = content.scrollHeight + 'px';
+      }
+    });
+  });
+
+  /* ============================================================
+     APRI LA PRIMA SEZIONE ALL'AVVIO
+     ============================================================ */
+  if (sections.length > 0) {
+    const first = sections[0];
+    first.classList.add('open');
+    first.querySelector('.section-toggle').setAttribute('aria-expanded', 'true');
+    const firstContent = first.querySelector('.section-content');
+    firstContent.style.maxHeight = 'none';
+    const firstHint = first.querySelector('.expand-hint');
+    if (firstHint) firstHint.textContent = 'Chiudi';
+  }
+
+  /* ============================================================
+     GESTIONE TEMI
+     ============================================================ */
+  const themeButtons = document.querySelectorAll('.theme-btn');
+  const htmlEl = document.documentElement;
+
+  themeButtons.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      const theme = this.getAttribute('data-theme');
+
+      themeButtons.forEach(function(b) {
+        b.classList.remove('active');
+        b.setAttribute('aria-pressed', 'false');
+      });
+      this.classList.add('active');
+      this.setAttribute('aria-pressed', 'true');
+
+      if (theme === 'normale') {
+        htmlEl.removeAttribute('data-theme');
+      } else {
+        htmlEl.setAttribute('data-theme', theme);
+      }
+
+      try {
+        localStorage.setItem('taulero-theme', theme);
+      } catch (e) { /* ignore */ }
+    });
+  });
+
+  /* ============================================================
+     RIPRISTINA TEMA SALVATO
+     ============================================================ */
+  try {
+    const savedTheme = localStorage.getItem('taulero-theme');
+    if (savedTheme) {
+      const btn = document.querySelector('.theme-btn[data-theme="' + savedTheme + '"]');
+      if (btn) btn.click();
+    }
+  } catch (e) { /* ignore */ }
+
+  /* ============================================================
+     SCORCIATOIE DA TASTIERA
+     ============================================================ */
+  document.addEventListener('keydown', function(e) {
+    // Ctrl/Cmd + Shift + T — cambia tema ciclicamente
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'T') {
+      e.preventDefault();
+      const themes = ['normale', 'notturno', 'filosofico', 'mistico', 'contemplativo'];
+      const current = document.querySelector('.theme-btn.active');
+      const currentTheme = current ? current.getAttribute('data-theme') : 'normale';
+      const idx = themes.indexOf(currentTheme);
+      const next = themes[(idx + 1) % themes.length];
+      const btn = document.querySelector('.theme-btn[data-theme="' + next + '"]');
+      if (btn) btn.click();
+    }
+  });
+
+})();
+</script>
+
+</body>
+</html>
