@@ -1,4 +1,4 @@
-/* =========================================================
+/* ========================================================
    ECHI DI SOFIA — script.js
    Caricato in index.html con:
      <script src="/svg/script.js" defer></script>
