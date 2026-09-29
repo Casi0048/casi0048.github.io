@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bernardo di Chiaravalle · Echi di Sofia</title>
+    <meta name="description" content="Bernardo di Chiaravalle (1090–1153): abate cistercense, teologo e mistico, l'ultimo dei Padri della Chiesa. La riforma cistercense, i quattro gradi dell'amore e la predicazione della Seconda Crociata.">
+    <meta name="author" content="Echi di Sofia">
+    <meta name="keywords" content="Bernardo di Chiaravalle, San Bernardo, cistercensi, De diligendo Deo, Sermoni sul Cantico dei Cantici, mistica medievale, Seconda Crociata, Templari">
+    <meta property="og:title" content="Bernardo di Chiaravalle · Echi di Sofia">
+    <meta property="og:description" content="L'ultimo dei Padri della Chiesa: amore, riforma e contemplazione nel XII secolo.">
+    <meta property="og:type" content="article">
+    <meta name="theme-color" content="#f2ede6">
+    <style>
+        /* ============================================================
+           RESET E VARIABILI
+           ============================================================ */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #f2ede6;
+            --bg-surface: #faf8f4;
+            --text: #2a2520;
+            --text-soft: #5c554c;
+            --accent: #6b4f3a;
+            --accent-soft: #b8a48e;
+            --border: #d6cdc2;
+            --shadow: rgba(42, 37, 32, 0.07);
+            --font-serif: 'Georgia', 'Times New Roman', serif;
+            --font-sans: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+            --radius: 10px;
+            --transition: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* MODALITÀ NOTTURNA */
+        body.theme-notturno {
+            --bg: #12100d;
+            --bg-surface: #1a1713;
+            --text: #e6dfd5;
+            --text-soft: #b0a696;
+            --accent: #c4a882;
+            --accent-soft: #8b6b4a;
+            --border: #352f28;
+            --shadow: rgba(0, 0, 0, 0.45);
+        }
+
+        /* MODALITÀ FILOSOFICA */
+        body.theme-filosofico {
+            --bg: #e8e4dc;
+            --bg-surface: #f2efe8;
+            --text: #1e1b17;
+            --text-soft: #48423a;
+            --accent: #4a3d30;
+            --accent-soft: #9c8e7e;
+            --border: #c8c0b4;
+            --shadow: rgba(30, 27, 23, 0.1);
+        }
+
+        /* MODALITÀ MISTICA */
+        body.theme-mistica {
+            --bg: #1a1022;
+            --bg-surface: #23152e;
+            --text: #efe6f5;
+            --text-soft: #c4b0d4;
+            --accent: #d4af37;
+            --accent-soft: #b8962e;
+            --border: #3c2c4c;
+            --shadow: rgba(0, 0, 0, 0.5);
+        }
+
+        /* MODALITÀ CONTEMPLATIVA */
+        body.theme-contemplativa {
+            --bg: #eef0ea;
+            --bg-surface: #f6f8f3;
+            --text: #33382e;
+            --text-soft: #5e6654;
+            --accent: #5a7a4a;
+            --accent-soft: #9eb890;
+            --border: #ced4c4;
+            --shadow: rgba(51, 56, 46, 0.06);
+        }
+
+        /* MODALITÀ MONASTICO — nuova, ispirata alla pietra e al silenzio */
+        body.theme-monastico {
+            --bg: #e6e2d8;
+            --bg-surface: #f0ece3;
+            --text: #2c2a24;
+            --text-soft: #5a564c;
+            --accent: #7a6a52;
+            --accent-soft: #c0b49e;
+            --border: #d0c8b8;
+            --shadow: rgba(44, 42, 36, 0.08);
+            --font-serif: 'Garamond', 'EB Garamond', 'Georgia', serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-serif);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.85;
+            font-size: 1.05rem;
+            transition: background var(--transition), color var(--transition);
+            padding: 2rem 1.5rem 6rem;
+            min-height: 100vh;
+        }
+
+        /* ============================================================
+           LAYOUT
+           ============================================================ */
+        .container {
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 0 0.5rem;
+        }
+
+        /* ============================================================
+           HEADER
+           ============================================================ */
+        .article-header {
+            text-align: center;
+            padding: 3rem 0 2rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+
+        .article-header::after {
+            content: '✠';
+            position: absolute;
+            bottom: -0.85rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.1rem;
+            color: var(--accent);
+            background: var(--bg);
+            padding: 0 1rem;
+            transition: background var(--transition);
+        }
+
+        .article-title {
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            font-weight: 400;
+            letter-spacing: 0.04em;
+            line-height: 1.25;
+            margin-bottom: 0.3rem;
+        }
+
+        .article-title em {
+            font-style: italic;
+            color: var(--accent);
+        }
+
+        .article-subtitle {
+            font-size: 1.05rem;
+            color: var(--text-soft);
+            font-style: italic;
+            margin-top: 0.4rem;
+        }
+
+        .article-dates {
+            font-size: 0.9rem;
+            color: var(--text-soft);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-top: 0.6rem;
+        }
+
+        /* ============================================================
+           METADATI
+           ============================================================ */
+        .meta-info {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.2rem 2.5rem;
+            font-size: 0.82rem;
+            color: var(--text-soft);
+            padding: 1.2rem 0 2rem;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+        }
+
+        .meta-info span {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .meta-info .meta-icon {
+            font-size: 0.9rem;
+            color: var(--accent);
+            font-style: normal;
+        }
+
+        /* ============================================================
+           OPZIONI DI LETTURA
+           ============================================================ */
+        .reading-options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.6rem;
+            padding: 1.5rem 0 2.5rem;
+        }
+
+        .reading-btn {
+            font-family: var(--font-sans);
+            font-size: 0.78rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 0.5rem 1.2rem;
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            background: var(--bg-surface);
+            color: var(--text-soft);
+            cursor: pointer;
+            transition: all var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reading-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--accent);
+            opacity: 0;
+            transition: opacity var(--transition);
+            border-radius: inherit;
+        }
+
+        .reading-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .reading-btn:hover,
+        .reading-btn.active {
+            color: var(--bg-surface);
+            border-color: var(--accent);
+        }
+
+        .reading-btn:hover::before,
+        .reading-btn.active::before {
+            opacity: 1;
+        }
+
+        .reading-btn.active {
+            font-weight: 600;
+        }
+
+        /* ============================================================
+           SEZIONI ESPANDIBILI — bottoni originali con croce cistercense
+           ============================================================ */
+        .section {
+            margin-bottom: 1.1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--bg-surface);
+            overflow: hidden;
+            transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+        }
+
+        .section:hover {
+            box-shadow: 0 4px 18px var(--shadow);
+            border-color: var(--accent-soft);
+        }
+
+        .section-toggle {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            width: 100%;
+            padding: 1.25rem 1.6rem;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-family: var(--font-serif);
+            font-size: 1.12rem;
+            font-weight: 600;
+            color: var(--text);
+            text-align: left;
+            transition: color var(--transition);
+            position: relative;
+        }
+
+        .section-toggle:hover {
+            color: var(--accent);
+        }
+
+        /* Simbolo originale: una croce cistercense stilizzata che ruota */
+        .toggle-symbol {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.2rem;
+            height: 2.2rem;
+            border-radius: 6px;
+            border: 1.5px solid var(--accent-soft);
+            color: var(--accent);
+            font-size: 1.05rem;
+            flex-shrink: 0;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            background: transparent;
+        }
+
+        .toggle-symbol::before {
+            content: '✠';
+            display: block;
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+        }
+
+        .section.open .toggle-symbol {
+            background: var(--accent);
+            color: var(--bg-surface);
+            border-color: var(--accent);
+            border-radius: 50%;
+        }
+
+        .section.open .toggle-symbol::before {
+            transform: rotate(135deg);
+            content: '−';
+            font-size: 1.3rem;
+            line-height: 1;
+        }
+
+        .section.open .section-toggle {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-title {
+            flex: 1;
+            letter-spacing: 0.01em;
+        }
+
+        .section-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        padding 0.4s ease,
+                        opacity 0.4s ease;
+            opacity: 0;
+            padding: 0 1.6rem;
+        }
+
+        .section.open .section-content {
+            max-height: 3200px;
+            opacity: 1;
+            padding: 1.4rem 1.6rem 1.8rem;
+        }
+
+        .section-content p {
+            margin-bottom: 1rem;
+            color: var(--text-soft);
+        }
+
+        .section-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-content em {
+            color: var(--accent);
+            font-style: italic;
+        }
+
+        .section-content strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .section-content blockquote {
+            border-left: 3px solid var(--accent-soft);
+            padding: 0.8rem 0 0.8rem 1.4rem;
+            margin: 1.4rem 0;
+            font-style: italic;
+            color: var(--text);
+            font-size: 1.06rem;
+            position: relative;
+        }
+
+        .section-content blockquote::before {
+            content: '“';
+            font-size: 2.2rem;
+            color: var(--accent-soft);
+            position: absolute;
+            left: 0.4rem;
+            top: -0.3rem;
+            font-family: var(--font-serif);
+        }
+
+        .section-content blockquote cite {
+            display: block;
+            margin-top: 0.6rem;
+            font-size: 0.85rem;
+            color: var(--text-soft);
+            font-style: normal;
+            letter-spacing: 0.04em;
+        }
+
+        /* ============================================================
+           BACK LINK
+           ============================================================ */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 3rem;
+            padding: 0.7rem 1.6rem;
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            text-decoration: none;
+            color: var(--text-soft);
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            transition: all var(--transition);
+            background: var(--bg-surface);
+        }
+
+        .back-link:hover {
+            background: var(--accent);
+            color: var(--bg-surface);
+            border-color: var(--accent);
+            transform: translateX(-4px);
+        }
+
+        .back-link .arrow {
+            transition: transform var(--transition);
+        }
+
+        .back-link:hover .arrow {
+            transform: translateX(-4px);
+        }
+
+        /* ============================================================
+           FOOTER
+           ============================================================ */
+        .article-footer {
+            text-align: center;
+            padding-top: 3rem;
+            font-size: 0.82rem;
+            color: var(--text-soft);
+            font-style: italic;
+            letter-spacing: 0.04em;
+        }
+
+        .article-footer .ornament {
+            display: block;
+            font-size: 1.4rem;
+            color: var(--accent-soft);
+            margin-bottom: 1rem;
+        }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 600px) {
+            body {
+                padding: 1rem 0.8rem 4rem;
+                font-size: 1rem;
+            }
+
+            .section-toggle {
+                padding: 1rem 1rem;
+                font-size: 1rem;
+                gap: 0.8rem;
+            }
+
+            .section-content {
+                padding: 0 1rem;
+            }
+
+            .section.open .section-content {
+                padding: 1rem 1rem 1.4rem;
+            }
+
+            .reading-btn {
+                font-size: 0.7rem;
+                padding: 0.4rem 0.9rem;
+            }
+
+            .meta-info {
+                gap: 0.8rem 1.5rem;
+                font-size: 0.75rem;
+            }
+
+            .toggle-symbol {
+                width: 1.9rem;
+                height: 1.9rem;
+                font-size: 0.95rem;
+            }
+        }
+
+        /* ============================================================
+           SCROLLBAR (webkit)
+           ============================================================ */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-soft);
+            border-radius: 4px;
+        }
+
+        /* ============================================================
+           SELEZIONE
+           ============================================================ */
+        ::selection {
+            background: var(--accent-soft);
+            color: var(--bg-surface);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- ======================================================
+             HEADER
+             ====================================================== -->
+        <header class="article-header">
+            <h1 class="article-title">
+                Bernardo di <em>Chiaravalle</em>
+            </h1>
+            <p class="article-subtitle">
+                L'ultimo dei Padri della Chiesa · Abate, mistico e riformatore
+            </p>
+            <p class="article-dates">1090 – 1153</p>
+        </header>
+
+        <!-- ======================================================
+             METADATI
+             ====================================================== -->
+        <div class="meta-info">
+            <span><span class="meta-icon">✠</span> Fontaines-lès-Dijon, Borgogna</span>
+            <span><span class="meta-icon">❧</span> Abate di Clairvaux</span>
+            <span><span class="meta-icon">◈</span> Dottore della Chiesa (1174)</span>
+            <span><span class="meta-icon">✦</span> Ordine Cistercense</span>
+        </div>
+
+        <!-- ======================================================
+             OPZIONI DI LETTURA
+             ====================================================== -->
+        <nav class="reading-options" aria-label="Modalità di lettura">
+            <button class="reading-btn active" data-theme="normale" aria-label="Modalità normale">
+                <span>Normale</span>
+            </button>
+            <button class="reading-btn" data-theme="notturno" aria-label="Modalità notturna">
+                <span>Notturno</span>
+            </button>
+            <button class="reading-btn" data-theme="filosofico" aria-label="Modalità filosofica">
+                <span>Filosofico</span>
+            </button>
+            <button class="reading-btn" data-theme="mistica" aria-label="Modalità mistica">
+                <span>Mistico</span>
+            </button>
+            <button class="reading-btn" data-theme="contemplativa" aria-label="Modalità contemplativa">
+                <span>Contemplativo</span>
+            </button>
+            <button class="reading-btn" data-theme="monastico" aria-label="Modalità monastica">
+                <span>Monastico</span>
+            </button>
+        </nav>
+
+        <!-- ======================================================
+             SEZIONI
+             ====================================================== -->
+
+        <!-- 1. VITA -->
+        <section class="section" id="sezione-vita">
+            <button class="section-toggle" aria-expanded="false" aria-controls="contenuto-vita">
+                <span class="toggle-symbol"></span>
+                <span class="section-title">La vita di un monaco cistercense</span>
+            </button>
+            <div class="section-content" id="contenuto-vita" role="region">
+                <p>
+                    Bernardo nacque nel 1090 a <strong>Fontaines-lès-Dijon</strong>, in Borgogna,
+                    da una famiglia nobile e numerosa. La madre, Aleth, lo educò fin
+                    dall'infanzia a una pietà profonda; la sua morte, quando Bernardo
+                    aveva circa diciassette anni, segnò una svolta decisiva nella sua
+                    vocazione[reference:0].
+                </p>
+                <p>
+                    Dopo aver studiato le arti liberali — grammatica, retorica e dialettica —
+                    presso la scuola dei canonici di Châtillon-sur-Seine, maturò
+                    lentamente la decisione di entrare nella vita religiosa. Intorno
+                    ai vent'anni, nel <strong>1112</strong>, entrò nell'abbazia di
+                    <strong>Citeaux</strong>, una fondazione monastica nuova, più
+                    rigorosa e più agile rispetto ai grandi monasteri benedettini
+                    dell'epoca[reference:1].
+                </p>
+                <p>
+                    Nel <strong>1115</strong>, il terzo abate di Citeaux, santo Stefano
+                    Harding, lo inviò a fondare una nuova abbazia nella valle
+                    dell'Aube: <strong>Chiaravalle</strong> (<em>Clairvaux</em>). Bernardo
+                    aveva solo venticinque anni. Sotto la sua guida, la comunità crebbe
+                    rapidamente e divenne il centro propulsore di un movimento
+                    riformatore che avrebbe trasformato il volto del monachesimo
+                    occidentale[reference:2].
+                </p>
+                <p>
+                    Per tutta la vita, Bernardo desiderò «vivere immerso nella valle
+                    luminosa della contemplazione», ma fu costretto a un'attività
+                    instancabile: fondò <strong>68 monasteri</strong>, viaggiò in tutta
+                    Europa, intervenne nelle questioni più gravi della Chiesa e dei
+                    regni. Tutto, per lui, partiva dal silenzio della preghiera[reference:3].
+                </p>
+            </div>
+        </section>
+
+        <!-- 2. RIFORMA CISTERCENSE -->
+        <section class="section" id="sezione-riforma">
+            <button class="section-toggle" aria-expanded="false" aria-controls="contenuto-riforma">
+                <span class="toggle-symbol"></span>
+                <span class="section-title">Il riformatore: la povertà come splendore</span>
+            </button>
+            <div class="section-content" id="contenuto-riforma" role="region">
+                <p>
+                    La riforma cistercense nacque come reazione alla ricchezza e alla
+                    mondanità che avevano progressivamente contaminato l'antico
+                    monachesimo benedettino, in particolare quello cluniacense.
+                    Bernardo riprese con decisione i motivi più autentici della
+                    regola di san Benedetto: <strong>povertà</strong>,
+                    <strong>semplicità</strong>, <strong>lavoro manuale</strong>,
+                    <strong>austerità</strong> in ogni espressione della vita
+                    monastica[reference:4].
+                </p>
+                <p>
+                    L'<em>Apologia</em> indirizzata a Guglielmo di Saint-Thierry è il
+                    manifesto di questa riforma. Bernardo vi critica con ironia
+                    tagliente l'ostentazione liturgica e artistica dei cluniacensi,
+                    contrapponendovi la sobrietà cistercense: edifici poveri, canto
+                    semplice, mensa frugale. Eppure, proprio questa povertà
+                    divenne una forma di <strong>splendore</strong>: le abbazie
+                    cistercensi, con la loro architettura nuda e luminosa, sono
+                    tra le più alte espressioni dell'arte medievale[reference:5].
+                </p>
+                <p>
+                    Bernardo non fu il fondatore dell'ordine — quel ruolo spetta a
+                    Roberto di Molesmes e a Stefano Harding — ma ne fu il vero
+                    animatore e il principale diffusore. Per questo è considerato
+                    il «secondo fondatore» dei cistercensi, colui che ne fece
+                    una forza spirituale e culturale capace di irradiarsi in
+                    tutta Europa[reference:6].
+                </p>
+                <blockquote>
+                    «La via è l'umiltà, che conduce alla verità: la prima è la fatica;
+                    l'altra è il frutto della fatica.»
+                    <cite>— I gradi dell'umiltà e della superbia</cite>
+                </blockquote>
+            </div>
+        </section>
+
+        <!-- 3. TEOLOGIA DELL'AMORE -->
+        <section class="section" id="sezione-teologia">
+            <button class="section-toggle" aria-expanded="false" aria-controls="contenuto-teologia">
+                <span class="toggle-symbol"></span>
+                <span class="section-title">I quattro gradi dell'amore</span>
+            </button>
+            <div class="section-content" id="contenuto-teologia" role="region">
+                <p>
+                    Il trattato <strong><em>De diligendo Deo</em></strong> («Sull'amore di Dio»)
+                    è il cuore della teologia bernardiana. Qui il monaco cistercense
+                    descrive il cammino dell'anima verso Dio come un'ascesa
+                    progressiva attraverso <strong>quattro gradi dell'amore</strong>
+                    [reference:7].
+                </p>
+                <p>
+                    <strong>Primo grado:</strong> l'uomo ama sé stesso per sé. È l'amore
+                    istintivo e naturale, il punto di partenza di ogni creatura.
+                    <strong>Secondo grado:</strong> l'uomo comincia ad amare Dio,
+                    ma ancora <em>per sé</em>, perché ha bisogno di Lui, perché
+                    spera nel Suo aiuto. <strong>Terzo grado:</strong> l'anima
+                    passa ad amare Dio <em>per Dio</em>, non più per interesse,
+                    ma per la Sua bontà infinita. In questo grado, scrive
+                    Bernardo, «ci si ferma a lungo; anzi, non so se in questa
+                    vita sia possibile raggiungere il quarto». <strong>Quarto
+                    grado:</strong> l'uomo ama sé stesso <em>solo per Dio</em>,
+                    dimentico di sé, tutto proteso verso l'unione con Lui[reference:8].
+                </p>
+                <p>
+                    Questa scala dell'amore non è un esercizio intellettuale, ma
+                    il racconto di un'esperienza vissuta. Bernardo conosceva
+                    l'amore di Dio non come un concetto, ma come una presenza
+                    che brucia e trasforma. «Per lui», ha detto Benedetto XVI,
+                    «la forza più grande della vita spirituale è l'amore.
+                    Dio, che è Amore, crea l'uomo per amore e per amore lo
+                    riscatta»[reference:9].
+                </p>
+            </div>
+        </section>
+
+        <!-- 4. MISTICA E MARIA -->
+        <section class="section" id="sezione-mistica">
+            <button class="section-toggle" aria-expanded="false" aria-controls="contenuto-mistica">
+                <span class="toggle-symbol"></span>
+                <span class="section-title">Il Cantico e la stella del mare</span>
+            </button>
+            <div class="section-content" id="contenuto-mistica" role="region">
+                <p>
+                    Gli <strong>86 Sermoni sul Cantico dei Cantici</strong>, composti
+                    a partire dal 1135 e rimasti incompiuti alla morte, sono il
+                    vertice della mistica bernardiana. Bernardo vi commenta,
+                    versetto dopo versetto, il dialogo d'amore tra lo Sposo e
+                    la Sposa, interpretandolo come l'unione dell'anima con
+                    Cristo[reference:10].
+                </p>
+                <p>
+                    Per Bernardo, Cristo è tutto. «Quando discuti o parli nulla
+                    ha sapore per me, se non vi avrò sentito risuonare il nome
+                    di Gesù», scrive. E accanto a Gesù, inseparabile, c'è
+                    <strong>Maria</strong>, la Madre che conduce al Figlio. La
+                    sua devozione mariana ha lasciato pagine di una tenerezza
+                    ineguagliata:
+                </p>
+                <blockquote>
+                    «Nei pericoli, nelle angustie, nelle incertezze pensa a Maria,
+                    invoca Maria. Ella non si parta mai dal tuo labbro, non si
+                    parta mai dal tuo cuore. Se tu la segui, non puoi deviare;
+                    se tu la preghi, non puoi disperare; se tu pensi a lei,
+                    non puoi sbagliare.»
+                    <cite>— Omelia II super «Missus est»</cite>
+                </blockquote>
+                <p>
+                    Maria è per Bernardo la <em>Stella del mare</em>: colei che
+                    orienta il navigante nella notte, che indica la rotta verso
+                    il porto sicuro che è Cristo. La sua teologia mariana non
+                    è speculazione astratta, ma nutrimento per il cammino
+                    quotidiano del monaco e del credente[reference:11].
+                </p>
+            </div>
+        </section>
+
+        <!-- 5. AZIONE POLITICA E CROCIATA -->
+        <section class="section" id="sezione-azione">
+            <button class="section-toggle" aria-expanded="false" aria-controls="contenuto-azione">
+                <span class="toggle-symbol"></span>
+                <span class="section-title">Le due spade: Bernardo nella storia</span>
+            </button>
+            <div class="section-content" id="contenuto-azione" role="region">
+                <p>
+                    Bernardo non fu soltanto un mistico. Fu uno degli uomini più
+                    potenti del suo tempo, consigliere di papi e re, arbitro
+                    di contese che decidevano le sorti dell'Europa. Nel
+                    <strong>1130</strong>, al concilio di Étampes, si schierò
+                    con decisione a favore di <strong>Innocenzo II</strong>
+                    contro l'antipapa Anacleto II, contribuendo in modo
+                    decisivo alla vittoria del primo[reference:12].
+                </p>
+                <p>
+                    Il suo intervento più discusso fu la predicazione della
+                    <strong>Seconda Crociata</strong> (1146–1147). Su incarico
+                    di papa Eugenio III — già suo discepolo a Chiaravalle —
+                    Bernardo percorse la Francia e la Germania infiammando
+                    gli animi con la sua oratoria. La crociata si risolse
+                    in un disastro militare, e Bernardo ne fu profondamente
+                    turbato. Tuttavia, la sua predicazione rimane uno dei
+                    momenti in cui la parola di un monaco seppe muovere
+                    eserciti[reference:13].
+                </p>
+                <p>
+                    Fu anche il teorico della <strong>«nuova milizia»</strong>:
+                    nel <em>De laude novae militiae</em> diede forma spirituale
+                    all'ordine dei <strong>Templari</strong>, fondato da Ugo di
+                    Payns nel 1119. Per Bernardo, il cavaliere templare è
+                    insieme monaco e soldato, e la sua lotta è prima di tutto
+                    interiore: contro il male che abita in sé[reference:14].
+                </p>
+                <p>
+                    Combatté con forza le eresie del suo tempo — quelle di
+                    Abelardo, di Gilberto Porretano, dei Catari — e difese
+                    gli ebrei dalle violenze che accompagnavano la
+                    predicazione crociata, condannando con fermezza
+                    ogni rigurgito di antisemitismo[reference:15].
+                </p>
+            </div>
+        </section>
+
+        <!-- 6. EREDITÀ -->
+        <section class="section" id="sezione-eredita">
+            <button class="section-toggle" aria-expanded="false" aria-controls="contenuto-eredita">
+                <span class="toggle-symbol"></span>
+                <span class="section-title">L'ultimo dei Padri</span>
+            </button>
+            <div class="section-content" id="contenuto-eredita" role="region">
+                <p>
+                    Bernardo morì il <strong>20 agosto 1153</strong> a Chiaravalle.
+                    Fu canonizzato nel <strong>1174</strong> da papa Alessandro III
+                    e proclamato <strong>Dottore della Chiesa</strong> nel 1830.
+                    Benedetto XVI lo ha definito «l'ultimo dei Padri» perché,
+                    nel XII secolo, seppe rinnovare e rendere presente la grande
+                    teologia dei Padri della Chiesa[reference:16].
+                </p>
+                <p>
+                    La sua eredità è immensa. L'ordine cistercense, alla sua
+                    morte, contava oltre <strong>300 monasteri</strong> diffusi
+                    in tutta Europa, e nel secolo successivo sarebbe
+                    diventato uno dei più potenti motori della cultura,
+                    dell'economia e della spiritualità medievale[reference:17].
+                </p>
+                <p>
+                    Ma l'eredità più profonda di Bernardo è un modo di
+                    intendere la fede come <strong>amicizia con Dio</strong>,
+                    come dialogo d'amore, come cammino di trasformazione
+                    interiore. La sua teologia non è un sistema di
+                    concetti, ma il racconto di un incontro. «La forza
+                    più grande della vita spirituale è l'amore», ha
+                    scritto. E tutto il suo insegnamento, tutta la sua
+                    azione, tutta la sua vita sono l'eco di questa
+                    verità semplice e inesauribile[reference:18].
+                </p>
+                <blockquote>
+                    «Ama il Signore senza misura, perché la misura
+                    dell'amore è amare senza misura.»
+                    <cite>— De diligendo Deo</cite>
+                </blockquote>
+            </div>
+        </section>
+
+        <!-- ======================================================
+             BACK LINK
+             ====================================================== -->
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="../index.html" class="back-link">
+                <span class="arrow">←</span>
+                Torna a Echi di Sofia
+            </a>
+        </div>
+
+        <!-- ======================================================
+             FOOTER
+             ====================================================== -->
+        <footer class="article-footer">
+            <span class="ornament">✠</span>
+            <p>Echi di Sofia · Voci che attraversano il tempo</p>
+            <p style="margin-top: 0.4rem; font-size: 0.75rem;">
+                Bernardo di Chiaravalle · 1090–1153
+            </p>
+        </footer>
+
+    </div>
+
+    <!-- ======================================================
+         JAVASCRIPT
+         ====================================================== -->
+    <script>
+        (function() {
+            'use strict';
+
+            /* ---------- SEZIONI ESPANDIBILI ---------- */
+            const sections = document.querySelectorAll('.section');
+
+            sections.forEach(function(section) {
+                const toggle = section.querySelector('.section-toggle');
+                const symbol = section.querySelector('.toggle-symbol');
+
+                toggle.addEventListener('click', function() {
+                    const isOpen = section.classList.contains('open');
+
+                    // Chiudi tutte le altre (comportamento a fisarmonica)
+                    sections.forEach(function(other) {
+                        if (other !== section && other.classList.contains('open')) {
+                            other.classList.remove('open');
+                            other.querySelector('.section-toggle')
+                                .setAttribute('aria-expanded', 'false');
+                        }
+                    });
+
+                    // Apri/chiudi la sezione corrente
+                    section.classList.toggle('open');
+                    const nowOpen = section.classList.contains('open');
+
+                    toggle.setAttribute('aria-expanded', String(nowOpen));
+                });
+            });
+
+            // Apri la prima sezione di default
+            if (sections.length > 0) {
+                const first = sections[0];
+                first.classList.add('open');
+                first.querySelector('.section-toggle')
+                    .setAttribute('aria-expanded', 'true');
+            }
+
+            /* ---------- OPZIONI DI LETTURA ---------- */
+            const readingBtns = document.querySelectorAll('.reading-btn');
+            const body = document.body;
+
+            readingBtns.forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    const theme = this.getAttribute('data-theme');
+
+                    // Rimuovi tutte le classi tema
+                    body.classList.remove(
+                        'theme-notturno',
+                        'theme-filosofico',
+                        'theme-mistica',
+                        'theme-contemplativa',
+                        'theme-monastico'
+                    );
+
+                    // Applica il tema scelto (se non è "normale")
+                    if (theme !== 'normale') {
+                        body.classList.add('theme-' + theme);
+                    }
+
+                    // Aggiorna lo stato attivo dei bottoni
+                    readingBtns.forEach(function(b) {
+                        b.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                });
+            });
+
+            /* ---------- ACCESSIBILITÀ: TASTIERA ---------- */
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    sections.forEach(function(section) {
+                        if (section.classList.contains('open')) {
+                            section.classList.remove('open');
+                            section.querySelector('.section-toggle')
+                                .setAttribute('aria-expanded', 'false');
+                        }
+                    });
+                }
+            });
+
+        })();
+    </script>
+
+</body>
+</html>
