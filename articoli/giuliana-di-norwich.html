@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giuliana di Norwich · Echi di Sofia</title>
+    <meta name="description" content="Giuliana di Norwich (1342–1416): anacoreta, mistica e teologa inglese. Le Rivelazioni dell'Amore Divino e la certezza che «tutto andrà bene».">
+    <meta name="author" content="Echi di Sofia">
+    <meta name="keywords" content="Giuliana di Norwich, mistica, anacoreta, Rivelazioni dell'Amore Divino, teologia, medioevo inglese">
+    <meta property="og:title" content="Giuliana di Norwich · Echi di Sofia">
+    <meta property="og:description" content="La mistica che vide l'amore di Dio e disse: tutto andrà bene.">
+    <meta property="og:type" content="article">
+    <meta name="theme-color" content="#f4efe9">
+    <style>
+        /* ============================================================
+           RESET E VARIABILI
+           ============================================================ */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #f4efe9;
+            --bg-surface: #faf7f3;
+            --text: #2b2620;
+            --text-soft: #5a5248;
+            --accent: #8b6b4a;
+            --accent-soft: #c4a882;
+            --border: #d9cfc2;
+            --shadow: rgba(43, 38, 32, 0.08);
+            --font-serif: 'Georgia', 'Times New Roman', serif;
+            --font-sans: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+            --radius: 12px;
+            --transition: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* MODALITÀ NOTTURNA */
+        body.theme-notturno {
+            --bg: #14100d;
+            --bg-surface: #1c1814;
+            --text: #e8e0d5;
+            --text-soft: #b5a898;
+            --accent: #c4a882;
+            --accent-soft: #8b6b4a;
+            --border: #3a322a;
+            --shadow: rgba(0, 0, 0, 0.4);
+        }
+
+        /* MODALITÀ FILOSOFICA */
+        body.theme-filosofico {
+            --bg: #ece8e0;
+            --bg-surface: #f5f2ec;
+            --text: #1f1c18;
+            --text-soft: #4a443c;
+            --accent: #5c4a3a;
+            --accent-soft: #a09080;
+            --border: #ccc4b8;
+            --shadow: rgba(31, 28, 24, 0.1);
+            --font-serif: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+        }
+
+        /* MODALITÀ MISTICA */
+        body.theme-mistica {
+            --bg: #1a1025;
+            --bg-surface: #241630;
+            --text: #efe6f5;
+            --text-soft: #c4b0d4;
+            --accent: #d4af37;
+            --accent-soft: #b8962e;
+            --border: #3e2e50;
+            --shadow: rgba(0, 0, 0, 0.5);
+        }
+
+        /* MODALITÀ CONTEMPLATIVA */
+        body.theme-contemplativa {
+            --bg: #f0ede5;
+            --bg-surface: #f8f6f0;
+            --text: #3a3630;
+            --text-soft: #6a6458;
+            --accent: #7a8b6e;
+            --accent-soft: #a8b89e;
+            --border: #d2cec4;
+            --shadow: rgba(58, 54, 48, 0.06);
+            --font-serif: 'Garamond', 'EB Garamond', 'Georgia', serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-serif);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.85;
+            font-size: 1.05rem;
+            transition: background var(--transition), color var(--transition);
+            padding: 2rem 1.5rem 6rem;
+            min-height: 100vh;
+        }
+
+        /* ============================================================
+           LAYOUT
+           ============================================================ */
+        .container {
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 0 0.5rem;
+        }
+
+        /* ============================================================
+           HEADER
+           ============================================================ */
+        .article-header {
+            text-align: center;
+            padding: 3rem 0 2rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+
+        .article-header::after {
+            content: '❧';
+            position: absolute;
+            bottom: -0.8rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.2rem;
+            color: var(--accent);
+            background: var(--bg);
+            padding: 0 1rem;
+            transition: background var(--transition);
+        }
+
+        .article-title {
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            font-weight: 400;
+            letter-spacing: 0.04em;
+            line-height: 1.25;
+            margin-bottom: 0.3rem;
+        }
+
+        .article-title em {
+            font-style: italic;
+            color: var(--accent);
+        }
+
+        .article-subtitle {
+            font-size: 1.05rem;
+            color: var(--text-soft);
+            font-style: italic;
+            margin-top: 0.4rem;
+        }
+
+        .article-dates {
+            font-size: 0.9rem;
+            color: var(--text-soft);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-top: 0.6rem;
+        }
+
+        /* ============================================================
+           METADATI
+           ============================================================ */
+        .meta-info {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.2rem 2.5rem;
+            font-size: 0.82rem;
+            color: var(--text-soft);
+            padding: 1.2rem 0 2rem;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+        }
+
+        .meta-info span {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .meta-info .meta-icon {
+            font-size: 0.9rem;
+            color: var(--accent);
+            font-style: normal;
+        }
+
+        /* ============================================================
+           OPZIONI DI LETTURA
+           ============================================================ */
+        .reading-options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.6rem;
+            padding: 1.5rem 0 2.5rem;
+        }
+
+        .reading-btn {
+            font-family: var(--font-sans);
+            font-size: 0.78rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 0.5rem 1.2rem;
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            background: var(--bg-surface);
+            color: var(--text-soft);
+            cursor: pointer;
+            transition: all var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reading-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--accent);
+            opacity: 0;
+            transition: opacity var(--transition);
+            border-radius: inherit;
+        }
+
+        .reading-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .reading-btn:hover,
+        .reading-btn.active {
+            color: var(--bg-surface);
+            border-color: var(--accent);
+        }
+
+        .reading-btn:hover::before,
+        .reading-btn.active::before {
+            opacity: 1;
+        }
+
+        .reading-btn.active {
+            font-weight: 600;
+        }
+
+        /* ============================================================
+           SEZIONI ESPANDIBILI
+           ============================================================ */
+        .section {
+            margin-bottom: 1.2rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--bg-surface);
+            overflow: hidden;
+            transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+        }
+
+        .section:hover {
+            box-shadow: 0 4px 18px var(--shadow);
+            border-color: var(--accent-soft);
+        }
+
+        .section-toggle {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            width: 100%;
+            padding: 1.3rem 1.6rem;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-family: var(--font-serif);
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text);
+            text-align: left;
+            transition: color var(--transition);
+            position: relative;
+        }
+
+        .section-toggle:hover {
+            color: var(--accent);
+        }
+
+        /* Simbolo originale: una goccia d'inchiostro che ruota */
+        .toggle-symbol {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.2rem;
+            height: 2.2rem;
+            border-radius: 50%;
+            border: 1.5px solid var(--accent-soft);
+            color: var(--accent);
+            font-size: 1rem;
+            flex-shrink: 0;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        }
+
+        .section.open .toggle-symbol {
+            transform: rotate(135deg);
+            background: var(--accent);
+            color: var(--bg-surface);
+            border-color: var(--accent);
+        }
+
+        .section.open .section-toggle {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-title {
+            flex: 1;
+            letter-spacing: 0.01em;
+        }
+
+        .section-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        padding 0.4s ease,
+                        opacity 0.4s ease;
+            opacity: 0;
+            padding: 0 1.6rem;
+        }
+
+        .section.open .section-content {
+            max-height: 3000px;
+            opacity: 1;
+            padding: 1.4rem 1.6rem 1.8rem;
+        }
+
+        .section-content p {
+            margin-bottom: 1rem;
+            color: var(--text-soft);
+        }
+
+        .section-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-content em {
+            color: var(--accent);
+            font-style: italic;
+        }
+
+        .section-content strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .section-content blockquote {
+            border-left: 3px solid var(--accent-soft);
+            padding: 0.8rem 0 0.8rem 1.4rem;
+            margin: 1.4rem 0;
+            font-style: italic;
+            color: var(--text);
+            font-size: 1.08rem;
+            position: relative;
+        }
+
+        .section-content blockquote::before {
+            content: '“';
+            font-size: 2.2rem;
+            color: var(--accent-soft);
+            position: absolute;
+            left: 0.4rem;
+            top: -0.3rem;
+            font-family: var(--font-serif);
+        }
+
+        .section-content blockquote cite {
+            display: block;
+            margin-top: 0.6rem;
+            font-size: 0.85rem;
+            color: var(--text-soft);
+            font-style: normal;
+            letter-spacing: 0.04em;
+        }
+
+        /* ============================================================
+           BACK LINK
+           ============================================================ */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 3rem;
+            padding: 0.7rem 1.6rem;
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            text-decoration: none;
+            color: var(--text-soft);
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            transition: all var(--transition);
+            background: var(--bg-surface);
+        }
+
+        .back-link:hover {
+            background: var(--accent);
+            color: var(--bg-surface);
+            border-color: var(--accent);
+            transform: translateX(-4px);
+        }
+
+        .back-link .arrow {
+            transition: transform var(--transition);
+        }
+
+        .back-link:hover .arrow {
+            transform: translateX(-4px);
+        }
+
+        /* ============================================================
+           FOOTER
+           ============================================================ */
+        .article-footer {
+            text-align: center;
+            padding-top: 3rem;
+            font-size: 0.82rem;
+            color: var(--text-soft);
+            font-style: italic;
+            letter-spacing: 0.04em;
+        }
+
+        .article-footer .ornament {
+            display: block;
+            font-size: 1.4rem;
+            color: var(--accent-soft);
+            margin-bottom: 1rem;
+        }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 600px) {
+            body {
+                padding: 1rem 0.8rem 4rem;
+                font-size: 1rem;
+            }
+
+            .section-toggle {
+                padding: 1rem 1rem;
+                font-size: 1rem;
+            }
+
+            .section-content {
+                padding: 0 1rem;
+            }
+
+            .section.open .section-content {
+                padding: 1rem 1rem 1.4rem;
+            }
+
+            .reading-btn {
+                font-size: 0.7rem;
+                padding: 0.4rem 0.9rem;
+            }
+
+            .meta-info {
+                gap: 0.8rem 1.5rem;
+                font-size: 0.75rem;
+            }
+        }
+
+        /* ============================================================
+           SCROLLBAR (webkit)
+           ============================================================ */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-soft);
+            border-radius: 4px;
+        }
+
+        /* ============================================================
+           SELEZIONE
+           ============================================================ */
+        ::selection {
+            background: var(--accent-soft);
+            color: var(--bg-surface);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- ======================================================
+             HEADER
+             ====================================================== -->
+        <header class="article-header">
+            <h1 class="article-title">
+                Giuliana di <em>Norwich</em>
+            </h1>
+            <p class="article-subtitle">
+                Anacoreta, mistica e teologa dell'Amore Divino
+            </p>
+            <p class="article-dates">1342 – 1416</p>
+        </header>
+
+        <!-- ======================================================
+             METADATI
+             ====================================================== -->
+        <div class="meta-info">
+            <span><span class="meta-icon">❧</span> Norwich, Inghilterra</span>
+            <span><span class="meta-icon">✧</span> Rivelazioni dell'Amore Divino</span>
+            <span><span class="meta-icon">◈</span> Mistica e Teologa</span>
+            <span><span class="meta-icon">⟡</span> Chiesa Cattolica e Anglicana</span>
+        </div>
+
+        <!-- ======================================================
+             OPZIONI DI LETTURA
+             ====================================================== -->
+        <nav class="reading-options" aria-label="Modalità di lettura">
+            <button class="reading-btn active" data-theme="normale" aria-label="Modalità normale">
+                <span>Normale</span>
+            </button>
+            <button class="reading-btn" data-theme="notturno" aria-label="Modalità notturna">
+                <span>Notturno</span>
+            </button>
+            <button class="reading-btn" data-theme="filosofico" aria-label="Modalità filosofica">
+                <span>Filosofico</span>
+            </button>
+            <button class="reading-btn" data-theme="mistica" aria-label="Modalità mistica">
+                <span>Mistico</span>
+            </button>
+            <button class="reading-btn" data-theme="contemplativa" aria-label="Modalità contemplativa">
+                <span>Contemplativo</span>
+            </button>
+        </nav>
+
+        <!-- ======================================================
+             SEZIONI
+             ====================================================== -->
+
+        <!-- 1. VITA -->
+        <section class="section" id="sezione-vita">
+            <button class="section-toggle" aria-expanded="false" aria-controls="contenuto-vita">
+                <span class="toggle-symbol">+</span>
+                <span class="section-title">La vita di una reclusa</span>
+            </button>
+            <div class="section-content" id="contenuto-vita" role="region">
+                <p>
+                    Di Giuliana di Norwich (1342–1416 circa) sappiamo pochissimo, e quel poco
+                    ci giunge quasi interamente dalle sue stesse parole. Visse a Norwich,
+                    un'importante città mercantile dell'Inghilterra orientale, in un secolo
+                    segnato dalla peste nera, dalla guerra dei Cent'anni e dallo scisma
+                    d'Occidente. La sua esistenza attraversa le rovine di un mondo che crolla
+                    e di una fede che cerca nuove forme per dire l'indicibile.
+                </p>
+                <p>
+                    Nel maggio del 1373, a trent'anni e mezzo, fu colpita da una malattia
+                    gravissima. Convinta di essere in punto di morte, chiese il conforto
+                    degli ultimi sacramenti. Mentre il sacerdote le mostrava il crocifisso,
+                    ricevette una serie di <strong>sedici visioni</strong> — le <em>shewings</em>
+                    — che trasformarono radicalmente la sua comprensione di Dio e di se stessa.
+                    Guarita contro ogni previsione, scelse di vivere come <strong>anacoreta</strong>
+                    in una piccola cella annessa alla chiesa di San Giuliano, nel cuore di
+                    Norwich. Da quel momento, come scrisse, fu «totalmente dedita alla
+                    preghiera, alla meditazione e allo studio»[reference:0].
+                </p>
+                <p>
+                    La sua cella aveva tre finestre: una verso l'interno della chiesa, per
+                    seguire la liturgia; una verso l'esterno, per ricevere i visitatori; e
+                    una verso la casa della serva che si prendeva cura di lei. Da quelle
+                    finestre passavano consolazione e sapienza: molti la cercavano per
+                    consiglio spirituale, e la sua reputazione di santità si diffuse ben oltre
+                    le mura di Norwich[reference:1].
+                </p>
+            </div>
+        </section>
+
+        <!-- 2. CONTESTO STORICO -->
+        <section class="section" id="sezione-contesto">
+            <button class="section-toggle" aria-expanded="false" aria-controls="contenuto-contesto">
+                <span class="toggle-symbol">+</span>
+                <span class="section-title">Un secolo di ferro e di fuoco</span>
+            </button>
+            <div class="section-content" id="contenuto-contesto" role="region">
+                <p>
+                    Giuliana nacque in un tempo di catastrofi. La <strong>peste nera</strong>
+                    raggiunse Norwich nel 1349, quando lei aveva appena sei o sette anni.
+                    La città perse quasi la metà dei suoi abitanti; interi quartieri si
+                    svuotarono, le campane suonavano senza sosta per i morti. La mortalità
+                    infantile, la carestia, le rivolte contadine — tutto contribuiva a
+                    un clima di angoscia collettiva[reference:2].
+                </p>
+                <p>
+                    Sul piano politico, l'Inghilterra era impegnata nella <strong>Guerra dei
+                    Cent'anni</strong> contro la Francia. Sul piano religioso, la Chiesa
+                    viveva lo <strong>scisma d'Occidente</strong> (1378–1417): due, poi tre
+                    papi si contendevano la cattedra di Pietro. In questo paesaggio di
+                    rovine, la voce di una donna reclusa in una cella di Norwich si levò
+                    a ricordare che Dio è amore, e che l'amore non conosce sconfitta.
+                </p>
+                <blockquote>
+                    «Tutto andrà bene, e ogni cosa sarà per il bene.»
+                    <cite>— Giuliana di Norwich, Rivelazioni dell'Amore Divino</cite>
+                </blockquote>
+            </div>
+        </section>
+
+        <!-- 3. LE RIVELAZIONI -->
+        <section class="section" id="sezione-rivelazioni">
+            <button class="section-toggle" aria-expanded="false" aria-controls="contenuto-rivelazioni">
+                <span class="toggle-symbol">+</span>
+                <span class="section-title">Le Rivelazioni dell'Amore Divino</span>
+            </button>
+            <div class="section-content" id="contenuto-rivelazioni" role="region">
+                <p>
+                    L'opera di Giuliana ci è giunta in due versioni. Il <strong>Testo Breve</strong>
+                    (<em>Short Text</em>), composto poco dopo le visioni, è un resoconto
+                    immediato, quasi diaristico, dell'esperienza mistica. Circa vent'anni
+                    dopo, Giuliana riprese quel materiale e lo trasformò nel <strong>Testo
+                    Lungo</strong> (<em>Long Text</em>), un trattato teologico di straordinaria
+                    profondità, in cui la veggente diventa teologa[reference:3].
+                </p>
+                <p>
+                    Il cuore dell'opera è la <strong>Rivelazione dell'Amore</strong>: Dio non
+                    è un giudice adirato, ma un amore che tutto avvolge e tutto trasforma.
+                    In una delle visioni centrali, Giuliana vide un piccolo oggetto,
+                    simile a una nocciola, nella palma della sua mano. Le fu detto:
+                    <em>«È tutto ciò che è stato creato.»</em> E le fu rivelato che
+                    quell'oggetto esiste, e esisterà sempre, perché Dio lo ama.
+                </p>
+                <p>
+                    La sua riflessione affronta il problema del male e della dannazione con
+                    un'audacia che ancora oggi sorprende. Pur senza negare la dottrina
+                    tradizionale, Giuliana osa sperare che <strong>tutto</strong> —
+                    letteralmente tutto — sia ricondotto al bene. Questa tensione tra
+                    l'insegnamento della Chiesa e l'esperienza mistica è il motore segreto
+                    del Testo Lungo[reference:4].
+                </p>
+            </div>
+        </section>
+
+        <!-- 4. TEOLOGIA -->
+        <section class="section" id="sezione-teologia">
+            <button class="section-toggle" aria-expanded="false" aria-controls="contenuto-teologia">
+                <span class="toggle-symbol">+</span>
+                <span class="section-title">Dio nostro Padre, Dio nostra Madre</span>
+            </button>
+            <div class="section-content" id="contenuto-teologia" role="region">
+                <p>
+                    La teologia di Giuliana è una delle più originali del Medioevo. La sua
+                    intuizione più celebre è quella della <strong>maternità di Dio</strong>.
+                    Non si tratta di una semplice metafora: Giuliana sviluppa una vera e
+                    propria teologia trinitaria in cui Cristo è <em>nostra vera Madre</em>,
+                    che ci genera, ci nutre e ci custodisce[reference:5].
+                </p>
+                <p>
+                    «Come veramente Dio è nostro Padre, così veramente Dio è nostra
+                    Madre», scrive. E ancora: «Gesù è nostra vera Madre; noi siamo
+                    generati da Lui, e da Lui siamo nutriti»[reference:6].
+                    Questa immagine, audace e tenera, non nasce da un progetto
+                    ideologico, ma dall'esperienza vissuta: nella visione, Giuliana
+                    vide Cristo sofferente e, insieme, vide in Lui la cura materna
+                    che non abbandona mai il figlio.
+                </p>
+                <p>
+                    Thomas Merton, il grande contemplativo del Novecento, disse che
+                    Giuliana «è senza dubbio la più grande dei mistici inglesi. Non solo:
+                    è una delle più grandi teologhe inglesi»[reference:7]. La sua
+                    capacità di unire l'esperienza visionaria e la riflessione dottrinale
+                    fa di lei una figura unica nella storia della spiritualità cristiana.
+                </p>
+            </div>
+        </section>
+
+        <!-- 5. EREDITÀ -->
+        <section class="section" id="sezione-eredita">
+            <button class="section-toggle" aria-expanded="false" aria-controls="contenuto-eredita">
+                <span class="toggle-symbol">+</span>
+                <span class="section-title">L'eco che non si spegne</span>
+            </button>
+            <div class="section-content" id="contenuto-eredita" role="region">
+                <p>
+                    Dopo la sua morte, l'opera di Giuliana sopravvisse in pochi manoscritti,
+                    custoditi da monache benedettine e brigidine. Fu riscoperta nel
+                    Seicento, poi tradotta e diffusa nel Novecento, fino a diventare
+                    uno dei testi spirituali più letti al mondo.
+                </p>
+                <p>
+                    Oggi Giuliana è venerata sia dalla <strong>Chiesa Cattolica</strong>
+                    che dalla <strong>Comunione Anglicana</strong>. Il suo messaggio
+                    — che Dio è amore, che l'amore è la sostanza stessa della realtà,
+                    che <em>«tutto andrà bene»</em> — risuona con particolare forza
+                    nei momenti di crisi. Durante la pandemia di COVID-19, le sue
+                    parole sono state riprese in tutto il mondo come un balsamo
+                    per l'anima[reference:8].
+                </p>
+                <p>
+                    La sua cella, ancora visibile accanto alla chiesa di San Giuliano
+                    a Norwich, è meta di pellegrinaggi. Ma forse il suo vero lascito
+                    è un modo di guardare il mondo: con gli occhi di chi ha visto
+                    l'amore più grande e non può più dimenticarlo.
+                </p>
+                <blockquote>
+                    «L'amore era il suo significato. Chi te lo rivela? L'amore.
+                    Perché te lo rivela? Per amore.»
+                    <cite>— Rivelazioni dell'Amore Divino, cap. 86</cite>
+                </blockquote>
+            </div>
+        </section>
+
+        <!-- ======================================================
+             BACK LINK
+             ====================================================== -->
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="../index.html" class="back-link">
+                <span class="arrow">←</span>
+                Torna a Echi di Sofia
+            </a>
+        </div>
+
+        <!-- ======================================================
+             FOOTER
+             ====================================================== -->
+        <footer class="article-footer">
+            <span class="ornament">❧</span>
+            <p>Echi di Sofia · Voci che attraversano il tempo</p>
+            <p style="margin-top: 0.4rem; font-size: 0.75rem;">
+                Giuliana di Norwich · 1342–1416
+            </p>
+        </footer>
+
+    </div>
+
+    <!-- ======================================================
+         JAVASCRIPT
+         ====================================================== -->
+    <script>
+        (function() {
+            'use strict';
+
+            /* ---------- SEZIONI ESPANDIBILI ---------- */
+            const sections = document.querySelectorAll('.section');
+
+            sections.forEach(function(section) {
+                const toggle = section.querySelector('.section-toggle');
+                const content = section.querySelector('.section-content');
+                const symbol = section.querySelector('.toggle-symbol');
+
+                toggle.addEventListener('click', function() {
+                    const isOpen = section.classList.contains('open');
+
+                    // Chiudi tutte le altre (comportamento a fisarmonica)
+                    sections.forEach(function(other) {
+                        if (other !== section && other.classList.contains('open')) {
+                            other.classList.remove('open');
+                            other.querySelector('.section-toggle')
+                                .setAttribute('aria-expanded', 'false');
+                            other.querySelector('.toggle-symbol')
+                                .textContent = '+';
+                        }
+                    });
+
+                    // Apri/chiudi la sezione corrente
+                    section.classList.toggle('open');
+                    const nowOpen = section.classList.contains('open');
+
+                    toggle.setAttribute('aria-expanded', String(nowOpen));
+                    symbol.textContent = nowOpen ? '−' : '+';
+                });
+            });
+
+            // Apri la prima sezione di default
+            if (sections.length > 0) {
+                const first = sections[0];
+                first.classList.add('open');
+                first.querySelector('.section-toggle')
+                    .setAttribute('aria-expanded', 'true');
+                first.querySelector('.toggle-symbol')
+                    .textContent = '−';
+            }
+
+            /* ---------- OPZIONI DI LETTURA ---------- */
+            const readingBtns = document.querySelectorAll('.reading-btn');
+            const body = document.body;
+
+            readingBtns.forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    const theme = this.getAttribute('data-theme');
+
+                    // Rimuovi tutte le classi tema
+                    body.classList.remove(
+                        'theme-notturno',
+                        'theme-filosofico',
+                        'theme-mistica',
+                        'theme-contemplativa'
+                    );
+
+                    // Applica il tema scelto (se non è "normale")
+                    if (theme !== 'normale') {
+                        body.classList.add('theme-' + theme);
+                    }
+
+                    // Aggiorna lo stato attivo dei bottoni
+                    readingBtns.forEach(function(b) {
+                        b.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                });
+            });
+
+            /* ---------- ACCESSIBILITÀ: TASTIERA ---------- */
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    sections.forEach(function(section) {
+                        if (section.classList.contains('open')) {
+                            section.classList.remove('open');
+                            section.querySelector('.section-toggle')
+                                .setAttribute('aria-expanded', 'false');
+                            section.querySelector('.toggle-symbol')
+                                .textContent = '+';
+                        }
+                    });
+                }
+            });
+
+        })();
+    </script>
+
+</body>
+</html>
