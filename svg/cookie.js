@@ -1,7 +1,7 @@
 
 /* ==========================================================
    ECHI DI SOFIA — COOKIE CONSENT
-   Sistema autonomo di gestione delle preferenze
+   Gestione autonoma delle preferenze
 ========================================================== */
 
 (() => {
@@ -10,7 +10,7 @@
     const CONSENT_KEY = "echiCookieConsent.v1";
 
     /* ------------------------------------------------------
-       Lettura / salvataggio consenso
+       Lettura e salvataggio
     ------------------------------------------------------ */
 
     function loadConsent() {
@@ -22,33 +22,36 @@
         }
     }
 
-    function saveConsent(consent) {
+    function saveConsent(preferences, external) {
         try {
             localStorage.setItem(
                 CONSENT_KEY,
                 JSON.stringify({
                     necessary: true,
-                    preferences: Boolean(consent.preferences),
-                    external: Boolean(consent.external),
+                    preferences: Boolean(preferences),
+                    external: Boolean(external),
                     savedAt: new Date().toISOString()
                 })
             );
         } catch {
-            /* Se localStorage non è disponibile, il sito continua a funzionare. */
+            /* Il sito continua a funzionare anche senza localStorage. */
         }
     }
 
     /* ------------------------------------------------------
-       Creazione banner
+       Creazione dell'interfaccia
     ------------------------------------------------------ */
 
-    function createCookieInterface() {
-        if (document.getElementById("echi-cookie-banner")) return;
+    function createInterface() {
 
-        const wrapper = document.createElement("div");
-        wrapper.id = "echi-cookie-container";
+        if (document.getElementById("echi-cookie-container")) {
+            return;
+        }
 
-        wrapper.innerHTML = `
+        const container = document.createElement("div");
+        container.id = "echi-cookie-container";
+
+        container.innerHTML = `
             <section
                 id="echi-cookie-banner"
                 class="echi-cookie-banner"
@@ -58,10 +61,14 @@
                 aria-describedby="echi-cookie-description"
                 hidden
             >
+
                 <div class="echi-cookie-content">
 
                     <div class="echi-cookie-text">
-                        <h2 id="echi-cookie-title">La tua privacy conta</h2>
+
+                        <h2 id="echi-cookie-title">
+                            La tua privacy conta
+                        </h2>
 
                         <p id="echi-cookie-description">
                             Echi di Sofia utilizza tecnologie necessarie
@@ -69,9 +76,11 @@
                             contenuti forniti da servizi esterni.
                             Puoi scegliere come gestire le tue preferenze.
                         </p>
+
                     </div>
 
                     <div class="echi-cookie-actions">
+
                         <button
                             type="button"
                             class="echi-cookie-button echi-cookie-secondary"
@@ -103,10 +112,13 @@
                         >
                             Accetta
                         </button>
+
                     </div>
 
                 </div>
+
             </section>
+
 
             <section
                 id="echi-cookie-modal"
@@ -116,9 +128,11 @@
                 aria-labelledby="echi-cookie-modal-title"
                 hidden
             >
+
                 <div class="echi-cookie-modal-box">
 
                     <div class="echi-cookie-modal-header">
+
                         <h2 id="echi-cookie-modal-title">
                             Personalizza cookie
                         </h2>
@@ -131,46 +145,61 @@
                         >
                             ×
                         </button>
+
                     </div>
+
 
                     <div class="echi-cookie-options">
 
                         <div class="echi-cookie-option">
+
                             <div>
                                 <h3>Necessari</h3>
+
                                 <p>
-                                    Necessari per il funzionamento essenziale
-                                    del sito. Sono sempre attivi.
+                                    Necessari per il funzionamento
+                                    essenziale del sito. Sono sempre attivi.
                                 </p>
                             </div>
 
                             <span class="echi-cookie-always">
                                 Sempre attivi
                             </span>
+
                         </div>
 
+
                         <div class="echi-cookie-option">
+
                             <div>
                                 <h3>Preferenze</h3>
+
                                 <p>
-                                    Permettono di ricordare alcune impostazioni
-                                    scelte dall'utente, come preferenze
-                                    dell'interfaccia.
+                                    Permettono di ricordare alcune
+                                    impostazioni scelte dall'utente,
+                                    come le preferenze dell'interfaccia.
                                 </p>
                             </div>
 
                             <label class="echi-cookie-switch">
+
                                 <input
                                     type="checkbox"
                                     id="echi-cookie-preferences"
                                 >
+
                                 <span></span>
+
                             </label>
+
                         </div>
 
+
                         <div class="echi-cookie-option">
+
                             <div>
                                 <h3>Contenuti esterni</h3>
+
                                 <p>
                                     Permettono di visualizzare contenuti
                                     incorporati forniti da servizi esterni,
@@ -179,15 +208,20 @@
                             </div>
 
                             <label class="echi-cookie-switch">
+
                                 <input
                                     type="checkbox"
                                     id="echi-cookie-external"
                                 >
+
                                 <span></span>
+
                             </label>
+
                         </div>
 
                     </div>
+
 
                     <div class="echi-cookie-modal-footer">
 
@@ -221,7 +255,9 @@
                     </div>
 
                 </div>
+
             </section>
+
 
             <button
                 id="echi-cookie-settings"
@@ -235,16 +271,21 @@
             </button>
         `;
 
-        document.body.appendChild(wrapper);
+        document.body.appendChild(container);
     }
 
+
     /* ------------------------------------------------------
-       Apertura / chiusura
+       Banner
     ------------------------------------------------------ */
 
     function showBanner() {
-        const banner = document.getElementById("echi-cookie-banner");
-        const settings = document.getElementById("echi-cookie-settings");
+
+        const banner =
+            document.getElementById("echi-cookie-banner");
+
+        const settings =
+            document.getElementById("echi-cookie-settings");
 
         if (!banner) return;
 
@@ -255,19 +296,34 @@
         }
     }
 
-    function hideBanner() {
-        const banner = document.getElementById("echi-cookie-banner");
-        const settings = document.getElementById("echi-cookie-settings");
 
-        if (banner) banner.hidden = true;
+    function hideBanner() {
+
+        const banner =
+            document.getElementById("echi-cookie-banner");
+
+        const settings =
+            document.getElementById("echi-cookie-settings");
+
+        if (banner) {
+            banner.hidden = true;
+        }
 
         if (settings) {
             settings.hidden = false;
         }
     }
 
+
+    /* ------------------------------------------------------
+       Finestra personalizzazione
+    ------------------------------------------------------ */
+
     function openModal() {
-        const modal = document.getElementById("echi-cookie-modal");
+
+        const modal =
+            document.getElementById("echi-cookie-modal");
+
         if (!modal) return;
 
         const consent = loadConsent();
@@ -279,74 +335,90 @@
             document.getElementById("echi-cookie-external");
 
         if (preferences) {
-            preferences.checked = Boolean(consent?.preferences);
+            preferences.checked =
+                Boolean(consent && consent.preferences);
         }
 
         if (external) {
-            external.checked = Boolean(consent?.external);
+            external.checked =
+                Boolean(consent && consent.external);
         }
 
         modal.hidden = false;
-        document.body.classList.add("echi-cookie-modal-open");
+
+        document.body.classList.add(
+            "echi-cookie-modal-open"
+        );
     }
 
+
     function closeModal() {
-        const modal = document.getElementById("echi-cookie-modal");
+
+        const modal =
+            document.getElementById("echi-cookie-modal");
 
         if (modal) {
             modal.hidden = true;
         }
 
-        document.body.classList.remove("echi-cookie-modal-open");
+        document.body.classList.remove(
+            "echi-cookie-modal-open"
+        );
     }
 
+
     /* ------------------------------------------------------
-       Azioni consenso
+       Azioni
     ------------------------------------------------------ */
 
     function acceptAll() {
-        saveConsent({
-            preferences: true,
-            external: true
-        });
+
+        saveConsent(true, true);
 
         hideBanner();
     }
+
 
     function rejectAll() {
-        saveConsent({
-            preferences: false,
-            external: false
-        });
 
+        saveConsent(false, false);
+
+        closeModal();
         hideBanner();
     }
 
+
     function savePreferences() {
+
         const preferences =
             document.getElementById("echi-cookie-preferences");
 
         const external =
             document.getElementById("echi-cookie-external");
 
-        saveConsent({
-            preferences: Boolean(preferences?.checked),
-            external: Boolean(external?.checked)
-        });
+        saveConsent(
+            preferences ? preferences.checked : false,
+            external ? external.checked : false
+        );
 
         closeModal();
         hideBanner();
     }
 
+
     function openPrivacyPolicy() {
-        window.location.href = "/pagine/privacy-policy.html";
+
+        window.location.href =
+            "/pagine/privacy-policy.html";
     }
 
+
     /* ------------------------------------------------------
-       Gestione click
+       Gestione delle azioni
     ------------------------------------------------------ */
 
     function handleAction(action) {
+
         switch (action) {
 
             case "accept":
@@ -356,7 +428,6 @@
             case "reject":
             case "reject-all":
                 rejectAll();
-                closeModal();
                 break;
 
             case "customize":
@@ -375,77 +446,117 @@
                 openPrivacyPolicy();
                 break;
 
-            default:
-                break;
         }
     }
+
 
     /* ------------------------------------------------------
        Inizializzazione
     ------------------------------------------------------ */
 
-    function initCookieConsent() {
-        createCookieInterface();
+    function init() {
+
+        createInterface();
 
         const consent = loadConsent();
 
         document.addEventListener("click", (event) => {
-            const actionElement =
-                event.target.closest("[data-cookie-action]");
 
-            if (!actionElement) return;
+            const target =
+                event.target.closest(
+                    "[data-cookie-action]"
+                );
+
+            if (!target) return;
 
             handleAction(
-                actionElement.getAttribute("data-cookie-action")
+                target.getAttribute(
+                    "data-cookie-action"
+                )
             );
         });
 
+
         const settings =
-            document.getElementById("echi-cookie-settings");
+            document.getElementById(
+                "echi-cookie-settings"
+            );
 
         if (settings) {
-            settings.addEventListener("click", openModal);
+
+            settings.addEventListener(
+                "click",
+                openModal
+            );
         }
+
 
         const modal =
-            document.getElementById("echi-cookie-modal");
+            document.getElementById(
+                "echi-cookie-modal"
+            );
 
         if (modal) {
-            modal.addEventListener("click", (event) => {
-                if (event.target === modal) {
-                    closeModal();
+
+            modal.addEventListener(
+                "click",
+                (event) => {
+
+                    if (event.target === modal) {
+                        closeModal();
+                    }
+
                 }
-            });
+            );
         }
 
-        document.addEventListener("keydown", (event) => {
-            if (event.key === "Escape") {
+
+        document.addEventListener(
+            "keydown",
+            (event) => {
+
+                if (event.key !== "Escape") {
+                    return;
+                }
+
                 const modal =
-                    document.getElementById("echi-cookie-modal");
+                    document.getElementById(
+                        "echi-cookie-modal"
+                    );
 
                 if (modal && !modal.hidden) {
                     closeModal();
                 }
-            }
-        });
 
-        if (!consent) {
-            showBanner();
-        } else {
+            }
+        );
+
+
+        if (consent) {
             hideBanner();
+        } else {
+            showBanner();
         }
     }
 
+
+    /* ------------------------------------------------------
+       Avvio
+    ------------------------------------------------------ */
+
     if (document.readyState === "loading") {
+
         document.addEventListener(
             "DOMContentLoaded",
-            initCookieConsent,
+            init,
             { once: true }
         );
+
     } else {
-        initCookieConsent();
+
+        init();
+
     }
 
 })();
-
 
