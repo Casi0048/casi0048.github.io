@@ -201,80 +201,118 @@ loadTrack(0, false);      // 2) carica il primo brano (ora può evidenziarlo)
     } else {
         console.warn("⚠️ Player: alcuni elementi DOM non trovati");
     }
+/* =====================================================
+   2) VIDEO — sezione "Visioni"
+   ===================================================== */
 
-    /* =====================================================
-       2) VIDEO — sezione "Visioni"
-       ===================================================== */
-    const videoPlayer  = document.getElementById("videoPlayer");
-    const videoToggle  = document.getElementById("videoToggle");
-    const videoClose   = document.getElementById("videoClose");
-    const visioniVideo = document.getElementById("visioniVideo");
+const videoPlayer  = document.getElementById("videoPlayer");
+const videoToggle  = document.getElementById("videoToggle");
+const videoClose   = document.getElementById("videoClose");
+const visioniVideo = document.getElementById("visioniVideo");
 
-    if (videoPlayer && videoToggle) {
-      // Carica YouTube solo quando l'utente apre "Visioni"
-// e ha consentito i contenuti esterni.
-if (visioniVideo && !visioniVideo.src) {
+if (videoPlayer && videoToggle) {
 
-    let externalAllowed = false;
+    function openVideo() {
 
-    try {
-        const consent = JSON.parse(
-            localStorage.getItem("echiCookieConsent.v1")
-        );
+        videoPlayer.classList.add("open");
+        videoToggle.setAttribute("aria-expanded", "true");
 
-        externalAllowed =
-            consent && consent.external === true;
+        const panel = document.getElementById("videoPanel");
 
-    } catch {
-        externalAllowed = false;
-    }
+        if (panel) {
+            panel.setAttribute("aria-hidden", "false");
+        }
 
-    if (externalAllowed) {
-        const videoSrc =
-            visioniVideo.getAttribute("data-src");
+        // Verifica il consenso ai contenuti esterni
+        let externalAllowed = false;
 
-        if (videoSrc) {
-            visioniVideo.src = videoSrc;
+        try {
+            const consent = JSON.parse(
+                localStorage.getItem("echiCookieConsent.v1")
+            );
+
+            externalAllowed =
+                consent && consent.external === true;
+
+        } catch {
+            externalAllowed = false;
+        }
+
+        // Carica YouTube soltanto dopo il consenso
+        if (visioniVideo && !visioniVideo.src && externalAllowed) {
+
+            const videoSrc =
+                visioniVideo.getAttribute("data-src");
+
+            if (videoSrc) {
+                visioniVideo.src = videoSrc;
+            }
         }
     }
-}
-       function closeVideo() {
-    videoPlayer.classList.remove("open");
-    videoToggle.setAttribute("aria-expanded", "false");
 
-    // Restituisce il focus al pulsante che apre il player
-    videoToggle.focus();
 
-    const panel = document.getElementById("videoPanel");
-    if (panel) panel.setAttribute("aria-hidden", "true");
+    function closeVideo() {
 
-    if (visioniVideo && visioniVideo.tagName === "VIDEO") {
-        visioniVideo.pause();
+        videoPlayer.classList.remove("open");
+        videoToggle.setAttribute("aria-expanded", "false");
+
+        // Restituisce il focus al pulsante di apertura
+        videoToggle.focus();
+
+        const panel = document.getElementById("videoPanel");
+
+        if (panel) {
+            panel.setAttribute("aria-hidden", "true");
+        }
+
+        if (visioniVideo && visioniVideo.tagName === "VIDEO") {
+            visioniVideo.pause();
+        }
     }
-}
 
-        videoToggle.addEventListener("click", function (e) {
+
+    videoToggle.addEventListener("click", function (e) {
+
+        e.stopPropagation();
+
+        if (videoPlayer.classList.contains("open")) {
+            closeVideo();
+        } else {
+            openVideo();
+        }
+    });
+
+
+    if (videoClose) {
+
+        videoClose.addEventListener("click", function (e) {
+
             e.stopPropagation();
-            if (videoPlayer.classList.contains("open")) closeVideo();
-            else openVideo();
-        });
+            closeVideo();
 
-        if (videoClose) {
-            videoClose.addEventListener("click", function (e) {
-                e.stopPropagation();
-                closeVideo();
-            });
-        }
-
-        document.addEventListener("click", function (e) {
-            if (!videoPlayer.contains(e.target)) closeVideo();
-        });
-
-        document.addEventListener("keydown", function (e) {
-            if (e.key === "Escape" && videoPlayer.classList.contains("open")) closeVideo();
         });
     }
 
+
+    document.addEventListener("click", function (e) {
+
+        if (!videoPlayer.contains(e.target)) {
+            closeVideo();
+        }
+    });
+
+
+    document.addEventListener("keydown", function (e) {
+
+        if (
+            e.key === "Escape" &&
+            videoPlayer.classList.contains("open")
+        ) {
+            closeVideo();
+        }
+    });
+
+}
     /* =====================================================
        3) NEWSLETTER
        ===================================================== */
