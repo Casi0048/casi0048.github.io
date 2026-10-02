@@ -2248,20 +2248,71 @@
             </div>
         </div>
 <!-- Audio al passaggio del mouse -->
-        <div class="audio-container">  
-<a href="#" onmouseover="playclip();"><img id="hoverElement" src="https://github.com/Casi0048/casi0048.github.io/blob/main/immagini/grecia-antica.webp" border="0" alt=""></a>    
-<audio id="audio">
-<source src="ttps://github.com/Casi0048/casi0048.github.io/blob/main/suoni/gymnopedie.mp3" type='audio/mpeg; codecs="mp3"'>
-<source src="file.ogg" type='audio/ogg; codecs="vorbis"'>
-</audio>
+<div class="audio-container">
+  <a href="/immagini/grecia-antica.webp"
+     class="audio-trigger"
+     id="hoverElement"
+     aria-label="Ascolta Gymnopédie n. 1 di Erik Satie">
+    <img src="/immagini/grecia-antica.webp"
+         alt="Vaso greco antico con decorazioni geometriche"
+         width="600"
+         height="400"
+         loading="lazy"
+         decoding="async"
+         border="0">
+  </a>
+
+  <audio id="audio"
+         preload="none"
+         loop>
+    <source src="/suoni/gymnopedie.mp3" type="audio/mpeg">
+    <source src="/suoni/gymnopedie.ogg" type="audio/ogg">
+    Il tuo browser non supporta l'elemento audio.
+  </audio>
 </div>
+
 <script>
-var hoverArea = document.getElementById('hoverElement');
-var audio = document.getElementById('audio');
-hoverArea.onmouseover= function(){
-audio.play();}
-hoverArea.onmouseout= function(){
-audio.pause();}
+(function() {
+  'use strict';
+
+  const hoverArea = document.getElementById('hoverElement');
+  const audio     = document.getElementById('audio');
+
+  if (!hoverArea || !audio) return;
+
+  // Al passaggio del mouse: play
+  hoverArea.addEventListener('mouseenter', function () {
+    // Gestisce la promise di play() (richiesta da browser moderni)
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(function () {
+        // Autoplay bloccato dal browser: nessun problema, ignoriamo
+      });
+    }
+  });
+
+  // All'uscita del mouse: pausa (con riavvolgimento dolce)
+  hoverArea.addEventListener('mouseleave', function () {
+    audio.pause();
+  });
+
+  // Supporto accessibilità: attiva anche con focus da tastiera
+  hoverArea.addEventListener('focus', function () {
+    audio.play().catch(function () {});
+  });
+  hoverArea.addEventListener('blur', function () {
+    audio.pause();
+  });
+
+  // Supporto touch: primo tap attiva, secondo disattiva
+  hoverArea.addEventListener('touchstart', function (e) {
+    if (audio.paused) {
+      audio.play().catch(function () {});
+    } else {
+      audio.pause();
+    }
+  }, { passive: true });
+})();
 </script>
         
         <!-- ============================================================
