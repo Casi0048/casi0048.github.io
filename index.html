@@ -2248,6 +2248,14 @@
             </div>
         </div>
 <!-- Audio al passaggio del mouse -->
+<img
+    class="echi-cookie-image"
+    src="/immagini/grecia-antica.webp"
+    alt=""
+    width="42"
+    height="42">
+
+<!-- Audio al passaggio del mouse -->
 <div class="audio-container">
   <a href="/immagini/grecia-antica.webp"
      class="audio-trigger"
@@ -2280,32 +2288,27 @@
 
   if (!hoverArea || !audio) return;
 
-  // Al passaggio del mouse: play
   hoverArea.addEventListener('mouseenter', function () {
-    // Gestisce la promise di play() (richiesta da browser moderni)
     const playPromise = audio.play();
+
     if (playPromise !== undefined) {
-      playPromise.catch(function () {
-        // Autoplay bloccato dal browser: nessun problema, ignoriamo
-      });
+      playPromise.catch(function () {});
     }
   });
 
-  // All'uscita del mouse: pausa (con riavvolgimento dolce)
   hoverArea.addEventListener('mouseleave', function () {
     audio.pause();
   });
 
-  // Supporto accessibilità: attiva anche con focus da tastiera
   hoverArea.addEventListener('focus', function () {
     audio.play().catch(function () {});
   });
+
   hoverArea.addEventListener('blur', function () {
     audio.pause();
   });
 
-  // Supporto touch: primo tap attiva, secondo disattiva
-  hoverArea.addEventListener('touchstart', function (e) {
+  hoverArea.addEventListener('touchstart', function () {
     if (audio.paused) {
       audio.play().catch(function () {});
     } else {
