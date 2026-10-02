@@ -2283,21 +2283,12 @@
 (function() {
   'use strict';
 
-  const hoverArea = document.getElementById('hoverElement');
+  const image = document.querySelector('#hoverElement img');
   const audio = document.getElementById('audio');
 
-  if (!hoverArea || !audio) return;
+  if (!image || !audio) return;
 
-  // Un click autorizza il browser alla riproduzione audio
-  hoverArea.addEventListener('click', function() {
-    audio.currentTime = 0;
-    audio.play().catch(function(error) {
-      console.log('Audio non avviato:', error);
-    });
-  });
-
-  // Dopo l'autorizzazione, il passaggio del mouse riproduce l'audio
-  hoverArea.addEventListener('mouseenter', function() {
+  image.addEventListener('mouseenter', function() {
     audio.currentTime = 0;
 
     audio.play().catch(function(error) {
@@ -2305,14 +2296,15 @@
     });
   });
 
-  // Uscendo dall'immagine, il brano si ferma
-  hoverArea.addEventListener('mouseleave', function() {
+  image.addEventListener('mouseleave', function() {
     audio.pause();
     audio.currentTime = 0;
   });
 
 })();
 </script>
+
+
 
 
         
