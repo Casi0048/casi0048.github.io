@@ -2247,23 +2247,14 @@
                 <p class="privacy-note">Nessuna comunicazione indesiderata. Potrai cancellarti in qualsiasi momento.</p>
             </div>
         </div>
-<!-- Immagine accanto al pulsante Personalizza cookie -->
-<img
-    class="echi-cookie-image"
-    src="/immagini/grecia-antica.webp"
-    alt=""
-    width="42"
-    height="42">
-
 <!-- Audio al passaggio del mouse -->
 <div class="audio-container">
   <a href="/immagini/grecia-antica.webp"
-     class="audio-trigger"
      id="hoverElement"
      aria-label="Ascolta Gymnopédie n. 1 di Erik Satie">
 
     <img src="/immagini/grecia-antica.webp"
-         alt="Vaso greco antico con decorazioni geometriche"
+         alt="Vaso greco antico"
          width="600"
          height="400"
          loading="lazy"
@@ -2271,7 +2262,7 @@
 
   </a>
 
-  <audio id="audio" preload="none" loop>
+  <audio id="audio" preload="metadata" loop>
     <source src="/suoni/gymnopedie.mp3" type="audio/mpeg">
     <source src="/suoni/gymnopedie.ogg" type="audio/ogg">
     Il tuo browser non supporta l'elemento audio.
@@ -2287,18 +2278,41 @@
 
   if (!hoverArea || !audio) return;
 
+  let unlocked = false;
+
+  // ──────────────────────────────────────────────
+  // SBLOCCO: al primo click/tap/tasto sblocca l'audio
+  // (una sola volta, poi mai più)
+  // ──────────────────────────────────────────────
+  function unlock() {
+    if (unlocked) return;
+    const vol = audio.volume;
+    audio.volume = 0;
+    audio.play().then(function() {
+      audio.pause();
+      audio.currentTime = 0;
+      audio.volume = vol;
+      unlocked = true;
+    }).catch(function() {
+      audio.volume = vol;
+    });
+  }
+
+  document.addEventListener('click', unlock, { once: true });
+  document.addEventListener('touchstart', unlock, { once: true, passive: true });
+  document.addEventListener('keydown', unlock, { once: true });
+
+  // ──────────────────────────────────────────────
+  // HOVER: play
+  // ──────────────────────────────────────────────
   hoverArea.addEventListener('mouseenter', function() {
     audio.currentTime = 0;
-
-    const promise = audio.play();
-
-    if (promise !== undefined) {
-      promise.catch(function(error) {
-        console.log('Audio non avviato:', error);
-      });
-    }
+    audio.play().catch(function() {});
   });
 
+  // ──────────────────────────────────────────────
+  // USCITA: pausa
+  // ──────────────────────────────────────────────
   hoverArea.addEventListener('mouseleave', function() {
     audio.pause();
     audio.currentTime = 0;
