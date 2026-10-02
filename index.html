@@ -2247,7 +2247,7 @@
                 <p class="privacy-note">Nessuna comunicazione indesiderata. Potrai cancellarti in qualsiasi momento.</p>
             </div>
         </div>
-<!-- Audio al passaggio del mouse -->
+<!-- Immagine accanto al pulsante Personalizza cookie -->
 <img
     class="echi-cookie-image"
     src="/immagini/grecia-antica.webp"
@@ -2261,18 +2261,17 @@
      class="audio-trigger"
      id="hoverElement"
      aria-label="Ascolta Gymnopédie n. 1 di Erik Satie">
+
     <img src="/immagini/grecia-antica.webp"
          alt="Vaso greco antico con decorazioni geometriche"
          width="600"
          height="400"
          loading="lazy"
-         decoding="async"
-         border="0">
+         decoding="async">
+
   </a>
 
-  <audio id="audio"
-         preload="none"
-         loop>
+  <audio id="audio" preload="none" loop>
     <source src="/suoni/gymnopedie.mp3" type="audio/mpeg">
     <source src="/suoni/gymnopedie.ogg" type="audio/ogg">
     Il tuo browser non supporta l'elemento audio.
@@ -2284,37 +2283,27 @@
   'use strict';
 
   const hoverArea = document.getElementById('hoverElement');
-  const audio     = document.getElementById('audio');
+  const audio = document.getElementById('audio');
 
   if (!hoverArea || !audio) return;
 
-  hoverArea.addEventListener('mouseenter', function () {
-    const playPromise = audio.play();
+  hoverArea.addEventListener('mouseenter', function() {
+    audio.currentTime = 0;
 
-    if (playPromise !== undefined) {
-      playPromise.catch(function () {});
+    const promise = audio.play();
+
+    if (promise !== undefined) {
+      promise.catch(function(error) {
+        console.log('Audio non avviato:', error);
+      });
     }
   });
 
-  hoverArea.addEventListener('mouseleave', function () {
+  hoverArea.addEventListener('mouseleave', function() {
     audio.pause();
+    audio.currentTime = 0;
   });
 
-  hoverArea.addEventListener('focus', function () {
-    audio.play().catch(function () {});
-  });
-
-  hoverArea.addEventListener('blur', function () {
-    audio.pause();
-  });
-
-  hoverArea.addEventListener('touchstart', function () {
-    if (audio.paused) {
-      audio.play().catch(function () {});
-    } else {
-      audio.pause();
-    }
-  }, { passive: true });
 })();
 </script>
         
