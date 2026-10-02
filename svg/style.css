@@ -2123,6 +2123,7 @@ body.light-theme .quote-author {
 }
 /* ----------------------------------------------------------
    IMMAGINE ACCANTO AL PULSANTE PREFERENZE
+   + trigger audio al passaggio del mouse
 ---------------------------------------------------------- */
 
 .echi-cookie-image {
@@ -2143,5 +2144,28 @@ body.light-theme .quote-author {
     box-shadow:
         0 8px 25px rgba(0, 0, 0, 0.28);
 
-    pointer-events: none;
+    /* ✅ MODIFICATO: da 'none' a 'auto' per ricevere gli eventi del mouse */
+    pointer-events: auto;
+    cursor: pointer;
+
+    /* Aggiunto: transizione morbida per l'effetto hover */
+    transition:
+        transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+/* ✅ NUOVO: effetto al passaggio del mouse */
+.echi-cookie-image:hover {
+    transform: scale(1.06);
+    border-color: rgba(214, 174, 82, 0.9);
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.35),
+        0 0 20px rgba(214, 174, 82, 0.25);
+}
+
+/* ✅ NUOVO: effetto al focus da tastiera (accessibilità) */
+.echi-cookie-image:focus-visible {
+    outline: 2px solid rgba(214, 174, 82, 0.8);
+    outline-offset: 3px;
 }
