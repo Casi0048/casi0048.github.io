@@ -1,56 +1,46 @@
-
 /* ==========================================================
-   ECHI DI SOFIA — COOKIE CONSENT
-   Gestione autonoma delle preferenze
+ECHI DI SOFIA — COOKIE CONSENT
+Gestione autonoma delle preferenze
 ========================================================== */
-
-(() => {
+(() =>  {
     "use strict";
-
     const CONSENT_KEY = "echiCookieConsent.v1";
-
     /* ------------------------------------------------------
-       Lettura e salvataggio
+    Lettura e salvataggio
     ------------------------------------------------------ */
-
-    function loadConsent() {
-        try {
+    function loadConsent()  {
+        try  {
             const saved = localStorage.getItem(CONSENT_KEY);
             return saved ? JSON.parse(saved) : null;
-        } catch {
+        } catch  {
             return null;
         }
     }
-
-    function saveConsent(preferences, external) {
-        try {
+    function saveConsent(preferences, external)  {
+        try  {
             localStorage.setItem(
-                CONSENT_KEY,
-                JSON.stringify({
-                    necessary: true,
-                    preferences: Boolean(preferences),
-                    external: Boolean(external),
-                    savedAt: new Date().toISOString()
-                })
+            CONSENT_KEY,
+            JSON.stringify( {
+                necessary: true,
+                preferences: Boolean(preferences),
+                external: Boolean(external),
+                savedAt: new Date().toISOString()
+            }
+            )
             );
-        } catch {
+        } catch  {
             /* Il sito continua a funzionare anche senza localStorage. */
         }
     }
-
     /* ------------------------------------------------------
-       Creazione dell'interfaccia
+    Creazione dell'interfaccia
     ------------------------------------------------------ */
-
-    function createInterface() {
-
-        if (document.getElementById("echi-cookie-container")) {
+    function createInterface()  {
+        if (document.getElementById("echi-cookie-container"))  {
             return;
         }
-
         const container = document.createElement("div");
         container.id = "echi-cookie-container";
-
         container.innerHTML = `
             <section
                 id="echi-cookie-banner"
@@ -270,293 +260,200 @@
                 ⚙
             </button>
         `;
-
         document.body.appendChild(container);
     }
-
-
     /* ------------------------------------------------------
-       Banner
+    Banner
     ------------------------------------------------------ */
-
-    function showBanner() {
-
+    function showBanner()  {
         const banner =
-            document.getElementById("echi-cookie-banner");
-
+        document.getElementById("echi-cookie-banner");
         const settings =
-            document.getElementById("echi-cookie-settings");
-
+        document.getElementById("echi-cookie-settings");
         if (!banner) return;
-
         banner.hidden = false;
-
-        if (settings) {
+        if (settings)  {
             settings.hidden = true;
         }
     }
-
-
-    function hideBanner() {
-
+    function hideBanner()  {
         const banner =
-            document.getElementById("echi-cookie-banner");
-
+        document.getElementById("echi-cookie-banner");
         const settings =
-            document.getElementById("echi-cookie-settings");
-
-        if (banner) {
+        document.getElementById("echi-cookie-settings");
+        if (banner)  {
             banner.hidden = true;
         }
-
-        if (settings) {
+        if (settings)  {
             settings.hidden = false;
         }
     }
-
-
     /* ------------------------------------------------------
-       Finestra personalizzazione
+    Finestra personalizzazione
     ------------------------------------------------------ */
-
-    function openModal() {
-
+    function openModal()  {
         const modal =
-            document.getElementById("echi-cookie-modal");
-
+        document.getElementById("echi-cookie-modal");
         if (!modal) return;
-
         const consent = loadConsent();
-
         const preferences =
-            document.getElementById("echi-cookie-preferences");
-
+        document.getElementById("echi-cookie-preferences");
         const external =
-            document.getElementById("echi-cookie-external");
-
-        if (preferences) {
+        document.getElementById("echi-cookie-external");
+        if (preferences)  {
             preferences.checked =
-                Boolean(consent && consent.preferences);
+            Boolean(consent && consent.preferences);
         }
-
-        if (external) {
+        if (external)  {
             external.checked =
-                Boolean(consent && consent.external);
+            Boolean(consent && consent.external);
         }
-
         modal.hidden = false;
-
         document.body.classList.add(
-            "echi-cookie-modal-open"
+        "echi-cookie-modal-open"
         );
     }
-
-
-    function closeModal() {
-
+    function closeModal()  {
         const modal =
-            document.getElementById("echi-cookie-modal");
-
-        if (modal) {
+        document.getElementById("echi-cookie-modal");
+        if (modal)  {
             modal.hidden = true;
         }
-
         document.body.classList.remove(
-            "echi-cookie-modal-open"
+        "echi-cookie-modal-open"
         );
     }
-
-
     /* ------------------------------------------------------
-       Azioni
+    Azioni
     ------------------------------------------------------ */
-
-    function acceptAll() {
-
+    function acceptAll()  {
         saveConsent(true, true);
-
         hideBanner();
     }
-
-
-    function rejectAll() {
-
+    function rejectAll()  {
         saveConsent(false, false);
-
         closeModal();
         hideBanner();
     }
-
-
-    function savePreferences() {
-
+    function savePreferences()  {
         const preferences =
-            document.getElementById("echi-cookie-preferences");
-
+        document.getElementById("echi-cookie-preferences");
         const external =
-            document.getElementById("echi-cookie-external");
-
+        document.getElementById("echi-cookie-external");
         saveConsent(
-            preferences ? preferences.checked : false,
-            external ? external.checked : false
+        preferences ? preferences.checked : false,
+        external ? external.checked : false
         );
-
         closeModal();
         hideBanner();
     }
-
-
-    function openPrivacyPolicy() {
-
+    function openPrivacyPolicy()  {
         window.location.href =
-            "/pagine/privacy-policy.html";
+        "/pagine/privacy-policy.html";
     }
-
-
     /* ------------------------------------------------------
-       Gestione delle azioni
+    Gestione delle azioni
     ------------------------------------------------------ */
-
-    function handleAction(action) {
-
-        switch (action) {
-
+    function handleAction(action)  {
+        switch (action)  {
             case "accept":
-                acceptAll();
-                break;
-
+            acceptAll();
+            break;
             case "reject":
             case "reject-all":
-                rejectAll();
-                break;
-
+            rejectAll();
+            break;
             case "customize":
-                openModal();
-                break;
-
+            openModal();
+            break;
             case "save":
-                savePreferences();
-                break;
-
+            savePreferences();
+            break;
             case "close":
-                closeModal();
-                break;
-
+            closeModal();
+            break;
             case "info":
-                openPrivacyPolicy();
-                break;
-
+            openPrivacyPolicy();
+            break;
         }
     }
-
-
     /* ------------------------------------------------------
-       Inizializzazione
+    Inizializzazione
     ------------------------------------------------------ */
-
-    function init() {
-
+    function init()  {
         createInterface();
-
         const consent = loadConsent();
-
-        document.addEventListener("click", (event) => {
-
+        document.addEventListener("click", (event) =>  {
             const target =
-                event.target.closest(
-                    "[data-cookie-action]"
-                );
-
+            event.target.closest(
+            "[data-cookie-action]"
+            );
             if (!target) return;
-
             handleAction(
-                target.getAttribute(
-                    "data-cookie-action"
-                )
+            target.getAttribute(
+            "data-cookie-action"
+            )
             );
-        });
-
-
+        }
+        );
         const settings =
-            document.getElementById(
-                "echi-cookie-settings"
-            );
-
-        if (settings) {
-
+        document.getElementById(
+        "echi-cookie-settings"
+        );
+        if (settings)  {
             settings.addEventListener(
-                "click",
-                openModal
+            "click",
+            openModal
             );
         }
-
-
         const modal =
-            document.getElementById(
-                "echi-cookie-modal"
-            );
-
-        if (modal) {
-
+        document.getElementById(
+        "echi-cookie-modal"
+        );
+        if (modal)  {
             modal.addEventListener(
-                "click",
-                (event) => {
-
-                    if (event.target === modal) {
-                        closeModal();
-                    }
-
-                }
-            );
-        }
-
-
-        document.addEventListener(
-            "keydown",
-            (event) => {
-
-                if (event.key !== "Escape") {
-                    return;
-                }
-
-                const modal =
-                    document.getElementById(
-                        "echi-cookie-modal"
-                    );
-
-                if (modal && !modal.hidden) {
+            "click",
+            (event) =>  {
+                if (event.target === modal)  {
                     closeModal();
                 }
-
             }
+            );
+        }
+        document.addEventListener(
+        "keydown",
+        (event) =>  {
+            if (event.key !== "Escape")  {
+                return;
+            }
+            const modal =
+            document.getElementById(
+            "echi-cookie-modal"
+            );
+            if (modal && !modal.hidden)  {
+                closeModal();
+            }
+        }
         );
-
-
-        if (consent) {
+        if (consent)  {
             hideBanner();
-        } else {
+        } else  {
             showBanner();
         }
     }
-
-
     /* ------------------------------------------------------
-       Avvio
+    Avvio
     ------------------------------------------------------ */
-
-    if (document.readyState === "loading") {
-
+    if (document.readyState === "loading")  {
         document.addEventListener(
-            "DOMContentLoaded",
-            init,
-            { once: true }
+        "DOMContentLoaded",
+        init,
+        {
+            once: true
+        }
         );
-
-    } else {
-
+    } else  {
         init();
-
     }
-
-})();
-
+}
+)();
