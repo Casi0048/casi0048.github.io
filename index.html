@@ -2278,6 +2278,7 @@
   </audio>
 </div>
 
+
 <script>
 (function() {
   'use strict';
@@ -2287,18 +2288,24 @@
 
   if (!hoverArea || !audio) return;
 
+  // Un click autorizza il browser alla riproduzione audio
+  hoverArea.addEventListener('click', function() {
+    audio.currentTime = 0;
+    audio.play().catch(function(error) {
+      console.log('Audio non avviato:', error);
+    });
+  });
+
+  // Dopo l'autorizzazione, il passaggio del mouse riproduce l'audio
   hoverArea.addEventListener('mouseenter', function() {
     audio.currentTime = 0;
 
-    const promise = audio.play();
-
-    if (promise !== undefined) {
-      promise.catch(function(error) {
-        console.log('Audio non avviato:', error);
-      });
-    }
+    audio.play().catch(function(error) {
+      console.log('Audio non avviato:', error);
+    });
   });
 
+  // Uscendo dall'immagine, il brano si ferma
   hoverArea.addEventListener('mouseleave', function() {
     audio.pause();
     audio.currentTime = 0;
@@ -2306,6 +2313,8 @@
 
 })();
 </script>
+
+
         
         <!-- ============================================================
      FOOTER
