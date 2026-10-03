@@ -34,7 +34,7 @@
 <meta name="theme-color" content="#080a12" />
 <meta name="msapplication-TileColor" content="#080a12" />
         <!-- FONTS -->
- 
+
         <!-- CSS BASE -->
         <link rel="stylesheet" href="/svg/style.css" />
         <!-- JAVASCRIPT -->
@@ -415,6 +415,98 @@
 .echi-cookie-image:focus-visible {
     outline: 2px solid rgba(214, 174, 82, 0.8);
     outline-offset: 3px;
+}
+/* ----------------------------------------------------------
+   IMMAGINE E INFORMAZIONI BRANO MUSICALE
+---------------------------------------------------------- */
+
+.echi-music-card {
+    position: fixed;
+    left: 92px;
+    bottom: 20px;
+    z-index: 99989;
+
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    width: max-content;
+    max-width: calc(100vw - 110px);
+}
+
+/* Immagine */
+.echi-music-card .echi-cookie-image {
+    position: static;
+    flex-shrink: 0;
+}
+
+/* Informazioni */
+.echi-music-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+
+    color: var(--text-color, #e8e2d5);
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.45);
+}
+
+/* Indicazione musicale */
+.echi-music-label {
+    color: #c5a45e;
+    font-family: var(--sans, sans-serif);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+}
+
+/* Titolo */
+.echi-music-title {
+    font-family: var(--serif, Georgia, serif);
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+/* Compositore */
+.echi-music-author {
+    font-family: var(--sans, sans-serif);
+    font-size: 13px;
+}
+
+/* Interprete */
+.echi-music-performer {
+    font-family: var(--sans, sans-serif);
+    font-size: 11px;
+    opacity: 0.75;
+}
+
+/* Adattamento per schermi piccoli */
+@media (max-width: 600px) {
+    .echi-music-card {
+        gap: 9px;
+        max-width: calc(100vw - 100px);
+    }
+
+    .echi-music-card .echi-cookie-image {
+        width: 120px;
+        height: 67px;
+    }
+
+    .echi-music-title {
+        font-size: 14px;
+    }
+
+    .echi-music-author {
+        font-size: 12px;
+    }
+
+    .echi-music-performer {
+        font-size: 10px;
+    }
+
+    .echi-music-label {
+        font-size: 9px;
+    }
 }
         </style>
     </head>
@@ -2298,16 +2390,28 @@
             </div>
         </div>
 <!-- Immagine accanto al pulsante cookie — trigger audio -->
-<img
-    class="echi-cookie-image"
-    id="hoverElement"
-    src="/immagini/grecia-antica.webp"
-    alt="Vaso greco antico"
-    width="180"
-    height="101"
-    loading="lazy"
-    decoding="async"
->
+<!-- Immagine e informazioni sul brano -->
+<div class="echi-music-card">
+
+    <img
+        class="echi-cookie-image"
+        id="hoverElement"
+        src="/immagini/grecia-antica.webp"
+        alt="Vaso greco antico"
+        width="180"
+        height="101"
+        loading="lazy"
+        decoding="async"
+    >
+
+    <div class="echi-music-info">
+        <span class="echi-music-label">♫ IN ASCOLTO</span>
+        <span class="echi-music-title">Gymnopédie No. 1</span>
+        <span class="echi-music-author">Erik Satie</span>
+        <span class="echi-music-performer">Edward Rosser, piano</span>
+    </div>
+
+</div>
 
 <audio id="audio" preload="none" loop>
     <source src="/suoni/gymnopedie.mp3" type="audio/mpeg">
