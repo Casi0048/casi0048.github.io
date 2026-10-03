@@ -2393,6 +2393,7 @@
 
 <!-- Immagine + info brano — trigger audio + didascalia al passaggio del mouse-->
 
+<!-- Immagine + info brano — trigger audio + didascalia al passaggio del mouse -->
 <div class="echi-music-card"
      role="group"
      aria-label="Anteprima audio: Gymnopédie n. 1 di Erik Satie, eseguita da Edward Rosser, pianoforte">
@@ -2404,7 +2405,6 @@
         alt="Vaso greco antico"
         width="180"
         height="101"
-        loading="lazy"
         decoding="async">
 
     <div class="echi-music-info" aria-hidden="true">
@@ -2416,11 +2416,8 @@
 
 </div>
 
-<!-- Audio -->
+<!-- Audio — vuoto, riempito dal JavaScript al primo gesto -->
 <audio id="audio" preload="none" loop></audio>
-    <source src="/suoni/gymnopedie.mp3" type="audio/mpeg">
-    Il tuo browser non supporta l'elemento audio.
-</audio>
 
 <script>
 (function () {
@@ -2435,30 +2432,36 @@
     var loading = false;
 
     // ─────────────────────────────────────────────
-    // Carica il file audio in modo differito
+    // Carica i file audio in modo differito
     // ─────────────────────────────────────────────
     function loadAudio() {
         if (loading || unlocked) return;
         loading = true;
 
-        var source = document.createElement('source');
-        source.src = '/suoni/gymnopedie.mp3';
-        source.type = 'audio/mpeg';
-        audio.appendChild(source);
-        audio.load(); // forza il browser a leggere la nuova source
+        // Prima scelta: Opus (più leggero, qualità migliore) — supportato da Chrome, Firefox, Edge, Brave, Safari 15+
+        var sourceOpus = document.createElement('source');
+        sourceOpus.src = '/suoni/gymnopedie.opus';
+        sourceOpus.type = 'audio/ogg; codecs=opus';
+        audio.appendChild(sourceOpus);
 
+        // Fallback: MP3 (per browser vecchi come Safari < 15)
+        var sourceMp3 = document.createElement('source');
+        sourceMp3.src = '/suoni/gymnopedie.mp3';
+        sourceMp3.type = 'audio/mpeg';
+        audio.appendChild(sourceMp3);
+
+        audio.load(); // Forza il browser a leggere le nuove source
         console.log('📥 Audio in caricamento...');
     }
 
     // ─────────────────────────────────────────────
-    // Sblocco: al primo click/tap/tasto
+    // Sblocco al primo click/tap/tasto
     // ─────────────────────────────────────────────
     function unlock() {
         if (unlocked) return;
 
         loadAudio();
 
-        // Aspetta che il file sia pronto per lo sblocco
         var tryPlay = function () {
             var vol = audio.volume;
             audio.volume = 0;
@@ -2475,7 +2478,6 @@
             });
         };
 
-        // Se il file è già pronto, sblocca subito; altrimenti aspetta
         if (audio.readyState >= 2) {
             tryPlay();
         } else {
