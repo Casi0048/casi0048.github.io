@@ -2417,7 +2417,7 @@
 </div>
 
 <!-- Audio -->
-<audio id="audio" preload="metadata" loop>
+<audio id="audio" preload="none" loop></audio>
     <source src="/suoni/gymnopedie.mp3" type="audio/mpeg">
     Il tuo browser non supporta l'elemento audio.
 </audio>
@@ -2429,69 +2429,84 @@
     var image = document.getElementById('hoverElement');
     var audio = document.getElementById('audio');
 
-    if (!image) {
-        console.error('hoverElement non trovato');
-        return;
-    }
-
-    if (!audio) {
-        console.error('audio non trovato');
-        return;
-    }
-
-    console.log('Pronto. Clicca una volta nella pagina per attivare l’audio.');
+    if (!image || !audio) return;
 
     var unlocked = false;
-    var unlocking = false;
+    var loading = false;
 
-    // SBLOCCO al primo click, tap o tasto
+    // ─────────────────────────────────────────────
+    // Carica il file audio in modo differito
+    // ─────────────────────────────────────────────
+    function loadAudio() {
+        if (loading || unlocked) return;
+        loading = true;
+
+        var source = document.createElement('source');
+        source.src = '/suoni/gymnopedie.mp3';
+        source.type = 'audio/mpeg';
+        audio.appendChild(source);
+        audio.load(); // forza il browser a leggere la nuova source
+
+        console.log('📥 Audio in caricamento...');
+    }
+
+    // ─────────────────────────────────────────────
+    // Sblocco: al primo click/tap/tasto
+    // ─────────────────────────────────────────────
     function unlock() {
-        if (unlocked || unlocking) return;
+        if (unlocked) return;
 
-        unlocking = true;
+        loadAudio();
 
-        var vol = audio.volume;
-        audio.volume = 0;
+        // Aspetta che il file sia pronto per lo sblocco
+        var tryPlay = function () {
+            var vol = audio.volume;
+            audio.volume = 0;
 
-        audio.play().then(function () {
-            audio.pause();
-            audio.currentTime = 0;
-            audio.volume = vol;
+            audio.play().then(function () {
+                audio.pause();
+                audio.currentTime = 0;
+                audio.volume = vol;
+                unlocked = true;
+                console.log('🔓 Audio sbloccato! Ora l\'hover funziona.');
+            }).catch(function (err) {
+                audio.volume = vol;
+                console.warn('⚠️ Sblocco fallito:', err.name);
+            });
+        };
 
-            unlocked = true;
-            unlocking = false;
-
-            console.log('Audio sbloccato! Ora l’hover funziona.');
-
-        }).catch(function (err) {
-            audio.volume = vol;
-            unlocking = false;
-
-            console.warn('Sblocco fallito:', err.name);
-        });
+        // Se il file è già pronto, sblocca subito; altrimenti aspetta
+        if (audio.readyState >= 2) {
+            tryPlay();
+        } else {
+            audio.addEventListener('canplay', tryPlay, { once: true });
+        }
     }
 
     document.addEventListener('click', unlock);
     document.addEventListener('touchstart', unlock, { passive: true });
     document.addEventListener('keydown', unlock);
 
-    // AVVIO al passaggio del mouse
+    // ─────────────────────────────────────────────
+    // Hover sull'immagine → play
+    // ─────────────────────────────────────────────
     image.addEventListener('mouseenter', function () {
         if (!unlocked) {
-            console.log('Audio non ancora sbloccato. Clicca una volta nella pagina.');
+            console.log('ℹ️ Hover rilevato, ma audio non ancora sbloccato.');
             return;
         }
 
         audio.currentTime = 0;
-
         audio.play().then(function () {
-            console.log('Musica in riproduzione');
+            console.log('🎵 Musica in riproduzione');
         }).catch(function (err) {
             console.warn('Play fallito:', err.name);
         });
     });
 
-    // PAUSA quando il mouse esce dall'immagine
+    // ─────────────────────────────────────────────
+    // Uscita dall'immagine → pausa
+    // ─────────────────────────────────────────────
     image.addEventListener('mouseleave', function () {
         audio.pause();
         audio.currentTime = 0;
