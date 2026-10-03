@@ -34,9 +34,7 @@
 <meta name="theme-color" content="#080a12" />
 <meta name="msapplication-TileColor" content="#080a12" />
         <!-- FONTS -->
- <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+ 
 
         
         <!-- CSS BASE -->
@@ -2320,7 +2318,7 @@
 </audio>
 
 <script>
-(function() {
+(function () {
     'use strict';
 
     const image = document.getElementById('hoverElement');
@@ -2328,19 +2326,22 @@
 
     if (!image || !audio) return;
 
-    image.addEventListener('mouseover', function() {
+    image.addEventListener('mouseenter', function () {
         audio.currentTime = 0;
 
-        audio.play().catch(function(error) {
-            console.log('Audio non avviato:', error);
-        });
+        const playPromise = audio.play();
+
+        if (playPromise !== undefined) {
+            playPromise.catch(function (error) {
+                console.log('Riproduzione bloccata dal browser:', error);
+            });
+        }
     });
 
-    image.addEventListener('mouseout', function() {
+    image.addEventListener('mouseleave', function () {
         audio.pause();
         audio.currentTime = 0;
     });
-
 })();
 </script>
         
