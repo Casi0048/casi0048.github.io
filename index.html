@@ -370,56 +370,12 @@
             }
 
 
-            /* ----------------------------------------------------------
-   IMMAGINE ACCANTO AL PULSANTE PREFERENZE
-   + trigger audio al passaggio del mouse
+ /* ----------------------------------------------------------
+   IMMAGINE + INFO BRANO — trigger audio al passaggio del mouse
+   Variante A: la didascalia appare solo al passaggio del mouse
 ---------------------------------------------------------- */
 
-.echi-cookie-image {
-    position: fixed;
-    left: 92px;
-    bottom: 20px;
-
-    width: 180px;
-    height: 101px;
-    z-index: 99989;
-    object-fit: cover;
-    border-radius: 6px;
-
-    border: 1px solid rgba(214, 174, 82, 0.55);
-
-    box-shadow:
-        0 8px 25px rgba(0, 0, 0, 0.28);
-
-    /* ✅ MODIFICATO: da 'none' a 'auto' per ricevere gli eventi del mouse */
-    pointer-events: auto;
-    cursor: pointer;
-
-    /* Aggiunto: transizione morbida per l'effetto hover */
-    transition:
-        transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-        border-color 0.3s ease,
-        box-shadow 0.3s ease;
-}
-
-/* ✅ NUOVO: effetto al passaggio del mouse */
-.echi-cookie-image:hover {
-    transform: scale(1.06);
-    border-color: rgba(214, 174, 82, 0.9);
-    box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.35),
-        0 0 20px rgba(214, 174, 82, 0.25);
-}
-
-/* ✅ NUOVO: effetto al focus da tastiera (accessibilità) */
-.echi-cookie-image:focus-visible {
-    outline: 2px solid rgba(214, 174, 82, 0.8);
-    outline-offset: 3px;
-}
-/* ----------------------------------------------------------
-   IMMAGINE E INFORMAZIONI BRANO MUSICALE
----------------------------------------------------------- */
-
+/* Contenitore fisso in basso a sinistra */
 .echi-music-card {
     position: fixed;
     left: 92px;
@@ -435,19 +391,66 @@
 }
 
 /* Immagine */
-.echi-music-card .echi-cookie-image {
-    position: static;
+.echi-cookie-image {
+    width: 180px;
+    height: 101px;
     flex-shrink: 0;
+
+    object-fit: cover;
+    border-radius: 6px;
+
+    border: 1px solid rgba(214, 174, 82, 0.55);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.28);
+
+    pointer-events: auto;
+    cursor: pointer;
+
+    transition:
+        transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
 }
 
-/* Informazioni */
+/* Effetto al passaggio del mouse */
+.echi-cookie-image:hover {
+    transform: scale(1.06);
+    border-color: rgba(214, 174, 82, 0.9);
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.35),
+        0 0 20px rgba(214, 174, 82, 0.25);
+}
+
+/* ✅ CONSERVATO: effetto focus da tastiera */
+.echi-cookie-image:focus-visible {
+    outline: 2px solid rgba(214, 174, 82, 0.8);
+    outline-offset: 3px;
+}
+
+/* Info brano — nascosta di default, appare al passaggio del mouse */
 .echi-music-info {
     display: flex;
     flex-direction: column;
     gap: 3px;
 
-    color: var(--text-color, #e8e2d5);
+    color: var(--text, #e8e2d5);
     text-shadow: 0 1px 5px rgba(0, 0, 0, 0.45);
+
+    pointer-events: none;
+    user-select: none;
+
+    /* Stato iniziale: invisibile e spostata a sinistra */
+    opacity: 0;
+    transform: translateX(-6px);
+    transition:
+        opacity 0.35s ease,
+        transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Al passaggio del mouse sull'immagine (o focus da tastiera) → info appare */
+.echi-music-card:hover .echi-music-info,
+.echi-cookie-image:focus-visible ~ .echi-music-info {
+    opacity: 1;
+    transform: translateX(0);
 }
 
 /* Indicazione musicale */
@@ -457,6 +460,7 @@
     font-size: 10px;
     font-weight: 500;
     letter-spacing: 1.5px;
+    text-transform: uppercase;
 }
 
 /* Titolo */
@@ -464,6 +468,7 @@
     font-family: var(--serif, Georgia, serif);
     font-size: 17px;
     font-weight: 600;
+    font-style: italic;
     line-height: 1.2;
 }
 
@@ -487,25 +492,21 @@
         max-width: calc(100vw - 100px);
     }
 
-    .echi-music-card .echi-cookie-image {
+    .echi-cookie-image {
         width: 120px;
         height: 67px;
     }
 
-    .echi-music-title {
-        font-size: 14px;
-    }
+    .echi-music-title { font-size: 14px; }
+    .echi-music-author { font-size: 12px; }
+    .echi-music-performer { font-size: 10px; }
+    .echi-music-label { font-size: 9px; }
+}
 
-    .echi-music-author {
-        font-size: 12px;
-    }
-
-    .echi-music-performer {
-        font-size: 10px;
-    }
-
-    .echi-music-label {
-        font-size: 9px;
+/* Accessibilità: nessuna transizione se l'utente la disattiva */
+@media (prefers-reduced-motion: reduce) {
+    .echi-music-info {
+        transition: none;
     }
 }
         </style>
@@ -2389,9 +2390,12 @@
                 <p class="privacy-note">Nessuna comunicazione indesiderata. Potrai cancellarti in qualsiasi momento.</p>
             </div>
         </div>
-<!-- Immagine accanto al pulsante cookie — trigger audio -->
-<!-- Immagine e informazioni sul brano -->
-<div class="echi-music-card">
+
+<!-- Immagine + info brano — trigger audio + didascalia al passaggio del mouse-->
+
+<div class="echi-music-card"
+     role="group"
+     aria-label="Anteprima audio: Gymnopédie n. 1 di Erik Satie, eseguita da Edward Rosser, pianoforte">
 
     <img
         class="echi-cookie-image"
@@ -2401,21 +2405,20 @@
         width="180"
         height="101"
         loading="lazy"
-        decoding="async"
-    >
+        decoding="async">
 
-    <div class="echi-music-info">
-        <span class="echi-music-label">♫ IN ASCOLTO</span>
-        <span class="echi-music-title">Gymnopédie No. 1</span>
-        <span class="echi-music-author">Erik Satie</span>
-        <span class="echi-music-performer">Edward Rosser, piano</span>
+    <div class="echi-music-info" aria-hidden="true">
+        <span class="echi-music-label">♪ Brano in ascolto</span>
+        <span class="echi-music-title">Gymnopédie n. 1</span>
+        <span class="echi-music-author">Erik Satie · 1888</span>
+        <span class="echi-music-performer">Edward Rosser, pianoforte</span>
     </div>
 
 </div>
 
-<audio id="audio" preload="none" loop>
+<!-- Audio -->
+<audio id="audio" preload="metadata" loop>
     <source src="/suoni/gymnopedie.mp3" type="audio/mpeg">
-    <source src="/suoni/gymnopedie.ogg" type="audio/ogg">
     Il tuo browser non supporta l'elemento audio.
 </audio>
 
