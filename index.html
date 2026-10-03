@@ -35,8 +35,6 @@
 <meta name="msapplication-TileColor" content="#080a12" />
         <!-- FONTS -->
  
-
-        
         <!-- CSS BASE -->
         <link rel="stylesheet" href="/svg/style.css" />
         <!-- JAVASCRIPT -->
@@ -2321,27 +2319,77 @@
 (function () {
     'use strict';
 
-    const image = document.getElementById('hoverElement');
-    const audio = document.getElementById('audio');
+    var image = document.getElementById('hoverElement');
+    var audio = document.getElementById('audio');
 
-    if (!image || !audio) return;
+    if (!image) {
+        console.error('hoverElement non trovato');
+        return;
+    }
 
+    if (!audio) {
+        console.error('audio non trovato');
+        return;
+    }
+
+    console.log('Pronto. Clicca una volta nella pagina per attivare l’audio.');
+
+    var unlocked = false;
+    var unlocking = false;
+
+    // SBLOCCO al primo click, tap o tasto
+    function unlock() {
+        if (unlocked || unlocking) return;
+
+        unlocking = true;
+
+        var vol = audio.volume;
+        audio.volume = 0;
+
+        audio.play().then(function () {
+            audio.pause();
+            audio.currentTime = 0;
+            audio.volume = vol;
+
+            unlocked = true;
+            unlocking = false;
+
+            console.log('Audio sbloccato! Ora l’hover funziona.');
+
+        }).catch(function (err) {
+            audio.volume = vol;
+            unlocking = false;
+
+            console.warn('Sblocco fallito:', err.name);
+        });
+    }
+
+    document.addEventListener('click', unlock);
+    document.addEventListener('touchstart', unlock, { passive: true });
+    document.addEventListener('keydown', unlock);
+
+    // AVVIO al passaggio del mouse
     image.addEventListener('mouseenter', function () {
+        if (!unlocked) {
+            console.log('Audio non ancora sbloccato. Clicca una volta nella pagina.');
+            return;
+        }
+
         audio.currentTime = 0;
 
-        const playPromise = audio.play();
-
-        if (playPromise !== undefined) {
-            playPromise.catch(function (error) {
-                console.log('Riproduzione bloccata dal browser:', error);
-            });
-        }
+        audio.play().then(function () {
+            console.log('Musica in riproduzione');
+        }).catch(function (err) {
+            console.warn('Play fallito:', err.name);
+        });
     });
 
+    // PAUSA quando il mouse esce dall'immagine
     image.addEventListener('mouseleave', function () {
         audio.pause();
         audio.currentTime = 0;
     });
+
 })();
 </script>
         
