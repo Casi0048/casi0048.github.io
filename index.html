@@ -7,7 +7,7 @@
         <meta
             name="description"
             content="Echi di Sofia — un viaggio attraverso la filosofia, dai presocratici al pensiero contemporaneo."
-       
+        />
         <!-- CONFIGURAZIONE RICERCA -->
         <script id="search-config-root">
             window.SEARCH_INDEX_URLS = ["/search-index.json?v=20251122", "/search-index.json"];
@@ -23,16 +23,22 @@
             }
         </script>
         <meta name="google-site-verification" content="PpwsR1To4InKAaDc4aFaUvzx9mNnUA34u98cfvCUrZk" />
-        <!-- FAVICONS -->
-        <link rel="icon" type="image/svg+xml" href="/favicon_io/favicon.svg" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon_io/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon_io/favicon-16x16.png" />
-        <link rel="icon" type="image/png" sizes="48x48" href="/favicon_io/favicon-48x48.png" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/favicon_io/apple-touch-icon.png" />
-        <link rel="manifest" href="/favicon_io/site.webmanifest" />
-        <meta name="theme-color" content="#080a12" />
-        <meta name="msapplication-TileColor" content="#080a12" />
+   <!-- FAVICONS -->
+<link rel="icon" type="image/svg+xml" href="/favicon_io/favicon.svg" />
+<link rel="icon" type="image/x-icon" href="/favicon_io/favicon.ico" />
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon_io/favicon-48x48.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon_io/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon_io/favicon-16x16.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/favicon_io/apple-touch-icon.png" />
+<link rel="manifest" href="/favicon_io/site.webmanifest" />
+<meta name="theme-color" content="#080a12" />
+<meta name="msapplication-TileColor" content="#080a12" />
+        <!-- FONTS -->
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 
+        
         <!-- CSS BASE -->
         <link rel="stylesheet" href="/svg/style.css" />
         <!-- JAVASCRIPT -->
@@ -366,6 +372,54 @@
                     display: none;
                 }
             }
+
+
+            /* ----------------------------------------------------------
+   IMMAGINE ACCANTO AL PULSANTE PREFERENZE
+   + trigger audio al passaggio del mouse
+---------------------------------------------------------- */
+
+.echi-cookie-image {
+    position: fixed;
+    left: 92px;
+    bottom: 20px;
+
+    width: 180px;
+    height: 101px;
+    z-index: 99989;
+    object-fit: cover;
+    border-radius: 6px;
+
+    border: 1px solid rgba(214, 174, 82, 0.55);
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.28);
+
+    /* ✅ MODIFICATO: da 'none' a 'auto' per ricevere gli eventi del mouse */
+    pointer-events: auto;
+    cursor: pointer;
+
+    /* Aggiunto: transizione morbida per l'effetto hover */
+    transition:
+        transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+/* ✅ NUOVO: effetto al passaggio del mouse */
+.echi-cookie-image:hover {
+    transform: scale(1.06);
+    border-color: rgba(214, 174, 82, 0.9);
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.35),
+        0 0 20px rgba(214, 174, 82, 0.25);
+}
+
+/* ✅ NUOVO: effetto al focus da tastiera (accessibilità) */
+.echi-cookie-image:focus-visible {
+    outline: 2px solid rgba(214, 174, 82, 0.8);
+    outline-offset: 3px;
+}
         </style>
     </head>
     <body>
@@ -2247,6 +2301,49 @@
                 <p class="privacy-note">Nessuna comunicazione indesiderata. Potrai cancellarti in qualsiasi momento.</p>
             </div>
         </div>
+<!-- Immagine accanto al pulsante cookie — trigger audio -->
+<img
+    class="echi-cookie-image"
+    id="hoverElement"
+    src="/immagini/grecia-antica.webp"
+    alt="Vaso greco antico"
+    width="180"
+    height="101"
+    loading="lazy"
+    decoding="async"
+>
+
+<audio id="audio" preload="none" loop>
+    <source src="/suoni/gymnopedie.mp3" type="audio/mpeg">
+    <source src="/suoni/gymnopedie.ogg" type="audio/ogg">
+    Il tuo browser non supporta l'elemento audio.
+</audio>
+
+<script>
+(function() {
+    'use strict';
+
+    const image = document.getElementById('hoverElement');
+    const audio = document.getElementById('audio');
+
+    if (!image || !audio) return;
+
+    image.addEventListener('mouseover', function() {
+        audio.currentTime = 0;
+
+        audio.play().catch(function(error) {
+            console.log('Audio non avviato:', error);
+        });
+    });
+
+    image.addEventListener('mouseout', function() {
+        audio.pause();
+        audio.currentTime = 0;
+    });
+
+})();
+</script>
+        
         <!-- ============================================================
      FOOTER
      ============================================================ -->
