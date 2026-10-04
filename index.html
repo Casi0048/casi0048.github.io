@@ -375,7 +375,6 @@
    Variante A · layout verticale: info sopra l'immagine
 ---------------------------------------------------------- */
 
-/* Contenitore fisso in basso a sinistra */
 .echi-music-card {
     position: fixed;
     left: 92px;
@@ -383,15 +382,14 @@
     z-index: 99989;
 
     display: flex;
-    flex-direction: column;      /* ← verticale */
-    align-items: flex-start;     /* ← allineati a sinistra */
-    gap: 10px;                   /* ← spazio tra info e immagine */
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
 
     width: max-content;
     max-width: calc(100vw - 110px);
 }
 
-/* Immagine */
 .echi-cookie-image {
     width: 180px;
     height: 101px;
@@ -412,7 +410,6 @@
         box-shadow 0.3s ease;
 }
 
-/* Effetto al passaggio del mouse */
 .echi-cookie-image:hover {
     transform: scale(1.06);
     border-color: rgba(214, 174, 82, 0.9);
@@ -421,13 +418,12 @@
         0 0 20px rgba(214, 174, 82, 0.25);
 }
 
-/* ✅ CONSERVATO: effetto focus da tastiera */
 .echi-cookie-image:focus-visible {
     outline: 2px solid rgba(214, 174, 82, 0.8);
     outline-offset: 3px;
 }
 
-/* Info brano — nascosta di default, appare al passaggio del mouse */
+/* Info brano — nascosta di default */
 .echi-music-info {
     display: flex;
     flex-direction: column;
@@ -441,7 +437,6 @@
     pointer-events: none;
     user-select: none;
 
-    /* Stato iniziale: invisibile e spostata verso il basso */
     opacity: 0;
     transform: translateY(6px);
     transition:
@@ -449,14 +444,14 @@
         transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* Al passaggio del mouse (o focus da tastiera) → info appare */
+/* Al passaggio del mouse → info appare */
 .echi-music-card:hover .echi-music-info,
-.echi-cookie-image:focus-visible ~ .echi-music-info {
+/* Al focus da tastiera (su qualsiasi figlio) → info appare */
+.echi-music-card:focus-within .echi-music-info {
     opacity: 1;
     transform: translateY(0);
 }
 
-/* Indicazione musicale */
 .echi-music-label {
     color: #c5a45e;
     font-family: var(--sans, sans-serif);
@@ -466,7 +461,6 @@
     text-transform: uppercase;
 }
 
-/* Titolo */
 .echi-music-title {
     font-family: var(--serif, Georgia, serif);
     font-size: 17px;
@@ -475,38 +469,32 @@
     line-height: 1.2;
 }
 
-/* Compositore */
 .echi-music-author {
     font-family: var(--sans, sans-serif);
     font-size: 13px;
 }
 
-/* Interprete */
 .echi-music-performer {
     font-family: var(--sans, sans-serif);
     font-size: 11px;
     opacity: 0.75;
 }
 
-/* Adattamento per schermi piccoli */
 @media (max-width: 600px) {
     .echi-music-card {
         gap: 7px;
         max-width: calc(100vw - 100px);
     }
-
     .echi-cookie-image {
         width: 120px;
         height: 67px;
     }
-
     .echi-music-title { font-size: 14px; }
     .echi-music-author { font-size: 12px; }
     .echi-music-performer { font-size: 10px; }
     .echi-music-label { font-size: 9px; }
 }
 
-/* Accessibilità: nessuna transizione se l'utente la disattiva */
 @media (prefers-reduced-motion: reduce) {
     .echi-music-info {
         transition: none;
@@ -2394,12 +2382,17 @@
             </div>
         </div>
 
-<!-- Immagine + info brano — trigger audio + didascalia al passaggio del mouse-->
-
 <!-- Immagine + info brano — trigger audio + didascalia al passaggio del mouse -->
 <div class="echi-music-card"
      role="group"
      aria-label="Anteprima audio: Gymnopédie n. 1 di Erik Satie, eseguita da Edward Rosser, pianoforte">
+
+    <div class="echi-music-info" aria-hidden="true">
+        <span class="echi-music-label">♪ Brano in ascolto</span>
+        <span class="echi-music-title">Gymnopédie n. 1</span>
+        <span class="echi-music-author">Erik Satie · 1888</span>
+        <span class="echi-music-performer">Edward Rosser, pianoforte</span>
+    </div>
 
     <img
         class="echi-cookie-image"
@@ -2409,13 +2402,6 @@
         width="180"
         height="101"
         decoding="async">
-
-    <div class="echi-music-info" aria-hidden="true">
-        <span class="echi-music-label">♪ Brano in ascolto</span>
-        <span class="echi-music-title">Gymnopédie n. 1</span>
-        <span class="echi-music-author">Erik Satie · 1888</span>
-        <span class="echi-music-performer">Edward Rosser, pianoforte</span>
-    </div>
 
 </div>
 
