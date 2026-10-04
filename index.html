@@ -370,9 +370,9 @@
             }
 
 
- /* ----------------------------------------------------------
+/* ----------------------------------------------------------
    IMMAGINE + INFO BRANO — trigger audio al passaggio del mouse
-   Variante A: la didascalia appare solo al passaggio del mouse
+   Variante A · layout verticale: info sopra l'immagine
 ---------------------------------------------------------- */
 
 /* Contenitore fisso in basso a sinistra */
@@ -383,8 +383,9 @@
     z-index: 99989;
 
     display: flex;
-    align-items: center;
-    gap: 14px;
+    flex-direction: column;      /* ← verticale */
+    align-items: flex-start;     /* ← allineati a sinistra */
+    gap: 10px;                   /* ← spazio tra info e immagine */
 
     width: max-content;
     max-width: calc(100vw - 110px);
@@ -432,25 +433,27 @@
     flex-direction: column;
     gap: 3px;
 
+    max-width: 240px;
+
     color: var(--text, #e8e2d5);
-    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.45);
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.55);
 
     pointer-events: none;
     user-select: none;
 
-    /* Stato iniziale: invisibile e spostata a sinistra */
+    /* Stato iniziale: invisibile e spostata verso il basso */
     opacity: 0;
-    transform: translateX(-6px);
+    transform: translateY(6px);
     transition:
         opacity 0.35s ease,
         transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* Al passaggio del mouse sull'immagine (o focus da tastiera) → info appare */
+/* Al passaggio del mouse (o focus da tastiera) → info appare */
 .echi-music-card:hover .echi-music-info,
 .echi-cookie-image:focus-visible ~ .echi-music-info {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateY(0);
 }
 
 /* Indicazione musicale */
@@ -488,7 +491,7 @@
 /* Adattamento per schermi piccoli */
 @media (max-width: 600px) {
     .echi-music-card {
-        gap: 9px;
+        gap: 7px;
         max-width: calc(100vw - 100px);
     }
 
