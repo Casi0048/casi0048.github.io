@@ -237,18 +237,25 @@ document.addEventListener("DOMContentLoaded", function ()  {
             }
         }
         function closeVideo()  {
-            videoPlayer.classList.remove("open");
-            videoToggle.setAttribute("aria-expanded", "false");
-            // Restituisce il focus al pulsante di apertura
-            videoToggle.focus();
-            const panel = document.getElementById("videoPanel");
-            if (panel)  {
-                panel.setAttribute("aria-hidden", "true");
-            }
-            if (visioniVideo && visioniVideo.tagName === "VIDEO")  {
-                visioniVideo.pause();
-            }
-        }
+    const wasOpen = videoPlayer.classList.contains("open");
+
+    videoPlayer.classList.remove("open");
+    videoToggle.setAttribute("aria-expanded", "false");
+
+    // Restituisce il focus al pulsante solo se il pannello era aperto
+    if (wasOpen)  {
+        videoToggle.focus();
+    }
+
+    const panel = document.getElementById("videoPanel");
+    if (panel)  {
+        panel.setAttribute("aria-hidden", "true");
+    }
+
+    if (visioniVideo && visioniVideo.tagName === "VIDEO")  {
+        visioniVideo.pause();
+    }
+}
         videoToggle.addEventListener("click", function (e)  {
             e.stopPropagation();
             if (videoPlayer.classList.contains("open"))  {
