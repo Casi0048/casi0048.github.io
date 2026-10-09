@@ -190,6 +190,7 @@ async function search() {
     }
 }
 
+
 input.addEventListener("input", () => {
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(search, 250);
@@ -201,5 +202,38 @@ form.addEventListener("submit", (event) => {
     search();
 });
 
-})();
+// Apertura e chiusura del pannello di ricerca
+const toggleBtn = document.getElementById("searchToggleBtn");
+const searchPanel = document.getElementById("siteSearch");
 
+if (toggleBtn && searchPanel) {
+    toggleBtn.addEventListener("click", () => {
+        const isOpening = searchPanel.hidden;
+
+        searchPanel.hidden = !isOpening;
+        toggleBtn.setAttribute("aria-expanded", String(isOpening));
+        toggleBtn.setAttribute(
+            "aria-label",
+            isOpening ? "Chiudi la ricerca" : "Apri la ricerca"
+        );
+
+        if (isOpening) {
+            input.focus();
+        } else {
+            results.hidden = true;
+        }
+    });
+
+    // Chiude il pannello con il tasto Esc
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && !searchPanel.hidden) {
+            searchPanel.hidden = true;
+            toggleBtn.setAttribute("aria-expanded", "false");
+            toggleBtn.setAttribute("aria-label", "Apri la ricerca");
+            results.hidden = true;
+            toggleBtn.focus();
+        }
+    });
+}
+
+})();
