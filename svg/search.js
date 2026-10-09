@@ -1,7 +1,6 @@
 (() => {
 "use strict";
 
-```
 const input = document.getElementById("siteSearchInput");
 const form = document.getElementById("siteSearchForm");
 const results = document.getElementById("siteSearchResults");
@@ -201,7 +200,6 @@ form.addEventListener("submit", (event) => {
     clearTimeout(debounceTimer);
     search();
 });
-```
 
 })();
 
