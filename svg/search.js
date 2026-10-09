@@ -207,6 +207,12 @@ form.addEventListener("submit", (event) => {
     const toggleBtn = document.getElementById("searchToggleBtn");
     
     const searchPanel = document.getElementById("siteSearch");
+    console.log("Ricerca:", {
+    pulsante: !!toggleBtn,
+    pannello: !!searchPanel,
+    input: !!input,
+    risultati: !!results
+});
 alert("Pulsante: " + !!toggleBtn + " | Pannello: " + !!searchPanel);
     if (toggleBtn && searchPanel) {
       toggleBtn.addEventListener("click", () => {
