@@ -2290,8 +2290,17 @@ main {
     // ─────────────────────────────────────────────
     // Sblocco al primo click/tap/tasto
     // ─────────────────────────────────────────────
-    function unlock() {
-        if (unlocked) return;
+   
+function unlock(event) {
+    // Non avviare lo sblocco audio cliccando sulla ricerca
+    if (
+        event &&
+        event.target.closest("#searchToggleBtn, #siteSearch")
+    ) {
+        return;
+    }
+
+    if (unlocked) return;
 
         loadAudio();
 
