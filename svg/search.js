@@ -212,7 +212,11 @@ if (toggleBtn && searchPanel) {
 
         searchPanel.hidden = !isOpening;
         toggleBtn.setAttribute("aria-expanded", String(isOpening));
-        searchPanel.style.backgroundColor = "red";
+       console.log("Ricerca:", {
+    hidden: searchPanel.hidden,
+    display: getComputedStyle(searchPanel).display,
+    visibility: getComputedStyle(searchPanel).visibility
+});
         toggleBtn.setAttribute(
             "aria-label",
             isOpening ? "Chiudi la ricerca" : "Apri la ricerca"
