@@ -212,6 +212,7 @@ if (toggleBtn && searchPanel) {
 
         searchPanel.hidden = !isOpening;
         toggleBtn.setAttribute("aria-expanded", String(isOpening));
+        searchPanel.style.backgroundColor = "red";
         toggleBtn.setAttribute(
             "aria-label",
             isOpening ? "Chiudi la ricerca" : "Apri la ricerca"
