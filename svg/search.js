@@ -202,43 +202,49 @@ form.addEventListener("submit", (event) => {
     search();
 });
 
-// Apertura e chiusura del pannello di ricerca
-const toggleBtn = document.getElementById("searchToggleBtn");
-const searchPanel = document.getElementById("siteSearch");
 
-if (toggleBtn && searchPanel) {
-    toggleBtn.addEventListener("click", () => {
-        const isOpening = searchPanel.hidden;
+    // Apertura e chiusura del pannello di ricerca
+    const toggleBtn = document.getElementById("searchToggleBtn");
+    const searchPanel = document.getElementById("siteSearch");
 
-        searchPanel.hidden = !isOpening;
-        toggleBtn.setAttribute("aria-expanded", String(isOpening));
-       console.log("Ricerca:", {
-    hidden: searchPanel.hidden,
-    display: getComputedStyle(searchPanel).display,
-    visibility: getComputedStyle(searchPanel).visibility
-});
-        toggleBtn.setAttribute(
-            "aria-label",
-            isOpening ? "Chiudi la ricerca" : "Apri la ricerca"
-        );
+    if (toggleBtn && searchPanel) {
+        toggleBtn.addEventListener("click", () => {
+            const isOpening = searchPanel.hidden;
 
-        if (isOpening) {
-            input.focus();
-        } else {
-            results.hidden = true;
-        }
-    });
+            searchPanel.hidden = !isOpening;
 
-    // Chiude il pannello con il tasto Esc
-    document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape" && !searchPanel.hidden) {
-            searchPanel.hidden = true;
-            toggleBtn.setAttribute("aria-expanded", "false");
-            toggleBtn.setAttribute("aria-label", "Apri la ricerca");
-            results.hidden = true;
-            toggleBtn.focus();
-        }
-    });
-}
+            toggleBtn.setAttribute("aria-expanded", String(isOpening));
+            toggleBtn.setAttribute(
+                "aria-label",
+                isOpening ? "Chiudi la ricerca" : "Apri la ricerca"
+            );
 
+            console.log("Ricerca:", {
+                isOpening: isOpening,
+                hidden: searchPanel.hidden,
+                display: window.getComputedStyle(searchPanel).display,
+                visibility: window.getComputedStyle(searchPanel).visibility,
+                background: window.getComputedStyle(searchPanel).backgroundColor
+            });
+
+            if (isOpening) {
+                input.focus();
+            } else {
+                results.hidden = true;
+            }
+        });
+
+               // Chiude il pannello con il tasto Esc
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape" && !searchPanel.hidden) {
+                searchPanel.hidden = true;
+
+                toggleBtn.setAttribute("aria-expanded", "false");
+                toggleBtn.setAttribute("aria-label", "Apri la ricerca");
+
+                results.hidden = true;
+                toggleBtn.focus();
+            }
+        });
+    }
 })();
