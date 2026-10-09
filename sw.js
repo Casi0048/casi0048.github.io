@@ -60,13 +60,23 @@ self.addEventListener('fetch', (event) => {
 
     try {
       const resp = await fetch(event.request);
-      if (url.origin === self.location.origin) {
+
+      // Memorizza soltanto risposte complete e riuscite
+      if (
+        url.origin === self.location.origin &&
+        resp.status === 200 &&
+        resp.type === 'basic' &&
+        !event.request.headers.has('Range')
+      ) {
         const cache = await caches.open(CACHE);
-        cache.put(event.request, resp.clone());
+        await cache.put(event.request, resp.clone());
       }
+
       return resp;
     } catch {
       return cached || Response.error();
     }
   })());
 });
+
+
