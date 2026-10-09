@@ -207,7 +207,7 @@ form.addEventListener("submit", (event) => {
     const toggleBtn = document.getElementById("searchToggleBtn");
     
     const searchPanel = document.getElementById("siteSearch");
-
+alert("Pulsante: " + !!toggleBtn + " | Pannello: " + !!searchPanel);
     if (toggleBtn && searchPanel) {
       toggleBtn.addEventListener("click", () => {
     const isOpening = searchPanel.hidden;
