@@ -209,10 +209,10 @@ form.addEventListener("submit", (event) => {
     const searchPanel = document.getElementById("siteSearch");
 
     if (toggleBtn && searchPanel) {
-        toggleBtn.addEventListener("click", () => {
-           alert("Lente cliccata. Pannello nascosto: " + searchPanel.hidden);
+      toggleBtn.addEventListener("click", () => {
+    const isOpening = searchPanel.hidden;
 
-            searchPanel.hidden = !isOpening;
+    searchPanel.hidden = !isOpening;
 
             toggleBtn.setAttribute("aria-expanded", String(isOpening));
             toggleBtn.setAttribute(
