@@ -209,7 +209,7 @@ form.addEventListener("submit", (event) => {
 
     if (toggleBtn && searchPanel) {
         toggleBtn.addEventListener("click", () => {
-            const isOpening = searchPanel.hidden;
+           alert("Lente cliccata. Pannello nascosto: " + searchPanel.hidden);
 
             searchPanel.hidden = !isOpening;
 
