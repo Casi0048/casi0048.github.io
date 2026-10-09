@@ -205,6 +205,7 @@ form.addEventListener("submit", (event) => {
 
     // Apertura e chiusura del pannello di ricerca
     const toggleBtn = document.getElementById("searchToggleBtn");
+    alert("Ricerca JS caricata: " + !!toggleBtn);
     const searchPanel = document.getElementById("siteSearch");
 
     if (toggleBtn && searchPanel) {
