@@ -1,59 +1,84 @@
 // sw.js — Single-file site (index.html inline CSS/JS)
-const CACHE = 'echi-single-v10';   // ⇦ aumenta il nome quando cambi qualcosa
+// ⇦ Incrementa CACHE_VERSION ad ogni modifica di index.html
+const CACHE_VERSION = 'v11';
+const CACHE = `echi-single-${CACHE_VERSION}`;
 
-// Metti SOLO risorse same-origin che ESISTONO davvero
+// Risorse same-origin che esistono davvero
 const ASSETS = [
-  '/',                // homepage (equivale a /index.html su GitHub Pages)
+  '/',
   '/index.html',
-  // Facoltativi (solo se esistono davvero nel repo):
   // '/search-index.json',
+  // '/search-full-index.json',
   // '/immagini%20per%20sito/Socrates_Louvre.jpg',
   // '/suoni/Strauss.mp3'
 ];
 
-// Install: precache senza fallire se un file manca
+/* =========================================================
+   INSTALL — precache non bloccante + attivazione immediata
+   ========================================================= */
 self.addEventListener('install', (event) => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE);
-    await Promise.allSettled(ASSETS.map(u => cache.add(u)));
+    await Promise.allSettled(ASSETS.map((u) => cache.add(u)));
   })());
   self.skipWaiting();
 });
 
-// Activate: pulizia cache vecchie e presa controllo immediata
+/* =========================================================
+   ACTIVATE — elimina cache vecchie + prende il controllo
+   ========================================================= */
 self.addEventListener('activate', (event) => {
   event.waitUntil((async () => {
     const keys = await caches.keys();
     await Promise.all(
       keys
-        .filter(k => k.startsWith('echi-') && k !== CACHE)
-        .map(k => caches.delete(k))
+        .filter((k) => k.startsWith('echi-') && k !== CACHE)
+        .map((k) => caches.delete(k))
     );
     await self.clients.claim();
   })());
 });
 
-// Fetch:
-// - Navigazioni (HTML): network-first con fallback a index.html cache (offline)
-// - Altre richieste: cache-first con cache dinamica SOLO same-origin
+/* =========================================================
+   FETCH
+   - Navigazioni: network-first con cache: 'reload'
+     (bypassa la cache HTTP di GitHub Pages, max-age=600)
+   - Asset: cache-first + caching dinamico same-origin
+   ========================================================= */
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
   const url = new URL(event.request.url);
 
-  // Navigazioni pagina
+  // Richieste cross-origin: lascia passare senza intercettare
+  if (url.origin !== self.location.origin) return;
+
+  // Ignora richieste Range (video/audio streaming)
+  if (event.request.headers.has('range')) return;
+
+  // ---------- NAVIGAZIONI ----------
   if (event.request.mode === 'navigate') {
     event.respondWith((async () => {
       try {
-        return await fetch(event.request);
+        // cache: 'reload' → ignora la cache HTTP, va sempre al server
+        const fresh = await fetch(event.request, { cache: 'reload' });
+
+        // Aggiorna la cache con la versione fresca
+        if (fresh && fresh.status === 200 && fresh.type === 'basic') {
+          const cache = await caches.open(CACHE);
+          cache.put('/index.html', fresh.clone());
+        }
+
+        return fresh;
       } catch {
+        // Offline: serve la versione in cache
         return (await caches.match('/index.html')) || Response.error();
       }
     })());
     return;
   }
 
-  // Statiche/asset: cache-first + caching dinamico same-origin
+  // ---------- ASSET (CSS, JS, immagini, font) ----------
   event.respondWith((async () => {
     const cached = await caches.match(event.request);
     if (cached) return cached;
@@ -61,9 +86,7 @@ self.addEventListener('fetch', (event) => {
     try {
       const resp = await fetch(event.request);
 
-      // Memorizza soltanto risposte complete e riuscite
       if (
-        url.origin === self.location.origin &&
         resp.status === 200 &&
         resp.type === 'basic' &&
         !event.request.headers.has('Range')
@@ -78,5 +101,3 @@ self.addEventListener('fetch', (event) => {
     }
   })());
 });
-
-
