@@ -39,6 +39,13 @@
         <meta name="theme-color" content="#080a12">
         <meta name="msapplication-TileColor" content="#080a12">
         <!-- FONTS -->
+        <script>
+  try {
+    if (localStorage.getItem('echiCookieConsent.v1')) {
+      document.documentElement.classList.add('echi-has-consent');
+    }
+  } catch (e) {}
+</script>
 <style>
 @font-face {
                 font-family: "Cinzel";
@@ -59,9 +66,105 @@
         <link rel="stylesheet" href="/svg/style.css">
         <!-- JAVASCRIPT -->
         <script src="/svg/script.js" defer></script>
-        <!-- COOKIE -->
-        <link rel="stylesheet" href="/svg/cookie.css">
-        <script src="/svg/cookie.js" defer></script>
+        <!-- ============================================================
+     COOKIE — Critical CSS inline
+     Serve a dipingere il banner al primo paint senza attendere
+     il caricamento di /svg/cookie.css.
+     ============================================================ -->
+<style>
+  .echi-cookie-banner {
+    position: fixed;
+    left: 24px;
+    right: 24px;
+    bottom: 24px;
+    z-index: 99990;
+    max-width: 1180px;
+    margin: 0 auto;
+    background: rgba(11, 15, 25, 0.97);
+    color: #f5f1e8;
+    border: 1px solid rgba(214, 174, 82, 0.45);
+    border-radius: 16px;
+    box-shadow: 0 18px 55px rgba(0, 0, 0, 0.38);
+  }
+
+  .echi-cookie-content {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    padding: 22px 26px;
+  }
+
+  .echi-cookie-text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .echi-cookie-text h2 {
+    margin: 0 0 8px;
+    font-family: "Cinzel", Georgia, serif;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: #d6ae52;
+  }
+
+  .echi-cookie-text p {
+    margin: 0;
+    font-family: "Inter", Arial, sans-serif;
+    font-size: 0.86rem;
+    line-height: 1.6;
+    color: rgba(245, 241, 232, 0.86);
+  }
+
+  .echi-cookie-actions {
+    display: flex;
+    gap: 9px;
+    flex-shrink: 0;
+  }
+
+  .echi-cookie-button {
+    border: 1px solid transparent;
+    border-radius: 8px;
+    padding: 9px 14px;
+    font-size: 0.78rem;
+    cursor: pointer;
+  }
+
+  .echi-cookie-primary {
+    background: #d6ae52;
+    color: #0b0f19;
+  }
+
+  .echi-cookie-secondary {
+    background: transparent;
+    color: #f5f1e8;
+    border-color: rgba(245, 241, 232, 0.28);
+  }
+
+  .echi-cookie-link {
+    background: transparent;
+    color: #d6ae52;
+  }
+
+  .echi-cookie-banner[hidden] {
+    display: none !important;
+  }
+
+  /* Chi ha già dato il consenso non vede nemmeno un frame */
+  html.echi-has-consent .echi-cookie-banner {
+    display: none !important;
+  }
+</style>
+      <!-- COOKIE — CSS non-blocking -->
+<link
+  rel="stylesheet"
+  href="/svg/cookie.css"
+  media="print"
+  onload="this.media='all'"
+>
+<noscript>
+  <link rel="stylesheet" href="/svg/cookie.css">
+</noscript>
+<script src="/svg/cookie.js" defer></script>
 
         <style>
             /* CRITICAL CSS
@@ -2871,5 +2974,120 @@ function unlock(event) {
                 setInterval(updateClock, 1000); // aggiorna ogni secondo
             })();
         </script>
+        <!-- ============================================================
+     COOKIE CONSENT — HTML statico
+     ============================================================ -->
+
+<section
+    id="echi-cookie-banner"
+    class="echi-cookie-banner"
+    role="dialog"
+    aria-modal="false"
+    aria-labelledby="echi-cookie-title"
+    aria-describedby="echi-cookie-description"
+>
+    <div class="echi-cookie-content">
+        <div class="echi-cookie-text">
+            <h2 id="echi-cookie-title">La tua privacy conta</h2>
+            <p id="echi-cookie-description">
+                Echi di Sofia utilizza tecnologie necessarie
+                al funzionamento del sito e, quando richiesto,
+                contenuti forniti da servizi esterni.
+                Puoi scegliere come gestire le tue preferenze.
+            </p>
+        </div>
+
+        <div class="echi-cookie-actions">
+            <button type="button" class="echi-cookie-button echi-cookie-secondary" data-cookie-action="reject">
+                Rifiuta
+            </button>
+            <button type="button" class="echi-cookie-button echi-cookie-secondary" data-cookie-action="customize">
+                Personalizza cookie
+            </button>
+            <button type="button" class="echi-cookie-button echi-cookie-link" data-cookie-action="info">
+                Maggiori informazioni
+            </button>
+            <button type="button" class="echi-cookie-button echi-cookie-primary" data-cookie-action="accept">
+                Accetta
+            </button>
+        </div>
+    </div>
+</section>
+
+<section
+    id="echi-cookie-modal"
+    class="echi-cookie-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="echi-cookie-modal-title"
+    hidden
+>
+    <div class="echi-cookie-modal-box">
+        <div class="echi-cookie-modal-header">
+            <h2 id="echi-cookie-modal-title">Personalizza cookie</h2>
+            <button
+                type="button"
+                class="echi-cookie-close"
+                data-cookie-action="close"
+                aria-label="Chiudi"
+            >×</button>
+        </div>
+
+        <div class="echi-cookie-options">
+            <div class="echi-cookie-option">
+                <div>
+                    <h3>Necessari</h3>
+                    <p>Necessari per il funzionamento essenziale del sito. Sono sempre attivi.</p>
+                </div>
+                <span class="echi-cookie-always">Sempre attivi</span>
+            </div>
+
+            <div class="echi-cookie-option">
+                <div>
+                    <h3>Preferenze</h3>
+                    <p>Permettono di ricordare alcune impostazioni scelte dall'utente, come le preferenze dell'interfaccia.</p>
+                </div>
+                <label class="echi-cookie-switch">
+                    <input type="checkbox" id="echi-cookie-preferences">
+                    <span></span>
+                </label>
+            </div>
+
+            <div class="echi-cookie-option">
+                <div>
+                    <h3>Contenuti esterni</h3>
+                    <p>Permettono di visualizzare contenuti incorporati forniti da servizi esterni, come YouTube.</p>
+                </div>
+                <label class="echi-cookie-switch">
+                    <input type="checkbox" id="echi-cookie-external">
+                    <span></span>
+                </label>
+            </div>
+        </div>
+
+        <div class="echi-cookie-modal-footer">
+            <a href="pagine/privacy-policy.html" class="echi-cookie-privacy">
+                Leggi la Privacy Policy
+            </a>
+            <div class="echi-cookie-modal-actions">
+                <button type="button" class="echi-cookie-button echi-cookie-secondary" data-cookie-action="reject-all">
+                    Rifiuta tutto
+                </button>
+                <button type="button" class="echi-cookie-button echi-cookie-primary" data-cookie-action="save">
+                    Salva preferenze
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<button
+    id="echi-cookie-settings"
+    class="echi-cookie-settings"
+    type="button"
+    aria-label="Gestisci preferenze cookie"
+    title="Gestisci preferenze cookie"
+    hidden
+>⚙</button>
     </body>
 </html>
