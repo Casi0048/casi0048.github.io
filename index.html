@@ -61,8 +61,250 @@
     font-display: swap;
   }
   </style>
-  
-<style>
+  <!-- ============================================================
+         COOKIE — Critical CSS inline
+         ============================================================ -->
+  <style>
+  .echi-cookie-banner {
+    position: fixed;
+    left: 24px;
+    right: 24px;
+    bottom: 24px;
+    z-index: 99990;
+    max-width: 1180px;
+    margin: 0 auto;
+    background: rgba(11, 15, 25, 0.97);
+    color: #f5f1e8;
+    border: 1px solid rgba(214, 174, 82, 0.45);
+    border-radius: 16px;
+    box-shadow: 0 18px 55px rgba(0, 0, 0, 0.38);
+  }
+
+  .echi-cookie-content {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    padding: 22px 26px;
+  }
+
+  .echi-cookie-text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .echi-cookie-text h2 {
+    margin: 0 0 8px;
+    font-family: "Cinzel", Georgia, serif;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: #d6ae52;
+  }
+
+  .echi-cookie-text p {
+    margin: 0;
+    font-family: "Inter", Arial, sans-serif;
+    font-size: 0.86rem;
+    line-height: 1.6;
+    color: rgba(245, 241, 232, 0.86);
+  }
+
+  .echi-cookie-actions {
+    display: flex;
+    gap: 9px;
+    flex-shrink: 0;
+  }
+
+  .echi-cookie-button {
+    border: 1px solid transparent;
+    border-radius: 8px;
+    padding: 9px 14px;
+    font-size: 0.78rem;
+    cursor: pointer;
+  }
+
+  .echi-cookie-primary {
+    background: #d6ae52;
+    color: #0b0f19;
+  }
+
+  .echi-cookie-secondary {
+    background: transparent;
+    color: #f5f1e8;
+    border-color: rgba(245, 241, 232, 0.28);
+  }
+
+  .echi-cookie-link {
+    background: transparent;
+    color: #d6ae52;
+  }
+
+  .echi-cookie-banner[hidden] {
+    display: none !important;
+  }
+
+  /* Chi ha già dato il consenso non vede nemmeno un frame */
+  html.echi-has-consent .echi-cookie-banner {
+    display: none !important;
+  }
+
+  /* Pulsante "gestisci preferenze" (rondellina ⚙) */
+  .echi-cookie-settings {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    z-index: 99989;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(214, 174, 82, 0.55);
+    border-radius: 50%;
+    background: rgba(11, 15, 25, 0.94);
+    color: #d6ae52;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.28);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .echi-cookie-settings:hover {
+    border-color: #d6ae52;
+    background: #0b0f19;
+    transform: translateY(-2px);
+  }
+
+  .echi-cookie-settings[hidden] {
+    display: none !important;
+  }
+
+  /* ============================================================
+   MODALE COOKIE — CSS critico
+   ============================================================ */
+  .echi-cookie-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(4, 7, 13, 0.72);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+  }
+
+  .echi-cookie-modal[hidden] {
+    display: none !important;
+  }
+
+  .echi-cookie-modal-box {
+    width: min(620px, 100%);
+    max-height: min(720px, calc(100vh - 48px));
+    overflow-y: auto;
+    background: #0b0f19;
+    color: #f5f1e8;
+    border: 1px solid rgba(214, 174, 82, 0.45);
+    border-radius: 16px;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+  }
+
+  .echi-cookie-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px 24px;
+    border-bottom: 1px solid rgba(245, 241, 232, 0.1);
+  }
+
+  .echi-cookie-modal-header h2 {
+    margin: 0;
+    font-family: "Cinzel", Georgia, serif;
+    font-size: 1.08rem;
+    font-weight: 500;
+    color: #d6ae52;
+  }
+
+  .echi-cookie-close {
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(245, 241, 232, 0.18);
+    border-radius: 50%;
+    background: transparent;
+    color: #f5f1e8;
+    font-size: 1.35rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .echi-cookie-options {
+    padding: 8px 24px;
+  }
+
+  .echi-cookie-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(245, 241, 232, 0.09);
+  }
+
+  .echi-cookie-option:last-child {
+    border-bottom: 0;
+  }
+
+  .echi-cookie-option h3 {
+    margin: 0 0 5px;
+    font-family: "Cinzel", Georgia, serif;
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: #f5f1e8;
+  }
+
+  .echi-cookie-option p {
+    margin: 0;
+    max-width: 450px;
+    font-family: "Inter", Arial, sans-serif;
+    font-size: 0.79rem;
+    line-height: 1.55;
+    color: rgba(245, 241, 232, 0.68);
+  }
+
+  .echi-cookie-always {
+    flex-shrink: 0;
+    font-family: "Inter", Arial, sans-serif;
+    font-size: 0.72rem;
+    color: #d6ae52;
+  }
+
+  .echi-cookie-modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px 24px;
+    border-top: 1px solid rgba(245, 241, 232, 0.1);
+  }
+
+  .echi-cookie-privacy {
+    color: #d6ae52;
+    font-family: "Inter", Arial, sans-serif;
+    font-size: 0.76rem;
+    text-decoration: none;
+  }
+
+  .echi-cookie-modal-actions {
+    display: flex;
+    gap: 9px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
   /* ==========================================================
    ECHI DI SOFIA — COOKIE CONSENT
    Stile autonomo
