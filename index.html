@@ -426,51 +426,7 @@
       <div class=echi-music-info aria-hidden=true> <span class=echi-music-label>♪ Brano in ascolto</span> <span class=echi-music-title>Gymnopédie n. 1</span> <span class=echi-music-author>Erik Satie · 1888</span> <span class=echi-music-performer>Edward Rosser, pianoforte</span> </div> <img class=echi-cookie-image id=hoverElement src=/immagini/grecia-antica.avif alt="Vaso greco antico" width=180 height=101 decoding=async fetchpriority=high>
     </div> <audio id=audio preload=none loop></audio>
     <script>
-      ! function() {
-        "use strict";
-        var e = document.getElementById("hoverElement"),
-          n = document.getElementById("audio");
-        if (e && n) {
-          var o = !1,
-            t = !1;
-          document.addEventListener("click", c), document.addEventListener("touchstart", c, {
-            passive: !0
-          }), document.addEventListener("keydown", c), e.addEventListener("mouseenter", (function() {
-            o ? (n.currentTime = 0, n.play().then((function() {
-              console.log("🎵 Musica in riproduzione")
-            })).catch((function(e) {
-              console.warn("Play fallito:", e.name)
-            }))) : console.log("ℹ️ Hover rilevato, ma audio non ancora sbloccato.")
-          })), e.addEventListener("mouseleave", (function() {
-            n.pause(), n.currentTime = 0
-          }))
-        }
-
-        function c(e) {
-          if (!(e && e.target.closest("#searchToggleBtn, #siteSearch") || o)) {
-            ! function() {
-              if (!t && !o) {
-                t = !0;
-                var e = document.createElement("source");
-                e.src = "/suoni/gymnopedie.opus", e.type = "audio/ogg; codecs=opus", n.appendChild(e);
-                var c = document.createElement("source");
-                c.src = "/suoni/gymnopedie.mp3", c.type = "audio/mpeg", n.appendChild(c), n.load(), console.log("📥 Audio in caricamento...")
-              }
-            }();
-            var c = function() {
-              var e = n.volume;
-              n.volume = 0, n.play().then((function() {
-                n.pause(), n.currentTime = 0, n.volume = e, o = !0, console.log("🔓 Audio sbloccato! Ora l'hover funziona.")
-              })).catch((function(o) {
-                n.volume = e, console.warn("⚠️ Sblocco fallito:", o.name)
-              }))
-            };
-            n.readyState >= 2 ? c() : n.addEventListener("canplay", c, {
-              once: !0
-            })
-          }
-        }
-      }()
+      !function(){"use strict";var e=document.getElementById("hoverElement"),n=document.getElementById("audio");if(e&&n){var o=!1,t=!1;document.addEventListener("click",c),document.addEventListener("touchstart",c,{passive:!0}),document.addEventListener("keydown",c),e.addEventListener("mouseenter",function(){o?(n.currentTime=0,n.play().then(function(){console.log("🎵 Musica in riproduzione")}).catch(function(e){console.warn("Play fallito:",e.name)})):console.log("ℹ️ Hover rilevato, ma audio non ancora sbloccato.")}),e.addEventListener("mouseleave",function(){n.pause(),n.currentTime=0})}function c(e){if(!(e&&e.target.closest("#searchToggleBtn, #siteSearch")||o)){!function(){if(!t&&!o){t=!0;var e=document.createElement("source");e.src="/suoni/gymnopedie.opus",e.type="audio/ogg; codecs=opus",n.appendChild(e);var c=document.createElement("source");c.src="/suoni/gymnopedie.mp3",c.type="audio/mpeg",n.appendChild(c),n.load(),console.log("📥 Audio in caricamento...")}}();var c=function(){var e=n.volume;n.volume=0,n.play().then(function(){n.pause(),n.currentTime=0,n.volume=e,o=!0,console.log("🔓 Audio sbloccato! Ora l'hover funziona.")}).catch(function(o){n.volume=e,console.warn("⚠️ Sblocco fallito:",o.name)})};n.readyState>=2?c():n.addEventListener("canplay",c,{once:!0})}}}();
     </script>
     <footer class=site-footer>
       <div class=container>
