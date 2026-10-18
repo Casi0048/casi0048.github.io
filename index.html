@@ -849,7 +849,7 @@
 
         .knowledge-tree,
         .heraclitus-clock {
-          animation: none;
+          animation: hourglassTurn 24s ease-in-out infinite;
         }
       }
 
@@ -3721,135 +3721,13 @@
         }
       }
 
-      /* ------------------------------------------------------------
-   FUOCO SOTTO L'OROLOGIO — alone caldo diffuso (::before)
-   ------------------------------------------------------------ */
-      .heraclitus-clock::before {
-        content: "";
-        position: absolute;
-        left: 50%;
-        bottom: -70px;
-        width: 200px;
-        height: 100px;
-        transform: translateX(-50%);
-        background: radial-gradient(ellipse at center bottom,
-            rgb(255 150 50 / 0.6) 0%,
-            rgb(255 100 30 / 0.35) 30%,
-            rgb(200 50 0 / 0.15) 55%,
-            transparent 75%);
-        filter: blur(14px);
-        pointer-events: none;
-        z-index: -1;
-        opacity: 0;
-        animation:
-          fireGlowIn 0.9s ease-out 3.2s forwards,
-          fireGlowPulse 3.2s ease-in-out 4.1s infinite;
-      }
-
-      /* ------------------------------------------------------------
-   FUOCO SOTTO L'OROLOGIO — lingue di fiamma (::after)
-   ------------------------------------------------------------ */
-      .heraclitus-clock::after {
-        content: "";
-        position: absolute;
-        left: 50%;
-        bottom: -58px;
-        width: 100px;
-        height: 80px;
-        transform: translateX(-50%);
-        background:
-          radial-gradient(ellipse 18px 40px at 50% 88%, rgb(255 220 100 / 0.90), transparent 70%),
-          radial-gradient(ellipse 22px 50px at 32% 92%, rgb(255 150 50 / 0.85), transparent 70%),
-          radial-gradient(ellipse 22px 45px at 68% 92%, rgb(255 100 30 / 0.80), transparent 70%),
-          radial-gradient(ellipse 15px 35px at 50% 98%, rgb(255 240 150 / 0.95), transparent 70%),
-          radial-gradient(ellipse 30px 55px at 50% 100%, rgb(255 80 20 / 0.60), transparent 75%);
-        filter: blur(4px);
-        pointer-events: none;
-        z-index: -1;
-        opacity: 0;
-        animation:
-          fireIgnite 0.7s ease-out 3.3s forwards,
-          fireFlicker 1.7s ease-in-out 4s infinite;
-      }
-
-      @keyframes fireGlowIn {
-        from {
-          opacity: 0;
-          transform: translateX(-50%) scale(0.6);
-        }
-
-        to {
-          opacity: 0.75;
-          transform: translateX(-50%) scale(1);
-        }
-      }
-
-      @keyframes fireGlowPulse {
-
-        0%,
-        100% {
-          opacity: 0.75;
-          transform: translateX(-50%) scale(1);
-        }
-
-        50% {
-          opacity: 1;
-          transform: translateX(-50%) scale(1.08);
-        }
-      }
-
-      @keyframes fireIgnite {
-        from {
-          opacity: 0;
-          transform: translateX(-50%) scaleY(0.2) scaleX(0.5);
-          filter: blur(10px);
-        }
-
-        to {
-          opacity: 1;
-          transform: translateX(-50%) scaleY(1) scaleX(1);
-          filter: blur(4px);
-        }
-      }
-
-      @keyframes fireFlicker {
-
-        0%,
-        100% {
-          opacity: 1;
-          transform: translateX(-50%) scaleY(1) scaleX(1);
-          filter: blur(4px);
-        }
-
-        15% {
-          opacity: 0.78;
-          transform: translateX(-50%) scaleY(1.12) scaleX(0.94);
-          filter: blur(5px);
-        }
-
-        30% {
-          opacity: 1;
-          transform: translateX(-50%) scaleY(0.94) scaleX(1.06);
-          filter: blur(3px);
-        }
-
-        50% {
-          opacity: 0.85;
-          transform: translateX(-50%) scaleY(1.08) scaleX(0.97);
-          filter: blur(4.5px);
-        }
-
-        70% {
-          opacity: 1;
-          transform: translateX(-50%) scaleY(0.92) scaleX(1.03);
-          filter: blur(3.5px);
-        }
-
-        85% {
-          opacity: 0.92;
-          transform: translateX(-50%) scaleY(1.05) scaleX(0.96);
-          filter: blur(4.8px);
-        }
+      /* CLESSIDRA SOTTO L'OROLOGIO */
+      .heraclitus-hourglass {
+        display: block;
+        width: 52px;
+        height: 65px;
+        overflow: visible;
+        filter: drop-shadow(0 0 4px rgb(190 160 105 / 0.18));
       }
 
       /* ============================================================
@@ -4040,14 +3918,471 @@
         .heraclitus-clock::after {
           opacity: 0 !important;
         }
+
+        .hourglass-rotator,
+        .hourglass-sand-top,
+        .hourglass-sand-stream,
+        .hourglass-sand-bottom {
+          animation: none !important;
+        }
       }
 
+      /* LIBRO SOTTO L'ALBERO */
       .wisdom-book {
         display: block;
         width: 70px;
         height: auto;
-        margin: 8px auto 4px;
+        margin: 1px auto 4px;
         opacity: 0.85;
+      }
+
+      /* ============================================================
+   CLESSIDRA DI ERACLITO — versione definitiva a 4 forme
+   ============================================================ */
+      .hourglass-rotator {
+        display: block;
+        width: fit-content;
+        margin: 12px auto 0;
+        transform-origin: center center;
+        animation: hourglassTurn 24s linear infinite;
+      }
+
+      .heraclitus-hourglass {
+        display: block;
+        width: 52px;
+        height: 65px;
+        overflow: visible;
+        filter: drop-shadow(0 0 4px rgb(190 160 105 / 0.18));
+      }
+
+      /* --- Forme A: fase 1 (clessidra dritta, 0-50%) --- */
+      .sand-top-a {
+        transform-box: fill-box;
+        transform-origin: center bottom;
+        /* si svuota verso il collo (y=42) */
+        animation: sandTopA 24s linear infinite;
+      }
+
+      .sand-bottom-a {
+        transform-box: fill-box;
+        transform-origin: center bottom;
+        /* si riempie dal fondo (y=84) */
+        animation: sandBottomA 24s linear infinite;
+      }
+
+      /* --- Forme B: fase 3 (clessidra capovolta, 50-100%) --- */
+      .sand-top-b {
+        transform-box: fill-box;
+        transform-origin: center top;
+        /* si riempie dal fondo visivo (y=17 → world y=83) */
+        animation: sandTopB 24s linear infinite;
+      }
+
+      .sand-bottom-b {
+        transform-box: fill-box;
+        transform-origin: center top;
+        /* si svuota verso il collo (y=61 → world y=39) */
+        animation: sandBottomB 24s linear infinite;
+      }
+
+      /* Getto di sabbia */
+      .hourglass-sand-stream {
+        animation: sandStream 24s linear infinite;
+      }
+
+      /* ------------------------------------------------------------
+   Rotazione: flip 40-50%, ritorno 88-100%
+   ------------------------------------------------------------ */
+      @keyframes hourglassTurn {
+
+        0%,
+        40% {
+          transform: rotate(0deg);
+        }
+
+        50%,
+        88% {
+          transform: rotate(180deg);
+        }
+
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* ------------------------------------------------------------
+   Fase 1 — forme A visibili
+   ------------------------------------------------------------ */
+      @keyframes sandTopA {
+
+        0%,
+        5% {
+          opacity: 1;
+          transform: scaleY(1);
+        }
+
+        40% {
+          opacity: 1;
+          transform: scaleY(0.05);
+        }
+
+        48% {
+          opacity: 0;
+          transform: scaleY(0.05);
+        }
+
+        88% {
+          opacity: 0;
+          transform: scaleY(1);
+        }
+
+        /* reset nascosto */
+        94% {
+          opacity: 0;
+          transform: scaleY(1);
+        }
+
+        100% {
+          opacity: 1;
+          transform: scaleY(1);
+        }
+
+        /* riappare a fine rotazione */
+      }
+
+      @keyframes sandBottomA {
+
+        0%,
+        5% {
+          opacity: 1;
+          transform: scaleY(0.05);
+        }
+
+        40% {
+          opacity: 1;
+          transform: scaleY(1);
+        }
+
+        48% {
+          opacity: 0;
+          transform: scaleY(1);
+        }
+
+        88% {
+          opacity: 0;
+          transform: scaleY(0.05);
+        }
+
+        /* reset nascosto */
+        94% {
+          opacity: 0;
+          transform: scaleY(0.05);
+        }
+
+        100% {
+          opacity: 1;
+          transform: scaleY(0.05);
+        }
+
+        /* riappare a fine rotazione */
+      }
+
+      /* ------------------------------------------------------------
+   Fase 3 — forme B visibili
+   ------------------------------------------------------------ */
+      @keyframes sandTopB {
+
+        0%,
+        50% {
+          opacity: 0;
+          transform: scaleY(0.05);
+        }
+
+        51% {
+          opacity: 1;
+          transform: scaleY(0.05);
+        }
+
+        88% {
+          opacity: 1;
+          transform: scaleY(1);
+        }
+
+        94% {
+          opacity: 0;
+          transform: scaleY(1);
+        }
+
+        100% {
+          opacity: 0;
+          transform: scaleY(0.05);
+        }
+
+        /* reset nascosto */
+      }
+
+      @keyframes sandBottomB {
+
+        0%,
+        50% {
+          opacity: 0;
+          transform: scaleY(1);
+        }
+
+        51% {
+          opacity: 1;
+          transform: scaleY(1);
+        }
+
+        88% {
+          opacity: 1;
+          transform: scaleY(0.05);
+        }
+
+        94% {
+          opacity: 0;
+          transform: scaleY(0.05);
+        }
+
+        100% {
+          opacity: 0;
+          transform: scaleY(1);
+        }
+
+        /* reset nascosto */
+      }
+
+      /* ------------------------------------------------------------
+   Getto visibile solo mentre la sabbia scorre
+   ------------------------------------------------------------ */
+      @keyframes sandStream {
+
+        0%,
+        5% {
+          opacity: 0;
+        }
+
+        6%,
+        39% {
+          opacity: 1;
+        }
+
+        40%,
+        50% {
+          opacity: 0;
+        }
+
+        51%,
+        87% {
+          opacity: 1;
+        }
+
+        88%,
+        100% {
+          opacity: 0;
+        }
+      }
+
+      /* ------------------------------------------------------------
+   Accessibilità
+   ------------------------------------------------------------ */
+      @media (prefers-reduced-motion: reduce) {
+
+        .hourglass-rotator,
+        .sand-top-a,
+        .sand-bottom-a,
+        .sand-top-b,
+        .sand-bottom-b,
+        .hourglass-sand-stream {
+          animation: none !important;
+        }
+      }
+
+      /* ============================================================
+   LIBRO DELLA SAPIENZA — animazioni
+   ============================================================ */
+      /* ============================================================
+   LIBRO DELLA SAPIENZA
+   ============================================================ */
+      .wisdom-book {
+        display: block;
+        width: 70px;
+        height: auto;
+        margin: 1px auto 4px;
+        overflow: visible;
+        opacity: 0.85;
+        /* Tre animazioni su proprietà indipendenti:
+     - bookEnter: una volta, scale + rotate
+     - bookFloat: infinito, translate
+     - bookGlow:  infinito, filter
+     Nessuna sovrascrittura, nessun conflitto. */
+        animation:
+          bookEnter 1.2s cubic-bezier(.22, 1, .36, 1) 0.2s both,
+          bookFloat 5s ease-in-out 1.4s infinite,
+          bookGlow 4s ease-in-out 1.4s infinite;
+        will-change: translate, scale, rotate, filter;
+      }
+
+      /* --- Ingresso --- */
+      @keyframes bookEnter {
+        0% {
+          scale: 0.5;
+          rotate: -10deg;
+          opacity: 0;
+        }
+
+        100% {
+          scale: 1;
+          rotate: 0deg;
+          opacity: 0.85;
+        }
+      }
+
+      /* --- Fluttuazione verticale dolce --- */
+      @keyframes bookFloat {
+
+        0%,
+        100% {
+          translate: 0 0;
+        }
+
+        50% {
+          translate: 0 -2.5px;
+        }
+      }
+
+      /* --- Glow dorato pulsante --- */
+      @keyframes bookGlow {
+
+        0%,
+        100% {
+          filter: drop-shadow(0 0 4px rgb(190 160 105 / 0.15));
+        }
+
+        50% {
+          filter: drop-shadow(0 0 12px rgb(245 213 138 / 0.45));
+        }
+      }
+
+      /* ============================================================
+   Pagine che respirano attorno al dorso
+   ============================================================ */
+      /* Pagina sinistra — perno sul dorso (lato destro) */
+      .wisdom-book g>path:nth-child(1) {
+        transform-box: fill-box;
+        transform-origin: right center;
+        animation: pageLeft 6s ease-in-out infinite;
+      }
+
+      /* Pagina destra — perno sul dorso (lato sinistro) */
+      .wisdom-book g>path:nth-child(2) {
+        transform-box: fill-box;
+        transform-origin: left center;
+        animation: pageRight 6s ease-in-out infinite;
+      }
+
+      /* Rotazione contenuta: respiro, non sventolio */
+      @keyframes pageLeft {
+
+        0%,
+        100% {
+          transform: rotate(0deg);
+        }
+
+        50% {
+          transform: rotate(-1.8deg);
+        }
+      }
+
+      @keyframes pageRight {
+
+        0%,
+        100% {
+          transform: rotate(0deg);
+        }
+
+        50% {
+          transform: rotate(1.8deg);
+        }
+      }
+
+      /* ============================================================
+   Righe di testo — lettura sequenziale perpetua
+   Delay negativi: lo sfasamento si mantiene a ogni ciclo,
+   non solo al primo (come succede con delay positivi).
+   ============================================================ */
+      .wisdom-book g>path:nth-child(n+4) {
+        animation: textRead 6s ease-in-out infinite;
+      }
+
+      .wisdom-book g>path:nth-child(4) {
+        animation-delay: -0s;
+      }
+
+      .wisdom-book g>path:nth-child(5) {
+        animation-delay: -1.5s;
+      }
+
+      .wisdom-book g>path:nth-child(6) {
+        animation-delay: -3s;
+      }
+
+      .wisdom-book g>path:nth-child(7) {
+        animation-delay: -4.5s;
+      }
+
+      /* Finestra "accesa" breve: una riga alla volta risalta */
+      @keyframes textRead {
+
+        0%,
+        10% {
+          opacity: 0.2;
+        }
+
+        15%,
+        25% {
+          opacity: 1;
+        }
+
+        30%,
+        100% {
+          opacity: 0.2;
+        }
+      }
+
+      /* ============================================================
+   Hover — pausa senza scatti
+   animation-play-state: paused congela sul frame corrente;
+   al rilascio, l'animazione riprende da lì, senza reset.
+   ============================================================ */
+      .wisdom-book:hover g>path:nth-child(1),
+      .wisdom-book:hover g>path:nth-child(2),
+      .wisdom-book:hover g>path:nth-child(n+4) {
+        animation-play-state: paused;
+      }
+
+      /* ============================================================
+   Accessibilità
+   ============================================================ */
+      @media (prefers-reduced-motion: reduce) {
+
+        .wisdom-book,
+        .wisdom-book g>path {
+          animation: none !important;
+          translate: none !important;
+          scale: none !important;
+          rotate: none !important;
+          filter: none !important;
+          transform: none !important;
+        }
+
+        .wisdom-book {
+          opacity: 0.85;
+        }
+
+        .wisdom-book g>path:nth-child(n+4) {
+          opacity: 1;
+        }
       }
     </style>
   </head>
@@ -4785,6 +5120,59 @@
           </circle>
           <circle cx="100" cy="100" r="1.2" fill="#080a12" />
         </svg>
+
+        <!-- CLESSIDRA DI ERACLITO -->
+        <div class="hourglass-rotator">
+          <svg class="heraclitus-hourglass" viewBox="0 0 80 100" width="52" height="65" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Clessidra con sabbia ambrata">
+
+            <defs>
+              <linearGradient id="glassHourglass" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#ffffff" stop-opacity=".12" />
+                <stop offset=".45" stop-color="#ffffff" stop-opacity=".38" />
+                <stop offset="1" stop-color="#ffffff" stop-opacity=".06" />
+              </linearGradient>
+              <linearGradient id="sandHourglass" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#F5D58A" />
+                <stop offset="1" stop-color="#B9792D" />
+              </linearGradient>
+              <clipPath id="hourglassInside">
+                <path d="M23 14 H57 L42 44 Q40 50 42 56 L57 86 H23 L38 56 Q40 50 38 44 Z" />
+              </clipPath>
+            </defs>
+
+            <!-- Vetro e montanti -->
+            <g class="hourglass-frame">
+              <g fill="none" stroke="#BEA069" stroke-width="3" stroke-linecap="round">
+                <path d="M17 9 H63 M17 91 H63" />
+                <path d="M20 12 L35 44 Q40 50 35 56 L20 88" />
+                <path d="M60 12 L45 44 Q40 50 45 56 L60 88" />
+              </g>
+              <path d="M22 13 H58 L43 44 Q40 50 43 56 L58 87 H22 L37 56 Q40 50 37 44 Z" fill="url(#glassHourglass)" stroke="#D7BD88" stroke-width="1.2" />
+            </g>
+
+            <!-- Sabbia: le due masse sono animate separatamente -->
+            <g clip-path="url(#hourglassInside)">
+              <!-- Clessidra dritta: sabbia superiore -->
+              <path class="sand-top-a" d="M25 17 H55 L42 42 H38 Z" fill="url(#sandHourglass)" />
+
+              <!-- Clessidra dritta: sabbia sul fondo -->
+              <path class="sand-bottom-a" d="M38 61 L26 84 H54 L42 61 Z" fill="url(#sandHourglass)" />
+
+              <!-- Clessidra capovolta: sabbia nella camera superiore -->
+              <path class="sand-top-b" d="M26 17 H54 L42 42 H38 Z" fill="url(#sandHourglass)" />
+
+              <!-- Clessidra capovolta: sabbia sul nuovo fondo -->
+              <path class="sand-bottom-b" d="M38 61 L26 84 H54 L42 61 Z" fill="url(#sandHourglass)" />
+
+              <!-- Getto di sabbia nel collo -->
+              <path class="hourglass-sand-stream" d="M40 43 V61" fill="none" stroke="#D9A34D" stroke-width="1.8" stroke-linecap="round" />
+            </g>
+
+            <!-- Riflessi -->
+            <path d="M27 20 L37 40 M27 80 L34 67" fill="none" stroke="#FFFFFF" stroke-opacity=".65" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+        </div>
+
         <div class="clock-motto">— tutto scorre —</div>
       </div>
       <!-- FILOSOFIA (EPOCHE) -->
