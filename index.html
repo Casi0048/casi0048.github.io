@@ -1029,6 +1029,19 @@ body.light-theme .site-search-panel .site-search-result .site-search-hit{backgro
   .wisdom-book{opacity:.85}
   .wisdom-book g>path:nth-child(n+4){opacity:1}
 }
+.filosofia-epoch-count{
+  display:inline-block;
+  margin-left:8px;
+  padding:1px 8px;
+  border-radius:999px;
+  font-size:.7rem;
+  font-family:var(--sans);
+  background:var(--gold-soft);
+  color:var(--gold);
+  vertical-align:middle
+}
+
+      
     </style>
   </head>
 
@@ -3589,6 +3602,26 @@ body.light-theme .site-search-panel .site-search-result .site-search-hit{backgro
     });
   });
 })();
+
+  document.querySelectorAll('.filosofia-epoch-btn').forEach(btn => {
+  const panel = document.getElementById(btn.dataset.target);
+  if (!panel) return;
+  const count = panel.querySelectorAll('.corrente-filosofi a').length;
+  const title = btn.querySelector('.filosofia-epoch-title');
+  if (title && count) {
+    const badge = document.createElement('span');
+    badge.className = 'filosofia-epoch-count';
+    badge.textContent = count;
+    title.appendChild(badge);
+  }
+});
+  document.querySelectorAll('.corrente').forEach((el, i) => {
+  const key = 'corrente-' + i;
+  if (sessionStorage.getItem(key) === '1') el.open = true;
+  el.addEventListener('toggle', () => {
+    sessionStorage.setItem(key, el.open ? '1' : '0');
+  });
+});
 </script>
   </body>
 
