@@ -1034,13 +1034,19 @@ body.light-theme .site-search-panel .site-search-result .site-search-hit{backgro
   margin-left:8px;
   padding:1px 8px;
   border-radius:999px;
-  font-size:.7rem;
   font-family:var(--sans);
-  background:var(--gold-soft);
-  color:var(--gold);
+  font-size:.68rem;
+  font-weight:600;
+  line-height:1.4;
+  letter-spacing:0;
+  background:var(--gold);
+  color:var(--bg);
   vertical-align:middle
 }
-
+body.light-theme .filosofia-epoch-count{
+  background:var(--gold);
+  color:#fff
+}
       
     </style>
   </head>
@@ -3573,9 +3579,7 @@ body.light-theme .site-search-panel .site-search-result .site-search-hit{backgro
       }()
     </script>
 
-
-
-    <script>
+ <script>
 (function(){
   var nav = document.getElementById('treeNav');
   if(!nav) return;
@@ -3591,38 +3595,35 @@ body.light-theme .site-search-panel .site-search-result .site-search-hit{backgro
 })();
 </script>
 <script>
-(function(){
+document.addEventListener('DOMContentLoaded', function () {
   var btns = document.querySelectorAll('.filosofia-epoch-btn');
-  var panels = document.querySelectorAll('.epoca-panel');
-  btns.forEach(function(btn){
-    btn.addEventListener('click', function(){
-      var target = btn.dataset.target;
-      btns.forEach(function(b){ b.classList.toggle('active', b === btn); });
-      panels.forEach(function(p){ p.classList.toggle('active', p.id === target); });
-    });
-  });
-})();
+  console.log('[counter] bottoni trovati:', btns.length);
 
-  document.querySelectorAll('.filosofia-epoch-btn').forEach(btn => {
-  const panel = document.getElementById(btn.dataset.target);
-  if (!panel) return;
-  const count = panel.querySelectorAll('.corrente-filosofi a').length;
-  const title = btn.querySelector('.filosofia-epoch-title');
-  if (title && count) {
-    const badge = document.createElement('span');
+  btns.forEach(function (btn) {
+    var target = btn.dataset.target;
+    var panel = document.getElementById(target);
+    if (!panel) {
+      console.warn('[counter] pannello mancante per', target);
+      return;
+    }
+
+    var count = panel.querySelectorAll('.corrente-filosofi a').length;
+    var title = btn.querySelector('.filosofia-epoch-title');
+    if (!title) {
+      console.warn('[counter] .filosofia-epoch-title mancante in', target);
+      return;
+    }
+    if (count === 0) return;
+
+    var badge = document.createElement('span');
     badge.className = 'filosofia-epoch-count';
     badge.textContent = count;
     title.appendChild(badge);
-  }
-});
-  document.querySelectorAll('.corrente').forEach((el, i) => {
-  const key = 'corrente-' + i;
-  if (sessionStorage.getItem(key) === '1') el.open = true;
-  el.addEventListener('toggle', () => {
-    sessionStorage.setItem(key, el.open ? '1' : '0');
+    console.log('[counter]', target, '→', count);
   });
 });
 </script>
+            
   </body>
 
 </html>
