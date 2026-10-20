@@ -3579,22 +3579,32 @@ body.light-theme .filosofia-epoch-count{
       }()
     </script>
 
- <script>
-(function(){
-  var nav = document.getElementById('treeNav');
-  if(!nav) return;
-  var epochs = nav.querySelectorAll('.tree-epoch');
-  epochs.forEach(function(ep){
-    ep.addEventListener('toggle', function(){
-      if(!ep.open) return;
-      epochs.forEach(function(other){
-        if(other !== ep) other.open = false;
+ 
+<script>
+(function () {
+  var btns = document.querySelectorAll('.filosofia-epoch-btn');
+  var panels = document.querySelectorAll('.epoca-panel');
+  if (!btns.length || !panels.length) return;
+
+  btns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var target = btn.dataset.target;
+      var panel = document.getElementById(target);
+      if (!panel) {
+        console.warn('[filosofia] pannello mancante per', target);
+        return;
+      }
+      btns.forEach(function (b) {
+        b.classList.toggle('active', b === btn);
+      });
+      panels.forEach(function (p) {
+        p.classList.toggle('active', p.id === target);
       });
     });
   });
 })();
 </script>
-<script>
+    <script>
 document.addEventListener('DOMContentLoaded', function () {
   var btns = document.querySelectorAll('.filosofia-epoch-btn');
   console.log('[counter] bottoni trovati:', btns.length);
@@ -3606,14 +3616,9 @@ document.addEventListener('DOMContentLoaded', function () {
       console.warn('[counter] pannello mancante per', target);
       return;
     }
-
     var count = panel.querySelectorAll('.corrente-filosofi a').length;
     var title = btn.querySelector('.filosofia-epoch-title');
-    if (!title) {
-      console.warn('[counter] .filosofia-epoch-title mancante in', target);
-      return;
-    }
-    if (count === 0) return;
+    if (!title || count === 0) return;
 
     var badge = document.createElement('span');
     badge.className = 'filosofia-epoch-count';
@@ -3623,7 +3628,6 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 </script>
-            
   </body>
 
 </html>
