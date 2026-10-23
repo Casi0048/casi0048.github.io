@@ -5873,31 +5873,15 @@ body.light-theme .cosmic-sky {
  </script>
  <script>
 function saveSettings () {
-  // Do critical work that is user-visible:
   validateForm();
   showSpinner();
   updateUI();
 
-  // Defer work that isn't user-visible to a separate task:
   setTimeout(() => {
     saveToDatabase();
     sendAnalytics();
   }, 0);
 }
-async function saveSettings () {
-  // Do critical work that is user-visible:
-  validateForm();
-  showSpinner();
-  updateUI();
-
-  // Yield to the main thread:
-  await scheduler.yield()
-
-  // Work that isn't user-visible, continued in a separate task:
-  saveToDatabase();
-  sendAnalytics();
-}
-
  </script>
   </body>
 
