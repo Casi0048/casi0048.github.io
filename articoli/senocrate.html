@@ -3,587 +3,1007 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Senocrate di Calcedonia - Filosofo dell'Accademia | Enciclopedia Filosofica</title>
-    <meta name="description" content="Approfondita analisi della vita, opere e pensiero di Senocrate, filosofo greco e scolarca dell'Accademia platonica">
-    <meta name="keywords" content="Senocrate, filosofia greca, Accademia platonica, Platone, Speusippo, metafisica, etica, demoni">
-    <meta name="author" content="Enciclopedia Filosofica">
+    <meta name="description" content="Senocrate di Calcedonia: biografia, pensiero filosofico, demonologia e opere del successore di Platone alla guida dell'Antica Accademia.">
+    <meta name="keywords" content="Senocrate, Calcedonia, Accademia, Platone, Speusippo, filosofia antica, demonologia, scolarca">
+    <meta name="author" content="Articolo Enciclopedico">
+    <meta property="og:title" content="Senocrate di Calcedonia | Enciclopedia Filosofica">
+    <meta property="og:description" content="La vita e il pensiero di Senocrate, scolarca dell'Antica Accademia e sistematizzatore della demonologia platonica.">
+    <meta property="og:type" content="article">
+    <meta name="twitter:card" content="summary_large_image">
+    <title>Senocrate di Calcedonia — Enciclopedia Filosofica</title>
     <style>
-        :root {
-            --normale-bg: #f9f9f9;
-            --normale-text: #333;
-            --normale-border: #ddd;
-            --filosofico-bg: #f5f0e6;
-            --filosofico-text: #3c2f22;
-            --filosofico-border: #c9b9a2;
-            --contemplativo-bg: #e6f0f5;
-            --contemplativo-text: #22333c;
-            --contemplativo-border: #a2b9c9;
-            --notturno-bg: #1a1a1a;
-            --notturno-text: #ccc;
-            --notturno-border: #444;
-            --transition: all 0.3s ease;
-        }
-        
-        * {
-            box-sizing: border-box;
+        /* ===== RESET & VARIABILI ===== */
+        *,
+        *::before,
+        *::after {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
-        
+
+        :root {
+            --bg-body: #f5f0e8;
+            --bg-card: #ffffff;
+            --bg-nav: rgba(255, 255, 255, 0.85);
+            --text-primary: #2c2418;
+            --text-secondary: #5a4e3e;
+            --text-muted: #8a7e6e;
+            --accent: #b8860b;
+            --accent-light: #d4a843;
+            --accent-dark: #8b6508;
+            --border: #e0d8cc;
+            --shadow: rgba(0, 0, 0, 0.08);
+            --shadow-heavy: rgba(0, 0, 0, 0.15);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --font-serif: 'Georgia', 'Times New Roman', serif;
+            --font-sans: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            --transition-smooth: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --transition-bounce: 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            --font-size-base: 1.05rem;
+            --line-height-base: 1.75;
+        }
+
+        /* ===== MODALITÀ SCURA ===== */
+        body.dark-mode {
+            --bg-body: #12100e;
+            --bg-card: #1e1b17;
+            --bg-nav: rgba(30, 27, 23, 0.92);
+            --text-primary: #e8e0d0;
+            --text-secondary: #b8a890;
+            --text-muted: #807060;
+            --accent: #d4a843;
+            --accent-light: #e8c860;
+            --accent-dark: #b8860b;
+            --border: #3a342c;
+            --shadow: rgba(0, 0, 0, 0.3);
+            --shadow-heavy: rgba(0, 0, 0, 0.5);
+        }
+
+        /* ===== TIPOGRAFIA REGOLABILE ===== */
+        body.font-small { --font-size-base: 0.9rem; }
+        body.font-medium { --font-size-base: 1.05rem; }
+        body.font-large { --font-size-base: 1.25rem; }
+        body.font-xlarge { --font-size-base: 1.45rem; }
+
+        /* ===== BODY ===== */
         body {
-            font-family: 'Georgia', serif;
-            line-height: 1.7;
-            background-color: var(--normale-bg);
-            color: var(--normale-text);
-            transition: var(--transition);
-            padding: 20px;
+            font-family: var(--font-serif);
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            font-size: var(--font-size-base);
+            line-height: var(--line-height-base);
+            transition: background-color var(--transition-smooth), color var(--transition-smooth);
+            overflow-x: hidden;
+            min-height: 100vh;
         }
-        
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+
+        /* ===== SFONDO ANIMATO ===== */
+        .bg-animated {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+            pointer-events: none;
         }
-        
-        body.notturno .container {
-            background: rgba(30, 30, 30, 0.95);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+
+        .bg-animated::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 40%, rgba(184, 134, 11, 0.04) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 60%, rgba(184, 134, 11, 0.03) 0%, transparent 50%),
+                        radial-gradient(circle at 50% 80%, rgba(212, 168, 67, 0.02) 0%, transparent 50%);
+            animation: bgRotate 60s linear infinite;
         }
-        
-        header {
+
+        @keyframes bgRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ===== PARTICELLE DECORATIVE ===== */
+        .particle {
+            position: fixed;
+            border-radius: 50%;
+            background: var(--accent);
+            opacity: 0.06;
+            pointer-events: none;
+            z-index: -1;
+            animation: floatParticle 20s infinite ease-in-out;
+        }
+
+        .particle:nth-child(1) { width: 300px; height: 300px; top: 10%; left: -5%; animation-delay: 0s; }
+        .particle:nth-child(2) { width: 200px; height: 200px; top: 60%; right: -3%; animation-delay: -5s; }
+        .particle:nth-child(3) { width: 150px; height: 150px; bottom: 20%; left: 20%; animation-delay: -10s; }
+        .particle:nth-child(4) { width: 250px; height: 250px; top: 30%; right: 15%; animation-delay: -15s; }
+
+        @keyframes floatParticle {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(30px, -40px) scale(1.1); }
+            50% { transform: translate(-20px, 20px) scale(0.9); }
+            75% { transform: translate(40px, 30px) scale(1.05); }
+        }
+
+        /* ===== HEADER ===== */
+        .header-article {
+            position: relative;
             text-align: center;
-            margin-bottom: 40px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid var(--normale-border);
-        }
-        
-        h1 {
-            font-size: 2.8rem;
-            margin-bottom: 10px;
-            color: #444;
-            letter-spacing: 1px;
-        }
-        
-        h2 {
-            font-size: 1.9rem;
-            margin-top: 35px;
-            margin-bottom: 15px;
-            color: #555;
-            padding-bottom: 8px;
-            border-bottom: 1px solid var(--normale-border);
-        }
-        
-        h3 {
-            font-size: 1.5rem;
-            margin-top: 25px;
-            margin-bottom: 12px;
-            color: #666;
-        }
-        
-        p {
-            margin-bottom: 20px;
-            text-align: justify;
-            font-size: 1.1rem;
-        }
-        
-        .reading-options {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 30px 0;
-            flex-wrap: wrap;
-        }
-        
-        .style-btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 1rem;
-            transition: var(--transition);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        .normale { 
-            background-color: #e9e9e9; 
-            color: #333;
-        }
-        
-        .filosofico { 
-            background-color: #e8dfce; 
-            color: #5c4b37;
-        }
-        
-        .contemplativo { 
-            background-color: #d4e3e9; 
-            color: #2c4b5c;
-        }
-        
-        .notturno { 
-            background-color: #2c2c2c; 
-            color: #d4e3e9;
-        }
-        
-        .section {
-            margin-bottom: 25px;
-            border: 1px solid var(--normale-border);
-            border-radius: 8px;
+            padding: 4rem 1.5rem 3rem;
+            background: linear-gradient(180deg, var(--bg-card) 0%, transparent 100%);
+            border-bottom: 1px solid var(--border);
             overflow: hidden;
         }
-        
+
+        .header-article::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            animation: shimmerLine 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmerLine {
+            0%, 100% { opacity: 0.4; width: 120px; }
+            50% { opacity: 1; width: 220px; }
+        }
+
+        .header-article h1 {
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            animation: fadeInUp 1s var(--transition-smooth) both;
+        }
+
+        .header-article .subtitle {
+            font-family: var(--font-sans);
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            font-style: italic;
+            animation: fadeInUp 1s 0.2s var(--transition-smooth) both;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== TOOLBAR LETTURA ===== */
+        .toolbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            padding: 0.8rem 1.2rem;
+            background: var(--bg-nav);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            transition: background var(--transition-smooth), border var(--transition-smooth);
+        }
+
+        .toolbar-group {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.3rem 0.5rem;
+            border-radius: var(--radius-sm);
+            background: var(--bg-body);
+            border: 1px solid var(--border);
+        }
+
+        .toolbar-group .label {
+            font-family: var(--font-sans);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            margin-right: 0.2rem;
+            white-space: nowrap;
+        }
+
+        .tool-btn {
+            font-family: var(--font-sans);
+            font-size: 0.82rem;
+            padding: 0.35rem 0.65rem;
+            border: none;
+            border-radius: 6px;
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-smooth);
+            white-space: nowrap;
+            font-weight: 500;
+        }
+
+        .tool-btn:hover {
+            background: var(--accent);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .tool-btn.active {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 2px 10px rgba(184, 134, 11, 0.35);
+        }
+
+        .tool-btn.icon-btn {
+            font-size: 1.1rem;
+            padding: 0.3rem 0.5rem;
+            line-height: 1;
+        }
+
+        /* ===== CONTENITORE ARTICOLO ===== */
+        .article-container {
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem 5rem;
+        }
+
+        /* ===== SEZIONI ===== */
+        .section {
+            margin-bottom: 2.5rem;
+            opacity: 0;
+            transform: translateY(40px);
+            animation: sectionReveal 0.8s var(--transition-smooth) forwards;
+        }
+
+        .section:nth-child(1) { animation-delay: 0.1s; }
+        .section:nth-child(2) { animation-delay: 0.2s; }
+        .section:nth-child(3) { animation-delay: 0.3s; }
+        .section:nth-child(4) { animation-delay: 0.4s; }
+        .section:nth-child(5) { animation-delay: 0.5s; }
+        .section:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes sectionReveal {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .section-header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            cursor: pointer;
-            padding: 15px 20px;
-            background-color: rgba(0,0,0,0.03);
-            transition: var(--transition);
-        }
-        
-        .section-header:hover {
-            background-color: rgba(0,0,0,0.06);
-        }
-        
-        .section-content {
-            padding: 0 20px;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease, padding 0.5s ease;
-        }
-        
-        .section-content.show {
-            padding: 20px;
-            max-height: 2000px;
-        }
-        
-        .toggle-btn {
-            background: none;
-            border: none;
-            font-size: 1.8rem;
-            cursor: pointer;
-            transition: var(--transition);
-            color: #666;
-            font-weight: bold;
-        }
-        
-        .quote {
-            font-style: italic;
-            border-left: 4px solid #ccc;
-            padding: 15px 20px;
-            margin: 25px 0;
-            background-color: rgba(0,0,0,0.03);
-            color: #666;
-        }
-        
-        .references {
-            font-size: 0.95rem;
-            margin-top: 50px;
-            padding-top: 25px;
-            border-top: 2px solid var(--normale-border);
-        }
-        
-        .references h2 {
-            margin-bottom: 20px;
-        }
-        
-        ul, ol {
-            margin-left: 25px;
-            margin-bottom: 20px;
-        }
-        
-        li {
-            margin-bottom: 10px;
-        }
-        
-        /* Stili per le diverse modalità di lettura */
-        body.normale {
-            background-color: var(--normale-bg);
-            color: var(--normale-text);
-        }
-        
-        body.filosofico {
-            background-color: var(--filosofico-bg);
-            color: var(--filosofico-text);
-        }
-        
-        body.filosofico h1, 
-        body.filosofico h2 {
-            color: #5c4b37;
-            border-color: var(--filosofico-border);
-        }
-        
-        body.filosofico .section {
-            border-color: var(--filosofico-border);
-        }
-        
-        body.filosofico .section-header {
-            background-color: rgba(92, 75, 55, 0.05);
-        }
-        
-        body.filosofico .quote {
-            border-left-color: var(--filosofico-border);
-            background-color: rgba(92, 75, 55, 0.05);
-        }
-        
-        body.contemplativo {
-            background-color: var(--contemplativo-bg);
-            color: var(--contemplativo-text);
-        }
-        
-        body.contemplativo h1, 
-        body.contemplativo h2 {
-            color: #2c4b5c;
-            border-color: var(--contemplativo-border);
-        }
-        
-        body.contemplativo .section {
-            border-color: var(--contemplativo-border);
-        }
-        
-        body.contemplativo .section-header {
-            background-color: rgba(44, 75, 92, 0.05);
-        }
-        
-        body.contemplativo .quote {
-            border-left-color: var(--contemplativo-border);
-            background-color: rgba(44, 75, 92, 0.05);
-        }
-        
-        body.notturno {
-            background-color: var(--notturno-bg);
-            color: var(--notturno-text);
-        }
-        
-        body.notturno h1, 
-        body.notturno h2 {
-            color: #aaccee;
-            border-color: var(--notturno-border);
-        }
-        
-        body.notturno .section {
-            border-color: var(--notturno-border);
-        }
-        
-        body.notturno .section-header {
-            background-color: rgba(170, 204, 238, 0.05);
-        }
-        
-        body.notturno .quote {
-            border-left-color: var(--notturno-border);
-            background-color: rgba(170, 204, 238, 0.05);
-            color: #aaa;
-        }
-        
-        body.notturno .toggle-btn {
-            color: #aaccee;
-        }
-        
-        .timeline {
-            display: flex;
-            flex-direction: column;
-            margin: 25px 0;
+            gap: 0.8rem;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid var(--accent);
             position: relative;
-            padding-left: 30px;
         }
-        
+
+        .section-header .section-icon {
+            font-size: 1.6rem;
+            line-height: 1;
+        }
+
+        .section-header h2 {
+            font-size: clamp(1.3rem, 3vw, 1.7rem);
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+            flex: 1;
+        }
+
+        .toggle-btn {
+            font-family: var(--font-sans);
+            font-size: 0.78rem;
+            padding: 0.45rem 0.9rem;
+            border: 1.5px solid var(--accent);
+            border-radius: 50px;
+            background: transparent;
+            color: var(--accent);
+            cursor: pointer;
+            transition: all var(--transition-bounce);
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .toggle-btn:hover {
+            background: var(--accent);
+            color: #fff;
+            transform: scale(1.06);
+            box-shadow: 0 4px 15px rgba(184, 134, 11, 0.35);
+        }
+
+        .toggle-btn .chevron {
+            display: inline-block;
+            transition: transform var(--transition-bounce);
+            font-size: 0.7rem;
+        }
+
+        .toggle-btn[aria-expanded="true"] .chevron {
+            transform: rotate(180deg);
+        }
+
+        .section-content {
+            overflow: hidden;
+            transition: max-height 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        opacity 0.5s ease,
+                        padding 0.4s ease;
+            max-height: 0;
+            opacity: 0;
+            padding: 0 0.2rem;
+        }
+
+        .section-content.open {
+            max-height: 3000px;
+            opacity: 1;
+            padding: 0.5rem 0.2rem 1rem;
+        }
+
+        .section-content p {
+            margin-bottom: 1.1rem;
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        .section-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-content strong {
+            color: var(--accent-dark);
+            font-weight: 700;
+        }
+
+        body.dark-mode .section-content strong {
+            color: var(--accent-light);
+        }
+
+        .section-content em {
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        /* ===== BLOCCO CITAZIONE ===== */
+        .quote-block {
+            margin: 1.5rem 0;
+            padding: 1.2rem 1.5rem;
+            border-left: 4px solid var(--accent);
+            background: linear-gradient(135deg, rgba(184, 134, 11, 0.06), rgba(184, 134, 11, 0.02));
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            font-style: italic;
+            color: var(--text-secondary);
+            position: relative;
+            transition: transform var(--transition-smooth), box-shadow var(--transition-smooth);
+        }
+
+        .quote-block:hover {
+            transform: translateX(6px);
+            box-shadow: -4px 0 20px var(--shadow);
+        }
+
+        .quote-block::before {
+            content: '“';
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            font-size: 3rem;
+            color: var(--accent);
+            opacity: 0.3;
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+
+        /* ===== GRIGLIA OPERE ===== */
+        .opere-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .opera-card {
+            padding: 0.9rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: var(--font-sans);
+            font-size: 0.88rem;
+            transition: all var(--transition-smooth);
+            cursor: default;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .opera-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent 60%, rgba(184, 134, 11, 0.1));
+            opacity: 0;
+            transition: opacity var(--transition-smooth);
+        }
+
+        .opera-card:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 8px 25px var(--shadow-heavy);
+            border-color: var(--accent);
+        }
+
+        .opera-card:hover::before {
+            opacity: 1;
+        }
+
+        .opera-card .opera-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+
+        .opera-card .opera-meta {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* ===== TIMELINE ===== */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+            margin: 1.5rem 0;
+        }
+
         .timeline::before {
             content: '';
             position: absolute;
-            left: 0;
+            left: 0.5rem;
             top: 0;
             bottom: 0;
-            width: 4px;
-            background: #ccc;
-            border-radius: 2px;
+            width: 2px;
+            background: linear-gradient(180deg, var(--accent), transparent);
         }
-        
-        .timeline-event {
-            margin-bottom: 25px;
+
+        .timeline-item {
             position: relative;
-            padding-left: 20px;
+            margin-bottom: 1.5rem;
+            padding-left: 1rem;
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: timelineReveal 0.6s var(--transition-smooth) forwards;
         }
-        
-        .timeline-event::before {
+
+        .timeline-item:nth-child(1) { animation-delay: 0.2s; }
+        .timeline-item:nth-child(2) { animation-delay: 0.35s; }
+        .timeline-item:nth-child(3) { animation-delay: 0.5s; }
+        .timeline-item:nth-child(4) { animation-delay: 0.65s; }
+
+        @keyframes timelineReveal {
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .timeline-item::before {
             content: '';
             position: absolute;
-            left: -33px;
-            top: 5px;
-            width: 16px;
-            height: 16px;
+            left: -1.65rem;
+            top: 0.5rem;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
-            background: #999;
-            border: 3px solid #fff;
+            background: var(--accent);
+            border: 2px solid var(--bg-card);
+            box-shadow: 0 0 0 2px var(--accent);
+            transition: transform var(--transition-bounce);
         }
-        
-        .timeline-year {
-            font-weight: bold;
-            color: #555;
-            margin-bottom: 5px;
+
+        .timeline-item:hover::before {
+            transform: scale(1.3);
         }
-        
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px;
+
+        .timeline-item .timeline-year {
+            font-family: var(--font-sans);
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 0.9rem;
+            letter-spacing: 0.03em;
+        }
+
+        .timeline-item .timeline-text {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-top: 0.15rem;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer-article {
+            text-align: center;
+            padding: 2.5rem 1.5rem;
+            border-top: 1px solid var(--border);
+            font-family: var(--font-sans);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .footer-article .back-to-top {
+            display: inline-block;
+            margin-bottom: 1rem;
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            background: var(--accent);
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all var(--transition-bounce);
+            box-shadow: 0 4px 15px rgba(184, 134, 11, 0.3);
+        }
+
+        .footer-article .back-to-top:hover {
+            transform: translateY(-3px) scale(1.04);
+            box-shadow: 0 8px 25px rgba(184, 134, 11, 0.5);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            .toolbar {
+                gap: 0.4rem;
+                padding: 0.6rem 0.8rem;
             }
-            
-            h1 {
-                font-size: 2.2rem;
+            .toolbar-group {
+                padding: 0.2rem 0.35rem;
             }
-            
-            h2 {
-                font-size: 1.6rem;
+            .toolbar-group .label {
+                display: none;
             }
-            
-            .reading-options {
-                flex-direction: column;
-                align-items: center;
+            .tool-btn {
+                font-size: 0.75rem;
+                padding: 0.3rem 0.5rem;
             }
-            
-            .style-btn {
-                width: 200px;
+            .section-header {
+                flex-wrap: wrap;
+            }
+            .toggle-btn {
+                font-size: 0.7rem;
+                padding: 0.35rem 0.7rem;
+            }
+            .opere-grid {
+                grid-template-columns: 1fr;
+            }
+            .article-container {
+                padding: 1.5rem 1rem 3rem;
+            }
+        }
+
+        /* ===== ANIMAZIONI EXTRA ===== */
+        @keyframes glowPulse {
+            0%, 100% { box-shadow: 0 0 5px rgba(184, 134, 11, 0.2); }
+            50% { box-shadow: 0 0 20px rgba(184, 134, 11, 0.4); }
+        }
+
+        .section-header::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-light);
+            animation: expandLine 2s var(--transition-smooth) forwards;
+        }
+
+        @keyframes expandLine {
+            to { width: 100%; }
+        }
+
+        /* Riduzione del movimento per accessibilità */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
             }
         }
     </style>
 </head>
-<body class="normale">
-    <div class="container">
-        <header>
-            <h1>Senocrate di Calcedonia</h1>
-            <p>(396/395 a.C. – 314/313 a.C.)</p>
-        </header>
-        
-        <div class="reading-options">
-            <button class="style-btn normale" onclick="changeStyle('normale')">Normale</button>
-            <button class="style-btn filosofico" onclick="changeStyle('filosofico')">Filosofico</button>
-            <button class="style-btn contemplativo" onclick="changeStyle('contemplativo')">Contemplativo</button>
-            <button class="style-btn notturno" onclick="changeStyle('notturno')">Notturno</button>
-        </div>
-        
-        <div class="section">
-            <div class="section-header" onclick="toggleSection(0)">
-                <h2>Vita e Contesto Storico</h2>
-                <button class="toggle-btn">+</button>
-            </div>
-            <div class="section-content">
-                <p>Senocrate nacque a Calcedonia, città situata sulla sponda asiatica del Bosforo, intorno al 396/395 a.C. Giunse ad Atene in giovane età per studiare filosofia presso l'Accademia platonica, dove divenne uno dei discepoli più fedeli di Platone. La sua serietà e dedizione agli studi filosofici furono presto note: si racconta che Platone stesso avesse esortato i suoi servitori a "sbucciare il fico di Senocrate", alludendo metaforicamente alla necessità di ammorbidire il suo carattere troppo austero.</p>
-                
-                <p>Alla morte di Platone (347 a.C.), Senocrate accompagnò Aristotele alla corte di Ermia di Atarneo, ma fece presto ritorno ad Atene. Quando Speusippo, successore di Platone, morì nel 339 a.C., Senocrate fu eletto scolarca dell'Accademia, carica che mantenne per circa venticinque anni, fino alla sua morte nel 314/313 a.C.</p>
-                
-                <div class="timeline">
-                    <div class="timeline-event">
-                        <div class="timeline-year">396/395 a.C.</div>
-                        <div class="timeline-description">Nascita di Senocrate a Calcedonia</div>
-                    </div>
-                    <div class="timeline-event">
-                        <div class="timeline-year">367 a.C.</div>
-                        <div class="timeline-description">Inizia a studiare all'Accademia di Platone</div>
-                    </div>
-                    <div class="timeline-event">
-                        <div class="timeline-year">347 a.C.</div>
-                        <div class="timeline-description">Morte di Platone; Senocrate lascia Atene</div>
-                    </div>
-                    <div class="timeline-event">
-                        <div class="timeline-year">339 a.C.</div>
-                        <div class="timeline-description">Diventa scolarca dell'Accademia</div>
-                    </div>
-                    <div class="timeline-event">
-                        <div class="timeline-year">314/313 a.C.</div>
-                        <div class="timeline-description">Morte di Senocrate</div>
-                    </div>
-                </div>
-                
-                <p>La sua amministrazione dell'Accademia fu caratterizzata da una rigorosa organizzazione e dall'introduzione di tasse di iscrizione, segnando una institutionalizzazione della scuola. Sotto la sua guida, l'Accademia mantenne il prestigio conquistato con Platone e Speusippo, attirando studenti da tutto il mondo greco.</p>
-                
-                <div class="quote">
-                    "Si dice che Platone avesse detto di Senocrate: 'Quanto è dotato per natura, e quanto ha bisogno di disciplina!'"
-                    <br>- Diogene Laerzio, Vite dei filosofi, IV, 2, 6
-                </div>
-            </div>
-        </div>
-        
-        <div class="section">
-            <div class="section-header" onclick="toggleSection(1)">
-                <h2>Opere e Fonti</h2>
-                <button class="toggle-btn">+</button>
-            </div>
-            <div class="section-content">
-                <p>Come per molti filosofi dell'Antichità, nessuna opera completa di Senocrate è giunta fino a noi. Le nostre conoscenze del suo pensiero derivano da testimonianze, citazioni e riferimenti in autori successivi. Tuttavia, dalle fonti antiche emerge che Senocrate fu un autore prolifico, con opere che spaziavano dalla metafisica all'etica, dalla fisica alla matematica.</p>
-                
-                <p>Tra le sue opere ricordiamo:</p>
-                <ul>
-                    <li>Sulla natura</li>
-                    <li>Sull'anima</li>
-                    <li>Sui numeri</li>
-                    <li>Sulla saggezza</li>
-                    <li>Sulla ricchezza</li>
-                    <li>Sulla morte</li>
-                    <li>Sulle virtù</li>
-                    <li>Sulle idee</li>
-                </ul>
-                
-                <p>Le fonti principali per ricostruire il suo pensiero sono:</p>
-                <ul>
-                    <li>Aristotele, che critica alcune sue dottrine</li>
-                    <li>Diogene Laerzio, che fornisce informazioni biografiche e un elenco delle opere</li>
-                    <li>Sesto Empirico, che cita le sue posizioni epistemologiche</li>
-                    <li>Cicerone, che riferisce alcune sue opinioni etiche e teologiche</li>
-                    <li>Plutarco, che discute le sue teorie cosmologiche</li>
-                    <li>Plotino e i neoplatonici, che preservano frammenti della sua metafisica</li>
-                </ul>
-                
-                <div class="quote">
-                    "Senocrate scrisse molti libri: sulla natura, sulla saggezza, sulla ricchezza, [...] e in totale settantacinque rotoli."
-                    <br>- Diogene Laerzio, Vite dei filosofi, IV, 2, 11-14
-                </div>
-            </div>
-        </div>
-        
-        <div class="section">
-            <div class="section-header" onclick="toggleSection(2)">
-                <h2>Pensiero Filosofico</h2>
-                <button class="toggle-btn">+</button>
-            </div>
-            <div class="section-content">
-                <h3>Metafisica e Teologia</h3>
-                <p>Senocrate sviluppò una complessa metafisica che cercava di sistematizzare e, in alcuni casi, modificare le dottrine di Platone. Distinse tre regni della realtà:</p>
-                <ol>
-                    <li>Il mondo sensibile (perceptibile attraverso i sensi)</li>
-                    <li>Il mondo intelligibile (conoscibile attraverso l'intelletto)</li>
-                    <li>Il mondo degli dèi e dei demoni (intermediari tra divino e umano)</li>
-                </ol>
-                
-                <p>Identificò le Idee platoniche con i numeri, seguendo in parte la strada tracciata da Speusippo, ma con significative differenze. Per Senocrate, l'Uno e la Diade erano i principi supremi: l'Uno rappresentava il principio formale e maschile, mentre la Diade il principio materiale e femminile.</p>
-                
-                <h3>Psicologia e Etica</h3>
-                <p>Senocrate sviluppò una psicologia che considerava l'anima come "numero auto-movente", una definizione che sottolineava sia la sua natura intelligibile (numero) sia la sua capacità di causare movimento.</p>
-                
-                <p>In campo etico, distinse tre tipi di beni: quelli dell'anima (i più importanti), quelli del corpo e quelli esterni. La virtù consisteva nel perseguire principalmente i beni dell'anima, che portano alla vera felicità.</p>
-                
-                <h3>Cosmologia e Demonologia</h3>
-                <p>Una delle contribuzioni più originali di Senocrate fu la sua teoria dei demoni (daimones), esseri intermediari tra gli dèi e gli uomini. Questi demoni servivano da mediatori tra il divino e l'umano, trasmettevano le preghiere degli uomini agli dèi e portavano agli uomini i doni divini.</p>
-                
-                <p>La sua cosmologia prevedeva una gerarchia di esseri celesti: al vertice gli dèi olimpici, seguiti dai demoni celesti, poi quelli atmosferici e infine quelli terrestri.</p>
-                
-                <div class="quote">
-                    "Senocrate diceva che ci sono tre nature: la sensibile, la intelligibile e la composta (che è quella dei demoni)."
-                    <br>- Proclo, Commento al Timeo, I, 5, 10
-                </div>
-            </div>
-        </div>
-        
-        <div class="section">
-            <div class="section-header" onclick="toggleSection(3)">
-                <h2>Influenza e Fortuna</h2>
-                <button class="toggle-btn">+</button>
-            </div>
-            <div class="section-content">
-                <p>L'influenza di Senocrate sul pensiero successivo è stata significativa, specialmente in ambito medioplatonico e neoplatonico. La sua sistemazione filosofica e la sua classificazione delle realtà furono riprese e sviluppate da molti filosofi successivi.</p>
-                
-                <h3>Platonismo Successivo</h3>
-                <p>Senocrate contribuì a definire molti aspetti dottrinali che sarebbero diventati caratteristici del platonismo successivo. La sua tripartizione della realtà e la sua demonologia influenzarono profondamente pensatori come Plutarco, Apuleio e i neoplatonici.</p>
-                
-                <h3>Filosofia Ellenistica</h3>
-                <p>Alcuni aspetti della sua etica, in particolare la classificazione dei beni, anticiparono temi che sarebbero stati sviluppati dalle scuole ellenistiche, specialmente dagli Stoici.</p>
-                
-                <h3>Medioplatonismo e Neoplatonismo</h3>
-                <p>La demonologia di Senocrate ebbe una profonda influenza sul medioplatonismo e sul successivo neoplatonismo. Plotino e soprattutto Porfirio e Proclo svilupparono ulteriormente la teoria degli esseri intermediari.</p>
-                
-                <h3>Filosofia Rinascimentale</h3>
-                <p>Con la riscoperta del platonismo nel Rinascimento, le idee di Senocrate riguardanti la gerarchia degli esseri e la demonologia influenzarono pensatori come Marsilio Ficino e Pico della Mirandola.</p>
-                
-                <div class="quote">
-                    "Senocrate, successore di Platone, fu il primo a dividere la filosofia in fisica, etica e dialettica."
-                    <br>- Sesto Empirico, Contro i matematici, VII, 16
-                </div>
-            </div>
-        </div>
-        
-        <div class="references">
-            <h2>Bibliografia</h2>
-            <ul>
-                <li>Dillon, J. (2003). <i>The Heirs of Plato: A Study of the Old Academy</i>. Oxford: Clarendon Press.</li>
-                <li>Isnardi Parente, M. (1982). <i>Senocrate e Ermodoro: Testimonianze e frammenti</i>. Napoli: Bibliopolis.</li>
-                <li>Merlan, P. (1968). <i>From Platonism to Neoplatonism</i>. The Hague: Martinus Nijhoff.</li>
-                <li>Tarán, L. (1981). <i>Speusippus of Athens: A Critical Study with a Collection of the Related Texts and Commentary</i>. Leiden: Brill.</li>
-                <li>Zhmud, L. (2012). <i>Pythagoras and the Early Pythagoreans</i>. Oxford: Oxford University Press.</li>
-            </ul>
-        </div>
-    </div>
+<body class="font-medium">
 
+    <!-- SFONDO ANIMATO -->
+    <div class="bg-animated" aria-hidden="true"></div>
+    <div class="particle" aria-hidden="true"></div>
+    <div class="particle" aria-hidden="true"></div>
+    <div class="particle" aria-hidden="true"></div>
+    <div class="particle" aria-hidden="true"></div>
+
+    <!-- HEADER -->
+    <header class="header-article">
+        <h1>Senocrate di Calcedonia</h1>
+        <p class="subtitle">Filosofo greco, scolarca dell'Antica Accademia (396/395 – 314/313 a.C.)</p>
+    </header>
+
+    <!-- TOOLBAR OPZIONI DI LETTURA -->
+    <nav class="toolbar" aria-label="Opzioni di lettura">
+        <div class="toolbar-group">
+            <span class="label">Tema</span>
+            <button class="tool-btn icon-btn" id="themeToggle" title="Alterna tema chiaro/scuro" aria-label="Alterna tema">🌙</button>
+        </div>
+        <div class="toolbar-group">
+            <span class="label">Testo</span>
+            <button class="tool-btn" data-font="small" title="Testo piccolo">A−</button>
+            <button class="tool-btn active" data-font="medium" title="Testo medio">A</button>
+            <button class="tool-btn" data-font="large" title="Testo grande">A+</button>
+            <button class="tool-btn" data-font="xlarge" title="Testo molto grande">A++</button>
+        </div>
+        <div class="toolbar-group">
+            <span class="label">Sezioni</span>
+            <button class="tool-btn" id="expandAll" title="Espandi tutte le sezioni">Espandi tutto</button>
+            <button class="tool-btn" id="collapseAll" title="Comprimi tutte le sezioni">Comprimi tutto</button>
+        </div>
+    </nav>
+
+    <!-- ARTICOLO -->
+    <main class="article-container" id="top">
+
+        <!-- SEZIONE 1: BIOGRAFIA -->
+        <section class="section" data-section="biografia">
+            <div class="section-header">
+                <span class="section-icon" aria-hidden="true">📜</span>
+                <h2>Biografia</h2>
+                <button class="toggle-btn" aria-expanded="false" aria-controls="content-biografia">
+                    <span class="toggle-text">Mostra</span>
+                    <span class="chevron" aria-hidden="true">▼</span>
+                </button>
+            </div>
+            <div class="section-content" id="content-biografia" role="region">
+                <p><strong>Senocrate di Calcedonia</strong> (in greco: Ξενοκράτης, Xenokrátēs) nacque intorno al 396/395 a.C. a Calcedonia, colonia megarese sul Bosforo, da una famiglia di rango: il padre si chiamava Agatone o Agatanore. Fu uno dei più fedeli discepoli di Platone, che accompagnò nel viaggio in Sicilia presso la corte di Dionisio il Giovane. Alla morte del maestro (347 a.C.), quando Speusippo assunse la guida dell'Accademia, Senocrate lasciò Atene insieme ad Aristotele, probabilmente su invito di Ermia di Atarneo, e si recò in Asia Minore[reference:0].</p>
+                <p>Tornato ad Atene, nel <strong>339/338 a.C.</strong> succedette a Speusippo come <em>scolarca</em> (direttore) dell'Antica Accademia, carica che mantenne per venticinque anni, fino alla morte avvenuta nel 314/313 a.C. all'età di ottantadue anni[reference:1][reference:2]. Secondo la tradizione, la successione non fu pacifica: l'<em>Index Academicorum</em> ercolanense riferisce che i membri più giovani dell'Accademia votarono e confermarono Senocrate con una stretta maggioranza[reference:3].</p>
+                <p>Le fonti antiche tramandano aneddoti che ne delineano il carattere austero e integerrimo. Eliano racconta che, durante un'assenza di Senocrate da Atene, Aristotele avrebbe interrogato Platone ormai vecchio per metterlo in difficoltà; al suo ritorno, Senocrate rimproverò aspramente Aristotele e biasimò Speusippo e gli altri discepoli per non aver difeso il maestro[reference:4]. Sempre Eliano riferisce che il tiranno Dionisio bandì una gara di resistenza al vino con una corona d'oro in palio: Senocrate la vinse e la pose sulla statua di Ermes[reference:5]. La tradizione lo descrive come modello di <em>autárkeia</em> (autosufficienza) e di morigeratezza, tanto da resistere alle lusinghe del generale macedone Antipatro[reference:6].</p>
+            </div>
+        </section>
+
+        <!-- SEZIONE 2: PENSIERO FILOSOFICO -->
+        <section class="section" data-section="pensiero">
+            <div class="section-header">
+                <span class="section-icon" aria-hidden="true">🧠</span>
+                <h2>Pensiero filosofico</h2>
+                <button class="toggle-btn" aria-expanded="false" aria-controls="content-pensiero">
+                    <span class="toggle-text">Mostra</span>
+                    <span class="chevron" aria-hidden="true">▼</span>
+                </button>
+            </div>
+            <div class="section-content" id="content-pensiero" role="region">
+                <p>La ricostruzione del pensiero di Senocrate è resa difficile dalla perdita quasi totale delle sue opere: Diogene Laerzio elenca oltre settanta titoli, ma nulla è sopravvissuto se non sotto forma di citazioni e testimonianze indirette[reference:7]. Le fonti principali sono Aristotele (che però non lo nomina quasi mai esplicitamente), Sesto Empirico, Plutarco, Proclo e Apuleio. Ciò nonostante, emerge una figura di sistematizzatore, impegnato a dare forma dottrinale all'eredità platonica.</p>
+                <p>La testimonianza più significativa riguarda la <strong>tripartizione della filosofia</strong>. Sesto Empirico riferisce che Senocrate fu esplicito nel dividere la materia filosofica — implicita in Platone — in <em>fisica</em>, <em>etica</em> e <em>logica</em>; questa suddivisione divenne lo standard nello Stoicismo e nella filosofia ellenistica[reference:8]. Senocrate, dunque, non fu un pensatore originale tanto quanto un <em>traghettatore</em> del platonismo verso forme sistematiche destinate a durare.</p>
+                <h3 style="margin: 1.2rem 0 0.6rem; font-size: 1.15rem; color: var(--accent-dark);">Metafisica e dottrina delle idee</h3>
+                <p>In metafisica, Senocrate accentuò l'orientamento matematizzante dell'ultimo Platone, recuperando ampiamente la tradizione pitagorica con particolare riferimento alla <strong>dottrina delle idee</strong>[reference:9]. Proclo riferisce che per Senocrate le idee sono insieme intelligibili e immutabili nella sostanza, «sul sacro piedistallo» della mente pura[reference:10]. La sua riflessione si sforzò di dare unità al concetto di idea, raccordando il mondo intelligibile con quello sensibile in una gerarchia continua.</p>
+                <h3 style="margin: 1.2rem 0 0.6rem; font-size: 1.15rem; color: var(--accent-dark);">Etica</h3>
+                <p>In etica, Senocrate identificò la <em>vita felice</em> (εὐδαίμων) con la <em>vita saggia</em> (σπουδαῖον)[reference:11]. L'opera <em>Sulla saggezza</em> (Περὶ φρονήσεως) analizzava il concetto di saggezza come duplice: una rivolta alla conoscenza e una alla prassi[reference:12]. La sua posizione etica è caratterizzata da un rigoroso intellettualismo, coerente con l'insegnamento socratico-platonico.</p>
+            </div>
+        </section>
+
+        <!-- SEZIONE 3: DEMONOLOGIA -->
+        <section class="section" data-section="demonologia">
+            <div class="section-header">
+                <span class="section-icon" aria-hidden="true">🌙</span>
+                <h2>Demonologia e cosmologia</h2>
+                <button class="toggle-btn" aria-expanded="false" aria-controls="content-demonologia">
+                    <span class="toggle-text">Mostra</span>
+                    <span class="chevron" aria-hidden="true">▼</span>
+                </button>
+            </div>
+            <div class="section-content" id="content-demonologia" role="region">
+                <p>Il contributo più originale e influente di Senocrate è la <strong>sistematizzazione della demonologia platonica</strong>. Partendo dal passo del <em>Simposio</em> in cui si afferma che «tutto ciò che è demonico è intermedio tra dio e mortale» (202d13-14), Senocrate sviluppò una vera e propria teoria degli esseri intermedi, che occupano un posto preciso nella geografia cosmica[reference:13].</p>
+                <p>Secondo la testimonianza di Plutarco, Senocrate sosteneva l'esistenza di nature intermedie tra la divinità e l'uomo, collocate in una posizione mediana (<em>en methorío</em>)[reference:14]. La sua cosmologia prevede una tripartizione verticale: gli dèi al di là del cielo e della luna, i demoni che governano la regione della luna, e gli uomini sulla terra, al di sotto di essa[reference:15]. La luna funge da confine tra morte, vita e rinascita: dopo la «prima morte» gli uomini possono raggiungere la regione lunare, e con la «seconda morte» andare oltre[reference:16].</p>
+                <div class="quote-block">
+                    «Di tre tipi essendo il triangolo, quello equilatero si adatta a tutte le anime divine, in quanto queste sono dominate dall'unità; l'isoscele si applica alle anime demoniche, nelle quali, essendo intermedie, c'è uguaglianza e diseguaglianza; lo scaleno è l'immagine delle anime che salgono e scendono.»
+                    <br><small style="font-style: normal; color: var(--text-muted);">— Senocrate, testimoniato da Plutarco e Proclo[reference:17][reference:18]</small>
+                </div>
+                <p>Celebre è la sua analogia geometrica: il <strong>triangolo equilatero</strong> rappresenta la divinità (tutte le parti uguali, unità), il <strong>triangolo isoscele</strong> rappresenta l'essere demonico (parti in parte uguali e in parte diseguali, natura mista di passione umana e facoltà divina), e il <strong>triangolo scaleno</strong> rappresenta l'uomo mortale (tutte le parti diseguali)[reference:19]. I demoni, con la loro parte inferiore toccano ciò che è peggiore, con quella superiore attingono agli esseri più nobili[reference:20].</p>
+                <p>Senocrate introdusse anche l'idea di <strong>demoni malvagi</strong>, un elemento che lo allontana dalla concezione platonica del divino come esclusivamente positivo[reference:21]. Il suo sistema demonologico assume rilievo su tre livelli distinti: religioso, psicologico ed etico[reference:22]. Questa dottrina costituisce il ponte tra il demonico platonico e gli schematismi del medioplatonismo[reference:23].</p>
+            </div>
+        </section>
+
+        <!-- SEZIONE 4: OPERE -->
+        <section class="section" data-section="opere">
+            <div class="section-header">
+                <span class="section-icon" aria-hidden="true">📚</span>
+                <h2>Opere</h2>
+                <button class="toggle-btn" aria-expanded="false" aria-controls="content-opere">
+                    <span class="toggle-text">Mostra</span>
+                    <span class="chevron" aria-hidden="true">▼</span>
+                </button>
+            </div>
+            <div class="section-content" id="content-opere" role="region">
+                <p>Diogene Laerzio ci ha tramandato un ricco elenco delle opere di Senocrate, tutte perdute a parte frammenti[reference:24]. La produzione spazia dalla fisica all'etica, dalla politica alla psicologia, testimoniando l'ampiezza degli interessi dello scolarca.</p>
+                <div class="opere-grid">
+                    <div class="opera-card">
+                        <span class="opera-title">Della natura</span>
+                        <span class="opera-meta">VI libri</span>
+                    </div>
+                    <div class="opera-card">
+                        <span class="opera-title">Della sapienza</span>
+                        <span class="opera-meta">VI libri</span>
+                    </div>
+                    <div class="opera-card">
+                        <span class="opera-title">Della ricchezza</span>
+                        <span class="opera-meta">I libro</span>
+                    </div>
+                    <div class="opera-card">
+                        <span class="opera-title">Dell'indefinito</span>
+                        <span class="opera-meta">I libro</span>
+                    </div>
+                    <div class="opera-card">
+                        <span class="opera-title">Della temperanza</span>
+                        <span class="opera-meta">I libro</span>
+                    </div>
+                    <div class="opera-card">
+                        <span class="opera-title">Della felicità</span>
+                        <span class="opera-meta">II libri</span>
+                    </div>
+                    <div class="opera-card">
+                        <span class="opera-title">Della saggezza</span>
+                        <span class="opera-meta">II libri</span>
+                    </div>
+                    <div class="opera-card">
+                        <span class="opera-title">Della memoria</span>
+                        <span class="opera-meta">I libro</span>
+                    </div>
+                    <div class="opera-card">
+                        <span class="opera-title">Della menzogna</span>
+                        <span class="opera-meta">I libro</span>
+                    </div>
+                    <div class="opera-card">
+                        <span class="opera-title">Economico</span>
+                        <span class="opera-meta">I libro</span>
+                    </div>
+                    <div class="opera-card">
+                        <span class="opera-title">Della forza della legge</span>
+                        <span class="opera-meta">I libro</span>
+                    </div>
+                    <div class="opera-card">
+                        <span class="opera-title">Del regime politico</span>
+                        <span class="opera-meta">I libro</span>
+                    </div>
+                </div>
+                <p style="margin-top: 1.2rem;">Tra le opere di contenuto più specificamente filosofico si segnalano quelle <em>Sulla conoscenza intellettiva</em> e <em>Sulla saggezza</em>, in cui Senocrate analizzava il concetto di saggezza come duplice[reference:25]. L'edizione moderna di riferimento dei frammenti è quella curata da Renato Heinze (<em>Xenokrates. Darstellung der Lehre und Sammlung der Fragmente</em>, 1892), successivamente integrata da Margherita Isnardi Parente[reference:26].</p>
+            </div>
+        </section>
+
+        <!-- SEZIONE 5: CRONOLOGIA -->
+        <section class="section" data-section="cronologia">
+            <div class="section-header">
+                <span class="section-icon" aria-hidden="true">⏳</span>
+                <h2>Cronologia essenziale</h2>
+                <button class="toggle-btn" aria-expanded="false" aria-controls="content-cronologia">
+                    <span class="toggle-text">Mostra</span>
+                    <span class="chevron" aria-hidden="true">▼</span>
+                </button>
+            </div>
+            <div class="section-content" id="content-cronologia" role="region">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-year">396/395 a.C.</div>
+                        <div class="timeline-text">Nasce a Calcedonia, colonia megarese sul Bosforo.</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">367–361 a.C. ca.</div>
+                        <div class="timeline-text">Accompagna Platone nel viaggio in Sicilia presso Dionisio il Giovane.</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">347 a.C.</div>
+                        <div class="timeline-text">Alla morte di Platone lascia Atene insieme ad Aristotele; Speusippo diventa scolarca.</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">339/338 a.C.</div>
+                        <div class="timeline-text">Succede a Speusippo come scolarca dell'Antica Accademia.</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">314/313 a.C.</div>
+                        <div class="timeline-text">Muore ad Atene all'età di 82 anni, dopo 25 anni di direzione dell'Accademia.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEZIONE 6: EREDITÀ -->
+        <section class="section" data-section="eredita">
+            <div class="section-header">
+                <span class="section-icon" aria-hidden="true">🔗</span>
+                <h2>Eredità e ricezione</h2>
+                <button class="toggle-btn" aria-expanded="false" aria-controls="content-eredita">
+                    <span class="toggle-text">Mostra</span>
+                    <span class="chevron" aria-hidden="true">▼</span>
+                </button>
+            </div>
+            <div class="section-content" id="content-eredita" role="region">
+                <p>Senocrate è una figura cruciale ma paradossalmente «nascosta» nella storia della filosofia antica. Da un lato, fu il <strong>traghettatore istituzionale</strong> del platonismo: resse l'Accademia per un quarto di secolo, garantendo continuità alla scuola in un periodo di transizione. Dall'altro, la sua opera di sistematizzazione — dalla tripartizione della filosofia alla demonologia — esercitò un'influenza profonda e duratura, soprattutto sul medioplatonismo e sul neoplatonismo[reference:27].</p>
+                <p>La sua demonologia, in particolare, costituisce il primo tentativo compiuto di organizzare in un sistema coerente i riferimenti sparsi e spesso mitici del corpus platonico al mondo intermedio. Apuleio, Plutarco e Proclo ne tramandano aspetti significativi, e la sua classificazione dei demoni in tre categorie (divini, anima-corpo, malvagi) anticipa sviluppi successivi[reference:28].</p>
+                <p>Dante, nel <em>Convivio</em> (IV, VI, 15), lo ricorda come «Zenocrate Calcedonio, suo compagnone» di Aristotele, sottolineandone il ruolo nella perfezione della filosofia morale[reference:29]. Cicerone lo definisce <em>gravissimus philosophorum</em>, testimoniando la stima di cui godette presso i Romani[reference:30]. La sua figura rimane quella di un custode rigoroso e creativo dell'eredità platonica, capace di trasformare intuizioni sparse in un sistema destinato a fecondare secoli di pensiero.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer-article">
+        <a href="#top" class="back-to-top">↑ Torna all'inizio</a>
+        <p>Articolo enciclopedico su Senocrate di Calcedonia · Fonti: Treccani, Diogene Laerzio, Proclo, Plutarco, Sesto Empirico, Studi sull'Accademia antica</p>
+    </footer>
+
+    <!-- JAVASCRIPT -->
     <script>
-        // Funzione per mostrare/nascondere le sezioni
-        function toggleSection(index) {
-            const contents = document.querySelectorAll('.section-content');
-            const buttons = document.querySelectorAll('.toggle-btn');
-            
-            if (contents[index].classList.contains('show')) {
-                contents[index].classList.remove('show');
-                buttons[index].textContent = '+';
-            } else {
-                contents[index].classList.add('show');
-                buttons[index].textContent = '−';
-            }
-        }
-        
-        // Funzione per cambiare lo stile di lettura
-        function changeStyle(style) {
-            document.body.className = style;
-            
-            // Aggiorna i colori dei bordi in base allo stile
-            const sections = document.querySelectorAll('.section');
-            const borders = document.querySelectorAll('header, h2, .references');
-            
-            if (style === 'filosofico') {
-                sections.forEach(section => {
-                    section.style.borderColor = 'var(--filosofico-border)';
+        (function() {
+            'use strict';
+
+            // ===== TOGGLE SEZIONI =====
+            const toggleButtons = document.querySelectorAll('.toggle-btn');
+
+            toggleButtons.forEach(btn => {
+                const section = btn.closest('.section');
+                const content = section.querySelector('.section-content');
+                const textSpan = btn.querySelector('.toggle-text');
+
+                // Inizializza: sezioni chiuse, pulsante "Mostra"
+                btn.setAttribute('aria-expanded', 'false');
+                content.classList.remove('open');
+                textSpan.textContent = 'Mostra';
+
+                btn.addEventListener('click', () => {
+                    const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+                    const newState = !isExpanded;
+
+                    btn.setAttribute('aria-expanded', newState);
+                    content.classList.toggle('open', newState);
+                    textSpan.textContent = newState ? 'Nascondi' : 'Mostra';
+
+                    // Piccola animazione di rimbalzo sul pulsante
+                    btn.style.transform = 'scale(0.95)';
+                    setTimeout(() => { btn.style.transform = ''; }, 150);
                 });
-                borders.forEach(border => {
-                    border.style.borderColor = 'var(--filosofico-border)';
-                });
-            } else if (style === 'contemplativo') {
-                sections.forEach(section => {
-                    section.style.borderColor = 'var(--contemplativo-border)';
-                });
-                borders.forEach(border => {
-                    border.style.borderColor = 'var(--contemplativo-border)';
-                });
-            } else if (style === 'notturno') {
-                sections.forEach(section => {
-                    section.style.borderColor = 'var(--notturno-border)';
-                });
-                borders.forEach(border => {
-                    border.style.borderColor = 'var(--notturno-border)';
-                });
-            } else {
-                sections.forEach(section => {
-                    section.style.borderColor = 'var(--normale-border)';
-                });
-                borders.forEach(border => {
-                    border.style.borderColor = 'var(--normale-border)';
-                });
-            }
-        }
-        
-        // Apre la prima sezione all'avvio
-        window.onload = function() {
-            toggleSection(0);
-            
-            // Aggiunge transizioni agli elementi dopo il caricamento
-            const sections = document.querySelectorAll('.section');
-            sections.forEach(section => {
-                section.style.transition = 'border-color 0.5s ease';
             });
-            
-            const borders = document.querySelectorAll('header, h2, .references');
-            borders.forEach(border => {
-                border.style.transition = 'border-color 0.5s ease';
+
+            // ===== ESPANDI / COMPRIMI TUTTO =====
+            const expandAllBtn = document.getElementById('expandAll');
+            const collapseAllBtn = document.getElementById('collapseAll');
+
+            expandAllBtn.addEventListener('click', () => {
+                toggleButtons.forEach(btn => {
+                    const content = btn.closest('.section').querySelector('.section-content');
+                    const textSpan = btn.querySelector('.toggle-text');
+                    btn.setAttribute('aria-expanded', 'true');
+                    content.classList.add('open');
+                    textSpan.textContent = 'Nascondi';
+                });
             });
-        };
+
+            collapseAllBtn.addEventListener('click', () => {
+                toggleButtons.forEach(btn => {
+                    const content = btn.closest('.section').querySelector('.section-content');
+                    const textSpan = btn.querySelector('.toggle-text');
+                    btn.setAttribute('aria-expanded', 'false');
+                    content.classList.remove('open');
+                    textSpan.textContent = 'Mostra';
+                });
+            });
+
+            // ===== TEMA CHIARO / SCURO =====
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
+
+            // Controlla preferenza salvata
+            const savedTheme = localStorage.getItem('senocrate-theme');
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-mode');
+                themeToggle.textContent = '☀️';
+            }
+
+            themeToggle.addEventListener('click', () => {
+                const isDark = body.classList.toggle('dark-mode');
+                themeToggle.textContent = isDark ? '☀️' : '🌙';
+                localStorage.setItem('senocrate-theme', isDark ? 'dark' : 'light');
+
+                // Animazione di rotazione
+                themeToggle.style.transform = 'rotate(360deg) scale(1.2)';
+                setTimeout(() => { themeToggle.style.transform = ''; }, 400);
+            });
+
+            // ===== DIMENSIONE TESTO =====
+            const fontButtons = document.querySelectorAll('[data-font]');
+            const fontClasses = ['font-small', 'font-medium', 'font-large', 'font-xlarge'];
+
+            // Ripristina preferenza salvata
+            const savedFont = localStorage.getItem('senocrate-font');
+            if (savedFont && fontClasses.includes(savedFont)) {
+                body.classList.remove(...fontClasses);
+                body.classList.add(savedFont);
+                fontButtons.forEach(b => {
+                    b.classList.toggle('active', b.dataset.font === savedFont.replace('font-', ''));
+                });
+            }
+
+            fontButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const font = btn.dataset.font;
+                    const cls = 'font-' + font;
+
+                    body.classList.remove(...fontClasses);
+                    body.classList.add(cls);
+
+                    fontButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    localStorage.setItem('senocrate-font', cls);
+
+                    // Animazione
+                    btn.style.transform = 'scale(0.9)';
+                    setTimeout(() => { btn.style.transform = ''; }, 150);
+                });
+            });
+
+            // ===== SCROLL REVEAL PER SEZIONI (Intersection Observer) =====
+            // Le sezioni hanno già animazione CSS, ma aggiungiamo un effetto
+            // di parallasse leggero sulle particelle in base allo scroll
+            let ticking = false;
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        const scrolled = window.scrollY;
+                        document.querySelectorAll('.particle').forEach((p, i) => {
+                            const speed = 0.02 + i * 0.01;
+                            p.style.transform = `translateY(${scrolled * speed}px)`;
+                        });
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+
+            // ===== EFFETTO RIPPLE SUI PULSANTI =====
+            document.querySelectorAll('.toggle-btn, .tool-btn, .back-to-top').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const ripple = document.createElement('span');
+                    ripple.style.cssText = `
+                        position: absolute;
+                        border-radius: 50%;
+                        background: rgba(255,255,255,0.4);
+                        width: 20px;
+                        height: 20px;
+                        left: ${e.clientX - rect.left - 10}px;
+                        top: ${e.clientY - rect.top - 10}px;
+                        pointer-events: none;
+                        transform: scale(0);
+                        animation: rippleAnim 0.6s ease-out forwards;
+                    `;
+                    this.style.position = 'relative';
+                    this.style.overflow = 'hidden';
+                    this.appendChild(ripple);
+                    setTimeout(() => ripple.remove(), 700);
+                });
+            });
+
+            // Aggiungi keyframes per ripple dinamicamente
+            const styleSheet = document.createElement('style');
+            styleSheet.textContent = `
+                @keyframes rippleAnim {
+                    to { transform: scale(15); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(styleSheet);
+
+        })();
     </script>
 </body>
 </html>

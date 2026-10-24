@@ -3,362 +3,829 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Speusippo - Successore di Platone | Enciclopedia Filosofica</title>
-    <meta name="description" content="Approfondita analisi della vita, opere e pensiero di Speusippo, filosofo greco e successore di Platone nell'Accademia">
-    <meta name="keywords" content="Speusippo, filosofia greca, Accademia platonica, Platone, metafisica, dialettica, etica">
+    <meta name="description" content="Speusippo di Atene: filosofo greco, nipote e successore di Platone alla guida dell'Accademia. Biografia, opere, metafisica dei principi e ricezione antica.">
+    <meta name="keywords" content="Speusippo, filosofia greca, Accademia, Platone, Uno, Molteplicità, numero, frammenti, scolarca">
     <meta name="author" content="Enciclopedia Filosofica">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Speusippo di Atene | Enciclopedia Filosofica">
+    <meta property="og:description" content="Speusippo, nipote di Platone e secondo scolarca dell'Accademia: la metafisica dei principi, il rifiuto delle Idee e l'etica del piacere.">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="it_IT">
+    <title>Speusippo di Atene — Enciclopedia Filosofica</title>
     <style>
         :root {
-            --normale-bg: #f9f9f9;
-            --normale-text: #333;
-            --filosofico-bg: #f5f0e6;
-            --filosofico-text: #3c2f22;
-            --contemplativo-bg: #e6f0f5;
-            --contemplativo-text: #22333c;
-            --notturno-bg: #1a1a1a;
-            --notturno-text: #ccc;
-            --transition: all 0.3s ease;
+            --bg: #0f0f1a;
+            --bg-card: #1a1a2e;
+            --bg-card-hover: #1f1f38;
+            --text: #e8e8f0;
+            --text-muted: #a0a0b8;
+            --accent: #7c6cf0;
+            --accent2: #e06c9f;
+            --accent3: #6cf0c2;
+            --border: #2a2a45;
+            --shadow: 0 8px 32px rgba(0,0,0,0.4);
+            --radius: 16px;
+            --font-size-base: 17px;
+            --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
-        body {
-            font-family: 'Georgia', serif;
-            line-height: 1.6;
+
+        [data-theme="light"] {
+            --bg: #f4f4fa;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f0f0ff;
+            --text: #1a1a2e;
+            --text-muted: #5a5a7a;
+            --border: #dcdcf0;
+            --shadow: 0 8px 32px rgba(100,100,180,0.12);
+        }
+
+        [data-theme="light"] .header-glow {
+            opacity: 0.15;
+        }
+
+        * {
             margin: 0;
             padding: 0;
-            background-color: var(--normale-bg);
-            color: var(--normale-text);
-            transition: var(--transition);
+            box-sizing: border-box;
         }
-        
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
+
+        html {
+            scroll-behavior: smooth;
         }
-        
+
+        body {
+            font-family: 'Segoe UI', 'Georgia', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            font-size: var(--font-size-base);
+            line-height: 1.75;
+            transition: background var(--transition), color var(--transition);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ── Sfondo animato ── */
+        .bg-animated {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .bg-animated::before,
+        .bg-animated::after {
+            content: '';
+            position: absolute;
+            width: 60vw;
+            height: 60vw;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.12;
+            animation: floatBlob 18s ease-in-out infinite;
+        }
+        .bg-animated::before {
+            background: var(--accent);
+            top: -20%;
+            left: -10%;
+        }
+        .bg-animated::after {
+            background: var(--accent2);
+            bottom: -20%;
+            right: -10%;
+            animation-delay: -9s;
+            animation-duration: 22s;
+        }
+        @keyframes floatBlob {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(4vw, -3vh) scale(1.1); }
+            66% { transform: translate(-3vw, 4vh) scale(0.95); }
+        }
+
+        /* ── Particelle ── */
+        .particles {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 50%;
+            opacity: 0;
+            animation: rise linear infinite;
+        }
+        @keyframes rise {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+        }
+
+        /* ── Header ── */
         header {
+            position: relative;
             text-align: center;
-            margin-bottom: 30px;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 20px;
+            padding: 5rem 1.5rem 3rem;
+            overflow: hidden;
         }
-        
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            color: #444;
+        .header-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+            opacity: 0.08;
+            animation: pulseGlow 5s ease-in-out infinite;
+            pointer-events: none;
         }
-        
-        h2 {
-            font-size: 1.8rem;
-            margin-top: 30px;
-            color: #555;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 5px;
+        @keyframes pulseGlow {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.08; }
+            50% { transform: translate(-50%, -50%) scale(1.25); opacity: 0.14; }
         }
-        
-        p {
-            margin-bottom: 15px;
-            text-align: justify;
+        header h1 {
+            font-size: clamp(2.2rem, 6vw, 4rem);
+            font-weight: 800;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2), var(--accent3));
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 6s ease infinite;
+            position: relative;
+            z-index: 1;
         }
-        
-        .reading-options {
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        .subtitle {
+            margin-top: 0.75rem;
+            font-size: clamp(0.95rem, 2vw, 1.2rem);
+            color: var(--text-muted);
+            font-style: italic;
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            animation: fadeUp 0.8s 0.3s forwards;
+        }
+        .subtitle-line {
+            display: block;
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            margin: 1rem auto 0;
+            opacity: 0;
+            animation: fadeUp 0.8s 0.5s forwards;
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Barra opzioni lettura ── */
+        .reading-bar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
             display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin: 20px 0;
             flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem 1rem;
+            padding: 0.75rem 1.5rem;
+            background: color-mix(in srgb, var(--bg) 85%, transparent);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            transition: background var(--transition), border var(--transition);
         }
-        
-        .style-btn {
-            padding: 8px 15px;
-            border: none;
-            border-radius: 4px;
+        .reading-bar .label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+        .reading-bar button {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: 50px;
+            padding: 0.45rem 1rem;
             cursor: pointer;
+            font-size: 0.85rem;
             font-family: inherit;
-            transition: var(--transition);
+            transition: all var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
         }
-        
-        .normale { background-color: #e9e9e9; }
-        .filosofico { background-color: #e8dfce; }
-        .contemplativo { background-color: #d4e3e9; }
-        .notturno { background-color: #2c2c2c; color: #eee; }
-        
-        .section {
-            margin-bottom: 20px;
+        .reading-bar button:hover {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px color-mix(in srgb, var(--accent) 40%, transparent);
         }
-        
+        .reading-bar button:active {
+            transform: scale(0.96);
+        }
+        .reading-bar .icon {
+            font-size: 1.1rem;
+            line-height: 1;
+        }
+
+        /* ── Contenuto principale ── */
+        main {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 5rem;
+        }
+
+        /* ── Info box ── */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+        .info-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.2rem 1.4rem;
+            transition: all var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--accent), var(--accent2));
+            border-radius: 4px 0 0 4px;
+        }
+        .info-card:hover {
+            background: var(--bg-card-hover);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+        .info-card .k {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        .info-card .v {
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+
+        /* ── Sezioni ── */
+        section {
+            margin-bottom: 2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: background var(--transition), border var(--transition), box-shadow var(--transition);
+        }
+        section:hover {
+            box-shadow: var(--shadow);
+        }
         .section-header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            gap: 0.75rem;
+            padding: 1.5rem 1.75rem;
             cursor: pointer;
-            padding: 10px;
-            background-color: rgba(0,0,0,0.03);
-            border-radius: 4px;
+            user-select: none;
+            transition: background var(--transition);
+            position: relative;
         }
-        
-        .section-content {
-            padding: 15px;
-            display: none;
-            animation: fadeIn 0.5s ease;
+        .section-header:hover {
+            background: var(--bg-card-hover);
         }
-        
-        .show {
-            display: block;
-        }
-        
-        .toggle-btn {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        
-        .rotate {
-            transform: rotate(45deg);
-        }
-        
-        .quote {
-            font-style: italic;
-            border-left: 3px solid #ccc;
-            padding-left: 15px;
-            margin: 20px 0;
-            color: #666;
-        }
-        
-        .references {
+        .section-header .num {
+            flex-shrink: 0;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
             font-size: 0.9rem;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
+            transition: transform var(--transition);
         }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .section-header.open .num {
+            transform: rotate(90deg);
         }
-        
-        /* Stili per le diverse modalità di lettura */
-        body.normale {
-            background-color: var(--normale-bg);
-            color: var(--normale-text);
+        .section-header h2 {
+            flex: 1;
+            font-size: clamp(1.15rem, 3vw, 1.4rem);
+            font-weight: 700;
+            letter-spacing: -0.3px;
         }
-        
-        body.filosofico {
-            background-color: var(--filosofico-bg);
-            color: var(--filosofico-text);
+        .section-header .chevron {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+            position: relative;
+            transition: transform var(--transition);
         }
-        
-        body.filosofico h1, 
-        body.filosofico h2 {
-            color: #5c4b37;
+        .section-header .chevron::before,
+        .section-header .chevron::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 10px;
+            height: 2px;
+            background: var(--text-muted);
+            border-radius: 2px;
+            transition: all var(--transition);
         }
-        
-        body.contemplativo {
-            background-color: var(--contemplativo-bg);
-            color: var(--contemplativo-text);
+        .section-header .chevron::before {
+            transform: translate(-70%, -50%) rotate(45deg);
         }
-        
-        body.contemplativo h1, 
-        body.contemplativo h2 {
-            color: #2c4b5c;
+        .section-header .chevron::after {
+            transform: translate(-30%, -50%) rotate(-45deg);
         }
-        
-        body.notturno {
-            background-color: var(--notturno-bg);
-            color: var(--notturno-text);
+        .section-header.open .chevron::before {
+            transform: translate(-70%, -50%) rotate(-45deg);
         }
-        
-        body.notturno h1, 
-        body.notturno h2 {
-            color: #aaccee;
+        .section-header.open .chevron::after {
+            transform: translate(-30%, -50%) rotate(45deg);
         }
-        
-        body.notturno .section-header {
-            background-color: rgba(255,255,255,0.05);
+
+        .section-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1), padding 0.4s;
+            padding: 0 1.75rem;
         }
-        
-        body.notturno .quote {
-            border-left-color: #555;
-            color: #aaa;
+        .section-body.open {
+            max-height: 3000px;
+            padding: 0 1.75rem 1.75rem;
+        }
+        .section-body p {
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+        .section-body p:last-child {
+            margin-bottom: 0;
+        }
+        .section-body strong {
+            color: var(--accent3);
+            font-weight: 600;
+        }
+        .section-body em {
+            color: var(--accent2);
+            font-style: italic;
+        }
+
+        .toggle-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-top: 0.75rem;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--accent);
+            border-radius: 50px;
+            padding: 0.4rem 1rem;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-family: inherit;
+            font-weight: 600;
+            transition: all var(--transition);
+        }
+        .toggle-btn:hover {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+        .toggle-btn .arrow {
+            transition: transform 0.3s;
+        }
+        .toggle-btn[aria-expanded="true"] .arrow {
+            transform: rotate(180deg);
+        }
+
+        /* ── Blockquote ── */
+        blockquote {
+            border-left: 4px solid var(--accent);
+            background: color-mix(in srgb, var(--accent) 8%, transparent);
+            margin: 1.25rem 0;
+            padding: 1rem 1.25rem;
+            border-radius: 0 12px 12px 0;
+            font-style: italic;
+            color: var(--text-muted);
+            position: relative;
+        }
+        blockquote::before {
+            content: '“';
+            position: absolute;
+            top: -0.2rem;
+            left: 0.5rem;
+            font-size: 3rem;
+            color: var(--accent);
+            opacity: 0.3;
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+        blockquote p {
+            margin-bottom: 0.25rem;
+            padding-left: 1.5rem;
+        }
+        blockquote cite {
+            display: block;
+            text-align: right;
+            font-size: 0.85rem;
+            font-style: normal;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        /* ── Fonti / note ── */
+        .sources {
+            margin-top: 2.5rem;
+            padding: 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        .sources h3 {
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+            color: var(--text);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .sources ol {
+            padding-left: 1.25rem;
+        }
+        .sources li {
+            margin-bottom: 0.4rem;
+        }
+
+        /* ── Torna su ── */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            box-shadow: 0 4px 20px color-mix(in srgb, var(--accent) 50%, transparent);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all var(--transition);
+            z-index: 200;
+        }
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .back-to-top:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 28px color-mix(in srgb, var(--accent) 60%, transparent);
+        }
+
+        /* ── Animazioni scroll ── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 600px) {
+            .reading-bar {
+                gap: 0.4rem;
+                padding: 0.6rem 1rem;
+            }
+            .reading-bar .label {
+                width: 100%;
+                text-align: center;
+                margin-bottom: 0.25rem;
+            }
+            .reading-bar button {
+                padding: 0.35rem 0.75rem;
+                font-size: 0.78rem;
+            }
+            .section-header {
+                padding: 1.2rem 1.25rem;
+            }
+            .section-body {
+                padding: 0 1.25rem;
+            }
+            .section-body.open {
+                padding: 0 1.25rem 1.25rem;
+            }
+            .back-to-top {
+                bottom: 1.25rem;
+                right: 1.25rem;
+                width: 42px;
+                height: 42px;
+            }
+            blockquote p {
+                padding-left: 0;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            html { scroll-behavior: auto; }
         }
     </style>
 </head>
-<body class="normale">
-    <div class="container">
-        <header>
-            <h1>Speusippo</h1>
-            <p>(408/407 a.C. – 339/338 a.C.)</p>
-        </header>
-        
-        <div class="reading-options">
-            <button class="style-btn normale" onclick="changeStyle('normale')">Normale</button>
-            <button class="style-btn filosofico" onclick="changeStyle('filosofico')">Filosofico</button>
-            <button class="style-btn contemplativo" onclick="changeStyle('contemplativo')">Contemplativo</button>
-            <button class="style-btn notturno" onclick="changeStyle('notturno')">Notturno</button>
+<body data-theme="dark">
+
+    <!-- Sfondo animato -->
+    <div class="bg-animated"></div>
+    <div class="particles" id="particles"></div>
+
+    <!-- Header -->
+    <header>
+        <div class="header-glow"></div>
+        <h1>Speusippo di Atene</h1>
+        <p class="subtitle">Filosofo platonico, nipote e successore di Platone alla guida dell'Accademia</p>
+        <span class="subtitle-line"></span>
+    </header>
+
+    <!-- Barra opzioni di lettura -->
+    <nav class="reading-bar" aria-label="Opzioni di lettura">
+        <span class="label">Lettura</span>
+        <button id="themeToggle" title="Cambia tema chiaro/scuro">
+            <span class="icon" id="themeIcon">🌙</span>
+            <span id="themeLabel">Scuro</span>
+        </button>
+        <button id="fontIncrease" title="Aumenta dimensione testo">
+            <span class="icon">A+</span>
+        </button>
+        <button id="fontDecrease" title="Riduci dimensione testo">
+            <span class="icon">A−</span>
+        </button>
+        <button id="fontReset" title="Ripristina dimensione predefinita">
+            <span class="icon">↺</span>
+            Reset
+        </button>
+    </nav>
+
+    <main>
+        <!-- Info rapide -->
+        <div class="info-grid reveal">
+            <div class="info-card">
+                <div class="k">Nascita</div>
+                <div class="v">ca. 410 a.C., Atene</div>
+            </div>
+            <div class="info-card">
+                <div class="k">Morte</div>
+                <div class="v">339 a.C., Atene</div>
+            </div>
+            <div class="info-card">
+                <div class="k">Scuola</div>
+                <div class="v">Accademia di Platone</div>
+            </div>
+            <div class="info-card">
+                <div class="k">Carica</div>
+                <div class="v">Scolarca (348–339 a.C.)</div>
+            </div>
         </div>
-        
-        <div class="section">
-            <div class="section-header" onclick="toggleSection(0)">
-                <h2>Vita e Contesto Storico</h2>
-                <button class="toggle-btn">+</button>
+
+        <!-- Sezione 1: Biografia -->
+        <section class="reveal">
+            <div class="section-header" data-target="bio">
+                <span class="num">1</span>
+                <h2>Biografia e successione a Platone</h2>
+                <span class="chevron"></span>
             </div>
-            <div class="section-content">
-                <p>Speusippo nacque ad Atene intorno al 408/407 a.C. da Eurimedonte e Potone, sorella di Platone. Appartenente a una famiglia aristocratica, fu quindi nipote del grande filosofo che avrebbe profondamente influenzato il suo pensiero e il suo destino.</p>
-                
-                <p>La sua formazione avvenne nell'ambiente culturale ateniese, sotto la guida dello zio Platone. Quando quest'ultimo fondò l'Accademia nel 387 a.C., Speusippo divenne uno dei suoi allievi più assidui, dimostrando particolare interesse per la dialettica e la matematica.</p>
-                
-                <p>Alla morte di Platone nel 347 a.C., nonostante le tensioni all'interno dell'Accademia e le rivalità con altri discepoli come Aristotele, Speusippo fu scelto come successore (scholarch) alla guida della scuola, posizione che mantenne per otto anni fino alla sua morte nel 339/338 a.C.</p>
-                
-                <p>Diogene Laerzio ci tramanda che Speusippo soffrì di una paralisi progressiva che lo costrinse a cedere la direzione dell'Accademia a Senocrate. Morì, secondo alcune fonti, suicida a causa delle sue condizioni di salute.</p>
+            <div class="section-body" id="bio">
+                <p><strong>Speusippo</strong> nacque ad Atene intorno al <strong>410 a.C.</strong>, figlio di Eurimedonte del demo di Mirrinunte e di <strong>Potone</strong>, sorella di Platone. Fu quindi nipote diretto del grande filosofo e membro della cerchia familiare più intima dell'Accademia[reference:0][reference:1].</p>
+                <p>Alla morte di Platone, nel <strong>348/347 a.C.</strong>, Speusippo gli succedette come <strong>scolarca</strong> (capo) dell'Accademia, mantenendo la guida della scuola per otto anni, fino alla sua morte nel <strong>339 a.C.</strong> Gli succedette Senocrate[reference:2][reference:3]. La tradizione antica lo ricorda come l'erede designato della filosofia platonica: Cicerone scrive che Platone lo lasciò <em>«quasi heredem»</em> della sua dottrina[reference:4].</p>
+                <p>La sua salute cagionevole e la morte sopraggiunta relativamente presto segnarono la fine del suo scolarcato, ma non prima che egli avesse consolidato l'identità filosofica dell'Accademia come istituzione autonoma, distinta dalla persona del fondatore.</p>
             </div>
-        </div>
-        
-        <div class="section">
-            <div class="section-header" onclick="toggleSection(1)">
-                <h2>Opere e Fonti</h2>
-                <button class="toggle-btn">+</button>
+        </section>
+
+        <!-- Sezione 2: Opere -->
+        <section class="reveal">
+            <div class="section-header" data-target="opere">
+                <span class="num">2</span>
+                <h2>Opere e frammenti</h2>
+                <span class="chevron"></span>
             </div>
-            <div class="section-content">
-                <p>Purtroppo, tutte le opere di Speusippo sono andate perdute, e la nostra conoscenza del suo pensiero deriva principalmente da testimonianze indirette, citazioni e riferimenti in autori successivi.</p>
-                
-                <p>Tra le sue opere ricordiamo:</p>
-                <ul>
-                    <li>Sul Piacere</li>
-                    <li>Sulle Similitudini</li>
-                    <li>Sulle Specie e i Generi</li>
-                    <li>Sulla Filosofia Pitagorica</li>
-                    <li>Sui Numeri</li>
-                    <li>Lettere a Dionisio II di Siracusa</li>
+            <div class="section-body" id="opere">
+                <p>Speusippo fu autore prolifico: Diogene Laerzio gli attribuisce <strong>circa trenta titoli</strong> tra trattati e dialoghi, ammettendo però che la sua bibliografia è incompleta[reference:5]. Nessuna delle sue opere ci è giunta integra; possediamo solo <strong>frammenti</strong> e testimonianze indirette, raccolte nelle edizioni moderne di Isnardi Parente (1980) e Tarán (1981)[reference:6].</p>
+                <p>Tra le opere principali ricordiamo:</p>
+                <ul style="margin: 0.75rem 0 1rem 1.25rem; color: var(--text-muted);">
+                    <li><strong>«Sulle cose simili»</strong> (Ὅμοια), in dieci libri, dedicata alla dialettica della somiglianza e della classificazione[reference:7];</li>
+                    <li><strong>«Definizioni»</strong> (Ὅροι) e <strong>«Divisioni»</strong> (Διαιρέσεις), opere di logica e metodo diairetico[reference:8];</li>
+                    <li><strong>«Sui generi e le specie degli esemplari»</strong> (Περὶ γενῶν καὶ εἰδῶν παραδειγμάτων), di impronta platonica[reference:9];</li>
+                    <li>Dialoghi come <strong>«Aristippo»</strong> e <strong>«Sul piacere»</strong> (Περὶ ἡδονῆς), dedicati al tema etico del piacere[reference:10];</li>
+                    <li>Un <strong>«Encomio di Platone»</strong>[reference:11].</li>
                 </ul>
-                
-                <p>Le fonti principali per ricostruire il suo pensiero sono:</p>
-                <ul>
-                    <li>Aristotele, che critica spesso le sue dottrine nella Metafisica e nell'Etica</li>
-                    <li>Diogene Laerzio, che fornisce informazioni biografiche</li>
-                    <li>Sesto Empirico, che cita alcune sue posizioni epistemologiche</li>
-                    <li>Proclo, che menziona le sue concezioni matematiche</li>
-                    <li>Cicerone, che riferisce alcune sue opinioni etiche</li>
-                </ul>
-                
-                <div class="quote">
-                    "Speusippo, nipote di Platone per parte di sorella, gli successe nell'Accademia e la diresse per otto anni."
-                    <br>- Diogene Laerzio, Vite dei filosofi, IV, 1
-                </div>
+                <p>Di particolare interesse è il trattato <strong>«Sui numeri pitagorici»</strong>, di cui possediamo estratti nella <em>Scienza matematica comune</em> di Giamblico: esso costituisce una delle fonti più preziose per ricostruire la sua metafisica dei principi[reference:12].</p>
             </div>
+        </section>
+
+        <!-- Sezione 3: Metafisica -->
+        <section class="reveal">
+            <div class="section-header" data-target="metafisica">
+                <span class="num">3</span>
+                <h2>La metafisica dei principi: l'Uno e la Molteplicità</h2>
+                <span class="chevron"></span>
+            </div>
+            <div class="section-body" id="metafisica">
+                <p>Il cuore della speculazione di Speusippo è una <strong>metafisica dei principi</strong> (archai) che rielabora in chiave originale l'eredità platonica e pitagorica. Secondo la testimonianza di Aristotele, egli pose a fondamento della realtà due principi supremi: l'<strong>Uno</strong> (τὸ ἕν) e la <strong>Molteplicità</strong> (πλῆθος)[reference:13][reference:14].</p>
+                <p>L'Uno è il principio <strong>attivo, limitante e formante</strong>; la Molteplicità è il principio <strong>passivo, illimitato e materiale</strong>, paragonato da Speusippo a una <em>materia completamente fluida e plasmabile</em>[reference:15]. Dall'incontro dei due principi nascono i <strong>numeri</strong>: la Molteplicità fornisce la divisibilità infinita, mentre l'Uno impone limite e qualità, producendo numeri determinati[reference:16].</p>
+                <blockquote>
+                    <p>«Di tutti i numeri matematici si devono postulare due principi primi e supremi: l'Uno — che non si deve nemmeno chiamare essere, per la sua semplicità e per la sua posizione di principio di ogni altra cosa — e un altro principio, quello della Molteplicità.»</p>
+                    <cite>Giamblico, <em>De communi mathematica scientia</em> (testimonianza di Speusippo)[reference:17]</cite>
+                </blockquote>
+                <p>La dottrina di Speusippo presenta due punti di rottura decisivi con Platone. Primo: <strong>egli nega l'esistenza delle Idee</strong> e dei numeri ideali, ammettendo soltanto i numeri matematici[reference:18][reference:19]. Secondo: <strong>rifiuta di identificare l'Uno con il Bene</strong>. L'Uno non è né bello né buono, ma è superiore a entrambi e ne è la causa: bellezza e bontà compaiono solo in uno stadio successivo del processo cosmologico[reference:20][reference:21].</p>
+                <p>Questo porta Speusippo a una <strong>gerarchia di livelli di realtà</strong> — numeri, grandezze geometriche, anima, esseri sensibili — ciascuno dotato di principi propri, analoghi ma non identici a quelli del livello superiore[reference:22][reference:23]. La sua è una metafisica <strong>pluralistica e stratificata</strong>, che Aristotele criticò per la mancanza di connessione tra i diversi piani dell'essere[reference:24].</p>
+            </div>
+        </section>
+
+        <!-- Sezione 4: Etica -->
+        <section class="reveal">
+            <div class="section-header" data-target="etica">
+                <span class="num">4</span>
+                <h2>Etica: il piacere e la virtù</h2>
+                <span class="chevron"></span>
+            </div>
+            <div class="section-body" id="etica">
+                <p>In ambito etico, Speusippo è noto soprattutto per la sua <strong>opposizione alla dottrina del piacere</strong>. Nel dibattito interno all'Accademia, mentre Eudosso sosteneva che il piacere, essendo desiderato da tutti i viventi, fosse il bene supremo, Speusippo assunse la posizione opposta: <strong>il piacere non è mai un bene</strong>[reference:25].</p>
+                <p>La sua concezione del bene è più articolata: egli riteneva che <strong>il bene si collochi tra due opposti</strong>, e che la virtù sia una <em>condizione sufficiente</em> per la felicità, ma non l'unica: per essere felici occorre anche un <strong>minimo di beni materiali</strong>, come la salute e una moderata disponibilità di ricchezze[reference:26]. Raggiunta la felicità, l'uomo dimora in uno stato di <strong>«assenza di turbamento»</strong> (ἀοχλησία), simile all'atarassia epicurea ma fondato su presupposti platonici[reference:27].</p>
+                <p>Questa posizione lo distingue sia dall'edonismo di Epicuro sia da certo rigorismo stoico, e testimonia la vitalità del dibattito etico nell'Accademia del IV secolo.</p>
+            </div>
+        </section>
+
+        <!-- Sezione 5: Ricezione e fortuna -->
+        <section class="reveal">
+            <div class="section-header" data-target="ricezione">
+                <span class="num">5</span>
+                <h2>Ricezione e fortuna storica</h2>
+                <span class="chevron"></span>
+            </div>
+            <div class="section-body" id="ricezione">
+                <p>La figura di Speusippo è stata a lungo oscurata dalla grandezza di Platone e di Aristotele, ma la critica moderna ne ha riconosciuto l'importanza come <strong>anello di congiunzione</strong> tra il platonismo maturo e le successive elaborazioni dell'Accademia antica[reference:28].</p>
+                <p>Dante lo ricorda nel <em>Convivio</em> accanto a Platone come uno dei maggiori rappresentanti dell'antica Accademia e «epigono di Socrate», soprattutto in relazione alle dottrine morali[reference:29]. Cicerone lo cita più volte come erede diretto della filosofia platonica e come uno dei primi <em>veteres Platonis auditores</em> insieme a Senocrate e Aristotele[reference:30].</p>
+                <p>La sua <strong>metafisica dei principi</strong> — con la distinzione tra Uno e Molteplicità e la negazione del valore etico del principio primo — ha influenzato lo sviluppo del medioplatonismo e ha posto problemi che saranno ripresi da Plotino e dalla tradizione neoplatonica, sia pure in un quadro speculativo profondamente mutato[reference:31].</p>
+                <p>Oggi Speusippo è studiato soprattutto per la sua <strong>originale rilettura della dialettica platonica</strong>, per la sua classificazione delle realtà in livelli autonomi e per il suo contributo al dibattito antico su piacere, virtù e felicità.</p>
+            </div>
+        </section>
+
+        <!-- Fonti -->
+        <div class="sources reveal">
+            <h3>Riferimenti bibliografici essenziali</h3>
+            <ol>
+                <li>M. Isnardi Parente (a cura di), <em>Speusippo. Frammenti</em>, Napoli 1980.</li>
+                <li>L. Tarán, <em>Speusippus of Athens: A Critical Study with a Collection of the Related Texts and Commentary</em>, Leiden 1981[reference:32].</li>
+                <li>G. Calogero, voce «Speusippo di Atene», in <em>Enciclopedia Italiana</em>, 1936[reference:33].</li>
+                <li>J. Dillon, <em>The Middle Platonists</em>, London 1977 (trad. it. parz.).</li>
+                <li>Diogene Laerzio, <em>Vite dei filosofi</em>, IV 1–5.</li>
+                <li>Aristotele, <em>Metafisica</em> VII 2, XII 7, XIV 4–5.</li>
+            </ol>
         </div>
-        
-        <div class="section">
-            <div class="section-header" onclick="toggleSection(2)">
-                <h2>Pensiero Filosofico</h2>
-                <button class="toggle-btn">+</button>
-            </div>
-            <div class="section-content">
-                <h3>Metafisica e Teoria dei Principi</h3>
-                <p>Speusippo sviluppò una metafisica originale che si distaccava in punti significativi dal platonismo tradizionale. Abbandonò la teoria delle Idee di Platone a favore di una concezione matematica della realtà. Per Speusippo, i principi ultimi della realtà non erano l'Uno e la Diade indefinita (come per Platone), ma una pluralità di principi corrispondenti ai diversi generi dell'essere.</p>
-                
-                <p>La sua ontologia prevedeva una gerarchia di livelli di realtà: i numeri, le grandezze geometriche, l'anima e infine il mondo sensibile. Ogni livello aveva i propri principi specifici, sebbene tutti fossero collegati in una struttura gerarchica.</p>
-                
-                <h3>Epistemologia</h3>
-                <p>Speusippo sosteneva che la conoscenza richiede una corrispondenza tra la struttura della mente e la struttura della realtà. Ogni livello dell'essere richiedeva una facoltà conoscitiva appropriata: la percezione per il mondo sensibile, la ragione matematica per i numeri e le figure geometriche, e l'intelletto puro per i principi primi.</p>
-                
-                <p>Rifiutò la teoria della reminiscenza platonica, proponendo invece che la conoscenza derivi da un processo di astrazione a partire dall'esperienza sensibile.</p>
-                
-                <h3>Etica</h3>
-                <p>In campo etico, Speusippo identificava il bene non con il piacere (come gli edonisti) né con un principio metafisico (come Platone), ma con lo stato di armonia e assenza di perturbazione (atarassia). Sosteneva che il piacere non è il bene supremo, ma solo un movimento verso lo stato naturale, mentre il dolore è un movimento contrario alla natura.</p>
-                
-                <div class="quote">
-                    "Speusippo, ponendo il bene nella perfezione, dice che esso è ciò che è conveniente a ciascuna cosa secondo la sua natura."
-                    <br>- Stobeo, Eclogae, II, 7, 3
-                </div>
-            </div>
-        </div>
-        
-        <div class="section">
-            <div class="section-header" onclick="toggleSection(3)">
-                <h2>Differenze con Platone e Aristotele</h2>
-                <button class="toggle-btn">+</button>
-            </div>
-            <div class="section-content">
-                <p>Speusippo si distaccò dal maestro Platone su diverse questioni fondamentali:</p>
-                
-                <ol>
-                    <li><strong>Teoria delle Idee:</strong> Abbandonò completamente la dottrina delle Idee, considerandola superflua e problematica.</li>
-                    <li><strong>Concezione del Bene:</strong> Mentre Platone identificava il Bene con l'Uno, principio metafisico supremo, Speusippo separava l'etica dalla metafisica, considerando il bene come perfezione specifica di ciascun essere.</li>
-                    <li><strong>Matematica:</strong> Attribuì alle entità matematiche uno status ontologico più fondamentale rispetto a Platone.</li>
-                </ol>
-                
-                <p>Il rapporto con Aristotele fu complesso e segnato da divergenze filosofiche. Aristotele criticò aspramente molte dottrine di Speusippo, in particolare:</p>
-                
-                <ol>
-                    <li>La moltiplicazione dei principi per ogni genere dell'essere</li>
-                    <li>La separazione tra metafisica ed etica</li>
-                    <li>La negazione della teoria delle Idee</li>
-                </ol>
-                
-                <p>Nonostante queste divergenze, alcuni studiosi hanno notato influenze speusippee in certe dottrine aristoteliche, specialmente nella concezione della sostanza e nella classificazione delle scienze.</p>
-            </div>
-        </div>
-        
-        <div class="section">
-            <div class="section-header" onclick="toggleSection(4)">
-                <h2>Influenza e Fortuna</h2>
-                <button class="toggle-btn">+</button>
-            </div>
-            <div class="section-content">
-                <p>L'influenza di Speusippo sul pensiero successivo è stata sottovalutata dalla tradizione filosofica, che ha privilegiato l'eredità di Platone e Aristotele. Tuttavia, il suo pensiero ebbe un impatto significativo su diversi aspetti:</p>
-                
-                <h3>Scuola Platonica</h3>
-                <p>Speusippo contribuì a orientare l'Accademia in direzione sempre più matematica e dialettica, influenzando i successivi scolarchi come Senocrate e Polemone. La sua sistemazione enciclopedica del sapere prefigurò la divisione delle scienze che sarebbe diventata canonica nel Medioevo.</p>
-                
-                <h3>Neoplatonismo</h3>
-                <p>Alcuni aspetti della metafisica speusippea, in particolare la gerarchia dei livelli di realtà e la moltiplicazione dei principi, anticiparono temi che sarebbero stati sviluppati dai neoplatonici come Plotino e Proclo.</p>
-                
-                <h3>Rinascimento</h3>
-                <p>Con la riscoperta del platonismo nel Rinascimento, alcuni umanisti mostrarono interesse per le dottrine "eterodosse" di Speusippo, vedendovi un tentativo di conciliare platonismo e aristotelismo.</p>
-                
-                <h3>Studi Moderni</h3>
-                <p>La filosofia di Speusippo è stata rivalutata a partire dal XIX secolo, soprattutto grazie agli studi di Hermann Usener, Paul Lang e, più recentemente, di Leonardo Tarán e John Dillon. Oggi è riconosciuto come un pensatore originale che ha sviluppato in modo autonomo l'eredità platonica.</p>
-                
-                <div class="quote">
-                    "Speusippo può essere considerato il primo filosofo sistematico, che tentò di organizzare tutto lo scibile umano in una struttura coerente e gerarchica."
-                    <br>- Leonardo Tarán, Speusippus of Athens, 1981
-                </div>
-            </div>
-        </div>
-        
-        <div class="references">
-            <h2>Bibliografia</h2>
-            <ul>
-                <li>Tarán, L. (1981). <i>Speusippus of Athens: A Critical Study with a Collection of the Related Texts and Commentary</i>. Leiden: Brill.</li>
-                <li>Dillon, J. (2003). <i>The Heirs of Plato: A Study of the Old Academy</i>. Oxford: Clarendon Press.</li>
-                <li>Döring, K. (1998). <i>Speusipp</i>. In H. Flashar (ed.), <i>Grundriss der Geschichte der Philosophie. Die Philosophie der Antike</i>. Basel: Schwabe.</li>
-                <li>Merlan, P. (1968). <i>From Platonism to Neoplatonism</i>. The Hague: Martinus Nijhoff.</li>
-            </ul>
-        </div>
-    </div>
+    </main>
+
+    <!-- Torna su -->
+    <button class="back-to-top" id="backToTop" aria-label="Torna all'inizio">↑</button>
 
     <script>
-        // Funzione per mostrare/nascondere le sezioni
-        function toggleSection(index) {
-            const contents = document.querySelectorAll('.section-content');
-            const buttons = document.querySelectorAll('.toggle-btn');
-            
-            contents[index].classList.toggle('show');
-            buttons[index].classList.toggle('rotate');
+        // ── Particelle ──
+        (function createParticles() {
+            const container = document.getElementById('particles');
+            const count = 30;
+            for (let i = 0; i < count; i++) {
+                const p = document.createElement('div');
+                p.classList.add('particle');
+                p.style.left = Math.random() * 100 + '%';
+                p.style.animationDuration = (12 + Math.random() * 18) + 's';
+                p.style.animationDelay = (Math.random() * 20) + 's';
+                p.style.width = p.style.height = (1.5 + Math.random() * 2.5) + 'px';
+                p.style.background = i % 3 === 0 ? 'var(--accent2)' : (i % 3 === 1 ? 'var(--accent3)' : 'var(--accent)');
+                container.appendChild(p);
+            }
+        })();
+
+        // ── Toggle sezioni ──
+        document.querySelectorAll('.section-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const targetId = header.dataset.target;
+                const body = document.getElementById(targetId);
+                const isOpen = body.classList.contains('open');
+
+                // Chiudi tutte le altre (opzionale: comportamento "accordion")
+                document.querySelectorAll('.section-body.open').forEach(b => {
+                    if (b !== body) {
+                        b.classList.remove('open');
+                        b.previousElementSibling.classList.remove('open');
+                    }
+                });
+
+                body.classList.toggle('open', !isOpen);
+                header.classList.toggle('open', !isOpen);
+            });
+        });
+
+        // ── Pulsanti "Mostra di più" / "Mostra di meno" ──
+        // (integrati nell'header: il click sull'header funge da toggle)
+
+        // ── Tema chiaro/scuro ──
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeLabel = document.getElementById('themeLabel');
+        const body = document.body;
+
+        themeToggle.addEventListener('click', () => {
+            const isDark = body.getAttribute('data-theme') === 'dark';
+            body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            themeIcon.textContent = isDark ? '☀️' : '🌙';
+            themeLabel.textContent = isDark ? 'Chiaro' : 'Scuro';
+        });
+
+        // ── Dimensione carattere ──
+        let currentFontSize = 17;
+        const fontIncrease = document.getElementById('fontIncrease');
+        const fontDecrease = document.getElementById('fontDecrease');
+        const fontReset = document.getElementById('fontReset');
+
+        function setFontSize(size) {
+            currentFontSize = Math.min(22, Math.max(13, size));
+            document.documentElement.style.setProperty('--font-size-base', currentFontSize + 'px');
         }
-        
-        // Funzione per cambiare lo stile di lettura
-        function changeStyle(style) {
-            document.body.className = style;
-        }
-        
-        // Apre la prima sezione all'avvio
-        window.onload = function() {
-            toggleSection(0);
-        };
+
+        fontIncrease.addEventListener('click', () => setFontSize(currentFontSize + 1));
+        fontDecrease.addEventListener('click', () => setFontSize(currentFontSize - 1));
+        fontReset.addEventListener('click', () => setFontSize(17));
+
+        // ── Torna su ──
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            backToTop.classList.toggle('visible', window.scrollY > 400);
+        });
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // ── Animazione reveal allo scroll ──
+        const revealElements = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+
+        revealElements.forEach(el => observer.observe(el));
+
+        // ── Apri la prima sezione di default ──
+        window.addEventListener('DOMContentLoaded', () => {
+            const firstHeader = document.querySelector('.section-header');
+            const firstBody = document.getElementById(firstHeader.dataset.target);
+            firstHeader.classList.add('open');
+            firstBody.classList.add('open');
+        });
     </script>
 </body>
 </html>

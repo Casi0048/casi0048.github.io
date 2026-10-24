@@ -1,1 +1,141 @@
-(()=>{"use strict";const e="echiCookieConsent.v1";function n(){try{const n=localStorage.getItem(e);return n?JSON.parse(n):null}catch{return null}}function o(n,o){try{localStorage.setItem(e,JSON.stringify({necessary:!0,preferences:Boolean(n),external:Boolean(o),savedAt:(new Date).toISOString()}))}catch{}}function i(){const e=document.getElementById("echi-cookie-banner"),n=document.getElementById("echi-cookie-settings");e&&(e.hidden=!0),n&&(n.hidden=!1)}function c(){const e=document.getElementById("echi-cookie-modal");if(!e)return;const o=n(),i=document.getElementById("echi-cookie-preferences"),c=document.getElementById("echi-cookie-external");i&&(i.checked=Boolean(o&&o.preferences)),c&&(c.checked=Boolean(o&&o.external)),e.hidden=!1,document.body.classList.add("echi-cookie-modal-open")}function t(){const e=document.getElementById("echi-cookie-modal");e&&(e.hidden=!0),document.body.classList.remove("echi-cookie-modal-open")}function a(e){switch(e){case"accept":o(!0,!0),i();break;case"reject":case"reject-all":o(!1,!1),t(),i();break;case"customize":c();break;case"save":!function(){const e=document.getElementById("echi-cookie-preferences"),n=document.getElementById("echi-cookie-external");o(!!e&&e.checked,!!n&&n.checked),t(),i()}();break;case"close":t();break;case"info":window.location.href="/pagine/privacy-policy.html"}}function d(){!function(){if(document.getElementById("echi-cookie-container"))return;const e=document.createElement("div");e.id="echi-cookie-container",e.innerHTML='\n            <section\n                id="echi-cookie-banner"\n                class="echi-cookie-banner"\n                role="dialog"\n                aria-modal="false"\n                aria-labelledby="echi-cookie-title"\n                aria-describedby="echi-cookie-description"\n                hidden\n            >\n\n                <div class="echi-cookie-content">\n\n                    <div class="echi-cookie-text">\n\n                        <h2 id="echi-cookie-title">\n                            La tua privacy conta\n                        </h2>\n\n                        <p id="echi-cookie-description">\n                            Echi di Sofia utilizza tecnologie necessarie\n                            al funzionamento del sito e, quando richiesto,\n                            contenuti forniti da servizi esterni.\n                            Puoi scegliere come gestire le tue preferenze.\n                        </p>\n\n                    </div>\n\n                    <div class="echi-cookie-actions">\n\n                        <button\n                            type="button"\n                            class="echi-cookie-button echi-cookie-secondary"\n                            data-cookie-action="reject"\n                        >\n                            Rifiuta\n                        </button>\n\n                        <button\n                            type="button"\n                            class="echi-cookie-button echi-cookie-secondary"\n                            data-cookie-action="customize"\n                        >\n                            Personalizza cookie\n                        </button>\n\n                        <button\n                            type="button"\n                            class="echi-cookie-button echi-cookie-link"\n                            data-cookie-action="info"\n                        >\n                            Maggiori informazioni\n                        </button>\n\n                        <button\n                            type="button"\n                            class="echi-cookie-button echi-cookie-primary"\n                            data-cookie-action="accept"\n                        >\n                            Accetta\n                        </button>\n\n                    </div>\n\n                </div>\n\n            </section>\n\n\n            <section\n                id="echi-cookie-modal"\n                class="echi-cookie-modal"\n                role="dialog"\n                aria-modal="true"\n                aria-labelledby="echi-cookie-modal-title"\n                hidden\n            >\n\n                <div class="echi-cookie-modal-box">\n\n                    <div class="echi-cookie-modal-header">\n\n                        <h2 id="echi-cookie-modal-title">\n                            Personalizza cookie\n                        </h2>\n\n                        <button\n                            type="button"\n                            class="echi-cookie-close"\n                            data-cookie-action="close"\n                            aria-label="Chiudi"\n                        >\n                            ×\n                        </button>\n\n                    </div>\n\n\n                    <div class="echi-cookie-options">\n\n                        <div class="echi-cookie-option">\n\n                            <div>\n                                <h3>Necessari</h3>\n\n                                <p>\n                                    Necessari per il funzionamento\n                                    essenziale del sito. Sono sempre attivi.\n                                </p>\n                            </div>\n\n                            <span class="echi-cookie-always">\n                                Sempre attivi\n                            </span>\n\n                        </div>\n\n\n                        <div class="echi-cookie-option">\n\n                            <div>\n                                <h3>Preferenze</h3>\n\n                                <p>\n                                    Permettono di ricordare alcune\n                                    impostazioni scelte dall\'utente,\n                                    come le preferenze dell\'interfaccia.\n                                </p>\n                            </div>\n\n                            <label class="echi-cookie-switch">\n\n                                <input\n                                    type="checkbox"\n                                    id="echi-cookie-preferences"\n                                >\n\n                                <span></span>\n\n                            </label>\n\n                        </div>\n\n\n                        <div class="echi-cookie-option">\n\n                            <div>\n                                <h3>Contenuti esterni</h3>\n\n                                <p>\n                                    Permettono di visualizzare contenuti\n                                    incorporati forniti da servizi esterni,\n                                    come YouTube.\n                                </p>\n                            </div>\n\n                            <label class="echi-cookie-switch">\n\n                                <input\n                                    type="checkbox"\n                                    id="echi-cookie-external"\n                                >\n\n                                <span></span>\n\n                            </label>\n\n                        </div>\n\n                    </div>\n\n\n                    <div class="echi-cookie-modal-footer">\n\n                        <a\n                            href="/pagine/privacy-policy.html"\n                            class="echi-cookie-privacy"\n                        >\n                            Leggi la Privacy Policy\n                        </a>\n\n                        <div class="echi-cookie-modal-actions">\n\n                            <button\n                                type="button"\n                                class="echi-cookie-button echi-cookie-secondary"\n                                data-cookie-action="reject-all"\n                            >\n                                Rifiuta tutto\n                            </button>\n\n                            <button\n                                type="button"\n                                class="echi-cookie-button echi-cookie-primary"\n                                data-cookie-action="save"\n                            >\n                                Salva preferenze\n                            </button>\n\n                        </div>\n\n                    </div>\n\n                </div>\n\n            </section>\n\n\n            <button\n                id="echi-cookie-settings"\n                class="echi-cookie-settings"\n                type="button"\n                aria-label="Gestisci preferenze cookie"\n                title="Gestisci preferenze cookie"\n                hidden\n            >\n                ⚙\n            </button>\n        ',document.body.appendChild(e)}();const e=n();document.addEventListener("click",e=>{const n=e.target.closest("[data-cookie-action]");n&&a(n.getAttribute("data-cookie-action"))});const o=document.getElementById("echi-cookie-settings");o&&o.addEventListener("click",c);const d=document.getElementById("echi-cookie-modal");d&&d.addEventListener("click",e=>{e.target===d&&t()}),document.addEventListener("keydown",e=>{if("Escape"!==e.key)return;const n=document.getElementById("echi-cookie-modal");n&&!n.hidden&&t()}),e?i():function(){const e=document.getElementById("echi-cookie-banner"),n=document.getElementById("echi-cookie-settings");e&&(e.hidden=!1,n&&(n.hidden=!0))}()}"loading"===document.readyState?document.addEventListener("DOMContentLoaded",d,{once:!0}):d()})();
+(() => {
+  "use strict";
+
+  const STORAGE_KEY = "echiCookieConsent.v1";
+
+  /* =========================================================
+     STORAGE
+     ========================================================= */
+  function readConsent() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch {
+      return null;
+    }
+  }
+
+  function writeConsent(preferences, external) {
+    try {
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({
+          necessary: true,
+          preferences: Boolean(preferences),
+          external: Boolean(external),
+          savedAt: new Date().toISOString()
+        })
+      );
+    } catch {}
+  }
+
+  /* =========================================================
+     UI
+     ========================================================= */
+  function showSettingsButtonOnly() {
+    const banner = document.getElementById("echi-cookie-banner");
+    const settings = document.getElementById("echi-cookie-settings");
+    if (banner) banner.hidden = true;
+    if (settings) settings.hidden = false;
+  }
+
+  function openModal() {
+    const modal = document.getElementById("echi-cookie-modal");
+    if (!modal) return;
+
+    const consent = readConsent();
+    const prefs = document.getElementById("echi-cookie-preferences");
+    const ext = document.getElementById("echi-cookie-external");
+
+    if (prefs) prefs.checked = Boolean(consent && consent.preferences);
+    if (ext) ext.checked = Boolean(consent && consent.external);
+
+    modal.hidden = false;
+    document.body.classList.add("echi-cookie-modal-open");
+  }
+
+  function closeModal() {
+    const modal = document.getElementById("echi-cookie-modal");
+    if (modal) modal.hidden = true;
+    document.body.classList.remove("echi-cookie-modal-open");
+  }
+
+  function saveCustomPreferences() {
+    const prefs = document.getElementById("echi-cookie-preferences");
+    const ext = document.getElementById("echi-cookie-external");
+    writeConsent(!!prefs && prefs.checked, !!ext && ext.checked);
+    closeModal();
+    showSettingsButtonOnly();
+  }
+
+  function handleAction(action) {
+    switch (action) {
+      case "accept":
+        writeConsent(true, true);
+        showSettingsButtonOnly();
+        break;
+      case "reject":
+      case "reject-all":
+        writeConsent(false, false);
+        closeModal();
+        showSettingsButtonOnly();
+        break;
+      case "customize":
+        openModal();
+        break;
+      case "save":
+        saveCustomPreferences();
+        break;
+      case "close":
+        closeModal();
+        break;
+      case "info":
+        window.location.href = "pagine/privacy-policy.html";
+        break;
+    }
+  }
+
+  /* =========================================================
+     INIT
+     ========================================================= */
+  function init() {
+    const consent = readConsent();
+
+    if (consent) {
+      // Ha già scelto → niente banner, mostra solo ingranaggio
+      showSettingsButtonOnly();
+    }
+    // Altrimenti: il banner è già visibile nell'HTML → non fare nulla
+
+    // Click handler unico (delega)
+    document.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-cookie-action]");
+      if (btn) handleAction(btn.getAttribute("data-cookie-action"));
+    });
+
+    // Apri modale dall'ingranaggio
+    const settings = document.getElementById("echi-cookie-settings");
+    if (settings) settings.addEventListener("click", openModal);
+
+    // Chiudi cliccando fuori
+    const modal = document.getElementById("echi-cookie-modal");
+    if (modal) {
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) closeModal();
+      });
+    }
+
+    // Chiudi con Esc
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape") return;
+      const m = document.getElementById("echi-cookie-modal");
+      if (m && !m.hidden) closeModal();
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init, { once: true });
+  } else {
+    init();
+  }
+})();
