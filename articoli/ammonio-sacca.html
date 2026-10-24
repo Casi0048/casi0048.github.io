@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Ammonio Sacca: il filosofo alessandrino, maestro di Plotino e Origene, fondatore del Neoplatonismo. Biografia, dottrine e testimonianze antiche in un articolo enciclopedico interattivo.">
+  <meta name="keywords" content="Ammonio Sacca, Neoplatonismo, Plotino, Origene, Alessandria, filosofia antica, platonismo, aristotelismo, henosis, teodidatta">
+  <meta name="author" content="Enciclopedia Filosofica Interattiva">
+  <meta name="robots" content="index, follow">
+  <title>Ammonio Sacca · L'Ombra che Generò il Neoplatonismo</title>
+  <style>
+    /* ============================================================
+       VARIABILI E RESET
+    ============================================================ */
+    :root {
+      --bg: #0e0e12;
+      --bg-card: rgba(22, 22, 30, 0.85);
+      --text: #e8e6f0;
+      --text-muted: #a8a4b8;
+      --accent: #c9a84c;
+      --accent-soft: rgba(201, 168, 76, 0.18);
+      --border: rgba(201, 168, 76, 0.25);
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+      --font-body: 'Georgia', 'Times New Roman', serif;
+      --font-heading: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+      --line-height: 1.85;
+      --letter-spacing: 0.01em;
+      --transition: 0.45s cubic-bezier(0.23, 1, 0.32, 1);
+      --glow: 0 0 30px rgba(201, 168, 76, 0.15);
+      --particle-color: rgba(201, 168, 76, 0.35);
+    }
+
+    /* MODALITÀ: FILOSOFICO — rigore, contrasto, struttura */
+    body.mode-filosofico {
+      --bg: #12141a;
+      --bg-card: rgba(20, 24, 34, 0.92);
+      --text: #d8dce8;
+      --text-muted: #8a92a8;
+      --accent: #7ba7c9;
+      --accent-soft: rgba(123, 167, 201, 0.14);
+      --border: rgba(123, 167, 201, 0.3);
+      --font-body: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      --font-heading: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      --line-height: 1.7;
+      --letter-spacing: 0.03em;
+      --glow: 0 0 40px rgba(123, 167, 201, 0.12);
+    }
+
+    /* MODALITÀ: CONTEMPLATIVO — lentezza, luce, respiro */
+    body.mode-contemplativo {
+      --bg: #1a1612;
+      --bg-card: rgba(30, 26, 20, 0.9);
+      --text: #ece4d8;
+      --text-muted: #b8aa98;
+      --accent: #d4b896;
+      --accent-soft: rgba(212, 184, 150, 0.16);
+      --border: rgba(212, 184, 150, 0.28);
+      --font-body: 'Georgia', 'Times New Roman', serif;
+      --line-height: 2.1;
+      --letter-spacing: 0.02em;
+      --glow: 0 0 60px rgba(212, 184, 150, 0.18);
+    }
+
+    /* MODALITÀ: NOTTURNO — profondità, silenzio, stelle */
+    body.mode-notturno {
+      --bg: #05060a;
+      --bg-card: rgba(10, 12, 20, 0.94);
+      --text: #c8c8d4;
+      --text-muted: #6a6a80;
+      --accent: #8a8ab0;
+      --accent-soft: rgba(138, 138, 176, 0.12);
+      --border: rgba(138, 138, 176, 0.22);
+      --font-body: 'Georgia', 'Times New Roman', serif;
+      --line-height: 1.9;
+      --letter-spacing: 0.04em;
+      --glow: 0 0 50px rgba(138, 138, 176, 0.1);
+      --particle-color: rgba(138, 138, 176, 0.3);
+    }
+
+    /* MODALITÀ: METAFISICO — tensione, ascesa, oro */
+    body.mode-metafisico {
+      --bg: #0a0806;
+      --bg-card: rgba(18, 14, 10, 0.92);
+      --text: #f0e6d6;
+      --text-muted: #b0a090;
+      --accent: #e8c86a;
+      --accent-soft: rgba(232, 200, 106, 0.16);
+      --border: rgba(232, 200, 106, 0.3);
+      --font-body: 'Georgia', 'Times New Roman', serif;
+      --line-height: 1.85;
+      --letter-spacing: 0.02em;
+      --glow: 0 0 70px rgba(232, 200, 106, 0.2);
+      --particle-color: rgba(232, 200, 106, 0.4);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: var(--line-height);
+      letter-spacing: var(--letter-spacing);
+      min-height: 100vh;
+      transition: background var(--transition), color var(--transition), font-family var(--transition), line-height var(--transition);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* ============================================================
+       SFONDO ANIMATO — PARTICELLE E AUREE
+    ============================================================ */
+    .cosmic-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .cosmic-bg::before {
+      content: '';
+      position: absolute;
+      inset: -50%;
+      background: radial-gradient(circle at 30% 40%, var(--accent-soft) 0%, transparent 60%),
+                  radial-gradient(circle at 70% 70%, var(--accent-soft) 0%, transparent 55%);
+      animation: auraDrift 22s ease-in-out infinite alternate;
+      opacity: 0.7;
+      transition: background var(--transition);
+    }
+
+    @keyframes auraDrift {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(4%, -3%) scale(1.08); }
+      100% { transform: translate(-3%, 2%) scale(1.03); }
+    }
+
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: var(--particle-color);
+      animation: floatUp linear infinite;
+      opacity: 0;
+      transition: background var(--transition);
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(0.6); opacity: 0; }
+      15% { opacity: 0.8; }
+      85% { opacity: 0.6; }
+      100% { transform: translateY(-120vh) scale(1.2); opacity: 0; }
+    }
+
+    /* ============================================================
+       LAYOUT
+    ============================================================ */
+    .page-wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 6rem;
+    }
+
+    /* ============================================================
+       HEADER
+    ============================================================ */
+    header {
+      text-align: center;
+      padding: 4rem 0 2.5rem;
+      position: relative;
+    }
+
+    header h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-shadow: 0 0 40px var(--accent-soft);
+      animation: titleReveal 1.6s cubic-bezier(0.23, 1, 0.32, 1) both;
+      transition: color var(--transition), text-shadow var(--transition);
+    }
+
+    header .subtitle {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      font-style: italic;
+      margin-top: 0.8rem;
+      letter-spacing: 0.12em;
+      animation: fadeSlide 1.4s 0.3s cubic-bezier(0.23, 1, 0.32, 1) both;
+    }
+
+    header .epigraph {
+      max-width: 600px;
+      margin: 2rem auto 0;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 1.2rem 0;
+      line-height: 1.7;
+      animation: fadeSlide 1.4s 0.6s cubic-bezier(0.23, 1, 0.32, 1) both;
+      transition: border-color var(--transition);
+    }
+
+    @keyframes titleReveal {
+      0% { opacity: 0; transform: translateY(30px) scale(0.96); filter: blur(8px); }
+      100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+    }
+
+    @keyframes fadeSlide {
+      0% { opacity: 0; transform: translateY(18px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ============================================================
+       BARRA MODALITÀ DI LETTURA
+    ============================================================ */
+    .reading-modes {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.6rem;
+      margin: 2rem 0 3rem;
+      padding: 1rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      backdrop-filter: blur(14px);
+      box-shadow: var(--shadow);
+      transition: background var(--transition), border-color var(--transition);
+      animation: fadeSlide 1.2s 0.8s cubic-bezier(0.23, 1, 0.32, 1) both;
+    }
+
+    .reading-modes button {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.55rem 1.1rem;
+      border-radius: 100px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .reading-modes button:hover {
+      color: var(--accent);
+      border-color: var(--border);
+      background: var(--accent-soft);
+    }
+
+    .reading-modes button.active {
+      color: var(--bg);
+      background: var(--accent);
+      border-color: var(--accent);
+      box-shadow: 0 0 24px var(--accent-soft);
+      font-weight: 600;
+    }
+
+    .reading-modes button .mode-dot {
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      margin-right: 0.45rem;
+      opacity: 0.6;
+      vertical-align: middle;
+    }
+
+    /* ============================================================
+       SEZIONI E PARAGRAFI ANIMATI
+    ============================================================ */
+    .section {
+      margin-bottom: 2.8rem;
+      opacity: 0;
+      transform: translateY(28px);
+      animation: sectionEnter 0.9s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+      transition: opacity 0.6s ease;
+    }
+
+    .section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes sectionEnter {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section h2 {
+      font-family: var(--font-heading);
+      font-size: clamp(1.5rem, 3.5vw, 2rem);
+      font-weight: 400;
+      color: var(--accent);
+      letter-spacing: 0.06em;
+      margin-bottom: 0.3rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      transition: color var(--transition), border-color var(--transition);
+    }
+
+    .section h2::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 60px;
+      height: 2px;
+      background: var(--accent);
+      box-shadow: 0 0 12px var(--accent-soft);
+      transition: background var(--transition), box-shadow var(--transition);
+    }
+
+    .section .section-intro {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin: 0.8rem 0 1.4rem;
+      font-style: italic;
+    }
+
+    /* ============================================================
+       BLOCCHI ORIGINALE / MODERNO — TOGGLE
+    ============================================================ */
+    .dual-block {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+      margin-top: 1.2rem;
+    }
+
+    @media (max-width: 720px) {
+      .dual-block { grid-template-columns: 1fr; }
+    }
+
+    .text-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+    }
+
+    .text-panel:hover {
+      border-color: var(--accent);
+      box-shadow: 0 8px 40px var(--accent-soft);
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.85rem 1.2rem;
+      cursor: pointer;
+      user-select: none;
+      background: var(--accent-soft);
+      border-bottom: 1px solid transparent;
+      transition: background var(--transition), border-color var(--transition);
+    }
+
+    .panel-header:hover {
+      background: var(--accent-soft);
+      border-bottom-color: var(--border);
+    }
+
+    .panel-header .label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color var(--transition);
+    }
+
+    .panel-header .label .icon {
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+
+    .toggle-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--accent);
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      transition: all 0.35s ease;
+      flex-shrink: 0;
+    }
+
+    .toggle-btn:hover {
+      background: var(--accent);
+      color: var(--bg);
+      transform: rotate(90deg);
+      box-shadow: 0 0 18px var(--accent-soft);
+    }
+
+    .toggle-btn .chevron {
+      display: inline-block;
+      transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+      font-size: 0.8rem;
+    }
+
+    .text-panel.open .toggle-btn .chevron {
+      transform: rotate(180deg);
+    }
+
+    .panel-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.6s cubic-bezier(0.23, 1, 0.32, 1), padding 0.4s ease, opacity 0.4s ease;
+      opacity: 0;
+      padding: 0 1.3rem;
+    }
+
+    .text-panel.open .panel-body {
+      max-height: 1200px;
+      opacity: 1;
+      padding: 1.2rem 1.3rem 1.4rem;
+    }
+
+    .panel-body p {
+      margin-bottom: 0.9rem;
+      font-size: 0.94rem;
+      color: var(--text);
+      line-height: var(--line-height);
+      transition: color var(--transition);
+    }
+
+    .panel-body p:last-child { margin-bottom: 0; }
+
+    .panel-body .source-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.15rem 0.5rem;
+      margin-top: 0.6rem;
+      font-style: normal;
+      transition: color var(--transition), border-color var(--transition);
+    }
+
+    /* ============================================================
+       CITAZIONI EVIDENZIATE
+    ============================================================ */
+    blockquote {
+      border-left: 3px solid var(--accent);
+      padding: 0.6rem 0 0.6rem 1.1rem;
+      margin: 1rem 0;
+      font-style: italic;
+      color: var(--text-muted);
+      background: var(--accent-soft);
+      border-radius: 0 8px 8px 0;
+      transition: border-color var(--transition), background var(--transition);
+    }
+
+    blockquote .quote-author {
+      display: block;
+      margin-top: 0.5rem;
+      font-size: 0.8rem;
+      font-style: normal;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent);
+      transition: color var(--transition);
+    }
+
+    /* ============================================================
+       TAG / BADGE
+    ============================================================ */
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.2rem 0;
+    }
+
+    .tag {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.3rem 0.8rem;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      color: var(--text-muted);
+      transition: all 0.3s ease;
+    }
+
+    .tag:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    footer {
+      text-align: center;
+      padding: 3rem 0 1rem;
+      border-top: 1px solid var(--border);
+      margin-top: 3rem;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+      transition: border-color var(--transition), color var(--transition);
+    }
+
+    footer .glyph {
+      display: block;
+      font-size: 1.4rem;
+      color: var(--accent);
+      margin-bottom: 0.8rem;
+      animation: pulseGlow 4s ease-in-out infinite;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.4; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.12); text-shadow: 0 0 30px var(--accent-soft); }
+    }
+
+    /* ============================================================
+       ANIMAZIONI SPECIALI PER MODALITÀ
+    ============================================================ */
+    body.mode-contemplativo .page-wrapper {
+      animation: breathe 8s ease-in-out infinite;
+    }
+
+    @keyframes breathe {
+      0%, 100% { opacity: 0.96; }
+      50% { opacity: 1; }
+    }
+
+    body.mode-metafisico .section h2 {
+      text-shadow: 0 0 30px var(--accent-soft);
+    }
+
+    body.mode-notturno .particle {
+      animation-duration: 28s;
+    }
+
+    body.mode-filosofico .text-panel {
+      border-radius: 6px;
+    }
+
+    /* ============================================================
+       SCROLLBAR
+    ============================================================ */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+    /* ============================================================
+       RIDUZIONE DEL MOVIMENTO
+    ============================================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body class="mode-normale">
+
+  <!-- SFONDO COSMICO -->
+  <div class="cosmic-bg" aria-hidden="true">
+    <div class="particle" style="width:3px;height:3px;left:10%;animation-duration:22s;animation-delay:0s;"></div>
+    <div class="particle" style="width:2px;height:2px;left:25%;animation-duration:28s;animation-delay:2s;"></div>
+    <div class="particle" style="width:4px;height:4px;left:40%;animation-duration:25s;animation-delay:5s;"></div>
+    <div class="particle" style="width:2px;height:2px;left:55%;animation-duration:30s;animation-delay:1s;"></div>
+    <div class="particle" style="width:3px;height:3px;left:70%;animation-duration:24s;animation-delay:7s;"></div>
+    <div class="particle" style="width:2px;height:2px;left:85%;animation-duration:32s;animation-delay:3s;"></div>
+    <div class="particle" style="width:5px;height:5px;left:15%;animation-duration:26s;animation-delay:9s;"></div>
+    <div class="particle" style="width:2px;height:2px;left:60%;animation-duration:29s;animation-delay:4s;"></div>
+    <div class="particle" style="width:3px;height:3px;left:90%;animation-duration:23s;animation-delay:6s;"></div>
+    <div class="particle" style="width:2px;height:2px;left:45%;animation-duration:31s;animation-delay:8s;"></div>
+  </div>
+
+  <div class="page-wrapper">
+
+    <!-- HEADER -->
+    <header>
+      <h1>Ammonio Sacca</h1>
+      <p class="subtitle">L'ombra che generò il Neoplatonismo</p>
+      <div class="epigraph">
+        «Questo è l'uomo che andavo cercando!» — Plotino, alla prima lezione di Ammonio<br>
+        <span style="font-size:0.8rem; letter-spacing:0.08em;">(Porfirio, <em>Vita Plotini</em>, 3)</span>
+      </div>
+    </header>
+
+    <!-- BARRA MODALITÀ -->
+    <nav class="reading-modes" aria-label="Modalità di lettura">
+      <button class="active" data-mode="normale"><span class="mode-dot"></span>Normale</button>
+      <button data-mode="filosofico"><span class="mode-dot"></span>Filosofico</button>
+      <button data-mode="contemplativo"><span class="mode-dot"></span>Contemplativo</button>
+      <button data-mode="notturno"><span class="mode-dot"></span>Notturno</button>
+      <button data-mode="metafisico"><span class="mode-dot"></span>Metafisico</button>
+    </nav>
+
+    <!-- ============================================================
+         SEZIONE 1: BIOGRAFIA
+    ============================================================ -->
+    <section class="section" id="biografia">
+      <h2>1. Biografia essenziale</h2>
+      <p class="section-intro">Le coordinate di un'esistenza quasi interamente affidata alla memoria dei discepoli.</p>
+
+      <div class="dual-block">
+
+        <!-- ORIGINALE -->
+        <div class="text-panel" id="panel-bio-orig">
+          <div class="panel-header" onclick="togglePanel('panel-bio-orig')">
+            <span class="label"><span class="icon">📜</span> Versione originale</span>
+            <button class="toggle-btn" aria-label="Apri o chiudi versione originale"><span class="chevron">▼</span></button>
+          </div>
+          <div class="panel-body">
+            <p>Ammonio, detto Sacca, visse ad Alessandria d'Egitto tra il 175 e il 242 d.C. In gioventù, per sostenersi, trasportava sacchi — donde il soprannome <em>Sakkâs</em>, «facchino». Più tardi aprì una scuola di filosofia e raccolse numerosi discepoli: Plotino, Origene il pagano, Erennio e Cassio Longino.</p>
+            <p>Non scrisse nulla. Come i Pitagorici, impose ai suoi allievi il segreto sulle dottrine. Porfirio racconta che Plotino, ascoltata una sua lezione, esclamò: «Questo è l'uomo che andavo cercando!». Alcuni lo dissero <em>teodidatta</em>, «istruito da dio», altri <em>autodidatta</em>.</p>
+            <span class="source-tag">Fonti: Porfirio, <em>Vita Plotini</em>; Teodoreto; Suda</span>
+          </div>
+        </div>
+
+        <!-- MODERNO -->
+        <div class="text-panel" id="panel-bio-mod">
+          <div class="panel-header" onclick="togglePanel('panel-bio-mod')">
+            <span class="label"><span class="icon">🔭</span> Versione moderna</span>
+            <button class="toggle-btn" aria-label="Apri o chiudi versione moderna"><span class="chevron">▼</span></button>
+          </div>
+          <div class="panel-body">
+            <p>Ammonio Sacca è una delle figure più enigmatiche della tarda antichità: un pensatore senza opere, la cui influenza è però sproporzionata rispetto alle tracce documentarie. Le date tradizionali (175–242 d.C.) lo collocano nel cuore della crisi religiosa e filosofica dell'Impero, ad Alessandria, crocevia di culture.</p>
+            <p>Il soprannome «Sacca» è probabilmente un'etichetta sociale legata al suo mestiere giovanile di portatore di sacchi, ma la tradizione lo ha trasformato in un marchio identitario. La sua scuola fu un laboratorio clandestino: insegnamento orale, segreto iniziatico, nessuna trascrizione. Plotino, il suo discepolo più celebre, ne sarebbe stato l'erede ufficiale, ma è impossibile stabilire con certezza quanto del sistema neoplatonico sia dovuto al maestro e quanto all'allievo. La storiografia recente lo considera un «fondatore per procura»: l'atto di nascita del Neoplatonismo è firmato da Plotino, ma l'ispirazione porta il nome di Ammonio.</p>
+            <span class="source-tag">Interpretazione storiografica contemporanea</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SEZIONE 2: IL SOPRANNOME E LA FIGURA
+    ============================================================ -->
+    <section class="section" id="soprannome">
+      <h2>2. Il soprannome «Sacca» e la questione delle origini</h2>
+      <p class="section-intro">Un epiteto tra disprezzo sociale, etimologia fantastica e memoria agiografica.</p>
+
+      <div class="dual-block">
+
+        <div class="text-panel" id="panel-sop-orig">
+          <div class="panel-header" onclick="togglePanel('panel-sop-orig')">
+            <span class="label"><span class="icon">📜</span> Versione originale</span>
+            <button class="toggle-btn" aria-label="Apri o chiudi versione originale"><span class="chevron">▼</span></button>
+          </div>
+          <div class="panel-body">
+            <p>Teodoreto di Cirro, sulla base di una presunta derivazione di <em>Sakkâs</em> da <em>sakkophóros</em>, sostenne che Ammonio si guadagnasse da vivere come facchino. Altri antichi lo dissero <em>theodídaktos</em>, «ammaestrato da dio», quasi a cancellare l'umiltà del mestiere con un'investitura divina.</p>
+            <p>La <em>Suda</em> tramanda che fu chiamato Sacca perché trasportava sacchi di grano, e che abbandonò i sacchi per la filosofia. L'aneddoto, probabilmente tardo, cristallizza l'immagine di un'ascesa sociale attraverso il pensiero.</p>
+            <span class="source-tag">Fonti: Teodoreto; Suda; tradizione lessicografica</span>
+          </div>
+        </div>
+
+        <div class="text-panel" id="panel-sop-mod">
+          <div class="panel-header" onclick="togglePanel('panel-sop-mod')">
+            <span class="label"><span class="icon">🔭</span> Versione moderna</span>
+            <button class="toggle-btn" aria-label="Apri o chiudi versione moderna"><span class="chevron">▼</span></button>
+          </div>
+          <div class="panel-body">
+            <p>Il soprannome è un documento sociale. «Sacca» non è un titolo onorifico: è un marchio di classe, un'etichetta che dice <em>da dove viene</em> Ammonio prima ancora di dire <em>chi è</em>. La filosofia antica era un'attività elitaria; un facchino che diventa maestro di Plotino è uno scandalo produttivo, un rovesciamento simbolico che la tradizione non poteva ignorare.</p>
+            <p>Gli studiosi moderni hanno cercato etimologie alternative — persino un'origine indiana del soprannome — ma nessuna è dimostrata. Ciò che resta è la funzione retorica dell'epiteto: esso segnala l'irregolarità biografica di un pensatore che non apparteneva ai circuiti accademici e che fece della marginalità la propria forza. In questo senso, «Sacca» è il primo indizio di una filosofia che non chiede permesso.</p>
+            <span class="source-tag">Analisi storico-sociale</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SEZIONE 3: LA SCUOLA E L'INSEGNAMENTO SEGRETO
+    ============================================================ -->
+    <section class="section" id="scuola">
+      <h2>3. La scuola di Alessandria e il segreto iniziatico</h2>
+      <p class="section-intro">Un magistero orale, una cerchia ristretta, un silenzio che ha reso impossibile la ricostruzione dottrinale.</p>
+
+      <div class="dual-block">
+
+        <div class="text-panel" id="panel-scu-orig">
+          <div class="panel-header" onclick="togglePanel('panel-scu-orig')">
+            <span class="label"><span class="icon">📜</span> Versione originale</span>
+            <button class="toggle-btn" aria-label="Apri o chiudi versione originale"><span class="chevron">▼</span></button>
+          </div>
+          <div class="panel-body">
+            <p>Ammonio insegnò oralmente e pretese dai discepoli la promessa di mantenere segrete le sue dottrine. Tra i suoi allievi figurano i due Origeni — il cristiano e il pagano —, Erennio e Plotino. Porfirio descrive l'incontro tra Plotino e Ammonio in termini drammatici, alimentando un alone di mistero intorno alla scuola.</p>
+            <p>L'insegnamento era probabilmente organizzato come una comunità filosofica di tipo pitagorico: ascolto, silenzio, trasmissione personale. Nessun testo scritto fu diffuso. La segretezza non era un vezzo: era una condizione strutturale del magistero.</p>
+            <span class="source-tag">Fonti: Porfirio; Eusebio; testimonianze sui discepoli</span>
+          </div>
+        </div>
+
+        <div class="text-panel" id="panel-scu-mod">
+          <div class="panel-header" onclick="togglePanel('panel-scu-mod')">
+            <span class="label"><span class="icon">🔭</span> Versione moderna</span>
+            <button class="toggle-btn" aria-label="Apri o chiudi versione moderna"><span class="chevron">▼</span></button>
+          </div>
+          <div class="panel-body">
+            <p>La scuola di Ammonio fu un'esperienza di <em>pedagogia iniziatica</em>. Il sapere non circolava come merce libraria, ma come trasmissione di vita: il maestro parlava, l'allievo ascoltava, il segreto garantiva la coesione del gruppo e la sacralità del contenuto. Questo modello, di origine pitagorica e platonica, era in tensione con la crescente cultura del libro e della pubblicazione che caratterizzava il III secolo.</p>
+            <p>Il segreto ha avuto un effetto paradossale: ha reso Ammonio quasi invisibile alla storia, ma ha anche permesso a Plotino di costruire un sistema originale senza il peso di un'ortodossia scritta. La scuola di Alessandria fu dunque un <em>laboratorio a cielo chiuso</em>: tutti ne parlano, nessuno può citarne i verbali. È questa la ragione per cui la filosofia di Ammonio resta un problema aperto, non un capitolo concluso.</p>
+            <span class="source-tag">Storia delle pratiche filosofiche</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SEZIONE 4: DOTTRINE
+    ============================================================ -->
+    <section class="section" id="dottrine">
+      <h2>4. Le dottrine: un platonismo in tensione</h2>
+      <p class="section-intro">Ricostruire Ammonio significa leggere le tracce di un pensiero che non volle (o non poté) scriversi.</p>
+
+      <div class="dual-block">
+
+        <div class="text-panel" id="panel-dot-orig">
+          <div class="panel-header" onclick="togglePanel('panel-dot-orig')">
+            <span class="label"><span class="icon">📜</span> Versione originale</span>
+            <button class="toggle-btn" aria-label="Apri o chiudi versione originale"><span class="chevron">▼</span></button>
+          </div>
+          <div class="panel-body">
+            <p>Ierocle di Alessandria (V secolo) riferisce che Ammonio divideva l'universo in tre piani: quello inferiore abitato dagli uomini e dagli animali, quello medio dai demoni — intermediari tra dèi e uomini — e quello superiore dagli dèi. Nemesio di Emesa gli attribuisce una soluzione originale al rapporto tra anima e corpo: non una mescolanza confusa, ma una <em>hénosis</em>, un'unione che rispetta l'integrità delle nature.</p>
+            <p>Secondo la testimonianza di Nemesio, Ammonio avrebbe parlato di <em>sýnchysis</em> (confusione) per le realtà corporee, ma di <em>hénosis</em> per l'unione dell'anima con l'intelletto e con il corpo: un'unione senza fusione. La tradizione gli attribuisce anche la tesi dell'immaterialità e immortalità dell'anima, e il tentativo di armonizzare Platone e Aristotele sui punti fondamentali.</p>
+            <span class="source-tag">Fonti: Ierocle (in Fozio); Nemesio di Emesa; testimonianze indirette</span>
+          </div>
+        </div>
+
+        <div class="text-panel" id="panel-dot-mod">
+          <div class="panel-header" onclick="togglePanel('panel-dot-mod')">
+            <span class="label"><span class="icon">🔭</span> Versione moderna</span>
+            <button class="toggle-btn" aria-label="Apri o chiudi versione moderna"><span class="chevron">▼</span></button>
+          </div>
+          <div class="panel-body">
+            <p>La dottrina di Ammonio si profila come un <strong>platonismo della mediazione</strong>. Egli non oppose Platone ad Aristotele, ma cercò di mostrarne la convergenza: l'idea platonica e la forma aristotelica potevano essere lette come aspetti di una stessa struttura razionale del reale. Questa mossa, apparentemente conciliativa, ebbe conseguenze radicali: aprì la strada a un sistema in cui l'intelletto, l'anima e il cosmo sono livelli di una processione unitaria.</p>
+            <p>La nozione di <em>hénosis</em> — unione senza confusione — è il nucleo speculativo più prezioso che le fonti gli attribuiscono. Contro ogni monismo dissolutivo, Ammonio avrebbe pensato l'unione come <em>relazione</em>: l'anima è nel corpo senza diventare corpo, l'intelletto illumina l'anima senza annullarla. È una metafisica della distinzione relazionale, che anticipa il tema plotiniano dell'unione estatica senza identificazione. La tripartizione del cosmo (uomini, demoni, dèi) va letta in questa chiave gerarchica e partecipativa.</p>
+            <span class="source-tag">Interpretazione metafisica</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SEZIONE 5: LA QUESTIONE CRISTIANA
+    ============================================================ -->
+    <section class="section" id="cristianesimo">
+      <h2>5. Ammonio e il Cristianesimo: un'identità contesa</h2>
+      <p class="section-intro">Le fonti pagane e cristiane divergono: chi era, religiosamente parlando, Ammonio Sacca?</p>
+
+      <div class="dual-block">
+
+        <div class="text-panel" id="panel-cri-orig">
+          <div class="panel-header" onclick="togglePanel('panel-cri-orig')">
+            <span class="label"><span class="icon">📜</span> Versione originale</span>
+            <button class="toggle-btn" aria-label="Apri o chiudi versione originale"><span class="chevron">▼</span></button>
+          </div>
+          <div class="panel-body">
+            <p>Eusebio di Cesarea, nella <em>Historia Ecclesiastica</em>, sostiene che Ammonio fu cristiano per tutta la vita e scrisse un trattato sull'armonia tra Mosè e Gesù, oltre a comporre canoni evangelici. Girolamo lo annovera tra i sapienti cristiani.</p>
+            <p>Porfirio, nel frammento riportato da Eusebio, racconta invece che Ammonio, nato da genitori cristiani e educato nella fede, «quando con l'età della ragione si rivolse alla filosofia, immediatamente passò a comportarsi secondo le leggi», cioè secondo i costumi pagani. Origene, al contrario, era greco e si convertì al Cristianesimo, vivendo «contro la legge».</p>
+            <span class="source-tag">Fonti: Eusebio, <em>Historia Ecclesiastica</em>; Porfirio (frammento); Girolamo</span>
+          </div>
+        </div>
+
+        <div class="text-panel" id="panel-cri-mod">
+          <div class="panel-header" onclick="togglePanel('panel-cri-mod')">
+            <span class="label"><span class="icon">🔭</span> Versione moderna</span>
+            <button class="toggle-btn" aria-label="Apri o chiudi versione moderna"><span class="chevron">▼</span></button>
+          </div>
+          <div class="panel-body">
+            <p>La questione cristiana è un caso esemplare di <strong>conflitto di memorie</strong>. Eusebio vuole arruolare Ammonio tra i padri della conciliazione tra fede e filosofia; Porfirio, anticristiano militante, lo vuole pagano per coerenza filosofica. Entrambi hanno interesse a rivendicarne l'eredità. La verità storica è probabilmente più sfumata: Ammonio fu un platonico alessandrino in un'epoca di identità religiose fluide, e la sua scuola fu frequentata tanto da pagani quanto da cristiani.</p>
+            <p>La ricerca recente (Ramelli, tra gli altri) mostra che Porfirio non dice che Ammonio «rinnegò» il Cristianesimo, ma che, divenuto filosofo, assunse uno stile di vita conforme alle leggi dell'Impero — leggi che, all'epoca, rendevano il Cristianesimo una <em>superstitio illicita</em>. Il problema non è dunque «era cristiano o pagano?», ma «che cosa significava, nel III secolo, essere un filosofo platonico con un passato cristiano?». Ammonio è interessante proprio perché non si lascia inscrivere in nessuna delle due caselle.</p>
+            <span class="source-tag">Storiografia delle identità religiose tardoantiche</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SEZIONE 6: EREDITÀ
+    ============================================================ -->
+    <section class="section" id="eredita">
+      <h2>6. L'eredità: un fondatore senza opera</h2>
+      <p class="section-intro">Ciò che Ammonio non scrisse, Plotino lo pensò: la nascita del Neoplatonismo come effetto di un silenzio.</p>
+
+      <div class="dual-block">
+
+        <div class="text-panel" id="panel-ere-orig">
+          <div class="panel-header" onclick="togglePanel('panel-ere-orig')">
+            <span class="label"><span class="icon">📜</span> Versione originale</span>
+            <button class="toggle-btn" aria-label="Apri o chiudi versione originale"><span class="chevron">▼</span></button>
+          </div>
+          <div class="panel-body">
+            <p>Porfirio considera la filosofia di Plotino come una ripresentazione di ciò che questi aveva ascoltato da Ammonio. La scuola neoplatonica, fin dalle origini, riconobbe in Ammonio il proprio fondatore. Porfirio vide in lui «la fonte della vera filosofia» per la propria generazione. Plotino stesso, secondo la testimonianza porfiriana, non rivendicò mai l'originalità del proprio sistema rispetto al maestro.</p>
+            <blockquote>
+              «La dottrina di Plotino si basava sugli insegnamenti di Ammonio.»
+              <span class="quote-author">Porfirio, <em>Vita Plotini</em></span>
+            </blockquote>
+            <span class="source-tag">Fonti: Porfirio; tradizione della scuola neoplatonica</span>
+          </div>
+        </div>
+
+        <div class="text-panel" id="panel-ere-mod">
+          <div class="panel-header" onclick="togglePanel('panel-ere-mod')">
+            <span class="label"><span class="icon">🔭</span> Versione moderna</span>
+            <button class="toggle-btn" aria-label="Apri o chiudi versione moderna"><span class="chevron">▼</span></button>
+          </div>
+          <div class="panel-body">
+            <p>Ammonio Sacca è il caso-limite del <strong>fondatore senza opera</strong>. La storia della filosofia è fatta di testi, e tuttavia il Neoplatonismo — una delle correnti più influenti del pensiero occidentale, ponte tra antichità e Medioevo — nacque da un insegnamento orale di cui non resta nulla. Plotino scrisse le <em>Enneadi</em>, ma la sua filosofia è impensabile senza l'ipotesi di un magistero ammoniano che ne costituisca la premessa.</p>
+            <p>Questa assenza ha un valore filosofico: Ammonio rappresenta l'<em>eccesso del maestro</em> sull'allievo, il punto in cui la trasmissione supera il documento. La sua figura è un monito per ogni storiografia che pretenda di ricostruire il pensiero solo attraverso i libri. Il Neoplatonismo è, in questo senso, un edificio la cui prima pietra è invisibile: tutti sanno che c'è, nessuno può mostrarla. E forse è proprio questa invisibilità a renderla, ancora oggi, così potentemente presente.</p>
+            <span class="source-tag">Filosofia della trasmissione</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="tags">
+        <span class="tag">Neoplatonismo</span>
+        <span class="tag">Platonismo medio</span>
+        <span class="tag">Aristotelismo</span>
+        <span class="tag">Alessandria</span>
+        <span class="tag">Henosis</span>
+        <span class="tag">Teodidatta</span>
+        <span class="tag">Segreto iniziatico</span>
+        <span class="tag">Plotino</span>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <span class="glyph">☉</span>
+      <p>Articolo enciclopedico interattivo · Ammonio Sacca (175–242 d.C.)</p>
+      <p style="margin-top:0.4rem; font-size:0.75rem;">Le fonti antiche sono parafrasate e adattate per finalità divulgative. Le interpretazioni moderne riflettono il dibattito storiografico contemporaneo.</p>
+    </footer>
+
+  </div>
+
+  <script>
+    // ============================================================
+    // TOGGLE PANNELLI (APRI / CHIUDI)
+    // ============================================================
+    function togglePanel(panelId) {
+      const panel = document.getElementById(panelId);
+      if (!panel) return;
+
+      const isOpen = panel.classList.contains('open');
+      const body = panel.querySelector('.panel-body');
+      const chevron = panel.querySelector('.chevron');
+
+      if (isOpen) {
+        panel.classList.remove('open');
+        body.style.maxHeight = '0';
+        body.style.opacity = '0';
+        body.style.padding = '0 1.3rem';
+        chevron.style.transform = 'rotate(0deg)';
+      } else {
+        panel.classList.add('open');
+        // Calcola l'altezza reale del contenuto per una transizione fluida
+        const scrollHeight = body.scrollHeight;
+        body.style.maxHeight = scrollHeight + 80 + 'px';
+        body.style.opacity = '1';
+        body.style.padding = '1.2rem 1.3rem 1.4rem';
+        chevron.style.transform = 'rotate(180deg)';
+
+        // Dopo la transizione, imposta maxHeight a un valore ampio per evitare tagli
+        setTimeout(() => {
+          if (panel.classList.contains('open')) {
+            body.style.maxHeight = '1200px';
+          }
+        }, 650);
+      }
+    }
+
+    // ============================================================
+    // MODALITÀ DI LETTURA
+    // ============================================================
+    const modeButtons = document.querySelectorAll('.reading-modes button');
+    const body = document.body;
+
+    const modeClasses = [
+      'mode-normale',
+      'mode-filosofico',
+      'mode-contemplativo',
+      'mode-notturno',
+      'mode-metafisico'
+    ];
+
+    modeButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const mode = button.dataset.mode;
+
+        // Rimuovi tutte le classi modalità
+        modeClasses.forEach(cls => body.classList.remove(cls));
+
+        // Aggiungi la classe selezionata
+        body.classList.add('mode-' + mode);
+
+        // Aggiorna lo stato attivo dei pulsanti
+        modeButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+
+        // Piccolo effetto di "respiro" alla transizione
+        document.querySelector('.page-wrapper').style.transition = 'none';
+        requestAnimationFrame(() => {
+          document.querySelector('.page-wrapper').style.transition = 'opacity 0.5s ease';
+          document.querySelector('.page-wrapper').style.opacity = '0.92';
+          setTimeout(() => {
+            document.querySelector('.page-wrapper').style.opacity = '1';
+          }, 150);
+        });
+      });
+    });
+
+    // ============================================================
+    // ANIMAZIONE DI ENTRATA DELLE SEZIONI ALLO SCROLL
+    // ============================================================
+    const sections = document.querySelectorAll('.section');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          // Una volta visibile, smettiamo di osservare per non riattivare
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.12,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    sections.forEach(section => {
+      // Imposta un ritardo progressivo per un effetto a cascata
+      section.style.animationDelay = '0.1s';
+      observer.observe(section);
+    });
+
+    // ============================================================
+    // APERTURA INIZIALE DI ALCUNI PANNELLI PER MOSTRARE LA FUNZIONE
+    // ============================================================
+    window.addEventListener('DOMContentLoaded', () => {
+      // Apriamo i primi due pannelli della prima sezione dopo un breve ritardo
+      setTimeout(() => {
+        togglePanel('panel-bio-orig');
+        togglePanel('panel-bio-mod');
+      }, 1200);
+
+      // Forziamo la visibilità della prima sezione
+      const firstSection = document.querySelector('.section');
+      if (firstSection) firstSection.classList.add('visible');
+    });
+
+    // ============================================================
+    // RIGENERAZIONE PARTICELLE PER UN EFFETTO PIÙ NATURALE
+    // ============================================================
+    function spawnParticle() {
+      const bg = document.querySelector('.cosmic-bg');
+      if (!bg) return;
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      const size = Math.random() * 4 + 1;
+      particle.style.width = size + 'px';
+      particle.style.height = size + 'px';
+      particle.style.left = Math.random() * 100 + '%';
+      particle.style.bottom = '-10px';
+      particle.style.animationDuration = (Math.random() * 15 + 18) + 's';
+      particle.style.animationDelay = Math.random() * 8 + 's';
+      bg.appendChild(particle);
+
+      // Rimuovi la particella dopo che ha completato l'animazione
+      setTimeout(() => {
+        if (particle.parentNode) particle.remove();
+      }, 40000);
+    }
+
+    // Genera particelle periodicamente
+    setInterval(spawnParticle, 4000);
+  </script>
+</body>
+</html>
