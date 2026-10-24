@@ -1,0 +1,33 @@
+name: Clean sitemap
+
+on:
+  push:
+    paths:
+      - 'sitemap.xml'
+
+permissions:
+  contents: write
+
+jobs:
+  clean:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Clean sitemap
+        run: |
+          cp sitemap.xml sitemap.xml.orig
+          python3 .github/scripts/clean-sitemap.py
+          mv sitemap-clean.xml sitemap.xml
+          if cmp -s sitemap.xml sitemap.xml.orig; then
+            echo "Sitemap gia' pulita, niente da fare."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add sitemap.xml
+          git commit -m "Auto-clean sitemap"
+          git push
