@@ -132,6 +132,7 @@ body.light-theme .site-header{background:rgb(242 237 229/.92);border-bottom:1px 
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
 /* ---------- HERO ---------- */
+
 .hero{padding:clamp(30px,4vw,55px) 0 clamp(10px,1.5vw,18px);text-align:center;position:relative;isolation:isolate}
 .hero .container{position:relative;z-index:2}
 .hero-kicker{margin-bottom:18px;font-family:var(--sans);font-size:.7rem;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--gold);opacity:0;animation:kickerIn 1.1s var(--ease-expo) .15s forwards}
@@ -439,6 +440,289 @@ html{scroll-behavior:auto}
 *,::after,::before{transition-duration:0s!important;animation-duration:0s!important;animation-iteration-count:1!important}
 .epoch-card,.hero h1,.hero h1 span,.hero-kicker,.hero-lead,.newsletter h2,.newsletter p,.newsletter-trigger,.resource,.scuola-card,.section-heading h2,.section-heading p,.knowledge-tree,.heraclitus-clock{opacity:1!important;transform:none!important;animation:none!important}
 }
+
+
+
+
+
+/* ===== L'ECO DEL GIORNO ===== */
+.eco-giorno {
+  position: relative;
+  margin-bottom: 24px;
+  padding: 22px 24px 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(12px);
+  overflow: hidden;
+  transition: border-color .3s ease, background .3s ease;
+}
+.eco-giorno::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: .55;
+}
+.eco-giorno:hover { border-color: var(--gold-line); }
+.eco-giorno-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--gold-line);
+}
+.eco-giorno-badge {
+  font-family: var(--sans);
+  font-size: .65rem;
+  font-weight: 500;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.eco-giorno-date {
+  font-family: var(--serif);
+  font-size: .82rem;
+  font-style: italic;
+  color: var(--text-muted);
+}
+.eco-giorno-body {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 22px;
+  align-items: start;
+}
+.eco-giorno-portrait { width: 96px; height: 96px; flex-shrink: 0; }
+.eco-giorno-portrait svg { width: 100%; height: 100%; display: block; }
+.eco-giorno-content { min-width: 0; }
+.eco-giorno-nome {
+  margin: 0 0 2px;
+  font-family: var(--display);
+  font-size: 1.4rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: var(--gold);
+}
+.eco-giorno-anno {
+  display: block;
+  margin-bottom: 12px;
+  font-family: var(--sans);
+  font-size: .72rem;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+}
+.eco-giorno-citazione {
+  margin: 0 0 6px;
+  padding-left: 14px;
+  border-left: 2px solid var(--gold-line);
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  font-style: italic;
+  line-height: 1.55;
+  color: var(--text-soft);
+}
+.eco-giorno-fonte {
+  display: block;
+  margin-bottom: 14px;
+  padding-left: 14px;
+  font-family: var(--sans);
+  font-size: .72rem;
+  letter-spacing: .5px;
+  color: var(--text-muted);
+}
+.eco-giorno-commento {
+  margin: 0 0 16px;
+  font-family: var(--serif);
+  font-size: .95rem;
+  line-height: 1.65;
+  color: var(--text-soft);
+  opacity: .92;
+}
+.eco-giorno-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.eco-giorno-link {
+  font-family: var(--sans);
+  font-size: .75rem;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color .25s ease;
+}
+.eco-giorno-link:hover { border-bottom-color: var(--gold); }
+.eco-giorno-altro {
+  padding: 5px 12px;
+  background: none;
+  border: 1px solid var(--gold-line);
+  border-radius: 100px;
+  font-family: var(--sans);
+  font-size: .72rem;
+  letter-spacing: .8px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color .25s ease, border-color .25s ease, background .25s ease;
+}
+.eco-giorno-altro:hover {
+  color: var(--gold);
+  border-color: var(--gold);
+  background: var(--gold-soft);
+}
+@media (max-width: 560px) {
+  .eco-giorno-body { grid-template-columns: 1fr; }
+  .eco-giorno-portrait { width: 72px; height: 72px; margin: 0 auto; }
+}
+
+
+
+
+/* ===== ATLANTE DELLE IDEE ===== */
+.atlante {
+  margin-bottom: 24px;
+  padding: 22px 24px 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(12px);
+  transition: border-color .3s ease;
+}
+.atlante:hover { border-color: var(--gold-line); }
+.atlante-head { margin-bottom: 10px; }
+.atlante-title {
+  margin: 0 0 4px;
+  font-family: var(--display);
+  font-size: .95rem;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.atlante-subtitle {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: .9rem;
+  font-style: italic;
+  color: var(--text-muted);
+}
+.atlante-map-wrapper {
+  width: 100%;
+  max-width: 720px;
+  margin: 8px auto 0;
+}
+.atlante-map { display: block; width: 100%; height: auto; overflow: visible; }
+
+.atlante-node { cursor: pointer; outline: none; }
+.atlante-node circle { transition: stroke .3s ease, fill .3s ease, stroke-width .3s ease; }
+.atlante-node text { transition: fill .3s ease; user-select: none; }
+.atlante-node:hover circle { stroke: var(--gold); stroke-width: 2; }
+.atlante-node:hover text { fill: var(--gold); }
+.atlante-node:focus-visible circle { stroke: var(--gold); stroke-width: 2.5; }
+.atlante-node.active circle {
+  stroke: var(--gold);
+  stroke-width: 2.5;
+  fill: rgba(69,230,161,0.08);
+  filter: drop-shadow(0 0 6px rgba(69,230,161,0.45));
+}
+.atlante-node.active text { fill: var(--gold); font-weight: 600; }
+.atlante-node-center { cursor: default; }
+
+.atlante-links line { transition: stroke .3s ease, stroke-opacity .3s ease, stroke-width .3s ease; }
+.atlante-links line.active { stroke: var(--gold); stroke-opacity: .85; stroke-width: 2; }
+.atlante-halo { pointer-events: none; }
+
+.atlante-info {
+  position: relative;
+  margin-top: 14px;
+  padding: 16px 18px;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  min-height: 90px;
+  transition: border-color .3s ease;
+}
+.atlante-info-empty p {
+  margin: 8px 0;
+  font-family: var(--serif);
+  font-size: .9rem;
+  font-style: italic;
+  color: var(--text-muted);
+  text-align: center;
+}
+.atlante-info-content:not([hidden]) {
+  animation: atlanteFadeIn .35s cubic-bezier(.23,1,.32,1);
+}
+@keyframes atlanteFadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.atlante-info-close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  padding: 4px 8px;
+  background: none;
+  border: 0;
+  color: var(--text-muted);
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color .25s ease, transform .3s ease;
+}
+.atlante-info-close:hover { color: var(--gold); transform: rotate(90deg); }
+.atlante-info-title {
+  margin: 0 0 8px;
+  font-family: var(--display);
+  font-size: 1.05rem;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  color: var(--gold);
+}
+.atlante-info-desc {
+  margin: 0 0 12px;
+  font-family: var(--serif);
+  font-size: .92rem;
+  line-height: 1.6;
+  color: var(--text-soft);
+}
+.atlante-filosofi {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.atlante-filosofi span {
+  padding: 3px 9px;
+  background: var(--surface);
+  border: 1px solid var(--gold-line);
+  border-radius: 100px;
+  font-family: var(--sans);
+  font-size: .68rem;
+  letter-spacing: .6px;
+  color: var(--text-muted);
+}
+.atlante-info-link {
+  font-family: var(--sans);
+  font-size: .72rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-decoration: none;
+}
+.atlante-info-link:hover { text-decoration: underline; }
+
+
+
+
+
+
+
+
 </style>
 </head>
 <body>
@@ -578,118 +862,217 @@ html{scroll-behavior:auto}
 
 <!-- LAYOUT A TRE COLONNE -->
 <div class="layout">
-<!-- SINISTRA -->
-<aside class="col-sinistra" aria-label="Navigazione tematica">
-<h3 data-i18n="epochsNav">Epoche</h3>
-<ul>
-<li><a href="filosofia/antica.html" data-i18n="ancientTitle">Filosofia antica</a></li>
-<li><a href="filosofia/classica.html" data-i18n="classicalTitle">Filosofia classica</a></li>
-<li><a href="filosofia/medievale.html" data-i18n="medievalTitle">Filosofia medievale</a></li>
-<li><a href="filosofia/moderna.html" data-i18n="modernTitle">Filosofia moderna</a></li>
-<li><a href="filosofia/contemporanea.html" data-i18n="contemporaryTitle">Filosofia contemporanea</a></li>
-<li><a href="filosofia/polacca.html" data-i18n="polishTitle">Filosofia polacca</a></li>
-</ul>
-<h3 data-i18n="schoolsNav">Scuole</h3>
-<ul>
-<li><a href="articoli/cinismo.html" data-i18n="cynicismTitle">Cinismo</a></li>
-<li><a href="articoli/epicureismo.html" data-i18n="epicureanismTitle">Epicureismo</a></li>
-<li><a href="articoli/stoicismo.html" data-i18n="stoicismTitle">Stoicismo</a></li>
-<li><a href="articoli/platonismo.html" data-i18n="platonismTitle">Platonismo</a></li>
-<li><a href="articoli/scetticismo.html" data-i18n="skepticismTitle">Scetticismo</a></li>
-<li><a href="articoli/filosofia-indiana.html" data-i18n="indianTitle">Filosofia indiana</a></li>
-</ul>
-<h3 data-i18n="resourcesNav">Risorse</h3>
-<ul>
-<li><a href="pagine/mappa_concettuale.html" data-i18n="conceptMapTitle">Mappa concettuale</a></li>
-<li><a href="pagine/linea_del_tempo.html" data-i18n="timelineTitle">Linea del tempo</a></li>
-<li><a href="#">Glossario filosofico</a></li>
-<li><a href="#">Indice alfabetico dei filosofi</a></li>
-</ul>
-</aside>
 
-<!-- CENTRALE -->
-<div class="col-centrale">
-<section class="philosophy-section">
-<div class="container">
-<div class="section-heading">
-<h2 data-i18n="philosophyTitle">Il pensiero attraverso i secoli</h2>
-<p data-i18n="philosophyIntro">Sei percorsi. Una lunga conversazione dell'umanità con se stessa.</p>
-</div>
-<div class="epochs-grid">
-<a href="filosofia/antica.html" class="epoch-card"><h3 data-i18n="ancientTitle">Filosofia antica</h3><p data-i18n="ancientText">Dalle prime domande sulla natura del cosmo alla nascita della filosofia greca.</p><span class="epoch-link" data-i18n="explore">Esplora →</span></a>
-<a href="filosofia/classica.html" class="epoch-card"><h3 data-i18n="classicalTitle">Filosofia classica</h3><p data-i18n="classicalText">Socrate, Platone, Aristotele e le grandi scuole che hanno formato il pensiero occidentale.</p><span class="epoch-link" data-i18n="explore">Esplora →</span></a>
-<a href="filosofia/medievale.html" class="epoch-card"><h3 data-i18n="medievalTitle">Filosofia medievale</h3><p data-i18n="medievalText">Fede, ragione, metafisica e incontro tra tradizioni cristiane, islamiche ed ebraiche.</p><span class="epoch-link" data-i18n="explore">Esplora →</span></a>
-<a href="filosofia/moderna.html" class="epoch-card"><h3 data-i18n="modernTitle">Filosofia moderna</h3><p data-i18n="modernText">Dalla rivoluzione scientifica all'Illuminismo, dal razionalismo all'idealismo.</p><span class="epoch-link" data-i18n="explore">Esplora →</span></a>
-<a href="filosofia/contemporanea.html" class="epoch-card"><h3 data-i18n="contemporaryTitle">Filosofia contemporanea</h3><p data-i18n="contemporaryText">Linguaggio, esistenza, scienza, società e le nuove forme del pensiero filosofico.</p><span class="epoch-link" data-i18n="explore">Esplora →</span></a>
-<a href="filosofia/polacca.html" class="epoch-card"><h3 data-i18n="polishTitle">Filosofia polacca</h3><p data-i18n="polishText">Una tradizione originale tra romanticismo, logica, fenomenologia e pensiero contemporaneo.</p><span class="epoch-link" data-i18n="explore">Esplora →</span></a>
-</div>
-</div>
-</section>
+  <!-- SINISTRA -->
+  <aside class="col-sinistra" aria-label="Navigazione tematica">
+    <h3 data-i18n="epochsNav">Epoche</h3>
+    <ul>
+      <li><a href="filosofia/antica.html" data-i18n="ancientTitle">Filosofia antica</a></li>
+      <li><a href="filosofia/classica.html" data-i18n="classicalTitle">Filosofia classica</a></li>
+      <li><a href="filosofia/medievale.html" data-i18n="medievalTitle">Filosofia medievale</a></li>
+      <li><a href="filosofia/moderna.html" data-i18n="modernTitle">Filosofia moderna</a></li>
+      <li><a href="filosofia/contemporanea.html" data-i18n="contemporaryTitle">Filosofia contemporanea</a></li>
+      <li><a href="filosofia/polacca.html" data-i18n="polishTitle">Filosofia polacca</a></li>
+    </ul>
 
-<section class="scuole">
-<div class="container">
-<div class="section-heading">
-<h2>✦ Scuole e tradizioni</h2>
-<p>Sei percorsi del pensiero che hanno attraversato epoche e culture diverse.</p>
-</div>
-<div class="scuole-grid">
-<a href="articoli/cinismo.html" class="scuola-card"><span class="scuola-icon">🐕</span><h3 data-i18n="cynicismTitle">Cinismo</h3><p data-i18n="cynicismText">Libertà radicale e vita secondo natura.</p></a>
-<a href="articoli/epicureismo.html" class="scuola-card"><span class="scuola-icon">🍇</span><h3 data-i18n="epicureanismTitle">Epicureismo</h3><p data-i18n="epicureanismText">Il piacere come assenza di dolore.</p></a>
-<a href="articoli/stoicismo.html" class="scuola-card"><span class="scuola-icon">🏛️</span><h3 data-i18n="stoicismTitle">Stoicismo</h3><p data-i18n="stoicismText">Virtù, destino e padronanza di sé.</p></a>
-<a href="articoli/platonismo.html" class="scuola-card"><span class="scuola-icon">💡</span><h3 data-i18n="platonismTitle">Platonismo</h3><p data-i18n="platonismText">Il mondo delle Idee e il Bene.</p></a>
-<a href="articoli/scetticismo.html" class="scuola-card"><span class="scuola-icon">❓</span><h3 data-i18n="skepticismTitle">Scetticismo</h3><p data-i18n="skepticismText">Sospensione del giudizio per serenità.</p></a>
-<a href="articoli/filosofia-indiana.html" class="scuola-card"><span class="scuola-icon">🕉️</span><h3 data-i18n="indianTitle">Filosofia indiana</h3><p data-i18n="indianText">Veda, Upanishad, Buddha e scuole.</p></a>
-</div>
-</div>
-</section>
+    <h3 data-i18n="schoolsNav">Scuole</h3>
+    <ul>
+      <li><a href="articoli/cinismo.html" data-i18n="cynicismTitle">Cinismo</a></li>
+      <li><a href="articoli/epicureismo.html" data-i18n="epicureanismTitle">Epicureismo</a></li>
+      <li><a href="articoli/stoicismo.html" data-i18n="stoicismTitle">Stoicismo</a></li>
+      <li><a href="articoli/platonismo.html" data-i18n="platonismTitle">Platonismo</a></li>
+      <li><a href="articoli/scetticismo.html" data-i18n="skepticismTitle">Scetticismo</a></li>
+      <li><a href="articoli/filosofia-indiana.html" data-i18n="indianTitle">Filosofia indiana</a></li>
+    </ul>
 
-<section class="resources">
-<div class="container">
-<div class="resources-inner">
-<a href="pagine/mappa_concettuale.html" class="resource"><small data-i18n="orientarsi">Orientarsi</small><h3 data-i18n="conceptMapTitle">Mappa concettuale</h3><p data-i18n="conceptMapText">Idee, scuole e filosofi collegati in una rete di pensiero.</p></a>
-<a href="pagine/linea_del_tempo.html" class="resource"><small data-i18n="throughCenturies">Attraversare i secoli</small><h3 data-i18n="timelineTitle">Linea del tempo</h3><p data-i18n="timelineText">Un percorso cronologico attraverso la storia della filosofia.</p></a>
-</div>
-</div>
-</section>
+    <h3 data-i18n="resourcesNav">Risorse</h3>
+    <ul>
+      <li><a href="pagine/mappa_concettuale.html" data-i18n="conceptMapTitle">Mappa concettuale</a></li>
+      <li><a href="pagine/linea_del_tempo.html" data-i18n="timelineTitle">Linea del tempo</a></li>
+      <li><a href="#">Glossario filosofico</a></li>
+      <li><a href="#">Indice alfabetico dei filosofi</a></li>
+    </ul>
+  </aside>
 
-<section class="newsletter">
-<h2 data-i18n="newsletterTitle">Filosofia in posta</h2>
-<p data-i18n="newsletterIntro">Pensieri, articoli e percorsi filosofici occasionalmente nella tua casella di posta.</p>
-<button type="button" class="newsletter-trigger" id="newsletterTrigger" data-i18n="newsletterButton">📧 Filosofia in posta</button>
-</section>
-</div>
+  <!-- CENTRALE -->
+  <div class="col-centrale">
 
-<!-- DESTRA -->
-<aside class="col-destra" aria-label="Approfondimenti">
-<div class="box">
-<h3>In Evidenza</h3>
-<ul>
-<li><a href="articoli/platonismo.html">La caverna di Platone</a></li>
-<li><a href="articoli/stoicismo.html">Lo stoicismo oggi</a></li>
-<li><a href="articoli/filosofia-indiana.html">Le Upanishad</a></li>
-<li><a href="articoli/epicureismo.html">Epicuro e il piacere</a></li>
-</ul>
+    <!-- ATLANTE DELLE IDEE -->
+    <section class="atlante" aria-label="Atlante delle Idee">
+      <div class="atlante-head">
+        <h3 class="atlante-title">✦ Atlante delle Idee</h3>
+        <p class="atlante-subtitle">Tocca un concetto per esplorare come i filosofi lo hanno pensato.</p>
+      </div>
+
+      <div class="atlante-map-wrapper">
+        <svg class="atlante-map" viewBox="0 0 720 520" role="img" aria-label="Mappa concettuale interattiva delle idee filosofiche" id="atlanteMap">
+          <defs>
+            <radialGradient id="atlanteCenterGrad" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="var(--gold)" stop-opacity="0.22"/>
+              <stop offset="100%" stop-color="var(--gold)" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+
+          <!-- alone pulsante dietro il centro -->
+          <circle cx="360" cy="260" r="120" fill="url(#atlanteCenterGrad)" class="atlante-halo">
+            <animate attributeName="r" values="110;130;110" dur="6s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.5;0.95;0.5" dur="6s" repeatCount="indefinite"/>
+          </circle>
+
+          <!-- connessioni -->
+          <g class="atlante-links" stroke="rgba(69,230,161,0.18)" stroke-width="1.5" fill="none">
+            <line x1="360" y1="260" x2="360" y2="60"  data-link="Bene"/>
+            <line x1="360" y1="260" x2="544" y2="119" data-link="Verità"/>
+            <line x1="360" y1="260" x2="620" y2="260" data-link="Libertà"/>
+            <line x1="360" y1="260" x2="544" y2="401" data-link="Anima"/>
+            <line x1="360" y1="260" x2="360" y2="460" data-link="Tempo"/>
+            <line x1="360" y1="260" x2="176" y2="401" data-link="Male"/>
+            <line x1="360" y1="260" x2="100" y2="260" data-link="Dio"/>
+            <line x1="360" y1="260" x2="176" y2="119" data-link="Amore"/>
+          </g>
+
+          <!-- nodo centrale -->
+          <g class="atlante-node atlante-node-center" aria-hidden="true">
+            <circle cx="360" cy="260" r="52" fill="var(--bg-soft)" stroke="var(--gold)" stroke-width="1.5"/>
+            <circle cx="360" cy="260" r="46" fill="none" stroke="var(--gold-line)" stroke-width="0.5" stroke-dasharray="1 3"/>
+            <text x="360" y="260" text-anchor="middle" dy="0.35em" font-family="Cinzel, serif" font-size="16" fill="var(--gold)" letter-spacing="2">SOFIA</text>
+          </g>
+
+          <!-- nodi esterni -->
+          <g class="atlante-node" data-concept="Bene" role="button" tabindex="0" aria-label="Bene">
+            <circle cx="360" cy="60" r="46" fill="var(--bg-soft)" stroke="var(--border)" stroke-width="1.2"/>
+            <text x="360" y="60" text-anchor="middle" dy="0.35em" font-family="Inter, sans-serif" font-size="12" fill="var(--text-soft)" letter-spacing="0.5">Bene</text>
+          </g>
+          <g class="atlante-node" data-concept="Verità" role="button" tabindex="0" aria-label="Verità">
+            <circle cx="544" cy="119" r="46" fill="var(--bg-soft)" stroke="var(--border)" stroke-width="1.2"/>
+            <text x="544" y="119" text-anchor="middle" dy="0.35em" font-family="Inter, sans-serif" font-size="12" fill="var(--text-soft)" letter-spacing="0.5">Verità</text>
+          </g>
+          <g class="atlante-node" data-concept="Libertà" role="button" tabindex="0" aria-label="Libertà">
+            <circle cx="620" cy="260" r="46" fill="var(--bg-soft)" stroke="var(--border)" stroke-width="1.2"/>
+            <text x="620" y="260" text-anchor="middle" dy="0.35em" font-family="Inter, sans-serif" font-size="12" fill="var(--text-soft)" letter-spacing="0.5">Libertà</text>
+          </g>
+          <g class="atlante-node" data-concept="Anima" role="button" tabindex="0" aria-label="Anima">
+            <circle cx="544" cy="401" r="46" fill="var(--bg-soft)" stroke="var(--border)" stroke-width="1.2"/>
+            <text x="544" y="401" text-anchor="middle" dy="0.35em" font-family="Inter, sans-serif" font-size="12" fill="var(--text-soft)" letter-spacing="0.5">Anima</text>
+          </g>
+          <g class="atlante-node" data-concept="Tempo" role="button" tabindex="0" aria-label="Tempo">
+            <circle cx="360" cy="460" r="46" fill="var(--bg-soft)" stroke="var(--border)" stroke-width="1.2"/>
+            <text x="360" y="460" text-anchor="middle" dy="0.35em" font-family="Inter, sans-serif" font-size="12" fill="var(--text-soft)" letter-spacing="0.5">Tempo</text>
+          </g>
+          <g class="atlante-node" data-concept="Male" role="button" tabindex="0" aria-label="Male">
+            <circle cx="176" cy="401" r="46" fill="var(--bg-soft)" stroke="var(--border)" stroke-width="1.2"/>
+            <text x="176" y="401" text-anchor="middle" dy="0.35em" font-family="Inter, sans-serif" font-size="12" fill="var(--text-soft)" letter-spacing="0.5">Male</text>
+          </g>
+          <g class="atlante-node" data-concept="Dio" role="button" tabindex="0" aria-label="Dio">
+            <circle cx="100" cy="260" r="46" fill="var(--bg-soft)" stroke="var(--border)" stroke-width="1.2"/>
+            <text x="100" y="260" text-anchor="middle" dy="0.35em" font-family="Inter, sans-serif" font-size="12" fill="var(--text-soft)" letter-spacing="0.5">Dio</text>
+          </g>
+          <g class="atlante-node" data-concept="Amore" role="button" tabindex="0" aria-label="Amore">
+            <circle cx="176" cy="119" r="46" fill="var(--bg-soft)" stroke="var(--border)" stroke-width="1.2"/>
+            <text x="176" y="119" text-anchor="middle" dy="0.35em" font-family="Inter, sans-serif" font-size="12" fill="var(--text-soft)" letter-spacing="0.5">Amore</text>
+          </g>
+        </svg>
+      </div>
+
+      <div class="atlante-info" id="atlanteInfo">
+        <div class="atlante-info-empty" id="atlanteInfoEmpty">
+          <p>Seleziona un concetto per scoprire come i filosofi lo hanno pensato.</p>
+        </div>
+        <div class="atlante-info-content" id="atlanteInfoContent" hidden>
+          <button type="button" class="atlante-info-close" id="atlanteInfoClose" aria-label="Chiudi">×</button>
+          <h4 class="atlante-info-title" id="atlanteInfoTitle"></h4>
+          <p class="atlante-info-desc" id="atlanteInfoDesc"></p>
+          <div class="atlante-filosofi" id="atlanteFilosofi"></div>
+          <a class="atlante-info-link" id="atlanteInfoLink">Approfondisci →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- L'ECO DEL GIORNO -->
+    <section class="eco-giorno" aria-label="L'Eco del Giorno">
+      <div class="eco-giorno-head">
+        <span class="eco-giorno-badge">☉ L'Eco del Giorno</span>
+        <span class="eco-giorno-date" id="ecoGiornoDate"></span>
+      </div>
+      <div class="eco-giorno-body">
+        <div class="eco-giorno-portrait" id="ecoGiornoPortrait" aria-hidden="true"></div>
+        <div class="eco-giorno-content">
+          <h3 class="eco-giorno-nome" id="ecoGiornoNome"></h3>
+          <span class="eco-giorno-anno" id="ecoGiornoAnno"></span>
+          <blockquote class="eco-giorno-citazione" id="ecoGiornoCitazione"></blockquote>
+          <cite class="eco-giorno-fonte" id="ecoGiornoFonte"></cite>
+          <p class="eco-giorno-commento" id="ecoGiornoCommento"></p>
+          <div class="eco-giorno-actions">
+            <a class="eco-giorno-link" id="ecoGiornoLink">Leggi il pensiero completo →</a>
+            <button type="button" class="eco-giorno-altro" id="ecoGiornoAltro">↻ Un altro eco</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RISORSE -->
+    <section class="resources">
+      <div class="resources-inner">
+        <a href="pagine/mappa_concettuale.html" class="resource">
+          <small data-i18n="orientarsi">Orientarsi</small>
+          <h3 data-i18n="conceptMapTitle">Mappa concettuale</h3>
+          <p data-i18n="conceptMapText">Idee, scuole e filosofi collegati in una rete di pensiero.</p>
+        </a>
+        <a href="pagine/linea_del_tempo.html" class="resource">
+          <small data-i18n="throughCenturies">Attraversare i secoli</small>
+          <h3 data-i18n="timelineTitle">Linea del tempo</h3>
+          <p data-i18n="timelineText">Un percorso cronologico attraverso la storia della filosofia.</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- NEWSLETTER -->
+    <section class="newsletter">
+      <h2 data-i18n="newsletterTitle">Filosofia in posta</h2>
+      <p data-i18n="newsletterIntro">Pensieri, articoli e percorsi filosofici occasionalmente nella tua casella di posta.</p>
+      <button type="button" class="newsletter-trigger" id="newsletterTrigger" data-i18n="newsletterButton">📧 Filosofia in posta</button>
+    </section>
+
+  </div>
+  <!-- /col-centrale -->
+
+  <!-- DESTRA -->
+  <aside class="col-destra" aria-label="Approfondimenti">
+    <div class="box">
+      <h3>In Evidenza</h3>
+      <ul>
+        <li><a href="articoli/platonismo.html">La caverna di Platone</a></li>
+        <li><a href="articoli/stoicismo.html">Lo stoicismo oggi</a></li>
+        <li><a href="articoli/filosofia-indiana.html">Le Upanishad</a></li>
+        <li><a href="articoli/epicureismo.html">Epicuro e il piacere</a></li>
+      </ul>
+    </div>
+
+    <div class="box">
+      <h3>Servizi</h3>
+      <ul>
+        <li><a href="https://www.treccani.it/enciclopedia/elenco-opere/Dizionario_di_filosofia/">Indice alfabetico dei filosofi</a></li>
+        <li><a href="https://www.marxists.org/italiano/sezione/filosofia/voltaire/diz-filo/index.htm">Dizionario filosofico Voltaire</a></li>
+        <li><a href="https://www.studocu.com/it/quiz/domande-chiuse-esame-filosofia-1/2841680">Quiz filosofici</a></li>
+        <li><a href="https://www.gianfrancobertagni.it/materiali/filosofiaantica/testiantichi.pdf">Antologia di testi</a></li>
+        <li><a href="https://www.raiscuola.rai.it/percorsi/filosofia">Percorso guidato per principianti</a></li>
+      </ul>
+    </div>
+
+    <div class="box">
+      <h3>Citazione del giorno</h3>
+      <p class="citazione">«A che genere di uomini appartengo? A quello di chi prova piacere nell'essere confutato...»<span class="autore">Platone, <em>Gorgia</em>, 458 a3-b3</span></p>
+    </div>
+
+    <div class="box">
+      <h3>Curiosità</h3>
+      <p class="curiosita-text"><strong>Filosofi morti per le loro idee:</strong> Socrate bevve la cicuta; Ipazia fu uccisa da una folla; Giordano Bruno fu arso vivo. La filosofia, a volte, è una questione di vita o di morte.</p>
+    </div>
+  </aside>
+  <!-- /col-destra -->
+
 </div>
-<div class="box">
-<h3>Servizi</h3>
-<ul>
-<li><a href="https://www.treccani.it/enciclopedia/elenco-opere/Dizionario_di_filosofia/">Indice alfabetico dei filosofi</a></li>
-<li><a href="https://www.marxists.org/italiano/sezione/filosofia/voltaire/diz-filo/index.htm">Dizionario filosofico Voltaire</a></li>
-<li><a href="https://www.studocu.com/it/quiz/domande-chiuse-esame-filosofia-1/2841680">Quiz filosofici</a></li>
-<li><a href="https://www.gianfrancobertagni.it/materiali/filosofiaantica/testiantichi.pdf">Antologia di testi</a></li>
-<li><a href="https://www.raiscuola.rai.it/percorsi/filosofia">Percorso guidato per principianti</a></li>
-</ul>
-</div>
-<div class="box">
-<h3>Citazione del giorno</h3>
-<p class="citazione">«A che genere di uomini appartengo? A quello di chi prova piacere nell'essere confutato...»<span class="autore">Platone, <em>Gorgia</em>, 458 a3-b3</span></p>
-</div>
-<div class="box">
-<h3>Curiosità</h3>
-<p class="curiosita-text"><strong>Filosofi morti per le loro idee:</strong> Socrate bevve la cicuta; Ipazia fu uccisa da una folla; Giordano Bruno fu arso vivo. La filosofia, a volte, è una questione di vita o di morte.</p>
-</div>
-</aside>
-</div>
+<!-- /layout -->
 </main>
 
 <footer class="site-footer">
@@ -881,6 +1264,282 @@ if(quoteText&&quoteAuthor&&quoteBlock){const e=[{text:"L'uomo è misura di tutte
 </script>
 <script>
 !function(){"use strict";const e=document.getElementById("celebrationCanvas"),t=document.getElementById("celebrationTrigger");if(!e||!t)return;if(window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;const n=e.getContext("2d");let i=[],a=null,o=1;const r=["#45e6a1","#d6ae52","#e2bf6b","#a8d8bb","#ffffff","#ffd76a"];function d(e,t,n){for(let a=0;a<n;a++){const n=Math.random()*Math.PI*2,a=2+7*Math.random();i.push({x:e,y:t,vx:Math.cos(n)*a,vy:Math.sin(n)*a-2-3*Math.random(),size:2+5*Math.random(),color:r[Math.floor(Math.random()*r.length)],life:1,decay:.006+.014*Math.random(),gravity:.14,rotation:Math.random()*Math.PI*2,rotationSpeed:.25*(Math.random()-.5),shape:Math.random()>.4?"circle":"rect",glow:Math.random()>.7})}}function c(){n.clearRect(0,0,e.width,e.height);i=i.filter(e=>e.life>0);i.forEach(e=>{e.x+=e.vx;e.y+=e.vy;e.vy+=e.gravity;e.vx*=.99;e.vy*=.99;e.life-=e.decay;e.rotation+=e.rotationSpeed;const t=Math.max(0,e.life);n.save();n.globalAlpha=t;n.translate(e.x,e.y);n.rotate(e.rotation);n.fillStyle=e.color;e.glow&&(n.shadowColor=e.color,n.shadowBlur=15);"circle"===e.shape?(n.beginPath(),n.arc(0,0,e.size,0,2*Math.PI),n.fill()):n.fillRect(-e.size/2,-e.size/2,e.size,.6*e.size);n.restore()});i.length>0?a=requestAnimationFrame(c):(cancelAnimationFrame(a),a=null,e.classList.remove("active"))}t.addEventListener("click",()=>function(t){o=window.devicePixelRatio||1;e.width=window.innerWidth*o;e.height=window.innerHeight*o;e.style.width=window.innerWidth+"px";e.style.height=window.innerHeight+"px";n.setTransform(o,0,0,o,0,0);e.classList.add("active");const i=window.innerWidth/2,r=window.innerHeight/2;d(i,r,120);setTimeout(()=>d(.4*i,.7*r,70),180);setTimeout(()=>d(1.6*i,.6*r,70),320);setTimeout(()=>d(i,.35*r,90),500);(function(){const e=document.createElement("div");e.className="score-celebration";e.setAttribute("aria-hidden","true");e.textContent="eureka εὕρηκα";document.body.appendChild(e);e.addEventListener("animationend",()=>e.remove())})();a||c()}())}()
+</script>
+<script>
+(function () {
+  'use strict';
+
+  const ecoData = [
+    { nome: "Socrate", iniziale: "Σ", anno: "470–399 a.C.",
+      citazione: "Una vita senza ricerca non è degna di essere vissuta.",
+      fonte: "Platone, Apologia di Socrate, 38a",
+      commento: "Socrate non scrisse nulla e non fondò una scuola. Fece della domanda la sua pratica filosofica, e per questo fu condannato a morte. La sua figura segna il confine simbolico tra il pensiero che cerca e il potere che teme la ricerca.",
+      link: "filosofia/classica.html", linkTesto: "Esplora la filosofia classica" },
+    { nome: "Eraclito", iniziale: "Η", anno: "535–475 a.C.",
+      citazione: "Nessun uomo entra due volte nello stesso fiume.",
+      fonte: "Frammento B91",
+      commento: "Il fiume è l'immagine del divenire: tutto scorre, nulla resta identico. Eraclito pensa il mondo come tensione e armonia degli opposti. Il suo frammento è forse il più citato della filosofia antica, e il più frainteso.",
+      link: "filosofia/antica.html", linkTesto: "Esplora la filosofia antica" },
+    { nome: "Platone", iniziale: "Π", anno: "427–347 a.C.",
+      citazione: "La meraviglia è l'inizio della filosofia.",
+      fonte: "Teeteto, 155d",
+      commento: "La meraviglia è ciò che ci apre al pensiero. Platone fonda la filosofia come domanda radicale sull'essere, e la sua caverna resta la metafora più potente della condizione umana: prigionieri di ombre, in cerca della luce.",
+      link: "articoli/platonismo.html", linkTesto: "Approfondisci il platonismo" },
+    { nome: "Aristotele", iniziale: "Α", anno: "384–322 a.C.",
+      citazione: "L'uomo è per natura un animale politico.",
+      fonte: "Politica, I, 1253a",
+      commento: "L'uomo non è un atomo isolato: è un essere che si realizza nella città. Aristotele pensa la politica come continuazione dell'etica, e la felicità come attività dell'anima secondo virtù. La sua enciclopedia del sapere ha formato il pensiero occidentale per duemila anni.",
+      link: "filosofia/classica.html", linkTesto: "Esplora la filosofia classica" },
+    { nome: "Epicuro", iniziale: "Ε", anno: "341–270 a.C.",
+      citazione: "La morte non è nulla per noi.",
+      fonte: "Lettera a Meneceo, 124",
+      commento: "La morte non ci riguarda: quando ci siamo noi, non c'è lei; quando c'è lei, non ci siamo noi. Epicuro non predica la fuga dal mondo, ma la liberazione dalle paure che ci impediscono di vivere. Il piacere, per lui, è assenza di dolore e serenità dell'anima.",
+      link: "articoli/epicureismo.html", linkTesto: "Approfondisci l'epicureismo" },
+    { nome: "Epitteto", iniziale: "Ε", anno: "50–135 d.C.",
+      citazione: "Alcune cose dipendono da noi, altre non dipendono da noi.",
+      fonte: "Manuale, 1",
+      commento: "Ciò che dipende da noi è solo il nostro giudizio. Epitteto, schiavo liberato, fa della filosofia una disciplina quotidiana di libertà interiore. La sua distinzione tra ciò che è in nostro potere e ciò che non lo è resta uno dei gesti più radicali del pensiero antico.",
+      link: "articoli/stoicismo.html", linkTesto: "Approfondisci lo stoicismo" },
+    { nome: "Agostino d'Ippona", iniziale: "Α", anno: "354–430",
+      citazione: "Il nostro cuore è inquieto finché non riposa in te.",
+      fonte: "Confessioni, I, 1",
+      commento: "Il cuore inquieto è il motore della ricerca. Agostino attraversa il pensiero greco e lo trasforma in preghiera: la verità non è un oggetto da possedere, ma una persona da amare. Le Confessioni sono il primo grande racconto dell'interiorità occidentale.",
+      link: "filosofia/medievale.html", linkTesto: "Esplora la filosofia medievale" },
+    { nome: "René Descartes", iniziale: "R", anno: "1596–1650",
+      citazione: "Penso, dunque sono.",
+      fonte: "Discorso sul metodo, IV",
+      commento: "Il dubbio è il metodo, non la meta. Descartes cerca un fondamento indubitabile e lo trova nel cogito: anche dubitando, penso. La filosofia moderna nasce da questa certezza minima e la costruzione del sapere riparte da zero.",
+      link: "filosofia/moderna.html", linkTesto: "Esplora la filosofia moderna" },
+    { nome: "Blaise Pascal", iniziale: "B", anno: "1623–1662",
+      citazione: "Il cuore ha le sue ragioni che la ragione non conosce.",
+      fonte: "Pensieri, fr. 423",
+      commento: "La ragione non basta a se stessa. Pascal, scienziato e credente, pensa l'uomo come essere fragile e grande insieme: schiavo della distrazione, capace di Dio. I Pensieri sono un'opera aperta, un laboratorio di domande radicali.",
+      link: "filosofia/moderna.html", linkTesto: "Esplora la filosofia moderna" },
+    { nome: "Baruch Spinoza", iniziale: "B", anno: "1632–1677",
+      citazione: "Deus sive Natura.",
+      fonte: "Etica, IV, Prefazione",
+      commento: "Dio non è fuori dalla natura: è la natura stessa. Spinoza costruisce un sistema in cui tutto segue necessità geometrica, e la libertà è comprendere questa necessità. L'Etica è forse il libro più radicale e più frainteso della filosofia moderna.",
+      link: "filosofia/moderna.html", linkTesto: "Esplora la filosofia moderna" },
+    { nome: "Immanuel Kant", iniziale: "I", anno: "1724–1804",
+      citazione: "Abbi il coraggio di servirti della tua propria ragione.",
+      fonte: "Che cos'è l'Illuminismo?",
+      commento: "L'Illuminismo è l'uscita dell'uomo dallo stato di minorità. Kant fa della ragione una pratica pubblica e politica: osa pensare, ma pensa in modo critico. La sua rivoluzione copernicana sposta il centro del conoscere dal mondo al soggetto.",
+      link: "filosofia/moderna.html", linkTesto: "Esplora la filosofia moderna" },
+    { nome: "G.W.F. Hegel", iniziale: "G", anno: "1770–1831",
+      citazione: "La verità è l'intero.",
+      fonte: "Fenomenologia dello spirito, Prefazione",
+      commento: "La verità non è una proposizione, è un processo. Hegel pensa la storia come dispiegarsi dello spirito, e il negativo come momento necessario del positivo. Il suo sistema è la cattedrale del pensiero moderno: grandioso, inquietante, inattuale.",
+      link: "filosofia/moderna.html", linkTesto: "Esplora la filosofia moderna" },
+    { nome: "Søren Kierkegaard", iniziale: "S", anno: "1813–1855",
+      citazione: "L'angoscia è la vertigine della libertà.",
+      fonte: "Il concetto dell'angoscia",
+      commento: "L'angoscia non è una malattia: è la vertigine della libertà. Kierkegaard oppone all'idealismo hegeliano l'esistenza singolare, fatta di scelte, salti, fede. La sua voce è quella di un pensatore che non vuole essere sistematico, ma esistenziale.",
+      link: "filosofia/contemporanea.html", linkTesto: "Esplora la filosofia contemporanea" },
+    { nome: "Friedrich Nietzsche", iniziale: "F", anno: "1844–1900",
+      citazione: "Dio è morto.",
+      fonte: "La gaia scienza, §125",
+      commento: "Dio è morto: non è una notizia teologica, è un evento culturale. Nietzsche diagnostica la crisi dei valori e annuncia l'oltreuomo. Il suo pensiero è una martellata sulla filosofia tradizionale, e una sfida a pensare senza consolazioni.",
+      link: "filosofia/contemporanea.html", linkTesto: "Esplora la filosofia contemporanea" },
+    { nome: "Ludwig Wittgenstein", iniziale: "L", anno: "1889–1951",
+      citazione: "Di ciò di cui non si può parlare, si deve tacere.",
+      fonte: "Tractatus logico-philosophicus, 7",
+      commento: "Il limite del linguaggio è il limite del mondo. Wittgenstein attraversa due volte la filosofia del Novecento: prima con il Tractatus, poi con le Ricerche filosofiche. Il suo pensiero è una terapia contro gli incantesimi del linguaggio.",
+      link: "filosofia/contemporanea.html", linkTesto: "Esplora la filosofia contemporanea" },
+    { nome: "Albert Camus", iniziale: "A", anno: "1913–1960",
+      citazione: "Bisogna immaginare Sisifo felice.",
+      fonte: "Il mito di Sisifo",
+      commento: "L'assurdo nasce dall'incontro tra la domanda umana e il silenzio del mondo. Camus non propone una soluzione, ma una rivolta: vivere senza consolazione, con lucidità. Sisifo, che spinge il masso, è felice perché sa.",
+      link: "filosofia/contemporanea.html", linkTesto: "Esplora la filosofia contemporanea" }
+  ];
+
+  const $ = (id) => document.getElementById(id);
+  const dateEl = $('ecoGiornoDate');
+  const portraitEl = $('ecoGiornoPortrait');
+  const nomeEl = $('ecoGiornoNome');
+  const annoEl = $('ecoGiornoAnno');
+  const citazioneEl = $('ecoGiornoCitazione');
+  const fonteEl = $('ecoGiornoFonte');
+  const commentoEl = $('ecoGiornoCommento');
+  const linkEl = $('ecoGiornoLink');
+  const altroBtn = $('ecoGiornoAltro');
+
+  if (!nomeEl) return;
+
+  let currentIndex = 0;
+
+  function giornoDellAnno() {
+    const now = new Date();
+    const start = new Date(now.getFullYear(), 0, 0);
+    return Math.floor((now - start) / 86400000);
+  }
+
+  function formatDate() {
+    const now = new Date();
+    const giorni = ['domenica','lunedì','martedì','mercoledì','giovedì','venerdì','sabato'];
+    const mesi = ['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
+    return giorni[now.getDay()] + ' ' + now.getDate() + ' ' + mesi[now.getMonth()];
+  }
+
+  function renderPortrait(iniziale) {
+    return '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
+      '<defs>' +
+        '<radialGradient id="ecoPortraitGrad" cx="50%" cy="40%" r="60%">' +
+          '<stop offset="0%" stop-color="var(--gold)" stop-opacity="0.20"/>' +
+          '<stop offset="100%" stop-color="var(--gold)" stop-opacity="0"/>' +
+        '</radialGradient>' +
+      '</defs>' +
+      '<circle cx="50" cy="50" r="48" fill="var(--bg-soft)" stroke="var(--gold)" stroke-width="1.2"/>' +
+      '<circle cx="50" cy="50" r="48" fill="url(#ecoPortraitGrad)"/>' +
+      '<circle cx="50" cy="50" r="42" fill="none" stroke="var(--gold-line)" stroke-width="0.6" stroke-dasharray="2 4"/>' +
+      '<text x="50" y="50" text-anchor="middle" dy="0.35em" font-family="Cinzel, serif" font-size="30" fill="var(--gold)" font-weight="500">' + iniziale + '</text>' +
+    '</svg>';
+  }
+
+  function renderEco(index) {
+    const e = ecoData[index];
+    if (!e) return;
+    currentIndex = index;
+    portraitEl.innerHTML = renderPortrait(e.iniziale);
+    nomeEl.textContent = e.nome;
+    annoEl.textContent = e.anno;
+    citazioneEl.textContent = '«' + e.citazione + '»';
+    fonteEl.textContent = e.fonte;
+    commentoEl.textContent = e.commento;
+    linkEl.textContent = (e.linkTesto || 'Leggi il pensiero completo') + ' →';
+    linkEl.href = e.link || '#';
+    if (dateEl) dateEl.textContent = formatDate();
+  }
+
+  function renderGiorno() {
+    renderEco(giornoDellAnno() % ecoData.length);
+  }
+
+  function renderCasuale() {
+    if (ecoData.length < 2) { renderEco(0); return; }
+    let newIdx;
+    do { newIdx = Math.floor(Math.random() * ecoData.length); }
+    while (newIdx === currentIndex);
+    renderEco(newIdx);
+  }
+
+  renderGiorno();
+  if (altroBtn) altroBtn.addEventListener('click', renderCasuale);
+})();
+</script>
+<script>
+(function () {
+  'use strict';
+
+  const atlanteData = {
+    Bene: {
+      titolo: "Bene",
+      desc: "Che cos'è il bene? Per Platone è l'Idea suprema, il sole che illumina tutte le altre. Per Aristotele è la felicità come attività conforme a virtù. Per Kant è la legge morale dentro di noi. Per Lévinas è l'altro che ci chiama alla responsabilità.",
+      filosofi: ["Platone", "Aristotele", "Kant", "Lévinas"],
+      link: "articoli/platonismo.html"
+    },
+    "Verità": {
+      titolo: "Verità",
+      desc: "La verità è ciò che è. Ma come la conosciamo? Parmenide la identifica con l'essere; Platone la vede come reminiscenza; Aristotele la definisce adeguazione dell'intelletto alla cosa; Heidegger la pensa come disvelamento. La filosofia è, da sempre, una lotta per la verità.",
+      filosofi: ["Parmenide", "Platone", "Aristotele", "Tommaso", "Heidegger"],
+      link: "filosofia/classica.html"
+    },
+    "Libertà": {
+      titolo: "Libertà",
+      desc: "Siamo davvero liberi? Gli stoici la pensano come accettazione del destino; Spinoza come comprensione della necessità; Kant come autonomia della volontà; Sartre come condanna. La libertà è il problema più radicale dell'esistenza umana.",
+      filosofi: ["Epitteto", "Spinoza", "Kant", "Sartre"],
+      link: "articoli/stoicismo.html"
+    },
+    Anima: {
+      titolo: "Anima",
+      desc: "L'anima è ciò che anima il corpo. Per Platone è prigioniera e cerca il ritorno alle Idee; per Aristotele è forma del corpo; per Agostino è l'uomo interiore; per Descartes è la res cogitans. Il rapporto anima-corpo attraversa tutta la storia della filosofia.",
+      filosofi: ["Platone", "Aristotele", "Agostino", "Descartes"],
+      link: "filosofia/antica.html"
+    },
+    Tempo: {
+      titolo: "Tempo",
+      desc: "Che cos'è il tempo? Eraclito vede il divenire come fiume; Agostino confessa di non saperlo, ma lo pensa come distensione dell'anima; Kant lo considera forma del senso interno; Bergson lo distingue dalla durata; Heidegger lo lega all'essere-per-la-morte.",
+      filosofi: ["Eraclito", "Agostino", "Kant", "Bergson", "Heidegger"],
+      link: "filosofia/contemporanea.html"
+    },
+    Male: {
+      titolo: "Male",
+      desc: "Da dove viene il male? Agostino lo pensa come privazione del bene; Leibniz come parte di un ordine più grande; Kant come male radicale; Nietzsche come eredità del platonismo; Arendt come banalità. Il problema del male è il cuore della teodicea.",
+      filosofi: ["Agostino", "Leibniz", "Kant", "Nietzsche", "Arendt"],
+      link: "filosofia/moderna.html"
+    },
+    Dio: {
+      titolo: "Dio",
+      desc: "Dio è il nome di ciò che ci supera. Anselmo lo dimostra con l'argomento ontologico; Tommaso con le cinque vie; Spinoza lo identifica con la Natura; Pascal ne fa il Dio del cuore; Nietzsche ne annuncia la morte. Ogni epoca ha pensato Dio a modo suo.",
+      filosofi: ["Anselmo", "Tommaso", "Spinoza", "Pascal", "Nietzsche"],
+      link: "filosofia/medievale.html"
+    },
+    Amore: {
+      titolo: "Amore",
+      desc: "L'amore è forza cosmica e legame umano. Per Platone è Eros, figlio di Poros e Penia, che spinge verso il bello; per Aristotele è philia, amicizia politica; per Agostino è caritas; per Kierkegaard è dono che si fa senza garanzia. Amare è pensare l'altro.",
+      filosofi: ["Platone", "Aristotele", "Agostino", "Kierkegaard"],
+      link: "filosofia/classica.html"
+    }
+  };
+
+  const $ = (id) => document.getElementById(id);
+  const map = $('atlanteMap');
+  if (!map) return;
+
+  const infoEmpty   = $('atlanteInfoEmpty');
+  const infoContent = $('atlanteInfoContent');
+  const infoTitle   = $('atlanteInfoTitle');
+  const infoDesc    = $('atlanteInfoDesc');
+  const infoFilosofi= $('atlanteFilosofi');
+  const infoLink    = $('atlanteInfoLink');
+  const infoClose   = $('atlanteInfoClose');
+
+  let activeConcept = null;
+
+  function resetActive() {
+    map.querySelectorAll('.atlante-node.active').forEach(n => n.classList.remove('active'));
+    map.querySelectorAll('.atlante-links line.active').forEach(l => l.classList.remove('active'));
+    activeConcept = null;
+    infoContent.hidden = true;
+    infoEmpty.hidden = false;
+  }
+
+  function activate(concept) {
+    const data = atlanteData[concept];
+    if (!data) return;
+
+    map.querySelectorAll('.atlante-node.active').forEach(n => n.classList.remove('active'));
+    map.querySelectorAll('.atlante-links line.active').forEach(l => l.classList.remove('active'));
+
+    const node = map.querySelector('.atlante-node[data-concept="' + concept + '"]');
+    if (node) node.classList.add('active');
+
+    const link = map.querySelector('.atlante-links line[data-link="' + concept + '"]');
+    if (link) link.classList.add('active');
+
+    infoTitle.textContent = data.titolo;
+    infoDesc.textContent = data.desc;
+    infoFilosofi.innerHTML = data.filosofi.map(f => '<span>' + f + '</span>').join('');
+    infoLink.href = data.link || '#';
+
+    infoEmpty.hidden = true;
+    infoContent.hidden = false;
+    activeConcept = concept;
+  }
+
+  map.querySelectorAll('.atlante-node[data-concept]').forEach(node => {
+    const concept = node.dataset.concept;
+
+    node.addEventListener('click', () => activate(concept));
+    node.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        activate(concept);
+      }
+    });
+  });
+
+  if (infoClose) infoClose.addEventListener('click', resetActive);
+})();
 </script>
 </body>
 </html>
