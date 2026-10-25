@@ -1586,6 +1586,91 @@ html{scroll-behavior:auto}
   .filo-num { width: 32px; height: 32px; font-size: .85rem; }
   .filo-tappa:not(:last-child)::before { left: 15px; top: 32px; }
 } 
+/* ===== GYMNOPEDIE ===== */
+ .echi-music-card {
+        position: fixed;
+        left: 92px;
+        bottom: 20px;
+        z-index: 99989;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        width: max-content;
+        max-width: calc(100vw - 110px)
+      }
+
+      .echi-cookie-image {
+        width: 141px;
+        height: 79px;
+        flex-shrink: 0;
+        object-fit: cover;
+        border-radius: 6px;
+        border: 1px solid rgba(214, 174, 82, .55);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, .28);
+        pointer-events: auto;
+        cursor: pointer;
+        transition: transform var(--dur-slow) var(--ease-expo), border-color var(--dur-base) var(--ease-smooth), box-shadow var(--dur-base) var(--ease-smooth)
+      }
+
+      .echi-cookie-image:hover {
+        transform: scale(1.04);
+        border-color: rgba(214, 174, 82, .9);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, .35), 0 0 20px rgba(214, 174, 82, .25)
+      }
+
+      .echi-cookie-image:focus-visible {
+        outline: 2px solid rgba(214, 174, 82, .8);
+        outline-offset: 3px
+      }
+
+      .echi-music-info {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        max-width: 240px;
+        color: var(--text, #e8e2d5);
+        text-shadow: 0 1px 5px rgba(0, 0, 0, .55);
+        pointer-events: none;
+        user-select: none;
+        opacity: 0;
+        transform: translate(-6px, 6px);
+        transition: opacity .35s var(--ease-smooth), transform .35s var(--ease-expo)
+      }
+
+      .echi-music-card:focus-within .echi-music-info,
+      .echi-music-card:hover .echi-music-info {
+        opacity: 1;
+        transform: translate(0, 0)
+      }
+
+      .echi-music-label {
+        color: #c5a45e;
+        font-family: var(--sans);
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 1.5px;
+        text-transform: uppercase
+      }
+
+      .echi-music-title {
+        font-family: var(--serif);
+        font-size: 17px;
+        font-weight: 600;
+        font-style: italic;
+        line-height: 1.2
+      }
+
+      .echi-music-author {
+        font-family: var(--sans);
+        font-size: 13px
+      }
+
+      .echi-music-performer {
+        font-family: var(--sans);
+        font-size: 11px;
+        opacity: .75
+      }
 </style>
 </head>
 <body>
@@ -2069,6 +2154,73 @@ html{scroll-behavior:auto}
 </form>
 </div>
 </div>
+
+
+
+
+
+ <div class=echi-music-card role=group aria-label="Anteprima audio: Gymnopédie n. 1 di Erik Satie, eseguita da Edward Rosser, pianoforte">
+      <div class=echi-music-info aria-hidden=true> <span class=echi-music-label>♪ Brano in ascolto</span> <span class=echi-music-title>Gymnopédie n. 1</span> <span class=echi-music-author>Erik Satie · 1888</span> <span class=echi-music-performer>Edward Rosser, pianoforte</span> </div> <img class=echi-cookie-image id=hoverElement src=/immagini/grecia-antica.avif alt="Vaso greco antico" width=180 height=101 decoding=async>
+    </div> <audio id=audio preload=none loop></audio>
+    <script>
+      ! function() {
+        "use strict";
+        var e = document.getElementById("hoverElement"),
+          n = document.getElementById("audio");
+        if (e && n) {
+          var o = !1,
+            t = !1;
+          document.addEventListener("click", c), document.addEventListener("touchstart", c, {
+            passive: !0
+          }), document.addEventListener("keydown", c), e.addEventListener("mouseenter", (function() {
+            o ? (n.currentTime = 0, n.play().then((function() {
+              console.log("🎵 Musica in riproduzione")
+            })).catch((function(e) {
+              console.warn("Play fallito:", e.name)
+            }))) : console.log("ℹ️ Hover rilevato, ma audio non ancora sbloccato.")
+          })), e.addEventListener("mouseleave", (function() {
+            n.pause(), n.currentTime = 0
+          }))
+        }
+
+        function c(e) {
+          if (!(e && e.target.closest("#searchToggleBtn, #siteSearch") || o)) {
+            ! function() {
+              if (!t && !o) {
+                t = !0;
+                var e = document.createElement("source");
+                e.src = "/suoni/gymnopedie.opus", e.type = "audio/ogg; codecs=opus", n.appendChild(e);
+                var c = document.createElement("source");
+                c.src = "/suoni/gymnopedie.mp3", c.type = "audio/mpeg", n.appendChild(c), n.load(), console.log("📥 Audio in caricamento...")
+              }
+            }();
+            var c = function() {
+              var e = n.volume;
+              n.volume = 0, n.play().then((function() {
+                n.pause(), n.currentTime = 0, n.volume = e, o = !0, console.log("🔓 Audio sbloccato! Ora l'hover funziona.")
+              })).catch((function(o) {
+                n.volume = e, console.warn("⚠️ Sblocco fallito:", o.name)
+              }))
+            };
+            n.readyState >= 2 ? c() : n.addEventListener("canplay", c, {
+              once: !0
+            })
+          }
+        }
+      }()
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
 
 <!-- ELEMENTI FLUTTUANTI (una sola copia) -->
 <audio id="myAudio" preload="none"></audio>
