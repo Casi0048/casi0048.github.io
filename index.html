@@ -2555,5 +2555,207 @@ if(quoteText&&quoteAuthor&&quoteBlock){const e=[{text:"L'uomo è misura di tutte
   if (btn) btn.addEventListener('click', prossimo);
 })();
 </script>
+  <script>
+(function () {
+  'use strict';
+  const elTitolo   = document.getElementById('dilTitolo');
+  const elScenario = document.getElementById('dilScenario');
+  const elOptions  = document.getElementById('dilOptions');
+  const elResult   = document.getElementById('dilResult');
+  const elResLabel = document.getElementById('dilResultLabel');
+  const elFilosofi = document.getElementById('dilFilosofi');
+  const elCommento = document.getElementById('dilCommento');
+  const elClose    = document.getElementById('dilResultClose');
+  const elAltro    = document.getElementById('dilAltro');
+
+  if (!elTitolo || !elOptions) return;
+
+  const dilemmi = [
+    {
+      titolo: "Il carrello impazzito",
+      scenario: "Un carrello ferroviario fuori controllo sta per travolgere cinque persone legate sui binari. Puoi azionare una leva che devierà il carrello su un binario secondario, dove è legata una sola persona. <em>Che cosa fai?</em>",
+      opzioni: [
+        {
+          breve: "Tiro la leva",
+          testo: "Salvo cinque persone al costo di una.",
+          filosofi: [
+            { nome: "Bentham", scuola: "Utilitarismo", risposta: "Tirare la leva. La morale consiste nel massimizzare la felicità del maggior numero: cinque vite pesano più di una. Non c'è spazio per i sentimentalismi." },
+            { nome: "Mill", scuola: "Utilitarismo", risposta: "Tirare la leva, ma con cautela: non tutte le vite hanno lo stesso «valore qualitativo». L'utilitarismo non è aritmetica cieca, è calcolo ragionato delle conseguenze." },
+            { nome: "Sartre", scuola: "Esistenzialismo", risposta: "Qualunque scelta è legittima, purché tu la assuma fino in fondo. Non esiste una risposta giusta in astratto: esiste la tua scelta, e la responsabilità che ne porti." }
+          ],
+          commento: "L'utilitarismo classico è la posizione più intuitiva per molti: scegliere di salvare il maggior numero di vite. Ma è anche la più contestata, perché tratta le persone come contenitori di utilità."
+        },
+        {
+          breve: "Non faccio nulla",
+          testo: "Lascio che il carrello prosegua la sua corsa.",
+          filosofi: [
+            { nome: "Kant", scuola: "Deontologia", risposta: "Non tirare la leva. Non puoi usare la persona legata sul binario secondario come mezzo per salvare le altre: l'umanità va trattata sempre anche come fine, mai solo come mezzo." },
+            { nome: "Tommaso d'Aquino", scuola: "Tomismo", risposta: "Non tirare la leva. Il male non va mai commesso, nemmeno per ottenere un bene maggiore. La dottrina del duplice effetto non giustifica l'uccisione diretta di un innocente." },
+            { nome: "Arendt", scuola: "Fenomenologia politica", risposta: "Non tirare la leva. Agire significa assumersi la responsabilità del mondo che si contribuisce a creare. Non ogni calcolo è una scelta morale: a volte la scelta è proprio rifiutare il calcolo." }
+          ],
+          commento: "La posizione deontologica difende l'intangibilità della persona: non si usa un essere umano come strumento, anche per un bene più grande. È una posizione scomoda, ma coerente."
+        }
+      ]
+    },
+    {
+      titolo: "La nave di Teseo",
+      scenario: "La nave di Teseo è conservata in porto. A poco a poco, ogni asse marcio viene sostituito con uno nuovo, finché tutte le parti originali sono state rimpiazzate. Le vecchie assi vengono rimontate in una seconda nave. <em>Quale delle due è la nave di Teseo?</em>",
+      opzioni: [
+        {
+          breve: "La nave ricostruita",
+          testo: "È la stessa nave solo se è fatta degli stessi pezzi originali.",
+          filosofi: [
+            { nome: "Aristotele", scuola: "Metafisica", risposta: "La nave ricostruita. L'identità dipende dalla materia e dalla forma: se le parti originali sono ricomposte secondo la stessa struttura, allora è la stessa nave." },
+            { nome: "Wittgenstein", scuola: "Filosofia del linguaggio", risposta: "La domanda è mal posta. «La stessa nave» non ha un significato univoco: dipende da ciò che intendiamo per «stessa». Il problema non è nella nave, ma nel nostro linguaggio." }
+          ],
+          commento: "Chi privilegia la materia pensa che l'identità sia nei pezzi. Chi privilegia il linguaggio pensa che il problema sia un gioco di parole, non un fatto del mondo."
+        },
+        {
+          breve: "La nave in porto",
+          testo: "È la stessa nave anche se ha tutti pezzi nuovi: conta la continuità.",
+          filosofi: [
+            { nome: "Locke", scuola: "Empirismo", risposta: "La nave in porto. L'identità non è nella materia ma nella continuità della coscienza e della funzione: la nave che ha continuato a navigare è la stessa, come un uomo che cambia tutte le cellule ma resta lo stesso uomo." },
+            { nome: "Hume", scuola: "Empirismo scettico", risposta: "Nessuna delle due. L'identità è una finzione della nostra mente: percepiamo solo un fascio di impressioni che si susseguono. La «nave» è un nome che diamo a un insieme di sensazioni, non una sostanza." },
+            { nome: "Parfit", scuola: "Filosofia analitica", risposta: "Nessuna delle due, e non importa. L'identità personale non è ciò che conta davvero: contano la continuità psicologica e la sopravvivenza di ciò che ci sta a cuore. Il problema della nave è un falso problema." }
+          ],
+          commento: "Locke anticipa le teorie moderne della continuità psicologica; Hume e Parfit dissolvono il problema. L'identità, per loro, non è una cosa che si possiede: è una costruzione, o un'illusione utile."
+        }
+      ]
+    },
+    {
+      titolo: "L'anello di Gige",
+      scenario: "Un pastore trova un anello che, ruotato, lo rende invisibile. Nessuno può vederlo, nessuno può giudicarlo, nessuno può punirlo. Può fare qualunque cosa senza conseguenze. <em>Che cosa faresti?</em>",
+      opzioni: [
+        {
+          breve: "Userei l'anello",
+          testo: "Se nessuno mi vede, posso agire secondo il mio interesse.",
+          filosofi: [
+            { nome: "Glaucone", scuola: "Platone, Repubblica", risposta: "Userei l'anello. La giustizia è una convenzione: chi è davvero libero dalle conseguenze agisce per il proprio vantaggio. L'uomo giusto lo è solo perché teme la punizione." },
+            { nome: "Callicle", scuola: "Sofistica", risposta: "Userei l'anello, senza ipocrisia. La legge è dei deboli contro i forti: chi ha la forza di fare ciò che vuole, lo faccia. La morale è una gabbia per chi non ha potere." },
+            { nome: "Nietzsche", scuola: "Filosofia della potenza", risposta: "Dipende da chi sei. Se sei forte, l'anello non ti serve: la tua virtù è la tua potenza. Se sei debole, userai l'anello per vendicarti — e rivelerai la tua schiavitù interiore." }
+          ],
+          commento: "La posizione di Glaucone è la sfida più radicale alla morale: se puoi fare ciò che vuoi senza conseguenze, perché dovresti essere giusto? È il problema che Platone cerca di risolvere in tutta la Repubblica."
+        },
+        {
+          breve: "Non userei l'anello",
+          testo: "La giustizia vale anche quando nessuno mi vede.",
+          filosofi: [
+            { nome: "Socrate", scuola: "Platone, Repubblica", risposta: "Non userei l'anello. L'ingiustizia danneggia l'anima di chi la commette: chi agisce male, anche invisibile, si rende schiavo delle proprie passioni. Meglio subire l'ingiustizia che commetterla." },
+            { nome: "Kant", scuola: "Deontologia", risposta: "Non userei l'anello. La legge morale non dipende dalle conseguenze: agisci in modo che la tua massima possa diventare legge universale. L'invisibilità non cambia nulla." },
+            { nome: "Epitteto", scuola: "Stoicismo", risposta: "Non userei l'anello. Ciò che dipende da me è solo il mio giudizio: la virtù non ha bisogno di testimoni. L'anello non mi rende più libero, mi rende più solo." }
+          ],
+          commento: "La posizione di Socrate ribalta il problema: non è la punizione esterna a rendere morale l'atto, ma lo stato dell'anima. La morale non è un contratto sociale, è una cura di sé."
+        }
+      ]
+    },
+    {
+      titolo: "La stanza cinese",
+      scenario: "Un uomo chiuso in una stanza riceve fogli con simboli cinesi e, seguendo un manuale, risponde con altri simboli cinesi. Dall'esterno, le risposte sembrano quelle di un parlante cinese. <em>L'uomo capisce il cinese?</em>",
+      opzioni: [
+        {
+          breve: "No, non capisce",
+          testo: "Manipola simboli senza comprenderne il significato.",
+          filosofi: [
+            { nome: "Searle", scuola: "Filosofia della mente", risposta: "No. La sintassi non è semantica: manipolare simboli secondo regole non equivale a comprendere. Un computer non capisce il linguaggio, esegue istruzioni. La mente non è un programma." },
+            { nome: "Nagel", scuola: "Filosofia della mente", risposta: "No. C'è qualcosa che si prova a essere un parlante cinese, un'esperienza soggettiva che nessuna descrizione funzionale può catturare. La coscienza non è calcolabile." }
+          ],
+          commento: "Searle vuole mostrare che l'intelligenza artificiale forte è impossibile: la comprensione richiede un'intenzionalità che nessun algoritmo può produrre. La stanza cinese è il suo argomento più celebre."
+        },
+        {
+          breve: "Sì, in un certo senso",
+          testo: "Il sistema nel suo insieme capisce, anche se l'uomo no.",
+          filosofi: [
+            { nome: "Dennett", scuola: "Funzionalismo", risposta: "Sì, in un certo senso. La domanda «l'uomo capisce?» è mal posta: il soggetto cognitivo non è l'uomo, è il sistema uomo+manuale+stanza. La comprensione è una funzione, non un luogo." },
+            { nome: "Putnam", scuola: "Funzionalismo", risposta: "Sì, se la funzione è realizzata. La mente è ciò che il cervello fa, non ciò di cui è fatto. Se il sistema produce comportamenti linguistici appropriati, allora in qualche misura comprende." },
+            { nome: "Chalmers", scuola: "Filosofia della mente", risposta: "La domanda è giusta, la risposta è difficile. La comprensione richiede coscienza, e la coscienza è il «problema difficile». La stanza cinese mostra che l'AI può simulare, non che possa essere cosciente." }
+          ],
+          commento: "I funzionalisti spostano il problema: la comprensione non è un fatto privato, è una funzione del sistema. Searle risponde che nessuna funzione, per quanto complessa, produce l'esperienza soggettiva. Il dibattito è ancora aperto."
+        }
+      ]
+    }
+  ];
+
+  function escapeHTML(s) {
+    return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  let currentIdx = 0;
+  let currentDilemma = null;
+
+  function renderDilemma(idx) {
+    currentIdx = idx;
+    currentDilemma = dilemmi[idx];
+    const d = currentDilemma;
+
+    elTitolo.textContent = d.titolo;
+    elScenario.innerHTML = d.scenario;
+    elResult.hidden = true;
+    elFilosofi.innerHTML = '';
+    elCommento.textContent = '';
+    elResLabel.textContent = '';
+
+    elOptions.innerHTML = '';
+    d.opzioni.forEach((op, i) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'dil-option';
+      btn.dataset.idx = i;
+      btn.innerHTML =
+        '<span class="label">Opzione ' + String.fromCharCode(65 + i) + '</span>' +
+        '<span class="text">' + escapeHTML(op.breve) + '</span>';
+      btn.addEventListener('click', () => seleziona(i));
+      elOptions.appendChild(btn);
+    });
+  }
+
+  function seleziona(idx) {
+    const d = currentDilemma;
+    if (!d) return;
+    const op = d.opzioni[idx];
+    if (!op) return;
+
+    elOptions.querySelectorAll('.dil-option').forEach((b, i) => {
+      if (i === idx) b.classList.add('selected');
+      else b.classList.add('dimmed');
+    });
+
+    elResLabel.textContent = 'Hai scelto: ' + op.breve;
+    elFilosofi.innerHTML = op.filosofi.map(f =>
+      '<div class="dil-filosofo">' +
+        '<div class="nome">' + escapeHTML(f.nome) +
+          '<small>' + escapeHTML(f.scuola) + '</small>' +
+        '</div>' +
+        '<div class="risposta">' + escapeHTML(f.risposta) + '</div>' +
+      '</div>'
+    ).join('');
+    elCommento.textContent = op.commento || '';
+
+    elResult.hidden = false;
+    elResult.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function reset() {
+    if (!currentDilemma) return;
+    renderDilemma(currentIdx);
+  }
+
+  function prossimo() {
+    if (dilemmi.length < 2) { reset(); return; }
+    let n;
+    do { n = Math.floor(Math.random() * dilemmi.length); }
+    while (n === currentIdx);
+    renderDilemma(n);
+  }
+
+  // Primo dilemma: rotazione giornaliera.
+  const now = new Date();
+  const start = new Date(now.getFullYear(), 0, 0);
+  const dayOfYear = Math.floor((now - start) / 86400000);
+  renderDilemma(dayOfYear % dilemmi.length);
+
+  if (elAltro) elAltro.addEventListener('click', prossimo);
+  if (elClose) elClose.addEventListener('click', reset);
+})();
+</script>
 </body>
 </html>
