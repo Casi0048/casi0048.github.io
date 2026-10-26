@@ -6909,41 +6909,38 @@ body.shake {
     <audio id="collisionSound" preload="auto" src="/suoni/explosion-1.mp3"></audio>
     <script>
 (function () {
-  // Su mobile o con "riduci movimento" attivo, niente scossa né suono
   if (window.matchMedia('(max-width: 768px)').matches) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  const CYCLE_MS = 24000;       // deve combaciare con dur="24s" nel SVG
-  const IMPACT_AT_MS = 12000;   // 50% del ciclo (metà di 24s)
-  const SHAKE_MS = 400;
+  const CYCLE_S       = 24;     // durata ciclo SMIL (deve combaciare con dur="24s")
+  const IMPACT_AT_S   = 12;     // secondo dell'impatto nel ciclo
+  const SHAKE_MS      = 400;
+  const SOUND_DELAY_MS = 0;     // ⇦ regola qui se il suono è in anticipo/ritardo
 
   const collision = document.getElementById('collision');
-  const sound = document.getElementById('collisionSound');
-  if (!collision || !sound) return;
+  const sound     = document.getElementById('collisionSound');
+  const svg       = document.querySelector('.cosmic-sky');
+  if (!collision || !sound || !svg) return;
 
   const animations = collision.querySelectorAll('animate, animateTransform');
 
-  // --- Sblocco audio al primo gesto utente (click/touch/scroll) ---
-  let audioUnlocked = false;
-  function unlockAudio() {
-    if (audioUnlocked) return;
+  // --- Sblocco audio al primo gesto utente ---
+  let audioReady = false;
+  function tryUnlock() {
+    if (audioReady) return;
     sound.muted = true;
     sound.play().then(() => {
       sound.pause();
       sound.currentTime = 0;
       sound.muted = false;
-      audioUnlocked = true;
-      // Rimuove i listener: non servono più
-      ['click','touchstart','keydown','scroll'].forEach(ev =>
-        document.removeEventListener(ev, unlockAudio)
-      );
-    }).catch(() => {
-      // Se fallisce, riprova al prossimo gesto
-    });
+      audioReady = true;
+      console.log('[impact] audio sbloccato');
+      ['click','touchstart','keydown','scroll','pointerdown'].forEach(ev =>
+        document.removeEventListener(ev, tryUnlock, true));
+    }).catch(() => {});
   }
-  ['click','touchstart','keydown','scroll'].forEach(ev =>
-    document.addEventListener(ev, unlockAudio, { once: false, passive: true })
-  );
+  ['click','touchstart','keydown','scroll','pointerdown'].forEach(ev =>
+    document.addEventListener(ev, tryUnlock, { capture: true, passive: true }));
 
   function shakePage() {
     document.body.classList.remove('shake');
@@ -6953,40 +6950,48 @@ body.shake {
   }
 
   function playExplosion() {
-    // Riporta l'audio all'inizio e lo riproduce, se possibile
+    if (!audioReady) {
+      console.log('[impact] suono non sbloccato');
+      return;
+    }
     try {
+      sound.pause();
       sound.currentTime = 0;
-      sound.volume = 0.6; // regola qui il volume (0.0 – 1.0)
+      sound.volume = 0.6;
       const p = sound.play();
-      if (p !== undefined) {
-        p.catch(() => { /* autoplay bloccato: ignora silenziosamente */ });
-      }
+      if (p && p.catch) p.catch(e => console.log('[impact] play err:', e.name));
     } catch (e) { /* ignora */ }
   }
 
+  function triggerImpact() {
+    shakePage();
+    if (SOUND_DELAY_MS === 0) playExplosion();
+    else setTimeout(playExplosion, SOUND_DELAY_MS);
+    console.log('[impact] triggered at SMIL t=' + svg.getCurrentTime().toFixed(3) + 's');
+  }
+
+  // --- Avvio ---
   function startCollision() {
-    // 1) Avvia tutte le animazioni SMIL nello stesso istante
-    animations.forEach(a => {
-      try { a.beginElement(); } catch (e) {}
-    });
+    animations.forEach(a => { try { a.beginElement(); } catch (e) {} });
 
-    // 2) Programma la prima scossa + suono esattamente a IMPACT_AT_MS
-    setTimeout(() => {
-      shakePage();
-      playExplosion();
-      // 3) Poi ogni CYCLE_MS
-      setInterval(() => {
-        shakePage();
-        playExplosion();
-      }, CYCLE_MS);
-    }, IMPACT_AT_MS);
+    // Loop di sincronizzazione: guarda il tempo SMIL, non setTimeout
+    let lastPhase = -1;
+    function watch() {
+      const t = svg.getCurrentTime();
+      // La fase è quanti "impatto" sono passati: 0 fino a 12s, 1 da 12 a 36s, ecc.
+      // Impatto avviene ai tempi IMPACT_AT_S, IMPACT_AT_S + CYCLE_S, ...
+      const cycleIndex = Math.floor((t - IMPACT_AT_S) / CYCLE_S);
+      if (cycleIndex !== lastPhase) {
+        if (cycleIndex >= 0) triggerImpact();
+        lastPhase = cycleIndex;
+      }
+      requestAnimationFrame(watch);
+    }
+    watch();
   }
 
-  if (document.readyState === 'complete') {
-    startCollision();
-  } else {
-    window.addEventListener('load', startCollision);
-  }
+  if (document.readyState === 'complete') startCollision();
+  else window.addEventListener('load', startCollision);
 })();
 </script>
   </body>
