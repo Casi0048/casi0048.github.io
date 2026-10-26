@@ -3881,25 +3881,6 @@ body.light-theme .music-panel {
     animation: none !important;
   }
 }
-/* Scuotimento pagina all'impatto delle comete */
-@keyframes pageShake {
-  0%   { transform: translate(0, 0); }
-  15%  { transform: translate(-8px, 6px); }
-  30%  { transform: translate(8px, -6px); }
-  45%  { transform: translate(-6px, -4px); }
-  60%  { transform: translate(6px, 4px); }
-  75%  { transform: translate(-4px, 2px); }
-  100% { transform: translate(0, 0); }
-}
-
-body.shake {
-  animation: pageShake 0.4s cubic-bezier(.36,.07,.19,.97) both;
-  overflow: hidden;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  body.shake { animation: none; }
-}
     </style>
   </head>
 
@@ -4231,15 +4212,11 @@ body.shake {
     </g>
 <!-- ============================================================ -->
 <!-- COLLISIONE CINEMATOGRAFICA FRA DUE COMETE                     -->
-<!-- Frammenti colorati + vibrazione interna dell'SVG              -->
+<!-- Sostituisce l'intero vecchio blocco collision, non le defs.    -->
+<!-- Richiede i gradienti/filtri già presenti:                     -->
+<!-- shootingTrailWarm, shootingTrailGrad, starGlow, collisionGlow -->
 <!-- ============================================================ -->
 <g id="collision">
-
-  <!-- Vibrazione locale dell'SVG al momento dell'impatto -->
-  <animateTransform attributeName="transform" type="translate"
-    values="0 0; 0 0; 4 -3; -4 3; 3 -2; -3 2; 2 -1; -2 1; 0 0"
-    keyTimes="0; 0.5; 0.503; 0.508; 0.514; 0.520; 0.526; 0.532; 0.54"
-    dur="24s" begin="indefinite" repeatCount="indefinite"/>
 
   <!-- Cometa A: entra dall'alto a destra; grafica ridotta al 25% -->
   <g opacity="0">
@@ -4254,11 +4231,11 @@ body.shake {
     <animateTransform attributeName="transform" type="translate"
       values="2200 -200; 2200 -200; 1670 -42; 960 220; 960 220"
       keyTimes="0; 0.25; 0.37; 0.5; 1"
-      dur="24s" begin="indefinite" repeatCount="indefinite"/>
+      dur="24s" begin="0s" repeatCount="indefinite"/>
     <animate attributeName="opacity"
       values="0; 0; 0.9; 1; 0; 0"
       keyTimes="0; 0.25; 0.37; 0.485; 0.51; 1"
-      dur="24s" begin="indefinite" repeatCount="indefinite"/>
+      dur="24s" begin="0s" repeatCount="indefinite"/>
   </g>
 
   <!-- Cometa B: entra dal basso a sinistra; grafica ridotta al 25% -->
@@ -4276,21 +4253,21 @@ body.shake {
     <animateTransform attributeName="transform" type="translate"
       values="-300 1200; -300 1200; 330 680; 960 220; 960 220"
       keyTimes="0; 0.25; 0.37; 0.5; 1"
-      dur="24s" begin="indefinite" repeatCount="indefinite"/>
+      dur="24s" begin="0s" repeatCount="indefinite"/>
     <animate attributeName="opacity"
       values="0; 0; 0.9; 1; 0; 0"
       keyTimes="0; 0.25; 0.37; 0.485; 0.51; 1"
-      dur="24s" begin="indefinite" repeatCount="indefinite"/>
+      dur="24s" begin="0s" repeatCount="indefinite"/>
   </g>
 
-  <!-- Pre-bagliore: breve tensione prima dell'impatto -->
+  <!-- Bagliore che precede l'impatto: breve tensione -->
   <circle cx="960" cy="220" r="0" fill="#bcefff" opacity="0">
     <animate attributeName="r" values="0; 0; 18; 30; 0"
       keyTimes="0; 0.485; 0.493; 0.5; 1"
-      dur="24s" begin="indefinite" repeatCount="indefinite"/>
+      dur="24s" begin="0s" repeatCount="indefinite"/>
     <animate attributeName="opacity" values="0; 0; 0.65; 0; 0"
       keyTimes="0; 0.485; 0.493; 0.505; 1"
-      dur="24s" begin="indefinite" repeatCount="indefinite"/>
+      dur="24s" begin="0s" repeatCount="indefinite"/>
   </circle>
 
   <!-- Nucleo caldo dell'esplosione -->
@@ -4303,7 +4280,7 @@ body.shake {
       dur="24s" begin="0s" repeatCount="indefinite"/>
   </circle>
 
-  <!-- Flash centrale -->
+  <!-- Flash centrale: intenso ma brevissimo -->
   <circle cx="960" cy="220" r="0" fill="#ffffff" opacity="0">
     <animate attributeName="r" values="0; 0; 32; 52; 0; 0"
       keyTimes="0; 0.5; 0.505; 0.515; 0.535; 1"
@@ -4336,7 +4313,7 @@ body.shake {
       dur="24s" begin="0s" repeatCount="indefinite"/>
   </circle>
 
-  <!-- Residuo luminoso -->
+  <!-- Residuo luminoso: la scena non si spegne di colpo -->
   <circle cx="960" cy="220" r="95" fill="url(#collisionGlow)" opacity="0">
     <animate attributeName="r" values="0; 0; 95; 145; 120; 70; 0; 0"
       keyTimes="0; 0.5; 0.54; 0.6; 0.68; 0.78; 0.86; 1"
@@ -4346,52 +4323,43 @@ body.shake {
       dur="24s" begin="0s" repeatCount="indefinite"/>
   </circle>
 
-  <!-- FRAMMENTI RADIALI: 9 scintille con colori differenziati -->
-
-  <!-- Caldi / dorati (3) -->
-  <circle cx="960" cy="220" r="3.2" fill="#fff4d6" opacity="0">
-    <animate attributeName="opacity" values="0; 0; 1; 0.8; 0.35; 0" keyTimes="0; 0.5; 0.515; 0.61; 0.75; 1" dur="24s" repeatCount="indefinite"/>
-    <animateTransform attributeName="transform" type="translate" values="0 0; 0 0; 120 -35; 260 -80; 390 -115; 390 -115" keyTimes="0; 0.5; 0.53; 0.61; 0.72; 1" dur="24s" repeatCount="indefinite"/>
-  </circle>
-  <circle cx="960" cy="220" r="2.6" fill="#f5d99b" opacity="0">
-    <animate attributeName="opacity" values="0; 0; 1; 0.7; 0.3; 0" keyTimes="0; 0.5; 0.515; 0.62; 0.76; 1" dur="24s" repeatCount="indefinite"/>
-    <animateTransform attributeName="transform" type="translate" values="0 0; 0 0; 95 -95; 200 -200; 285 -285; 285 -285" keyTimes="0; 0.5; 0.53; 0.62; 0.74; 1" dur="24s" repeatCount="indefinite"/>
-  </circle>
-  <circle cx="960" cy="220" r="1.7" fill="#ffe7ad" opacity="0">
-    <animate attributeName="opacity" values="0; 0; 1; 0.55; 0.2; 0" keyTimes="0; 0.5; 0.515; 0.61; 0.75; 1" dur="24s" repeatCount="indefinite"/>
-    <animateTransform attributeName="transform" type="translate" values="0 0; 0 0; 155 75; 315 150; 455 215; 455 215" keyTimes="0; 0.5; 0.53; 0.62; 0.74; 1" dur="24s" repeatCount="indefinite"/>
-  </circle>
-
-  <!-- Freddi / azzurri (3) -->
-  <circle cx="960" cy="220" r="2.2" fill="#bcefff" opacity="0">
-    <animate attributeName="opacity" values="0; 0; 1; 0.7; 0.3; 0" keyTimes="0; 0.5; 0.515; 0.6; 0.73; 1" dur="24s" repeatCount="indefinite"/>
-    <animateTransform attributeName="transform" type="translate" values="0 0; 0 0; 45 110; 100 245; 150 365; 150 365" keyTimes="0; 0.5; 0.53; 0.61; 0.72; 1" dur="24s" repeatCount="indefinite"/>
-  </circle>
-  <circle cx="960" cy="220" r="1.8" fill="#e2fbff" opacity="0">
-    <animate attributeName="opacity" values="0; 0; 1; 0.6; 0.25; 0" keyTimes="0; 0.5; 0.515; 0.6; 0.74; 1" dur="24s" repeatCount="indefinite"/>
-    <animateTransform attributeName="transform" type="translate" values="0 0; 0 0; -150 -25; -300 -50; -430 -70; -430 -70" keyTimes="0; 0.5; 0.53; 0.61; 0.73; 1" dur="24s" repeatCount="indefinite"/>
-  </circle>
-  <circle cx="960" cy="220" r="2.4" fill="#c7f7ff" opacity="0">
-    <animate attributeName="opacity" values="0; 0; 1; 0.6; 0.25; 0" keyTimes="0; 0.5; 0.515; 0.62; 0.76; 1" dur="24s" repeatCount="indefinite"/>
-    <animateTransform attributeName="transform" type="translate" values="0 0; 0 0; -125 -110; -245 -220; -355 -320; -355 -320" keyTimes="0; 0.5; 0.53; 0.62; 0.74; 1" dur="24s" repeatCount="indefinite"/>
-  </circle>
-
-  <!-- Neutri / bianchi (3) -->
-  <circle cx="960" cy="220" r="2.8" fill="#ffffff" opacity="0">
-    <animate attributeName="opacity" values="0; 0; 1; 0.65; 0.25; 0" keyTimes="0; 0.5; 0.515; 0.62; 0.76; 1" dur="24s" repeatCount="indefinite"/>
-    <animateTransform attributeName="transform" type="translate" values="0 0; 0 0; -95 70; -215 160; -330 245; -330 245" keyTimes="0; 0.5; 0.53; 0.62; 0.74; 1" dur="24s" repeatCount="indefinite"/>
-  </circle>
-  <circle cx="960" cy="220" r="2" fill="#f8fbff" opacity="0">
-    <animate attributeName="opacity" values="0; 0; 1; 0.65; 0.25; 0" keyTimes="0; 0.5; 0.515; 0.61; 0.75; 1" dur="24s" repeatCount="indefinite"/>
-    <animateTransform attributeName="transform" type="translate" values="0 0; 0 0; -40 -120; -90 -260; -130 -390; -130 -390" keyTimes="0; 0.5; 0.53; 0.62; 0.74; 1" dur="24s" repeatCount="indefinite"/>
-  </circle>
-  <circle cx="960" cy="220" r="1.5" fill="#effcff" opacity="0">
-    <animate attributeName="opacity" values="0; 0; 1; 0.55; 0.2; 0" keyTimes="0; 0.5; 0.515; 0.61; 0.75; 1" dur="24s" repeatCount="indefinite"/>
-    <animateTransform attributeName="transform" type="translate" values="0 0; 0 0; 60 -140; 130 -300; 190 -430; 190 -430" keyTimes="0; 0.5; 0.53; 0.62; 0.74; 1" dur="24s" repeatCount="indefinite"/>
-  </circle>
-
+  <!-- Frammenti radiali: traiettorie e velocità differenziate -->
+  <g fill="#fff4d6">
+    <circle cx="960" cy="220" r="3.2" opacity="0">
+      <animate attributeName="opacity" values="0; 0; 1; 0.8; 0.35; 0" keyTimes="0; 0.5; 0.515; 0.61; 0.75; 1" dur="24s" repeatCount="indefinite"/>
+      <animateTransform attributeName="transform" type="translate" values="0 0; 0 0; 120 -35; 260 -80; 390 -115; 390 -115" keyTimes="0; 0.5; 0.53; 0.61; 0.72; 1" dur="24s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="960" cy="220" r="2.2" opacity="0">
+      <animate attributeName="opacity" values="0; 0; 1; 0.7; 0.3; 0" keyTimes="0; 0.5; 0.515; 0.6; 0.73; 1" dur="24s" repeatCount="indefinite"/>
+      <animateTransform attributeName="transform" type="translate" values="0 0; 0 0; 45 110; 100 245; 150 365; 150 365" keyTimes="0; 0.5; 0.53; 0.61; 0.72; 1" dur="24s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="960" cy="220" r="2.8" opacity="0">
+      <animate attributeName="opacity" values="0; 0; 1; 0.65; 0.25; 0" keyTimes="0; 0.5; 0.515; 0.62; 0.76; 1" dur="24s" repeatCount="indefinite"/>
+      <animateTransform attributeName="transform" type="translate" values="0 0; 0 0; -95 70; -215 160; -330 245; -330 245" keyTimes="0; 0.5; 0.53; 0.62; 0.74; 1" dur="24s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="960" cy="220" r="1.8" opacity="0">
+      <animate attributeName="opacity" values="0; 0; 1; 0.6; 0.25; 0" keyTimes="0; 0.5; 0.515; 0.6; 0.74; 1" dur="24s" repeatCount="indefinite"/>
+      <animateTransform attributeName="transform" type="translate" values="0 0; 0 0; -150 -25; -300 -50; -430 -70; -430 -70" keyTimes="0; 0.5; 0.53; 0.61; 0.73; 1" dur="24s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="960" cy="220" r="2.6" opacity="0">
+      <animate attributeName="opacity" values="0; 0; 1; 0.7; 0.3; 0" keyTimes="0; 0.5; 0.515; 0.62; 0.76; 1" dur="24s" repeatCount="indefinite"/>
+      <animateTransform attributeName="transform" type="translate" values="0 0; 0 0; 95 -95; 200 -200; 285 -285; 285 -285" keyTimes="0; 0.5; 0.53; 0.62; 0.74; 1" dur="24s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="960" cy="220" r="2" opacity="0">
+      <animate attributeName="opacity" values="0; 0; 1; 0.65; 0.25; 0" keyTimes="0; 0.5; 0.515; 0.61; 0.75; 1" dur="24s" repeatCount="indefinite"/>
+      <animateTransform attributeName="transform" type="translate" values="0 0; 0 0; -40 -120; -90 -260; -130 -390; -130 -390" keyTimes="0; 0.5; 0.53; 0.62; 0.74; 1" dur="24s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="960" cy="220" r="1.7" opacity="0">
+      <animate attributeName="opacity" values="0; 0; 1; 0.55; 0.2; 0" keyTimes="0; 0.5; 0.515; 0.61; 0.75; 1" dur="24s" repeatCount="indefinite"/>
+      <animateTransform attributeName="transform" type="translate" values="0 0; 0 0; 155 75; 315 150; 455 215; 455 215" keyTimes="0; 0.5; 0.53; 0.62; 0.74; 1" dur="24s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="960" cy="220" r="2.4" opacity="0">
+      <animate attributeName="opacity" values="0; 0; 1; 0.6; 0.25; 0" keyTimes="0; 0.5; 0.515; 0.62; 0.76; 1" dur="24s" repeatCount="indefinite"/>
+      <animateTransform attributeName="transform" type="translate" values="0 0; 0 0; -125 -110; -245 -220; -355 -320; -355 -320" keyTimes="0; 0.5; 0.53; 0.62; 0.74; 1" dur="24s" repeatCount="indefinite"/>
+    </circle>
+  </g>
 </g>
-</g>
+
 
   <!-- ============================================================ -->
   <!-- 6. VIGNETTATURA (ultima: scurisce i bordi)                   -->
@@ -6904,96 +6872,6 @@ body.shake {
         }))
       }()
     </script>
-
-
-    <audio id="collisionSound" preload="auto" src="/suoni/explosion-1.mp3"></audio>
-    <script>
-(function () {
-  if (window.matchMedia('(max-width: 768px)').matches) return;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-  const CYCLE_S       = 24;     // durata ciclo SMIL (deve combaciare con dur="24s")
-  const IMPACT_AT_S   = 12;     // secondo dell'impatto nel ciclo
-  const SHAKE_MS      = 400;
-  const SOUND_DELAY_MS = 0;     // ⇦ regola qui se il suono è in anticipo/ritardo
-
-  const collision = document.getElementById('collision');
-  const sound     = document.getElementById('collisionSound');
-  const svg       = document.querySelector('.cosmic-sky');
-  if (!collision || !sound || !svg) return;
-
-  const animations = collision.querySelectorAll('animate, animateTransform');
-
-  // --- Sblocco audio al primo gesto utente ---
-  let audioReady = false;
-  function tryUnlock() {
-    if (audioReady) return;
-    sound.muted = true;
-    sound.play().then(() => {
-      sound.pause();
-      sound.currentTime = 0;
-      sound.muted = false;
-      audioReady = true;
-      console.log('[impact] audio sbloccato');
-      ['click','touchstart','keydown','scroll','pointerdown'].forEach(ev =>
-        document.removeEventListener(ev, tryUnlock, true));
-    }).catch(() => {});
-  }
-  ['click','touchstart','keydown','scroll','pointerdown'].forEach(ev =>
-    document.addEventListener(ev, tryUnlock, { capture: true, passive: true }));
-
-  function shakePage() {
-    document.body.classList.remove('shake');
-    void document.body.offsetWidth;
-    document.body.classList.add('shake');
-    setTimeout(() => document.body.classList.remove('shake'), SHAKE_MS);
-  }
-
-  function playExplosion() {
-    if (!audioReady) {
-      console.log('[impact] suono non sbloccato');
-      return;
-    }
-    try {
-      sound.pause();
-      sound.currentTime = 0;
-      sound.volume = 0.6;
-      const p = sound.play();
-      if (p && p.catch) p.catch(e => console.log('[impact] play err:', e.name));
-    } catch (e) { /* ignora */ }
-  }
-
-  function triggerImpact() {
-    shakePage();
-    if (SOUND_DELAY_MS === 0) playExplosion();
-    else setTimeout(playExplosion, SOUND_DELAY_MS);
-    console.log('[impact] triggered at SMIL t=' + svg.getCurrentTime().toFixed(3) + 's');
-  }
-
-  // --- Avvio ---
-  function startCollision() {
-    animations.forEach(a => { try { a.beginElement(); } catch (e) {} });
-
-    // Loop di sincronizzazione: guarda il tempo SMIL, non setTimeout
-    let lastPhase = -1;
-    function watch() {
-      const t = svg.getCurrentTime();
-      // La fase è quanti "impatto" sono passati: 0 fino a 12s, 1 da 12 a 36s, ecc.
-      // Impatto avviene ai tempi IMPACT_AT_S, IMPACT_AT_S + CYCLE_S, ...
-      const cycleIndex = Math.floor((t - IMPACT_AT_S) / CYCLE_S);
-      if (cycleIndex !== lastPhase) {
-        if (cycleIndex >= 0) triggerImpact();
-        lastPhase = cycleIndex;
-      }
-      requestAnimationFrame(watch);
-    }
-    watch();
-  }
-
-  if (document.readyState === 'complete') startCollision();
-  else window.addEventListener('load', startCollision);
-})();
-</script>
   </body>
 
 </html>
