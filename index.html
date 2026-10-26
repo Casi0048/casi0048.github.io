@@ -6649,7 +6649,6 @@ body.light-theme .music-panel {
         })), t && t.addEventListener("click", g)
       }()
     </script>
-    <audio id="collisionSound" preload="auto" src="/suoni/explosion-1.mp3"></audio>
     <script>
       ! function() {
         "use strict";
@@ -6874,6 +6873,110 @@ body.light-theme .music-panel {
         }))
       }()
     </script>
+        <audio id="collisionSound" preload="auto" src="/suoni/explosion-1.mp3"></audio>
+<script>
+(function () {
+  console.log('[impact] script avviato');
+
+  if (window.matchMedia('(max-width: 768px)').matches) {
+    console.log('[impact] viewport < 768, script esce');
+    return;
+  }
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    console.log('[impact] reduced-motion attivo, script esce');
+    return;
+  }
+
+  const CYCLE_S       = 24;
+  const IMPACT_AT_S   = 12;
+  const SHAKE_MS      = 400;
+  const SOUND_DELAY_MS = 0;
+
+  const collision = document.getElementById('collision');
+  const sound     = document.getElementById('collisionSound');
+  const svg       = document.querySelector('.cosmic-sky');
+
+  console.log('[impact] collision:', !!collision, '| sound:', !!sound, '| svg:', !!svg);
+
+  if (!collision || !sound || !svg) {
+    console.log('[impact] elemento mancante, script esce');
+    return;
+  }
+
+  const animations = collision.querySelectorAll('animate, animateTransform');
+  console.log('[impact] animazioni trovate:', animations.length);
+
+  // Sblocco audio al primo gesto utente
+  let audioReady = false;
+  function tryUnlock() {
+    if (audioReady) return;
+    sound.muted = true;
+    sound.play().then(() => {
+      sound.pause();
+      sound.currentTime = 0;
+      sound.muted = false;
+      audioReady = true;
+      console.log('[impact] audio sbloccato');
+      ['click','touchstart','keydown','scroll','pointerdown'].forEach(ev =>
+        document.removeEventListener(ev, tryUnlock, true));
+    }).catch(e => console.log('[impact] unlock fallito:', e.name));
+  }
+  ['click','touchstart','keydown','scroll','pointerdown'].forEach(ev =>
+    document.addEventListener(ev, tryUnlock, { capture: true, passive: true }));
+
+  function shakePage() {
+    document.body.classList.remove('shake');
+    void document.body.offsetWidth;
+    document.body.classList.add('shake');
+    setTimeout(() => document.body.classList.remove('shake'), SHAKE_MS);
+  }
+
+  function playExplosion() {
+    if (!audioReady) {
+      console.log('[impact] suono non sbloccato (serve un click)');
+      return;
+    }
+    try {
+      sound.pause();
+      sound.currentTime = 0;
+      sound.volume = 0.6;
+      const p = sound.play();
+      if (p && p.catch) p.catch(e => console.log('[impact] play err:', e.name));
+    } catch (e) {
+      console.log('[impact] errore play:', e);
+    }
+  }
+
+  function triggerImpact() {
+    console.log('[impact] TRIGGER a SMIL t=' + svg.getCurrentTime().toFixed(3) + 's');
+    shakePage();
+    if (SOUND_DELAY_MS === 0) playExplosion();
+    else setTimeout(playExplosion, SOUND_DELAY_MS);
+  }
+
+  function startCollision() {
+    console.log('[impact] avvio collisione');
+    animations.forEach(a => { try { a.beginElement(); } catch (e) {} });
+
+    // Sincronizza con il tempo reale delle animazioni SMIL
+    let lastCycle = -1;
+    function watch() {
+      const t = svg.getCurrentTime();
+      // Impatto ai tempi 12s, 36s, 60s, ... = 12 + n*24
+      const cycleIndex = Math.floor((t - IMPACT_AT_S) / CYCLE_S);
+      if (cycleIndex !== lastCycle) {
+        if (cycleIndex >= 0) triggerImpact();
+        lastCycle = cycleIndex;
+      }
+      requestAnimationFrame(watch);
+    }
+    watch();
+  }
+
+  if (document.readyState === 'complete') startCollision();
+  else window.addEventListener('load', startCollision);
+})();
+</script>
   </body>
 
 </html>
