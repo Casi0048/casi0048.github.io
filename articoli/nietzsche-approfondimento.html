@@ -20,12 +20,6 @@
     <meta property="og:description" content="Un viaggio profondo nel pensiero di Friedrich Nietzsche. La morte di Dio, la volontà di potenza, l'Übermensch, l'eterno ritorno.">
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://www.echidisofia.org/articoli/nietzsche.html">
-    <meta property="og:image" content="https://www.echidisofia.org/immagini/nietzsche-og.jpg">
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Nietzsche — Il Martello della Filosofia">
-    <meta name="twitter:description" content="Un viaggio profondo nel pensiero di Friedrich Nietzsche.">
 
     <!-- Theme -->
     <meta name="theme-color" content="#0a0806">
@@ -48,37 +42,129 @@
             box-sizing: border-box;
         }
 
+        /* ----------------------------------------------------------
+           VARIABILI — TUTTE LE PALETTE DELLE 4 MODALITÀ
+           ---------------------------------------------------------- */
+
         :root {
-            --gold: #d4a857;
-            --gold-dim: rgba(212, 168, 87, 0.15);
-            --gold-glow: rgba(212, 168, 87, 0.25);
-            --dark: #0a0806;
-            --dark-soft: #14100c;
-            --dark-glass: rgba(10, 8, 6, 0.75);
+            /* Tema predefinito: Notte */
+            --bg: #0a0806;
+            --bg-soft: #14100c;
+            --bg-elevated: #1a1511;
+            --bg-nav: rgba(10, 8, 6, 0.75);
+            --surface: rgba(255, 255, 255, 0.02);
+            --surface-hover: rgba(255, 255, 255, 0.04);
+
             --text: #e8ddd0;
             --text-soft: #b8aea2;
             --text-muted: #7a7064;
-            --serif: 'Cormorant Garamond', 'Georgia', serif;
-            --sans: 'Inter', 'Arial', sans-serif;
+
+            --gold-rgb: 212, 168, 87;
+            --gold: rgb(var(--gold-rgb));
+
+            --border: rgba(var(--gold-rgb), 0.08);
+            --border-strong: rgba(var(--gold-rgb), 0.18);
+
+            --font-size-body: 19px;
+            --line-height: 1.8;
+            --font-body: 'Cormorant Garamond', 'Georgia', serif;
+            --font-heading: 'Cormorant Garamond', 'Georgia', serif;
+
+            --shadow-soft: rgba(0, 0, 0, 0.3);
+            --shadow-strong: rgba(0, 0, 0, 0.5);
+
             --transition-smooth: cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        /* Modalità Chiaro — carta color crema */
+        body.mode-chiaro {
+            --bg: #faf6ef;
+            --bg-soft: #f2ead9;
+            --bg-elevated: #ede0cc;
+            --bg-nav: rgba(250, 246, 239, 0.9);
+            --surface: rgba(0, 0, 0, 0.02);
+            --surface-hover: rgba(0, 0, 0, 0.04);
+
+            --text: #2a1f14;
+            --text-soft: #4a3a28;
+            --text-muted: #7a6550;
+
+            --gold-rgb: 138, 100, 32;
+
+            --border: rgba(var(--gold-rgb), 0.2);
+            --border-strong: rgba(var(--gold-rgb), 0.35);
+
+            --shadow-soft: rgba(80, 60, 30, 0.08);
+            --shadow-strong: rgba(80, 60, 30, 0.15);
+        }
+
+        /* Modalità Contemplativo — seppia scuro, lettura lenta */
+        body.mode-contemplativo {
+            --bg: #1a1410;
+            --bg-soft: #241c14;
+            --bg-elevated: #2e2218;
+            --bg-nav: rgba(26, 20, 16, 0.85);
+            --surface: rgba(255, 255, 255, 0.025);
+            --surface-hover: rgba(255, 255, 255, 0.05);
+
+            --text: #ede0cc;
+            --text-soft: #c0ae94;
+            --text-muted: #8a7a66;
+
+            --gold-rgb: 220, 178, 120;
+
+            --border: rgba(var(--gold-rgb), 0.1);
+            --border-strong: rgba(var(--gold-rgb), 0.22);
+
+            --font-size-body: 20px;
+            --line-height: 1.95;
+        }
+
+        /* Modalità Alta leggibilità — massimo contrasto */
+        body.mode-alta-leggibilita {
+            --bg: #ffffff;
+            --bg-soft: #f7f7f7;
+            --bg-elevated: #f0f0f0;
+            --bg-nav: rgba(255, 255, 255, 0.96);
+            --surface: rgba(0, 0, 0, 0.02);
+            --surface-hover: rgba(0, 0, 0, 0.05);
+
+            --text: #0a0a0a;
+            --text-soft: #333333;
+            --text-muted: #666666;
+
+            --gold-rgb: 0, 100, 70;
+
+            --border: rgba(var(--gold-rgb), 0.25);
+            --border-strong: rgba(var(--gold-rgb), 0.5);
+
+            --font-size-body: 20px;
+            --line-height: 1.85;
+            --font-body: 'Inter', 'Arial', sans-serif;
+            --font-heading: 'Inter', 'Arial', sans-serif;
+
+            --shadow-soft: rgba(0, 0, 0, 0.06);
+            --shadow-strong: rgba(0, 0, 0, 0.12);
         }
 
         html {
             scroll-behavior: smooth;
+            background: var(--bg);
         }
 
         body {
-            font-family: var(--serif);
-            font-size: 19px;
-            line-height: 1.8;
+            font-family: var(--font-body);
+            font-size: var(--font-size-body);
+            line-height: var(--line-height);
             color: var(--text);
-            background: var(--dark);
+            background: var(--bg);
             overflow-x: hidden;
             min-height: 100vh;
+            transition: background-color 0.4s ease, color 0.4s ease;
         }
 
         /* ============================================================
-             PARTICLES BACKGROUND — COSMIC ATMOSPHERE
+             PARTICLES BACKGROUND — solo nelle modalità scure
              ============================================================ */
 
         #particles-canvas {
@@ -89,10 +175,16 @@
             height: 100%;
             z-index: 0;
             pointer-events: none;
-            background:
-                radial-gradient(ellipse at 30% 20%, rgba(60, 40, 20, 0.15), transparent 50%),
-                radial-gradient(ellipse at 70% 80%, rgba(30, 20, 50, 0.10), transparent 40%),
-                var(--dark);
+            background: transparent;
+            transition: opacity 0.4s ease;
+        }
+
+        body.mode-chiaro #particles-canvas {
+            opacity: 0.12;
+        }
+
+        body.mode-alta-leggibilita #particles-canvas {
+            display: none;
         }
 
         /* ============================================================
@@ -104,15 +196,15 @@
             top: 0;
             left: 0;
             height: 3px;
-            background: linear-gradient(90deg, var(--gold), #e8c87a, var(--gold));
+            background: linear-gradient(90deg, var(--gold), rgba(var(--gold-rgb), 0.6), var(--gold));
             z-index: 10000;
             width: 0%;
             transition: width 0.1s ease-out;
-            box-shadow: 0 0 20px rgba(212, 168, 87, 0.25);
+            box-shadow: 0 0 20px rgba(var(--gold-rgb), 0.25);
         }
 
         /* ============================================================
-             NAVIGATION — MINIMAL
+             NAVIGATION
              ============================================================ */
 
         .nav-top {
@@ -120,16 +212,17 @@
             top: 0;
             left: 0;
             width: 100%;
-            padding: 18px 32px;
+            padding: 14px 24px;
             z-index: 9999;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(10, 8, 6, 0.60);
+            gap: 16px;
+            background: var(--bg-nav);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(212, 168, 87, 0.08);
-            transition: transform 0.4s var(--transition-smooth);
+            border-bottom: 1px solid var(--border);
+            transition: transform 0.4s var(--transition-smooth), background 0.4s ease;
         }
 
         .nav-top.hidden {
@@ -137,14 +230,15 @@
         }
 
         .nav-brand {
-            font-family: var(--sans);
+            font-family: 'Inter', sans-serif;
             font-size: 0.62rem;
             letter-spacing: 4px;
             text-transform: uppercase;
             color: var(--gold);
             text-decoration: none;
-            opacity: 0.7;
+            opacity: 0.8;
             transition: opacity 0.3s ease;
+            white-space: nowrap;
         }
 
         .nav-brand:hover {
@@ -158,32 +252,55 @@
         .nav-actions {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 10px;
         }
 
-        .nav-btn {
-            background: none;
-            border: 1px solid rgba(212, 168, 87, 0.15);
-            border-radius: 20px;
-            padding: 6px 14px;
-            font-family: var(--sans);
-            font-size: 0.58rem;
-            letter-spacing: 1.2px;
-            text-transform: uppercase;
-            color: var(--text-muted);
+        /* ----------------------------------------------------------
+           SELETTORE MODALITÀ DI LETTURA
+           ---------------------------------------------------------- */
+
+        .reading-modes {
+            display: flex;
+            gap: 2px;
+            padding: 3px;
+            border: 1px solid var(--border-strong);
+            border-radius: 100px;
+            background: var(--surface);
+        }
+
+        .mode-btn {
+            width: 32px;
+            height: 28px;
+            border: 0;
+            border-radius: 14px;
+            background: transparent;
+            font-size: 0.85rem;
             cursor: pointer;
-            transition: all 0.3s ease;
-            background: rgba(212, 168, 87, 0.04);
+            transition: background 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
+            opacity: 0.55;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .nav-btn:hover {
-            border-color: rgba(212, 168, 87, 0.4);
-            color: var(--gold);
-            background: rgba(212, 168, 87, 0.08);
+        .mode-btn:hover {
+            opacity: 1;
+            background: rgba(var(--gold-rgb), 0.12);
+        }
+
+        .mode-btn.active {
+            opacity: 1;
+            background: rgba(var(--gold-rgb), 0.18);
+            box-shadow: 0 0 10px rgba(var(--gold-rgb), 0.2);
+        }
+
+        .mode-btn:focus-visible {
+            outline: 2px solid var(--gold);
+            outline-offset: 2px;
         }
 
         /* ============================================================
-             HERO — IL MARTELLO
+             HERO
              ============================================================ */
 
         .hero {
@@ -203,9 +320,10 @@
             position: absolute;
             inset: 0;
             background:
-                radial-gradient(ellipse at 50% 30%, rgba(212, 168, 87, 0.04), transparent 60%),
-                radial-gradient(ellipse at 80% 80%, rgba(60, 40, 20, 0.08), transparent 50%);
+                radial-gradient(ellipse at 50% 30%, rgba(var(--gold-rgb), 0.04), transparent 60%),
+                radial-gradient(ellipse at 80% 80%, rgba(var(--gold-rgb), 0.02), transparent 50%);
             z-index: 0;
+            pointer-events: none;
         }
 
         .hero-content {
@@ -215,12 +333,12 @@
         }
 
         .hero-tag {
-            font-family: var(--sans);
+            font-family: 'Inter', sans-serif;
             font-size: 0.62rem;
             letter-spacing: 6px;
             text-transform: uppercase;
             color: var(--gold);
-            opacity: 0.5;
+            opacity: 0.65;
             margin-bottom: 30px;
             animation: fadeInUp 1.2s var(--transition-smooth) both;
         }
@@ -228,24 +346,19 @@
         .hero-symbol {
             font-size: 4.2rem;
             color: var(--gold);
-            opacity: 0.15;
+            opacity: 0.2;
             margin-bottom: 10px;
             animation: floatHammer 6s ease-in-out infinite;
             display: block;
         }
 
         @keyframes floatHammer {
-            0%,
-            100% {
-                transform: translateY(0) rotate(-3deg);
-            }
-            50% {
-                transform: translateY(-12px) rotate(3deg);
-            }
+            0%, 100% { transform: translateY(0) rotate(-3deg); }
+            50% { transform: translateY(-12px) rotate(3deg); }
         }
 
         .hero h1 {
-            font-family: var(--serif);
+            font-family: var(--font-heading);
             font-size: clamp(3.2rem, 10vw, 7.5rem);
             font-weight: 700;
             letter-spacing: -0.02em;
@@ -256,7 +369,7 @@
 
         .hero h1 .gold {
             color: var(--gold);
-            text-shadow: 0 0 40px rgba(212, 168, 87, 0.10);
+            text-shadow: 0 0 40px rgba(var(--gold-rgb), 0.10);
         }
 
         .hero h1 .small {
@@ -274,7 +387,7 @@
             font-style: italic;
             color: var(--text-soft);
             margin-top: 28px;
-            opacity: 0.8;
+            opacity: 0.85;
             animation: fadeInUp 1.6s var(--transition-smooth) 0.2s both;
             max-width: 680px;
             margin-left: auto;
@@ -286,10 +399,10 @@
             font-size: clamp(1.4rem, 2.5vw, 2rem);
             font-style: italic;
             color: var(--gold);
-            opacity: 0.6;
+            opacity: 0.7;
             padding: 20px 30px;
-            border-top: 1px solid rgba(212, 168, 87, 0.08);
-            border-bottom: 1px solid rgba(212, 168, 87, 0.08);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
             display: inline-block;
             animation: fadeInUp 1.8s var(--transition-smooth) 0.4s both;
         }
@@ -300,37 +413,24 @@
             left: 50%;
             transform: translateX(-50%);
             z-index: 2;
-            font-family: var(--sans);
+            font-family: 'Inter', sans-serif;
             font-size: 0.55rem;
             letter-spacing: 3px;
             text-transform: uppercase;
             color: var(--text-muted);
-            opacity: 0.3;
+            opacity: 0.4;
             animation: pulseScroll 3s ease-in-out infinite;
             cursor: pointer;
         }
 
         @keyframes pulseScroll {
-            0%,
-            100% {
-                opacity: 0.2;
-                transform: translateX(-50%) translateY(0);
-            }
-            50% {
-                opacity: 0.6;
-                transform: translateX(-50%) translateY(-6px);
-            }
+            0%, 100% { opacity: 0.25; transform: translateX(-50%) translateY(0); }
+            50% { opacity: 0.6; transform: translateX(-50%) translateY(-6px); }
         }
 
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* ============================================================
@@ -346,7 +446,7 @@
         }
 
         /* ============================================================
-             SECTION — STILE EPICO
+             SECTION
              ============================================================ */
 
         .section {
@@ -363,17 +463,17 @@
         }
 
         .section-number {
-            font-family: var(--sans);
+            font-family: 'Inter', sans-serif;
             font-size: 0.6rem;
             letter-spacing: 4px;
             text-transform: uppercase;
             color: var(--gold);
-            opacity: 0.3;
+            opacity: 0.55;
             margin-bottom: 12px;
         }
 
         .section h2 {
-            font-family: var(--serif);
+            font-family: var(--font-heading);
             font-size: clamp(2.2rem, 5vw, 3.6rem);
             font-weight: 600;
             line-height: 1.15;
@@ -389,7 +489,7 @@
             font-size: 1.1rem;
             font-style: italic;
             color: var(--text-soft);
-            opacity: 0.7;
+            opacity: 0.85;
             margin-bottom: 30px;
             font-weight: 300;
         }
@@ -405,7 +505,7 @@
             font-weight: 600;
         }
 
-        /* --- DIVIDER SPETTACOLARE --- */
+        /* --- DIVIDER --- */
 
         .divider-dramatic {
             text-align: center;
@@ -418,52 +518,45 @@
             height: 1px;
             background: linear-gradient(90deg, transparent, var(--gold), transparent);
             margin: 0 auto;
-            opacity: 0.3;
+            opacity: 0.4;
         }
 
         .divider-dramatic .symbol {
             display: block;
             font-size: 2rem;
             color: var(--gold);
-            opacity: 0.1;
+            opacity: 0.15;
             margin: 12px 0;
             animation: pulseGold 4s ease-in-out infinite;
         }
 
         @keyframes pulseGold {
-            0%,
-            100% {
-                opacity: 0.08;
-                transform: scale(1);
-            }
-            50% {
-                opacity: 0.25;
-                transform: scale(1.1);
-            }
+            0%, 100% { opacity: 0.1; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(1.1); }
         }
 
         /* ============================================================
-             CITAZIONI — BLOCCHI EPICI
+             CITAZIONI
              ============================================================ */
 
         .quote-block {
             padding: 40px 48px;
             margin: 50px 0;
             border-left: 3px solid var(--gold);
-            background: rgba(212, 168, 87, 0.03);
+            background: rgba(var(--gold-rgb), 0.04);
             border-radius: 4px 12px 12px 4px;
             position: relative;
             transition: background 0.6s ease;
         }
 
         .quote-block:hover {
-            background: rgba(212, 168, 87, 0.06);
+            background: rgba(var(--gold-rgb), 0.07);
         }
 
         .quote-block .quote-mark {
             font-size: 4rem;
             color: var(--gold);
-            opacity: 0.08;
+            opacity: 0.1;
             position: absolute;
             top: -8px;
             left: 16px;
@@ -488,7 +581,7 @@
             font-style: normal;
             color: var(--text-muted);
             letter-spacing: 1px;
-            font-family: var(--sans);
+            font-family: 'Inter', sans-serif;
             text-transform: uppercase;
             font-weight: 300;
         }
@@ -498,7 +591,7 @@
         }
 
         /* ============================================================
-             CONCEPT CARDS — PER CONCETTI CHIAVE
+             CONCEPT CARDS
              ============================================================ */
 
         .concept-grid {
@@ -510,29 +603,29 @@
 
         .concept-card {
             padding: 28px 30px;
-            border: 1px solid rgba(212, 168, 87, 0.06);
+            border: 1px solid var(--border);
             border-radius: 12px;
-            background: rgba(255, 255, 255, 0.015);
+            background: var(--surface);
             transition: all 0.5s var(--transition-smooth);
             cursor: default;
         }
 
         .concept-card:hover {
-            border-color: rgba(212, 168, 87, 0.2);
-            background: rgba(212, 168, 87, 0.04);
+            border-color: var(--border-strong);
+            background: var(--surface-hover);
             transform: translateY(-4px);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 60px var(--shadow-soft);
         }
 
         .concept-card .icon {
             font-size: 1.8rem;
             display: block;
             margin-bottom: 10px;
-            opacity: 0.6;
+            opacity: 0.7;
         }
 
         .concept-card h3 {
-            font-family: var(--serif);
+            font-family: var(--font-heading);
             font-size: 1.3rem;
             font-weight: 600;
             color: var(--gold);
@@ -552,7 +645,7 @@
             font-style: italic;
             margin-top: 6px;
             letter-spacing: 1px;
-            opacity: 0.6;
+            opacity: 0.8;
         }
 
         @media (max-width: 640px) {
@@ -566,7 +659,7 @@
         }
 
         /* ============================================================
-             IMMAGINE / ATMOSFERA
+             ATMOSFERA
              ============================================================ */
 
         .atmosphere-image {
@@ -574,17 +667,17 @@
             position: relative;
             border-radius: 16px;
             overflow: hidden;
-            background: linear-gradient(135deg, rgba(20, 16, 12, 0.6), rgba(40, 30, 20, 0.4));
+            background: var(--bg-elevated);
             padding: 60px 40px;
             text-align: center;
-            border: 1px solid rgba(212, 168, 87, 0.06);
+            border: 1px solid var(--border);
         }
 
         .atmosphere-image .emoji-big {
             font-size: 4.5rem;
             display: block;
             margin-bottom: 16px;
-            opacity: 0.4;
+            opacity: 0.5;
             filter: grayscale(0.3);
         }
 
@@ -601,13 +694,13 @@
         }
 
         /* ============================================================
-             CHIUSURA EPICA
+             CHIUSURA
              ============================================================ */
 
         .closing-section {
             margin-top: 120px;
             padding: 60px 0 40px;
-            border-top: 1px solid rgba(212, 168, 87, 0.06);
+            border-top: 1px solid var(--border);
             text-align: center;
             position: relative;
         }
@@ -616,31 +709,37 @@
             content: '⚡';
             font-size: 3rem;
             display: block;
-            opacity: 0.08;
+            opacity: 0.1;
             margin-bottom: 10px;
         }
 
         .closing-section h2 {
+            font-family: var(--font-heading);
             font-size: clamp(1.8rem, 4vw, 2.8rem);
             font-weight: 600;
+            color: var(--text);
+        }
+
+        .closing-section h2 .gold {
+            color: var(--gold);
         }
 
         .closing-section .final-quote {
             font-size: 1.4rem;
             font-style: italic;
             color: var(--gold);
-            opacity: 0.6;
+            opacity: 0.7;
             max-width: 650px;
             margin: 20px auto 30px;
         }
 
         .closing-section .credit {
-            font-family: var(--sans);
+            font-family: 'Inter', sans-serif;
             font-size: 0.6rem;
             letter-spacing: 2px;
             text-transform: uppercase;
             color: var(--text-muted);
-            opacity: 0.3;
+            opacity: 0.4;
             margin-top: 40px;
         }
 
@@ -649,10 +748,6 @@
              ============================================================ */
 
         @media (max-width: 768px) {
-            body {
-                font-size: 17px;
-            }
-
             .hero h1 {
                 font-size: clamp(2.6rem, 8vw, 4.2rem);
             }
@@ -675,7 +770,7 @@
             }
 
             .nav-top {
-                padding: 14px 16px;
+                padding: 12px 16px;
             }
 
             .atmosphere-image {
@@ -684,6 +779,10 @@
         }
 
         @media (max-width: 480px) {
+            body {
+                font-size: 17px;
+            }
+
             .hero-sub {
                 font-size: 1rem;
             }
@@ -701,9 +800,15 @@
                 letter-spacing: 4px;
             }
 
-            .nav-btn {
-                font-size: 0.5rem;
-                padding: 4px 10px;
+            .mode-btn {
+                width: 28px;
+                height: 26px;
+                font-size: 0.75rem;
+            }
+
+            .nav-brand {
+                font-size: 0.55rem;
+                letter-spacing: 2px;
             }
         }
 
@@ -731,19 +836,19 @@
         }
 
         /* ============================================================
-             SCROLL INDICATOR — FINE PAGINA
+             SCROLL INDICATOR — FINE
              ============================================================ */
 
         .end-marker {
             text-align: center;
             padding: 40px 0 20px;
-            font-family: var(--sans);
+            font-family: 'Inter', sans-serif;
             font-size: 0.5rem;
             letter-spacing: 4px;
             text-transform: uppercase;
             color: var(--text-muted);
-            opacity: 0.15;
-            border-top: 1px solid rgba(212, 168, 87, 0.04);
+            opacity: 0.25;
+            border-top: 1px solid var(--border);
             margin-top: 20px;
         }
 
@@ -751,41 +856,27 @@
             display: block;
             font-size: 1.2rem;
             margin-bottom: 6px;
-            opacity: 0.3;
+            opacity: 0.5;
         }
 
         /* ============================================================
-             TRANSIZIONE SEZIONI — SCROLL REVEAL
+             SCROLL REVEAL
              ============================================================ */
 
         .section-reveal {
             transition-delay: 0.1s;
         }
 
-        .section-reveal:nth-child(2) {
-            transition-delay: 0.2s;
-        }
-        .section-reveal:nth-child(3) {
-            transition-delay: 0.3s;
-        }
-        .section-reveal:nth-child(4) {
-            transition-delay: 0.4s;
-        }
-        .section-reveal:nth-child(5) {
-            transition-delay: 0.5s;
-        }
-        .section-reveal:nth-child(6) {
-            transition-delay: 0.6s;
-        }
-        .section-reveal:nth-child(7) {
-            transition-delay: 0.7s;
-        }
-        .section-reveal:nth-child(8) {
-            transition-delay: 0.8s;
-        }
+        .section-reveal:nth-child(2) { transition-delay: 0.2s; }
+        .section-reveal:nth-child(3) { transition-delay: 0.3s; }
+        .section-reveal:nth-child(4) { transition-delay: 0.4s; }
+        .section-reveal:nth-child(5) { transition-delay: 0.5s; }
+        .section-reveal:nth-child(6) { transition-delay: 0.6s; }
+        .section-reveal:nth-child(7) { transition-delay: 0.7s; }
+        .section-reveal:nth-child(8) { transition-delay: 0.8s; }
 
         /* ============================================================
-             BACK TO TOP FLOATING
+             BACK TO TOP
              ============================================================ */
 
         .back-to-top {
@@ -796,8 +887,8 @@
             width: 44px;
             height: 44px;
             border-radius: 50%;
-            border: 1px solid rgba(212, 168, 87, 0.12);
-            background: rgba(10, 8, 6, 0.7);
+            border: 1px solid var(--border-strong);
+            background: var(--bg-nav);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             color: var(--gold);
@@ -819,8 +910,7 @@
         }
 
         .back-to-top:hover {
-            border-color: rgba(212, 168, 87, 0.3);
-            background: rgba(20, 16, 12, 0.9);
+            border-color: var(--gold);
             transform: translateY(-2px) scale(1.02);
         }
 
@@ -833,13 +923,13 @@
         }
 
         /* ============================================================
-             STILE PER IL TESTO — ENFASI FILOSOFICA
+             ENFASI
              ============================================================ */
 
         .philosophical-em {
             font-style: italic;
             color: var(--gold);
-            opacity: 0.8;
+            opacity: 0.9;
         }
 
         .highlight-gold {
@@ -847,38 +937,17 @@
             font-weight: 500;
         }
 
-        .text-center {
-            text-align: center;
-        }
-
-        .mt-20 {
-            margin-top: 20px;
-        }
-        .mt-40 {
-            margin-top: 40px;
-        }
-        .mb-20 {
-            margin-bottom: 20px;
-        }
-        .mb-40 {
-            margin-bottom: 40px;
-        }
-
         /* ============================================================
-             KEYFRAMES EXTRA — BRILLIO
+             KEYFRAMES EXTRA
              ============================================================ */
 
         @keyframes shimmer {
-            0% {
-                background-position: -200% 0;
-            }
-            100% {
-                background-position: 200% 0;
-            }
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
         }
 
         .shimmer-text {
-            background: linear-gradient(90deg, var(--gold), #f0dfc5, var(--gold));
+            background: linear-gradient(90deg, var(--gold), rgba(var(--gold-rgb), 0.6), var(--gold));
             background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -888,45 +957,35 @@
     </style>
 </head>
 
-<body>
+<body class="mode-notte">
 
-    <!-- ============================================================
-         PROGRESS BAR
-         ============================================================ -->
-
+    <!-- Progress bar -->
     <div class="reading-progress" id="readingProgress"></div>
 
-    <!-- ============================================================
-         PARTICLES BACKGROUND
-         ============================================================ -->
-
+    <!-- Particles -->
     <canvas id="particles-canvas"></canvas>
 
-    <!-- ============================================================
-         NAV TOP
-         ============================================================ -->
-
+    <!-- NAV TOP -->
     <nav class="nav-top" id="navTop">
         <a href="https://www.echidisofia.org/" class="nav-brand">
             ECHI DI SOFIA <span>· Nietzsche</span>
         </a>
         <div class="nav-actions">
-            <button class="nav-btn" id="themeToggle" aria-label="Alterna modalità di lettura">🌙</button>
+            <div class="reading-modes" role="group" aria-label="Modalità di lettura">
+                <button class="mode-btn active" data-mode="notte" title="Modalità notte" aria-label="Modalità notte">🌙</button>
+                <button class="mode-btn" data-mode="chiaro" title="Modalità chiara" aria-label="Modalità chiara">☀️</button>
+                <button class="mode-btn" data-mode="contemplativo" title="Modalità contemplativa" aria-label="Modalità contemplativa">🕯️</button>
+                <button class="mode-btn" data-mode="alta-leggibilita" title="Alta leggibilità" aria-label="Alta leggibilità">📖</button>
+            </div>
         </div>
     </nav>
 
-    <!-- ============================================================
-         BACK TO TOP
-         ============================================================ -->
-
+    <!-- BACK TO TOP -->
     <button class="back-to-top" id="backToTop" aria-label="Torna su">
         <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
     </button>
 
-    <!-- ============================================================
-         HERO
-         ============================================================ -->
-
+    <!-- HERO -->
     <section class="hero" id="hero">
         <div class="hero-content">
             <div class="hero-tag">Friedrich Nietzsche · 1844–1900</div>
@@ -954,16 +1013,10 @@
         <div class="hero-scroll" id="scrollIndicator">Scorri verso il basso</div>
     </section>
 
-    <!-- ============================================================
-         MAIN CONTENT
-         ============================================================ -->
-
+    <!-- MAIN -->
     <div class="main-content">
 
-        <!-- ============================================================
-             SEZIONE 1 — INTRODUZIONE
-             ============================================================ -->
-
+        <!-- I. INTRODUZIONE -->
         <section class="section section-reveal" id="section1">
             <div class="section-number">I · IL FILOSOFO COL MARTELLO</div>
             <h2>
@@ -1011,20 +1064,13 @@
             </p>
         </section>
 
-        <!-- ============================================================
-             DIVIDER
-             ============================================================ -->
-
         <div class="divider-dramatic">
             <div class="line"></div>
             <span class="symbol">✦</span>
             <div class="line"></div>
         </div>
 
-        <!-- ============================================================
-             SEZIONE 2 — DIO È MORTO
-             ============================================================ -->
-
+        <!-- II. DIO È MORTO -->
         <section class="section section-reveal" id="section2">
             <div class="section-number">II · LA MORTE DI DIO</div>
             <h2>
@@ -1085,20 +1131,13 @@
             </div>
         </section>
 
-        <!-- ============================================================
-             DIVIDER
-             ============================================================ -->
-
         <div class="divider-dramatic">
             <div class="line"></div>
             <span class="symbol">✦</span>
             <div class="line"></div>
         </div>
 
-        <!-- ============================================================
-             SEZIONE 3 — VOLONTÀ DI POTENZA
-             ============================================================ -->
-
+        <!-- III. VOLONTÀ DI POTENZA -->
         <section class="section section-reveal" id="section3">
             <div class="section-number">III · LA VOLONTÀ DI POTENZA</div>
             <h2>
@@ -1165,20 +1204,13 @@
             </p>
         </section>
 
-        <!-- ============================================================
-             DIVIDER
-             ============================================================ -->
-
         <div class="divider-dramatic">
             <div class="line"></div>
             <span class="symbol">✦</span>
             <div class="line"></div>
         </div>
 
-        <!-- ============================================================
-             SEZIONE 4 — ÜBERMENSCH
-             ============================================================ -->
-
+        <!-- IV. ÜBERMENSCH -->
         <section class="section section-reveal" id="section4">
             <div class="section-number">IV · L'ÜBERMENSCH</div>
             <h2>
@@ -1243,20 +1275,13 @@
             </div>
         </section>
 
-        <!-- ============================================================
-             DIVIDER
-             ============================================================ -->
-
         <div class="divider-dramatic">
             <div class="line"></div>
             <span class="symbol">✦</span>
             <div class="line"></div>
         </div>
 
-        <!-- ============================================================
-             SEZIONE 5 — ETERNO RITORNO
-             ============================================================ -->
-
+        <!-- V. ETERNO RITORNO -->
         <section class="section section-reveal" id="section5">
             <div class="section-number">V · L'ETERNO RITORNO</div>
             <h2>
@@ -1293,8 +1318,7 @@
                     Tutto va, tutto ritorna; eternamente gira la ruota dell'essere.
                     Tutto muore, tutto rifiorisce; eternamente corre l'anno dell'essere.
                     Tutto si rompe, tutto si ricompone; eternamente si costruisce
-                    la stessa casa dell'essere. Tutto si separa, tutto si riabbraccia;
-                    eternamente fedele a sé stesso rimane l'anello dell'essere.
+                    la stessa casa dell'essere.
                 </blockquote>
                 <span class="source">— Friedrich Nietzsche, <span>Così parlò Zarathustra</span>, "Il convalescente"</span>
             </div>
@@ -1317,20 +1341,13 @@
             </div>
         </section>
 
-        <!-- ============================================================
-             DIVIDER
-             ============================================================ -->
-
         <div class="divider-dramatic">
             <div class="line"></div>
             <span class="symbol">✦</span>
             <div class="line"></div>
         </div>
 
-        <!-- ============================================================
-             SEZIONE 6 — AMOR FATI
-             ============================================================ -->
-
+        <!-- VI. AMOR FATI -->
         <section class="section section-reveal" id="section6">
             <div class="section-number">VI · AMOR FATI</div>
             <h2>
@@ -1378,20 +1395,13 @@
             </p>
         </section>
 
-        <!-- ============================================================
-             DIVIDER
-             ============================================================ -->
-
         <div class="divider-dramatic">
             <div class="line"></div>
             <span class="symbol">✦</span>
             <div class="line"></div>
         </div>
 
-        <!-- ============================================================
-             SEZIONE 7 — ERODITÀ
-             ============================================================ -->
-
+        <!-- VII. EREDITÀ -->
         <section class="section section-reveal" id="section7">
             <div class="section-number">VII · L'EREDITÀ</div>
             <h2>
@@ -1407,9 +1417,6 @@
                 Il suo pensiero ha attraversato il Novecento come un
                 <span class="philosophical-em">sisma</span> le cui scosse
                 si avvertono ancora oggi.
-            </p>
-
-            <p>
             </p>
 
             <div class="concept-grid">
@@ -1459,10 +1466,7 @@
             </p>
         </section>
 
-        <!-- ============================================================
-             CHIUSURA
-             ============================================================ -->
-
+        <!-- CHIUSURA -->
         <section class="closing-section">
             <h2>
                 Il martello <span class="gold">risuona</span>
@@ -1473,14 +1477,14 @@
                 un filo sopra un abisso.»
             </p>
 
-            <p style="color: var(--text-soft); opacity: 0.7; max-width: 600px; margin: 0 auto 30px;">
+            <p style="color: var(--text-soft); opacity: 0.85; max-width: 600px; margin: 0 auto 30px;">
                 Nietzsche non ci ha lasciato risposte. Ci ha lasciato
                 <strong style="color: var(--text);">domande</strong>.
                 E forse, in questo, sta il suo dono più grande.
             </p>
 
-            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(212,168,87,0.06);">
-                <span style="font-family: var(--sans); font-size: 0.55rem; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); opacity: 0.3;">
+            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--border);">
+                <span style="font-family: 'Inter', sans-serif; font-size: 0.55rem; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); opacity: 0.5;">
                     Continua a leggere · Echi di Sofia
                 </span>
             </div>
@@ -1490,10 +1494,6 @@
             </div>
         </section>
 
-        <!-- ============================================================
-             END MARKER
-             ============================================================ -->
-
         <div class="end-marker">
             <span class="symbol">⚡</span>
             fine
@@ -1502,7 +1502,7 @@
     </div>
 
     <!-- ============================================================
-         JAVASCRIPT — PARTICLES, SCROLL, ANIMAZIONI
+         JAVASCRIPT
          ============================================================ -->
 
     <script>
@@ -1512,6 +1512,7 @@
 
         (function initParticles() {
             const canvas = document.getElementById('particles-canvas');
+            if (!canvas) return;
             const ctx = canvas.getContext('2d');
             let w, h;
             let particles = [];
@@ -1526,10 +1527,7 @@
             resize();
 
             class Particle {
-                constructor() {
-                    this.reset();
-                }
-
+                constructor() { this.reset(); }
                 reset() {
                     this.x = Math.random() * w;
                     this.y = Math.random() * h;
@@ -1540,26 +1538,21 @@
                     this.pulse = Math.random() * Math.PI * 2;
                     this.pulseSpeed = 0.005 + Math.random() * 0.015;
                 }
-
                 update() {
                     this.x += this.speedX;
                     this.y += this.speedY;
                     this.pulse += this.pulseSpeed;
-
                     if (this.x < 0 || this.x > w) this.speedX *= -1;
                     if (this.y < 0 || this.y > h) this.speedY *= -1;
-
                     if (this.x < 0) this.x = 0;
                     if (this.x > w) this.x = w;
                     if (this.y < 0) this.y = 0;
                     if (this.y > h) this.y = h;
                 }
-
                 draw() {
                     const pulseFactor = 0.5 + 0.5 * Math.sin(this.pulse);
                     const alpha = this.opacity * (0.6 + 0.4 * pulseFactor);
                     const radius = this.size * (0.8 + 0.3 * pulseFactor);
-
                     ctx.beginPath();
                     ctx.arc(this.x, this.y, radius, 0, Math.PI * 2);
                     ctx.fillStyle = `rgba(212, 168, 87, ${alpha})`;
@@ -1567,29 +1560,20 @@
                 }
             }
 
-            for (let i = 0; i < PARTICLE_COUNT; i++) {
-                particles.push(new Particle());
-            }
+            for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
 
             function animateParticles() {
                 ctx.clearRect(0, 0, w, h);
+                particles.forEach(p => { p.update(); p.draw(); });
 
-                particles.forEach(p => {
-                    p.update();
-                    p.draw();
-                });
-
-                // Connessioni tra particelle vicine
                 ctx.strokeStyle = 'rgba(212, 168, 87, 0.02)';
                 ctx.lineWidth = 0.4;
-
                 for (let i = 0; i < particles.length; i++) {
                     for (let j = i + 1; j < particles.length; j++) {
                         const dx = particles[i].x - particles[j].x;
                         const dy = particles[i].y - particles[j].y;
                         const dist = Math.sqrt(dx * dx + dy * dy);
                         const maxDist = 180;
-
                         if (dist < maxDist) {
                             const alpha = 0.02 * (1 - dist / maxDist);
                             ctx.beginPath();
@@ -1600,42 +1584,82 @@
                         }
                     }
                 }
-
                 requestAnimationFrame(animateParticles);
             }
-
             animateParticles();
         })();
 
         /* ============================================================
-             SCROLL REVEAL — INTERSECTION OBSERVER
+             SISTEMA DI LETTURA — QUATTRO MODALITÀ
+             ============================================================ */
+
+        (function initReadingModes() {
+            const STORAGE_KEY = 'nietzsche-reading-mode';
+            const MODES = ['notte', 'chiaro', 'contemplativo', 'alta-leggibilita'];
+            const buttons = document.querySelectorAll('.mode-btn');
+            const body = document.body;
+            const metaTheme = document.querySelector('meta[name="theme-color"]');
+
+            const themeColors = {
+                'notte': '#0a0806',
+                'chiaro': '#faf6ef',
+                'contemplativo': '#1a1410',
+                'alta-leggibilita': '#ffffff'
+            };
+
+            function setMode(mode) {
+                if (!MODES.includes(mode)) mode = 'notte';
+
+                MODES.forEach(m => body.classList.remove('mode-' + m));
+                body.classList.add('mode-' + mode);
+
+                buttons.forEach(b => {
+                    const isActive = b.dataset.mode === mode;
+                    b.classList.toggle('active', isActive);
+                    b.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+                });
+
+                if (metaTheme) metaTheme.setAttribute('content', themeColors[mode]);
+
+                try { localStorage.setItem(STORAGE_KEY, mode); } catch (e) {}
+            }
+
+            let savedMode = 'notte';
+            try { savedMode = localStorage.getItem(STORAGE_KEY) || 'notte'; } catch (e) {}
+            setMode(savedMode);
+
+            buttons.forEach(btn => {
+                btn.addEventListener('click', () => setMode(btn.dataset.mode));
+            });
+
+            // Scorciatoie da tastiera 1-4
+            document.addEventListener('keydown', (e) => {
+                if (e.target.matches('input, textarea, select')) return;
+                const idx = parseInt(e.key, 10);
+                if (idx >= 1 && idx <= 4) {
+                    setMode(MODES[idx - 1]);
+                }
+            });
+        })();
+
+        /* ============================================================
+             SCROLL REVEAL
              ============================================================ */
 
         (function initScrollReveal() {
             const sections = document.querySelectorAll('.section-reveal');
-
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
+                    if (entry.isIntersecting) entry.target.classList.add('visible');
                 });
-            }, {
-                threshold: 0.1,
-                rootMargin: '0px 0px -40px 0px'
-            });
+            }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
-            sections.forEach(section => {
-                observer.observe(section);
-            });
+            sections.forEach(section => observer.observe(section));
 
-            // Rendi visibili le sezioni già visibili all'avvio
             setTimeout(() => {
                 sections.forEach(section => {
                     const rect = section.getBoundingClientRect();
-                    if (rect.top < window.innerHeight * 0.9) {
-                        section.classList.add('visible');
-                    }
+                    if (rect.top < window.innerHeight * 0.9) section.classList.add('visible');
                 });
             }, 100);
         })();
@@ -1646,12 +1670,11 @@
 
         (function initProgress() {
             const progress = document.getElementById('readingProgress');
-
             window.addEventListener('scroll', () => {
                 const scrollTop = window.scrollY;
                 const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-                const progressPercent = (scrollTop / docHeight) * 100;
-                progress.style.width = Math.min(progressPercent, 100) + '%';
+                const pct = (scrollTop / docHeight) * 100;
+                progress.style.width = Math.min(pct, 100) + '%';
             }, { passive: true });
         })();
 
@@ -1661,15 +1684,9 @@
 
         (function initBackToTop() {
             const btn = document.getElementById('backToTop');
-
             window.addEventListener('scroll', () => {
-                if (window.scrollY > 400) {
-                    btn.classList.add('visible');
-                } else {
-                    btn.classList.remove('visible');
-                }
+                btn.classList.toggle('visible', window.scrollY > 400);
             }, { passive: true });
-
             btn.addEventListener('click', () => {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
@@ -1682,7 +1699,6 @@
         (function initNavHide() {
             const nav = document.getElementById('navTop');
             let lastScroll = 0;
-
             window.addEventListener('scroll', () => {
                 const currentScroll = window.scrollY;
                 if (currentScroll > 100 && currentScroll > lastScroll) {
@@ -1695,83 +1711,25 @@
         })();
 
         /* ============================================================
-             THEME TOGGLE — CHIARO/SCURO
-             ============================================================ */
-
-        (function initTheme() {
-            const btn = document.getElementById('themeToggle');
-            let isDark = true;
-
-            btn.addEventListener('click', () => {
-                isDark = !isDark;
-                document.body.style.transition = 'background 1s ease, color 1s ease';
-
-                if (isDark) {
-                    document.body.style.background = '';
-                    document.body.style.color = '';
-                    btn.textContent = '🌙';
-                    document.querySelector('.hero h1 .gold').style.color = '';
-                    document.querySelectorAll('.gold').forEach(el => {
-                        el.style.color = '';
-                    });
-                    document.querySelectorAll('.highlight-gold').forEach(el => {
-                        el.style.color = '';
-                    });
-                } else {
-                    document.body.style.background = '#f5f0ea';
-                    document.body.style.color = '#1a1612';
-                    btn.textContent = '☀️';
-                    document.querySelectorAll('.gold, .highlight-gold, .hero h1 .gold').forEach(el => {
-                        el.style.color = '#b8860b';
-                    });
-                    document.querySelectorAll('.hero-quote, .quote-block blockquote, .final-quote').forEach(el => {
-                        el.style.color = '#b8860b';
-                    });
-                    document.querySelectorAll('.section-number, .nav-brand').forEach(el => {
-                        el.style.color = '#b8860b';
-                    });
-                    document.querySelectorAll('.nav-btn').forEach(el => {
-                        el.style.color = '#7a6a5a';
-                        el.style.borderColor = 'rgba(184,134,11,0.2)';
-                    });
-                    document.querySelectorAll('.concept-card h3').forEach(el => {
-                        el.style.color = '#b8860b';
-                    });
-                    document.querySelectorAll('.hero-symbol, .divider-dramatic .symbol, .end-marker .symbol').forEach(el => {
-                        el.style.color = '#b8860b';
-                    });
-                    document.querySelector('.hero-tag').style.color = '#b8860b';
-                    document.querySelector('.subtitle').style.color = '#5a4a3a';
-                }
-
-                setTimeout(() => {
-                    document.body.style.transition = '';
-                }, 1000);
-            });
-        })();
-
-        /* ============================================================
-             SCROLL INDICATOR — CLICK TO SCROLL
+             SCROLL INDICATOR
              ============================================================ */
 
         (function initScrollIndicator() {
             const indicator = document.getElementById('scrollIndicator');
+            if (!indicator) return;
             indicator.addEventListener('click', () => {
                 const target = document.getElementById('section1');
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
         })();
 
         /* ============================================================
-             CONSOLE — UNA FIRMA
+             CONSOLE
              ============================================================ */
 
         console.log('%c⚡ Nietzsche — Il Martello della Filosofia', 'font-size:24px; font-weight:bold; color:#d4a857;');
-        console.log('%c«Bisogna avere ancora del caos dentro di sé per poter partorire una stella danzante.»', 'font-size:14px; font-style:italic; color:#b8aea2;');
+        console.log('%cModalità di lettura: premi 1-4 per cambiare tema', 'font-size:12px; color:#b8aea2;');
         console.log('%cEchi di Sofia · 2026', 'font-size:12px; color:#7a7064;');
-        console.log('%chttps://www.echidisofia.org/', 'font-size:12px; color:#d4a857;');
     </script>
 
 </body>
