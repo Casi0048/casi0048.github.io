@@ -4541,7 +4541,7 @@
       position: relative;
       height: 48vh;
       min-height: 320px;
-      max-height: 460px;
+      max-height: 360px;
       border-radius: calc(var(--radius) - 4px);
       overflow: hidden;
       background: radial-gradient(ellipse at 50% 120%, var(--gold-soft), transparent 65%);
@@ -4740,7 +4740,88 @@
         opacity: 1;
       }
     }
+    /* ============================================================
+   FOTO GALLEGGIANTI — dentro il fiume
+   ============================================================ */
+    .fo-persons {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      /* i click passano al canvas sotto */
+      overflow: hidden;
+      z-index: 2;
+      /* sopra il canvas, sotto eventuali futuri overlay */
+    }
 
+    .fo-person {
+      position: absolute;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--gold-line);
+      box-shadow:
+        0 4px 20px rgba(0, 0, 0, .35),
+        0 0 0 3px rgba(69, 230, 161, .06),
+        0 0 24px -6px var(--gold-soft);
+      filter: saturate(.85) contrast(1.05);
+      opacity: .72;
+      will-change: transform;
+      animation: foPersonFloat 10s ease-in-out infinite;
+      transition: opacity .5s ease, filter .5s ease;
+      pointer-events: auto;
+      /* hover funziona sulla singola foto */
+    }
+
+    .fo-person:hover {
+      opacity: .95;
+      filter: saturate(1) contrast(1.05);
+    }
+
+    /* posizione + dimensione — modifica qui se vuoi spostarle */
+    .fo-person-1 {
+      width: 32px;
+      height: 33px;
+      top: 85%;
+      left: 12%;
+      animation-duration: 12s;
+    }
+
+    .fo-person-2 {
+      width: 32px;
+      height: 32px;
+      top: 85%;
+      left: 78%;
+      animation-duration: 9s;
+      animation-delay: -3s;
+      /* sfasate: non si muovono mai in sincrono */
+    }
+
+    @keyframes foPersonFloat {
+
+      0%,
+      100% {
+        transform: translate(0, 0) rotate(-2deg);
+      }
+
+      30% {
+        transform: translate(10px, -8px) rotate(1deg);
+      }
+
+      60% {
+        transform: translate(-6px, -12px) rotate(3deg);
+      }
+
+      85% {
+        transform: translate(-10px, 4px) rotate(-1deg);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .fo-person {
+        animation: none;
+      }
+    }
+
+    /* ---------- RISPOSTA ---------- */
     @keyframes foDraw {
       to {
         stroke-dashoffset: 0;
@@ -5614,11 +5695,16 @@
               <span class="fo-badge">πάντα ῥεῖ · Il Fiume del Logos</span>
               <span class="fo-num-hint">Interroga l'oracolo ↓</span>
             </div>
-
+            <!-- INIZIO FOTO MT E KRK  -->
             <div class="fo-stage" id="foStage">
               <canvas id="foRiver" aria-hidden="true"></canvas>
               <span class="fo-hint" aria-hidden="true">prova a trattenere una parola</span>
+              <div class="fo-persons" aria-hidden="true">
+                <img class="fo-person fo-person-1" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/immagini%20per%20sito/maria_teresa.jpg" alt="Maria Teresa" loading="lazy" decoding="async">
+                <img class="fo-person fo-person-2" src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/immagini%20per%20sito/krk.jpg" alt="KRK" loading="lazy" decoding="async">
+              </div>
             </div>
+            <!-- FINE FOTO MT E KRK > -->
 
             <div class="fo-oracle">
               <div class="fo-head">
@@ -8127,13 +8213,14 @@
           active: false
         };
         const TEXTS = [
-          'πάντα ῥεῖ', 'Tutto scorre', 'Il carattere è il destino',
+          'Φ πάντα ῥεῖ', 'Tutto scorre', 'Il carattere è il destino',
           'La natura ama nascondersi', 'Il sole è nuovo ogni giorno',
-          'La via in su e in giù è la stessa', "L'armonia nascosta è più forte",
+          'La via in su e in giù è la stessa', "∇ L'armonia nascosta è più forte",
           'Siamo e non siamo', 'Il fuoco si accende secondo misura', 'Uno è il saggio',
           'Non si tocca due volte', 'Guerra è padre di tutte le cose',
           'Il mare è puro e impuro', "L'anima ha confini profondi",
-          'Ascoltando non me, ma il Logos', "L'asino preferisce la paglia",
+          'Σ Ascoltando non me, ma il Logos', "L'asino preferisce la paglia",
+          'Maria Teresa💭', "Casimiro🤔",
           'Il tempo è un fanciullo che gioca', 'Medicina che taglia e brucia',
           'Non si entra due volte nello stesso fiume', 'Il Logos governa tutte le cose'
         ];
@@ -8367,6 +8454,10 @@
           },
           {
             t: "L'asino preferisce la paglia all'oro.",
+            r: "Fr. 9 Diels–Kranz"
+          },
+          {
+            t: "Maria Teresa.",
             r: "Fr. 9 Diels–Kranz"
           },
           {
