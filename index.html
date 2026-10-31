@@ -29,7 +29,17 @@
     } catch (e) {}
   </script>
   <style>
-    
+    @keyframes fadeUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
 
     @keyframes kickerIn {
       0% {
@@ -4888,6 +4898,7 @@
       }
     }
 
+
     /* Eco finale — La soglia del dubbio */
     .soglia-dubbio .soglia-eco {
       margin: 1.2rem 0 1rem;
@@ -5354,274 +5365,260 @@
       z-index: 2;
     }
 
-    /* ============================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   /* ============================================================
    LA SOGLIA DEL DUBBIO — allineata a .frammento / .paradosso
    Usa solo le variabili del design system del sito.
    ============================================================ */
-    .soglia-dubbio {
-      position: relative;
-      margin-bottom: 24px;
-      padding: 22px 24px 20px;
-      overflow: hidden;
-      color: var(--text);
-      background:
+
+.soglia-dubbio {
+    position: relative;
+    margin-bottom: 24px;
+    padding: 22px 24px 20px;
+    overflow: hidden;
+    color: var(--text);
+    background:
         radial-gradient(ellipse at 90% 0%, var(--gold-soft), transparent 55%),
         var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      backdrop-filter: blur(12px);
-      transition: border-color .3s ease;
-    }
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    backdrop-filter: blur(12px);
+    transition: border-color .3s ease;
+}
 
-    .soglia-dubbio:hover {
-      border-color: var(--gold-line);
-    }
+.soglia-dubbio:hover {
+    border-color: var(--gold-line);
+}
 
-    /* Etichetta — badge + riga, come .frammento-head */
-    .soglia-dubbio .soglia-etichetta {
-      display: block;
-      margin: 0 0 16px;
-      padding: 0 0 10px;
-      border-bottom: 1px solid var(--gold-line);
-      font-family: var(--sans);
-      font-size: .66rem;
-      font-weight: 500;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      color: var(--gold);
-    }
+/* Etichetta — badge + riga, come .frammento-head */
+.soglia-dubbio .soglia-etichetta {
+    display: block;
+    margin: 0 0 16px;
+    padding: 0 0 10px;
+    border-bottom: 1px solid var(--gold-line);
+    font-family: var(--sans);
+    font-size: .66rem;
+    font-weight: 500;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+}
 
-    /* Titolo — come .paradosso-titolo */
-    .soglia-dubbio h3,
-    .soglia-dubbio #sogliaTitolo {
-      margin: 0 0 12px;
-      font-family: var(--display);
-      font-size: 1.2rem;
-      font-weight: 500;
-      letter-spacing: .4px;
-      line-height: 1.3;
-      color: var(--gold);
-    }
+/* Titolo — come .paradosso-titolo */
+.soglia-dubbio h3,
+.soglia-dubbio #sogliaTitolo {
+    margin: 0 0 12px;
+    font-family: var(--display);
+    font-size: 1.2rem;
+    font-weight: 500;
+    letter-spacing: .4px;
+    line-height: 1.3;
+    color: var(--gold);
+}
 
-    /* Intro — come .frammento-commento */
-    .soglia-dubbio .soglia-intro {
-      max-width: 60ch;
-      margin: 0 0 16px;
-      font-family: var(--serif);
-      font-size: .93rem;
-      line-height: 1.6;
-      color: var(--text-soft);
-    }
+/* Intro — come .frammento-commento */
+.soglia-dubbio .soglia-intro {
+    max-width: 60ch;
+    margin: 0 0 16px;
+    font-family: var(--serif);
+    font-size: .93rem;
+    line-height: 1.6;
+    color: var(--text-soft);
+}
 
-    /* Scelte */
-    .soglia-dubbio .soglia-scelte {
-      display: grid;
-      gap: 8px;
-      margin: 0 0 16px;
-    }
+/* Scelte */
+.soglia-dubbio .soglia-scelte {
+    display: grid;
+    gap: 8px;
+    margin: 0 0 16px;
+}
 
-    .soglia-dubbio .soglia-scelte button {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      width: 100%;
-      padding: 10px 14px;
-      color: var(--text-soft);
-      text-align: left;
-      font-family: var(--serif);
-      font-size: .93rem;
-      font-weight: 400;
-      line-height: 1.55;
-      background: transparent;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      cursor: pointer;
-      transition:
+.soglia-dubbio .soglia-scelte button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 10px 14px;
+    color: var(--text-soft);
+    text-align: left;
+    font-family: var(--serif);
+    font-size: .93rem;
+    font-weight: 400;
+    line-height: 1.55;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition:
         border-color .25s ease,
         background .25s ease,
         color .25s ease,
         box-shadow .25s ease;
-    }
+}
 
-    .soglia-dubbio .soglia-scelte button span {
-      flex-shrink: 0;
-      min-width: 1.2em;
-      color: var(--gold);
-      font-family: var(--sans);
-      font-size: .7rem;
-      font-weight: 600;
-      font-variant-numeric: tabular-nums;
-    }
+.soglia-dubbio .soglia-scelte button span {
+    flex-shrink: 0;
+    min-width: 1.2em;
+    color: var(--gold);
+    font-family: var(--sans);
+    font-size: .7rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
 
-    .soglia-dubbio .soglia-scelte button:hover,
-    .soglia-dubbio .soglia-scelte button:focus-visible {
-      border-color: var(--gold-line);
-      background: var(--bg-soft);
-    }
+.soglia-dubbio .soglia-scelte button:hover,
+.soglia-dubbio .soglia-scelte button:focus-visible {
+    border-color: var(--gold-line);
+    background: var(--bg-soft);
+}
 
-    .soglia-dubbio .soglia-scelte button:focus-visible,
-    .soglia-dubbio .soglia-reset:focus-visible {
-      outline: 2px solid var(--gold);
-      outline-offset: 2px;
-    }
+.soglia-dubbio .soglia-scelte button:focus-visible,
+.soglia-dubbio .soglia-reset:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+}
 
-    /* Stato attivo — quello che il JS aggiunge con .is-active */
-    .soglia-dubbio .soglia-scelte button.is-active {
-      border-color: var(--gold);
-      background: var(--gold-soft);
-      color: var(--text);
-      box-shadow: inset 0 0 0 1px var(--gold-line);
-    }
+/* Stato attivo — quello che il JS aggiunge con .is-active */
+.soglia-dubbio .soglia-scelte button.is-active {
+    border-color: var(--gold);
+    background: var(--gold-soft);
+    color: var(--text);
+    box-shadow: inset 0 0 0 1px var(--gold-line);
+}
 
-    .soglia-dubbio .soglia-scelte button.is-active span {
-      color: var(--gold);
-    }
+.soglia-dubbio .soglia-scelte button.is-active span {
+    color: var(--gold);
+}
 
-    /* Risultato */
-    .soglia-dubbio .soglia-risultato {
-      margin: 16px 0 0;
-      padding: 12px 16px;
-      border-left: 2px solid var(--gold-line);
-      border-radius: 0 8px 8px 0;
-      background: var(--gold-soft);
-    }
+/* Risultato */
+.soglia-dubbio .soglia-risultato {
+    margin: 16px 0 0;
+    padding: 12px 16px;
+    border-left: 2px solid var(--gold-line);
+    border-radius: 0 8px 8px 0;
+    background: var(--gold-soft);
+}
 
-    .soglia-dubbio .soglia-risultato[hidden] {
-      display: none;
-    }
+.soglia-dubbio .soglia-risultato[hidden] {
+    display: none;
+}
 
-    /* Animazione di comparsa — attivata da .is-visible */
-    @keyframes sogliaRise {
-      from {
-        opacity: 0;
-        transform: translateY(12px);
-      }
+/* Animazione di comparsa — attivata da .is-visible */
+@keyframes sogliaRise {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
 
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+.soglia-dubbio .soglia-risultato.is-visible .soglia-risposta,
+.soglia-dubbio .soglia-risultato.is-visible .soglia-domanda,
+.soglia-dubbio .soglia-risultato.is-visible .soglia-eco,
+.soglia-dubbio .soglia-risultato.is-visible .soglia-reset {
+    animation: sogliaRise .6s cubic-bezier(.23, 1, .32, 1) both;
+}
 
+.soglia-dubbio .soglia-risultato.is-visible .soglia-risposta { animation-delay: .05s; }
+.soglia-dubbio .soglia-risultato.is-visible .soglia-domanda { animation-delay: .15s; }
+.soglia-dubbio .soglia-risultato.is-visible .soglia-eco     { animation-delay: .25s; }
+.soglia-dubbio .soglia-risultato.is-visible .soglia-reset   { animation-delay: .35s; }
+
+/* Risposta */
+.soglia-dubbio .soglia-risposta {
+    margin: 0 0 12px;
+    font-family: var(--serif);
+    font-size: .93rem;
+    line-height: 1.7;
+    color: var(--text);
+}
+
+.soglia-dubbio .soglia-risposta:last-child {
+    margin-bottom: 0;
+}
+
+/* Domanda riformulata */
+.soglia-dubbio .soglia-domanda {
+    margin: 8px 0 0;
+    padding-left: 14px;
+    border-left: 2px solid var(--gold-line);
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    font-style: italic;
+    line-height: 1.6;
+    color: var(--text);
+}
+
+/* Reset — pill come .frammento-altro */
+.soglia-dubbio .soglia-reset {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    padding: 5px 12px;
+    background: none;
+    border: 1px solid var(--gold-line);
+    border-radius: 100px;
+    font-family: var(--sans);
+    font-size: .7rem;
+    letter-spacing: .8px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color .25s ease, border-color .25s ease, background .25s ease;
+}
+
+.soglia-dubbio .soglia-reset:hover {
+    color: var(--gold);
+    border-color: var(--gold);
+    background: var(--gold-soft);
+}
+
+/* Firma */
+.soglia-dubbio .soglia-firma {
+    margin: 16px 0 0;
+    padding-top: 14px;
+    border-top: 1px dashed var(--border);
+    font-family: var(--sans);
+    font-size: .7rem;
+    font-style: normal;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    opacity: .8;
+}
+
+/* Responsive */
+@media (max-width: 560px) {
+    .soglia-dubbio { padding: 18px 16px 16px; }
+    .soglia-dubbio h3 { font-size: 1.05rem; }
+    .soglia-dubbio .soglia-scelte button { padding: 9px 12px; font-size: .88rem; }
+    .soglia-dubbio .soglia-domanda { font-size: 1rem; }
+}
+
+/* Riduzione del movimento */
+@media (prefers-reduced-motion: reduce) {
+    .soglia-dubbio .soglia-scelte button,
+    .soglia-dubbio .soglia-reset,
     .soglia-dubbio .soglia-risultato.is-visible .soglia-risposta,
     .soglia-dubbio .soglia-risultato.is-visible .soglia-domanda,
     .soglia-dubbio .soglia-risultato.is-visible .soglia-eco,
     .soglia-dubbio .soglia-risultato.is-visible .soglia-reset {
-      animation: sogliaRise .6s cubic-bezier(.23, 1, .32, 1) both;
-    }
-
-    .soglia-dubbio .soglia-risultato.is-visible .soglia-risposta {
-      animation-delay: .05s;
-    }
-
-    .soglia-dubbio .soglia-risultato.is-visible .soglia-domanda {
-      animation-delay: .15s;
-    }
-
-    .soglia-dubbio .soglia-risultato.is-visible .soglia-eco {
-      animation-delay: .25s;
-    }
-
-    .soglia-dubbio .soglia-risultato.is-visible .soglia-reset {
-      animation-delay: .35s;
-    }
-
-    /* Risposta */
-    .soglia-dubbio .soglia-risposta {
-      margin: 0 0 12px;
-      font-family: var(--serif);
-      font-size: .93rem;
-      line-height: 1.7;
-      color: var(--text);
-    }
-
-    .soglia-dubbio .soglia-risposta:last-child {
-      margin-bottom: 0;
-    }
-
-    /* Domanda riformulata */
-    .soglia-dubbio .soglia-domanda {
-      margin: 8px 0 0;
-      padding-left: 14px;
-      border-left: 2px solid var(--gold-line);
-      font-family: var(--serif);
-      font-size: 1.05rem;
-      font-style: italic;
-      line-height: 1.6;
-      color: var(--text);
-    }
-
-    /* Reset — pill come .frammento-altro */
-    .soglia-dubbio .soglia-reset {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 12px;
-      padding: 5px 12px;
-      background: none;
-      border: 1px solid var(--gold-line);
-      border-radius: 100px;
-      font-family: var(--sans);
-      font-size: .7rem;
-      letter-spacing: .8px;
-      color: var(--text-muted);
-      cursor: pointer;
-      transition: color .25s ease, border-color .25s ease, background .25s ease;
-    }
-
-    .soglia-dubbio .soglia-reset:hover {
-      color: var(--gold);
-      border-color: var(--gold);
-      background: var(--gold-soft);
-    }
-
-    /* Firma */
-    .soglia-dubbio .soglia-firma {
-      margin: 16px 0 0;
-      padding-top: 14px;
-      border-top: 1px dashed var(--border);
-      font-family: var(--sans);
-      font-size: .7rem;
-      font-style: normal;
-      letter-spacing: 1.2px;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      opacity: .8;
-    }
-
-    /* Responsive */
-    @media (max-width: 560px) {
-      .soglia-dubbio {
-        padding: 18px 16px 16px;
-      }
-
-      .soglia-dubbio h3 {
-        font-size: 1.05rem;
-      }
-
-      .soglia-dubbio .soglia-scelte button {
-        padding: 9px 12px;
-        font-size: .88rem;
-      }
-
-      .soglia-dubbio .soglia-domanda {
-        font-size: 1rem;
-      }
-    }
-
-    /* Riduzione del movimento */
-    @media (prefers-reduced-motion: reduce) {
-
-      .soglia-dubbio .soglia-scelte button,
-      .soglia-dubbio .soglia-reset,
-      .soglia-dubbio .soglia-risultato.is-visible .soglia-risposta,
-      .soglia-dubbio .soglia-risultato.is-visible .soglia-domanda,
-      .soglia-dubbio .soglia-risultato.is-visible .soglia-eco,
-      .soglia-dubbio .soglia-risultato.is-visible .soglia-reset {
         animation: none !important;
         transition-duration: 1ms !important;
-      }
     }
+}
   </style>
 
   <body><svg class=cosmic-sky viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" xmlns=http://www.w3.org/2000/svg aria-hidden=true>
@@ -8750,548 +8747,454 @@
       }()
     </script>
     <script>
-      /* ============================================================
+/* ============================================================
    1) FIUME ORACOLO — canvas animato + oracolo di Eraclito
    Richiede nel DOM: #fiumeOracolo, #foStage, #foRiver,
                      #foForm, #foQuestion, #foBtn, #foResponse
    Se assenti → si auto-disattiva senza errori.
    ============================================================ */
-      (function() {
-        'use strict';
-        const root = document.getElementById('fiumeOracolo');
-        if (!root) return;
-        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        /* --- CONFIG --- */
-        const MAX_DPR = 1;
-        const SHADOW_BLUR = 12;
-        const ATTRACT_R = 200;
-        const GLOW_R = 90;
-        const EDGE_FADE_H = 0.14;
-        const RIPPLE_MIN_D2 = 144;
-        const ATTRACT_R2 = ATTRACT_R * ATTRACT_R;
-        const GLOW_R2 = GLOW_R * GLOW_R;
-        /* --- Lettura variabili CSS (con fallback chain) --- */
-        function readVarRgb(name, fallback) {
-          if (!document.body) return fallback;
-          const probe = document.createElement('span');
-          probe.style.cssText =
-            `color:var(${name});position:absolute;visibility:hidden;pointer-events:none`;
-          document.body.appendChild(probe);
-          const c = getComputedStyle(probe).color;
-          probe.remove();
-          const m = c.match(/[\d.]+/g);
-          if (!m || m.length < 3) return fallback;
-          return `${Math.round(+m[0])},${Math.round(+m[1])},${Math.round(+m[2])}`;
-        }
+(function () {
+  'use strict';
+  const root = document.getElementById('fiumeOracolo');
+  if (!root) return;
 
-        function readFirstRgb(names, fallback) {
-          for (const n of names) {
-            const v = readVarRgb(n, null);
-            if (v) return v;
-          }
-          return fallback;
-        }
-        /* Accent = oro, Text = testo — coerenti con i temi dell'articolo */
-        const palette = {
-          gold: readFirstRgb(['--gold', '--accent'], '201,169,110'),
-          text: readFirstRgb(['--text', '--foreground'], '224,220,211')
-        };
-        let fillTextColor = `rgb(${palette.text})`;
-        let glowColorRgba = `rgba(${palette.gold},.9)`;
-        let ripplePrefix = `rgba(${palette.gold},`;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        function refreshPaletteStrings() {
-          fillTextColor = `rgb(${palette.text})`;
-          glowColorRgba = `rgba(${palette.gold},.9)`;
-          ripplePrefix = `rgba(${palette.gold},`;
-        }
-        /* --- Font: prova prima --font-serif (usato dall'articolo) --- */
-        let serifFont = 'Cormorant Garamond, Georgia, serif';
+  /* --- CONFIG --- */
+  const MAX_DPR       = 1;
+  const SHADOW_BLUR   = 12;
+  const ATTRACT_R     = 200;
+  const GLOW_R        = 90;
+  const EDGE_FADE_H   = 0.14;
+  const RIPPLE_MIN_D2 = 144;
+  const ATTRACT_R2    = ATTRACT_R * ATTRACT_R;
+  const GLOW_R2       = GLOW_R * GLOW_R;
 
-        function cacheFont() {
-          let v = getComputedStyle(root).getPropertyValue('--font-serif').trim();
-          if (!v) v = getComputedStyle(root).getPropertyValue('--serif').trim();
-          if (v) serifFont = v;
-        }
-        /* --- Canvas --- */
-        const stage = document.getElementById('foStage');
-        const canvas = document.getElementById('foRiver');
-        if (!stage || !canvas) return;
-        const ctx = canvas.getContext('2d', {
-          alpha: true,
-          desynchronized: true
-        });
-        let W = 0,
-          H = 0,
-          DPR = 1;
-        let fragments = [];
-        const ripples = [];
-        const cursor = {
-          x: -9999,
-          y: -9999,
-          lastX: -9999,
-          lastY: -9999,
-          active: false
-        };
-        const TEXTS = [
-          'Φ πάντα ῥεῖ', 'Tutto scorre', 'Il carattere è il destino',
-          'La natura ama nascondersi', 'Il sole è nuovo ogni giorno',
-          'La via in su e in giù è la stessa', "∇ L'armonia nascosta è più forte",
-          'Siamo e non siamo', 'Il fuoco si accende secondo misura', 'Uno è il saggio',
-          'Non si tocca due volte', 'Guerra è padre di tutte le cose',
-          'Il mare è puro e impuro', "L'anima ha confini profondi",
-          'Σ Ascoltando non me, ma il Logos', "L'asino preferisce la paglia",
-          'Maria Teresa💭', 'Casimiro🤔',
-          'Il tempo è un fanciullo che gioca', 'Medicina che taglia e brucia',
-          'Non si entra due volte nello stesso fiume', 'Il Logos governa tutte le cose'
-        ];
-        class Frag {
-          constructor(text) {
-            this.text = text;
-            this.baseY = H * 0.18 + Math.random() * (H * 0.64);
-            this.x = Math.random() * (W + 400) - 200;
-            this.speed = 0.018 + Math.random() * 0.045;
-            this.size = 14 + Math.random() * 8;
-            this.phase = Math.random() * Math.PI * 2;
-            this.amp = 6 + Math.random() * 14;
-            this.ox = 0;
-            this.oy = 0;
-            this.rot = 0;
-            this.shim = 0;
-            this.baseAlpha = 0.55 + Math.random() * 0.35;
-            this.fontStr = `${this.size}px ${serifFont}`;
-            ctx.font = this.fontStr;
-            this.width = ctx.measureText(this.text).width;
-          }
-          update(t, dt) {
-            this.x += this.speed * dt;
-            if (this.x > W + this.width + 80) {
-              this.x = -this.width - 80;
-              this.baseY = H * 0.18 + Math.random() * (H * 0.64);
-            }
-            const wave = Math.sin(t * 0.0008 + this.phase) * this.amp;
-            const dx = this.x + this.ox - cursor.x;
-            const dy = this.baseY + this.oy + wave - cursor.y;
-            const d2 = dx * dx + dy * dy;
-            if (cursor.active && d2 < ATTRACT_R2 && d2 > 1) {
-              const dist = Math.sqrt(d2);
-              const f = (1 - dist / ATTRACT_R) * 2.2;
-              this.ox += (dx / dist) * f * dt * 0.09;
-              this.oy += (dy / dist) * f * dt * 0.09;
-              this.rot += (dx / dist) * f * 0.0025;
-              if (d2 < GLOW_R2) this.shim = Math.sin(t * 0.02) * 0.35;
-            } else {
-              this.shim *= 0.9;
-            }
-            this.ox *= 0.94;
-            this.oy *= 0.94;
-            this.rot *= 0.93;
-            this.y = this.baseY + wave + this.oy;
-            this.drawX = this.x + this.ox;
-          }
-          draw() {
-            const edgeFade = Math.min(1, Math.min(this.y, H - this.y) / (H * EDGE_FADE_H));
-            const a = Math.max(0.15, Math.min(1, (this.baseAlpha + this.shim) * edgeFade));
-            ctx.save();
-            ctx.translate(this.drawX, this.y);
-            if (this.rot > 0.001 || this.rot < -0.001) ctx.rotate(this.rot);
-            ctx.font = this.fontStr;
-            ctx.textBaseline = 'middle';
-            if (this.shim > 0.02) {
-              ctx.globalAlpha = a * 0.55;
-              ctx.fillStyle = glowColorRgba;
-              ctx.shadowBlur = SHADOW_BLUR;
-              ctx.shadowColor = glowColorRgba;
-              ctx.fillText(this.text, 0, 0);
-              ctx.shadowBlur = 0;
-            }
-            ctx.globalAlpha = a;
-            ctx.fillStyle = fillTextColor;
-            ctx.fillText(this.text, 0, 0);
-            ctx.restore();
-          }
-        }
+  /* --- Lettura variabili CSS (con fallback chain) --- */
+  function readVarRgb(name, fallback) {
+    if (!document.body) return fallback;
+    const probe = document.createElement('span');
+    probe.style.cssText =
+      `color:var(${name});position:absolute;visibility:hidden;pointer-events:none`;
+    document.body.appendChild(probe);
+    const c = getComputedStyle(probe).color;
+    probe.remove();
+    const m = c.match(/[\d.]+/g);
+    if (!m || m.length < 3) return fallback;
+    return `${Math.round(+m[0])},${Math.round(+m[1])},${Math.round(+m[2])}`;
+  }
+  function readFirstRgb(names, fallback) {
+    for (const n of names) {
+      const v = readVarRgb(n, null);
+      if (v) return v;
+    }
+    return fallback;
+  }
 
-        function resizeRiver() {
-          const r = stage.getBoundingClientRect();
-          DPR = Math.min(window.devicePixelRatio || 1, MAX_DPR);
-          W = r.width;
-          H = r.height;
-          canvas.width = Math.floor(W * DPR);
-          canvas.height = Math.floor(H * DPR);
-          canvas.style.width = W + 'px';
-          canvas.style.height = H + 'px';
-          ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-          cacheFont();
-          fragments = TEXTS.map(t => new Frag(t));
-        }
-        /* --- Culling --- */
-        let riverVisible = true;
-        let pageVisible = !document.hidden;
-        let lastT = 0;
-        if ('IntersectionObserver' in window) {
-          new IntersectionObserver(entries => entries.forEach(e => {
-            riverVisible = e.isIntersecting;
-            if (riverVisible) lastT = 0; // ← evita salto al rientro
-          }), {
-            rootMargin: '120px'
-          }).observe(stage);
-        }
-        document.addEventListener('visibilitychange', () => {
-          pageVisible = !document.hidden;
-          lastT = 0;
-        });
+  /* Accent = oro, Text = testo — coerenti con i temi dell'articolo */
+  const palette = {
+    gold: readFirstRgb(['--gold', '--accent'], '201,169,110'),
+    text: readFirstRgb(['--text', '--foreground'], '224,220,211')
+  };
 
-        function loop(t) {
-          requestAnimationFrame(loop);
-          if (!riverVisible || !pageVisible) return;
-          const dt = lastT ? Math.min(t - lastT, 50) : 16;
-          lastT = t;
-          ctx.clearRect(0, 0, W, H);
-          for (let i = ripples.length - 1; i >= 0; i--) {
-            const r = ripples[i];
-            r.r += 1.4 * dt * 0.06;
-            r.a *= 0.965;
-            if (r.a < 0.02) {
-              ripples.splice(i, 1);
-              continue;
-            }
-            ctx.beginPath();
-            ctx.arc(r.x, r.y, r.r, 0, Math.PI * 2);
-            ctx.strokeStyle = ripplePrefix + r.a + ')';
-            ctx.lineWidth = 1;
-            ctx.stroke();
-          }
-          for (let i = 0; i < fragments.length; i++) {
-            fragments[i].update(t, dt);
-            fragments[i].draw();
-          }
-        }
-        /* --- Mouse / touch --- */
-        function move(clientX, clientY) {
-          const r = stage.getBoundingClientRect();
-          const x = clientX - r.left;
-          const y = clientY - r.top;
-          if (cursor.active) {
-            const ddx = x - cursor.lastX;
-            const ddy = y - cursor.lastY;
-            if (ddx * ddx + ddy * ddy > RIPPLE_MIN_D2) {
-              ripples.push({
-                x,
-                y,
-                r: 2,
-                a: 0.5
-              });
-            }
-          }
-          cursor.x = x;
-          cursor.y = y;
-          cursor.lastX = x;
-          cursor.lastY = y;
-          cursor.active = true;
-        }
-        stage.addEventListener('mousemove', e => move(e.clientX, e.clientY), {
-          passive: true
-        });
-        stage.addEventListener('mouseleave', () => {
-          cursor.active = false;
-          cursor.x = cursor.y = -9999;
-        });
-        stage.addEventListener('touchmove', e => {
-          if (e.touches[0]) move(e.touches[0].clientX, e.touches[0].clientY);
-        }, {
-          passive: true
-        });
-        stage.addEventListener('touchend', () => {
-          cursor.active = false;
-          cursor.x = cursor.y = -9999;
-        });
-        /* --- Oracolo --- */
-        const FRAGMENTS = [{
-            t: "Non si può discendere due volte nel medesimo fiume.",
-            r: "Fr. 91 Diels–Kranz"
-          },
-          {
-            t: "Il carattere è il destino dell'uomo.",
-            r: "Fr. 119 Diels–Kranz"
-          },
-          {
-            t: "La natura ama nascondersi.",
-            r: "Fr. 123 Diels–Kranz"
-          },
-          {
-            t: "Il sole è nuovo ogni giorno.",
-            r: "Fr. 6 Diels–Kranz"
-          },
-          {
-            t: "La via in su e la via in giù sono una sola e medesima via.",
-            r: "Fr. 60 Diels–Kranz"
-          },
-          {
-            t: "L'armonia nascosta è più forte di quella manifesta.",
-            r: "Fr. 54 Diels–Kranz"
-          },
-          {
-            t: "Ascoltando non me, ma il Logos, è saggio riconoscere che tutte le cose sono una.",
-            r: "Fr. 50 Diels–Kranz"
-          },
-          {
-            t: "Non si può scoprire i confini dell'anima, per quanto a fondo si vada: così profondo è il suo Logos.",
-            r: "Fr. 45 Diels–Kranz"
-          },
-          {
-            t: "Guerra è padre di tutte le cose e re di tutte.",
-            r: "Fr. 53 Diels–Kranz"
-          },
-          {
-            t: "Questo cosmo fu sempre, è e sarà fuoco eternamente vivo.",
-            r: "Fr. 30 Diels–Kranz"
-          },
-          {
-            t: "Il mare è l'acqua più pura e più impura.",
-            r: "Fr. 61 Diels–Kranz"
-          },
-          {
-            t: "Una cosa sola è la sapienza: conoscere il pensiero che governa tutte le cose.",
-            r: "Fr. 41 Diels–Kranz"
-          },
-          {
-            t: "Nel medesimo fiume entriamo e non entriamo, siamo e non siamo.",
-            r: "Fr. 49a Diels–Kranz"
-          },
-          {
-            t: "Di questo Logos, che è sempre, gli uomini non comprendono né prima né dopo averlo ascoltato.",
-            r: "Fr. 1 Diels–Kranz"
-          },
-          {
-            t: "L'asino preferisce la paglia all'oro.",
-            r: "Fr. 9 Diels–Kranz"
-          },
-          {
-            t: "Maria Teresa.",
-            r: "Fr. 9 Diels–Kranz"
-          },
-          {
-            t: "Medicina che taglia, brucia, tortura — eppure guarisce.",
-            r: "Fr. 58 Diels–Kranz"
-          },
-          {
-            t: "Il tempo è un fanciullo che gioca, che muove i dadi: di un fanciullo è il regno.",
-            r: "Fr. 52 Diels–Kranz"
-          },
-          {
-            t: "La malattia rende dolce e buona la salute.",
-            r: "Fr. 111 Diels–Kranz"
-          }
-        ];
+  let fillTextColor  = `rgb(${palette.text})`;
+  let glowColorRgba  = `rgba(${palette.gold},.9)`;
+  let ripplePrefix   = `rgba(${palette.gold},`;
 
-        function hash(s) {
-          let h = 0;
-          for (let i = 0; i < s.length; i++) {
-            h = ((h << 5) - h) + s.charCodeAt(i);
-            h |= 0;
-          }
-          return Math.abs(h);
-        }
-        let lastIdx = -1;
+  function refreshPaletteStrings() {
+    fillTextColor  = `rgb(${palette.text})`;
+    glowColorRgba  = `rgba(${palette.gold},.9)`;
+    ripplePrefix   = `rgba(${palette.gold},`;
+  }
 
-        function pick(q) {
-          const base = hash((q || 'silenzio').toLowerCase().trim());
-          const now = Date.now();
-          let i = (base * 31 + (now % 7919)) % FRAGMENTS.length;
-          if (i === lastIdx) i = (i + 1 + (now % 3)) % FRAGMENTS.length;
-          lastIdx = i;
-          return FRAGMENTS[i];
-        }
+  /* --- Font: prova prima --font-serif (usato dall'articolo) --- */
+  let serifFont = 'Cormorant Garamond, Georgia, serif';
+  function cacheFont() {
+    let v = getComputedStyle(root).getPropertyValue('--font-serif').trim();
+    if (!v) v = getComputedStyle(root).getPropertyValue('--serif').trim();
+    if (v) serifFont = v;
+  }
 
-        function constellationSVG() {
-          const pts = [
-            [40, 85],
-            [78, 42],
-            [128, 58],
-            [172, 26],
-            [218, 62],
-            [258, 92],
-            [200, 112]
-          ];
-          const links = [
-            [0, 1],
-            [1, 2],
-            [2, 3],
-            [3, 4],
-            [4, 5],
-            [5, 6],
-            [6, 0],
-            [2, 6]
-          ];
-          let s = '<svg class="fo-constellation" viewBox="0 0 300 150" aria-hidden="true">';
-          links.forEach(([a, b], i) => {
-            s += `<line x1="${pts[a][0]}" y1="${pts[a][1]}" x2="${pts[b][0]}" y2="${pts[b][1]}" style="animation-delay:${i*0.08}s"/>`;
-          });
-          pts.forEach((p, i) => {
-            s += `<circle cx="${p[0]}" cy="${p[1]}" r="2" style="animation-delay:${i*0.1}s"/>`;
-          });
-          return s + '</svg>';
-        }
-        const form = document.getElementById('foForm');
-        const input = document.getElementById('foQuestion');
-        const btn = document.getElementById('foBtn');
-        const resp = document.getElementById('foResponse');
-        if (!form || !input || !btn || !resp) return;
-        let busy = false;
-        form.addEventListener('submit', e => {
-          e.preventDefault();
-          if (busy) return;
-          const q = input.value.trim();
-          if (!q) {
-            input.focus();
-            input.animate([{
-                transform: 'translateX(0)'
-              },
-              {
-                transform: 'translateX(-6px)'
-              },
-              {
-                transform: 'translateX(6px)'
-              },
-              {
-                transform: 'translateX(0)'
-              }
-            ], {
-              duration: 320,
-              easing: 'ease-in-out'
-            });
-            return;
-          }
-          busy = true;
-          btn.disabled = true;
-          const label = btn.textContent;
-          btn.textContent = 'Ascolta…';
-          resp.innerHTML = '<span class="fo-listening">L\'oracolo ascolta…</span>';
-          setTimeout(() => {
-            resp.innerHTML =
-              constellationSVG() +
-              '<div class="fo-fragment"><blockquote></blockquote><cite></cite></div>';
-            const c = resp.querySelector('.fo-constellation');
-            const box = resp.querySelector('.fo-fragment');
-            const bq = resp.querySelector('blockquote');
-            const ci = resp.querySelector('cite');
-            const f = pick(q);
-            bq.textContent = f.t;
-            ci.textContent = f.r;
-            requestAnimationFrame(() => {
-              c.classList.add('visible');
-              setTimeout(() => box.classList.add('visible'),
-                reduceMotion ? 50 : 900);
-            });
-            busy = false;
-            btn.disabled = false;
-            btn.textContent = label;
-          }, reduceMotion ? 200 : 1700);
-        });
-        /* --- Cambio tema: rileggi palette + font --- */
-        new MutationObserver(() => {
-          palette.gold = readFirstRgb(['--gold', '--accent'], palette.gold);
-          palette.text = readFirstRgb(['--text', '--foreground'], palette.text);
-          refreshPaletteStrings();
-          cacheFont();
-        }).observe(document.body, {
-          attributes: true,
-          attributeFilter: ['class']
-        });
-        /* --- Resize --- */
-        let rt;
-        window.addEventListener('resize', () => {
-          clearTimeout(rt);
-          rt = setTimeout(resizeRiver, 160);
-        }, {
-          passive: true
-        });
-        resizeRiver();
-        requestAnimationFrame(loop);
-      })();
-      /* ============================================================
-         2) LA SOGLIA DEL DUBBIO — scelte filosofiche
-         Funziona con .soglia, .soglia-dubbio o #soglia (fallback chain)
-         ============================================================ */
-      (function() {
-        'use strict';
-        /* Selettore robusto: accetta la classe dell'HTML fornito o una variante */
-        const modulo = document.querySelector('.soglia, .soglia-dubbio, #soglia');
-        if (!modulo || modulo.dataset.inizializzato) return;
-        modulo.dataset.inizializzato = 'true';
-        const risultato = modulo.querySelector('.soglia-risultato');
-        const risposta = modulo.querySelector('.soglia-risposta');
-        const domanda = modulo.querySelector('.soglia-domanda');
-        const scelte = modulo.querySelector('.soglia-scelte');
-        const resetBtn = modulo.querySelector('.soglia-reset');
-        if (!risultato || !scelte || !resetBtn) return; // HTML incoerente → esci
-        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        const riflessioni = {
-          memoria: {
-            risposta: 'La memoria unisce ciò che siamo stati a ciò che siamo. Ma i ricordi cambiano, svaniscono e talvolta ci ingannano.',
-            domanda: 'Se perdessi i tuoi ricordi, saresti ancora la stessa persona?'
-          },
-          coscienza: {
-            risposta: 'Forse sei colui che osserva il cambiamento. Ma anche la coscienza cresce, apprende e si trasforma.',
-            domanda: 'E se anche chi osserva cambiasse continuamente?'
-          },
-          relazioni: {
-            risposta: 'Gli altri contribuiscono a formarci. La nostra identità nasce anche dagli incontri, dai legami e dalle separazioni.',
-            domanda: 'Chi saresti se venissero meno i legami che ti definiscono?'
-          }
-        };
-        const bottoni = Array.from(scelte.querySelectorAll('button[data-soglia]'));
-        /* Stato iniziale accessibile */
-        bottoni.forEach(b => b.setAttribute('aria-pressed', 'false'));
+  /* --- Canvas --- */
+  const stage  = document.getElementById('foStage');
+  const canvas = document.getElementById('foRiver');
+  if (!stage || !canvas) return;
+  const ctx = canvas.getContext('2d', { alpha: true, desynchronized: true });
 
-        function scegli(pulsante) {
-          const r = riflessioni[pulsante.dataset.soglia];
-          if (!r) return;
-          /* Contenuto */
-          risposta.textContent = r.risposta;
-          domanda.textContent = r.domanda;
-          /* Mostra + riavvia l'animazione (is-visible) */
-          risultato.hidden = false;
-          risultato.classList.remove('is-visible');
-          void risultato.offsetWidth; // reflow → riavvia @keyframes
-          risultato.classList.add('is-visible');
-          /* Stato visivo e accessibile dei bottoni */
-          bottoni.forEach(b => {
-            const attivo = b === pulsante;
-            b.classList.toggle('is-active', attivo);
-            b.setAttribute('aria-pressed', String(attivo));
-          });
-          /* Scroll morbido al risultato (rispetta reduced-motion) */
-          if (!reduceMotion) {
-            requestAnimationFrame(() => {
-              risultato.scrollIntoView({
-                behavior: 'smooth',
-                block: 'nearest'
-              });
-            });
-          }
-        }
-        /* Delegazione eventi sul gruppo */
-        scelte.addEventListener('click', e => {
-          const pulsante = e.target.closest('button[data-soglia]');
-          if (!pulsante || !scelte.contains(pulsante)) return;
-          scegli(pulsante);
-        });
-        /* Reset */
-        resetBtn.addEventListener('click', () => {
-          risultato.hidden = true;
-          risultato.classList.remove('is-visible');
-          bottoni.forEach(b => {
-            b.classList.remove('is-active');
-            b.setAttribute('aria-pressed', 'false');
-          });
-          if (bottoni[0]) bottoni[0].focus({
-            preventScroll: true
-          });
-        });
-      })();
-    </script>
+  let W = 0, H = 0, DPR = 1;
+  let fragments = [];
+  const ripples = [];
+  const cursor = { x: -9999, y: -9999, lastX: -9999, lastY: -9999, active: false };
+
+  const TEXTS = [
+    'Φ πάντα ῥεῖ', 'Tutto scorre', 'Il carattere è il destino',
+    'La natura ama nascondersi', 'Il sole è nuovo ogni giorno',
+    'La via in su e in giù è la stessa', "∇ L'armonia nascosta è più forte",
+    'Siamo e non siamo', 'Il fuoco si accende secondo misura', 'Uno è il saggio',
+    'Non si tocca due volte', 'Guerra è padre di tutte le cose',
+    'Il mare è puro e impuro', "L'anima ha confini profondi",
+    'Σ Ascoltando non me, ma il Logos', "L'asino preferisce la paglia",
+    'Maria Teresa💭', 'Casimiro🤔',
+    'Il tempo è un fanciullo che gioca', 'Medicina che taglia e brucia',
+    'Non si entra due volte nello stesso fiume', 'Il Logos governa tutte le cose'
+  ];
+
+  class Frag {
+    constructor(text) {
+      this.text     = text;
+      this.baseY    = H * 0.18 + Math.random() * (H * 0.64);
+      this.x        = Math.random() * (W + 400) - 200;
+      this.speed    = 0.018 + Math.random() * 0.045;
+      this.size     = 14 + Math.random() * 8;
+      this.phase    = Math.random() * Math.PI * 2;
+      this.amp      = 6 + Math.random() * 14;
+      this.ox = 0; this.oy = 0; this.rot = 0; this.shim = 0;
+      this.baseAlpha = 0.55 + Math.random() * 0.35;
+      this.fontStr   = `${this.size}px ${serifFont}`;
+      ctx.font = this.fontStr;
+      this.width = ctx.measureText(this.text).width;
+    }
+    update(t, dt) {
+      this.x += this.speed * dt;
+      if (this.x > W + this.width + 80) {
+        this.x = -this.width - 80;
+        this.baseY = H * 0.18 + Math.random() * (H * 0.64);
+      }
+      const wave = Math.sin(t * 0.0008 + this.phase) * this.amp;
+      const dx   = this.x + this.ox - cursor.x;
+      const dy   = this.baseY + this.oy + wave - cursor.y;
+      const d2   = dx * dx + dy * dy;
+      if (cursor.active && d2 < ATTRACT_R2 && d2 > 1) {
+        const dist = Math.sqrt(d2);
+        const f    = (1 - dist / ATTRACT_R) * 2.2;
+        this.ox  += (dx / dist) * f * dt * 0.09;
+        this.oy  += (dy / dist) * f * dt * 0.09;
+        this.rot += (dx / dist) * f * 0.0025;
+        if (d2 < GLOW_R2) this.shim = Math.sin(t * 0.02) * 0.35;
+      } else {
+        this.shim *= 0.9;
+      }
+      this.ox  *= 0.94;
+      this.oy  *= 0.94;
+      this.rot *= 0.93;
+      this.y    = this.baseY + wave + this.oy;
+      this.drawX = this.x + this.ox;
+    }
+    draw() {
+      const edgeFade = Math.min(1, Math.min(this.y, H - this.y) / (H * EDGE_FADE_H));
+      const a = Math.max(0.15, Math.min(1, (this.baseAlpha + this.shim) * edgeFade));
+      ctx.save();
+      ctx.translate(this.drawX, this.y);
+      if (this.rot > 0.001 || this.rot < -0.001) ctx.rotate(this.rot);
+      ctx.font = this.fontStr;
+      ctx.textBaseline = 'middle';
+      if (this.shim > 0.02) {
+        ctx.globalAlpha = a * 0.55;
+        ctx.fillStyle   = glowColorRgba;
+        ctx.shadowBlur  = SHADOW_BLUR;
+        ctx.shadowColor = glowColorRgba;
+        ctx.fillText(this.text, 0, 0);
+        ctx.shadowBlur = 0;
+      }
+      ctx.globalAlpha = a;
+      ctx.fillStyle   = fillTextColor;
+      ctx.fillText(this.text, 0, 0);
+      ctx.restore();
+    }
+  }
+
+  function resizeRiver() {
+    const r = stage.getBoundingClientRect();
+    DPR = Math.min(window.devicePixelRatio || 1, MAX_DPR);
+    W = r.width; H = r.height;
+    canvas.width  = Math.floor(W * DPR);
+    canvas.height = Math.floor(H * DPR);
+    canvas.style.width  = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    cacheFont();
+    fragments = TEXTS.map(t => new Frag(t));
+  }
+
+  /* --- Culling --- */
+  let riverVisible = true;
+  let pageVisible  = !document.hidden;
+  let lastT = 0;
+
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(entries => entries.forEach(e => {
+      riverVisible = e.isIntersecting;
+      if (riverVisible) lastT = 0;   // ← evita salto al rientro
+    }), { rootMargin: '120px' }).observe(stage);
+  }
+  document.addEventListener('visibilitychange', () => {
+    pageVisible = !document.hidden;
+    lastT = 0;
+  });
+
+  function loop(t) {
+    requestAnimationFrame(loop);
+    if (!riverVisible || !pageVisible) return;
+    const dt = lastT ? Math.min(t - lastT, 50) : 16;
+    lastT = t;
+    ctx.clearRect(0, 0, W, H);
+
+    for (let i = ripples.length - 1; i >= 0; i--) {
+      const r = ripples[i];
+      r.r += 1.4 * dt * 0.06;
+      r.a *= 0.965;
+      if (r.a < 0.02) { ripples.splice(i, 1); continue; }
+      ctx.beginPath();
+      ctx.arc(r.x, r.y, r.r, 0, Math.PI * 2);
+      ctx.strokeStyle = ripplePrefix + r.a + ')';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+
+    for (let i = 0; i < fragments.length; i++) {
+      fragments[i].update(t, dt);
+      fragments[i].draw();
+    }
+  }
+
+  /* --- Mouse / touch --- */
+  function move(clientX, clientY) {
+    const r = stage.getBoundingClientRect();
+    const x = clientX - r.left;
+    const y = clientY - r.top;
+    if (cursor.active) {
+      const ddx = x - cursor.lastX;
+      const ddy = y - cursor.lastY;
+      if (ddx * ddx + ddy * ddy > RIPPLE_MIN_D2) {
+        ripples.push({ x, y, r: 2, a: 0.5 });
+      }
+    }
+    cursor.x = x; cursor.y = y;
+    cursor.lastX = x; cursor.lastY = y;
+    cursor.active = true;
+  }
+  stage.addEventListener('mousemove', e => move(e.clientX, e.clientY), { passive: true });
+  stage.addEventListener('mouseleave', () => {
+    cursor.active = false; cursor.x = cursor.y = -9999;
+  });
+  stage.addEventListener('touchmove', e => {
+    if (e.touches[0]) move(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive: true });
+  stage.addEventListener('touchend', () => {
+    cursor.active = false; cursor.x = cursor.y = -9999;
+  });
+
+  /* --- Oracolo --- */
+  const FRAGMENTS = [
+    { t: "Non si può discendere due volte nel medesimo fiume.", r: "Fr. 91 Diels–Kranz" },
+    { t: "Il carattere è il destino dell'uomo.", r: "Fr. 119 Diels–Kranz" },
+    { t: "La natura ama nascondersi.", r: "Fr. 123 Diels–Kranz" },
+    { t: "Il sole è nuovo ogni giorno.", r: "Fr. 6 Diels–Kranz" },
+    { t: "La via in su e la via in giù sono una sola e medesima via.", r: "Fr. 60 Diels–Kranz" },
+    { t: "L'armonia nascosta è più forte di quella manifesta.", r: "Fr. 54 Diels–Kranz" },
+    { t: "Ascoltando non me, ma il Logos, è saggio riconoscere che tutte le cose sono una.", r: "Fr. 50 Diels–Kranz" },
+    { t: "Non si può scoprire i confini dell'anima, per quanto a fondo si vada: così profondo è il suo Logos.", r: "Fr. 45 Diels–Kranz" },
+    { t: "Guerra è padre di tutte le cose e re di tutte.", r: "Fr. 53 Diels–Kranz" },
+    { t: "Questo cosmo fu sempre, è e sarà fuoco eternamente vivo.", r: "Fr. 30 Diels–Kranz" },
+    { t: "Il mare è l'acqua più pura e più impura.", r: "Fr. 61 Diels–Kranz" },
+    { t: "Una cosa sola è la sapienza: conoscere il pensiero che governa tutte le cose.", r: "Fr. 41 Diels–Kranz" },
+    { t: "Nel medesimo fiume entriamo e non entriamo, siamo e non siamo.", r: "Fr. 49a Diels–Kranz" },
+    { t: "Di questo Logos, che è sempre, gli uomini non comprendono né prima né dopo averlo ascoltato.", r: "Fr. 1 Diels–Kranz" },
+    { t: "L'asino preferisce la paglia all'oro.", r: "Fr. 9 Diels–Kranz" },
+    { t: "Maria Teresa.", r: "Fr. 9 Diels–Kranz" },
+    { t: "Medicina che taglia, brucia, tortura — eppure guarisce.", r: "Fr. 58 Diels–Kranz" },
+    { t: "Il tempo è un fanciullo che gioca, che muove i dadi: di un fanciullo è il regno.", r: "Fr. 52 Diels–Kranz" },
+    { t: "La malattia rende dolce e buona la salute.", r: "Fr. 111 Diels–Kranz" }
+  ];
+
+  function hash(s) {
+    let h = 0;
+    for (let i = 0; i < s.length; i++) { h = ((h << 5) - h) + s.charCodeAt(i); h |= 0; }
+    return Math.abs(h);
+  }
+  let lastIdx = -1;
+  function pick(q) {
+    const base = hash((q || 'silenzio').toLowerCase().trim());
+    const now  = Date.now();
+    let i = (base * 31 + (now % 7919)) % FRAGMENTS.length;
+    if (i === lastIdx) i = (i + 1 + (now % 3)) % FRAGMENTS.length;
+    lastIdx = i;
+    return FRAGMENTS[i];
+  }
+
+  function constellationSVG() {
+    const pts = [[40,85],[78,42],[128,58],[172,26],[218,62],[258,92],[200,112]];
+    const links = [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,0],[2,6]];
+    let s = '<svg class="fo-constellation" viewBox="0 0 300 150" aria-hidden="true">';
+    links.forEach(([a,b], i) => {
+      s += `<line x1="${pts[a][0]}" y1="${pts[a][1]}" x2="${pts[b][0]}" y2="${pts[b][1]}" style="animation-delay:${i*0.08}s"/>`;
+    });
+    pts.forEach((p, i) => {
+      s += `<circle cx="${p[0]}" cy="${p[1]}" r="2" style="animation-delay:${i*0.1}s"/>`;
+    });
+    return s + '</svg>';
+  }
+
+  const form  = document.getElementById('foForm');
+  const input = document.getElementById('foQuestion');
+  const btn   = document.getElementById('foBtn');
+  const resp  = document.getElementById('foResponse');
+  if (!form || !input || !btn || !resp) return;
+
+  let busy = false;
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    if (busy) return;
+    const q = input.value.trim();
+    if (!q) {
+      input.focus();
+      input.animate([
+        { transform: 'translateX(0)' },
+        { transform: 'translateX(-6px)' },
+        { transform: 'translateX(6px)' },
+        { transform: 'translateX(0)' }
+      ], { duration: 320, easing: 'ease-in-out' });
+      return;
+    }
+    busy = true;
+    btn.disabled = true;
+    const label = btn.textContent;
+    btn.textContent = 'Ascolta…';
+    resp.innerHTML = '<span class="fo-listening">L\'oracolo ascolta…</span>';
+
+    setTimeout(() => {
+      resp.innerHTML =
+        constellationSVG() +
+        '<div class="fo-fragment"><blockquote></blockquote><cite></cite></div>';
+      const c   = resp.querySelector('.fo-constellation');
+      const box = resp.querySelector('.fo-fragment');
+      const bq  = resp.querySelector('blockquote');
+      const ci  = resp.querySelector('cite');
+      const f   = pick(q);
+      bq.textContent = f.t;
+      ci.textContent = f.r;
+      requestAnimationFrame(() => {
+        c.classList.add('visible');
+        setTimeout(() => box.classList.add('visible'),
+                   reduceMotion ? 50 : 900);
+      });
+      busy = false;
+      btn.disabled = false;
+      btn.textContent = label;
+    }, reduceMotion ? 200 : 1700);
+  });
+
+  /* --- Cambio tema: rileggi palette + font --- */
+  new MutationObserver(() => {
+    palette.gold = readFirstRgb(['--gold', '--accent'], palette.gold);
+    palette.text = readFirstRgb(['--text', '--foreground'], palette.text);
+    refreshPaletteStrings();
+    cacheFont();
+  }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
+  /* --- Resize --- */
+  let rt;
+  window.addEventListener('resize', () => {
+    clearTimeout(rt);
+    rt = setTimeout(resizeRiver, 160);
+  }, { passive: true });
+
+  resizeRiver();
+  requestAnimationFrame(loop);
+})();
+
+
+/* ============================================================
+   2) LA SOGLIA DEL DUBBIO — scelte filosofiche
+   Funziona con .soglia, .soglia-dubbio o #soglia (fallback chain)
+   ============================================================ */
+(function () {
+  'use strict';
+
+  /* Selettore robusto: accetta la classe dell'HTML fornito o una variante */
+  const modulo = document.querySelector('.soglia, .soglia-dubbio, #soglia');
+  if (!modulo || modulo.dataset.inizializzato) return;
+  modulo.dataset.inizializzato = 'true';
+
+  const risultato = modulo.querySelector('.soglia-risultato');
+  const risposta  = modulo.querySelector('.soglia-risposta');
+  const domanda   = modulo.querySelector('.soglia-domanda');
+  const scelte    = modulo.querySelector('.soglia-scelte');
+  const resetBtn  = modulo.querySelector('.soglia-reset');
+  if (!risultato || !scelte || !resetBtn) return;   // HTML incoerente → esci
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const riflessioni = {
+    memoria: {
+      risposta: 'La memoria unisce ciò che siamo stati a ciò che siamo. Ma i ricordi cambiano, svaniscono e talvolta ci ingannano.',
+      domanda:  'Se perdessi i tuoi ricordi, saresti ancora la stessa persona?'
+    },
+    coscienza: {
+      risposta: 'Forse sei colui che osserva il cambiamento. Ma anche la coscienza cresce, apprende e si trasforma.',
+      domanda:  'E se anche chi osserva cambiasse continuamente?'
+    },
+    relazioni: {
+      risposta: 'Gli altri contribuiscono a formarci. La nostra identità nasce anche dagli incontri, dai legami e dalle separazioni.',
+      domanda:  'Chi saresti se venissero meno i legami che ti definiscono?'
+    }
+  };
+
+  const bottoni = Array.from(scelte.querySelectorAll('button[data-soglia]'));
+
+  /* Stato iniziale accessibile */
+  bottoni.forEach(b => b.setAttribute('aria-pressed', 'false'));
+
+  function scegli(pulsante) {
+    const r = riflessioni[pulsante.dataset.soglia];
+    if (!r) return;
+
+    /* Contenuto */
+    risposta.textContent = r.risposta;
+    domanda.textContent  = r.domanda;
+
+    /* Mostra + riavvia l'animazione (is-visible) */
+    risultato.hidden = false;
+    risultato.classList.remove('is-visible');
+    void risultato.offsetWidth;              // reflow → riavvia @keyframes
+    risultato.classList.add('is-visible');
+
+    /* Stato visivo e accessibile dei bottoni */
+    bottoni.forEach(b => {
+      const attivo = b === pulsante;
+      b.classList.toggle('is-active', attivo);
+      b.setAttribute('aria-pressed', String(attivo));
+    });
+
+    /* Scroll morbido al risultato (rispetta reduced-motion) */
+    if (!reduceMotion) {
+      requestAnimationFrame(() => {
+        risultato.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
+    }
+  }
+
+  /* Delegazione eventi sul gruppo */
+  scelte.addEventListener('click', e => {
+    const pulsante = e.target.closest('button[data-soglia]');
+    if (!pulsante || !scelte.contains(pulsante)) return;
+    scegli(pulsante);
+  });
+
+  /* Reset */
+  resetBtn.addEventListener('click', () => {
+    risultato.hidden = true;
+    risultato.classList.remove('is-visible');
+
+    bottoni.forEach(b => {
+      b.classList.remove('is-active');
+      b.setAttribute('aria-pressed', 'false');
+    });
+
+    if (bottoni[0]) bottoni[0].focus({ preventScroll: true });
+  });
+})();
+</script>
     <script>
       (function() {
         'use strict';
