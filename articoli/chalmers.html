@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="David Chalmers: il filosofo che ha posto il problema difficile della coscienza. Biografia, naturalismo dualista, panpsichismo, realtà virtuale e mente estesa.">
+    <meta name="author" content="Enciclopedia Filosofica">
+    <meta property="og:title" content="David Chalmers — Il Cartografo della Coscienza">
+    <meta property="og:description" content="Un viaggio nel pensiero del filosofo che ha ridefinito il mistero della coscienza.">
+    <meta property="og:type" content="article">
+    <title>David Chalmers — Il Cartografo della Coscienza</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ===== RESET & BASE ===== */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --font-serif: 'Cormorant Garamond', Georgia, serif;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            --radius: 12px;
+            --shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        body {
+            font-family: var(--font-sans);
+            line-height: 1.8;
+            transition: background-color 0.8s, color 0.8s;
+            overflow-x: hidden;
+        }
+
+        /* ===== TEMI ===== */
+        body.theme-normal {
+            --bg: #f7f5f2; --surface: #ffffff; --text: #1a1a1a;
+            --text-secondary: #555; --accent: #8b5e3c; --border: #e0dbd5;
+            --highlight: #f0ebe4;
+        }
+        body.theme-filosofico {
+            --bg: #1a1a1f; --surface: #23232b; --text: #e0dcd3;
+            --text-secondary: #a8a39a; --accent: #c9a96e; --border: #35353f;
+            --highlight: #2a2a35;
+        }
+        body.theme-meditativo {
+            --bg: #e8ede8; --surface: #f2f5f2; --text: #2d3a2d;
+            --text-secondary: #5a6b5a; --accent: #6b8f6b; --border: #c8d5c8;
+            --highlight: #dde8dd;
+        }
+        body.theme-notturno {
+            --bg: #0a0a12; --surface: #12121e; --text: #c8c8d8;
+            --text-secondary: #8888a0; --accent: #7b7bd0; --border: #1e1e30;
+            --highlight: #16162a;
+        }
+        body.theme-pergamena {
+            --bg: #f4e4c1; --surface: #faf0d7; --text: #3d2e1a;
+            --text-secondary: #6b5a3e; --accent: #8b6914; --border: #d4c09a;
+            --highlight: #efe0b8;
+        }
+
+        body.theme-normal, body.theme-filosofico, body.theme-meditativo,
+        body.theme-notturno, body.theme-pergamena {
+            background-color: var(--bg);
+            color: var(--text);
+        }
+
+        /* ===== PROGRESS BAR ===== */
+        #progress-bar {
+            position: fixed; top: 0; left: 0; height: 3px;
+            background: var(--accent); width: 0%; z-index: 1000;
+            transition: width 0.1s linear;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            position: relative; min-height: 100vh;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            text-align: center; padding: 2rem; overflow: hidden;
+        }
+        .header::before {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(ellipse at 50% 30%, rgba(201, 169, 110, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+        .particle {
+            position: absolute; width: 2px; height: 2px; background: var(--accent);
+            border-radius: 50%; opacity: 0.4; animation: floatParticle 12s infinite;
+        }
+        @keyframes floatParticle {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+        .header h1 {
+            font-family: var(--font-serif);
+            font-size: clamp(3rem, 8vw, 7rem);
+            font-weight: 700; letter-spacing: -0.02em; line-height: 1.1;
+            margin-bottom: 1rem; position: relative; z-index: 1;
+            animation: fadeInUp 1.2s ease-out, shimmer 6s linear infinite;
+            background: linear-gradient(90deg, var(--text) 0%, var(--accent) 50%, var(--text) 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .header .subtitle {
+            font-family: var(--font-serif);
+            font-size: clamp(1.1rem, 2.5vw, 1.8rem);
+            font-style: italic; color: var(--text-secondary);
+            max-width: 600px; position: relative; z-index: 1;
+            animation: fadeInUp 1.2s 0.2s ease-out both;
+        }
+        .header .dates {
+            margin-top: 2rem; font-family: var(--font-sans);
+            font-size: 0.9rem; letter-spacing: 0.15em;
+            text-transform: uppercase; color: var(--accent);
+            position: relative; z-index: 1;
+            animation: fadeInUp 1.2s 0.4s ease-out both;
+        }
+        .scroll-indicator {
+            position: absolute; bottom: 2rem; left: 50%;
+            transform: translateX(-50%);
+            display: flex; flex-direction: column; align-items: center;
+            gap: 0.5rem; color: var(--text-secondary); font-size: 0.75rem;
+            letter-spacing: 0.1em; text-transform: uppercase;
+            animation: pulse 2s infinite; z-index: 1;
+        }
+        .scroll-indicator::after {
+            content: ''; width: 1px; height: 40px;
+            background: linear-gradient(to bottom, var(--accent), transparent);
+        }
+        @keyframes pulse { 0%,100%{opacity:.6} 50%{opacity:1} }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+
+        /* ===== PANNELLO OPZIONI DI LETTURA (RIDISEGNATO) ===== */
+        .reading-panel {
+            position: fixed;
+            top: 1.25rem;
+            right: 1.25rem;
+            z-index: 999;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+            transition: background 0.5s, border-color 0.5s;
+            overflow: hidden;
+            max-width: 320px;
+        }
+
+        .reading-panel-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.85rem 1.1rem;
+            cursor: pointer;
+            user-select: none;
+            border-bottom: 1px solid var(--border);
+            transition: background 0.3s, border-color 0.5s;
+        }
+
+        .reading-panel-header:hover {
+            background: var(--highlight);
+        }
+
+        .reading-panel-header .icon-book {
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+
+        .reading-panel-header .label-current {
+            flex: 1;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text);
+        }
+
+        .reading-panel-header .label-current span {
+            display: block;
+            font-size: 0.68rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+            letter-spacing: 0.04em;
+            text-transform: none;
+            margin-top: 2px;
+        }
+
+        .reading-panel-header .chevron {
+            font-size: 0.9rem;
+            color: var(--accent);
+            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .reading-panel.collapsed .reading-panel-header .chevron {
+            transform: rotate(-90deg);
+        }
+
+        .reading-options {
+            display: flex;
+            flex-direction: column;
+            padding: 0.6rem;
+            gap: 0.4rem;
+            max-height: 500px;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.23, 1, 0.32, 1),
+                        padding 0.4s, opacity 0.4s;
+            opacity: 1;
+        }
+
+        .reading-panel.collapsed .reading-options {
+            max-height: 0;
+            padding: 0 0.6rem;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .reading-option {
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+            padding: 0.7rem 0.9rem;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            background: transparent;
+            text-align: left;
+            transition: all 0.3s;
+            color: var(--text);
+            font-family: var(--font-sans);
+            width: 100%;
+            position: relative;
+        }
+
+        .reading-option:hover {
+            background: var(--highlight);
+            transform: translateX(3px);
+        }
+
+        .reading-option.active {
+            border-color: var(--accent);
+            background: var(--highlight);
+        }
+
+        .reading-option.active::before {
+            content: '✓';
+            position: absolute;
+            top: 0.35rem;
+            right: 0.55rem;
+            font-size: 0.7rem;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .option-icon {
+            width: 36px;
+            height: 36px;
+            min-width: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.05rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .reading-option.active .option-icon {
+            background: var(--accent);
+            color: var(--bg);
+            border-color: var(--accent);
+            transform: scale(1.08);
+        }
+
+        .option-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 0;
+        }
+
+        .option-name {
+            font-size: 0.88rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        .option-desc {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            line-height: 1.3;
+        }
+
+        /* Colori anteprima nei bottoni */
+        .reading-option[data-theme="normal"] .option-icon { background: #f7f5f2; color: #8b5e3c; border-color: #d4cec6; }
+        .reading-option[data-theme="filosofico"] .option-icon { background: #1a1a1f; color: #c9a96e; border-color: #35353f; }
+        .reading-option[data-theme="meditativo"] .option-icon { background: #e8ede8; color: #6b8f6b; border-color: #c8d5c8; }
+        .reading-option[data-theme="notturno"] .option-icon { background: #0a0a12; color: #7b7bd0; border-color: #1e1e30; }
+        .reading-option[data-theme="pergamena"] .option-icon { background: #f4e4c1; color: #8b6914; border-color: #d4c09a; }
+
+        /* ===== MAIN ===== */
+        .container { max-width: 800px; margin: 0 auto; padding: 4rem 2rem 6rem; }
+
+        .section {
+            margin-bottom: 3rem; opacity: 0; transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .section.visible { opacity: 1; transform: translateY(0); }
+
+        .section-header {
+            display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;
+        }
+        .section-number {
+            font-family: var(--font-serif); font-size: 3rem; font-weight: 700;
+            color: var(--accent); opacity: 0.4; line-height: 1;
+        }
+        .section h2 {
+            font-family: var(--font-serif);
+            font-size: clamp(1.6rem, 4vw, 2.4rem);
+            font-weight: 600; letter-spacing: -0.01em;
+        }
+
+        details {
+            margin-top: 1rem; border: 1px solid var(--border);
+            border-radius: var(--radius); overflow: hidden;
+            background: var(--surface);
+            transition: background 0.5s, border-color 0.5s;
+        }
+        details[open] { box-shadow: var(--shadow); }
+        summary {
+            padding: 1.2rem 1.5rem; cursor: pointer;
+            font-family: var(--font-sans); font-weight: 500;
+            font-size: 0.95rem; letter-spacing: 0.05em;
+            text-transform: uppercase; color: var(--accent);
+            list-style: none; display: flex;
+            justify-content: space-between; align-items: center;
+            transition: background 0.3s; user-select: none;
+        }
+        summary::-webkit-details-marker { display: none; }
+        summary::after {
+            content: '＋'; font-size: 1.2rem;
+            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            color: var(--text-secondary);
+        }
+        details[open] summary::after { transform: rotate(45deg); }
+        summary:hover { background: var(--highlight); }
+
+        .details-content {
+            padding: 0 1.5rem 1.5rem;
+            animation: expandContent 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        @keyframes expandContent {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .details-content p { margin-bottom: 1rem; color: var(--text); }
+        .details-content p:last-child { margin-bottom: 0; }
+        .details-content blockquote {
+            border-left: 3px solid var(--accent);
+            padding-left: 1.5rem; margin: 1.5rem 0;
+            font-family: var(--font-serif); font-style: italic;
+            font-size: 1.1rem; color: var(--text-secondary);
+        }
+
+        /* Timeline */
+        .timeline { margin: 2rem 0; position: relative; padding-left: 2rem; }
+        .timeline::before {
+            content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+            width: 2px; background: linear-gradient(to bottom, var(--accent), transparent);
+        }
+        .timeline-item { position: relative; margin-bottom: 1.5rem; padding-left: 1rem; }
+        .timeline-item::before {
+            content: ''; position: absolute; left: -2rem; top: 0.6rem;
+            width: 10px; height: 10px; border-radius: 50%;
+            background: var(--accent); border: 2px solid var(--bg);
+            transition: border-color 0.5s;
+        }
+        .timeline-year {
+            font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em;
+            color: var(--accent); text-transform: uppercase;
+        }
+        .timeline-text {
+            font-size: 0.95rem; color: var(--text-secondary); margin-top: 0.2rem;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center; padding: 3rem 2rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-secondary); font-size: 0.85rem;
+            transition: border-color 0.5s;
+        }
+        .footer a { color: var(--accent); text-decoration: none; }
+
+        #back-to-top {
+            position: fixed; bottom: 2rem; right: 2rem;
+            width: 48px; height: 48px; border-radius: 50%;
+            background: var(--accent); color: var(--bg); border: none;
+            cursor: pointer; font-size: 1.2rem;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; visibility: hidden; transition: all 0.4s;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3); z-index: 998;
+        }
+        #back-to-top.visible { opacity: 1; visibility: visible; }
+        #back-to-top:hover { transform: translateY(-4px) scale(1.05); }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .reading-panel {
+                top: auto; bottom: 1rem; right: 1rem; left: 1rem;
+                max-width: none;
+            }
+            .reading-panel.collapsed .reading-options { max-height: 0; }
+            .container { padding: 2rem 1.2rem 4rem; }
+            .section-number { font-size: 2rem; }
+            #back-to-top { bottom: 5rem; }
+        }
+    </style>
+</head>
+<body class="theme-filosofico">
+
+    <div id="progress-bar"></div>
+
+    <!-- ===== PANNELLO OPZIONI DI LETTURA ===== -->
+    <aside class="reading-panel" id="readingPanel" aria-label="Opzioni di lettura">
+        <div class="reading-panel-header" id="readingPanelHeader" role="button" tabindex="0" aria-expanded="true" aria-controls="readingOptions">
+            <span class="icon-book" aria-hidden="true">📖</span>
+            <div class="label-current">
+                Modalità di lettura
+                <span id="currentThemeLabel">Filosofico</span>
+            </div>
+            <span class="chevron" aria-hidden="true">▾</span>
+        </div>
+        <div class="reading-options" id="readingOptions" role="radiogroup" aria-label="Scegli modalità di lettura">
+            <button class="reading-option" data-theme="normal" role="radio" aria-checked="false">
+                <span class="option-icon" aria-hidden="true">☀</span>
+                <span class="option-text">
+                    <span class="option-name">Normale</span>
+                    <span class="option-desc">Lettura classica, chiara e luminosa</span>
+                </span>
+            </button>
+            <button class="reading-option active" data-theme="filosofico" role="radio" aria-checked="true">
+                <span class="option-icon" aria-hidden="true">φ</span>
+                <span class="option-text">
+                    <span class="option-name">Filosofico</span>
+                    <span class="option-desc">Atmosfera scura e contemplativa</span>
+                </span>
+            </button>
+            <button class="reading-option" data-theme="meditativo" role="radio" aria-checked="false">
+                <span class="option-icon" aria-hidden="true">☘</span>
+                <span class="option-text">
+                    <span class="option-name">Meditativo</span>
+                    <span class="option-desc">Toni verdi, calma e respiro lento</span>
+                </span>
+            </button>
+            <button class="reading-option" data-theme="notturno" role="radio" aria-checked="false">
+                <span class="option-icon" aria-hidden="true">☾</span>
+                <span class="option-text">
+                    <span class="option-name">Notturno</span>
+                    <span class="option-desc">Buio profondo, per occhi stanchi</span>
+                </span>
+            </button>
+            <button class="reading-option" data-theme="pergamena" role="radio" aria-checked="false">
+                <span class="option-icon" aria-hidden="true">✦</span>
+                <span class="option-text">
+                    <span class="option-name">Pergamena</span>
+                    <span class="option-desc">Antico manoscritto, toni caldi</span>
+                </span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="particles" id="particles"></div>
+        <h1>David Chalmers</h1>
+        <p class="subtitle">Il cartografo della coscienza. Colui che ha nominato l'abisso tra materia ed esperienza.</p>
+        <p class="dates">1966 — presente · Filosofo della mente</p>
+        <div class="scroll-indicator">Scorri</div>
+    </header>
+
+    <!-- Contenuto -->
+    <main class="container">
+
+        <section class="section" id="biografia">
+            <div class="section-header">
+                <span class="section-number">01</span>
+                <h2>Biografia</h2>
+            </div>
+            <details open>
+                <summary>La formazione di un pensatore nomade</summary>
+                <div class="details-content">
+                    <p>David John Chalmers nasce in Australia nel 1966. Matematico precoce — medaglia di bronzo alle Olimpiadi Internazionali di Matematica — studia matematica ad Adelaide e a Oxford come Rhodes Scholar. Ma è la lettura di Douglas Hofstadter a deviare la sua traiettoria: la filosofia della mente diventa la sua ossessione.</p>
+                    <p>Si trasferisce alla Indiana University, dove consegue un PhD in filosofia e scienza cognitiva nel 1993 sotto la guida di Hofstadter. Dopo un post-dottorato alla Washington University di St. Louis, insegna in diverse università fino a diventare University Professor di Filosofia e Scienze Neurali alla New York University, dove co-dirige il Center for Mind, Brain, and Consciousness.</p>
+                    <p>È Distinguished Professor all'Australian National University e membro della Australian Academy of the Humanities. Nel 2010 tiene le prestigiose John Locke Lectures a Oxford — solo il terzo filosofo australiano a ricevere tale onore.</p>
+                    <div class="timeline">
+                        <div class="timeline-item"><div class="timeline-year">1966</div><div class="timeline-text">Nasce in Australia.</div></div>
+                        <div class="timeline-item"><div class="timeline-year">1980s</div><div class="timeline-text">Studia matematica ad Adelaide e Oxford; Rhodes Scholar.</div></div>
+                        <div class="timeline-item"><div class="timeline-year">1993</div><div class="timeline-text">PhD in filosofia e scienza cognitiva, Indiana University.</div></div>
+                        <div class="timeline-item"><div class="timeline-year">1994</div><div class="timeline-text">Conia l'espressione "hard problem" alla conferenza di Tucson.</div></div>
+                        <div class="timeline-item"><div class="timeline-year">1996</div><div class="timeline-text">Pubblica <em>The Conscious Mind</em>.</div></div>
+                        <div class="timeline-item"><div class="timeline-year">2010</div><div class="timeline-text">John Locke Lectures; pubblica <em>Constructing the World</em> (2012).</div></div>
+                        <div class="timeline-item"><div class="timeline-year">2022</div><div class="timeline-text">Pubblica <em>Reality+</em>: la realtà virtuale è realtà genuina.</div></div>
+                    </div>
+                </div>
+            </details>
+        </section>
+
+        <section class="section" id="hard-problem">
+            <div class="section-header">
+                <span class="section-number">02</span>
+                <h2>Il Problema Difficile della Coscienza</h2>
+            </div>
+            <details>
+                <summary>L'abisso tra il cervello e l'esperienza</summary>
+                <div class="details-content">
+                    <p>Nel 1994, alla prima conferenza sulla coscienza di Tucson, Chalmers pronuncia una distinzione destinata a segnare il campo per decenni. I "problemi facili" della coscienza — la discriminazione degli stimoli, l'integrazione delle informazioni, il controllo del comportamento, la verbalizzazione — sono certamente complessi, ma disponiamo di un quadro concettuale per spiegarli in termini di meccanismi neurali e computazionali.</p>
+                    <p>Il "problema difficile", invece, è di natura diversa: perché questi processi fisici sono accompagnati da un'esperienza soggettiva? Perché il cervello non elabora informazioni "al buio", senza l'illuminazione della coscienza? Perché c'è qualcosa che si prova a vedere il rosso, a sentire un do centrale, a provare dolore?</p>
+                    <blockquote>"La coscienza è l'esperienza soggettiva. È l'esperienza del mondo e della mente dal punto di vista in prima persona." — David Chalmers</blockquote>
+                    <p>Chalmers non ha inventato il problema — è antico quanto la filosofia — ma gli ha dato un nome che lo ha reso impossibile da ignorare. La sua formulazione ha catalizzato un intero campo di ricerca, dividendo filosofi e neuroscienziati tra coloro che cercano di risolverlo e coloro che cercano di dissolverlo.</p>
+                    <p>La sua posizione è di ottimismo radicale: il problema è risolvibile, ma richiederà una teoria matematica delle leggi fondamentali che collegano neuroscienze e coscienza, qualcosa di analogo alle leggi fondamentali della fisica.</p>
+                </div>
+            </details>
+        </section>
+
+        <section class="section" id="dualismo">
+            <div class="section-header">
+                <span class="section-number">03</span>
+                <h2>Naturalismo Dualista e Panpsichismo</h2>
+            </div>
+            <details>
+                <summary>La coscienza come caratteristica fondamentale della natura</summary>
+                <div class="details-content">
+                    <p>La soluzione speculativa che Chalmers propone in <em>The Conscious Mind</em> (1996) è un "naturalismo dualista": l'esperienza fenomenica non è riducibile a proprietà fisiche, ma è una caratteristica fondamentale della natura, governata da leggi psicofisiche di base. È naturalista perché tutto è conseguenza di un network di proprietà e leggi basilari, ed è compatibile con tutti i risultati della scienza contemporanea.</p>
+                    <p>Negli anni successivi, Chalmers esplora il panpsichismo — l'idea che l'esperienza sia una proprietà fondamentale di tutta la materia — e il panprotopsychismo, una versione più cauta in cui le entità microfisiche possiedono proprietà proto-fenomeniche che si combinano in esperienza macro.</p>
+                    <p>Queste posizioni non sono per lui dogmi, ma ipotesi speculative da prendere sul serio in un campo dove le risposte facili sono sospette. La sua apertura intellettuale lo porta a esplorare anche l'illusionismo, pur non abbracciandolo.</p>
+                </div>
+            </details>
+        </section>
+
+        <section class="section" id="realtà-virtuale">
+            <div class="section-header">
+                <span class="section-number">04</span>
+                <h2>Mente Estesa e Realtà Virtuale</h2>
+            </div>
+            <details>
+                <summary>La mente oltre il cranio, la realtà oltre il mondo fisico</summary>
+                <div class="details-content">
+                    <p>Con Andy Clark, Chalmers formula la tesi della "mente estesa": gli strumenti che usiamo — quaderni, computer, smartphone, cloud — possono diventare parti costitutive dei nostri processi cognitivi. Il principio di parità stabilisce che se un processo esterno svolge la stessa funzione di un processo interno, merita lo stesso status cognitivo.</p>
+                    <p>In <em>Reality+</em> (2022), Chalmers compie un passo ancora più radicale: la realtà virtuale è realtà genuina. I mondi virtuali non sono realtà di seconda classe. Se vivessimo in una simulazione perfetta, gli oggetti che percepiamo sarebbero reali secondo tutti e cinque i criteri filosofici di realtà: esistenza, potere causale, indipendenza dalla mente, non illusorietà e genuinità.</p>
+                    <blockquote>"La realtà virtuale è realtà genuina. I mondi virtuali non devono essere realtà di seconda classe. Possono essere realtà di prima classe." — David Chalmers, <em>Reality+</em></blockquote>
+                    <p>Questa posizione, che Chalmers chiama "realismo virtuale", si estende a questioni morali: gli esseri simulati hanno lo stesso status morale degli esseri umani ordinari, e non dovrebbero mai essere trattati meramente come mezzi.</p>
+                </div>
+            </details>
+        </section>
+
+        <section class="section" id="constructing">
+            <div class="section-header">
+                <span class="section-number">05</span>
+                <h2>Constructing the World</h2>
+            </div>
+            <details>
+                <summary>La struttura scrutabile della realtà</summary>
+                <div class="details-content">
+                    <p>In <em>Constructing the World</em> (2012), basato sulle John Locke Lectures del 2010, Chalmers sviluppa un progetto ambizioso: specificare la struttura del mondo nella forma di un insieme limitato di verità basilari dalle quali tutte le altre verità possono essere derivate.</p>
+                    <p>Riprendendo il progetto dell'<em>Aufbau</em> di Rudolf Carnap, Chalmers introduce il concetto di "scrutabilità": l'idea che tutte le verità siano conoscibili a partire da un insieme ristretto di verità fondamentali. È un'opera monumentale — otto capitoli e diciassette excursus — che attraversa filosofia del linguaggio, epistemologia, metafisica e filosofia della mente.</p>
+                    <p>Il libro è stato accolto come un lavoro di importanza filosofica maggiore, estremamente ambizioso, destinato a plasmare la direzione della ricerca futura.</p>
+                </div>
+            </details>
+        </section>
+
+        <section class="section" id="eredità">
+            <div class="section-header">
+                <span class="section-number">06</span>
+                <h2>Eredità e Dibattito Contemporaneo</h2>
+            </div>
+            <details>
+                <summary>La coscienza nell'era dell'IA</summary>
+                <div class="details-content">
+                    <p>Chalmers è oggi una delle voci più influenti nel dibattito sulla coscienza artificiale. Negli ultimi anni si è concentrato su quella che chiama "technophilosophy": usare la filosofia per fare luce sulla tecnologia e la tecnologia per fare luce sulla filosofia.</p>
+                    <p>La sua attenzione si è rivolta in particolare all'IA: la possibilità che i sistemi attuali o futuri siano coscienti solleva questioni morali e sociali urgenti. Chalmers collabora con filosofi, ricercatori di IA e neuroscienziati per sviluppare indicatori di coscienza basati sulle migliori teorie disponibili.</p>
+                    <p>La sua scommessa con Christof Koch — che i correlati neurali della coscienza non sarebbero stati scoperti entro 25 anni — è stata vinta da Chalmers nel 2023, ma il problema difficile resta aperto. E lui, ottimista eterno, continua a cercare.</p>
+                    <blockquote>"Sono un ottimista eterno, e penso che il problema sia risolvibile in un modo o nell'altro." — David Chalmers</blockquote>
+                    <p>Che la soluzione arrivi da una teoria matematica fondamentale, dal panpsichismo o da una neuroscienza trasformata, David Chalmers ha già assicurato che la domanda su cosa significhi essere coscienti rimanga al centro della scena filosofica e scientifica.</p>
+                </div>
+            </details>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <p>Articolo enciclopedico su David Chalmers · Fonti: Cell, Philosophy of Education, Springer, DergiPark, Google Books.</p>
+        <p>Un capolavoro di profondità ed estetica. <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">Torna all'inizio</a></p>
+    </footer>
+
+    <button id="back-to-top" aria-label="Torna su">↑</button>
+
+    <script>
+        // ===== PARTICELLE =====
+        (function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 30; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.animationDelay = Math.random() * 12 + 's';
+                p.style.animationDuration = (8 + Math.random() * 8) + 's';
+                p.style.width = p.style.height = (1 + Math.random() * 2) + 'px';
+                container.appendChild(p);
+            }
+        })();
+
+        // ===== PANNELLO OPZIONI DI LETTURA =====
+        const panel = document.getElementById('readingPanel');
+        const panelHeader = document.getElementById('readingPanelHeader');
+        const currentLabel = document.getElementById('currentThemeLabel');
+        const readingOptions = document.querySelectorAll('.reading-option');
+
+        const themeNames = {
+            normal: 'Normale',
+            filosofico: 'Filosofico',
+            meditativo: 'Meditativo',
+            notturno: 'Notturno',
+            pergamena: 'Pergamena'
+        };
+
+        // Toggle pannello
+        function togglePanel() {
+            const isCollapsed = panel.classList.toggle('collapsed');
+            panelHeader.setAttribute('aria-expanded', String(!isCollapsed));
+        }
+        panelHeader.addEventListener('click', togglePanel);
+        panelHeader.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                togglePanel();
+            }
+        });
+
+        // Cambio tema
+        readingOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const theme = option.dataset.theme;
+                document.body.className = 'theme-' + theme;
+                currentLabel.textContent = themeNames[theme];
+
+                readingOptions.forEach(o => {
+                    o.classList.remove('active');
+                    o.setAttribute('aria-checked', 'false');
+                });
+                option.classList.add('active');
+                option.setAttribute('aria-checked', 'true');
+
+                // Chiudi il pannello su mobile dopo la scelta
+                if (window.innerWidth <= 600) {
+                    panel.classList.add('collapsed');
+                    panelHeader.setAttribute('aria-expanded', 'false');
+                }
+            });
+        });
+
+        // ===== PROGRESS BAR & BACK TO TOP =====
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            document.getElementById('progress-bar').style.width = (scrollTop / docHeight) * 100 + '%';
+            document.getElementById('back-to-top').classList.toggle('visible', scrollTop > 400);
+        });
+
+        document.getElementById('back-to-top').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // ===== REVEAL ON SCROLL =====
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.section').forEach((section, i) => {
+            section.style.transitionDelay = (i * 0.1) + 's';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
