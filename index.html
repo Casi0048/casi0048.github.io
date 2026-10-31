@@ -29,6 +29,41 @@
     } catch (e) {}
   </script>
   <style>
+    @keyframes fadeUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    @keyframes kickerIn {
+      0% {
+        opacity: 0;
+        transform: translateY(6px) scale(.92)
+      }
+
+      to {
+        opacity: .9;
+        transform: translateY(0) scale(1)
+      }
+    }
+
+    @keyframes titleIn {
+      0% {
+        opacity: 0;
+        transform: translateY(10px) scale(.94)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1)
+      }
+    }
 
     @keyframes mottoFade {
       0% {
@@ -4863,214 +4898,6 @@
       }
     }
 
-    /* LA SOGLIA DEL DUBBIO — allineata a .frammento / .paradosso */
-    .soglia-dubbio {
-      position: relative;
-      margin-bottom: 24px;
-      padding: 22px 24px 20px;
-      overflow: hidden;
-      color: var(--text);
-      background:
-        radial-gradient(ellipse at 90% 0%, rgba(69, 230, 161, .06), transparent 55%),
-        var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      backdrop-filter: blur(12px);
-      transition: border-color .3s ease;
-    }
-
-    .soglia-dubbio:hover {
-      border-color: var(--gold-line);
-    }
-
-    /* Etichetta: badge + riga di separazione (come .frammento-head) */
-    .soglia-etichetta {
-      display: block;
-      margin: 0 0 16px;
-      padding: 0 0 10px;
-      border-bottom: 1px solid var(--gold-line);
-      font-family: var(--sans);
-      font-size: .66rem;
-      font-weight: 500;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      color: var(--gold);
-    }
-
-    /* Titolo: come .paradosso-titolo */
-    .soglia-dubbio h3 {
-      margin: 0 0 12px;
-      font-family: var(--display);
-      font-size: 1.2rem;
-      font-weight: 500;
-      letter-spacing: .4px;
-      line-height: 1.3;
-      color: var(--gold);
-    }
-
-    /* Intro: come .frammento-commento */
-    .soglia-intro {
-      max-width: 60ch;
-      margin: 0 0 16px;
-      font-family: var(--serif);
-      font-size: .93rem;
-      line-height: 1.6;
-      color: var(--text-soft);
-    }
-
-    /* Scelte: come le opzioni del quiz */
-    .soglia-scelte {
-      display: grid;
-      gap: 8px;
-      margin: 0 0 16px;
-    }
-
-    .soglia-scelte button {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      width: 100%;
-      padding: 10px 14px;
-      color: var(--text-soft);
-      text-align: left;
-      font-family: var(--serif);
-      font-size: .93rem;
-      font-weight: 400;
-      line-height: 1.55;
-      background: transparent;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      cursor: pointer;
-      transition: border-color .25s ease, background .25s ease;
-    }
-
-    .soglia-scelte button span {
-      flex-shrink: 0;
-      min-width: 1.2em;
-      color: var(--gold);
-      font-family: var(--sans);
-      font-size: 1rem;
-      font-weight: 600;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .soglia-scelte button:hover,
-    .soglia-scelte button:focus-visible {
-      border-color: var(--gold-line);
-      background: var(--bg-soft);
-    }
-
-    .soglia-scelte button:focus-visible,
-    .soglia-reset:focus-visible {
-      outline: 2px solid var(--gold);
-      outline-offset: 2px;
-    }
-
-    /* Risultato: come .frammento-greco */
-    .soglia-risultato {
-      margin: 16px 0 0;
-      padding: 12px 16px;
-      border-left: 2px solid var(--gold-line);
-      border-radius: 0 8px 8px 0;
-      background: rgba(69, 230, 161, .04);
-    }
-
-    .soglia-risultato[hidden] {
-      display: none;
-    }
-
-    /* Risposta dell'oracolo */
-    .soglia-risposta {
-      margin: 0 0 12px;
-      font-family: var(--serif);
-      font-size: .93rem;
-      line-height: 1.7;
-      color: var(--text-soft);
-    }
-
-    .soglia-risposta:last-child {
-      margin-bottom: 0;
-    }
-
-    /* Domanda riformulata: come .frammento-formulazione */
-    .soglia-domanda {
-      margin: 8px 0 0;
-      padding-left: 14px;
-      border-left: 2px solid var(--gold-line);
-      font-family: var(--serif);
-      font-size: 1.05rem;
-      font-style: italic;
-      line-height: 1.6;
-      color: var(--text);
-    }
-
-    /* Reset: pill come .frammento-altro */
-    .soglia-reset {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 12px;
-      padding: 5px 12px;
-      background: none;
-      border: 1px solid var(--gold-line);
-      border-radius: 100px;
-      font-family: var(--sans);
-      font-size: .7rem;
-      letter-spacing: .8px;
-      color: var(--text-muted);
-      cursor: pointer;
-      transition: color .25s ease, border-color .25s ease, background .25s ease;
-    }
-
-    .soglia-reset:hover {
-      color: var(--gold);
-      border-color: var(--gold);
-      background: var(--gold-soft);
-    }
-
-    /* Firma: come .frammento-autore */
-    .soglia-firma {
-      margin: 16px 0 0;
-      padding-top: 14px;
-      border-top: 1px dashed var(--border);
-      font-family: var(--sans);
-      font-size: .7rem;
-      font-style: normal;
-      letter-spacing: 1.2px;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      opacity: .8;
-    }
-
-    /* Responsive: stesso breakpoint del resto */
-    @media (max-width: 560px) {
-      .soglia-dubbio {
-        padding: 18px 16px 16px;
-      }
-
-      .soglia-dubbio h3 {
-        font-size: 1.05rem;
-      }
-
-      .soglia-scelte button {
-        padding: 9px 12px;
-        font-size: .88rem;
-      }
-
-      .soglia-domanda {
-        font-size: 1rem;
-      }
-    }
-
-    /* Riduzione del movimento (safe per minificatore) */
-    @media (prefers-reduced-motion: reduce) {
-
-      .soglia-scelte button,
-      .soglia-reset {
-        transition-duration: 1ms !important;
-      }
-    }
-
     /* Eco finale — La soglia del dubbio */
     .soglia-dubbio .soglia-eco {
       margin: 1.2rem 0 1rem;
@@ -5535,6 +5362,275 @@
     .quiz .quiz-actions {
       position: relative;
       z-index: 2;
+    }
+
+    /* ============================================================
+   LA SOGLIA DEL DUBBIO — allineata a .frammento / .paradosso
+   Usa solo le variabili del design system del sito.
+   ============================================================ */
+    .soglia-dubbio {
+      position: relative;
+      margin-bottom: 24px;
+      padding: 22px 24px 20px;
+      overflow: hidden;
+      color: var(--text);
+      background:
+        radial-gradient(ellipse at 90% 0%, var(--gold-soft), transparent 55%),
+        var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      backdrop-filter: blur(12px);
+      transition: border-color .3s ease;
+    }
+
+    .soglia-dubbio:hover {
+      border-color: var(--gold-line);
+    }
+
+    /* Etichetta — badge + riga, come .frammento-head */
+    .soglia-dubbio .soglia-etichetta {
+      display: block;
+      margin: 0 0 16px;
+      padding: 0 0 10px;
+      border-bottom: 1px solid var(--gold-line);
+      font-family: var(--sans);
+      font-size: .66rem;
+      font-weight: 500;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    /* Titolo — come .paradosso-titolo */
+    .soglia-dubbio h3,
+    .soglia-dubbio #sogliaTitolo {
+      margin: 0 0 12px;
+      font-family: var(--display);
+      font-size: 1.2rem;
+      font-weight: 500;
+      letter-spacing: .4px;
+      line-height: 1.3;
+      color: var(--gold);
+    }
+
+    /* Intro — come .frammento-commento */
+    .soglia-dubbio .soglia-intro {
+      max-width: 60ch;
+      margin: 0 0 16px;
+      font-family: var(--serif);
+      font-size: .93rem;
+      line-height: 1.6;
+      color: var(--text-soft);
+    }
+
+    /* Scelte */
+    .soglia-dubbio .soglia-scelte {
+      display: grid;
+      gap: 8px;
+      margin: 0 0 16px;
+    }
+
+    .soglia-dubbio .soglia-scelte button {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      padding: 10px 14px;
+      color: var(--text-soft);
+      text-align: left;
+      font-family: var(--serif);
+      font-size: .93rem;
+      font-weight: 400;
+      line-height: 1.55;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition:
+        border-color .25s ease,
+        background .25s ease,
+        color .25s ease,
+        box-shadow .25s ease;
+    }
+
+    .soglia-dubbio .soglia-scelte button span {
+      flex-shrink: 0;
+      min-width: 1.2em;
+      color: var(--gold);
+      font-family: var(--sans);
+      font-size: 1rem;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .soglia-dubbio .soglia-scelte button:hover,
+    .soglia-dubbio .soglia-scelte button:focus-visible {
+      border-color: var(--gold-line);
+      background: var(--bg-soft);
+    }
+
+    .soglia-dubbio .soglia-scelte button:focus-visible,
+    .soglia-dubbio .soglia-reset:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 2px;
+    }
+
+    /* Stato attivo — quello che il JS aggiunge con .is-active */
+    .soglia-dubbio .soglia-scelte button.is-active {
+      border-color: var(--gold);
+      background: var(--gold-soft);
+      color: var(--text);
+      box-shadow: inset 0 0 0 1px var(--gold-line);
+    }
+
+    .soglia-dubbio .soglia-scelte button.is-active span {
+      color: var(--gold);
+    }
+
+    /* Risultato */
+    .soglia-dubbio .soglia-risultato {
+      margin: 16px 0 0;
+      padding: 12px 16px;
+      border-left: 2px solid var(--gold-line);
+      border-radius: 0 8px 8px 0;
+      background: var(--gold-soft);
+    }
+
+    .soglia-dubbio .soglia-risultato[hidden] {
+      display: none;
+    }
+
+    /* Animazione di comparsa — attivata da .is-visible */
+    @keyframes sogliaRise {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .soglia-dubbio .soglia-risultato.is-visible .soglia-risposta,
+    .soglia-dubbio .soglia-risultato.is-visible .soglia-domanda,
+    .soglia-dubbio .soglia-risultato.is-visible .soglia-eco,
+    .soglia-dubbio .soglia-risultato.is-visible .soglia-reset {
+      animation: sogliaRise .6s cubic-bezier(.23, 1, .32, 1) both;
+    }
+
+    .soglia-dubbio .soglia-risultato.is-visible .soglia-risposta {
+      animation-delay: .05s;
+    }
+
+    .soglia-dubbio .soglia-risultato.is-visible .soglia-domanda {
+      animation-delay: .15s;
+    }
+
+    .soglia-dubbio .soglia-risultato.is-visible .soglia-eco {
+      animation-delay: .25s;
+    }
+
+    .soglia-dubbio .soglia-risultato.is-visible .soglia-reset {
+      animation-delay: .35s;
+    }
+
+    /* Risposta */
+    .soglia-dubbio .soglia-risposta {
+      margin: 0 0 12px;
+      font-family: var(--serif);
+      font-size: .93rem;
+      line-height: 1.7;
+      color: var(--text);
+    }
+
+    .soglia-dubbio .soglia-risposta:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Domanda riformulata */
+    .soglia-dubbio .soglia-domanda {
+      margin: 8px 0 0;
+      padding-left: 14px;
+      border-left: 2px solid var(--gold-line);
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      font-style: italic;
+      line-height: 1.6;
+      color: var(--text);
+    }
+
+    /* Reset — pill come .frammento-altro */
+    .soglia-dubbio .soglia-reset {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 12px;
+      padding: 5px 12px;
+      background: none;
+      border: 1px solid var(--gold-line);
+      border-radius: 100px;
+      font-family: var(--sans);
+      font-size: .7rem;
+      letter-spacing: .8px;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: color .25s ease, border-color .25s ease, background .25s ease;
+    }
+
+    .soglia-dubbio .soglia-reset:hover {
+      color: var(--gold);
+      border-color: var(--gold);
+      background: var(--gold-soft);
+    }
+
+    /* Firma */
+    .soglia-dubbio .soglia-firma {
+      margin: 16px 0 0;
+      padding-top: 14px;
+      border-top: 1px dashed var(--border);
+      font-family: var(--sans);
+      font-size: .7rem;
+      font-style: normal;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      opacity: .8;
+    }
+
+    /* Responsive */
+    @media (max-width: 560px) {
+      .soglia-dubbio {
+        padding: 18px 16px 16px;
+      }
+
+      .soglia-dubbio h3 {
+        font-size: 1.05rem;
+      }
+
+      .soglia-dubbio .soglia-scelte button {
+        padding: 9px 12px;
+        font-size: .88rem;
+      }
+
+      .soglia-dubbio .soglia-domanda {
+        font-size: 1rem;
+      }
+    }
+
+    /* Riduzione del movimento */
+    @media (prefers-reduced-motion: reduce) {
+
+      .soglia-dubbio .soglia-scelte button,
+      .soglia-dubbio .soglia-reset,
+      .soglia-dubbio .soglia-risultato.is-visible .soglia-risposta,
+      .soglia-dubbio .soglia-risultato.is-visible .soglia-domanda,
+      .soglia-dubbio .soglia-risultato.is-visible .soglia-eco,
+      .soglia-dubbio .soglia-risultato.is-visible .soglia-reset {
+        animation: none !important;
+        transition-duration: 1ms !important;
+      }
     }
   </style>
 
@@ -8664,32 +8760,32 @@
       }()
     </script>
     <script>
+      /* ============================================================
+   1) FIUME ORACOLO — canvas animato + oracolo di Eraclito
+   Richiede nel DOM: #fiumeOracolo, #foStage, #foRiver,
+                     #foForm, #foQuestion, #foBtn, #foResponse
+   Se assenti → si auto-disattiva senza errori.
+   ============================================================ */
       (function() {
         'use strict';
         const root = document.getElementById('fiumeOracolo');
         if (!root) return;
         const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        /* ============================================================
-           CONFIG — tocca qui per tuning prestazioni / estetica
-           ============================================================ */
-        const MAX_DPR = 1; // 1 = veloce · 1.25 = nitido · 2 = retina (pesante)
-        const SHADOW_BLUR = 12; // era 16 — meno pixel sfocati per frame
-        const ATTRACT_R = 200; // raggio attrazione cursore
-        const GLOW_R = 90; // raggio in cui il frammento brilla
-        const EDGE_FADE_H = 0.14; // frazione di altezza per il fade ai bordi
-        const RIPPLE_MIN_D2 = 144; // 12² — distanza minima² tra due increspature
-        /* pre-calcola quadrati per evitare sqrt nel caso comune */
+        /* --- CONFIG --- */
+        const MAX_DPR = 1;
+        const SHADOW_BLUR = 12;
+        const ATTRACT_R = 200;
+        const GLOW_R = 90;
+        const EDGE_FADE_H = 0.14;
+        const RIPPLE_MIN_D2 = 144;
         const ATTRACT_R2 = ATTRACT_R * ATTRACT_R;
         const GLOW_R2 = GLOW_R * GLOW_R;
-        /* ============================================================
-           Palette CSS — letta una volta, riletta solo al cambio tema
-           ============================================================ */
+        /* --- Lettura variabili CSS (con fallback chain) --- */
         function readVarRgb(name, fallback) {
+          if (!document.body) return fallback;
           const probe = document.createElement('span');
-          probe.style.color = `var(${name})`;
-          probe.style.position = 'absolute';
-          probe.style.visibility = 'hidden';
-          probe.style.pointerEvents = 'none';
+          probe.style.cssText =
+            `color:var(${name});position:absolute;visibility:hidden;pointer-events:none`;
           document.body.appendChild(probe);
           const c = getComputedStyle(probe).color;
           probe.remove();
@@ -8697,11 +8793,19 @@
           if (!m || m.length < 3) return fallback;
           return `${Math.round(+m[0])},${Math.round(+m[1])},${Math.round(+m[2])}`;
         }
+
+        function readFirstRgb(names, fallback) {
+          for (const n of names) {
+            const v = readVarRgb(n, null);
+            if (v) return v;
+          }
+          return fallback;
+        }
+        /* Accent = oro, Text = testo — coerenti con i temi dell'articolo */
         const palette = {
-          gold: readVarRgb('--gold', '69,230,161'),
-          text: readVarRgb('--text', '217,251,232')
+          gold: readFirstRgb(['--gold', '--accent'], '201,169,110'),
+          text: readFirstRgb(['--text', '--foreground'], '224,220,211')
         };
-        /* stringhe colore pre-composte — niente template literal nel loop */
         let fillTextColor = `rgb(${palette.text})`;
         let glowColorRgba = `rgba(${palette.gold},.9)`;
         let ripplePrefix = `rgba(${palette.gold},`;
@@ -8711,18 +8815,18 @@
           glowColorRgba = `rgba(${palette.gold},.9)`;
           ripplePrefix = `rgba(${palette.gold},`;
         }
-        /* font cache — mai getComputedStyle nel loop */
+        /* --- Font: prova prima --font-serif (usato dall'articolo) --- */
         let serifFont = 'Cormorant Garamond, Georgia, serif';
 
         function cacheFont() {
-          const v = getComputedStyle(root).getPropertyValue('--serif').trim();
+          let v = getComputedStyle(root).getPropertyValue('--font-serif').trim();
+          if (!v) v = getComputedStyle(root).getPropertyValue('--serif').trim();
           if (v) serifFont = v;
         }
-        /* ============================================================
-           FIUME
-           ============================================================ */
+        /* --- Canvas --- */
         const stage = document.getElementById('foStage');
         const canvas = document.getElementById('foRiver');
+        if (!stage || !canvas) return;
         const ctx = canvas.getContext('2d', {
           alpha: true,
           desynchronized: true
@@ -8747,7 +8851,7 @@
           'Non si tocca due volte', 'Guerra è padre di tutte le cose',
           'Il mare è puro e impuro', "L'anima ha confini profondi",
           'Σ Ascoltando non me, ma il Logos', "L'asino preferisce la paglia",
-          'Maria Teresa💭', "Casimiro🤔",
+          'Maria Teresa💭', 'Casimiro🤔',
           'Il tempo è un fanciullo che gioca', 'Medicina che taglia e brucia',
           'Non si entra due volte nello stesso fiume', 'Il Logos governa tutte le cose'
         ];
@@ -8778,7 +8882,7 @@
             const wave = Math.sin(t * 0.0008 + this.phase) * this.amp;
             const dx = this.x + this.ox - cursor.x;
             const dy = this.baseY + this.oy + wave - cursor.y;
-            const d2 = dx * dx + dy * dy; /* sqrt solo se dentro il raggio */
+            const d2 = dx * dx + dy * dy;
             if (cursor.active && d2 < ATTRACT_R2 && d2 > 1) {
               const dist = Math.sqrt(d2);
               const f = (1 - dist / ATTRACT_R) * 2.2;
@@ -8796,7 +8900,6 @@
             this.drawX = this.x + this.ox;
           }
           draw() {
-            /* fade ai bordi calcolato in JS — sostituisce la mask CSS (enorme risparmio paint) */
             const edgeFade = Math.min(1, Math.min(this.y, H - this.y) / (H * EDGE_FADE_H));
             const a = Math.max(0.15, Math.min(1, (this.baseAlpha + this.shim) * edgeFade));
             ctx.save();
@@ -8832,25 +8935,22 @@
           cacheFont();
           fragments = TEXTS.map(t => new Frag(t));
         }
-        /* ============================================================
-           Culling: pausa se fuori schermo o tab in background
-           ============================================================ */
+        /* --- Culling --- */
         let riverVisible = true;
         let pageVisible = !document.hidden;
+        let lastT = 0;
         if ('IntersectionObserver' in window) {
-          new IntersectionObserver(
-            entries => entries.forEach(e => {
-              riverVisible = e.isIntersecting;
-            }), {
-              rootMargin: '120px'
-            }
-          ).observe(stage);
+          new IntersectionObserver(entries => entries.forEach(e => {
+            riverVisible = e.isIntersecting;
+            if (riverVisible) lastT = 0; // ← evita salto al rientro
+          }), {
+            rootMargin: '120px'
+          }).observe(stage);
         }
         document.addEventListener('visibilitychange', () => {
           pageVisible = !document.hidden;
-          lastT = 0; /* reset delta al ritorno per evitare salti */
+          lastT = 0;
         });
-        let lastT = 0;
 
         function loop(t) {
           requestAnimationFrame(loop);
@@ -8858,7 +8958,6 @@
           const dt = lastT ? Math.min(t - lastT, 50) : 16;
           lastT = t;
           ctx.clearRect(0, 0, W, H);
-          /* increspature */
           for (let i = ripples.length - 1; i >= 0; i--) {
             const r = ripples[i];
             r.r += 1.4 * dt * 0.06;
@@ -8873,15 +8972,12 @@
             ctx.lineWidth = 1;
             ctx.stroke();
           }
-          /* frammenti */
           for (let i = 0; i < fragments.length; i++) {
             fragments[i].update(t, dt);
             fragments[i].draw();
           }
         }
-        /* ============================================================
-           Mouse / touch
-           ============================================================ */
+        /* --- Mouse / touch --- */
         function move(clientX, clientY) {
           const r = stage.getBoundingClientRect();
           const x = clientX - r.left;
@@ -8920,9 +9016,7 @@
           cursor.active = false;
           cursor.x = cursor.y = -9999;
         });
-        /* ============================================================
-           ORACOLO
-           ============================================================ */
+        /* --- Oracolo --- */
         const FRAGMENTS = [{
             t: "Non si può discendere due volte nel medesimo fiume.",
             r: "Fr. 91 Diels–Kranz"
@@ -9053,6 +9147,7 @@
         const input = document.getElementById('foQuestion');
         const btn = document.getElementById('foBtn');
         const resp = document.getElementById('foResponse');
+        if (!form || !input || !btn || !resp) return;
         let busy = false;
         form.addEventListener('submit', e => {
           e.preventDefault();
@@ -9060,22 +9155,22 @@
           const q = input.value.trim();
           if (!q) {
             input.focus();
-            input.animate(
-              [{
-                  transform: 'translateX(0)'
-                }, {
-                  transform: 'translateX(-6px)'
-                },
-                {
-                  transform: 'translateX(6px)'
-                }, {
-                  transform: 'translateX(0)'
-                }
-              ], {
-                duration: 320,
-                easing: 'ease-in-out'
+            input.animate([{
+                transform: 'translateX(0)'
+              },
+              {
+                transform: 'translateX(-6px)'
+              },
+              {
+                transform: 'translateX(6px)'
+              },
+              {
+                transform: 'translateX(0)'
               }
-            );
+            ], {
+              duration: 320,
+              easing: 'ease-in-out'
+            });
             return;
           }
           busy = true;
@@ -9084,7 +9179,8 @@
           btn.textContent = 'Ascolta…';
           resp.innerHTML = '<span class="fo-listening">L\'oracolo ascolta…</span>';
           setTimeout(() => {
-            resp.innerHTML = constellationSVG() +
+            resp.innerHTML =
+              constellationSVG() +
               '<div class="fo-fragment"><blockquote></blockquote><cite></cite></div>';
             const c = resp.querySelector('.fo-constellation');
             const box = resp.querySelector('.fo-fragment');
@@ -9095,28 +9191,25 @@
             ci.textContent = f.r;
             requestAnimationFrame(() => {
               c.classList.add('visible');
-              setTimeout(() => box.classList.add('visible'), reduceMotion ? 50 : 900);
+              setTimeout(() => box.classList.add('visible'),
+                reduceMotion ? 50 : 900);
             });
             busy = false;
             btn.disabled = false;
             btn.textContent = label;
           }, reduceMotion ? 200 : 1700);
         });
-        /* ============================================================
-           Re-read palette + font al cambio tema
-           ============================================================ */
+        /* --- Cambio tema: rileggi palette + font --- */
         new MutationObserver(() => {
-          palette.gold = readVarRgb('--gold', palette.gold);
-          palette.text = readVarRgb('--text', palette.text);
+          palette.gold = readFirstRgb(['--gold', '--accent'], palette.gold);
+          palette.text = readFirstRgb(['--text', '--foreground'], palette.text);
           refreshPaletteStrings();
           cacheFont();
         }).observe(document.body, {
           attributes: true,
           attributeFilter: ['class']
         });
-        /* ============================================================
-           Resize
-           ============================================================ */
+        /* --- Resize --- */
         let rt;
         window.addEventListener('resize', () => {
           clearTimeout(rt);
@@ -9124,21 +9217,26 @@
         }, {
           passive: true
         });
-        /* ============================================================
-           START
-           ============================================================ */
         resizeRiver();
         requestAnimationFrame(loop);
       })();
-      /* LA SOGLIA DEL DUBBIO */
-      (() => {
-        const modulo = document.querySelector('.soglia-dubbio');
+      /* ============================================================
+         2) LA SOGLIA DEL DUBBIO — scelte filosofiche
+         Funziona con .soglia, .soglia-dubbio o #soglia (fallback chain)
+         ============================================================ */
+      (function() {
+        'use strict';
+        /* Selettore robusto: accetta la classe dell'HTML fornito o una variante */
+        const modulo = document.querySelector('.soglia, .soglia-dubbio, #soglia');
         if (!modulo || modulo.dataset.inizializzato) return;
         modulo.dataset.inizializzato = 'true';
         const risultato = modulo.querySelector('.soglia-risultato');
         const risposta = modulo.querySelector('.soglia-risposta');
         const domanda = modulo.querySelector('.soglia-domanda');
         const scelte = modulo.querySelector('.soglia-scelte');
+        const resetBtn = modulo.querySelector('.soglia-reset');
+        if (!risultato || !scelte || !resetBtn) return; // HTML incoerente → esci
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         const riflessioni = {
           memoria: {
             risposta: 'La memoria unisce ciò che siamo stati a ciò che siamo. Ma i ricordi cambiano, svaniscono e talvolta ci ingannano.',
@@ -9153,27 +9251,54 @@
             domanda: 'Chi saresti se venissero meno i legami che ti definiscono?'
           }
         };
-        scelte.addEventListener('click', event => {
-          const pulsante = event.target.closest('button[data-soglia]');
-          if (!pulsante) return;
-          const riflessione = riflessioni[pulsante.dataset.soglia];
-          if (!riflessione) return;
-          risposta.textContent = riflessione.risposta;
-          domanda.textContent = riflessione.domanda;
+        const bottoni = Array.from(scelte.querySelectorAll('button[data-soglia]'));
+        /* Stato iniziale accessibile */
+        bottoni.forEach(b => b.setAttribute('aria-pressed', 'false'));
+
+        function scegli(pulsante) {
+          const r = riflessioni[pulsante.dataset.soglia];
+          if (!r) return;
+          /* Contenuto */
+          risposta.textContent = r.risposta;
+          domanda.textContent = r.domanda;
+          /* Mostra + riavvia l'animazione (is-visible) */
           risultato.hidden = false;
-          scelte.querySelectorAll('button').forEach(button => {
-            button.setAttribute(
-              'aria-pressed',
-              String(button === pulsante)
-            );
+          risultato.classList.remove('is-visible');
+          void risultato.offsetWidth; // reflow → riavvia @keyframes
+          risultato.classList.add('is-visible');
+          /* Stato visivo e accessibile dei bottoni */
+          bottoni.forEach(b => {
+            const attivo = b === pulsante;
+            b.classList.toggle('is-active', attivo);
+            b.setAttribute('aria-pressed', String(attivo));
           });
+          /* Scroll morbido al risultato (rispetta reduced-motion) */
+          if (!reduceMotion) {
+            requestAnimationFrame(() => {
+              risultato.scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest'
+              });
+            });
+          }
+        }
+        /* Delegazione eventi sul gruppo */
+        scelte.addEventListener('click', e => {
+          const pulsante = e.target.closest('button[data-soglia]');
+          if (!pulsante || !scelte.contains(pulsante)) return;
+          scegli(pulsante);
         });
-        modulo.querySelector('.soglia-reset').addEventListener('click', () => {
+        /* Reset */
+        resetBtn.addEventListener('click', () => {
           risultato.hidden = true;
-          scelte.querySelectorAll('button').forEach(button => {
-            button.setAttribute('aria-pressed', 'false');
+          risultato.classList.remove('is-visible');
+          bottoni.forEach(b => {
+            b.classList.remove('is-active');
+            b.setAttribute('aria-pressed', 'false');
           });
-          scelte.querySelector('button')?.focus();
+          if (bottoni[0]) bottoni[0].focus({
+            preventScroll: true
+          });
         });
       })();
     </script>
