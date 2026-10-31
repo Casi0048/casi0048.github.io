@@ -4739,7 +4739,7 @@
     }
 
 /* ============================================================
-   IL GIARDINO DELLE IDEE
+   IL GIARDINO DELLE IDEE — esperienze interattive
    ============================================================ */
 .giardino {
   position: relative;
@@ -5142,6 +5142,47 @@
     transition-duration: 1ms !important;
   }
 }
+/* ============================================================
+   RISALITA — animazione di ingresso per tutti i moduli
+   ============================================================ */
+.atlante,
+.eco-giorno,
+.frammento,
+.dialoghi,
+.fo-section,
+.giardino,
+.dil,
+.ua {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity .9s var(--ease-expo),
+    transform .9s var(--ease-expo);
+  will-change: opacity, transform;
+}
+
+.atlante.is-visible,
+.eco-giorno.is-visible,
+.frammento.is-visible,
+.dialoghi.is-visible,
+.fo-section.is-visible,
+.giardino.is-visible,
+.dil.is-visible,
+.ua.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  will-change: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .atlante, .eco-giorno, .frammento, .dialoghi,
+  .fo-section, .giardino, .dil, .ua {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
 
   </style>
 
@@ -5758,7 +5799,6 @@
             <div class=dialoghi-featured id=diFeatured></div>
             <div class=dialoghi-actions><button type=button class=dialoghi-altro id=diAltro>↻ Un altro dialogo</button><a href=articoli/dialoghi/ class=dialoghi-tutti>Tutti i dialoghi →</a></div>
           </section>
-          <!-- incolla qui, dopo </section> di .frammento e prima di <section class="dialoghi"> -->
 
           <!-- ============================================================
      MODULO FIUME + ORACOLO — uniforme al tema .frammento
@@ -5794,8 +5834,7 @@
           </section>
           <!-- fine modulo Fiume + Oracolo -->
 
-
-  <!-- ============================================================
+<!-- ============================================================
      IL GIARDINO DELLE IDEE — tre esperienze interattive
      ============================================================ -->
 <section class="giardino" aria-label="Il Giardino delle Idee">
@@ -8816,6 +8855,49 @@
     breathToggle.textContent = 'Inizia il respiro';
   }
   breathToggle.addEventListener('click', () => { breathActive ? stopBreath() : startBreath(); });
+})();
+</script>
+<script>
+(function () {
+  'use strict';
+
+  // Rispetta prefers-reduced-motion
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const selectors = '.atlante, .eco-giorno, .frammento, .dialoghi, .fo-section, .giardino, .dil, .ua';
+  const modules = document.querySelectorAll(selectors);
+  if (!modules.length) return;
+
+  // Fallback: se IntersectionObserver non c'è, mostra tutto subito
+  if (!('IntersectionObserver' in window)) {
+    modules.forEach(m => m.classList.add('is-visible'));
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    rootMargin: '0px 0px -8% 0px',
+    threshold: 0.08
+  });
+
+  modules.forEach(m => observer.observe(m));
+
+  // Fallback di sicurezza: dopo 1.2s, mostra qualunque modulo
+  // già dentro il viewport che l'observer non ha catturato
+  setTimeout(() => {
+    modules.forEach(m => {
+      const rect = m.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        m.classList.add('is-visible');
+      }
+    });
+  }, 1200);
 })();
 </script>
   </body>
