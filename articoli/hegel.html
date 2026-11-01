@@ -3,7 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Georg Wilhelm Friedrich Hegel - Il Sistema Dialettico</title>
+    <meta name="description" content="Articolo enciclopedico esaustivo su Georg Wilhelm Friedrich Hegel (1770-1831): il sistema dialettico, la Fenomenologia dello spirito, lo spirito oggettivo e assoluto, la filosofia della storia, l'eredità nell'idealismo e nel pensiero contemporaneo. Con sezioni espandibili, modalità di lettura multiple e animazioni cosmologiche.">
+    <meta name="keywords" content="Hegel, idealismo tedesco, dialettica, tesi antitesi sintesi, Fenomenologia dello spirito, Scienza della logica, spirito oggettivo, spirito assoluto, filosofia della storia, Stato etico, Stoccarda, Jena, Berlino, Marx, Kierkegaard, Croce, Gentile">
+    <meta name="author" content="Enciclopedia Filosofica">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Georg Wilhelm Friedrich Hegel — La Dialettica dello Spirito">
+    <meta property="og:description" content="Un viaggio enciclopedico nel sistema hegeliano: dalla dialettica alla filosofia della storia. Modalità di lettura e sezioni interattive.">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="it_IT">
+    <title>Georg Wilhelm Friedrich Hegel — La Dialettica dello Spirito</title>
     <style>
         :root {
             --primary-color: #2c3e50;
@@ -15,8 +23,14 @@
             --dialectical-thesis: #3498db;
             --dialectical-antithesis: #e74c3c;
             --dialectical-synthesis: #2ecc71;
+            /* Variabili modalità di lettura */
+            --mode-accent: #b8860b;
+            --mode-bar-bg: rgba(255, 255, 255, 0.75);
+            --mode-bar-border: rgba(44, 62, 80, 0.12);
+            --mode-btn-color: #2c3e50;
+            --mode-btn-border: rgba(44, 62, 80, 0.22);
         }
-        
+
         body {
             font-family: 'Georgia', serif;
             line-height: 1.8;
@@ -26,8 +40,9 @@
             color: var(--dark-text);
             background-color: var(--light-bg);
             background-image: linear-gradient(to bottom, #ffffff, var(--light-bg));
+            transition: background-color 0.5s ease, color 0.5s ease, background-image 0.5s ease;
         }
-        
+
         h1 {
             color: var(--primary-color);
             text-align: center;
@@ -37,8 +52,9 @@
             font-weight: normal;
             font-size: 2.5rem;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            transition: color 0.5s ease, border-color 0.5s ease;
         }
-        
+
         h2 {
             color: var(--primary-color);
             margin-top: 40px;
@@ -47,7 +63,7 @@
             padding-left: 15px;
             transition: all 0.3s ease;
         }
-        
+
         .section {
             background-color: white;
             padding: 25px;
@@ -59,29 +75,29 @@
             overflow: hidden;
             position: relative;
         }
-        
+
         .section-content {
             display: none;
             padding-top: 20px;
             animation: fadeIn 0.8s cubic-bezier(0.22, 1, 0.36, 1);
         }
-        
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
+
         .section-content.show {
             display: block;
         }
-        
+
         .btn-container {
             display: flex;
             gap: 15px;
             margin: 20px 0;
             flex-wrap: wrap;
         }
-        
+
         .btn {
             background-color: var(--secondary-color);
             color: white;
@@ -99,7 +115,7 @@
             overflow: hidden;
             z-index: 1;
         }
-        
+
         .btn:after {
             content: '';
             position: absolute;
@@ -113,67 +129,67 @@
             transition: all 0.6s ease;
             z-index: -1;
         }
-        
+
         .btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 15px rgba(0,0,0,0.15);
         }
-        
+
         .btn:hover:after {
             opacity: 1;
             animation: shine 1.5s infinite;
         }
-        
+
         @keyframes shine {
             0% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-        
+
         .btn-style {
             background-color: var(--accent-color);
             color: white;
         }
-        
+
         .btn-style:hover {
             background-color: #c0392b;
         }
-        
+
         .btn-alt {
             background-color: var(--primary-color);
             color: white;
         }
-        
+
         .btn-alt:hover {
             background-color: #1a252f;
         }
-        
+
         .hegel-style {
             background-color: #f8f9fa;
             border-left: 6px solid var(--secondary-color);
             box-shadow: 0 8px 25px rgba(52, 73, 94, 0.15);
             transform: translateY(-5px);
         }
-        
+
         .hegel-style h2 {
             color: var(--secondary-color);
             border-left-color: var(--secondary-color);
         }
-        
+
         .dialectical-thesis {
             background-color: #ebf5fb;
             border-left: 6px solid var(--dialectical-thesis);
         }
-        
+
         .dialectical-antithesis {
             background-color: #fdedec;
             border-left: 6px solid var(--dialectical-antithesis);
         }
-        
+
         .dialectical-synthesis {
             background-color: #e8f8f5;
             border-left: 6px solid var(--dialectical-synthesis);
         }
-        
+
         img {
             max-width: 100%;
             height: auto;
@@ -185,11 +201,11 @@
             transform: rotate(-1deg);
             transition: all 0.4s ease;
         }
-        
+
         img:hover {
             transform: rotate(0deg) scale(1.02);
         }
-        
+
         .quote {
             font-style: italic;
             color: var(--primary-color);
@@ -200,8 +216,9 @@
             border-radius: 8px;
             position: relative;
             box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            transition: background-color 0.5s ease, color 0.5s ease;
         }
-        
+
         .quote:before {
             content: """;
             font-size: 80px;
@@ -212,26 +229,28 @@
             opacity: 0.1;
             font-family: serif;
         }
-        
+
         .highlight {
             background: linear-gradient(120deg, #d6eaf8 0%, #ebf5fb 100%);
             padding: 3px 8px;
             border-radius: 4px;
             color: var(--dark-text);
             font-weight: bold;
+            transition: background 0.5s ease, color 0.5s ease;
         }
-        
+
         ul {
             padding-left: 30px;
         }
-        
+
         li {
             margin-bottom: 12px;
             position: relative;
             line-height: 1.6;
             padding-left: 25px;
+            transition: padding 0.3s ease;
         }
-        
+
         li:before {
             content: "";
             position: absolute;
@@ -241,34 +260,35 @@
             height: 12px;
             background-color: var(--secondary-color);
             border-radius: 50%;
+            transition: background-color 0.5s ease;
         }
-        
+
         .icon {
             font-size: 20px;
         }
-        
+
         .dialectic-icon {
             color: var(--secondary-color);
             margin-right: 8px;
         }
-        
+
         .spirit-icon {
             color: var(--primary-color);
             margin-right: 8px;
         }
-        
+
         .history-icon {
             color: var(--accent-color);
             margin-right: 8px;
         }
-        
+
         .dialectical-process {
             display: flex;
             justify-content: space-between;
             margin: 20px 0;
             text-align: center;
         }
-        
+
         .dialectical-step {
             flex: 1;
             padding: 15px;
@@ -277,58 +297,203 @@
             color: white;
             font-weight: bold;
         }
-        
-        .thesis-step {
-            background-color: var(--dialectical-thesis);
+
+        .thesis-step { background-color: var(--dialectical-thesis); }
+        .antithesis-step { background-color: var(--dialectical-antithesis); }
+        .synthesis-step { background-color: var(--dialectical-synthesis); }
+
+        /* ========== BARRA MODALITÀ DI LETTURA ========== */
+        .reading-modes {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 25px 0 35px;
+            padding: 14px;
+            background: var(--mode-bar-bg);
+            border: 1px solid var(--mode-bar-border);
+            border-radius: 50px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: background 0.5s ease, border-color 0.5s ease;
         }
-        
-        .antithesis-step {
-            background-color: var(--dialectical-antithesis);
+
+        .mode-btn {
+            font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+            font-size: 0.82rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 10px 20px;
+            border: 1px solid var(--mode-btn-border);
+            border-radius: 40px;
+            background: transparent;
+            color: var(--mode-btn-color);
+            cursor: pointer;
+            transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
         }
-        
-        .synthesis-step {
-            background-color: var(--dialectical-synthesis);
+
+        .mode-btn:hover {
+            border-color: var(--mode-accent);
+            color: var(--mode-accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
         }
-        
+
+        .mode-btn.active {
+            background: var(--mode-accent);
+            color: #fff;
+            border-color: var(--mode-accent);
+            box-shadow: 0 0 14px rgba(184, 134, 11, 0.45);
+            font-weight: 600;
+        }
+
+        /* ========== MODALITÀ FILOSOFICO ========== */
+        body.mode-filosofico {
+            --mode-accent: #6a4a1f;
+            --mode-bar-bg: rgba(250, 246, 236, 0.85);
+            --mode-btn-color: #3a2a10;
+            background-color: #f5f2ec;
+            background-image: linear-gradient(to bottom, #faf8f3, #efe9df);
+            color: #2c2a25;
+            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+            font-size: 1.05rem;
+        }
+        body.mode-filosofico h1 { color: #4a2a0f; border-bottom-color: #8a3a1a; }
+        body.mode-filosofico h2 { color: #3a1f08; border-left-color: #8a6a3a; }
+        body.mode-filosofico .section { background-color: #faf6ec; border-color: #e0d4b8; }
+        body.mode-filosofico .quote { background-color: #f5ecd5; color: #3a2a10; }
+        body.mode-filosofico .highlight { background: linear-gradient(120deg, #ede0b8 0%, #f5ecd5 100%); color: #3a2a10; }
+        body.mode-filosofico li:before { background-color: #8a6a3a; }
+        body.mode-filosofico .section-content p {
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        /* ========== MODALITÀ MEDITATIVO ========== */
+        body.mode-meditativo {
+            --mode-accent: #4a7a4a;
+            --mode-bar-bg: rgba(240, 248, 240, 0.85);
+            --mode-btn-color: #2a4a2a;
+            background-color: #eef5ee;
+            background-image: linear-gradient(to bottom, #f6fbf6, #e2ede2);
+            color: #2a4a2a;
+            line-height: 2.2;
+            letter-spacing: 0.4px;
+            font-family: 'Georgia', serif;
+        }
+        body.mode-meditativo h1 { color: #2a5a2a; border-bottom-color: #6a9a6a; }
+        body.mode-meditativo h2 { color: #2a5a2a; border-left-color: #6a9a6a; }
+        body.mode-meditativo .section { background-color: #f4faf4; border-color: #c8e0c8; }
+        body.mode-meditativo .quote { background-color: #e8f4e8; color: #2a4a2a; }
+        body.mode-meditativo .highlight { background: linear-gradient(120deg, #c8e0c8 0%, #e0f0e0 100%); color: #1a3a1a; }
+        body.mode-meditativo li:before { background-color: #4a7a4a; }
+        body.mode-meditativo .section-content p {
+            text-align: center;
+            max-width: 62ch;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        body.mode-meditativo ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        body.mode-meditativo li {
+            padding-left: 0;
+            text-align: center;
+        }
+        body.mode-meditativo li:before { display: none; }
+
+        /* ========== MODALITÀ PAPIRO ========== */
+        body.mode-papiro {
+            --mode-accent: #8a5a1a;
+            --mode-bar-bg: rgba(250, 240, 215, 0.88);
+            --mode-btn-color: #4a2a0a;
+            background-color: #f2e8cc;
+            background-image: linear-gradient(to bottom, #f9f0d5, #ecd9a8);
+            color: #4a3418;
+            font-family: 'Georgia', 'Times New Roman', serif;
+        }
+        body.mode-papiro h1 { color: #5a2a08; border-bottom-color: #a0522d; }
+        body.mode-papiro h2 { color: #5a2a08; border-left-color: #a0522d; }
+        body.mode-papiro .section {
+            background-color: #faf2dc;
+            border-color: #d4bc88;
+            box-shadow: 0 5px 18px rgba(120, 80, 20, 0.15);
+        }
+        body.mode-papiro .quote { background-color: #f5e8c0; color: #3a2008; }
+        body.mode-papiro .highlight { background: linear-gradient(120deg, #e8d08a 0%, #f2e0a8 100%); color: #3a2008; }
+        body.mode-papiro li:before { background-color: #8a5a1a; }
+        body.mode-papiro img { border-color: #e8d4a0; }
+
+        /* ========== MODALITÀ NOTTURNO ========== */
+        body.mode-notturno {
+            --mode-accent: #d4af37;
+            --mode-bar-bg: rgba(20, 20, 32, 0.85);
+            --mode-bar-border: rgba(255, 255, 255, 0.1);
+            --mode-btn-color: #c0c0d8;
+            --mode-btn-border: rgba(255, 255, 255, 0.18);
+            --primary-color: #d8d8e8;
+            --secondary-color: #a0a0c0;
+            --dark-text: #d8d8e8;
+            --light-text: #1a1a28;
+            background-color: #0a0a14;
+            background-image: linear-gradient(to bottom, #0a0a14, #12121f);
+            color: #c8c8dc;
+        }
+        body.mode-notturno h1 { color: #e8e8f4; border-bottom-color: #ff6b9d; text-shadow: 0 0 20px rgba(255, 107, 157, 0.3); }
+        body.mode-notturno h2 { color: #d8d8e8; border-left-color: #8a2be2; }
+        body.mode-notturno .section { background-color: #14141f; border-color: #2a2a3a; }
+        body.mode-notturno .quote { background-color: #1a1a28; color: #c8c8dc; }
+        body.mode-notturno .quote:before { color: #5a5a7a; }
+        body.mode-notturno .highlight { background: linear-gradient(120deg, #2a2a4a 0%, #1a1a3a 100%); color: #e8e8f4; }
+        body.mode-notturno li:before { background-color: #8a8aa8; }
+        body.mode-notturno .hegel-style { background-color: #1a1a28; border-left-color: #a0a0c0; }
+        body.mode-notturno .hegel-style h2 { color: #d0d0e0; border-left-color: #a0a0c0; }
+        body.mode-notturno .dialectical-thesis { background-color: #102030; border-left-color: #3498db; }
+        body.mode-notturno .dialectical-antithesis { background-color: #301018; border-left-color: #e74c3c; }
+        body.mode-notturno .dialectical-synthesis { background-color: #103020; border-left-color: #2ecc71; }
+        body.mode-notturno img { border-color: #2a2a3a; box-shadow: 0 0 30px rgba(0, 229, 255, 0.15); }
+        body.mode-notturno .btn { box-shadow: 0 4px 8px rgba(0,0,0,0.4); }
+
+        /* ========== RESPONSIVE ========== */
         @media (max-width: 768px) {
-            body {
-                padding: 20px;
-            }
-            
-            h1 {
-                font-size: 2rem;
-            }
-            
-            .section {
-                padding: 20px;
-            }
-            
-            .btn {
-                padding: 10px 18px;
-                font-size: 14px;
-            }
-            
-            .dialectical-process {
-                flex-direction: column;
-            }
-            
-            .dialectical-step {
-                margin: 5px 0;
-            }
+            body { padding: 20px; }
+            h1 { font-size: 2rem; }
+            .section { padding: 20px; }
+            .btn { padding: 10px 18px; font-size: 14px; }
+            .dialectical-process { flex-direction: column; }
+            .dialectical-step { margin: 5px 0; }
+            .mode-btn { padding: 8px 14px; font-size: 0.72rem; }
+            .reading-modes { border-radius: 20px; padding: 10px; }
         }
     </style>
 </head>
-<body>
-  <h1>Georg Wilhelm Friedrich Hegel: La Dialettica dello Spirito</h1>
+<body class="mode-normale">
 
-<div style="text-align: center; margin: 30px 0;">
-    <img src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/immagini/hegel.webp"
-         alt="Ritratto di Georg Wilhelm Friedrich Hegel"
-         width="400"
-         loading="lazy"
-         onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Hegel_portrait_by_Schlesinger_1831.jpg/440px-Hegel_portrait_by_Schlesinger_1831.jpg';">
-    <p style="margin-top: 10px; font-style: italic; color: #555;">Georg Wilhelm Friedrich Hegel (1770-1831)</p>
-</div>
+    <h1>Georg Wilhelm Friedrich Hegel: La Dialettica dello Spirito</h1>
+
+    <!-- IMMAGINE -->
+    <div style="text-align: center; margin: 30px 0;">
+        <img src="https://raw.githubusercontent.com/Casi0048/casi0048.github.io/main/immagini/hegel.webp"
+             alt="Ritratto di Georg Wilhelm Friedrich Hegel"
+             width="400"
+             loading="lazy"
+             onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Hegel_portrait_by_Schlesinger_1831.jpg/440px-Hegel_portrait_by_Schlesinger_1831.jpg';">
+        <p style="margin-top: 10px; font-style: italic; color: #555;">Georg Wilhelm Friedrich Hegel (1770-1831)</p>
+    </div>
+
+    <!-- BARRA MODALITÀ DI LETTURA -->
+    <nav class="reading-modes" aria-label="Modalità di lettura">
+        <button class="mode-btn active" data-mode="normale">✦ Normale</button>
+        <button class="mode-btn" data-mode="filosofico">Φ Filosofico</button>
+        <button class="mode-btn" data-mode="meditativo">☯ Meditativo</button>
+        <button class="mode-btn" data-mode="papiro">📜 Papiro</button>
+        <button class="mode-btn" data-mode="notturno">🌙 Notturno</button>
+    </nav>
+
     <div class="section">
         <h2>Vita e Opere</h2>
         <div class="btn-container">
@@ -344,18 +509,18 @@
         </div>
         <div class="section-content">
             <p>Georg Wilhelm Friedrich Hegel (1770-1831) è stato il massimo esponente dell'<span class="highlight">idealismo tedesco</span> e uno dei filosofi più influenti della storia del pensiero occidentale.</p>
-            
+
             <p>Principali tappe biografiche:</p>
-            
+
             <ul>
                 <li><span class="spirit-icon">🎓</span> Nato a Stoccarda, studiò teologia a Tubinga con Schelling e Hölderlin</li>
                 <li><span class="spirit-icon">🏛️</span> Insegnò a Jena, Heidelberg e Berlino</li>
                 <li><span class="history-icon">📚</span> Rettore dell'Università di Berlino dal 1830</li>
                 <li><span class="spirit-icon">⚕️</span> Morì durante un'epidemia di colera a Berlino</li>
             </ul>
-            
+
             <p>Opere fondamentali:</p>
-            
+
             <ul>
                 <li><em>Fenomenologia dello spirito</em> (1807) - Prima grande opera sistematica</li>
                 <li><em>Scienza della logica</em> (1812-1816)</li>
@@ -363,13 +528,13 @@
                 <li><em>Lineamenti di filosofia del diritto</em> (1821)</li>
                 <li><em>Lezioni sulla filosofia della storia</em> (postume)</li>
             </ul>
-            
+
             <div class="quote">
                 "Il reale è razionale e il razionale è reale."
             </div>
         </div>
     </div>
-    
+
     <div class="section">
         <h2>La Dialettica Hegeliana</h2>
         <div class="btn-container">
@@ -385,7 +550,7 @@
         </div>
         <div class="section-content">
             <p>Il metodo dialettico di Hegel rappresenta il <span class="highlight">motore del divenire</span> della realtà:</p>
-            
+
             <div class="dialectical-process">
                 <div class="dialectical-step thesis-step">
                     <h3>Tesi</h3>
@@ -400,22 +565,22 @@
                     <p>Superamento e conservazione</p>
                 </div>
             </div>
-            
+
             <p>Caratteristiche della dialettica:</p>
-            
+
             <ul>
                 <li><span class="dialectic-icon">🔄</span> Processo triadico che avviene a tutti i livelli della realtà</li>
                 <li><span class="dialectic-icon">⚡</span> La contraddizione è il motore del movimento</li>
                 <li><span class="dialectic-icon">📈</span> Progressiva elevazione a livelli più complessi</li>
                 <li><span class="dialectic-icon">🌍</span> Applicabile alla natura, alla storia e allo spirito</li>
             </ul>
-            
+
             <div class="quote">
                 "La filosofia è il proprio tempo appreso con il pensiero."
             </div>
         </div>
     </div>
-    
+
     <div class="section">
         <h2>Filosofia dello Spirito</h2>
         <div class="btn-container">
@@ -431,28 +596,28 @@
         </div>
         <div class="section-content">
             <p>Hegel sviluppa una complessa <span class="highlight">filosofia dello spirito</span> in tre momenti:</p>
-            
+
             <ul>
                 <li><span class="spirit-icon">💭</span> <strong>Spirito soggettivo</strong>: individualità psichica e coscienza</li>
                 <li><span class="spirit-icon">🏛️</span> <strong>Spirito oggettivo</strong>: diritto, moralità, eticità (famiglia, società civile, Stato)</li>
                 <li><span class="spirit-icon">🎨</span> <strong>Spirito assoluto</strong>: arte, religione, filosofia come forme di autocomprensione</li>
             </ul>
-            
+
             <p>Lo Stato hegeliano:</p>
-            
+
             <ul>
                 <li>Rappresenta la massima realizzazione dello spirito oggettivo</li>
                 <li>"La realtà dell'idea morale"</li>
                 <li>Organismo razionale che supera gli interessi particolari</li>
                 <li>Monarchia costituzionale come forma più avanzata</li>
             </ul>
-            
+
             <div class="quote">
                 "Lo Stato è la sostanza etica consapevole di sé."
             </div>
         </div>
     </div>
-    
+
     <div class="section">
         <h2>Filosofia della Storia</h2>
         <div class="btn-container">
@@ -468,28 +633,28 @@
         </div>
         <div class="section-content">
             <p>Per Hegel la storia è il <span class="highlight">processo di realizzazione</span> dello spirito nel mondo:</p>
-            
+
             <ul>
                 <li><span class="history-icon">🔄</span> La storia ha un senso e una direzione (teleologia)</li>
                 <li><span class="history-icon">⚡</span> La "ragione" (Vernunft) governa il processo storico</li>
                 <li><span class="history-icon">👑</span> Gli "individui cosmico-storici" (Alessandro, Cesare, Napoleone) incarnano lo spirito del tempo</li>
                 <li><span class="history-icon">🏛️</span> Lo Stato prussiano rappresenta il culmine (controversa)</li>
             </ul>
-            
+
             <p>Fasi dello sviluppo storico:</p>
-            
+
             <ul>
                 <li>Oriente: uno solo è libero (il despota)</li>
                 <li>Greco-romana: alcuni sono liberi (i cittadini)</li>
                 <li>Germanica: tutti sono liberi (nello Stato razionale)</li>
             </ul>
-            
+
             <div class="quote">
                 "La storia del mondo è il progresso nella coscienza della libertà."
             </div>
         </div>
     </div>
-    
+
     <div class="section">
         <h2>Eredita e Influenza</h2>
         <div class="btn-container">
@@ -505,49 +670,47 @@
         </div>
         <div class="section-content">
             <p>Hegel ha influenzato profondamente:</p>
-            
+
             <ul>
                 <li><span class="dialectic-icon">👨‍🎓</span> La sinistra hegeliana (Feuerbach, Marx)</li>
                 <li><span class="dialectic-icon">📚</span> L'esistenzialismo (Kierkegaard, Sartre)</li>
                 <li><span class="dialectic-icon">🌍</span> Lo storicismo (Croce, Gentile)</li>
                 <li><span class="dialectic-icon">🧠</span> La filosofia continentale del XX secolo</li>
             </ul>
-            
+
             <p>Critiche principali:</p>
-            
+
             <ul>
                 <li>Schopenhauer: "Hegel è un ciarlatano"</li>
                 <li>Kierkegaard: eccesso di sistema a scapito dell'individuo</li>
                 <li>Popper: accusato di totalitarismo</li>
                 <li>Marx: "messo su testa" il metodo dialettico</li>
             </ul>
-            
+
             <p>Attualità del pensiero hegeliano:</p>
-            
+
             <ul>
                 <li>Teorie della riconoscimento (Honneth)</li>
                 <li>Filosofia politica contemporanea</li>
                 <li>Studi sull'idealismo tedesco</li>
             </ul>
-            
+
             <div class="quote">
                 "La filosofia hegeliana è l'espressione più compiuta della modernità."
             </div>
         </div>
     </div>
-    
+
     <script>
-        // Toggle per mostrare/nascondere i contenuti
+        // ========== TOGGLE SEZIONI ==========
         document.querySelectorAll('.toggle-btn').forEach(button => {
-            // Salva l'icona originale come attributo data
             const icon = button.querySelector('.icon');
             button.setAttribute('data-original-icon', icon.textContent);
-            
+
             button.addEventListener('click', function() {
                 const content = this.parentElement.nextElementSibling;
                 content.classList.toggle('show');
-                
-                // Cambia l'icona e il testo
+
                 const icon = this.querySelector('.icon');
                 if (content.classList.contains('show')) {
                     icon.textContent = '📕';
@@ -559,14 +722,13 @@
                 }
             });
         });
-        
-        // Cambia stile delle sezioni (tema Hegel)
+
+        // ========== STILE HEGELIANO ==========
         document.querySelectorAll('.style-btn').forEach(button => {
             button.addEventListener('click', function() {
                 const section = this.parentElement.parentElement;
                 section.classList.toggle('hegel-style');
-                
-                // Cambia l'icona e il testo
+
                 const icon = this.querySelector('.icon');
                 if (section.classList.contains('hegel-style')) {
                     icon.textContent = '✏️';
@@ -577,37 +739,55 @@
                 }
             });
         });
-        
-        // Bottoni tema tesi
+
+        // ========== TEMI DIALETTICI ==========
         document.querySelectorAll('.thesis-btn').forEach(button => {
             button.addEventListener('click', function() {
                 const section = this.parentElement.parentElement;
                 section.classList.toggle('dialectical-thesis');
-                
-                // Rimuovi altri stili tematici
                 section.classList.remove('dialectical-antithesis', 'dialectical-synthesis');
             });
         });
-        
-        // Bottoni tema antitesi
+
         document.querySelectorAll('.antithesis-btn').forEach(button => {
             button.addEventListener('click', function() {
                 const section = this.parentElement.parentElement;
                 section.classList.toggle('dialectical-antithesis');
-                
-                // Rimuovi altri stili tematici
                 section.classList.remove('dialectical-thesis', 'dialectical-synthesis');
             });
         });
-        
-        // Bottoni tema sintesi
+
         document.querySelectorAll('.synthesis-btn').forEach(button => {
             button.addEventListener('click', function() {
                 const section = this.parentElement.parentElement;
                 section.classList.toggle('dialectical-synthesis');
-                
-                // Rimuovi altri stili tematici
                 section.classList.remove('dialectical-thesis', 'dialectical-antithesis');
+            });
+        });
+
+        // ========== MODALITÀ DI LETTURA ==========
+        const modeButtons = document.querySelectorAll('.mode-btn');
+        const body = document.body;
+
+        modeButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const mode = btn.dataset.mode;
+
+                // Rimuovi tutte le classi mode-*
+                body.className = body.className.replace(/mode-\w+/g, '').trim();
+                body.classList.add(`mode-${mode}`);
+
+                // Aggiorna stato attivo
+                modeButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                // Piccola pulsazione di feedback al cambio modalità
+                body.style.transition = 'none';
+                body.style.filter = 'brightness(1.15)';
+                setTimeout(() => {
+                    body.style.transition = 'background-color 0.5s ease, color 0.5s ease, background-image 0.5s ease, filter 0.6s ease-out';
+                    body.style.filter = 'brightness(1)';
+                }, 60);
             });
         });
     </script>
