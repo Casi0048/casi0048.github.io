@@ -2815,17 +2815,26 @@
       overflow: hidden;
       transition: border-color .3s ease, background .3s ease
     }
-
-    .dialoghi::before,
-    .dil::before,
+     .dialoghi::before,
     .eco-giorno::before,
-    .frammento::before,
-
+    .frammento::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: .55
+    }
 
     .eco-giorno:hover {
       border-color: var(--gold-line)
     }
 
+.eco-giorno:hover {
+  border-color: var(--gold-line)
+}
     .eco-giorno-head {
       display: flex;
       align-items: center;
@@ -3734,7 +3743,7 @@
       }
     }
 
-    @media (max-width:560px) {
+       @media (max-width:560px) {
       .eco-giorno-body {
         grid-template-columns: 1fr
       }
@@ -3743,15 +3752,6 @@
         width: 72px;
         height: 72px;
         margin: 0 auto
-      }
-
-      .dil-filosofo,
-      .dil-options {
-        grid-template-columns: 1fr
-      }
-
-      .dil-filosofo {
-        gap: 4px
       }
     }
 
@@ -4842,7 +4842,6 @@
 .dialoghi.is-visible,
 .fo-section.is-visible,
 .giardino.is-visible,
-.dil.is-visible,
 .ua.is-visible {
   /* --focus-* hanno fallback 1/1/0 → nessun effetto se il JS non gira */
   opacity: calc(1 * var(--focus-op, 1));
@@ -4876,7 +4875,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .atlante, .eco-giorno, .frammento, .dialoghi,
-  .fo-section, .giardino, .dil, .ua,
+    .fo-section, .giardino, .ua,
   .hero, .hero .container, .philosophy-quotes,
   .knowledge-tree, .heraclitus-clock {
     opacity: 1 !important;
@@ -4886,9 +4885,41 @@
   }
 }
 
+
+/* Skip link accessibile */
+.skip-link {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  transform: translateY(-200%);
+  background: var(--gold);
+  color: var(--bg);
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-family: var(--sans);
+  font-size: .82rem;
+  font-weight: 600;
+  text-decoration: none;
+  z-index: 100000;
+  transition: transform .2s var(--ease-smooth);
+}
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 2px solid var(--bg);
+  outline-offset: 2px;
+}
+
+/* Focus visibile sui tab del Giardino */
+.giardino-tabs button:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
   </style>
 
-  <body><svg class=cosmic-sky viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" xmlns=http://www.w3.org/2000/svg aria-hidden=true>
+ <body>
+    <a href="#main" class="skip-link">Salta al contenuto principale</a>
+    <svg class=cosmic-sky viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" xmlns=http://www.w3.org/2000/svg aria-hidden=true>
       <defs>
         <linearGradient id=skyGradient x1=0% y1=0% x2=100% y2=100%>
           <stop offset=0% stop-color=#050914 />
@@ -5240,7 +5271,7 @@
         <div class=site-search-results id=siteSearchResults hidden></div>
       </div>
     </div>
-    <main>
+      <main id="main">
       <section class=hero>
         <div class=container>
           <div class=hero-kicker data-i18n=heroKicker>Filosofia · Pensiero · Cultura</div>
@@ -5267,11 +5298,11 @@
                 <p class=quote-text id=quoteText></p>
                 <div class=quote-author-row><cite class=quote-author id=quoteAuthor></cite><button class=quote-info id=quoteInfo type=button aria-label="Mostra la fonte della citazione" aria-expanded=false>ⓘ</button></div>
                 <div class=quote-source id=quoteSource aria-hidden=true></div>
-              </blockquote><span class="quote-mark quote-mark-end">”</span>
+               </blockquote><span class="quote-mark quote-mark-end">”</span>
             </div>
           </div>
         </div>
-        <div class=knowledge-tree><svg viewBox="0 0 220 360" width=216 height=353 xmlns=http://www.w3.org/2000/svg>
+        <div class=knowledge-tree aria-hidden="true"><svg viewBox="0 0 220 360" width=216 height=353 xmlns=http://www.w3.org/2000/svg aria-hidden="true" focusable="false">
             <g fill=none stroke=#BEA069 stroke-opacity=.55 stroke-width=1.5 stroke-linecap=round>
               <path d="M110 292 C100 305 90 314 76 320" />
               <path d="M110 292 C120 305 130 314 144 320" />
@@ -5316,7 +5347,7 @@
               <circle cx=75 cy=132 r=1.5 />
               <circle cx=145 cy=132 r=1.5 />
             </g>
-          </svg><svg class=wisdom-book viewBox="0 0 100 58" width=70 height=41 xmlns=http://www.w3.org/2000/svg role=img aria-label="Libro aperto">
+          </svg><svg class=wisdom-book viewBox="0 0 100 58" width=70 height=41 xmlns=http://www.w3.org/2000/svg aria-hidden="true" focusable="false">
             <g fill=none stroke=#BEA069 stroke-width=1.5 stroke-linecap=round stroke-linejoin=round>
               <path d="M50 17 C38 10 25 10 10 15 L10 43 C25 38 38 39 50 47" />
               <path d="M50 17 C62 10 75 10 90 15 L90 43 C75 38 62 39 50 47" />
@@ -5329,51 +5360,52 @@
           </svg>
           <div class=tree-motto>Contemplata aliis tradere</div>
         </div>
-        <div class=heraclitus-clock><svg viewBox="0 0 200 200" width=110 height=110 xmlns=http://www.w3.org/2000/svg>
-            <circle class=clock-outer cx=100 cy=100 r=90 fill=rgba(10,12,24,0.4) stroke=var(--gold) stroke-width=1.5 stroke-opacity=0.5 />
-            <circle class=clock-inner cx=100 cy=100 r=85 fill=none stroke=var(--gold) stroke-width=0.8 stroke-opacity=0.2 />
-            <g class=clock-numbers fill=var(--gold) font-family="'Cinzel', serif" font-size=11 font-weight=500 text-anchor=middle dominant-baseline=central fill-opacity=0.6><text x=100 y=16>XII</text><text x=175 y=100>III</text><text x=100 y=184>VI</text><text x=25 y=100>IX</text></g>
-            <line id=hourHand x1=100 y1=100 x2=100 y2=50 stroke=var(--gold) stroke-width=1.8 stroke-linecap=round stroke-opacity=0.5 />
-            <line id=minHand x1=100 y1=100 x2=100 y2=35 stroke=var(--gold) stroke-width=1.2 stroke-linecap=round stroke-opacity=0.4 /><text class=clock-greek x=100 y=150 font-family="'Cinzel', serif" font-size=15 font-weight=600 fill=var(--gold) text-anchor=middle dominant-baseline=central fill-opacity=0.95>ΠΑΝΤΑ ῬΕΙ</text>
-            <circle class=clock-center cx=100 cy=100 r=3 fill=var(--gold) fill-opacity=0.5>
-              <animate attributeName=r values=2.5;3.5;2.5 dur=3s repeatCount=indefinite />
-            </circle>
-            <circle cx=100 cy=100 r=1.2 fill=#080a12 />
-          </svg>
-          <div class=hourglass-rotator><svg class=heraclitus-hourglass viewBox="0 0 80 100" width=52 height=65 xmlns=http://www.w3.org/2000/svg role=img aria-label=Clessidra>
-              <defs>
-                <linearGradient id=glassHourglass x1=0 y1=0 x2=1 y2=0>
-                  <stop offset=0 stop-color=#ffffff stop-opacity=.12 />
-                  <stop offset=.45 stop-color=#ffffff stop-opacity=.38 />
-                  <stop offset=1 stop-color=#ffffff stop-opacity=.06 />
-                </linearGradient>
-                <linearGradient id=sandHourglass x1=0 y1=0 x2=0 y2=1>
-                  <stop offset=0 stop-color=#F5D58A />
-                  <stop offset=1 stop-color=#B9792D />
-                </linearGradient>
-                <clipPath id=hourglassInside>
-                  <path d="M23 14 H57 L42 44 Q40 50 42 56 L57 86 H23 L38 56 Q40 50 38 44 Z" />
-                </clipPath>
-              </defs>
-              <g class=hourglass-frame>
-                <g fill=none stroke=#BEA069 stroke-width=3 stroke-linecap=round>
-                  <path d="M17 9 H63 M17 91 H63" />
-                  <path d="M20 12 L35 44 Q40 50 35 56 L20 88" />
-                  <path d="M60 12 L45 44 Q40 50 45 56 L60 88" />
-                </g>
-                <path d="M22 13 H58 L43 44 Q40 50 43 56 L58 87 H22 L37 56 Q40 50 37 44 Z" fill=url(#glassHourglass) stroke=#D7BD88 stroke-width=1.2 />
-              </g>
-              <g clip-path=url(#hourglassInside)>
-                <path class=sand-top-a d="M25 17 H55 L42 42 H38 Z" fill=url(#sandHourglass) />
-                <path class=sand-bottom-a d="M38 61 L26 84 H54 L42 61 Z" fill=url(#sandHourglass) />
-                <path class=sand-top-b d="M26 17 H54 L42 42 H38 Z" fill=url(#sandHourglass) />
-                <path class=sand-bottom-b d="M38 61 L26 84 H54 L42 61 Z" fill=url(#sandHourglass) />
-                <path class=hourglass-sand-stream d="M40 43 V61" fill=none stroke=#D9A34D stroke-width=1.8 stroke-linecap=round />
-              </g>
-              <path d="M27 20 L37 40 M27 80 L34 67" fill=none stroke=#FFFFFF stroke-opacity=.65 stroke-width=1.5 stroke-linecap=round />
-            </svg></div>
-          <div class=clock-motto>— tutto scorre —</div>
-        </div>
+        <div class=heraclitus-clock aria-hidden="true"><svg viewBox="0 0 200 200" width=110 height=110 xmlns=http://www.w3.org/2000/svg aria-hidden="true" focusable="false">
+    <circle class=clock-outer cx=100 cy=100 r=90 fill=rgba(10,12,24,0.4) stroke=var(--gold) stroke-width=1.5 stroke-opacity=0.5 />
+    <circle class=clock-inner cx=100 cy=100 r=85 fill=none stroke=var(--gold) stroke-width=0.8 stroke-opacity=0.2 />
+    <g class=clock-numbers fill=var(--gold) font-family="'Cinzel', serif" font-size=11 font-weight=500 text-anchor=middle dominant-baseline=central fill-opacity=0.6><text x=100 y=16>XII</text><text x=175 y=100>III</text><text x=100 y=184>VI</text><text x=25 y=100>IX</text></g>
+    <line id=hourHand x1=100 y1=100 x2=100 y2=50 stroke=var(--gold) stroke-width=1.8 stroke-linecap=round stroke-opacity=0.5 />
+    <line id=minHand x1=100 y1=100 x2=100 y2=35 stroke=var(--gold) stroke-width=1.2 stroke-linecap=round stroke-opacity=0.4 /><text class=clock-greek x=100 y=150 font-family="'Cinzel', serif" font-size=15 font-weight=600 fill=var(--gold) text-anchor=middle dominant-baseline=central fill-opacity=0.95>ΠΑΝΤΑ ῬΕΙ</text>
+    <circle class=clock-center cx=100 cy=100 r=3 fill=var(--gold) fill-opacity=0.5>
+      <animate attributeName=r values=2.5;3.5;2.5 dur=3s repeatCount=indefinite />
+    </circle>
+    <circle cx=100 cy=100 r=1.2 fill=#080a12 />
+  </svg>
+  <div class=hourglass-rotator><svg class=heraclitus-hourglass viewBox="0 0 80 100" width=52 height=65 xmlns=http://www.w3.org/2000/svg aria-hidden="true" focusable="false">
+      <defs>
+        <linearGradient id=glassHourglass x1=0 y1=0 x2=1 y2=0>
+          <stop offset=0 stop-color=#ffffff stop-opacity=.12 />
+          <stop offset=.45 stop-color=#ffffff stop-opacity=.38 />
+          <stop offset=1 stop-color=#ffffff stop-opacity=.06 />
+        </linearGradient>
+        <linearGradient id=sandHourglass x1=0 y1=0 x2=0 y2=1>
+          <stop offset=0 stop-color=#F5D58A />
+          <stop offset=1 stop-color=#B9792D />
+        </linearGradient>
+        <clipPath id=hourglassInside>
+          <path d="M23 14 H57 L42 44 Q40 50 42 56 L57 86 H23 L38 56 Q40 50 38 44 Z" />
+        </clipPath>
+      </defs>
+      <g class=hourglass-frame>
+        <g fill=none stroke=#BEA069 stroke-width=3 stroke-linecap=round>
+          <path d="M17 9 H63 M17 91 H63" />
+          <path d="M20 12 L35 44 Q40 50 35 56 L20 88" />
+          <path d="M60 12 L45 44 Q40 50 45 56 L60 88" />
+        </g>
+        <path d="M22 13 H58 L43 44 Q40 50 43 56 L58 87 H22 L37 56 Q40 50 37 44 Z" fill=url(#glassHourglass) stroke=#D7BD88 stroke-width=1.2 />
+      </g>
+      <g clip-path=url(#hourglassInside)>
+        <path class=sand-top-a d="M25 17 H55 L42 42 H38 Z" fill=url(#sandHourglass) />
+        <path class=sand-bottom-a d="M38 61 L26 84 H54 L42 61 Z" fill=url(#sandHourglass) />
+        <path class=sand-top-b d="M26 17 H54 L42 42 H38 Z" fill=url(#sandHourglass) />
+        <path class=sand-bottom-b d="M38 61 L26 84 H54 L42 61 Z" fill=url(#sandHourglass) />
+        <path class=hourglass-sand-stream d="M40 43 V61" fill=none stroke=#D9A34D stroke-width=1.8 stroke-linecap=round />
+      </g>
+      <path d="M27 20 L37 40 M27 80 L34 67" fill=none stroke=#FFFFFF stroke-opacity=.65 stroke-width=1.5 stroke-linecap=round />
+    </svg></div>
+  <div class=clock-motto>— tutto scorre —</div>
+</div>
+
       </section>
       <div class=layout>
         <aside class=col-sinistra aria-label="Navigazione tematica">
@@ -5409,7 +5441,7 @@
               <h3 class=atlante-title>✦ Atlante delle Idee</h3>
               <p class=atlante-subtitle>Tocca un concetto per esplorare come i filosofi lo hanno pensato.</p>
             </div>
-            <div class=atlante-map-wrapper><svg class=atlante-map viewBox="0 0 720 520" role=img aria-label="Mappa concettuale interattiva delle idee filosofiche" id=atlanteMap>
+            <div class=atlante-map-wrapper><svg class=atlante-map viewBox="0 0 720 520" role="group" aria-label="Mappa concettuale interattiva delle idee filosofiche" id=atlanteMap>
                 <defs>
                   <radialGradient id=atlanteCenterGrad cx=50% cy=50% r=50%>
                     <stop offset=0% stop-color=var(--gold) stop-opacity=0.22 />
@@ -5466,7 +5498,7 @@
               <div class=atlante-info-content id=atlanteInfoContent hidden><button type=button class=atlante-info-close id=atlanteInfoClose aria-label=Chiudi>×</button>
                 <h4 class=atlante-info-title id=atlanteInfoTitle>Seleziona un concetto</h4>
                 <p class=atlante-info-desc id=atlanteInfoDesc></p>
-                <div class=atlante-filosofi id=atlanteFilosofi></div><a class=atlante-info-link id=atlanteInfoLink>Approfondisci →</a>
+                <div class=atlante-filosofi id=atlanteFilosofi></div><a class=atlante-info-link id=atlanteInfoLink href="#">Approfondisci →</a>
               </div>
             </div>
           </section>
@@ -5478,7 +5510,7 @@
                 <h3 class=eco-giorno-nome id=ecoGiornoNome>Eco del Giorno</h3><span class=eco-giorno-anno id=ecoGiornoAnno></span>
                 <blockquote class=eco-giorno-citazione id=ecoGiornoCitazione></blockquote><cite class=eco-giorno-fonte id=ecoGiornoFonte></cite>
                 <p class=eco-giorno-commento id=ecoGiornoCommento></p>
-                <div class=eco-giorno-actions><a class=eco-giorno-link id=ecoGiornoLink>Leggi il pensiero completo →</a><button type=button class=eco-giorno-altro id=ecoGiornoAltro>↻ Un altro eco</button></div>
+                <div class=eco-giorno-actions><a class=eco-giorno-link id=ecoGiornoLink href="#">Leggi il pensiero completo →</a><button type=button class=eco-giorno-altro id=ecoGiornoAltro>↻ Un altro eco</button></div>
               </div>
             </div>
           </section>
@@ -5491,7 +5523,7 @@
                 <p class=frammento-greco id=frammentoGreco></p>
                 <blockquote class=frammento-traduzione id=frammentoTraduzione></blockquote>
                 <p class=frammento-commento id=frammentoCommento></p>
-                <div class=frammento-footer><cite class=frammento-autore id=frammentoAutore></cite><a class=frammento-link id=frammentoLink>Approfondisci →</a></div>
+                <div class=frammento-footer><cite class=frammento-autore id=frammentoAutore></cite><a class=frammento-link id=frammentoLink href="#">Approfondisci →</a></div>
               </div>
             </div>
             <div class=frammento-actions><button type=button class=frammento-altro id=frammentoAltro>↻ Un altro frammento</button></div>
@@ -5545,14 +5577,14 @@
     <span class="giardino-sub">Tre esperienze per pensare, scegliere, respirare.</span>
   </div>
 
-  <div class="giardino-tabs" role="tablist">
-    <button type="button" data-tab="oracolo" class="active" role="tab" aria-selected="true">🔮 Oracolo profondo</button>
-    <button type="button" data-tab="dilemmi" role="tab" aria-selected="false">⚖️ Dilemmi etici</button>
-    <button type="button" data-tab="respiro" role="tab" aria-selected="false">🌬️ Respiro filosofico</button>
+  <div class="giardino-tabs" role="tablist" aria-label="Sezioni del Giardino delle Idee">
+    <button type="button" data-tab="oracolo" class="active" role="tab" aria-selected="true" id="tab-oracolo" aria-controls="giardino-oracolo">🔮 Oracolo profondo</button>
+    <button type="button" data-tab="dilemmi" role="tab" aria-selected="false" id="tab-dilemmi" aria-controls="giardino-dilemmi">⚖️ Dilemmi etici</button>
+    <button type="button" data-tab="respiro" role="tab" aria-selected="false" id="tab-respiro" aria-controls="giardino-respiro">🌬️ Respiro filosofico</button>
   </div>
 
   <!-- ORACOLO -->
-  <div class="giardino-panel active" id="giardino-oracolo" role="tabpanel">
+  <div class="giardino-panel active" id="giardino-oracolo" role="tabpanel" aria-labelledby="tab-oracolo" tabindex="0">
     <div class="giardino-oracle-input">
       <input type="text" id="giardinoOracleInput" placeholder="Poni una domanda all'oracolo..." autocomplete="off" maxlength="200" aria-label="La tua domanda">
       <button type="button" id="giardinoOracleBtn">Consulta</button>
@@ -5566,12 +5598,12 @@
   </div>
 
   <!-- DILEMMI -->
-  <div class="giardino-panel" id="giardino-dilemmi" role="tabpanel">
+   <div class="giardino-panel" id="giardino-dilemmi" role="tabpanel" aria-labelledby="tab-dilemmi" tabindex="0">
     <div id="giardinoDilemmaContent"></div>
   </div>
 
   <!-- RESPIRO -->
-  <div class="giardino-panel" id="giardino-respiro" role="tabpanel">
+  <div class="giardino-panel" id="giardino-respiro" role="tabpanel" aria-labelledby="tab-respiro" tabindex="0">
     <div class="giardino-breath-wrap">
       <div class="giardino-breath-circle-wrap">
         <div class="giardino-breath-circle" id="giardinoBreathCircle"></div>
@@ -6133,14 +6165,16 @@
         function x() {
           p.classList.remove("open"), p.setAttribute("aria-hidden", "true")
         }
-        h && p && h.addEventListener("click", (e => {
-          e.preventDefault(), p.classList.add("open"), p.setAttribute("aria-hidden", "false")
+               h && p && h.addEventListener("click", (e => {
+          e.preventDefault(), p.classList.add("open"), p.setAttribute("aria-hidden", "false");
+          const first = p.querySelector('input[type="email"]');
+          if (first) setTimeout(() => first.focus(), 30);
         })), g && p && g.addEventListener("click", (e => {
-          e.preventDefault(), x()
+          e.preventDefault(), x(), h && h.focus()
         })), p && (p.addEventListener("click", (e => {
-          e.target === p && x()
+          e.target === p && x() && h && h.focus()
         })), document.addEventListener("keydown", (e => {
-          "Escape" === e.key && p.classList.contains("open") && x()
+          if ("Escape" === e.key && p.classList.contains("open")) { x(); h && h.focus(); }
         }))), v && v.addEventListener("submit", (async function(e) {
           e.preventDefault(), e.stopPropagation();
           const t = v.querySelector('input[type="email"]'),
@@ -8342,55 +8376,13 @@
   breathToggle.addEventListener('click', () => { breathActive ? stopBreath() : startBreath(); });
 })();
 </script>
-<script>
-(function () {
-  'use strict';
 
-  // Rispetta prefers-reduced-motion
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-  const selectors = '.atlante, .eco-giorno, .frammento, .dialoghi, .fo-section, .giardino, .dil, .ua';
-  const modules = document.querySelectorAll(selectors);
-  if (!modules.length) return;
-
-  // Fallback: se IntersectionObserver non c'è, mostra tutto subito
-  if (!('IntersectionObserver' in window)) {
-    modules.forEach(m => m.classList.add('is-visible'));
-    return;
-  }
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, {
-    rootMargin: '0px 0px -8% 0px',
-    threshold: 0.08
-  });
-
-  modules.forEach(m => observer.observe(m));
-
-  // Fallback di sicurezza: dopo 1.2s, mostra qualunque modulo
-  // già dentro il viewport che l'observer non ha catturato
-  setTimeout(() => {
-    modules.forEach(m => {
-      const rect = m.getBoundingClientRect();
-      if (rect.top < window.innerHeight && rect.bottom > 0) {
-        m.classList.add('is-visible');
-      }
-    });
-  }, 1200);
-})();
-</script>
 <script>
 (function () {
   'use strict';
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  const SELECTORS = '.atlante, .eco-giorno, .frammento, .dialoghi, .fo-section, .giardino, .dil, .ua';
+ const SELECTORS = '.atlante, .eco-giorno, .frammento, .dialoghi, .fo-section, .giardino, .ua';
   const modules = document.querySelectorAll(SELECTORS);
   if (!modules.length) return;
 
