@@ -4915,6 +4915,77 @@
   outline: 2px solid var(--gold);
   outline-offset: 3px;
 }
+/* ============================================================
+   FIX CONTRASTO A11Y — portare Lighthouse a 100
+   ============================================================ */
+
+/* Testo muted più leggibile su sfondo scuro */
+:root {
+  --text-muted: #8eb5a1; /* era #789987 — più chiaro, contrasto 6.8:1 */
+}
+
+body.light-theme {
+  --text-muted: #2e4d3d; /* più scuro su tema chiaro */
+}
+
+/* Tab attivo del Giardino: oro su sfondo oro-soft falliva il contrasto */
+.giardino-tabs button.active {
+  background: var(--bg-soft) !important;
+  border-color: var(--gold);
+  color: var(--gold);
+  box-shadow: inset 0 0 10px rgba(69, 230, 161, .2);
+}
+
+/* Placeholder input: garantisce contrasto minimo 4.5:1 */
+input::placeholder,
+textarea::placeholder {
+  color: var(--text-muted) !important;
+  opacity: 1 !important;
+}
+
+/* Footer motto e autore: schiariti per contrasto */
+.footer-motto {
+  color: #b8a898 !important;
+}
+.footer-motto-author {
+  color: #a89888 !important;
+}
+
+/* Testi piccoli (date, autori, categorie) spesso sotto i 12px */
+.ua-date,
+.ua-excerpt,
+.eco-giorno-anno,
+.frammento-autore,
+.di-name,
+.di-theme,
+.ua-cat,
+.frammento-num,
+.eco-giorno-fonte,
+.atlante-filosofi span {
+  color: var(--text-muted);
+}
+
+/* Bottoni "Approfondisci" e simili: contrasto garantito */
+.giardino-next,
+.fo-form button,
+.giardino-oracle-input button,
+.giardino-breath-toggle {
+  color: var(--bg);
+  background: var(--gold);
+  font-weight: 600;
+}
+
+/* Link con bordo inferiore: visibilità hover */
+.frammento-link,
+.eco-giorno-link,
+.di-link,
+.paradosso-link,
+.atlante-info-link {
+  color: var(--gold);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
   </style>
 
  <body>
@@ -5498,7 +5569,7 @@
               <div class=atlante-info-content id=atlanteInfoContent hidden><button type=button class=atlante-info-close id=atlanteInfoClose aria-label=Chiudi>×</button>
                 <h4 class=atlante-info-title id=atlanteInfoTitle>Seleziona un concetto</h4>
                 <p class=atlante-info-desc id=atlanteInfoDesc></p>
-                <div class=atlante-filosofi id=atlanteFilosofi></div><a class=atlante-info-link id=atlanteInfoLink href="#">Approfondisci →</a>
+                <div class=atlante-filosofi id=atlanteFilosofi></div><a class=atlante-info-link id=atlanteInfoLink href="#" aria-label="Approfondisci il concetto dell'Atlante">Approfondisci →</a>
               </div>
             </div>
           </section>
@@ -5510,7 +5581,7 @@
                 <h3 class=eco-giorno-nome id=ecoGiornoNome>Eco del Giorno</h3><span class=eco-giorno-anno id=ecoGiornoAnno></span>
                 <blockquote class=eco-giorno-citazione id=ecoGiornoCitazione></blockquote><cite class=eco-giorno-fonte id=ecoGiornoFonte></cite>
                 <p class=eco-giorno-commento id=ecoGiornoCommento></p>
-                <div class=eco-giorno-actions><a class=eco-giorno-link id=ecoGiornoLink href="#">Leggi il pensiero completo →</a><button type=button class=eco-giorno-altro id=ecoGiornoAltro>↻ Un altro eco</button></div>
+                <div class=eco-giorno-actions><a class=eco-giorno-link id=ecoGiornoLink href="#" aria-label="Leggi il pensiero completo del filosofo">Leggi il pensiero completo →</a><button type=button class=eco-giorno-altro id=ecoGiornoAltro>↻ Un altro eco</button></div>
               </div>
             </div>
           </section>
@@ -5523,7 +5594,7 @@
                 <p class=frammento-greco id=frammentoGreco></p>
                 <blockquote class=frammento-traduzione id=frammentoTraduzione></blockquote>
                 <p class=frammento-commento id=frammentoCommento></p>
-                <div class=frammento-footer><cite class=frammento-autore id=frammentoAutore></cite><a class=frammento-link id=frammentoLink href="#">Approfondisci →</a></div>
+                <div class=frammento-footer><cite class=frammento-autore id=frammentoAutore></cite><a class=frammento-link id=frammentoLink href="#" aria-label="Approfondisci il frammento filosofico">Approfondisci →</a></div>
               </div>
             </div>
             <div class=frammento-actions><button type=button class=frammento-altro id=frammentoAltro>↻ Un altro frammento</button></div>
@@ -7243,7 +7314,7 @@
               o = e.category || "Articolo",
               r = e.url || "#",
               n = e.excerpt || e.text || "";
-            return '<a class="ua-card" href="' + i(r) + '"><span class="ua-cat">' + i(o) + "</span><h4>" + i(e.title || "Senza titolo") + "</h4>" + (t ? '<span class="ua-date">' + i(t) + "</span>" : "") + '<p class="ua-excerpt">' + i(n) + '</p><span class="ua-link">Leggi →</span></a>'
+            return '<a class="ua-card" href="' + i(r) + '" aria-label="Leggi l\'articolo: ' + i(e.title || "Senza titolo") + '"><span class="ua-cat">' + i(o) + "</span><h4>" + i(e.title || "Senza titolo") + "</h4>" + (t ? '<span class="ua-date">' + i(t) + "</span>" : "") + '<p class="ua-excerpt">' + i(n) + '</p><span class="ua-link">Leggi →</span></a>'
           })).join("") : e.innerHTML = '<p class="ua-empty">Nessun articolo ancora pubblicato.</p>'
         }!async function() {
           try {
