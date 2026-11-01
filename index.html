@@ -4986,6 +4986,33 @@ textarea::placeholder {
   text-underline-offset: 3px;
   text-decoration-thickness: 1px;
 }
+
+
+/* ── Bottone "Nuova domanda" sotto la risposta dell'oracolo ── */
+.fo-reset-btn {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 18px;
+  padding: 8px 20px;
+  background: transparent;
+  border: 1px solid var(--gold-line);
+  border-radius: 100px;
+  color: var(--gold);
+  font-family: var(--sans);
+  font-size: .72rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all .3s ease;
+}
+.fo-reset-btn:hover {
+  background: var(--gold-soft);
+  border-color: var(--gold);
+}
+.fo-reset-btn:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
   </style>
 
  <body>
@@ -8075,7 +8102,7 @@ textarea::placeholder {
         const btn = document.getElementById('foBtn');
         const resp = document.getElementById('foResponse');
         let busy = false;
-        form.addEventListener('submit', e => {
+                form.addEventListener('submit', e => {
           e.preventDefault();
           if (busy) return;
           const q = input.value.trim();
@@ -8104,6 +8131,10 @@ textarea::placeholder {
           const label = btn.textContent;
           btn.textContent = 'Ascolta…';
           resp.innerHTML = '<span class="fo-listening">L\'oracolo ascolta…</span>';
+
+          // Svuota l'input subito dopo l'invio (nuovo)
+          input.value = '';
+
           setTimeout(() => {
             resp.innerHTML = constellationSVG() +
               '<div class="fo-fragment"><blockquote></blockquote><cite></cite></div>';
@@ -8114,6 +8145,19 @@ textarea::placeholder {
             const f = pick(q);
             bq.textContent = f.t;
             ci.textContent = f.r;
+
+            // Aggiungi bottone "Nuova domanda" (nuovo)
+            const resetBtn = document.createElement('button');
+            resetBtn.type = 'button';
+            resetBtn.className = 'fo-reset-btn';
+            resetBtn.textContent = '↻ Nuova domanda';
+            resetBtn.addEventListener('click', () => {
+              resp.innerHTML = '';
+              input.value = '';
+              input.focus();
+            });
+            box.appendChild(resetBtn);
+
             requestAnimationFrame(() => {
               c.classList.add('visible');
               setTimeout(() => box.classList.add('visible'), reduceMotion ? 50 : 900);
@@ -8243,19 +8287,37 @@ textarea::placeholder {
     }
     return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
   }
-  function consultOracle(){
+   function consultOracle(){
     const q = oracleInput.value.trim();
     if (!q){ oracleInput.focus(); return; }
     oracleBtn.disabled = true;
     oracleResponse.innerHTML = '<div class="giardino-consulting"><span class="glyph">✧</span><p>L\'oracolo consulta le stelle...</p></div>';
+
+    // Svuota subito l'input così puoi scrivere la prossima domanda
+    oracleInput.value = '';
+
     setTimeout(() => {
       const r = findResponse(q);
-      oracleResponse.innerHTML = '<div class="giardino-oracle-card">' +
-        '<div class="giardino-oracle-quote">"' + r.quote + '"</div>' +
-        '<div class="giardino-oracle-author">— ' + r.author + '</div>' +
-        '<div class="giardino-oracle-reflection">' + r.reflection + '</div>' +
+      oracleResponse.innerHTML =
+        '<div class="giardino-oracle-card">' +
+          '<div class="giardino-oracle-quote">"' + r.quote + '"</div>' +
+          '<div class="giardino-oracle-author">— ' + r.author + '</div>' +
+          '<div class="giardino-oracle-reflection">' + r.reflection + '</div>' +
+          '<button type="button" class="giardino-next" id="giardinoOracleReset" ' +
+            'style="display:block;margin:20px auto 0;">↻ Nuova domanda</button>' +
         '</div>';
       oracleBtn.disabled = false;
+
+      // Reset: riporta lo stato iniziale e mette a fuoco l'input
+      document.getElementById('giardinoOracleReset').addEventListener('click', () => {
+        oracleResponse.innerHTML =
+          '<div class="giardino-consulting">' +
+            '<span class="glyph" style="animation:none;">✧</span>' +
+            '<p style="animation:none;">L\'oracolo attende la tua domanda...</p>' +
+          '</div>';
+        oracleInput.value = '';
+        oracleInput.focus();
+      });
     }, 1700);
   }
   oracleBtn.addEventListener('click', consultOracle);
