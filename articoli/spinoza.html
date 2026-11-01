@@ -3,189 +3,1047 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Baruch Spinoza - Filosofo Razionalista</title>
+    <!-- Meta tag enciclopedici -->
+    <meta name="description" content="Articolo enciclopedico esaustivo su Baruch Spinoza (1632–1677): il filosofo del Deus sive Natura, dell'Etica more geometrico demonstrata, del monismo panteistico, della libertà come conoscenza della necessità, dell'ostracismo dalla comunità ebraica di Amsterdam e della sua immensa eredità nel pensiero moderno. Con sezioni espandibili, modalità di lettura multiple e animazioni cosmiche spettacolari.">
+    <meta name="keywords" content="Baruch Spinoza, Benedetto Spinoza, Deus sive Natura, Etica, monismo, panteismo, panenteismo, razionalismo, libertà, necessità, sostanza, attributi, modi, Amsterdam, ostracismo, herem, Tractatus theologico-politicus, Tractatus politicus, filosofia moderna, Descartes, Leibniz, Hegel, Einstein">
+    <meta name="author" content="Enciclopedia Filosofica Cosmica">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Baruch Spinoza — Il Filosofo della Ragione e della Libertà | Enciclopedia Cosmica">
+    <meta property="og:description" content="Un viaggio enciclopedico nel pensiero di Spinoza: dal Deus sive Natura alla libertà come conoscenza della necessità. Sezioni animate, modalità di lettura e un'esperienza cosmica.">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="it_IT">
+    <title>Baruch Spinoza — Il Filosofo della Ragione e della Libertà | Enciclopedia Cosmica</title>
     <style>
+        /* ========== VARIABILI E RESET ========== */
+        :root {
+            --bg-primary: #05050f;
+            --bg-secondary: #0a0a1a;
+            --bg-card: rgba(15, 15, 35, 0.85);
+            --text-primary: #e8e8f0;
+            --text-secondary: #b0b0c8;
+            --accent-gold: #d4af37;
+            --accent-cyan: #00e5ff;
+            --accent-violet: #8a2be2;
+            --accent-rose: #ff6b9d;
+            --glow-gold: 0 0 20px rgba(212, 175, 55, 0.4);
+            --glow-cyan: 0 0 20px rgba(0, 229, 255, 0.4);
+            --border-radius: 16px;
+            --font-serif: 'Georgia', 'Times New Roman', serif;
+            --font-sans: 'Segoe UI', 'Helvetica Neue', sans-serif;
+            --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: 'Georgia', serif;
-            line-height: 1.6;
-            max-width: 800px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-serif);
+            line-height: 1.8;
+            overflow-x: hidden;
+            min-height: 100vh;
+            transition: background 0.6s, color 0.6s;
+        }
+
+        /* ========== SFONDO COSMICO ANIMATO ========== */
+        .cosmic-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -3;
+            background: radial-gradient(ellipse at 20% 50%, #1a0a2e 0%, #05050f 70%);
+            transition: background 0.6s;
+        }
+
+        .stars-layer {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background-image:
+                radial-gradient(2px 2px at 10% 20%, #fff, transparent),
+                radial-gradient(2px 2px at 30% 65%, #fff, transparent),
+                radial-gradient(1px 1px at 50% 10%, #fff, transparent),
+                radial-gradient(1.5px 1.5px at 70% 80%, #fff, transparent),
+                radial-gradient(1px 1px at 90% 40%, #fff, transparent),
+                radial-gradient(2px 2px at 15% 85%, #fff, transparent),
+                radial-gradient(1px 1px at 45% 45%, #fff, transparent),
+                radial-gradient(1.5px 1.5px at 80% 15%, #fff, transparent),
+                radial-gradient(1px 1px at 60% 90%, #fff, transparent),
+                radial-gradient(2px 2px at 95% 70%, #fff, transparent),
+                radial-gradient(1px 1px at 25% 35%, #fff, transparent),
+                radial-gradient(1.5px 1.5px at 55% 55%, #fff, transparent);
+            background-size: 200% 200%;
+            animation: starDrift 80s linear infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes starDrift {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+
+        .stars-layer-secondary {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background-image:
+                radial-gradient(1px 1px at 5% 50%, #aef, transparent),
+                radial-gradient(1.5px 1.5px at 35% 30%, #aef, transparent),
+                radial-gradient(1px 1px at 65% 70%, #aef, transparent),
+                radial-gradient(2px 2px at 85% 25%, #aef, transparent),
+                radial-gradient(1px 1px at 75% 90%, #aef, transparent);
+            background-size: 300% 300%;
+            animation: starDriftReverse 120s linear infinite;
+            opacity: 0.4;
+        }
+
+        @keyframes starDriftReverse {
+            0% { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+
+        .nebula {
+            position: fixed;
+            z-index: -2;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: 0.25;
+            animation: nebulaPulse 14s ease-in-out infinite alternate;
+        }
+
+        .nebula-1 {
+            width: 520px;
+            height: 520px;
+            background: radial-gradient(circle, #8a2be2, transparent);
+            top: -12%;
+            left: -12%;
+            animation-delay: 0s;
+        }
+
+        .nebula-2 {
+            width: 420px;
+            height: 420px;
+            background: radial-gradient(circle, #00e5ff, transparent);
+            bottom: -12%;
+            right: -12%;
+            animation-delay: -5s;
+        }
+
+        .nebula-3 {
+            width: 340px;
+            height: 340px;
+            background: radial-gradient(circle, #d4af37, transparent);
+            top: 40%;
+            right: 18%;
+            animation-delay: -9s;
+        }
+
+        .nebula-4 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, #ff6b9d, transparent);
+            bottom: 30%;
+            left: 10%;
+            animation-delay: -12s;
+        }
+
+        @keyframes nebulaPulse {
+            0% { transform: scale(1) translate(0, 0); opacity: 0.18; }
+            50% { transform: scale(1.15) translate(15px, -10px); opacity: 0.32; }
+            100% { transform: scale(1.35) translate(30px, -25px); opacity: 0.4; }
+        }
+
+        /* ========== CONTENITORE PRINCIPALE ========== */
+        .container {
+            max-width: 900px;
             margin: 0 auto;
-            padding: 20px;
-            color: #333;
-            background-color: #f9f9f9;
+            padding: 40px 24px 80px;
+            position: relative;
+            z-index: 1;
         }
-        
-        h1 {
-            color: #2c3e50;
+
+        /* ========== HEADER ========== */
+        .article-header {
             text-align: center;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 10px;
+            padding: 60px 0 40px;
+            position: relative;
         }
-        
-        h2 {
-            color: #2980b9;
-            margin-top: 30px;
+
+        .article-header h1 {
+            font-family: var(--font-serif);
+            font-size: clamp(2rem, 5.5vw, 3.5rem);
+            font-weight: 400;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-cyan), var(--accent-violet), var(--accent-rose));
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: titleGlow 6s ease-in-out infinite alternate, gradientShift 8s ease infinite;
+            line-height: 1.3;
         }
-        
-        .section {
-            background-color: white;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
+
+        @keyframes titleGlow {
+            0% { filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.3)); }
+            50% { filter: drop-shadow(0 0 25px rgba(0, 229, 255, 0.4)); }
+            100% { filter: drop-shadow(0 0 30px rgba(138, 43, 226, 0.5)); }
         }
-        
-        .section-content {
-            display: none;
-            padding-top: 10px;
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
-        
-        .section-content.show {
-            display: block;
+
+        .article-header .subtitle {
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            color: var(--text-secondary);
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            margin-top: 16px;
+            animation: fadeInUp 1.2s ease-out 0.3s both;
         }
-        
-        .btn {
-            background-color: #3498db;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-right: 10px;
-            transition: background-color 0.3s;
+
+        .article-header .dates {
+            font-family: var(--font-sans);
+            font-size: 1.1rem;
+            color: var(--accent-gold);
+            margin-top: 8px;
+            letter-spacing: 2px;
+            animation: fadeInUp 1.2s ease-out 0.6s both;
         }
-        
-        .btn:hover {
-            background-color: #2980b9;
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        
-        .btn-style {
-            background-color: #27ae60;
+
+        /* ========== IMMAGINE ========== */
+        .image-container {
+            text-align: center;
+            margin: 30px 0 40px;
+            position: relative;
+            animation: fadeInUp 1.2s ease-out 0.9s both;
         }
-        
-        .btn-style:hover {
-            background-color: #219653;
-        }
-        
-        .special-style {
-            background-color: #f1c40f;
-            color: #2c3e50;
-            border-left: 5px solid #e67e22;
-        }
-        
-        img {
+
+        .image-container img {
             max-width: 100%;
             height: auto;
-            display: block;
-            margin: 20px auto;
-            border-radius: 5px;
+            border-radius: 12px;
+            box-shadow: 0 0 40px rgba(0, 229, 255, 0.2), 0 20px 40px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-height: 450px;
+            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.6s;
         }
-        
+
+        .image-container img:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 60px rgba(212, 175, 55, 0.35), 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .image-container p {
+            margin-top: 14px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-style: italic;
+            letter-spacing: 1px;
+        }
+
+        /* ========== BARRA MODALITÀ DI LETTURA ========== */
+        .reading-modes {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 30px 0 50px;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 60px;
+            backdrop-filter: blur(12px);
+            animation: fadeInUp 1.2s ease-out 1.2s both;
+        }
+
+        .mode-btn {
+            font-family: var(--font-sans);
+            font-size: 0.82rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 10px 22px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 40px;
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mode-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, rgba(0, 229, 255, 0.15), transparent);
+            opacity: 0;
+            transition: opacity var(--transition);
+        }
+
+        .mode-btn:hover::before {
+            opacity: 1;
+        }
+
+        .mode-btn:hover {
+            border-color: var(--accent-cyan);
+            color: #fff;
+            box-shadow: var(--glow-cyan);
+        }
+
+        .mode-btn.active {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+            box-shadow: var(--glow-gold);
+            background: rgba(212, 175, 55, 0.08);
+        }
+
+        /* ========== STILI MODALITÀ DI LETTURA ========== */
+        body.mode-filosofico {
+            --font-serif: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+            --text-primary: #d0d8e8;
+            --bg-primary: #080812;
+            font-size: 1.08rem;
+        }
+        body.mode-filosofico .section-content p {
+            text-align: justify;
+            hyphens: auto;
+        }
+        body.mode-filosofico .section-content {
+            border-left: 2px solid var(--accent-violet);
+            padding-left: 24px;
+        }
+
+        body.mode-meditativo {
+            --font-serif: 'Georgia', serif;
+            --bg-primary: #0a0f0a;
+            --text-primary: #c8e6c8;
+            line-height: 2.2;
+            letter-spacing: 0.5px;
+        }
+        body.mode-meditativo .section-content p {
+            text-align: center;
+            max-width: 65ch;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        body.mode-meditativo .section-content {
+            background: rgba(0, 40, 0, 0.2);
+            border-radius: 20px;
+            padding: 24px;
+        }
+        body.mode-meditativo .section-content ul {
+            text-align: center;
+        }
+        body.mode-meditativo .section-content li {
+            display: block;
+        }
+
+        body.mode-papiro {
+            --bg-primary: #1a1408;
+            --bg-secondary: #2a2010;
+            --bg-card: rgba(40, 30, 15, 0.9);
+            --text-primary: #e8d5a8;
+            --text-secondary: #c0a870;
+            --accent-gold: #b8860b;
+            --font-serif: 'Georgia', 'Times New Roman', serif;
+        }
+        body.mode-papiro .cosmic-bg {
+            background: radial-gradient(ellipse at 50% 50%, #2a2010 0%, #1a1408 70%);
+        }
+        body.mode-papiro .stars-layer,
+        body.mode-papiro .stars-layer-secondary {
+            opacity: 0.15;
+        }
+        body.mode-papiro .nebula {
+            opacity: 0.08;
+        }
+        body.mode-papiro .container::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: -1;
+            border-radius: var(--border-radius);
+        }
+
+        body.mode-notturno {
+            --bg-primary: #000000;
+            --bg-card: rgba(8, 8, 8, 0.92);
+            --text-primary: #a0a0b0;
+            --text-secondary: #606070;
+            --accent-gold: #b8960b;
+            --accent-cyan: #0088aa;
+            --accent-violet: #5a1a8a;
+        }
+        body.mode-notturno .stars-layer,
+        body.mode-notturno .stars-layer-secondary {
+            opacity: 0.3;
+        }
+        body.mode-notturno .nebula {
+            opacity: 0.08;
+        }
+
+        /* ========== CITAZIONE ========== */
         .quote {
             font-style: italic;
-            color: #7f8c8d;
-            border-left: 3px solid #bdc3c7;
-            padding-left: 15px;
-            margin: 20px 0;
+            border-left: 4px solid var(--accent-cyan);
+            padding: 24px 28px;
+            margin: 30px 0;
+            background: linear-gradient(135deg, rgba(0, 229, 255, 0.04), rgba(138, 43, 226, 0.04));
+            color: var(--text-primary);
+            border-radius: 0 16px 16px 0;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            position: relative;
+            backdrop-filter: blur(8px);
+            animation: quoteGlow 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes quoteGlow {
+            0% { box-shadow: 0 0 20px rgba(0, 229, 255, 0.1); }
+            100% { box-shadow: 0 0 35px rgba(0, 229, 255, 0.2); }
+        }
+
+        .quote::before {
+            content: "“";
+            font-size: 70px;
+            color: rgba(212, 175, 55, 0.2);
+            position: absolute;
+            left: 10px;
+            top: -20px;
+            line-height: 1;
+            font-family: Georgia, serif;
+        }
+
+        .quote em {
+            color: var(--accent-gold);
+            font-style: italic;
+        }
+
+        .quote cite {
+            display: block;
+            margin-top: 12px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-style: normal;
+            letter-spacing: 1px;
+        }
+
+        /* ========== SEZIONI ESPANDIBILI ========== */
+        .section {
+            margin-bottom: 24px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(16px);
+            transition: border-color var(--transition), box-shadow var(--transition);
+            animation: sectionReveal 0.8s ease-out both;
+            animation-timeline: view();
+            animation-range: entry 0% entry 30%;
+        }
+
+        @keyframes sectionReveal {
+            from { opacity: 0; transform: translateY(40px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .section:hover {
+            border-color: rgba(0, 229, 255, 0.2);
+            box-shadow: 0 0 40px rgba(0, 229, 255, 0.05);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 28px;
+            cursor: pointer;
+            user-select: none;
+            transition: background var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 10%;
+            width: 80%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+            opacity: 0.3;
+            transition: opacity var(--transition);
+        }
+
+        .section-header:hover::after {
+            opacity: 0.8;
+        }
+
+        .section-header:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .section-header h2 {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            border: none;
+        }
+
+        .section-icon {
+            font-size: 1.6rem;
+            filter: drop-shadow(0 0 8px var(--accent-gold));
+            transition: transform var(--transition);
+            display: inline-block;
+        }
+
+        .section-header:hover .section-icon {
+            transform: scale(1.2) rotate(10deg);
+        }
+
+        .toggle-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-secondary);
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all var(--transition);
+            flex-shrink: 0;
+            font-family: var(--font-sans);
+        }
+
+        .toggle-btn:hover {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+            box-shadow: var(--glow-gold);
+            transform: rotate(90deg);
+        }
+
+        .section.open .toggle-btn {
+            transform: rotate(45deg);
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+            box-shadow: var(--glow-cyan);
+        }
+
+        .section-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), padding 0.4s;
+            padding: 0 28px;
+        }
+
+        .section.open .section-content {
+            max-height: 4000px;
+            padding: 0 28px 32px;
+        }
+
+        .section-content h3 {
+            font-family: var(--font-serif);
+            font-size: 1.15rem;
+            font-weight: 500;
+            color: var(--accent-cyan);
+            margin: 24px 0 12px;
+            letter-spacing: 1px;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .section-content h3::before {
+            content: '◆';
+            position: absolute;
+            left: 0;
+            color: var(--accent-gold);
+            font-size: 0.7rem;
+            top: 6px;
+        }
+
+        .section-content h3:first-child {
+            margin-top: 8px;
+        }
+
+        .section-content p {
+            margin-bottom: 18px;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.9;
+        }
+
+        .section-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-content strong {
+            color: var(--accent-gold);
+            font-weight: 600;
+        }
+
+        .section-content em {
+            color: var(--accent-cyan);
+            font-style: italic;
+        }
+
+        .section-content ul {
+            list-style: none;
+            padding-left: 0;
+            margin: 16px 0;
+        }
+
+        .section-content ul li {
+            padding: 8px 0 8px 28px;
+            position: relative;
+            color: var(--text-secondary);
+        }
+
+        .section-content ul li::before {
+            content: '✦';
+            position: absolute;
+            left: 0;
+            color: var(--accent-gold);
+            font-size: 0.9rem;
+            top: 9px;
+        }
+
+        /* ========== TIMELINE ========== */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+            margin: 24px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--accent-gold), var(--accent-cyan), var(--accent-violet), var(--accent-rose));
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 22px;
+            padding-left: 24px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -26px;
+            top: 8px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent-gold);
+            box-shadow: 0 0 12px var(--accent-gold);
+            transition: transform var(--transition), box-shadow var(--transition);
+        }
+
+        .timeline-item:hover::before {
+            transform: scale(1.4);
+            box-shadow: 0 0 20px var(--accent-cyan);
+        }
+
+        .timeline-item .year {
+            font-family: var(--font-sans);
+            color: var(--accent-cyan);
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .timeline-item .event {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* ========== FOOTER ========== */
+        .article-footer {
+            text-align: center;
+            padding: 60px 0 20px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            font-family: var(--font-sans);
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            margin-top: 60px;
+            animation: fadeInUp 1s ease-out both;
+            animation-timeline: view();
+            animation-range: entry 0% entry 50%;
+        }
+
+        .article-footer .glyph {
+            font-size: 1.5rem;
+            display: block;
+            margin-bottom: 12px;
+            animation: glyphFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes glyphFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .article-footer .footer-note {
+            margin-top: 8px;
+            font-size: 0.75rem;
+            opacity: 0.5;
+            font-style: italic;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 700px) {
+            .container { padding: 20px 16px 60px; }
+            .article-header h1 { letter-spacing: 2px; }
+            .section-header { padding: 18px 20px; }
+            .section-header h2 { font-size: 1.15rem; gap: 10px; }
+            .section-content { padding: 0 20px; }
+            .section.open .section-content { padding: 0 20px 24px; }
+            .reading-modes { border-radius: 20px; padding: 12px; }
+            .mode-btn { padding: 8px 14px; font-size: 0.72rem; }
+        }
+
+        /* ========== SCROLLBAR ========== */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(var(--accent-gold), var(--accent-violet));
+            border-radius: 4px;
         }
     </style>
 </head>
-<body>
-    <h1>Baruch Spinoza: Filosofo della Ragione e della Libertà</h1>
-    
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Benedictus_de_Spinoza.jpg/440px-Benedictus_de_Spinoza.jpg" alt="Ritratto di Baruch Spinoza" width="300">
-    
-    <div class="section">
-        <h2>Introduzione</h2>
-        <button class="btn toggle-btn">Apri/Chiudi</button>
-        <button class="btn btn-style style-btn">Cambia Stile</button>
-        <div class="section-content">
-            <p>Baruch Spinoza (1632-1677) è stato uno dei più importanti filosofi razionalisti del XVII secolo, insieme a René Descartes e Gottfried Leibniz. Nato ad Amsterdam da una famiglia ebraica portoghese, Spinoza sviluppò un sistema filosofico radicale che lo portò all'esclusione dalla comunità ebraica.</p>
-            
-            <p>La sua filosofia, esposta principalmente nell'<em>Etica dimostrata secondo l'ordine geometrico</em>, unisce metafisica, epistemologia, psicologia ed etica in un sistema coerente basato sulla ragione.</p>
-            
-            <div class="quote">
-                "La pace non è assenza di guerra: è una virtù, uno stato d'animo, una disposizione alla benevolenza, alla fiducia, alla giustizia."
+<body class="mode-normale">
+
+    <!-- Sfondo cosmico animato -->
+    <div class="cosmic-bg"></div>
+    <div class="stars-layer"></div>
+    <div class="stars-layer-secondary"></div>
+    <div class="nebula nebula-1"></div>
+    <div class="nebula nebula-2"></div>
+    <div class="nebula nebula-3"></div>
+    <div class="nebula nebula-4"></div>
+
+    <div class="container">
+        <!-- HEADER -->
+        <header class="article-header">
+            <h1>Baruch Spinoza</h1>
+            <p class="subtitle">Il Filosofo della Ragione e della Libertà</p>
+            <p class="dates">1632 — 1677 · Amsterdam, Paesi Bassi · L'Aia</p>
+        </header>
+
+        <!-- IMMAGINE -->
+        <div class="image-container">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Benedictus_de_Spinoza.jpg/440px-Benedictus_de_Spinoza.jpg" 
+                 alt="Ritratto di Baruch Spinoza" 
+                 loading="lazy"
+                 onerror="this.style.display='none';">
+            <p>Ritratto di Baruch (Benedetto) Spinoza</p>
+        </div>
+
+        <!-- OPZIONI DI LETTURA -->
+        <nav class="reading-modes" aria-label="Modalità di lettura">
+            <button class="mode-btn active" data-mode="normale">✦ Normale</button>
+            <button class="mode-btn" data-mode="filosofico">Φ Filosofico</button>
+            <button class="mode-btn" data-mode="meditativo">☯ Meditativo</button>
+            <button class="mode-btn" data-mode="papiro">📜 Papiro</button>
+            <button class="mode-btn" data-mode="notturno">🌙 Notturno</button>
+        </nav>
+
+        <!-- CORPO DELL'ARTICOLO -->
+        <article class="article-body">
+
+            <!-- SEZIONE 1: INTRODUZIONE -->
+            <div class="section open" id="sez-intro">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2><span class="section-icon">🌌</span> Introduzione</h2>
+                    <button class="toggle-btn" aria-label="Espandi sezione">+</button>
+                </div>
+                <div class="section-content">
+                    <p><strong>Baruch Spinoza</strong> (1632–1677), noto anche con il nome latino di <em>Benedictus de Spinoza</em> e in italiano come <strong>Benedetto Spinoza</strong>, è stato uno dei più importanti filosofi razionalisti del XVII secolo, insieme a René Descartes e Gottfried Leibniz. Nato ad Amsterdam da una famiglia ebraica di origine portoghese (i suoi genitori erano <em>marranos</em>, ebrei costretti alla conversione in Portogallo e poi tornati all'ebraismo), Spinoza sviluppò un sistema filosofico radicale che lo portò all'esclusione dalla comunità ebraica nel 1656, all'età di soli ventiquattro anni.</p>
+                    <p>La sua filosofia, esposta principalmente nell'<em>Etica dimostrata secondo l'ordine geometrico</em> (pubblicata postuma nel 1677), unisce metafisica, epistemologia, psicologia ed etica in un sistema coerente basato sulla ragione e sulla deduzione geometrica. Spinoza è considerato il primo filosofo moderno a rompere con il dualismo cartesiano e a proporre una visione <strong>monista</strong> e <strong>immanente</strong> della realtà, in cui Dio e Natura coincidono.</p>
+                    <div class="quote">
+                        «La pace non è assenza di guerra: è una virtù, uno stato d'animo, una disposizione alla benevolenza, alla fiducia, alla giustizia.»
+                        <cite>— Baruch Spinoza, <em>Tractatus politicus</em></cite>
+                    </div>
+                    <p>La sua vita fu segnata da un'esistenza appartata e sobria, dedicata interamente allo studio e alla riflessione. Rifiutò una cattedra all'Università di Heidelberg per preservare la propria libertà di pensiero, e visse modestamente coltivando lenti e specchi, intrattenendo una fitta corrispondenza con i maggiori intellettuali europei del suo tempo.</p>
+                </div>
             </div>
-        </div>
-    </div>
-    
-    <div class="section">
-        <h2>Metafisica: Dio o Natura</h2>
-        <button class="btn toggle-btn">Apri/Chiudi</button>
-        <button class="btn btn-style style-btn">Cambia Stile</button>
-        <div class="section-content">
-            <p>Spinoza propone una visione monista della realtà, spesso riassunta nella formula <em>Deus sive Natura</em> (Dio o la Natura). Per Spinoza:</p>
-            
-            <ul>
-                <li>Esiste una sola sostanza infinita che può essere chiamata sia Dio che Natura</li>
-                <li>Tutto ciò che esiste è un'espressione o modificazione di questa unica sostanza</li>
-                <li>Dio non è un essere trascendente ma immanente, presente in tutto ciò che esiste</li>
-                <li>La natura è governata da leggi necessarie e deterministiche</li>
-            </ul>
-            
-            <p>Questa visione panteistica (o più precisamente panenteistica) era rivoluzionaria per l'epoca e considerata eretica dalle autorità religiose.</p>
-        </div>
-    </div>
-    
-    <div class="section">
-        <h2>Etica e Libertà</h2>
-        <button class="btn toggle-btn">Apri/Chiudi</button>
-        <button class="btn btn-style style-btn">Cambia Stile</button>
-        <div class="section-content">
-            <p>L'<em>Etica</em> di Spinoza presenta una concezione della libertà radicalmente diversa dal senso comune:</p>
-            
-            <ul>
-                <li>La libertà non è il libero arbitrio, ma la comprensione della necessità</li>
-                <li>Agire liberamente significa agire secondo la propria natura razionale</li>
-                <li>Le passioni ci rendono schiavi quando non le comprendiamo</li>
-                <li>La conoscenza razionale ci libera dalla schiavitù delle passioni</li>
-            </ul>
-            
-            <p>Per Spinoza, il sommo bene è la conoscenza intellettuale di Dio/Natura, che conduce alla beatitudine e alla vera libertà.</p>
-            
-            <div class="quote">
-                "L'uomo libero è colui che vive guidato dalla sola ragione."
+
+            <!-- SEZIONE 2: BIOGRAFIA -->
+            <div class="section" id="sez-bio">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2><span class="section-icon">🪐</span> Biografia</h2>
+                    <button class="toggle-btn" aria-label="Espandi sezione">+</button>
+                </div>
+                <div class="section-content">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="year">24 novembre 1632</div>
+                            <div class="event">Nasce ad Amsterdam da Michael de Spinoza e Hanna Debora Senior, famiglia di commercianti ebrei di origine portoghese.</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="year">1639–1650</div>
+                            <div class="event">Frequenta la scuola della comunità ebraica <em>Talmud Torah</em>, dove studia la Bibbia, il Talmud e la filosofia ebraica medievale (Maimonide, Gersonide, Hasdai Crescas).</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="year">1654</div>
+                            <div class="event">Alla morte del padre, assume la conduzione dell'impresa commerciale familiare, che tuttavia abbandonerà poco dopo per dedicarsi interamente alla filosofia.</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="year">27 luglio 1656</div>
+                            <div class="event"><strong>Herem</strong> (scomunica): viene espulso dalla comunità ebraica di Amsterdam con una formula di estrema durezza, a causa delle sue idee considerate eretiche. Da allora vive in isolamento, frequentando circoli di dissidenti e liberi pensatori.</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="year">1660–1663</div>
+                            <div class="event">Si trasferisce a Rijnsburg, poi a Voorburg (vicino all'Aia). Scrive il <em>Tractatus de intellectus emendatione</em> (Trattato sull'emendazione dell'intelletto) e i <em>Principi di filosofia cartesiana</em>.</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="year">1670</div>
+                            <div class="event">Pubblica anonimo il <em>Tractatus theologico-politicus</em>, opera che suscita enorme scandalo per la sua critica alla religione rivelata e la difesa della libertà di pensiero.</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="year">1673</div>
+                            <div class="event">Rifiuta la cattedra di filosofia offertagli dall'Università di Heidelberg, per non compromettere la propria libertà di ricerca e di espressione.</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="year">1675</div>
+                            <div class="event">Completa l'<em>Etica</em>, ma rinuncia a pubblicarla per timore delle persecuzioni religiose. L'opera circolerà manoscritta tra amici fidati.</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="year">21 febbraio 1677</div>
+                            <div class="event">Muore all'Aia, probabilmente di tubercolosi, all'età di 44 anni. Poco dopo la morte, gli amici pubblicano le <em>Opera posthuma</em>, comprendenti l'<em>Etica</em>, il <em>Tractatus politicus</em> e altri scritti.</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+
+            <!-- SEZIONE 3: OPERE PRINCIPALI -->
+            <div class="section" id="sez-opere">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2><span class="section-icon">📚</span> Opere Principali</h2>
+                    <button class="toggle-btn" aria-label="Espandi sezione">+</button>
+                </div>
+                <div class="section-content">
+                    <ul>
+                        <li><strong>Etica dimostrata secondo l'ordine geometrico</strong> (<em>Ethica more geometrico demonstrata</em>, 1677, postuma) — Il capolavoro, strutturato in definizioni, assiomi, proposizioni, dimostrazioni e corollari, sul modello della geometria euclidea. Comprende cinque parti: Dio, la natura e l'origine della mente, l'origine e la natura degli affetti, la schiavitù umana (le passioni), la potenza dell'intelletto (la libertà).</li>
+                        <li><strong>Trattato teologico-politico</strong> (<em>Tractatus theologico-politicus</em>, 1670) — Critica radicale dell'interpretazione biblica letteralista e difesa della libertà di pensiero e della separazione tra teologia e filosofia.</li>
+                        <li><strong>Trattato sull'emendazione dell'intelletto</strong> (<em>Tractatus de intellectus emendatione</em>, 1677, postumo) — Riflessione sul metodo della conoscenza e sul sommo bene.</li>
+                        <li><strong>Principi di filosofia cartesiana</strong> (<em>Renati Des Cartes Principia Philosophiae more geometrico demonstrata</em>, 1663) — Esposizione geometrica della filosofia di Descartes, con un'appendice sulle idee metafisiche.</li>
+                        <li><strong>Trattato politico</strong> (<em>Tractatus politicus</em>, 1677, postumo e incompiuto) — Analisi della politica e delle forme di governo, con una difesa della democrazia.</li>
+                        <li><strong>Epistolario</strong> — Circa 300 lettere con i maggiori intellettuali europei (Oldenburg, Boyle, Huygens, Leibniz, Tschirnhaus, Blyenbergh), fondamentali per comprendere l'evoluzione del suo pensiero.</li>
+                        <li><strong>Compendio di grammatica ebraica</strong> (<em>Compendium grammatices linguae hebraeae</em>, 1677, postumo) — Studio filologico della lingua ebraica.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- SEZIONE 4: METAFISICA -->
+            <div class="section" id="sez-metafisica">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2><span class="section-icon">☀️</span> Metafisica: <em>Deus sive Natura</em></h2>
+                    <button class="toggle-btn" aria-label="Espandi sezione">+</button>
+                </div>
+                <div class="section-content">
+                    <p>Il cuore della filosofia di Spinoza è la sua concezione <strong>monista</strong> e <strong>immanentista</strong> della realtà, riassunta nella celebre formula <strong><em>Deus sive Natura</em></strong> (Dio o la Natura). Contro il dualismo cartesiano di <em>res cogitans</em> e <em>res extensa</em>, Spinoza afferma che esiste una sola sostanza infinita, che può essere chiamata indifferentemente Dio o Natura.</p>
+                    <h3>La sostanza</h3>
+                    <p>La sostanza è <em>ciò che è in sé e per sé si concepisce</em>: non ha bisogno di altro per esistere e per essere pensata. Essa è <strong>infinita</strong>, <strong>eterna</strong>, <strong>necessaria</strong>, <strong>unica</strong>, <strong>indivisibile</strong> e <strong>libera</strong> (nel senso che agisce secondo la propria necessità interiore). Dio, o la Natura, è l'unica sostanza esistente: tutto ciò che esiste è in Dio.</p>
+                    <h3>Gli attributi</h3>
+                    <p>Gli attributi sono le <em>proprietà essenziali</em> della sostanza, ciò che l'intelletto percepisce come costituente la sua essenza. Spinoza ne ammette infiniti, ma ne conosciamo due: il <strong>pensiero</strong> (<em>cogitatio</em>) e l'<strong>estensione</strong> (<em>extensio</em>). Pensiero ed estensione non sono due sostanze distinte, ma due attributi della stessa unica sostanza.</p>
+                    <h3>I modi</h3>
+                    <p>I modi sono le <em>affezioni della sostanza</em>, cioè le sue manifestazioni particolari e finite. Ogni cosa esistente — un albero, un uomo, un pensiero, un'emozione — è un modo della sostanza, un'espressione della potenza divina. Spinoza distingue tra <strong>modi infiniti immediati</strong> (l'intelletto infinito, il movimento e la quiete) e <strong>modi finiti</strong> (le cose particolari).</p>
+                    <h3>Il panteismo spinoziano</h3>
+                    <p>La formula <em>Deus sive Natura</em> è stata variamente interpretata come <strong>panteismo</strong> (Dio = Natura), <strong>panenteismo</strong> (tutto è in Dio, ma Dio è più della Natura) o <strong>ateismo</strong> (negazione del Dio trascendente). In realtà Spinoza rifiuta sia il Dio personale e trascendente delle religioni positive sia l'ateismo materialista: il suo Dio è la totalità razionale e necessaria dell'essere, di cui le cose finite sono espressioni transitorie.</p>
+                    <div class="quote">
+                        «Per Dio intendo un essere assolutamente infinito, cioè una sostanza che consta di infiniti attributi, ciascuno dei quali esprime un'essenza eterna e infinita.»
+                        <cite>— Baruch Spinoza, <em>Etica</em>, Parte I, Definizione VI</cite>
+                    </div>
+                    <h3>Determinismo e necessità</h3>
+                    <p>Poiché tutto deriva necessariamente dalla natura di Dio, <strong>non esiste il libero arbitrio</strong> inteso come capacità di scegliere altrimenti da come si sceglie. Ogni cosa è determinata da cause precedenti e necessarie. La libertà, come vedremo, non è assenza di necessità, ma <strong>comprensione della necessità</strong>.</p>
+                </div>
+            </div>
+
+            <!-- SEZIONE 5: ETICA E LIBERTÀ -->
+            <div class="section" id="sez-etica">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2><span class="section-icon">⚖️</span> Etica e Libertà</h2>
+                    <button class="toggle-btn" aria-label="Espandi sezione">+</button>
+                </div>
+                <div class="section-content">
+                    <p>L'<em>Etica</em> di Spinoza presenta una concezione della libertà radicalmente diversa dal senso comune e da quella cartesiana. Per Spinoza, la libertà non è il <strong>libero arbitrio</strong> (che è un'illusione), ma la <strong>comprensione della necessità</strong>: agire liberamente significa agire secondo la propria natura razionale, comprendendo le cause che ci determinano.</p>
+                    <h3>Le passioni e la schiavitù</h3>
+                    <p>Spinoza dedica la Parte III dell'<em>Etica</em> a un'analisi geometrica delle passioni (<em>affectus</em>), che sono per lui <strong>modificazioni della potenza d'agire</strong> della mente e del corpo. Le passioni possono essere <em>attive</em> (gioia, quando aumentano la potenza) o <em>passive</em> (tristezza, quando la diminuiscono). Quando non le comprendiamo, le passioni ci dominano e ci rendono <strong>schiavi</strong>: siamo passivi rispetto a cause esterne.</p>
+                    <h3>La ragione e la libertà</h3>
+                    <p>La conoscenza razionale ci libera dalla schiavitù delle passioni: comprendere che le nostre emozioni derivano da cause necessarie ci permette di <strong>trasformarle in affetti attivi</strong>. La virtù, per Spinoza, è la <strong>potenza</strong> stessa dell'uomo, la sua capacità di perseverare nel proprio essere e di agire secondo ragione. Il sommo bene è la <strong>conoscenza intellettuale di Dio</strong> (l'<em>amor Dei intellectualis</em>), che conduce alla beatitudine e alla vera libertà.</p>
+                    <h3>L'<em>amor Dei intellectualis</em></h3>
+                    <p>Nella Parte V dell'<em>Etica</em>, Spinoza descrive l'<strong>amore intellettuale di Dio</strong>: è l'amore con cui la mente, comprendendo la necessità di tutte le cose come espressioni della sostanza divina, si unisce a Dio stesso. Questo amore è <strong>eterno</strong> e costituisce la nostra <strong>beatitudine</strong>: non un premio esterno, ma la stessa conoscenza razionale nella sua forma più alta.</p>
+                    <div class="quote">
+                        «L'uomo libero è colui che vive guidato dalla sola ragione.»
+                        <cite>— Baruch Spinoza, <em>Etica</em>, Parte IV, Proposizione LXVII</cite>
+                    </div>
+                    <h3>Virtù e potenza</h3>
+                    <p>La morale spinoziana è una morale della <strong>potenza</strong>, non del dovere: non ci sono comandamenti esterni, ma la legge immanente della nostra natura razionale. La virtù non consiste nel sacrificio o nella rinuncia, ma nell'<strong>accrescimento della propria potenza d'agire</strong> e nella <strong>gioia</strong> che ne deriva. Il vizio, al contrario, è <em>impotenza</em>, passività, tristezza.</p>
+                </div>
+            </div>
+
+            <!-- SEZIONE 6: POLITICA E RELIGIONE -->
+            <div class="section" id="sez-politica">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2><span class="section-icon">🕊️</span> Politica e Religione</h2>
+                    <button class="toggle-btn" aria-label="Espandi sezione">+</button>
+                </div>
+                <div class="section-content">
+                    <p>Spinoza fu anche un originale pensatore politico e un precursore della critica biblica moderna. Nel <em>Tractatus theologico-politicus</em> (1670) egli sostiene la <strong>separazione tra teologia e filosofia</strong> e la <strong>libertà di pensiero</strong> come fondamento dello Stato. La religione, per Spinoza, non è un insieme di dogmi teoretici, ma una <strong>pratica di giustizia e carità</strong>: il suo nucleo è l'obbedienza a Dio attraverso l'amore del prossimo, non la speculazione metafisica.</p>
+                    <h3>La critica della religione rivelata</h3>
+                    <p>Spinoza analizza la Bibbia con metodo storico-filologico, mostrando che i suoi testi furono scritti in epoche diverse da autori diversi e che vanno interpretati nel loro contesto storico. La Scrittura non insegna la verità filosofica, ma la <strong>pietà e l'obbedienza</strong>: il suo linguaggio è immaginativo e adattato alla comprensione del popolo, non razionale e speculativo.</p>
+                    <h3>Il patto sociale e la democrazia</h3>
+                    <p>Nel <em>Tractatus politicus</em> Spinoza sviluppa una concezione <strong>naturalistica</strong> della politica: il diritto di ciascuno si estende fino alla sua potenza, e lo Stato nasce per garantire la sicurezza e la cooperazione. La migliore forma di governo è la <strong>democrazia</strong>, perché è la più conforme alla natura umana e alla ragione, e perché in essa il maggior numero possibile di cittadini partecipa alla sovranità.</p>
+                    <h3>La libertà di pensiero</h3>
+                    <p>Nel <em>Tractatus theologico-politicus</em> Spinoza difende con forza la <strong>libertà di pensiero e di espressione</strong> come diritto inalienabile: lo Stato può regolare le azioni esterne, ma non le convinzioni interiori. La pace e la stabilità dello Stato sono garantite non dall'oppressione del pensiero, ma dalla sua <strong>libera circolazione</strong>.</p>
+                    <div class="quote">
+                        «Il fine dello Stato non è trasformare gli uomini da esseri razionali in bestie o automi, ma al contrario far sì che la loro mente e il loro corpo possano svilupparsi in piena sicurezza e che essi possano servirsi liberamente della ragione.»
+                        <cite>— Baruch Spinoza, <em>Tractatus theologico-politicus</em>, Cap. XX</cite>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SEZIONE 7: INFLUENZA E RICEZIONE -->
+            <div class="section" id="sez-eredita">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2><span class="section-icon">✨</span> Influenza e Ricezione</h2>
+                    <button class="toggle-btn" aria-label="Espandi sezione">+</button>
+                </div>
+                <div class="section-content">
+                    <p>Nonostante sia stato ostracizzato durante la sua vita e la sua opera principale sia stata pubblicata postuma e anonima, il pensiero di Spinoza ha avuto un'enorme influenza sulla filosofia e sulla cultura occidentale.</p>
+                    <h3>Eredità filosofica</h3>
+                    <ul>
+                        <li><strong>Illuminismo</strong>: Diderot, Lessing, Herder e Goethe apprezzarono il suo razionalismo e la sua critica alla religione rivelata. Lessing dichiarò: «Non c'è altra filosofia che quella di Spinoza».</li>
+                        <li><strong>Idealismo tedesco</strong>: Hegel lo definì «il punto cruciale della filosofia moderna», riconoscendogli il merito di aver superato il dualismo cartesiano, pur criticandone il monismo astratto. Schelling e Fichte ne furono profondamente influenzati.</li>
+                        <li><strong>Materialismo e marxismo</strong>: Marxisti e materialisti videro in Spinoza un precursore del monismo materialista e dell'immanentismo. Louis Althusser e Gilles Deleuze ne fecero uno dei riferimenti centrali del loro pensiero.</li>
+                        <li><strong>Letteratura e scienza</strong>: Einstein si riferiva spesso al Dio di Spinoza («credo nel Dio di Spinoza, che si rivela nell'armonia di tutto ciò che esiste, non in un Dio che si preoccupa del destino e delle azioni degli uomini»). Goethe, Wordsworth, Coleridge, Borges e Italo Calvino lo hanno citato o omaggiato.</li>
+                        <li><strong>Psicologia e neuroscienze</strong>: Freud e Antonio Damasio hanno studiato la sua teoria delle passioni e il suo <strong>parallelismo psico-fisico</strong>, che anticipa alcune concezioni moderne della mente.</li>
+                    </ul>
+                    <h3>Critiche</h3>
+                    <p>Le principali obiezioni al suo pensiero riguardano:</p>
+                    <ul>
+                        <li>La difficoltà di conciliare il <strong>determinismo</strong> con la libertà e la responsabilità morale.</li>
+                        <li>Il carattere astratto e geometrico del metodo, che sembra trascurare l'esperienza concreta.</li>
+                        <li>La tensione tra <strong>monismo</strong> e <strong>pluralità</strong> dell'esperienza: come spiegare la molteplicità delle cose finite se esiste una sola sostanza?</li>
+                        <li>L'<strong>ateismo</strong> implicito nella sua identificazione di Dio con la Natura, che scandalizzò i contemporanei e fu condannata dalle autorità religiose.</li>
+                    </ul>
+                    <h3>Attualità</h3>
+                    <p>Oggi Spinoza è considerato uno dei più importanti filosofi della modernità e un precursore del pensiero laico, scientifico e democratico. La sua opera continua a essere studiata per la sua <strong>coerenza sistematica</strong>, la sua <strong>radicalità</strong> e la sua capacità di unire <strong>ragione, libertà e natura</strong> in una visione unitaria dell'esistenza.</p>
+                    <div class="quote">
+                        «Spinoza è il filosofo più importante del XVII secolo, e forse di tutta la filosofia moderna: colui che ha osato pensare l'unità di Dio, dell'uomo e della natura, e ha pagato questa audacia con l'ostracismo e la solitudine.»
+                        <cite>— Gilles Deleuze</cite>
+                    </div>
+                </div>
+            </div>
+
+        </article>
+
+        <!-- FOOTER -->
+        <footer class="article-footer">
+            <span class="glyph">✦ ✦ ✦</span>
+            <p>Enciclopedia Filosofica Cosmica · Articolo enciclopedico su Baruch Spinoza</p>
+            <p class="footer-note">«Omnia praeclara tam difficilia quam rara sunt» — Tutte le cose eccellenti sono tanto difficili quanto rare</p>
+        </footer>
     </div>
-    
-    <div class="section">
-        <h2>Influenza e Ricezione</h2>
-        <button class="btn toggle-btn">Apri/Chiudi</button>
-        <button class="btn btn-style style-btn">Cambia Stile</button>
-        <div class="section-content">
-            <p>Nonostante sia stato ostracizzato durante la sua vita, il pensiero di Spinoza ha avuto un'enorme influenza:</p>
-            
-            <ul>
-                <li>Illuministi come Diderot e Lessing apprezzavano il suo razionalismo</li>
-                <li>Hegel lo definì "il punto cruciale della filosofia moderna"</li>
-                <li>Marxisti e materialisti videro in lui un precursore</li>
-                <li>Einstein si riferiva spesso al Dio di Spinoza come alla sua concezione del divino</li>
-                <li>Psicologi come Freud e Damasio hanno studiato la sua teoria delle passioni</li>
-            </ul>
-            
-            <p>Oggi Spinoza è considerato uno dei più importanti filosofi della modernità e un precursore del pensiero laico e scientifico.</p>
-        </div>
-    </div>
-    
+
     <script>
-        // Toggle per aprire/chiudere le sezioni
-        document.querySelectorAll('.toggle-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const content = this.nextElementSibling.nextElementSibling;
-                content.classList.toggle('show');
+        // ========== TOGGLE SEZIONI ESPANDIBILI ==========
+        function toggleSection(header) {
+            const section = header.parentElement;
+            const isOpen = section.classList.contains('open');
+
+            // Chiudi tutte le altre sezioni (comportamento accordion)
+            document.querySelectorAll('.section.open').forEach(s => {
+                if (s !== section) s.classList.remove('open');
+            });
+
+            // Toggle della sezione corrente
+            section.classList.toggle('open');
+        }
+
+        // ========== MODALITÀ DI LETTURA ==========
+        const modeButtons = document.querySelectorAll('.mode-btn');
+        const body = document.body;
+
+        modeButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const mode = btn.dataset.mode;
+
+                // Rimuovi tutte le classi mode-*
+                body.className = body.className.replace(/mode-\w+/g, '').trim();
+                body.classList.add(`mode-${mode}`);
+
+                // Aggiorna stato attivo dei bottoni
+                modeButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                // Effetto "pulsazione cosmica" al cambio modalità
+                const cosmicBg = document.querySelector('.cosmic-bg');
+                cosmicBg.style.transition = 'none';
+                cosmicBg.style.filter = 'brightness(2.5)';
+                setTimeout(() => {
+                    cosmicBg.style.transition = 'filter 0.9s ease-out';
+                    cosmicBg.style.filter = 'brightness(1)';
+                }, 50);
             });
         });
-        
-        // Cambia stile delle sezioni
-        document.querySelectorAll('.style-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const section = this.parentElement;
-                section.classList.toggle('special-style');
+
+        // ========== EFFETTO PARALLASSE LEGGERO SULLE NEBULOSE ==========
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 24;
+            const y = (e.clientY / window.innerHeight - 0.5) * 24;
+
+            document.querySelectorAll('.nebula').forEach((neb, i) => {
+                const speed = (i + 1) * 0.4;
+                neb.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
             });
         });
+
+        // ========== ANIMAZIONE STELLE: VARIAZIONE CASUALE DELL'OPACITÀ ==========
+        setInterval(() => {
+            const stars1 = document.querySelector('.stars-layer');
+            const stars2 = document.querySelector('.stars-layer-secondary');
+            if (stars1) stars1.style.opacity = 0.4 + Math.random() * 0.4;
+            if (stars2) stars2.style.opacity = 0.2 + Math.random() * 0.4;
+        }, 4000);
+
+        // ========== APERTURA INIZIALE: prima sezione già aperta ==========
+        // (già impostata con class="section open")
     </script>
 </body>
 </html>
