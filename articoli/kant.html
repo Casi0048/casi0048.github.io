@@ -3,425 +3,823 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Immanuel Kant - Il Filosofo della Ragione</title>
+    <!-- Meta tag enciclopedici essenziali -->
+    <meta name="description" content="Articolo enciclopedico esaustivo su Immanuel Kant (1724–1804): vita, le tre Critiche, etica dell'imperativo categorico, estetica del sublime, filosofia politica e religiosa, eredità nell'idealismo tedesco e nella filosofia moderna. Con sezioni espandibili, modalità di lettura multiple e animazioni cosmiche.">
+    <meta name="keywords" content="Immanuel Kant, filosofia, Critica della ragion pura, Critica della ragion pratica, Critica del giudizio, imperativo categorico, idealismo tedesco, Königsberg, illuminismo, noumeno, fenomeno, giudizi sintetici a priori, rivoluzione copernicana, estetica trascendentale, sublime, pace perpetua, religione entro i limiti della sola ragione">
+    <meta name="author" content="Enciclopedia Filosofica Cosmica">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Immanuel Kant — Il Copernico della Filosofia | Enciclopedia Cosmica">
+    <meta property="og:description" content="Un viaggio enciclopedico nel pensiero di Kant: dalla rivoluzione copernicana della conoscenza all'imperativo categorico, dal sublime alla pace perpetua. Sezioni animate, modalità di lettura e un'esperienza cosmica.">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="it_IT">
+    <title>Immanuel Kant — Il Copernico della Filosofia | Enciclopedia Cosmica</title>
     <style>
+        /* ========== VARIABILI E RESET ========== */
         :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --accent-color: #e74c3c;
-            --light-bg: #ecf0f1;
-            --dark-text: #2c3e50;
-            --light-text: #ecf0f1;
+            --bg-primary: #05050f;
+            --bg-secondary: #0a0a1a;
+            --bg-card: rgba(15, 15, 35, 0.85);
+            --text-primary: #e8e8f0;
+            --text-secondary: #b0b0c8;
+            --accent-gold: #d4af37;
+            --accent-cyan: #00e5ff;
+            --accent-violet: #8a2be2;
+            --accent-rose: #ff6b9d;
+            --glow-gold: 0 0 20px rgba(212, 175, 55, 0.4);
+            --glow-cyan: 0 0 20px rgba(0, 229, 255, 0.4);
+            --border-radius: 16px;
+            --font-serif: 'Georgia', 'Times New Roman', serif;
+            --font-sans: 'Segoe UI', 'Helvetica Neue', sans-serif;
+            --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
-        
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: 'Georgia', serif;
-            line-height: 1.7;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-serif);
+            line-height: 1.8;
+            overflow-x: hidden;
+            min-height: 100vh;
+            transition: background 0.6s, color 0.6s;
+        }
+
+        /* ========== SFONDO COSMICO ANIMATO ========== */
+        .cosmic-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -3;
+            background: radial-gradient(ellipse at 20% 50%, #1a0a2e 0%, #05050f 70%);
+            transition: background 0.6s;
+        }
+
+        .stars-layer {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background-image:
+                radial-gradient(2px 2px at 10% 20%, #fff, transparent),
+                radial-gradient(2px 2px at 30% 65%, #fff, transparent),
+                radial-gradient(1px 1px at 50% 10%, #fff, transparent),
+                radial-gradient(1.5px 1.5px at 70% 80%, #fff, transparent),
+                radial-gradient(1px 1px at 90% 40%, #fff, transparent),
+                radial-gradient(2px 2px at 15% 85%, #fff, transparent),
+                radial-gradient(1px 1px at 45% 45%, #fff, transparent),
+                radial-gradient(1.5px 1.5px at 80% 15%, #fff, transparent),
+                radial-gradient(1px 1px at 60% 90%, #fff, transparent),
+                radial-gradient(2px 2px at 95% 70%, #fff, transparent);
+            background-size: 200% 200%;
+            animation: starDrift 60s linear infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes starDrift {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+
+        .nebula {
+            position: fixed;
+            z-index: -2;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.25;
+            animation: nebulaPulse 12s ease-in-out infinite alternate;
+        }
+
+        .nebula-1 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, #8a2be2, transparent);
+            top: -10%;
+            left: -10%;
+            animation-delay: 0s;
+        }
+
+        .nebula-2 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, #00e5ff, transparent);
+            bottom: -10%;
+            right: -10%;
+            animation-delay: -4s;
+        }
+
+        .nebula-3 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, #d4af37, transparent);
+            top: 40%;
+            right: 20%;
+            animation-delay: -8s;
+        }
+
+        @keyframes nebulaPulse {
+            0% { transform: scale(1) translate(0, 0); opacity: 0.2; }
+            100% { transform: scale(1.3) translate(30px, -20px); opacity: 0.4; }
+        }
+
+        /* ========== CONTENITORE PRINCIPALE ========== */
+        .container {
             max-width: 900px;
             margin: 0 auto;
-            padding: 30px;
-            color: var(--dark-text);
-            background-color: var(--light-bg);
+            padding: 40px 24px 80px;
+            position: relative;
+            z-index: 1;
         }
-        
-        h1 {
-            color: var(--primary-color);
+
+        /* ========== HEADER ========== */
+        .article-header {
             text-align: center;
-            border-bottom: 3px solid var(--secondary-color);
-            padding-bottom: 15px;
-            margin-bottom: 40px;
-            font-weight: normal;
-            font-size: 2.5rem;
+            padding: 60px 0 40px;
+            position: relative;
         }
-        
-        h2 {
-            color: var(--primary-color);
-            margin-top: 40px;
-            font-weight: normal;
-            border-left: 4px solid var(--accent-color);
-            padding-left: 15px;
+
+        .article-header h1 {
+            font-family: var(--font-serif);
+            font-size: clamp(2.2rem, 6vw, 3.8rem);
+            font-weight: 400;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-cyan), var(--accent-violet));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: titleGlow 4s ease-in-out infinite alternate;
+            line-height: 1.3;
         }
-        
-        .section {
-            background-color: white;
-            padding: 25px;
-            margin-bottom: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            transition: all 0.4s ease;
-            border: 1px solid #dfe6e9;
+
+        @keyframes titleGlow {
+            0% { filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.3)); }
+            100% { filter: drop-shadow(0 0 30px rgba(0, 229, 255, 0.5)); }
         }
-        
-        .section-content {
-            display: none;
-            padding-top: 20px;
-            animation: fadeIn 0.6s;
+
+        .article-header .subtitle {
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            color: var(--text-secondary);
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            margin-top: 16px;
+            animation: fadeInUp 1.2s ease-out 0.3s both;
         }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
-        .section-content.show {
-            display: block;
+
+        .article-header .dates {
+            font-family: var(--font-sans);
+            font-size: 1.1rem;
+            color: var(--accent-gold);
+            margin-top: 8px;
+            letter-spacing: 2px;
+            animation: fadeInUp 1.2s ease-out 0.6s both;
         }
-        
-        .btn-container {
+
+        /* ========== BARRA MODALITÀ DI LETTURA ========== */
+        .reading-modes {
             display: flex;
-            gap: 15px;
-            margin: 20px 0;
             flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 30px 0 50px;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 60px;
+            backdrop-filter: blur(12px);
+            animation: fadeInUp 1.2s ease-out 0.9s both;
         }
-        
-        .btn {
-            background-color: var(--secondary-color);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 25px;
+
+        .mode-btn {
+            font-family: var(--font-sans);
+            font-size: 0.82rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 10px 22px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 40px;
+            background: transparent;
+            color: var(--text-secondary);
             cursor: pointer;
-            transition: all 0.3s;
-            font-size: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .btn:hover {
-            background-color: #2980b9;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-        }
-        
-        .btn-style {
-            background-color: var(--accent-color);
-        }
-        
-        .btn-style:hover {
-            background-color: #c0392b;
-        }
-        
-        .kant-style {
-            background-color: #f5f9fc;
-            border-left: 6px solid var(--secondary-color);
-            box-shadow: 0 6px 16px rgba(52, 152, 219, 0.2);
-        }
-        
-        .kant-style h2 {
-            color: var(--secondary-color);
-        }
-        
-        img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 35px auto;
-            border-radius: 8px;
-            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-            border: 2px solid white;
-        }
-        
-        .quote {
-            font-style: italic;
-            color: var(--primary-color);
-            border-left: 4px solid var(--accent-color);
-            padding: 15px 25px;
-            margin: 30px 0;
-            background-color: #f5f9fc;
-            border-radius: 0 8px 8px 0;
+            transition: all var(--transition);
             position: relative;
+            overflow: hidden;
         }
-        
-        .quote:before {
-            content: """;
-            font-size: 60px;
-            color: var(--secondary-color);
+
+        .mode-btn::before {
+            content: '';
             position: absolute;
-            left: 10px;
-            top: -15px;
+            inset: 0;
+            background: radial-gradient(circle at center, rgba(0, 229, 255, 0.15), transparent);
+            opacity: 0;
+            transition: opacity var(--transition);
+        }
+
+        .mode-btn:hover::before {
+            opacity: 1;
+        }
+
+        .mode-btn:hover {
+            border-color: var(--accent-cyan);
+            color: #fff;
+            box-shadow: var(--glow-cyan);
+        }
+
+        .mode-btn.active {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+            box-shadow: var(--glow-gold);
+            background: rgba(212, 175, 55, 0.08);
+        }
+
+        /* ========== STILI MODALITÀ DI LETTURA ========== */
+        body.mode-filosofico {
+            --font-serif: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+            --text-primary: #d0d8e8;
+            --bg-primary: #080812;
+            font-size: 1.08rem;
+        }
+        body.mode-filosofico .article-body p {
+            text-align: justify;
+            hyphens: auto;
+        }
+        body.mode-filosofico .section-content {
+            border-left: 2px solid var(--accent-violet);
+            padding-left: 24px;
+        }
+
+        body.mode-meditativo {
+            --font-serif: 'Georgia', serif;
+            --bg-primary: #0a0f0a;
+            --text-primary: #c8e6c8;
+            line-height: 2.2;
+            letter-spacing: 0.5px;
+        }
+        body.mode-meditativo .article-body p {
+            text-align: center;
+            max-width: 65ch;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        body.mode-meditativo .section-content {
+            background: rgba(0, 40, 0, 0.2);
+            border-radius: 20px;
+            padding: 24px;
+        }
+
+        body.mode-papiro {
+            --bg-primary: #1a1408;
+            --bg-secondary: #2a2010;
+            --bg-card: rgba(40, 30, 15, 0.9);
+            --text-primary: #e8d5a8;
+            --text-secondary: #c0a870;
+            --accent-gold: #b8860b;
+            --font-serif: 'Georgia', 'Times New Roman', serif;
+        }
+        body.mode-papiro .cosmic-bg {
+            background: radial-gradient(ellipse at 50% 50%, #2a2010 0%, #1a1408 70%);
+        }
+        body.mode-papiro .stars-layer {
             opacity: 0.2;
         }
-        
-        .highlight {
-            background-color: #e3f2fd;
-            padding: 3px 8px;
-            border-radius: 4px;
-            color: var(--primary-color);
-            font-weight: bold;
+        body.mode-papiro .nebula {
+            opacity: 0.1;
         }
-        
-        ul {
-            padding-left: 30px;
+        body.mode-papiro .container::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: -1;
+            border-radius: var(--border-radius);
         }
-        
-        li {
-            margin-bottom: 12px;
+
+        body.mode-notturno {
+            --bg-primary: #000000;
+            --bg-card: rgba(8, 8, 8, 0.92);
+            --text-primary: #a0a0b0;
+            --text-secondary: #606070;
+            --accent-gold: #b8960b;
+            --accent-cyan: #0088aa;
+            --accent-violet: #5a1a8a;
+        }
+        body.mode-notturno .stars-layer {
+            opacity: 0.3;
+        }
+        body.mode-notturno .nebula {
+            opacity: 0.1;
+        }
+        body.mode-notturno .article-header h1 {
+            background: linear-gradient(135deg, #b8960b, #0088aa, #5a1a8a);
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        /* ========== SEZIONI ESPANDIBILI ========== */
+        .section {
+            margin-bottom: 24px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(16px);
+            transition: border-color var(--transition), box-shadow var(--transition);
+            animation: sectionReveal 0.8s ease-out both;
+            animation-timeline: view();
+            animation-range: entry 0% entry 30%;
+        }
+
+        @keyframes sectionReveal {
+            from { opacity: 0; transform: translateY(40px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .section:hover {
+            border-color: rgba(0, 229, 255, 0.2);
+            box-shadow: 0 0 40px rgba(0, 229, 255, 0.05);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 28px;
+            cursor: pointer;
+            user-select: none;
+            transition: background var(--transition);
             position: relative;
-            line-height: 1.6;
+            overflow: hidden;
         }
-        
-        li:before {
-            content: "→";
-            color: var(--accent-color);
-            font-weight: bold;
-            display: inline-block;
-            width: 1em;
-            margin-left: -1.5em;
+
+        .section-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 10%;
+            width: 80%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+            opacity: 0.3;
+            transition: opacity var(--transition);
         }
-        
-        .icon {
-            font-size: 20px;
+
+        .section-header:hover::after {
+            opacity: 0.8;
         }
-        
-        @media (max-width: 768px) {
-            body {
-                padding: 15px;
-            }
-            
-            h1 {
-                font-size: 1.8rem;
-            }
-            
-            .section {
-                padding: 18px;
-            }
+
+        .section-header:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .section-header h2 {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .section-icon {
+            font-size: 1.6rem;
+            filter: drop-shadow(0 0 8px var(--accent-gold));
+            transition: transform var(--transition);
+        }
+
+        .section-header:hover .section-icon {
+            transform: scale(1.2) rotate(10deg);
+        }
+
+        .toggle-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-secondary);
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all var(--transition);
+            flex-shrink: 0;
+        }
+
+        .toggle-btn:hover {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+            box-shadow: var(--glow-gold);
+            transform: rotate(90deg);
+        }
+
+        .section.open .toggle-btn {
+            transform: rotate(45deg);
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        .section-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), padding 0.4s;
+            padding: 0 28px;
+        }
+
+        .section.open .section-content {
+            max-height: 3000px;
+            padding: 0 28px 32px;
+        }
+
+        .section-content p {
+            margin-bottom: 18px;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.9;
+        }
+
+        .section-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-content strong {
+            color: var(--accent-gold);
+            font-weight: 600;
+        }
+
+        .section-content em {
+            color: var(--accent-cyan);
+            font-style: italic;
+        }
+
+        .section-content blockquote {
+            border-left: 3px solid var(--accent-gold);
+            padding: 16px 24px;
+            margin: 20px 0;
+            background: rgba(212, 175, 55, 0.05);
+            border-radius: 0 12px 12px 0;
+            font-style: italic;
+            color: var(--text-primary);
+            font-size: 1.05rem;
+            line-height: 1.9;
+        }
+
+        .section-content .highlight-box {
+            background: linear-gradient(135deg, rgba(0, 229, 255, 0.06), rgba(138, 43, 226, 0.06));
+            border: 1px solid rgba(0, 229, 255, 0.15);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+
+        .section-content .highlight-box p {
+            color: var(--text-primary);
+        }
+
+        .section-content ul {
+            list-style: none;
+            padding-left: 0;
+            margin: 16px 0;
+        }
+
+        .section-content ul li {
+            padding: 8px 0 8px 28px;
+            position: relative;
+            color: var(--text-secondary);
+        }
+
+        .section-content ul li::before {
+            content: '✦';
+            position: absolute;
+            left: 0;
+            color: var(--accent-gold);
+            font-size: 0.9rem;
+        }
+
+        /* ========== TIMELINE ========== */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+            margin: 24px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--accent-gold), var(--accent-cyan), var(--accent-violet));
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+            padding-left: 24px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -26px;
+            top: 8px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent-gold);
+            box-shadow: 0 0 12px var(--accent-gold);
+        }
+
+        .timeline-item .year {
+            font-family: var(--font-sans);
+            color: var(--accent-cyan);
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .timeline-item .event {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* ========== FOOTER ========== */
+        .article-footer {
+            text-align: center;
+            padding: 60px 0 20px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            font-family: var(--font-sans);
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            margin-top: 60px;
+            animation: fadeInUp 1s ease-out both;
+            animation-timeline: view();
+            animation-range: entry 0% entry 50%;
+        }
+
+        .article-footer .glyph {
+            font-size: 1.5rem;
+            display: block;
+            margin-bottom: 12px;
+            animation: glyphFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes glyphFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 600px) {
+            .container { padding: 20px 16px 60px; }
+            .article-header h1 { letter-spacing: 2px; }
+            .section-header { padding: 18px 20px; }
+            .section-header h2 { font-size: 1.15rem; }
+            .section-content { padding: 0 20px; }
+            .section.open .section-content { padding: 0 20px 24px; }
+            .reading-modes { border-radius: 20px; padding: 12px; }
+            .mode-btn { padding: 8px 14px; font-size: 0.72rem; }
+        }
+
+        /* ========== SCROLLBAR ========== */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(var(--accent-gold), var(--accent-violet));
+            border-radius: 4px;
         }
     </style>
 </head>
-<body>
-    <h1>Immanuel Kant: La Rivoluzione Copernicana della Filosofia</h1>
-    
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Kant_gemaelde_3.jpg/440px-Kant_gemaelde_3.jpg" alt="Ritratto di Immanuel Kant" width="400">
-    
-    <div class="section">
-        <h2>Vita e Opere</h2>
-        <div class="btn-container">
-            <button class="btn toggle-btn">
-                <span class="icon">📖</span> Mostra/Nascondi
-            </button>
-            <button class="btn btn-style style-btn">
-                <span class="icon">🎨</span> Stile Kantiano
-            </button>
-        </div>
-        <div class="section-content">
-            <p>Immanuel Kant (1724-1804) è il più importante filosofo dell'Illuminismo tedesco e uno dei pensatori più influenti della storia occidentale. Nato e vissuto a Königsberg (oggi Kaliningrad), la sua vita fu straordinariamente regolare e dedita allo studio.</p>
-            
-            <p>Principali tappe biografiche:</p>
-            
-            <ul>
-                <li>Nato in una famiglia pietista, studiò teologia e filosofia</li>
-                <li>Fu professore all'Università di Königsberg per oltre 40 anni</li>
-                <li>Vita estremamente metodica (la passeggiata delle 15:30 diventata proverbiale)</li>
-                <li>Pubblicò le opere principali dopo i 57 anni</li>
-            </ul>
-            
-            <p>Opere fondamentali:</p>
-            
-            <ul>
-                <li><em>Critica della ragion pura</em> (1781) - Teoria della conoscenza</li>
-                <li><em>Critica della ragion pratica</em> (1788) - Etica</li>
-                <li><em>Critica del giudizio</em> (1790) - Estetica e teleologia</li>
-                <li><em>Fondazione della metafisica dei costumi</em> (1785)</li>
-            </ul>
-            
-            <div class="quote">
-                "Il cielo stellato sopra di me, la legge morale dentro di me."
+<body class="mode-normale">
+
+    <!-- Sfondo cosmico animato -->
+    <div class="cosmic-bg"></div>
+    <div class="stars-layer"></div>
+    <div class="nebula nebula-1"></div>
+    <div class="nebula nebula-2"></div>
+    <div class="nebula nebula-3"></div>
+
+    <div class="container">
+        <!-- HEADER -->
+        <header class="article-header">
+            <h1>Immanuel Kant</h1>
+            <p class="subtitle">Il Copernico della Filosofia</p>
+            <p class="dates">1724 — 1804 · Königsberg, Prussia Orientale</p>
+        </header>
+
+        <!-- OPZIONI DI LETTURA -->
+        <nav class="reading-modes" aria-label="Modalità di lettura">
+            <button class="mode-btn active" data-mode="normale">✦ Normale</button>
+            <button class="mode-btn" data-mode="filosofico">Φ Filosofico</button>
+            <button class="mode-btn" data-mode="meditativo">☯ Meditativo</button>
+            <button class="mode-btn" data-mode="papiro">📜 Papiro</button>
+            <button class="mode-btn" data-mode="notturno">🌙 Notturno</button>
+        </nav>
+
+        <!-- CORPO DELL'ARTICOLO -->
+        <article class="article-body">
+
+            <!-- SEZIONE 1: VITA -->
+            <div class="section open" id="sez-vita">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2><span class="section-icon">🌌</span> Vita e formazione</h2>
+                    <button class="toggle-btn" aria-label="Espandi sezione">+</button>
+                </div>
+                <div class="section-content">
+                    <p><strong>Immanuel Kant</strong> nacque il 22 aprile 1724 a <em>Königsberg</em>, capitale della Prussia Orientale (oggi Kaliningrad), da una famiglia di artigiani di modeste condizioni ma di profonda fede pietista. Il padre era un mastro sellaio di origine scozzese, la madre Anna Regina Reuter, figlia di un sellaio, era più istruita della media delle donne del suo ceto[reference:1]. Kant fu il quarto di nove figli e crebbe in un ambiente segnato dal <em>pietismo</em>, movimento luterano che enfatizzava la conversione interiore, la grazia divina e la devozione personale.</p>
+                    <p>Frequentò il <em>Collegium Fridericianum</em>, scuola pietista, dagli otto ai quindici anni. Sebbene l'educazione ricevuta gli imponesse un'introspezione forzata che egli avrebbe poi criticato, il giovane Kant trovò rifugio nei classici latini e conservò sempre un profondo rispetto per i genitori, in particolare per la madre, della cui "genuina religiosità" parlò con ammirazione. Secondo il biografo Manfred Kuehn, i genitori influenzarono Kant meno attraverso il pietismo che attraverso i valori artigiani di "duro lavoro, onestà, pulizia e indipendenza".</p>
+                    <p>Nel 1740, a sedici anni, entrò nell'<em>Università di Königsberg</em> (l'Albertina), dove studiò matematica, fisica, filosofia, teologia e letteratura latina[reference:5]. Il suo insegnante principale fu <em>Martin Knutzen</em>, un pietista influenzato da Wolff e Locke, che lo introdusse alla filosofia di Christian Wolff e alla fisica di Isaac Newton. Nel 1746 lasciò l'università e per sei anni lavorò come precettore in case private nei dintorni di Königsberg[reference:7]. Tornato all'Albertina nel 1755, ottenne il diritto di tenere lezioni come <em>Privatdozent</em>, retribuito direttamente dagli studenti, e per oltre quarant'anni insegnò filosofia, logica, metafisica, etica, matematica, fisica, geografia fisica e antropologia[reference:8].</p>
+                    <p>Nel 1770 fu finalmente nominato <strong>professore ordinario di logica e metafisica</strong> a Königsberg, cattedra che mantenne fino al pensionamento nel 1796[reference:9]. La sua vita fu estremamente regolare e sedentaria: non si allontanò mai dalla Prussia Orientale e i suoi biografi raccontano che i suoi concittadini regolavano gli orologi sulle sue passeggiate quotidiane. Morì a Königsberg il 12 febbraio 1804, lasciando un'opera che avrebbe segnato irreversibilmente la storia della filosofia.</p>
+                </div>
             </div>
-        </div>
-    </div>
-    
-    <div class="section">
-        <h2>La Rivoluzione Copernicana</h2>
-        <div class="btn-container">
-            <button class="btn toggle-btn">
-                <span class="icon">🔄</span> Mostra/Nascondi
-            </button>
-            <button class="btn btn-style style-btn">
-                <span class="icon">🎨</span> Stile Kantiano
-            </button>
-        </div>
-        <div class="section-content">
-            <p>Nella <span class="highlight">Critica della ragion pura</span>, Kant opera una rivoluzione nel modo di concepire la conoscenza, paragonabile alla rivoluzione copernicana in astronomia:</p>
-            
-            <ul>
-                <li>Non è la mente che si conforma agli oggetti, ma gli oggetti che si conformano alle strutture della mente</li>
-                <li>Distinzione tra fenomeno (come le cose ci appaiono) e noumeno (la cosa in sé)</li>
-                <li>Le forme a priori della sensibilità (spazio e tempo) strutturano ogni esperienza</li>
-                <li>Le categorie dell'intelletto (causalità, sostanza, etc.) organizzano il mondo fenomenico</li>
-            </ul>
-            
-            <p>Questa rivoluzione:</p>
-            
-            <ul>
-                <li>Supera l'empirismo (Hume) e il razionalismo (Leibniz)</li>
-                <li>Fonda la possibilità delle scienze matematiche della natura</li>
-                <li>Limita la conoscenza al campo dell'esperienza possibile</li>
-                <li>Rende impossibile la metafisica come scienza</li>
-            </ul>
-            
-            <div class="quote">
-                "Senza sensibilità nessun oggetto ci sarebbe dato, senza intelletto nessun oggetto sarebbe pensato."
+
+            <!-- SEZIONE 2: LE TRE CRITICHE -->
+            <div class="section" id="sez-critiche">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2><span class="section-icon">📚</span> Le tre Critiche</h2>
+                    <button class="toggle-btn" aria-label="Espandi sezione">+</button>
+                </div>
+                <div class="section-content">
+                    <p>L'opera di Kant è comunemente divisa in due periodi: il <em>periodo precritico</em> (fino al 1770), in cui subì l'influenza di Leibniz, Newton e Wolff, e il <em>periodo critico</em>, inaugurato dalla pubblicazione della <strong>Critica della ragion pura</strong> nel 1781 (seconda edizione 1787)[reference:11]. A questa seguirono la <strong>Critica della ragion pratica</strong> (1788) e la <strong>Critica del giudizio</strong> (1790), che insieme costituiscono il nucleo del suo sistema filosofico.</p>
+                    <div class="highlight-box">
+                        <p><strong>L'idea fondamentale della filosofia critica di Kant è l'autonomia umana.</strong> L'intelletto umano è la fonte delle leggi generali della natura che strutturano ogni nostra esperienza; la ragione umana dà a se stessa la legge morale, che è il fondamento della credenza in Dio, nella libertà e nell'immortalità. Conoscenza scientifica, moralità e fede religiosa sono così mutualmente coerenti e sicure perché tutte poggiano sullo stesso fondamento dell'autonomia umana.</p>
+                    </div>
+                    <p>La <em>Critica della ragion pura</em> indaga le condizioni di possibilità della conoscenza scientifica. Kant si chiede come siano possibili i <strong>giudizi sintetici a priori</strong>, cioè giudizi che, pur essendo universali e necessari (a priori), estendono la nostra conoscenza (sintetici)[reference:14]. La risposta risiede nella <em>rivoluzione copernicana</em> operata da Kant: non è il soggetto che si adegua all'oggetto, ma è l'oggetto che si adegua alle forme a priori del soggetto conoscente[reference:15]. Spazio e tempo sono le forme pure della sensibilità (estetica trascendentale); le dodici categorie (quantità, qualità, relazione, modalità) sono i concetti puri dell'intelletto (analitica trascendentale)[reference:16][reference:17]. La <em>dialettica trascendentale</em> mostra invece come la ragione, quando pretende di conoscere ciò che va oltre l'esperienza (l'anima, il mondo come totalità, Dio), cada inevitabilmente in illusioni. Conosciamo solo i <strong>fenomeni</strong>, non le cose in sé (<strong>noumeni</strong>)[reference:18].</p>
+                    <p>La <em>Critica della ragion pratica</em> affronta il problema morale. Kant vi sviluppa la celebre dottrina dell'<strong>imperativo categorico</strong>, la legge morale che la ragione dà a se stessa e che si esprime nella formula: "Agisci in modo che la massima della tua volontà possa sempre valere come principio di una legislazione universale"[reference:19]. La moralità non dipende dalle conseguenze né dalle inclinazioni sensibili, ma dal <em>dovere</em> e dall'<em>autonomia della volontà</em>: una volontà buona è tale non per ciò che ottiene, ma per il volere stesso[reference:20]. I tre postulati della ragion pratica — libertà, immortalità dell'anima e esistenza di Dio — sono condizioni del <em>sommo bene</em>, l'unione di virtù e felicità[reference:21].</p>
+                    <p>La <em>Critica del giudizio</em> si divide in una <strong>critica del giudizio estetico</strong> e una <strong>critica del giudizio teleologico</strong>[reference:22]. Il giudizio estetico riflettente riguarda il bello e il sublime: il bello è oggetto di un piacere disinteressato, universale e necessario ma soggettivo; il sublime nasce quando l'oggetto rappresentato è al di là di ogni comparazione e suscita sgomento e ammirazione, rivelando la superiorità della ragione sulla sensibilità[reference:23]. Il giudizio teleologico considera la natura come se fosse organizzata secondo fini, ponendo l'uomo come fine ultimo della natura e aprendo la strada a una visione teleologica dell'esistenza[reference:24].</p>
+                </div>
             </div>
-        </div>
-    </div>
-    
-    <div class="section">
-        <h2>Etica dell'Imperativo Categorico</h2>
-        <div class="btn-container">
-            <button class="btn toggle-btn">
-                <span class="icon">⚖️</span> Mostra/Nascondi
-            </button>
-            <button class="btn btn-style style-btn">
-                <span class="icon">🎨</span> Stile Kantiano
-            </button>
-        </div>
-        <div class="section-content">
-            <p>Nella <span class="highlight">filosofia morale</span>, Kant sviluppa un'etica deontologica basata sull'imperativo categorico:</p>
-            
-            <ul>
-                <li>Agisci solo secondo quella massima che puoi volere divenga legge universale</li>
-                <li>Tratta l'umanità, nella tua come nell'altrui persona, sempre come fine e mai semplicemente come mezzo</li>
-                <li>L'unico bene incondizionato è la buona volontà</li>
-                <li>Autonomia della volontà come fondamento della dignità umana</li>
-            </ul>
-            
-            <p>Caratteristiche dell'etica kantiana:</p>
-            
-            <ul>
-                <li>Razionalità: la legge morale è razionale e universale</li>
-                <li>Formalità: non prescrive azioni concrete ma la forma della moralità</li>
-                <li>Autonomia: la legge morale è autoimposta dalla ragione</li>
-                <li>Doverosità: il dovere per il dovere, non per conseguenze</li>
-            </ul>
-            
-            <div class="quote">
-                "Agisci in modo che la massima della tua volontà possa sempre valere in ogni tempo come principio di una legislazione universale."
+
+            <!-- SEZIONE 3: ETICA -->
+            <div class="section" id="sez-etica">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2><span class="section-icon">⚖️</span> Etica e imperativo categorico</h2>
+                    <button class="toggle-btn" aria-label="Espandi sezione">+</button>
+                </div>
+                <div class="section-content">
+                    <p>L'etica kantiana, esposta nella <em>Fondazione della metafisica dei costumi</em> (1785) e nella <em>Critica della ragion pratica</em>, rappresenta una delle vette del pensiero morale occidentale. Kant muove dalla constatazione che <strong>nulla è incondizionatamente buono se non una volontà buona</strong>: ricchezza, onore, intelligenza, coraggio possono essere usati male, ma la volontà buona è buona in se stessa, indipendentemente dai risultati[reference:26].</p>
+                    <p>La legge morale si presenta come un <strong>imperativo categorico</strong>, cioè un comando incondizionato che non dipende da alcuno scopo esterno. Esso si distingue dagli imperativi ipotetici, che comandano solo in vista di un fine (ad esempio: "se vuoi essere felice, sii onesto"). L'imperativo categorico ordina il dovere per il dovere. Nella <em>Fondazione</em> Kant ne formula diverse versioni: la prima, già citata, richiede l'universalizzabilità della massima; la seconda ordina di trattare l'umanità, nella propria persona e in quella altrui, sempre anche come fine e mai solo come mezzo; la terza richiama l'<strong>autonomia della volontà</strong> come legislatrice universale; la quarta introduce l'idea di un <strong>regno dei fini</strong>, una comunità ideale di esseri razionali che si danno leggi comuni[reference:27][reference:28].</p>
+                    <blockquote>
+                        «Due cose riempiono l'animo con sempre nuova e crescente ammirazione e venerazione: il cielo stellato sopra di me e la legge morale dentro di me.»
+                    </blockquote>
+                    <p>Questa celebre frase, incisa sulla tomba di Kant, riassume il dualismo della sua visione: da un lato il mondo fenomenico, dominato dalla necessità naturale; dall'altro il mondo noumenico della libertà morale. L'uomo appartiene a entrambi: come essere sensibile è sottoposto alle leggi della natura, come essere razionale è libero e legislatore morale. La <strong>libertà</strong> è dunque il presupposto dell'etica, e l'etica è la prova della libertà.</p>
+                </div>
             </div>
-        </div>
-    </div>
-    
-    <div class="section">
-        <h2>Estetica e Giudizio Teleologico</h2>
-        <div class="btn-container">
-            <button class="btn toggle-btn">
-                <span class="icon">🎭</span> Mostra/Nascondi
-            </button>
-            <button class="btn btn-style style-btn">
-                <span class="icon">🎨</span> Stile Kantiano
-            </button>
-        </div>
-        <div class="section-content">
-            <p>Nella <span class="highlight">Critica del giudizio</span>, Kant unifica il sistema filosofico esaminando:</p>
-            
-            <ul>
-                <li>Giudizio estetico: il bello e il sublime</li>
-                <li>Giudizio teleologico: finalità nella natura</li>
-            </ul>
-            
-            <p>Il bello secondo Kant:</p>
-            
-            <ul>
-                <li>Disinteressato: non legato a desideri o concetti</li>
-                <li>Universale: pretesa di validità per tutti</li>
-                <li>Senza scopo: fine senza scopo determinato</li>
-                <li>Necessario: legato a un sentimento comune</li>
-            </ul>
-            
-            <p>Il sublime:</p>
-            
-            <ul>
-                <li>Matematico: grandezza assoluta (oceano, montagne)</li>
-                <li>Dinamico: potenza della natura (tempeste, vulcani)</li>
-                <li>Mostra la superiorità della ragione sulla natura</li>
-            </ul>
-            
-            <div class="quote">
-                "Il bello è il simbolo del bene morale."
+
+            <!-- SEZIONE 4: POLITICA E RELIGIONE -->
+            <div class="section" id="sez-politica">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2><span class="section-icon">🕊️</span> Filosofia politica e religione</h2>
+                    <button class="toggle-btn" aria-label="Espandi sezione">+</button>
+                </div>
+                <div class="section-content">
+                    <p>Negli ultimi decenni della sua vita Kant si dedicò con crescente intensità alla filosofia della storia, del diritto e della religione. Nel saggio <strong>Per la pace perpetua</strong> (1795) egli delinea un progetto cosmopolitico di grande attualità. La pace tra gli Stati non è un'utopia irrealizzabile, ma un compito della ragione. Kant formula tre <em>articoli definitivi</em>: la costituzione civile di ogni Stato deve essere <strong>repubblicana</strong>; il diritto delle genti deve fondarsi su una <strong>federazione di Stati liberi</strong>; il diritto cosmopolitico deve limitarsi alle condizioni dell'<strong>ospitalità universale</strong>[reference:29]. Il diritto cosmopolitico è "un diritto universale dell'umanità", derivante dall'idea che gli individui possono essere considerati cittadini di uno Stato universale del genere umano[reference:30].</p>
+                    <p>In <strong>La religione entro i limiti della sola ragione</strong> (1793) Kant affronta il problema del rapporto tra fede e ragione. La religione, per Kant, è essenzialmente morale: Gesù è il grande maestro morale, e i dogmi della fede tradizionale vanno interpretati alla luce della ragione pratica[reference:31]. L'opera introduce il tema del <em>male radicale</em>, la tendenza innata dell'uomo a subordinare la legge morale all'amor proprio, ma afferma anche la possibilità della conversione e della vittoria del bene[reference:32]. La religione non è quindi un insieme di verità teoretiche rivelate, ma una disposizione morale che si esprime nella condotta di vita.</p>
+                </div>
             </div>
-        </div>
-    </div>
-    
-    <div class="section">
-        <h2>Influenza e Attualità</h2>
-        <div class="btn-container">
-            <button class="btn toggle-btn">
-                <span class="icon">🌍</span> Mostra/Nascondi
-            </button>
-            <button class="btn btn-style style-btn">
-                <span class="icon">🎨</span> Stile Kantiano
-            </button>
-        </div>
-        <div class="section-content">
-            <p>Kant ha influenzato profondamente:</p>
-            
-            <ul>
-                <li>L'idealismo tedesco (Fichte, Schelling, Hegel)</li>
-                <li>La fenomenologia (Husserl)</li>
-                <li>La filosofia analitica (Wittgenstein, Strawson)</li>
-                <li>L'etica contemporanea (Rawls, Habermas)</li>
-            </ul>
-            
-            <p>Concetti kantiani fondamentali per:</p>
-            
-            <ul>
-                <li>Diritti umani e dignità della persona</li>
-                <li>Pace perpetua e cosmopolitismo</li>
-                <li>Autonomia individuale e società democratica</li>
-                <li>Limiti della conoscenza scientifica</li>
-            </ul>
-            
-            <p>Critiche e sviluppi successivi:</p>
-            
-            <ul>
-                <li>Hegel: critica alla cosa in sé e all'etica formale</li>
-                <li>Schopenhauer: reinterpretazione del noumeno</li>
-                <li>Heidegger: Kant come precursore dell'ontologia</li>
-            </ul>
-            
-            <div class="quote">
-                "L'illuminismo è l'uscita dell'uomo dallo stato di minorità che egli deve imputare a se stesso."
+
+            <!-- SEZIONE 5: EREDITÀ -->
+            <div class="section" id="sez-eredita">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2><span class="section-icon">✨</span> Eredità e influenza</h2>
+                    <button class="toggle-btn" aria-label="Espandi sezione">+</button>
+                </div>
+                <div class="section-content">
+                    <p>L'influenza di Kant sulla filosofia successiva è difficilmente sopravvalutabile. La sua opera segnò uno spartiacque: dopo Kant, nessun filosofo poté più ignorare la questione critica delle condizioni della conoscenza. L'<strong>idealismo tedesco</strong> — Fichte, Schelling, Hegel — nacque come sviluppo e superamento del criticismo kantiano[reference:33]. Fichte radicalizzò l'io kantiano fino a farne il principio assoluto dell'esistenza; Hegel criticò la distinzione kantiana tra fenomeno e noumeno come un residuo di dualismo dogmatico, ma riconobbe in Kant il punto di partenza imprescindibile del pensiero moderno[reference:34].</p>
+                    <p>Nel Novecento, la filosofia kantiana è rimasta una fonte inesauribile di ispirazione: dalla fenomenologia di Husserl all'ermeneutica di Gadamer, dalla teoria critica della Scuola di Francoforte alla filosofia analitica della scienza. Il <strong>neokantismo</strong> di Marburgo e Heidelberg rielaborò il criticismo in chiave epistemologica e metodologica. La <strong>rivoluzione copernicana</strong> — l'idea che sia il soggetto a costituire l'oggetto della conoscenza — ha anticipato le riflessioni moderne sul ruolo attivo del soggetto nella costruzione della realtà[reference:35].</p>
+                    <p>Come ha scritto un interprete, <em>"sarebbe difficile sopravvalutare l'influenza di Kant sul pensiero del XIX secolo. La sua filosofia è come uno spartiacque da cui il fiume della speculazione scorre verso l'idealismo moderno, l'agnosticismo e persino il materialismo"</em>[reference:36]. Oggi, a tre secoli dalla nascita, Kant rimane il filosofo dell'autonomia, della dignità umana, della pace cosmopolitica e della responsabilità morale: un pensatore la cui opera continua a illuminare le domande fondamentali dell'esistenza.</p>
+                    <!-- Timeline riassuntiva -->
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="year">1724</div>
+                            <div class="event">Nasce a Königsberg il 22 aprile</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="year">1740</div>
+                            <div class="event">Entra all'Università di Königsberg</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="year">1755</div>
+                            <div class="event">Inizia l'insegnamento come Privatdozent</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="year">1770</div>
+                            <div class="event">Professore ordinario di logica e metafisica</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="year">1781</div>
+                            <div class="event">Prima edizione della Critica della ragion pura</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="year">1788</div>
+                            <div class="event">Critica della ragion pratica</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="year">1790</div>
+                            <div class="event">Critica del giudizio</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="year">1795</div>
+                            <div class="event">Per la pace perpetua</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="year">1804</div>
+                            <div class="event">Muore a Königsberg il 12 febbraio</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+
+        </article>
+
+        <!-- FOOTER -->
+        <footer class="article-footer">
+            <span class="glyph">✦ ✦ ✦</span>
+            <p>Enciclopedia Filosofica Cosmica · Articolo enciclopedico su Immanuel Kant</p>
+            <p style="margin-top: 8px; font-size: 0.75rem; opacity: 0.5;">«Sapere aude! Abbi il coraggio di servirti del tuo proprio intelletto.»</p>
+        </footer>
     </div>
-    
+
     <script>
-        // Toggle per mostrare/nascondere i contenuti
-        document.querySelectorAll('.toggle-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const content = this.parentElement.nextElementSibling;
-                content.classList.toggle('show');
-                
-                // Cambia l'icona e il testo
-                const icon = this.querySelector('.icon');
-                if (content.classList.contains('show')) {
-                    icon.textContent = '📕';
-                    this.innerHTML = this.innerHTML.replace('Mostra', 'Nascondi');
-                } else {
-                    icon.textContent = '📖';
-                    this.innerHTML = this.innerHTML.replace('Nascondi', 'Mostra');
-                }
+        // ========== TOGGLE SEZIONI ESPANDIBILI ==========
+        function toggleSection(header) {
+            const section = header.parentElement;
+            const isOpen = section.classList.contains('open');
+
+            // Chiudi tutte le altre sezioni (comportamento accordion)
+            document.querySelectorAll('.section.open').forEach(s => {
+                if (s !== section) s.classList.remove('open');
+            });
+
+            // Toggle della sezione corrente
+            section.classList.toggle('open');
+        }
+
+        // ========== MODALITÀ DI LETTURA ==========
+        const modeButtons = document.querySelectorAll('.mode-btn');
+        const body = document.body;
+
+        modeButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const mode = btn.dataset.mode;
+
+                // Rimuovi tutte le classi mode-*
+                body.className = body.className.replace(/mode-\w+/g, '').trim();
+                body.classList.add(`mode-${mode}`);
+
+                // Aggiorna stato attivo dei bottoni
+                modeButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                // Piccolo effetto di "pulsazione cosmica" al cambio modalità
+                document.querySelector('.cosmic-bg').style.transition = 'none';
+                document.querySelector('.cosmic-bg').style.filter = 'brightness(2)';
+                setTimeout(() => {
+                    document.querySelector('.cosmic-bg').style.transition = 'filter 0.8s ease-out';
+                    document.querySelector('.cosmic-bg').style.filter = 'brightness(1)';
+                }, 50);
             });
         });
-        
-        // Cambia stile delle sezioni
-        document.querySelectorAll('.style-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const section = this.parentElement.parentElement;
-                section.classList.toggle('kant-style');
-                
-                // Cambia l'icona e il testo
-                const icon = this.querySelector('.icon');
-                if (section.classList.contains('kant-style')) {
-                    icon.textContent = '✏️';
-                    this.innerHTML = this.innerHTML.replace('Stile Kantiano', 'Stile Normale');
-                } else {
-                    icon.textContent = '🎨';
-                    this.innerHTML = this.innerHTML.replace('Stile Normale', 'Stile Kantiano');
-                }
+
+        // ========== APERTURA INIZIALE: prima sezione già aperta ==========
+        // (già impostata con class="section open")
+
+        // ========== EFFETTO PARALLASSE LEGGERO SULLE NEBULOSE ==========
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 20;
+            const y = (e.clientY / window.innerHeight - 0.5) * 20;
+
+            document.querySelectorAll('.nebula').forEach((neb, i) => {
+                const speed = (i + 1) * 0.5;
+                neb.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
             });
         });
+
+        // ========== ANIMAZIONE STELLE: VARIAZIONE CASUALE DELL'OPACITÀ ==========
+        setInterval(() => {
+            const stars = document.querySelector('.stars-layer');
+            if (stars) {
+                stars.style.opacity = 0.4 + Math.random() * 0.4;
+            }
+        }, 4000);
     </script>
 </body>
 </html>
