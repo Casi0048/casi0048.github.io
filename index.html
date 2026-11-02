@@ -5161,6 +5161,19 @@ h2.atlante-title {
     transition-duration: 1ms !important;
   }
 }
+/* Quiz filosofia antica */
+.quiz-review-link {
+  display: inline-block;
+  margin-top: 8px;
+  font-family: var(--sans);
+  font-size: .75rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
   </style>
 
   <body>
@@ -5888,7 +5901,28 @@ h2.atlante-title {
            </div>
           </section>
 
+<section class="quiz-filosofia" id="quizFilosofiaAntica" aria-label="Quiz: Filosofia antica">
+  <div class="quiz-head">
+    <span class="quiz-badge">🎓 Quiz · Filosofia antica</span>
+    <span class="quiz-sub">Dodici domande per attraversare i grandi temi del pensiero antico.</span>
+  </div>
 
+  <div class="quiz-progress" aria-hidden="true">
+    <div class="quiz-progress-bar"></div>
+  </div>
+
+  <div class="quiz-stage">
+    <p class="quiz-intro">Da Talete a Plotino: scegli una risposta per ogni domanda. Alla fine troverai il punteggio e una spiegazione per ogni risposta, giusta o sbagliata.</p>
+    <button type="button" class="quiz-start-btn">Inizia il quiz →</button>
+  </div>
+
+  <div class="quiz-result" hidden aria-live="polite">
+    <h3 class="quiz-result-title">Risultato del quiz</h3>
+    <p class="quiz-result-score"></p>
+    <p class="quiz-result-message"></p>
+    <button type="button" class="quiz-restart-btn">↻ Riprova il quiz</button>
+  </div>
+</section>
 
 
 
@@ -9545,6 +9579,322 @@ h2.atlante-title {
 
   // Avvio automatico se si vuole (opzionale): decommentare la riga sotto
   // startQuiz();
+})();
+</script>
+<script>
+(function () {
+  'use strict';
+
+  const root = document.getElementById('quizFilosofiaAntica');
+  if (!root) return;
+
+  /* ============================================================
+     UTILITY
+     ============================================================ */
+  function escapeHtml(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[c]));
+  }
+
+  function shuffle(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ============================================================
+     DOM REFS — selettori via root.querySelector, mai document
+     ============================================================ */
+  const els = {
+    stage:         root.querySelector('.quiz-stage'),
+    progressBar:   root.querySelector('.quiz-progress-bar'),
+    resultBox:     root.querySelector('.quiz-result'),
+    resultTitle:   root.querySelector('.quiz-result-title'),
+    resultScore:   root.querySelector('.quiz-result-score'),
+    resultMessage: root.querySelector('.quiz-result-message'),
+    startBtn:      root.querySelector('.quiz-start-btn'),
+    restartBtn:    root.querySelector('.quiz-restart-btn')
+  };
+
+  /* ============================================================
+     DATI — 12 domande di filosofia antica
+     ============================================================ */
+  const QUESTIONS_RAW = [
+    {
+      q: "Secondo Talete di Mileto, qual è l'arché, il principio di tutte le cose?",
+      options: ["L'acqua", "Il fuoco", "L'aria", "L'apeiron"],
+      correct: 0,
+      explain: "Talete (VI sec. a.C.) è considerato il primo filosofo della tradizione occidentale per aver cercato un principio unico (arché) che spiegasse la molteplicità del mondo, identificandolo nell'acqua: ciò che assume tutte le forme e nutre ogni vivente.",
+      link: "/filosofia/antica.html"
+    },
+    {
+      q: "Cosa significa la celebre formula eraclitea «panta rei»?",
+      options: ["Tutto scorre", "Tutto è uno", "Tutto è fuoco", "Tutto ritorna"],
+      correct: 0,
+      explain: "Eraclito (VI-V sec. a.C.) vede la realtà come perenne divenire: nulla resta identico a se stesso, ogni cosa è in continuo mutamento, come l'acqua di un fiume che non è mai la stessa. L'armonia del cosmo nasce dalla tensione degli opposti.",
+      link: "/filosofia/antica.html"
+    },
+    {
+      q: "Nella filosofia di Parmenide, cosa caratterizza l'essere?",
+      options: ["È eterno, immutabile e unico", "È in continuo divenire", "È molteplice e cangiante", "È solo apparenza sensibile"],
+      correct: 0,
+      explain: "Parmenide (V sec. a.C.) oppone al divenire di Eraclito l'immobilità dell'essere: l'essere è, il non essere non è. L'essere è quindi eterno, ingenerato, immutabile e unico. Il divenire è illusione dei sensi, non realtà conoscibile.",
+      link: "/filosofia/antica.html"
+    },
+    {
+      q: "Secondo Democrito, di cosa è composta la realtà?",
+      options: ["Di atomi e vuoto", "Di acqua e fuoco", "Di numeri", "Di Idee eterne"],
+      correct: 0,
+      explain: "Democrito (V-IV sec. a.C.), con Leucippo, fonda l'atomismo: la realtà è composta da atomi indivisibili che si muovono nel vuoto. È una delle prime forme compiute di materialismo della storia del pensiero occidentale.",
+      link: "/filosofia/antica.html"
+    },
+    {
+      q: "Cosa intende Protagora con la celebre frase «L'uomo è misura di tutte le cose»?",
+      options: ["Che la verità è relativa all'uomo che conosce", "Che l'uomo è il centro fisico dell'universo", "Che l'uomo è misurabile matematicamente", "Che l'uomo è il fine della natura"],
+      correct: 0,
+      explain: "Protagora (V sec. a.C.), il più celebre sofista, sostiene che non esiste un criterio assoluto di verità: ogni cosa appare diversa a ciascuno. La conoscenza è sempre prospettica e situata. Non è scetticismo radicale, ma relativismo culturale.",
+      link: "/filosofia/antica.html"
+    },
+    {
+      q: "Come si chiama il metodo socratico di condurre l'interlocutore a scoprire la verità attraverso domande?",
+      options: ["Maieutica", "Dialettica hegeliana", "Retorica sofistica", "Sillogismo aristotelico"],
+      correct: 0,
+      explain: "Socrate (469-399 a.C.) paragonava il proprio metodo all'arte della levatrice (maieutica): non trasmetteva una conoscenza già pronta, ma aiutava l'interlocutore a «partorire» la verità che già portava dentro di sé. Il dialogo era lo strumento di questa ricerca.",
+      link: "/filosofia/antica.html"
+    },
+    {
+      q: "Nel mito della caverna di Platone, cosa rappresentano le ombre proiettate sul fondo?",
+      options: ["Le apparenze sensibili, copie imperfette della vera realtà", "Le Idee eterne", "Il mondo intelligibile", "La luce del Bene"],
+      correct: 0,
+      explain: "Nel libro VII della Repubblica, Platone descrive prigionieri incatenati che scambiano ombre per realtà. Le ombre sono le apparenze sensibili: copie imperfette delle Idee, la vera realtà che si può cogliere solo con la ragione, dopo un cammino di liberazione.",
+      link: "/filosofia/antica.html"
+    },
+    {
+      q: "Quante e quali sono le cause che, secondo Aristotele, spiegano ogni ente?",
+      options: ["Quattro: materiale, formale, efficiente, finale", "Tre: materiale, formale, finale", "Due: materiale e spirituale", "Cinque: con l'aggiunta della causa eterna"],
+      correct: 0,
+      explain: "Aristotele (384-322 a.C.) individua quattro cause per spiegare la realtà: materiale (di che è fatto), formale (la sua essenza), efficiente (chi lo ha prodotto), finale (il suo scopo). La causa finale è quella che caratterizza più profondamente il suo pensiero.",
+      link: "/filosofia/antica.html"
+    },
+    {
+      q: "Qual è la posizione di Epicuro sulla morte?",
+      options: ["La morte non è nulla per noi: quando ci siamo noi, non c'è lei", "La morte è il passaggio a una vita migliore", "La morte è il male peggiore da temere", "La morte è l'inizio della vera conoscenza"],
+      correct: 0,
+      explain: "Epicuro (341-270 a.C.) sostiene che temere la morte è irrazionale: la morte non è un'esperienza, perché quando c'è lei non ci siamo noi, e quando ci siamo noi non c'è lei. Liberarsi da questa paura è il primo passo verso l'atarassia, la serenità dell'anima.",
+      link: "/filosofia/antica.html"
+    },
+    {
+      q: "Secondo la distinzione di Epitteto, cosa dipende davvero da noi?",
+      options: ["Solo i nostri giudizi e le nostre scelte", "Tutto ciò che ci accade", "Il corpo e la reputazione", "Il destino e la fortuna"],
+      correct: 0,
+      explain: "Epitteto (50-135 d.C.) distingue ciò che dipende da noi (i giudizi, le scelte, le opinioni) da ciò che non dipende (il corpo, la ricchezza, la reputazione, gli eventi). La libertà interiore consiste nel concentrarsi solo sul primo ambito e accettare il resto.",
+      link: "/filosofia/antica.html"
+    },
+    {
+      q: "Cosa significa «epoché» nella filosofia scettica?",
+      options: ["Sospensione del giudizio", "Conversione morale", "Purificazione dell'anima", "Ritorno a se stessi"],
+      correct: 0,
+      explain: "Per gli scettici (Pirrone, Sesto Empirico) l'epoché è la sospensione del giudizio: di fronte all'equivalenza degli argomenti pro e contro, si sospende l'assenso. Da questa sospensione nasce l'atarassia, la quiete interiore, fine ultimo della vita scettica.",
+      link: "/filosofia/antica.html"
+    },
+    {
+      q: "Nella filosofia di Plotino, qual è il principio supremo della realtà?",
+      options: ["L'Uno, da cui tutto emana", "Il Demiurgo platonico", "L'essere parmenideo", "Il motore immobile aristotelico"],
+      correct: 0,
+      explain: "Plotino (III sec. d.C.), fondatore del neoplatonismo, pone l'Uno al vertice della realtà: un principio ineffabile, al di là dell'essere e del pensiero, da cui tutto emana per gradi (Uno → Intelletto → Anima → mondo sensibile). È una sintesi originale di Platone, Aristotele e misticismo.",
+      link: "/filosofia/antica.html"
+    }
+  ];
+
+  /* ============================================================
+     STATO
+     ============================================================ */
+  const state = {
+    questions: [],
+    currentIndex: 0,
+    score: 0,
+    answered: false,
+    wrongAnswers: []
+  };
+
+  /* ============================================================
+     PREPARAZIONE
+     ============================================================ */
+  function prepareQuestions() {
+    return QUESTIONS_RAW.map(q => {
+      const indices = q.options.map((_, i) => i);
+      shuffle(indices);
+      return {
+        q: q.q,
+        options: indices.map(i => q.options[i]),
+        correct: indices.indexOf(q.correct),
+        explain: q.explain,
+        link: q.link || null
+      };
+    });
+  }
+
+  /* ============================================================
+     RENDER
+     ============================================================ */
+  function updateProgress() {
+    const pct = state.currentIndex / state.questions.length;
+    els.progressBar.style.width = (pct * 100) + '%';
+  }
+
+  function renderQuestion() {
+    if (state.currentIndex >= state.questions.length) {
+      showResult();
+      return;
+    }
+
+    state.answered = false;
+    const q = state.questions[state.currentIndex];
+    updateProgress();
+
+    els.stage.innerHTML = `
+      <div class="quiz-question-card">
+        <p class="quiz-question-text">${state.currentIndex + 1}. ${escapeHtml(q.q)}</p>
+        <div class="quiz-options" role="group" aria-label="Opzioni di risposta">
+          ${q.options.map((opt, i) =>
+            `<button type="button" class="quiz-option" data-index="${i}" aria-pressed="false">${escapeHtml(opt)}</button>`
+          ).join('')}
+        </div>
+        <div class="quiz-feedback-slot" aria-live="polite"></div>
+        <p class="sr-only" aria-live="polite">Domanda ${state.currentIndex + 1} di ${state.questions.length}</p>
+      </div>
+    `;
+
+    const firstOption = els.stage.querySelector('.quiz-option');
+    if (firstOption) firstOption.focus();
+
+    els.stage.querySelectorAll('.quiz-option').forEach(btn => {
+      btn.addEventListener('click', () => handleAnswer(parseInt(btn.dataset.index, 10)));
+    });
+  }
+
+  function handleAnswer(selected) {
+    if (state.answered) return;
+    state.answered = true;
+
+    const q = state.questions[state.currentIndex];
+    const options = els.stage.querySelectorAll('.quiz-option');
+    const slot = els.stage.querySelector('.quiz-feedback-slot');
+    const isCorrect = selected === q.correct;
+
+    options.forEach((btn, i) => {
+      btn.disabled = true;
+      btn.setAttribute('aria-pressed', i === selected ? 'true' : 'false');
+      if (i === q.correct) btn.classList.add('correct');
+      else if (i === selected) btn.classList.add('wrong');
+    });
+
+    if (isCorrect) {
+      state.score++;
+    } else {
+      state.wrongAnswers.push({
+        q: q.q,
+        given: q.options[selected],
+        correct: q.options[q.correct],
+        explain: q.explain,
+        link: q.link
+      });
+    }
+
+    slot.innerHTML = `
+      <div class="quiz-feedback">
+        <strong>${isCorrect ? '✓ Corretto.' : '✗ Non è la risposta giusta.'}</strong>
+        ${escapeHtml(q.explain)}
+      </div>
+      <button type="button" class="quiz-next-btn">
+        ${state.currentIndex < state.questions.length - 1 ? 'Prossima domanda →' : 'Vedi il risultato →'}
+      </button>
+    `;
+
+    const nextBtn = slot.querySelector('.quiz-next-btn');
+    nextBtn.addEventListener('click', () => {
+      state.currentIndex++;
+      renderQuestion();
+    });
+    nextBtn.focus();
+  }
+
+  function showResult() {
+    updateProgress();
+    els.stage.hidden = true;
+    els.resultBox.hidden = false;
+
+    const total = state.questions.length;
+    const pct = Math.round((state.score / total) * 100);
+
+    let title, message;
+    if (pct >= 80) {
+      title = 'Ottimo lavoro, filosofo!';
+      message = 'Conosci bene i protagonisti del pensiero antico. Potresti approfondire le scuole ellenistiche e il neoplatonismo.';
+    } else if (pct >= 50) {
+      title = 'Buona base, continua a esplorare.';
+      message = 'Hai una buona preparazione di base. Rivedi gli argomenti in cui hai sbagliato e prova di nuovo: la filosofia antica si costruisce per domande.';
+    } else {
+      title = 'Un inizio: la filosofia è un cammino.';
+      message = 'La filosofia antica è un viaggio, non una gara. Rileggi le spiegazioni, esplora i moduli e riprova: ogni errore è un\'occasione per pensare meglio.';
+    }
+
+    els.resultTitle.textContent = title;
+    els.resultScore.textContent = `Hai risposto correttamente a ${state.score} domande su ${total} (${pct}%).`;
+    els.resultMessage.textContent = message;
+
+    const oldReview = root.querySelector('.quiz-review');
+    if (oldReview) oldReview.remove();
+
+    if (state.wrongAnswers.length > 0) {
+      const review = document.createElement('div');
+      review.className = 'quiz-review';
+      review.innerHTML = `
+        <h4 class="quiz-review-title">Da rivedere (${state.wrongAnswers.length})</h4>
+        <ul class="quiz-review-list">
+          ${state.wrongAnswers.map(w => `
+            <li>
+              <p class="quiz-review-q">${escapeHtml(w.q)}</p>
+              <p class="quiz-review-a">Risposta corretta: <strong>${escapeHtml(w.correct)}</strong></p>
+              <p class="quiz-review-exp">${escapeHtml(w.explain)}</p>
+              ${w.link ? `<a class="quiz-review-link" href="${escapeHtml(w.link)}">Approfondisci →</a>` : ''}
+            </li>
+          `).join('')}
+        </ul>
+      `;
+      els.resultMessage.insertAdjacentElement('afterend', review);
+    }
+
+    els.resultBox.setAttribute('tabindex', '-1');
+    els.resultBox.focus();
+  }
+
+  function startQuiz() {
+    state.questions = prepareQuestions();
+    state.currentIndex = 0;
+    state.score = 0;
+    state.answered = false;
+    state.wrongAnswers = [];
+
+    els.resultBox.hidden = true;
+    els.stage.hidden = false;
+
+    const oldReview = root.querySelector('.quiz-review');
+    if (oldReview) oldReview.remove();
+
+    renderQuestion();
+  }
+
+  /* ============================================================
+     INIT
+     ============================================================ */
+  els.startBtn.addEventListener('click', startQuiz);
+  els.restartBtn.addEventListener('click', startQuiz);
 })();
 </script>
   </body>
