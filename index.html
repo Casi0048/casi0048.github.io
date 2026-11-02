@@ -29,7 +29,7 @@
     } catch (e) {}
   </script>
   <style>
- @keyframes fadeUp {
+    @keyframes fadeUp {
       0% {
         opacity: 0;
         transform: translateY(20px)
@@ -523,8 +523,6 @@
       }
     }
 
-
-
     @keyframes atlanteFadeIn {
       0% {
         opacity: 0;
@@ -536,8 +534,6 @@
         transform: translateY(0)
       }
     }
-
-
 
     @keyframes frammentoPulse {
 
@@ -552,6 +548,7 @@
         transform: scale(1.05)
       }
     }
+
     @font-face {
       font-family: Inter;
       src: url(/fonts/inter/Inter-Regular.woff2) format("woff2");
@@ -648,9 +645,6 @@
       --dur-quick: 180ms;
       --dur-base: 320ms;
       --dur-slow: 560ms;
-      --dur-entrance: 900ms;
-      --stagger: 80ms;
-      --transition: var(--dur-base) var(--ease-smooth);
       --torna-su-bg: var(--gold);
       --torna-su-color: var(--bg);
       --torna-su-shadow: rgba(69, 230, 161, .3)
@@ -801,9 +795,12 @@
 
     .echi-cookie-banner[hidden],
     .echi-cookie-modal[hidden],
-    .echi-cookie-settings[hidden],
+    .echi-cookie-settings[hidden] {
+      display: none;
+    }
+
     body.light-theme .hero::before {
-      display: none
+      display: none;
     }
 
     .echi-cookie-modal-box {
@@ -1544,170 +1541,339 @@
       transform: translateY(8px)
     }
 
-  /* ============================================================
+    /* ============================================================
    KNOWLEDGE-TREE — albero della conoscenza
    - 1-9:  stelle che pulsano (twinkle in place)
    - 10-18: luci che si staccano, volteggiano, svaniscono
    - foglie: flutter indipendente
    Tutto solo opacity + transform → composited, zero Lighthouse warning.
    ============================================================ */
+    .knowledge-tree {
+      position: absolute;
+      width: 130px;
+      left: 20%;
+      top: 66%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 2;
+      animation: treeEnter 1.1s var(--ease-expo) 1.05s forwards;
+    }
 
-.knowledge-tree {
-  position: absolute;
-  width: 130px;
-  left: 20%;
-  top: 66%;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  z-index: 2;
-  animation: treeEnter 1.1s var(--ease-expo) 1.05s forwards;
-}
+    .knowledge-tree::after {
+      content: "";
+      position: absolute;
+      bottom: -6px;
+      left: 50%;
+      width: 90px;
+      height: 12px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse at center, rgb(212 175 55/.45), transparent 70%);
+      transform: translateX(-50%) scale(.3);
+      pointer-events: none;
+      opacity: 0;
+      animation: softPuff .9s var(--ease-expo) 1.65s both;
+    }
 
-.knowledge-tree::after {
-  content: "";
-  position: absolute;
-  bottom: -6px;
-  left: 50%;
-  width: 90px;
-  height: 12px;
-  border-radius: 50%;
-  background: radial-gradient(ellipse at center, rgb(212 175 55/.45), transparent 70%);
-  transform: translateX(-50%) scale(.3);
-  pointer-events: none;
-  opacity: 0;
-  animation: softPuff .9s var(--ease-expo) 1.65s both;
-}
+    /* ---------- Base comune per tutte le stelle ---------- */
+    .tree-stars circle {
+      transform-box: fill-box;
+      transform-origin: center;
+      will-change: transform, opacity;
+      --dx: 0px;
+      --dy: 0px;
+    }
 
-/* ---------- Base comune per tutte le stelle ---------- */
-.tree-stars circle {
-  transform-box: fill-box;
-  transform-origin: center;
-  will-change: transform, opacity;
-  --dx: 0px;
-  --dy: 0px;
-}
+    /* ---------- 1-9: twinkle in place ---------- */
+    .tree-stars circle:nth-child(-n+9) {
+      animation: treeStarTwinkle 3.2s ease-in-out infinite;
+    }
 
-/* ---------- 1-9: twinkle in place ---------- */
-.tree-stars circle:nth-child(-n+9) {
-  animation: treeStarTwinkle 3.2s ease-in-out infinite;
-}
-.tree-stars circle:nth-child(1) { animation-delay: -0.00s; }
-.tree-stars circle:nth-child(2) { animation-delay: -0.40s; }
-.tree-stars circle:nth-child(3) { animation-delay: -0.80s; }
-.tree-stars circle:nth-child(4) { animation-delay: -1.20s; }
-.tree-stars circle:nth-child(5) { animation-delay: -1.60s; }
-.tree-stars circle:nth-child(6) { animation-delay: -2.00s; }
-.tree-stars circle:nth-child(7) { animation-delay: -2.40s; }
-.tree-stars circle:nth-child(8) { animation-delay: -2.80s; }
-.tree-stars circle:nth-child(9) { animation-delay: -0.20s; }
+    .tree-stars circle:nth-child(1) {
+      animation-delay: -0.00s;
+    }
 
-@keyframes treeStarTwinkle {
-  0%, 100% { opacity: .55; transform: scale(.85); }
-  50%      { opacity: 1;   transform: scale(1.35); }
-}
+    .tree-stars circle:nth-child(2) {
+      animation-delay: -0.40s;
+    }
 
-/* ---------- 10-18: detach + volo + dissolvenza ---------- */
-.tree-stars circle:nth-child(n+10) {
-  animation: starDetach 9s ease-in-out infinite;
-}
-.tree-stars circle:nth-child(10) { --dx:  42px; --dy: -108px; animation-duration:  8.6s; animation-delay: -3.2s; }
-.tree-stars circle:nth-child(11) { --dx: -60px; --dy: -102px; animation-duration: 11.4s; animation-delay: -5.8s; }
-.tree-stars circle:nth-child(12) { --dx:  18px; --dy: -142px; animation-duration:  9.2s; animation-delay: -2.4s; }
-.tree-stars circle:nth-child(13) { --dx: -22px; --dy: -132px; animation-duration: 10.0s; animation-delay: -4.2s; }
-.tree-stars circle:nth-child(14) { --dx:  48px; --dy: -112px; animation-duration:  8.2s; animation-delay: -1.0s; }
-.tree-stars circle:nth-child(15) { --dx: -42px; --dy: -128px; animation-duration: 11.2s; animation-delay: -6.0s; }
-.tree-stars circle:nth-child(16) { --dx:  32px; --dy: -136px; animation-duration:  9.6s; animation-delay: -3.8s; }
-.tree-stars circle:nth-child(17) { --dx: -52px; --dy:  -98px; animation-duration: 10.4s; animation-delay: -5.0s; }
-.tree-stars circle:nth-child(18) { --dx:  24px; --dy: -122px; animation-duration:  8.8s; animation-delay: -2.0s; }
+    .tree-stars circle:nth-child(3) {
+      animation-delay: -0.80s;
+    }
 
-@keyframes starDetach {
-  0%, 6%    { opacity: 0;    transform: translate(0, 0) scale(0.4); }
-  10%, 18%  { opacity: 1;    transform: translate(0, 0) scale(1); }
-  32%       { opacity: 1;    transform: translate(calc(var(--dx) *  0.20), calc(var(--dy) * 0.22)) scale(1.10); }
-  44%       { opacity: 0.88; transform: translate(calc(var(--dx) * -0.06), calc(var(--dy) * 0.42)) scale(1.02); }
-  58%       { opacity: 0.68; transform: translate(calc(var(--dx) *  0.32), calc(var(--dy) * 0.58)) scale(0.92); }
-  72%       { opacity: 0.42; transform: translate(calc(var(--dx) *  0.08), calc(var(--dy) * 0.72)) scale(0.78); }
-  86%       { opacity: 0.18; transform: translate(calc(var(--dx) *  0.58), calc(var(--dy) * 0.86)) scale(0.60); }
-  100%      { opacity: 0;    transform: translate(var(--dx), var(--dy)) scale(0.40); }
-}
+    .tree-stars circle:nth-child(4) {
+      animation-delay: -1.20s;
+    }
 
-/* ---------- Foglie: flutter indipendente ---------- */
-.tree-leaves ellipse {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: treeLeafFlutter 5s ease-in-out infinite;
-  will-change: transform;
-}
+    .tree-stars circle:nth-child(5) {
+      animation-delay: -1.60s;
+    }
 
-@keyframes treeLeafFlutter {
-  0%, 100% { transform: rotate(0deg)  translateY(0); }
-  30%      { transform: rotate(5deg)  translateY(-1px); }
-  60%      { transform: rotate(-3deg) translateY(1px); }
-}
+    .tree-stars circle:nth-child(6) {
+      animation-delay: -2.00s;
+    }
 
-.tree-leaves ellipse:nth-child(1) { animation-delay: -0.0s; animation-duration: 5.2s; }
-.tree-leaves ellipse:nth-child(2) { animation-delay: -1.2s; animation-duration: 4.6s; }
-.tree-leaves ellipse:nth-child(3) { animation-delay: -2.4s; animation-duration: 5.4s; }
-.tree-leaves ellipse:nth-child(4) { animation-delay: -0.6s; animation-duration: 4.9s; }
-.tree-leaves ellipse:nth-child(5) { animation-delay: -1.8s; animation-duration: 5.6s; }
-.tree-leaves ellipse:nth-child(6) { animation-delay: -3.0s; animation-duration: 5.0s; }
-.tree-leaves ellipse:nth-child(7) { animation-delay: -2.1s; animation-duration: 4.7s; }
-.tree-leaves ellipse:nth-child(8) { animation-delay: -0.9s; animation-duration: 5.3s; }
+    .tree-stars circle:nth-child(7) {
+      animation-delay: -2.40s;
+    }
 
-/* ---------- Motto ---------- */
-.tree-motto {
-  margin-top: -6px;
-  font-family: var(--serif);
-  font-size: .82rem;
-  font-style: italic;
-  font-weight: 600;
-  letter-spacing: .8px;
-  color: var(--gold);
-  opacity: .78;
-  animation: mottoFade .9s var(--ease-expo) 1.8s both;
-}
+    .tree-stars circle:nth-child(8) {
+      animation-delay: -2.80s;
+    }
 
-/* ============================================================
+    .tree-stars circle:nth-child(9) {
+      animation-delay: -0.20s;
+    }
+
+    @keyframes treeStarTwinkle {
+
+      0%,
+      100% {
+        opacity: .55;
+        transform: scale(.85);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1.35);
+      }
+    }
+
+    /* ---------- 10-18: detach + volo + dissolvenza ---------- */
+    .tree-stars circle:nth-child(n+10) {
+      animation: starDetach 9s ease-in-out infinite;
+    }
+
+    .tree-stars circle:nth-child(10) {
+      --dx: 42px;
+      --dy: -108px;
+      animation-duration: 8.6s;
+      animation-delay: -3.2s;
+    }
+
+    .tree-stars circle:nth-child(11) {
+      --dx: -60px;
+      --dy: -102px;
+      animation-duration: 11.4s;
+      animation-delay: -5.8s;
+    }
+
+    .tree-stars circle:nth-child(12) {
+      --dx: 18px;
+      --dy: -142px;
+      animation-duration: 9.2s;
+      animation-delay: -2.4s;
+    }
+
+    .tree-stars circle:nth-child(13) {
+      --dx: -22px;
+      --dy: -132px;
+      animation-duration: 10.0s;
+      animation-delay: -4.2s;
+    }
+
+    .tree-stars circle:nth-child(14) {
+      --dx: 48px;
+      --dy: -112px;
+      animation-duration: 8.2s;
+      animation-delay: -1.0s;
+    }
+
+    .tree-stars circle:nth-child(15) {
+      --dx: -42px;
+      --dy: -128px;
+      animation-duration: 11.2s;
+      animation-delay: -6.0s;
+    }
+
+    .tree-stars circle:nth-child(16) {
+      --dx: 32px;
+      --dy: -136px;
+      animation-duration: 9.6s;
+      animation-delay: -3.8s;
+    }
+
+    .tree-stars circle:nth-child(17) {
+      --dx: -52px;
+      --dy: -98px;
+      animation-duration: 10.4s;
+      animation-delay: -5.0s;
+    }
+
+    .tree-stars circle:nth-child(18) {
+      --dx: 24px;
+      --dy: -122px;
+      animation-duration: 8.8s;
+      animation-delay: -2.0s;
+    }
+
+    @keyframes starDetach {
+
+      0%,
+      6% {
+        opacity: 0;
+        transform: translate(0, 0) scale(0.4);
+      }
+
+      10%,
+      18% {
+        opacity: 1;
+        transform: translate(0, 0) scale(1);
+      }
+
+      32% {
+        opacity: 1;
+        transform: translate(calc(var(--dx) * 0.20), calc(var(--dy) * 0.22)) scale(1.10);
+      }
+
+      44% {
+        opacity: 0.88;
+        transform: translate(calc(var(--dx) * -0.06), calc(var(--dy) * 0.42)) scale(1.02);
+      }
+
+      58% {
+        opacity: 0.68;
+        transform: translate(calc(var(--dx) * 0.32), calc(var(--dy) * 0.58)) scale(0.92);
+      }
+
+      72% {
+        opacity: 0.42;
+        transform: translate(calc(var(--dx) * 0.08), calc(var(--dy) * 0.72)) scale(0.78);
+      }
+
+      86% {
+        opacity: 0.18;
+        transform: translate(calc(var(--dx) * 0.58), calc(var(--dy) * 0.86)) scale(0.60);
+      }
+
+      100% {
+        opacity: 0;
+        transform: translate(var(--dx), var(--dy)) scale(0.40);
+      }
+    }
+
+    /* ---------- Foglie: flutter indipendente ---------- */
+    .tree-leaves ellipse {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: treeLeafFlutter 5s ease-in-out infinite;
+      will-change: transform;
+    }
+
+    @keyframes treeLeafFlutter {
+
+      0%,
+      100% {
+        transform: rotate(0deg) translateY(0);
+      }
+
+      30% {
+        transform: rotate(5deg) translateY(-1px);
+      }
+
+      60% {
+        transform: rotate(-3deg) translateY(1px);
+      }
+    }
+
+    .tree-leaves ellipse:nth-child(1) {
+      animation-delay: -0.0s;
+      animation-duration: 5.2s;
+    }
+
+    .tree-leaves ellipse:nth-child(2) {
+      animation-delay: -1.2s;
+      animation-duration: 4.6s;
+    }
+
+    .tree-leaves ellipse:nth-child(3) {
+      animation-delay: -2.4s;
+      animation-duration: 5.4s;
+    }
+
+    .tree-leaves ellipse:nth-child(4) {
+      animation-delay: -0.6s;
+      animation-duration: 4.9s;
+    }
+
+    .tree-leaves ellipse:nth-child(5) {
+      animation-delay: -1.8s;
+      animation-duration: 5.6s;
+    }
+
+    .tree-leaves ellipse:nth-child(6) {
+      animation-delay: -3.0s;
+      animation-duration: 5.0s;
+    }
+
+    .tree-leaves ellipse:nth-child(7) {
+      animation-delay: -2.1s;
+      animation-duration: 4.7s;
+    }
+
+    .tree-leaves ellipse:nth-child(8) {
+      animation-delay: -0.9s;
+      animation-duration: 5.3s;
+    }
+
+    /* ---------- Motto ---------- */
+    .tree-motto {
+      margin-top: -6px;
+      font-family: var(--serif);
+      font-size: .82rem;
+      font-style: italic;
+      font-weight: 600;
+      letter-spacing: .8px;
+      color: var(--gold);
+      opacity: .78;
+      animation: mottoFade .9s var(--ease-expo) 1.8s both;
+    }
+
+    /* ============================================================
    Reduced motion: tutto fermo, stelle tutte visibili.
    Necessario perché il general override del sito fissa
    animation-duration: 0s, congelando le stelle sul primo
    keyframe di starDetach dove opacity = 0 → sparirebbero.
    ============================================================ */
-@media (prefers-reduced-motion: reduce) {
-  .tree-stars circle,
-  .tree-leaves ellipse {
-    animation: none !important;
-    opacity: 1 !important;
-    transform: none !important;
-  }
-  .knowledge-tree,
-  .knowledge-tree::after,
-  .tree-motto {
-    animation: none !important;
-  }
-  .knowledge-tree {
-    opacity: 1 !important;
-    transform: translateY(-50%) !important;
-  }
-  .knowledge-tree::after {
-    opacity: .55 !important;
-    transform: translateX(-50%) scale(1) !important;
-  }
-}
+    @media (prefers-reduced-motion: reduce) {
 
-/* Riduzione del movimento: luci ferme, tutte visibili.
+      .tree-stars circle,
+      .tree-leaves ellipse {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+      }
+
+      .knowledge-tree,
+      .knowledge-tree::after,
+      .tree-motto {
+        animation: none !important;
+      }
+
+      .knowledge-tree {
+        opacity: 1 !important;
+        transform: translateY(-50%) !important;
+      }
+
+      .knowledge-tree::after {
+        opacity: .55 !important;
+        transform: translateX(-50%) scale(1) !important;
+      }
+    }
+
+    /* Riduzione del movimento: luci ferme, tutte visibili.
    (Necessario perché il general override del sito fissa
    animation-duration: 0s, congelando le stelle sul primo
    keyframe dove opacity = 0 → sparirebbero.) */
-@media (prefers-reduced-motion: reduce) {
-  .tree-stars circle {
-    animation: none !important;
-    opacity: 1 !important;
-    transform: none !important;
-  }
-}
+    @media (prefers-reduced-motion: reduce) {
+      .tree-stars circle {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
+
     .heraclitus-clock,
     .knowledge-tree::after {
       position: absolute;
@@ -2942,7 +3108,8 @@
       overflow: hidden;
       transition: border-color .3s ease, background .3s ease
     }
-     .dialoghi::before,
+
+    .dialoghi::before,
     .eco-giorno::before,
     .frammento::before {
       content: "";
@@ -2959,9 +3126,6 @@
       border-color: var(--gold-line)
     }
 
-.eco-giorno:hover {
-  border-color: var(--gold-line)
-}
     .eco-giorno-head {
       display: flex;
       align-items: center;
@@ -3120,15 +3284,16 @@
       background: var(--gold-soft)
     }
 
-   .atlante {
-    margin-bottom: 24px;
-    padding: 22px 24px 20px;
-    background: rgba(255, 255, 255, .06); /* leggermente più opaco di .035 */
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    transition: border-color .3s ease;
-    /* rimosso: backdrop-filter: blur(12px); */
-}
+    .atlante {
+      margin-bottom: 24px;
+      padding: 22px 24px 20px;
+      background: rgba(255, 255, 255, .06);
+      /* leggermente più opaco di .035 */
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      transition: border-color .3s ease;
+      /* rimosso: backdrop-filter: blur(12px); */
+    }
 
     .atlante:hover {
       border-color: var(--gold-line)
@@ -3637,8 +3802,6 @@
       color: var(--gold)
     }
 
-
-
     .echi-music-card {
       position: fixed;
       left: 92px;
@@ -3870,7 +4033,7 @@
       }
     }
 
-       @media (max-width:560px) {
+    @media (max-width:560px) {
       .eco-giorno-body {
         grid-template-columns: 1fr
       }
@@ -3925,7 +4088,6 @@
         animation: none !important
       }
     }
-
 
     .frammento {
       position: relative;
@@ -4542,683 +4704,793 @@
       }
     }
 
-/* ============================================================
+    /* ============================================================
    IL GIARDINO DELLE IDEE — esperienze interattive
    ============================================================ */
-.giardino {
-  position: relative;
-  margin-bottom: 24px;
-  padding: 22px 24px 20px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  backdrop-filter: blur(12px);
-  overflow: hidden;
-  transition: border-color .3s ease;
-}
-.giardino::before {
-  content: "";
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  opacity: .55;
-}
-.giardino:hover { border-color: var(--gold-line); }
+    .giardino {
+      position: relative;
+      margin-bottom: 24px;
+      padding: 22px 24px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      backdrop-filter: blur(12px);
+      overflow: hidden;
+      transition: border-color .3s ease;
+    }
 
-.giardino-head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 8px;
-  margin-bottom: 16px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--gold-line);
-}
-.giardino-badge {
-  font-family: var(--sans);
-  font-size: .66rem;
-  font-weight: 500;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  color: var(--gold);
-}
-.giardino-sub {
-  font-family: var(--serif);
-  font-size: .82rem;
-  font-style: italic;
-  color: var(--text-muted);
-}
+    .giardino::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: .55;
+    }
 
-.giardino-tabs {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-.giardino-tabs button {
-  appearance: none;
-  background: transparent;
-  border: 1px solid var(--gold-line);
-  border-radius: 100px;
-  padding: 8px 18px;
-  font-family: var(--sans);
-  font-size: .75rem;
-  letter-spacing: 1px;
-  color: var(--text-soft);
-  cursor: pointer;
-  transition: all .3s var(--ease-smooth);
-}
-.giardino-tabs button:hover { border-color: var(--gold); color: var(--gold); }
-.giardino-tabs button.active {
-  background: var(--gold-soft);
-  border-color: var(--gold);
-  color: var(--gold);
-  box-shadow: 0 0 20px var(--gold-soft);
-}
-.giardino-panel { display: none; animation: giardinoFadeIn .5s ease-out; }
-.giardino-panel.active { display: block; }
-@keyframes giardinoFadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+    .giardino:hover {
+      border-color: var(--gold-line);
+    }
 
-/* ── ORACOLO ── */
-.giardino-oracle-input {
-  display: flex;
-  gap: 8px;
-  max-width: 560px;
-  margin: 0 auto 20px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-.giardino-oracle-input input {
-  flex: 1;
-  min-width: 200px;
-  padding: 10px 16px;
-  border-radius: 100px;
-  border: 1px solid var(--gold-line);
-  background: rgba(255,255,255,.035);
-  color: var(--text);
-  font-family: var(--serif);
-  font-size: 1rem;
-  font-style: italic;
-  outline: none;
-  transition: border-color .25s ease, box-shadow .25s ease;
-}
-.giardino-oracle-input input:focus {
-  border-color: var(--gold);
-  box-shadow: 0 0 0 3px var(--gold-soft);
-}
-.giardino-oracle-input input::placeholder { color: var(--text-muted); }
-.giardino-oracle-input button {
-  padding: 10px 22px;
-  border-radius: 100px;
-  border: 1px solid var(--gold);
-  background: var(--gold);
-  color: var(--bg);
-  font-family: var(--sans);
-  font-size: .72rem;
-  font-weight: 600;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: transform .25s ease, box-shadow .25s ease, filter .25s ease;
-}
-.giardino-oracle-input button:hover:not(:disabled) {
-  transform: translateY(-1px);
-  filter: brightness(1.08);
-  box-shadow: 0 4px 20px var(--gold-soft);
-}
-.giardino-oracle-input button:disabled { opacity: .6; cursor: wait; }
+    .giardino-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--gold-line);
+    }
 
-.giardino-oracle-response {
-  min-height: 120px;
-  max-width: 650px;
-  margin: 0 auto;
-  padding: 10px 0;
-  text-align: center;
-}
-.giardino-oracle-card {
-  background: linear-gradient(135deg, var(--gold-soft), rgba(122,107,212,.05));
-  border: 1px solid var(--gold-line);
-  border-radius: 14px;
-  padding: 26px 24px;
-  animation: giardinoReveal .7s ease-out;
-  text-align: left;
-}
-@keyframes giardinoReveal {
-  from { opacity: 0; transform: scale(.96); filter: blur(6px); }
-  to { opacity: 1; transform: scale(1); filter: blur(0); }
-}
-.giardino-oracle-quote {
-  font-family: var(--serif);
-  font-size: 1.2rem;
-  font-style: italic;
-  color: var(--text);
-  line-height: 1.55;
-  margin-bottom: 12px;
-}
-.giardino-oracle-author {
-  font-family: var(--display);
-  font-size: .78rem;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 18px;
-}
-.giardino-oracle-reflection {
-  font-family: var(--serif);
-  font-size: 1rem;
-  line-height: 1.7;
-  color: var(--text-soft);
-  padding-top: 16px;
-  border-top: 1px solid var(--gold-line);
-}
-.giardino-consulting {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  color: var(--text-muted);
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: 1rem;
-  padding: 30px 0;
-}
-.giardino-consulting .glyph {
-  font-size: 2rem;
-  color: var(--gold);
-  animation: giardinoSpin 2s linear infinite;
-}
-@keyframes giardinoSpin {
-  from { transform: rotate(0); } to { transform: rotate(360deg); }
-}
+    .giardino-badge {
+      font-family: var(--sans);
+      font-size: .66rem;
+      font-weight: 500;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
 
-/* ── DILEMMI ── */
-.giardino-dilemma-progress {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: 20px;
-}
-.giardino-dot {
-  width: 9px; height: 9px;
-  border-radius: 50%;
-  background: var(--gold-line);
-  transition: all .3s ease;
-}
-.giardino-dot.active { background: var(--gold); box-shadow: 0 0 10px var(--gold); }
-.giardino-dot.done { background: var(--gold-soft); }
+    .giardino-sub {
+      font-family: var(--serif);
+      font-size: .82rem;
+      font-style: italic;
+      color: var(--text-muted);
+    }
 
-.giardino-dilemma-text {
-  font-family: var(--serif);
-  font-size: 1.1rem;
-  line-height: 1.6;
-  color: var(--text);
-  margin-bottom: 18px;
-  text-align: center;
-  font-style: italic;
-  padding: 0 10px;
-}
-.giardino-choices {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.giardino-choice {
-  background: var(--bg-soft);
-  border: 1px solid var(--border);
-  color: var(--text-soft);
-  padding: 14px 18px;
-  border-radius: 10px;
-  font-family: var(--sans);
-  font-size: .92rem;
-  text-align: left;
-  cursor: pointer;
-  transition: all .3s ease;
-  line-height: 1.5;
-}
-.giardino-choice:hover {
-  border-color: var(--gold-line);
-  background: var(--surface);
-  transform: translateX(3px);
-}
-.giardino-interpretation {
-  margin-top: 18px;
-  padding: 18px 20px;
-  background: var(--bg-soft);
-  border-left: 2px solid var(--gold);
-  border-radius: 0 10px 10px 0;
-  animation: giardinoFadeIn .5s ease-out;
-}
-.giardino-interp-school {
-  font-family: var(--sans);
-  font-size: .68rem;
-  letter-spacing: 1.8px;
-  text-transform: uppercase;
-  color: var(--gold);
-  font-weight: 500;
-  margin-bottom: 10px;
-}
-.giardino-interp-text {
-  font-family: var(--serif);
-  font-size: .95rem;
-  line-height: 1.65;
-  color: var(--text-soft);
-  margin-bottom: 14px;
-}
-.giardino-next {
-  padding: 8px 20px;
-  border-radius: 100px;
-  border: 1px solid var(--gold-line);
-  background: transparent;
-  color: var(--gold);
-  font-family: var(--sans);
-  font-size: .72rem;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all .3s ease;
-}
-.giardino-next:hover { background: var(--gold-soft); border-color: var(--gold); }
+    .giardino-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
 
-.giardino-profile {
-  text-align: center;
-  padding: 24px 20px;
-  background: linear-gradient(135deg, var(--gold-soft), rgba(122,107,212,.05));
-  border: 1px solid var(--gold-line);
-  border-radius: 14px;
-  animation: giardinoReveal .7s ease-out;
-}
-.giardino-profile-title {
-  font-family: var(--display);
-  font-size: 1.3rem;
-  color: var(--gold);
-  letter-spacing: 1px;
-  margin-bottom: 14px;
-}
-.giardino-profile-desc {
-  font-family: var(--serif);
-  font-size: 1rem;
-  line-height: 1.7;
-  color: var(--text-soft);
-  margin-bottom: 18px;
-}
+    .giardino-tabs button {
+      appearance: none;
+      background: transparent;
+      border: 1px solid var(--gold-line);
+      border-radius: 100px;
+      padding: 8px 18px;
+      font-family: var(--sans);
+      font-size: .75rem;
+      letter-spacing: 1px;
+      color: var(--text-soft);
+      cursor: pointer;
+      transition: all .3s var(--ease-smooth);
+    }
 
-/* ── RESPIRO ── */
-.giardino-breath-wrap { text-align: center; padding: 10px 0; }
-.giardino-breath-circle-wrap {
-  position: relative;
-  width: 200px; height: 200px;
-  margin: 20px auto 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.giardino-breath-circle {
-  position: absolute;
-  width: 100%; height: 100%;
-  border-radius: 50%;
-  border: 1px solid var(--gold-line);
-  background: radial-gradient(circle, var(--gold-soft), transparent 70%);
-  transition: transform 4s ease-in-out, background 4s ease-in-out;
-}
-.giardino-breath-circle.inhale {
-  transform: scale(1.12);
-  background: radial-gradient(circle, var(--gold-soft), transparent 70%);
-}
-.giardino-breath-circle.exhale {
-  transform: scale(.82);
-  background: radial-gradient(circle, rgba(122,107,212,.15), transparent 70%);
-}
-.giardino-breath-label {
-  position: relative;
-  z-index: 2;
-  font-family: var(--display);
-  color: var(--gold);
-  font-size: 1rem;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-}
-.giardino-breath-quote {
-  min-height: 90px;
-  max-width: 500px;
-  margin: 0 auto 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.giardino-breath-quote p {
-  font-family: var(--serif);
-  font-size: 1.05rem;
-  font-style: italic;
-  color: var(--text-soft);
-  line-height: 1.6;
-  text-align: center;
-  opacity: 0;
-  transition: opacity 1.2s ease-in-out;
-  margin: 0;
-}
-.giardino-breath-quote p.show { opacity: 1; }
-.giardino-breath-quote span {
-  display: block;
-  margin-top: 10px;
-  color: var(--gold);
-  font-family: var(--sans);
-  font-size: .68rem;
-  font-style: normal;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-}
-.giardino-breath-toggle {
-  padding: 10px 28px;
-  border-radius: 100px;
-  border: 1px solid var(--gold);
-  background: transparent;
-  color: var(--gold);
-  font-family: var(--sans);
-  font-size: .72rem;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all .3s ease;
-}
-.giardino-breath-toggle:hover {
-  background: var(--gold-soft);
-  box-shadow: 0 0 20px var(--gold-soft);
-}
+    .giardino-tabs button:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
 
-@media (max-width: 560px) {
-  .giardino { padding: 18px 16px 16px; }
-  .giardino-oracle-input { flex-direction: column; align-items: stretch; }
-  .giardino-oracle-input button { width: 100%; }
-  .giardino-breath-circle-wrap { width: 160px; height: 160px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .giardino *,
-  .giardino *::before,
-  .giardino *::after {
-    animation-duration: 1ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 1ms !important;
-  }
-}
-/* ============================================================
+    .giardino-panel {
+      display: none;
+      animation: giardinoFadeIn .5s ease-out;
+    }
+
+    .giardino-panel.active {
+      display: block;
+    }
+
+    @keyframes giardinoFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ── ORACOLO ── */
+    .giardino-oracle-input {
+      display: flex;
+      gap: 8px;
+      max-width: 560px;
+      margin: 0 auto 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .giardino-oracle-input input {
+      flex: 1;
+      min-width: 200px;
+      padding: 10px 16px;
+      border-radius: 100px;
+      border: 1px solid var(--gold-line);
+      background: rgba(255, 255, 255, .035);
+      color: var(--text);
+      font-family: var(--serif);
+      font-size: 1rem;
+      font-style: italic;
+      outline: none;
+      transition: border-color .25s ease, box-shadow .25s ease;
+    }
+
+    .giardino-oracle-input input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px var(--gold-soft);
+    }
+
+    .giardino-oracle-input input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .giardino-oracle-input button {
+      padding: 10px 22px;
+      border-radius: 100px;
+      border: 1px solid var(--gold);
+      background: var(--gold);
+      color: var(--bg);
+      font-family: var(--sans);
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: transform .25s ease, box-shadow .25s ease, filter .25s ease;
+    }
+
+    .giardino-oracle-input button:hover:not(:disabled) {
+      transform: translateY(-1px);
+      filter: brightness(1.08);
+      box-shadow: 0 4px 20px var(--gold-soft);
+    }
+
+    .giardino-oracle-input button:disabled {
+      opacity: .6;
+      cursor: wait;
+    }
+
+    .giardino-oracle-response {
+      min-height: 120px;
+      max-width: 650px;
+      margin: 0 auto;
+      padding: 10px 0;
+      text-align: center;
+    }
+
+    .giardino-oracle-card {
+      background: linear-gradient(135deg, var(--gold-soft), rgba(122, 107, 212, .05));
+      border: 1px solid var(--gold-line);
+      border-radius: 14px;
+      padding: 26px 24px;
+      animation: giardinoReveal .7s ease-out;
+      text-align: left;
+    }
+
+    @keyframes giardinoReveal {
+      from {
+        opacity: 0;
+        transform: scale(.96);
+        filter: blur(6px);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+      }
+    }
+
+    .giardino-oracle-quote {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      font-style: italic;
+      color: var(--text);
+      line-height: 1.55;
+      margin-bottom: 12px;
+    }
+
+    .giardino-oracle-author {
+      font-family: var(--display);
+      font-size: .78rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 18px;
+    }
+
+    .giardino-oracle-reflection {
+      font-family: var(--serif);
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--text-soft);
+      padding-top: 16px;
+      border-top: 1px solid var(--gold-line);
+    }
+
+    .giardino-consulting {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      color: var(--text-muted);
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 1rem;
+      padding: 30px 0;
+    }
+
+    .giardino-consulting .glyph {
+      font-size: 2rem;
+      color: var(--gold);
+      animation: giardinoSpin 2s linear infinite;
+    }
+
+    @keyframes giardinoSpin {
+      from {
+        transform: rotate(0);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* ── DILEMMI ── */
+    .giardino-dilemma-progress {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .giardino-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--gold-line);
+      transition: all .3s ease;
+    }
+
+    .giardino-dot.active {
+      background: var(--gold);
+      box-shadow: 0 0 10px var(--gold);
+    }
+
+    .giardino-dot.done {
+      background: var(--gold-soft);
+    }
+
+    .giardino-dilemma-text {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: var(--text);
+      margin-bottom: 18px;
+      text-align: center;
+      font-style: italic;
+      padding: 0 10px;
+    }
+
+    .giardino-choices {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .giardino-choice {
+      background: var(--bg-soft);
+      border: 1px solid var(--border);
+      color: var(--text-soft);
+      padding: 14px 18px;
+      border-radius: 10px;
+      font-family: var(--sans);
+      font-size: .92rem;
+      text-align: left;
+      cursor: pointer;
+      transition: all .3s ease;
+      line-height: 1.5;
+    }
+
+    .giardino-choice:hover {
+      border-color: var(--gold-line);
+      background: var(--surface);
+      transform: translateX(3px);
+    }
+
+    .giardino-interpretation {
+      margin-top: 18px;
+      padding: 18px 20px;
+      background: var(--bg-soft);
+      border-left: 2px solid var(--gold);
+      border-radius: 0 10px 10px 0;
+      animation: giardinoFadeIn .5s ease-out;
+    }
+
+    .giardino-interp-school {
+      font-family: var(--sans);
+      font-size: .68rem;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+
+    .giardino-interp-text {
+      font-family: var(--serif);
+      font-size: .95rem;
+      line-height: 1.65;
+      color: var(--text-soft);
+      margin-bottom: 14px;
+    }
+
+    .giardino-next {
+      padding: 8px 20px;
+      border-radius: 100px;
+      border: 1px solid var(--gold-line);
+      background: transparent;
+      color: var(--gold);
+      font-family: var(--sans);
+      font-size: .72rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all .3s ease;
+    }
+
+    .giardino-next:hover {
+      background: var(--gold-soft);
+      border-color: var(--gold);
+    }
+
+    .giardino-profile {
+      text-align: center;
+      padding: 24px 20px;
+      background: linear-gradient(135deg, var(--gold-soft), rgba(122, 107, 212, .05));
+      border: 1px solid var(--gold-line);
+      border-radius: 14px;
+      animation: giardinoReveal .7s ease-out;
+    }
+
+    .giardino-profile-title {
+      font-family: var(--display);
+      font-size: 1.3rem;
+      color: var(--gold);
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+    }
+
+    .giardino-profile-desc {
+      font-family: var(--serif);
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--text-soft);
+      margin-bottom: 18px;
+    }
+
+    /* ── RESPIRO ── */
+    .giardino-breath-wrap {
+      text-align: center;
+      padding: 10px 0;
+    }
+
+    .giardino-breath-circle-wrap {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      margin: 20px auto 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .giardino-breath-circle {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 1px solid var(--gold-line);
+      background: radial-gradient(circle, var(--gold-soft), transparent 70%);
+      transition: transform 4s ease-in-out, background 4s ease-in-out;
+    }
+
+    .giardino-breath-circle.inhale {
+      transform: scale(1.12);
+      background: radial-gradient(circle, var(--gold-soft), transparent 70%);
+    }
+
+    .giardino-breath-circle.exhale {
+      transform: scale(.82);
+      background: radial-gradient(circle, rgba(122, 107, 212, .15), transparent 70%);
+    }
+
+    .giardino-breath-label {
+      position: relative;
+      z-index: 2;
+      font-family: var(--display);
+      color: var(--gold);
+      font-size: 1rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    .giardino-breath-quote {
+      min-height: 90px;
+      max-width: 500px;
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .giardino-breath-quote p {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      font-style: italic;
+      color: var(--text-soft);
+      line-height: 1.6;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 1.2s ease-in-out;
+      margin: 0;
+    }
+
+    .giardino-breath-quote p.show {
+      opacity: 1;
+    }
+
+    .giardino-breath-quote span {
+      display: block;
+      margin-top: 10px;
+      color: var(--gold);
+      font-family: var(--sans);
+      font-size: .68rem;
+      font-style: normal;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .giardino-breath-toggle {
+      padding: 10px 28px;
+      border-radius: 100px;
+      border: 1px solid var(--gold);
+      background: transparent;
+      color: var(--gold);
+      font-family: var(--sans);
+      font-size: .72rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all .3s ease;
+    }
+
+    .giardino-breath-toggle:hover {
+      background: var(--gold-soft);
+      box-shadow: 0 0 20px var(--gold-soft);
+    }
+
+    @media (max-width: 560px) {
+      .giardino {
+        padding: 18px 16px 16px;
+      }
+
+      .giardino-oracle-input {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .giardino-oracle-input button {
+        width: 100%;
+      }
+
+      .giardino-breath-circle-wrap {
+        width: 160px;
+        height: 160px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      .giardino *,
+      .giardino *::before,
+      .giardino *::after {
+        animation-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 1ms !important;
+      }
+    }
+
+    /* ============================================================
    RISALITA + SPOTLIGHT — composited-only (NO filter: blur)
    Lighthouse-friendly: solo opacity + transform animati.
    ============================================================ */
-.atlante,
-.eco-giorno,
-.frammento,
-.dialoghi,
-.fo-section,
-.giardino,
-.ua {
-  opacity: 0;
-  transform: translateY(28px);
-  transition:
-    opacity .9s var(--ease-expo),
-    transform .9s var(--ease-expo);
-}
+    .atlante,
+    .eco-giorno,
+    .frammento,
+    .dialoghi,
+    .fo-section,
+    .giardino,
+    .quiz-filosofia,
+    .ua {
+      opacity: 0;
+      transform: translateY(28px);
+      transition:
+        opacity .9s var(--ease-expo),
+        transform .9s var(--ease-expo);
+    }
 
-.atlante.is-visible,
-.eco-giorno.is-visible,
-.frammento.is-visible,
-.dialoghi.is-visible,
-.fo-section.is-visible,
-.giardino.is-visible,
-.ua.is-visible {
-  opacity: calc(1 * var(--focus-op, 1));
-  transform: translateY(0) scale(var(--focus-scale, 1));
-  transition:
-    opacity .6s var(--ease-expo),
-    transform .6s var(--ease-expo);
-}
+    .atlante.is-visible,
+    .eco-giorno.is-visible,
+    .frammento.is-visible,
+    .dialoghi.is-visible,
+    .fo-section.is-visible,
+    .giardino.is-visible,
+    .quiz-filosofia.is-visible,
+    .ua.is-visible {
+      opacity: calc(1 * var(--focus-op, 1));
+      transform: translateY(0) scale(var(--focus-scale, 1));
+      transition:
+        opacity .6s var(--ease-expo),
+        transform .6s var(--ease-expo);
+    }
 
-/* ============================================================
+    /* ============================================================
    HERO DISSOLVE — solo opacity + scale (NO blur)
    ============================================================ */
-.hero {
-  opacity: var(--hero-op, 1);
-  transition: opacity .08s linear;
-}
-.hero .container,
-.philosophy-quotes {
-  transform: scale(var(--hero-scale, 1));
-  transform-origin: 50% 35%;
-  transition: transform .08s linear;
-}
-.knowledge-tree,
-.heraclitus-clock {
-  transition: none;
-}
+    .hero {
+      opacity: var(--hero-op, 1);
+      transition: opacity .08s linear;
+    }
 
-@media (prefers-reduced-motion: reduce) {
-  .atlante, .eco-giorno, .frammento, .dialoghi,
-  .fo-section, .giardino, .ua,
-  .hero, .hero .container, .philosophy-quotes,
-  .knowledge-tree, .heraclitus-clock {
-    opacity: 1 !important;
-    transform: none !important;
-    filter: none !important;
-    transition: none !important;
-  }
-}
+    .hero .container,
+    .philosophy-quotes {
+      transform: scale(var(--hero-scale, 1));
+      transform-origin: 50% 35%;
+      transition: transform .08s linear;
+    }
 
-/* Skip link accessibile */
-.skip-link {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  transform: translateY(-200%);
-  background: var(--gold);
-  color: var(--bg);
-  padding: 10px 18px;
-  border-radius: 8px;
-  font-family: var(--sans);
-  font-size: .82rem;
-  font-weight: 600;
-  text-decoration: none;
-  z-index: 100000;
-  transition: transform .2s var(--ease-smooth);
-}
-.skip-link:focus,
-.skip-link:focus-visible {
-  transform: translateY(0);
-  outline: 2px solid var(--bg);
-  outline-offset: 2px;
-}
+    .knowledge-tree,
+    .heraclitus-clock {
+      transition: none;
+    }
 
-/* Focus visibile sui tab del Giardino */
-.giardino-tabs button:focus-visible {
-  outline: 2px solid var(--gold);
-  outline-offset: 3px;
-}
-/* ============================================================
+    @media (prefers-reduced-motion: reduce) {
+
+      .atlante,
+      .eco-giorno,
+      .frammento,
+      .dialoghi,
+      .fo-section,
+      .giardino,
+      .quiz-filosofia,
+      .ua,
+      .hero,
+      .hero .container,
+      .philosophy-quotes,
+      .knowledge-tree,
+      .heraclitus-clock {
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+        transition: none !important;
+      }
+    }
+
+    /* Focus visibile sui tab del Giardino */
+    .giardino-tabs button:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 3px;
+    }
+
+    /* ============================================================
    FIX CONTRASTO A11Y — portare Lighthouse a 100
    ============================================================ */
+    /* Testo muted più leggibile su sfondo scuro */
+    :root {
+      --text-muted: #8eb5a1;
+      /* era #789987 — più chiaro, contrasto 6.8:1 */
+    }
 
-/* Testo muted più leggibile su sfondo scuro */
-:root {
-  --text-muted: #8eb5a1; /* era #789987 — più chiaro, contrasto 6.8:1 */
-}
+    body.light-theme {
+      --text-muted: #2e4d3d;
+      /* più scuro su tema chiaro */
+    }
 
-body.light-theme {
-  --text-muted: #2e4d3d; /* più scuro su tema chiaro */
-}
+    /* Tab attivo del Giardino: oro su sfondo oro-soft falliva il contrasto */
+    .giardino-tabs button.active {
+      background: var(--bg-soft) !important;
+      border-color: var(--gold);
+      color: var(--gold);
+      box-shadow: inset 0 0 10px rgba(69, 230, 161, .2);
+    }
 
-/* Tab attivo del Giardino: oro su sfondo oro-soft falliva il contrasto */
-.giardino-tabs button.active {
-  background: var(--bg-soft) !important;
-  border-color: var(--gold);
-  color: var(--gold);
-  box-shadow: inset 0 0 10px rgba(69, 230, 161, .2);
-}
+    /* Placeholder input: garantisce contrasto minimo 4.5:1 */
+    input::placeholder,
+    textarea::placeholder {
+      color: var(--text-muted) !important;
+      opacity: 1 !important;
+    }
 
-/* Placeholder input: garantisce contrasto minimo 4.5:1 */
-input::placeholder,
-textarea::placeholder {
-  color: var(--text-muted) !important;
-  opacity: 1 !important;
-}
+    /* Footer motto e autore: schiariti per contrasto */
+    .footer-motto {
+      color: #b8a898 !important;
+    }
 
-/* Footer motto e autore: schiariti per contrasto */
-.footer-motto {
-  color: #b8a898 !important;
-}
-.footer-motto-author {
-  color: #a89888 !important;
-}
+    .footer-motto-author {
+      color: #a89888 !important;
+    }
 
-/* Testi piccoli (date, autori, categorie) spesso sotto i 12px */
-.ua-date,
-.ua-excerpt,
-.eco-giorno-anno,
-.frammento-autore,
-.di-name,
-.di-theme,
-.ua-cat,
-.frammento-num,
-.eco-giorno-fonte,
-.atlante-filosofi span {
-  color: var(--text-muted);
-}
+    /* Testi piccoli (date, autori, categorie) spesso sotto i 12px */
+    .ua-date,
+    .ua-excerpt,
+    .eco-giorno-anno,
+    .frammento-autore,
+    .di-name,
+    .di-theme,
+    .ua-cat,
+    .frammento-num,
+    .eco-giorno-fonte,
+    .atlante-filosofi span {
+      color: var(--text-muted);
+    }
 
-/* Bottoni "Approfondisci" e simili: contrasto garantito */
-.giardino-next,
-.fo-form button,
-.giardino-oracle-input button,
-.giardino-breath-toggle {
-  color: var(--bg);
-  background: var(--gold);
-  font-weight: 600;
-}
+    /* Bottoni "Approfondisci" e simili: contrasto garantito */
+    .giardino-next,
+    .fo-form button,
+    .giardino-oracle-input button,
+    .giardino-breath-toggle {
+      color: var(--bg);
+      background: var(--gold);
+      font-weight: 600;
+    }
 
-/* Link con bordo inferiore: visibilità hover */
-.frammento-link,
-.eco-giorno-link,
-.di-link,
-.paradosso-link,
-.atlante-info-link {
-  color: var(--gold);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  text-decoration-thickness: 1px;
-}
-/* ============================================================
+    /* Link con bordo inferiore: visibilità hover */
+    .frammento-link,
+    .eco-giorno-link,
+    .di-link,
+    .paradosso-link,
+    .atlante-info-link {
+      color: var(--gold);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+    }
+
+    /* ============================================================
    A11Y — skip link + focus visibile + contrasto
    ============================================================ */
+    /* Skip link (se non già presente con questi valori) */
+    .skip-link {
+      position: fixed;
+      top: 8px;
+      left: 8px;
+      transform: translateY(-200%);
+      background: var(--gold);
+      color: var(--bg);
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-family: var(--sans);
+      font-size: .85rem;
+      font-weight: 700;
+      text-decoration: none;
+      z-index: 100001;
+      transition: transform .2s var(--ease-smooth);
+    }
 
-/* Skip link (se non già presente con questi valori) */
-.skip-link {
-  position: fixed;
-  top: 8px;
-  left: 8px;
-  transform: translateY(-200%);
-  background: var(--gold);
-  color: var(--bg);
-  padding: 12px 20px;
-  border-radius: 8px;
-  font-family: var(--sans);
-  font-size: .85rem;
-  font-weight: 700;
-  text-decoration: none;
-  z-index: 100001;
-  transition: transform .2s var(--ease-smooth);
-}
-.skip-link:focus,
-.skip-link:focus-visible {
-  transform: translateY(0);
-  outline: 3px solid var(--bg);
-  outline-offset: 2px;
-}
+    .skip-link:focus,
+    .skip-link:focus-visible {
+      transform: translateY(0);
+      outline: 3px solid var(--bg);
+      outline-offset: 2px;
+    }
 
-/* Focus visibile universale per chi naviga da tastiera */
-:focus-visible {
-  outline: 2px solid var(--gold);
-  outline-offset: 3px;
-}
-button:focus:not(:focus-visible),
-a:focus:not(:focus-visible) {
-  outline: none;
-}
+    /* Focus visibile universale per chi naviga da tastiera */
+    :focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 3px;
+    }
 
-/* Heading di sezione: quando converti badge in <h2>, non farli sembrare titoloni */
-h2.eco-giorno-badge,
-h2.paradosso-badge,
-h2.frammento-badge,
-h2.fo-badge,
-h2.giardino-badge,
-h2.quiz-badge,
-h2.dil-badge,
-h2.dialoghi-badge,
-h2.ua-title,
-h2.atlante-title {
-  margin: 0;
-  padding: 0;
-  font-family: var(--sans);
-  font-size: .66rem;
-  font-weight: 500;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  color: var(--gold);
-  line-height: 1.4;
-  display: inline;
-}
+    button:focus:not(:focus-visible),
+    a:focus:not(:focus-visible) {
+      outline: none;
+    }
 
-/* Assicura che i link senza href (prima del click) siano focusabili */
-a[role="button"] {
-  cursor: pointer;
-}
+    /* Heading di sezione: quando converti badge in <h2>, non farli sembrare titoloni */
+    h2.eco-giorno-badge,
+    h2.paradosso-badge,
+    h2.frammento-badge,
+    h2.fo-badge,
+    h2.giardino-badge,
+    h2.quiz-badge,
+    h2.dil-badge,
+    h2.dialoghi-badge,
+    h2.ua-title,
+    h2.atlante-title {
+      margin: 0;
+      padding: 0;
+      font-family: var(--sans);
+      font-size: .66rem;
+      font-weight: 500;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      line-height: 1.4;
+      display: inline;
+    }
 
-/* Selettore lingua: comunica stato attivo */
-.language-switcher button[aria-pressed="true"] {
-  background: var(--gold-soft);
-  color: var(--gold);
-  box-shadow: inset 0 0 0 1px var(--gold-line), 0 0 12px var(--gold-soft);
-}
-.language-switcher button[aria-pressed="false"] {
-  background: transparent;
-}
+    /* Assicura che i link senza href (prima del click) siano focusabili */
+    a[role="button"] {
+      cursor: pointer;
+    }
 
-/* Theme toggle: comunica stato */
-.theme-toggle-btn[aria-pressed="true"] {
-  background: var(--gold-soft);
-  border-color: var(--gold-line);
-  color: var(--text);
-}
+    /* Selettore lingua: comunica stato attivo */
+    .language-switcher button[aria-pressed="true"] {
+      background: var(--gold-soft);
+      color: var(--gold);
+      box-shadow: inset 0 0 0 1px var(--gold-line), 0 0 12px var(--gold-soft);
+    }
 
-/* ── Bottone "Nuova domanda" sotto la risposta dell'oracolo ── */
-.fo-reset-btn {
-  display: inline-flex;
-  align-items: center;
-  margin-top: 18px;
-  padding: 8px 20px;
-  background: transparent;
-  border: 1px solid var(--gold-line);
-  border-radius: 100px;
-  color: var(--gold);
-  font-family: var(--sans);
-  font-size: .72rem;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all .3s ease;
-}
-.fo-reset-btn:hover {
-  background: var(--gold-soft);
-  border-color: var(--gold);
-}
-.fo-reset-btn:focus-visible {
-  outline: 2px solid var(--gold);
-  outline-offset: 3px;
-}
+    .language-switcher button[aria-pressed="false"] {
+      background: transparent;
+    }
+
+    /* Theme toggle: comunica stato */
+    .theme-toggle-btn[aria-pressed="true"] {
+      background: var(--gold-soft);
+      border-color: var(--gold-line);
+      color: var(--text);
+    }
+
+    /* ── Bottone "Nuova domanda" sotto la risposta dell'oracolo ── */
+    .fo-reset-btn {
+      display: inline-flex;
+      align-items: center;
+      margin-top: 18px;
+      padding: 8px 20px;
+      background: transparent;
+      border: 1px solid var(--gold-line);
+      border-radius: 100px;
+      color: var(--gold);
+      font-family: var(--sans);
+      font-size: .72rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all .3s ease;
+    }
+
+    .fo-reset-btn:hover {
+      background: var(--gold-soft);
+      border-color: var(--gold);
+    }
+
+    .fo-reset-btn:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 3px;
+    }
   </style>
 
- <body>
+  <body>
     <a href="#main" class="skip-link">Salta al contenuto principale</a>
     <svg class=cosmic-sky viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" xmlns=http://www.w3.org/2000/svg aria-hidden=true>
       <defs>
@@ -5572,7 +5844,7 @@ a[role="button"] {
         <div class=site-search-results id=siteSearchResults hidden></div>
       </div>
     </div>
-      <main id="main">
+    <main id="main">
       <section class=hero>
         <div class=container>
           <div class=hero-kicker data-i18n=heroKicker>Filosofia · Pensiero · Cultura</div>
@@ -5599,7 +5871,7 @@ a[role="button"] {
                 <p class=quote-text id=quoteText></p>
                 <div class=quote-author-row><cite class=quote-author id=quoteAuthor></cite><button class=quote-info id=quoteInfo type=button aria-label="Mostra la fonte della citazione" aria-expanded=false>ⓘ</button></div>
                 <div class=quote-source id=quoteSource aria-hidden=true></div>
-               </blockquote><span class="quote-mark quote-mark-end">”</span>
+              </blockquote><span class="quote-mark quote-mark-end">”</span>
             </div>
           </div>
         </div>
@@ -5618,8 +5890,8 @@ a[role="button"] {
               <path d="M110 150 C121 138 129 126 134 112 C139 99 142 86 144 72" />
               <path d="M110 125 C105 112 103 99 104 86 C105 72 108 60 110 48" />
             </g>
-           <g class="tree-leaves" fill=#78B4A5 fill-opacity=.38 stroke=#D2BE7D stroke-opacity=.35 stroke-width=.6>
-  <ellipse cx=55 cy=117 rx=8 ry=4 />
+            <g class="tree-leaves" fill=#78B4A5 fill-opacity=.38 stroke=#D2BE7D stroke-opacity=.35 stroke-width=.6>
+              <ellipse cx=55 cy=117 rx=8 ry=4 />
               <ellipse cx=76 cy=82 rx=8 ry=4 />
               <ellipse cx=86 cy=121 rx=7 ry=3.5 />
               <ellipse cx=165 cy=117 rx=8 ry=4 />
@@ -5662,50 +5934,50 @@ a[role="button"] {
           <div class=tree-motto>Contemplata aliis tradere</div>
         </div>
         <div class=heraclitus-clock aria-hidden="true"><svg viewBox="0 0 200 200" width=110 height=110 xmlns=http://www.w3.org/2000/svg aria-hidden="true" focusable="false">
-    <circle class=clock-outer cx=100 cy=100 r=90 fill=rgba(10,12,24,0.4) stroke=var(--gold) stroke-width=1.5 stroke-opacity=0.5 />
-    <circle class=clock-inner cx=100 cy=100 r=85 fill=none stroke=var(--gold) stroke-width=0.8 stroke-opacity=0.2 />
-    <g class=clock-numbers fill=var(--gold) font-family="'Cinzel', serif" font-size=11 font-weight=500 text-anchor=middle dominant-baseline=central fill-opacity=0.6><text x=100 y=16>XII</text><text x=175 y=100>III</text><text x=100 y=184>VI</text><text x=25 y=100>IX</text></g>
-    <line id=hourHand x1=100 y1=100 x2=100 y2=50 stroke=var(--gold) stroke-width=1.8 stroke-linecap=round stroke-opacity=0.5 />
-    <line id=minHand x1=100 y1=100 x2=100 y2=35 stroke=var(--gold) stroke-width=1.2 stroke-linecap=round stroke-opacity=0.4 /><text class=clock-greek x=100 y=150 font-family="'Cinzel', serif" font-size=15 font-weight=600 fill=var(--gold) text-anchor=middle dominant-baseline=central fill-opacity=0.95>ΠΑΝΤΑ ῬΕΙ</text>
-    <circle class=clock-center cx=100 cy=100 r=3 fill=var(--gold) fill-opacity=0.5>
-      <animate attributeName=r values=2.5;3.5;2.5 dur=3s repeatCount=indefinite />
-    </circle>
-    <circle cx=100 cy=100 r=1.2 fill=#080a12 />
-  </svg>
-  <div class=hourglass-rotator><svg class=heraclitus-hourglass viewBox="0 0 80 100" width=52 height=65 xmlns=http://www.w3.org/2000/svg aria-hidden="true" focusable="false">
-      <defs>
-        <linearGradient id=glassHourglass x1=0 y1=0 x2=1 y2=0>
-          <stop offset=0 stop-color=#ffffff stop-opacity=.12 />
-          <stop offset=.45 stop-color=#ffffff stop-opacity=.38 />
-          <stop offset=1 stop-color=#ffffff stop-opacity=.06 />
-        </linearGradient>
-        <linearGradient id=sandHourglass x1=0 y1=0 x2=0 y2=1>
-          <stop offset=0 stop-color=#F5D58A />
-          <stop offset=1 stop-color=#B9792D />
-        </linearGradient>
-        <clipPath id=hourglassInside>
-          <path d="M23 14 H57 L42 44 Q40 50 42 56 L57 86 H23 L38 56 Q40 50 38 44 Z" />
-        </clipPath>
-      </defs>
-      <g class=hourglass-frame>
-        <g fill=none stroke=#BEA069 stroke-width=3 stroke-linecap=round>
-          <path d="M17 9 H63 M17 91 H63" />
-          <path d="M20 12 L35 44 Q40 50 35 56 L20 88" />
-          <path d="M60 12 L45 44 Q40 50 45 56 L60 88" />
-        </g>
-        <path d="M22 13 H58 L43 44 Q40 50 43 56 L58 87 H22 L37 56 Q40 50 37 44 Z" fill=url(#glassHourglass) stroke=#D7BD88 stroke-width=1.2 />
-      </g>
-      <g clip-path=url(#hourglassInside)>
-        <path class=sand-top-a d="M25 17 H55 L42 42 H38 Z" fill=url(#sandHourglass) />
-        <path class=sand-bottom-a d="M38 61 L26 84 H54 L42 61 Z" fill=url(#sandHourglass) />
-        <path class=sand-top-b d="M26 17 H54 L42 42 H38 Z" fill=url(#sandHourglass) />
-        <path class=sand-bottom-b d="M38 61 L26 84 H54 L42 61 Z" fill=url(#sandHourglass) />
-        <path class=hourglass-sand-stream d="M40 43 V61" fill=none stroke=#D9A34D stroke-width=1.8 stroke-linecap=round />
-      </g>
-      <path d="M27 20 L37 40 M27 80 L34 67" fill=none stroke=#FFFFFF stroke-opacity=.65 stroke-width=1.5 stroke-linecap=round />
-    </svg></div>
-  <div class=clock-motto>— tutto scorre —</div>
-</div>
+            <circle class=clock-outer cx=100 cy=100 r=90 fill=rgba(10,12,24,0.4) stroke=var(--gold) stroke-width=1.5 stroke-opacity=0.5 />
+            <circle class=clock-inner cx=100 cy=100 r=85 fill=none stroke=var(--gold) stroke-width=0.8 stroke-opacity=0.2 />
+            <g class=clock-numbers fill=var(--gold) font-family="'Cinzel', serif" font-size=11 font-weight=500 text-anchor=middle dominant-baseline=central fill-opacity=0.6><text x=100 y=16>XII</text><text x=175 y=100>III</text><text x=100 y=184>VI</text><text x=25 y=100>IX</text></g>
+            <line id=hourHand x1=100 y1=100 x2=100 y2=50 stroke=var(--gold) stroke-width=1.8 stroke-linecap=round stroke-opacity=0.5 />
+            <line id=minHand x1=100 y1=100 x2=100 y2=35 stroke=var(--gold) stroke-width=1.2 stroke-linecap=round stroke-opacity=0.4 /><text class=clock-greek x=100 y=150 font-family="'Cinzel', serif" font-size=15 font-weight=600 fill=var(--gold) text-anchor=middle dominant-baseline=central fill-opacity=0.95>ΠΑΝΤΑ ῬΕΙ</text>
+            <circle class=clock-center cx=100 cy=100 r=3 fill=var(--gold) fill-opacity=0.5>
+              <animate attributeName=r values=2.5;3.5;2.5 dur=3s repeatCount=indefinite />
+            </circle>
+            <circle cx=100 cy=100 r=1.2 fill=#080a12 />
+          </svg>
+          <div class=hourglass-rotator><svg class=heraclitus-hourglass viewBox="0 0 80 100" width=52 height=65 xmlns=http://www.w3.org/2000/svg aria-hidden="true" focusable="false">
+              <defs>
+                <linearGradient id=glassHourglass x1=0 y1=0 x2=1 y2=0>
+                  <stop offset=0 stop-color=#ffffff stop-opacity=.12 />
+                  <stop offset=.45 stop-color=#ffffff stop-opacity=.38 />
+                  <stop offset=1 stop-color=#ffffff stop-opacity=.06 />
+                </linearGradient>
+                <linearGradient id=sandHourglass x1=0 y1=0 x2=0 y2=1>
+                  <stop offset=0 stop-color=#F5D58A />
+                  <stop offset=1 stop-color=#B9792D />
+                </linearGradient>
+                <clipPath id=hourglassInside>
+                  <path d="M23 14 H57 L42 44 Q40 50 42 56 L57 86 H23 L38 56 Q40 50 38 44 Z" />
+                </clipPath>
+              </defs>
+              <g class=hourglass-frame>
+                <g fill=none stroke=#BEA069 stroke-width=3 stroke-linecap=round>
+                  <path d="M17 9 H63 M17 91 H63" />
+                  <path d="M20 12 L35 44 Q40 50 35 56 L20 88" />
+                  <path d="M60 12 L45 44 Q40 50 45 56 L60 88" />
+                </g>
+                <path d="M22 13 H58 L43 44 Q40 50 43 56 L58 87 H22 L37 56 Q40 50 37 44 Z" fill=url(#glassHourglass) stroke=#D7BD88 stroke-width=1.2 />
+              </g>
+              <g clip-path=url(#hourglassInside)>
+                <path class=sand-top-a d="M25 17 H55 L42 42 H38 Z" fill=url(#sandHourglass) />
+                <path class=sand-bottom-a d="M38 61 L26 84 H54 L42 61 Z" fill=url(#sandHourglass) />
+                <path class=sand-top-b d="M26 17 H54 L42 42 H38 Z" fill=url(#sandHourglass) />
+                <path class=sand-bottom-b d="M38 61 L26 84 H54 L42 61 Z" fill=url(#sandHourglass) />
+                <path class=hourglass-sand-stream d="M40 43 V61" fill=none stroke=#D9A34D stroke-width=1.8 stroke-linecap=round />
+              </g>
+              <path d="M27 20 L37 40 M27 80 L34 67" fill=none stroke=#FFFFFF stroke-opacity=.65 stroke-width=1.5 stroke-linecap=round />
+            </svg></div>
+          <div class=clock-motto>— tutto scorre —</div>
+        </div>
 
       </section>
       <div class=layout>
@@ -5869,57 +6141,839 @@ a[role="button"] {
           </section>
           <!-- fine modulo Fiume + Oracolo -->
 
-<!-- ============================================================
+          <!-- ============================================================
      IL GIARDINO DELLE IDEE — tre esperienze interattive
      ============================================================ -->
-<section class="giardino" aria-label="Il Giardino delle Idee">
-  <div class="giardino-head">
-    <span class="giardino-badge">🌌 Il Giardino delle Idee</span>
-    <span class="giardino-sub">Tre esperienze per pensare, scegliere, respirare.</span>
-  </div>
+          <section class="giardino" aria-label="Il Giardino delle Idee">
+            <div class="giardino-head">
+              <span class="giardino-badge">🌌 Il Giardino delle Idee</span>
+              <span class="giardino-sub">Tre esperienze per pensare, scegliere, respirare.</span>
+            </div>
 
-  <div class="giardino-tabs" role="tablist" aria-label="Sezioni del Giardino delle Idee">
-    <button type="button" data-tab="oracolo" class="active" role="tab" aria-selected="true" id="tab-oracolo" aria-controls="giardino-oracolo">🔮 Oracolo profondo</button>
-    <button type="button" data-tab="dilemmi" role="tab" aria-selected="false" id="tab-dilemmi" aria-controls="giardino-dilemmi">⚖️ Dilemmi etici</button>
-    <button type="button" data-tab="respiro" role="tab" aria-selected="false" id="tab-respiro" aria-controls="giardino-respiro">🌬️ Respiro filosofico</button>
-  </div>
+            <div class="giardino-tabs" role="tablist" aria-label="Sezioni del Giardino delle Idee">
+              <button type="button" data-tab="oracolo" class="active" role="tab" aria-selected="true" id="tab-oracolo" aria-controls="giardino-oracolo">🔮 Oracolo profondo</button>
+              <button type="button" data-tab="dilemmi" role="tab" aria-selected="false" id="tab-dilemmi" aria-controls="giardino-dilemmi">⚖️ Dilemmi etici</button>
+              <button type="button" data-tab="respiro" role="tab" aria-selected="false" id="tab-respiro" aria-controls="giardino-respiro">🌬️ Respiro filosofico</button>
+            </div>
 
-  <!-- ORACOLO -->
-  <div class="giardino-panel active" id="giardino-oracolo" role="tabpanel" aria-labelledby="tab-oracolo" tabindex="0">
-    <div class="giardino-oracle-input">
-      <input type="text" id="giardinoOracleInput" placeholder="Poni una domanda all'oracolo..." autocomplete="off" maxlength="200" aria-label="La tua domanda">
-      <button type="button" id="giardinoOracleBtn">Consulta</button>
-    </div>
-    <div class="giardino-oracle-response" id="giardinoOracleResponse" aria-live="polite">
-      <div class="giardino-consulting">
-        <span class="glyph" style="animation:none;">✧</span>
-        <p style="animation:none;">L'oracolo attende la tua domanda...</p>
+            <!-- ORACOLO -->
+            <div class="giardino-panel active" id="giardino-oracolo" role="tabpanel" aria-labelledby="tab-oracolo" tabindex="0">
+              <div class="giardino-oracle-input">
+                <input type="text" id="giardinoOracleInput" placeholder="Poni una domanda all'oracolo..." autocomplete="off" maxlength="200" aria-label="La tua domanda">
+                <button type="button" id="giardinoOracleBtn">Consulta</button>
+              </div>
+              <div class="giardino-oracle-response" id="giardinoOracleResponse" aria-live="polite">
+                <div class="giardino-consulting">
+                  <span class="glyph" style="animation:none;">✧</span>
+                  <p style="animation:none;">L'oracolo attende la tua domanda...</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- DILEMMI -->
+            <div class="giardino-panel" id="giardino-dilemmi" role="tabpanel" aria-labelledby="tab-dilemmi" tabindex="0">
+              <div id="giardinoDilemmaContent"></div>
+            </div>
+
+            <!-- RESPIRO -->
+            <div class="giardino-panel" id="giardino-respiro" role="tabpanel" aria-labelledby="tab-respiro" tabindex="0">
+              <div class="giardino-breath-wrap">
+                <div class="giardino-breath-circle-wrap">
+                  <div class="giardino-breath-circle" id="giardinoBreathCircle"></div>
+                  <div class="giardino-breath-label" id="giardinoBreathLabel">Pronto</div>
+                </div>
+                <div class="giardino-breath-quote">
+                  <p id="giardinoBreathQuote"></p>
+                </div>
+                <button type="button" class="giardino-breath-toggle" id="giardinoBreathToggle">Inizia il respiro</button>
+              </div>
+            </div>
+          </section>
+          <!-- ============================================================
+     QUIZ FILOSOFICO — "Che cos'è la filosofia?"
+     Modulo interattivo per Echi di Sofia
+     ============================================================ -->
+          <section class="quiz-filosofia" id="quizFilosofia" aria-label="Quiz: Che cos'è la filosofia?">
+            <div class="quiz-head">
+              <span class="quiz-badge">🎓 Quiz · Che cos'è la filosofia?</span>
+              <span class="quiz-sub">Metti alla prova le tue conoscenze sui moduli del corso.</span>
+            </div>
+
+            <div class="quiz-progress" aria-hidden="true">
+              <div class="quiz-progress-bar" id="quizProgressBar"></div>
+            </div>
+
+            <div class="quiz-stage" id="quizStage">
+              <p class="quiz-intro">Rispondi alle domande. Alla fine riceverai un punteggio e una breve spiegazione per ogni risposta.</p>
+              <button type="button" class="quiz-start-btn" id="quizStartBtn">Inizia il quiz →</button>
+            </div>
+
+            <div class="quiz-result" id="quizResult" hidden>
+              <h3 class="quiz-result-title" id="quizResultTitle"></h3>
+              <p class="quiz-result-score" id="quizResultScore"></p>
+              <p class="quiz-result-message" id="quizResultMessage"></p>
+              <button type="button" class="quiz-restart-btn" id="quizRestartBtn">↻ Riprova il quiz</button>
+            </div>
+          </section>
+
+          <style>
+            /* ============================================================
+   STILI QUIZ — coerenti con il tema di Echi di Sofia
+   ============================================================ */
+            .quiz-filosofia {
+              position: relative;
+              margin-bottom: 24px;
+              padding: 22px 24px 24px;
+              background: var(--surface);
+              border: 1px solid var(--border);
+              border-radius: var(--radius);
+              backdrop-filter: blur(12px);
+              overflow: hidden;
+              transition: border-color .3s ease;
+            }
+
+            .quiz-filosofia::before {
+              content: "";
+              position: absolute;
+              top: 0;
+              left: 0;
+              right: 0;
+              height: 2px;
+              background: linear-gradient(90deg, transparent, var(--gold), transparent);
+              opacity: .55;
+            }
+
+            .quiz-filosofia:hover {
+              border-color: var(--gold-line);
+            }
+
+            .quiz-head {
+              display: flex;
+              flex-wrap: wrap;
+              align-items: baseline;
+              justify-content: space-between;
+              gap: 8px;
+              margin-bottom: 16px;
+              padding-bottom: 10px;
+              border-bottom: 1px solid var(--gold-line);
+            }
+
+            .quiz-badge {
+              font-family: var(--sans);
+              font-size: .66rem;
+              font-weight: 500;
+              letter-spacing: 2.5px;
+              text-transform: uppercase;
+              color: var(--gold);
+            }
+
+            .quiz-sub {
+              font-family: var(--serif);
+              font-size: .82rem;
+              font-style: italic;
+              color: var(--text-muted);
+            }
+
+            .quiz-progress {
+              width: 100%;
+              height: 4px;
+              background: var(--border);
+              border-radius: 4px;
+              margin-bottom: 18px;
+              overflow: hidden;
+            }
+
+            .quiz-progress-bar {
+              height: 100%;
+              width: 0%;
+              background: linear-gradient(90deg, var(--gold), #00e5ff);
+              border-radius: 4px;
+              transition: width .4s ease;
+            }
+
+            .quiz-stage {
+              min-height: 120px;
+            }
+
+            .quiz-intro {
+              font-family: var(--serif);
+              font-size: 1rem;
+              color: var(--text-soft);
+              text-align: center;
+              margin: 0 0 18px;
+            }
+
+            .quiz-start-btn,
+            .quiz-restart-btn {
+              display: block;
+              margin: 0 auto;
+              padding: 12px 28px;
+              border-radius: 100px;
+              border: 1px solid var(--gold);
+              background: var(--gold);
+              color: var(--bg);
+              font-family: var(--sans);
+              font-size: .78rem;
+              font-weight: 600;
+              letter-spacing: 1.5px;
+              text-transform: uppercase;
+              cursor: pointer;
+              transition: transform .25s ease, box-shadow .25s ease, filter .25s ease;
+            }
+
+            .quiz-start-btn:hover,
+            .quiz-restart-btn:hover {
+              transform: translateY(-2px);
+              filter: brightness(1.08);
+              box-shadow: 0 4px 20px var(--gold-soft);
+            }
+
+            .quiz-question-card {
+              animation: quizFadeIn .4s ease-out;
+            }
+
+            @keyframes quizFadeIn {
+              from {
+                opacity: 0;
+                transform: translateY(8px);
+              }
+
+              to {
+                opacity: 1;
+                transform: translateY(0);
+              }
+            }
+
+            .quiz-question-text {
+              font-family: var(--serif);
+              font-size: 1.1rem;
+              line-height: 1.55;
+              color: var(--text);
+              margin: 0 0 18px;
+              padding: 0 6px;
+              text-align: center;
+              font-style: italic;
+            }
+
+            .quiz-options {
+              display: flex;
+              flex-direction: column;
+              gap: 9px;
+              max-width: 640px;
+              margin: 0 auto;
+            }
+
+            .quiz-option {
+              background: var(--bg-soft);
+              border: 1px solid var(--border);
+              color: var(--text-soft);
+              padding: 13px 18px;
+              border-radius: 10px;
+              font-family: var(--sans);
+              font-size: .92rem;
+              text-align: left;
+              cursor: pointer;
+              transition: all .25s ease;
+              line-height: 1.5;
+            }
+
+            .quiz-option:hover:not(:disabled) {
+              border-color: var(--gold-line);
+              background: var(--surface);
+              transform: translateX(3px);
+            }
+
+            .quiz-option.correct {
+              border-color: #2ecc71;
+              background: rgba(46, 204, 113, .12);
+              color: #a8f0c8;
+            }
+
+            .quiz-option.wrong {
+              border-color: #e74c3c;
+              background: rgba(231, 76, 60, .1);
+              color: #f4b8b0;
+            }
+
+            .quiz-option:disabled {
+              cursor: default;
+            }
+
+            .quiz-feedback {
+              margin: 16px auto 0;
+              max-width: 640px;
+              padding: 14px 18px;
+              border-left: 3px solid var(--gold);
+              background: var(--bg-soft);
+              border-radius: 0 10px 10px 0;
+              font-family: var(--serif);
+              font-size: .95rem;
+              line-height: 1.6;
+              color: var(--text-soft);
+              animation: quizFadeIn .3s ease-out;
+            }
+
+            .quiz-feedback strong {
+              color: var(--gold);
+            }
+
+            .quiz-next-btn {
+              display: block;
+              margin: 18px auto 0;
+              padding: 9px 22px;
+              border-radius: 100px;
+              border: 1px solid var(--gold-line);
+              background: transparent;
+              color: var(--gold);
+              font-family: var(--sans);
+              font-size: .72rem;
+              letter-spacing: 1px;
+              text-transform: uppercase;
+              cursor: pointer;
+              transition: all .25s ease;
+            }
+
+            .quiz-next-btn:hover {
+              background: var(--gold-soft);
+              border-color: var(--gold);
+            }
+
+            .quiz-result {
+              text-align: center;
+              padding: 20px 10px;
+              animation: quizFadeIn .5s ease-out;
+            }
+
+            .quiz-result-title {
+              font-family: var(--display);
+              font-size: 1.3rem;
+              color: var(--gold);
+              letter-spacing: 1px;
+              margin-bottom: 12px;
+            }
+
+            .quiz-result-score {
+              font-family: var(--sans);
+              font-size: 1rem;
+              color: var(--text);
+              margin-bottom: 8px;
+            }
+
+            .quiz-result-message {
+              font-family: var(--serif);
+              font-size: 1rem;
+              line-height: 1.7;
+              color: var(--text-soft);
+              max-width: 520px;
+              margin: 0 auto 18px;
+            }
+          </style>
+
+          <script>
+            (function() {
+              'use strict';
+              const root = document.getElementById('quizFilosofia');
+              if (!root) return;
+              /* ============================================================
+                 DATI DEL QUIZ — domande estratte dalle flashcard
+                 ============================================================ */
+              const questions = [{
+                  q: 'Chi tratta il concetto di "mondo possibile" e "pluralità dei mondi"?',
+                  options: ['Nagel', 'Lewis', 'Jackson', 'Danto'],
+                  correct: 1,
+                  explain: 'David Lewis è il filosofo che ha sviluppato la teoria dei mondi possibili e della pluralità dei mondi.'
+                },
+                {
+                  q: "Chi compie l'esperimento mentale del pipistrello?",
+                  options: ['Nagel', 'Jackson', 'Danto', 'Carnap'],
+                  correct: 0,
+                  explain: "Thomas Nagel, nel saggio 'What Is It Like to Be a Bat?', esplora l'irriducibilità dell'esperienza soggettiva."
+                },
+                {
+                  q: "Chi tratta l'esperimento mentale della neuroscienziata Mary?",
+                  options: ['Jackson', 'Lewis', 'Nagel', 'Foucault'],
+                  correct: 0,
+                  explain: "Frank Jackson ha formulato l'esperimento di Mary, sulla conoscenza fenomenica e i qualia."
+                },
+                {
+                  q: "Quale filosofo tratta la ricerca sulle origini della morale in 'Genealogia della morale'?",
+                  options: ['Kant', 'Nietzsche', 'Hegel', 'Schopenhauer'],
+                  correct: 1,
+                  explain: "Friedrich Nietzsche indaga genealogicamente l'origine dei valori morali, smascherandone le radici psicologiche."
+                },
+                {
+                  q: 'Chi tratta la volontà di sistematizzazione?',
+                  options: ['Descartes', 'Kant', 'Fichte', 'Hegel'],
+                  correct: 0,
+                  explain: 'René Descartes, con il suo metodo e la sua volontà di fondare sistematicamente il sapere.'
+                },
+                {
+                  q: "Quando si colloca l'epoca della costruzione (dei sistemi filosofici)?",
+                  options: ['Tra Cinquecento e Seicento', 'Tra Seicento e Ottocento', 'Tra Settecento e Novecento', 'Nel Medioevo'],
+                  correct: 1,
+                  explain: "L'epoca della costruzione dei grandi sistemi filosofici si colloca tra Seicento e Ottocento."
+                },
+                {
+                  q: 'Qual è il significato di "mito"?',
+                  options: ['Parola, racconto', 'Verità razionale', 'Legge scritta', 'Silenzio'],
+                  correct: 0,
+                  explain: 'Mito deriva dal greco mythos: parola, racconto, narrazione sacra.'
+                },
+                {
+                  q: "L'esperimento mentale del mulino è stato formulato dal filosofo?",
+                  options: ['Leibniz', 'Descartes', 'Locke', 'Hume'],
+                  correct: 0,
+                  explain: "Gottfried Wilhelm Leibniz, per mostrare l'insufficienza di una spiegazione puramente meccanicistica della percezione."
+                },
+                {
+                  q: 'Quale tra i seguenti filosofi è l’autore del libro "Significato e necessità"?',
+                  options: ['Carnap', 'Wittgenstein', 'Quine', 'Russell'],
+                  correct: 0,
+                  explain: "Rudolf Carnap, esponente del neopositivismo logico, scrisse 'Meaning and Necessity'."
+                },
+                {
+                  q: "Nella filosofia antica il discorso fondato sull'argomentazione razionale era chiamato?",
+                  options: ['Logos', 'Mythos', 'Pathos', 'Ethos'],
+                  correct: 0,
+                  explain: 'Il logos è il discorso razionale, contrapposto al mythos narrativo.'
+                },
+                {
+                  q: 'Quale tra i seguenti filosofi ha individuato le origini della filosofia nella meraviglia?',
+                  options: ['Aristotele', 'Platone', 'Socrate', 'Eraclito'],
+                  correct: 0,
+                  explain: "Aristotele, nella Metafisica, afferma che gli uomini cominciarono a filosofare per la meraviglia."
+                },
+                {
+                  q: 'Il mito è?',
+                  options: ['Una narrazione', 'Una dimostrazione', 'Una legge', 'Un esperimento'],
+                  correct: 0,
+                  explain: 'Il mito è essenzialmente una narrazione simbolica e fondativa.'
+                },
+                {
+                  q: 'Il libro "Storia della follia nell’età classica" è stato scritto da?',
+                  options: ['Foucault', 'Derrida', 'Lyotard', 'Deleuze'],
+                  correct: 0,
+                  explain: "Michel Foucault, che indaga la genealogia del sapere psichiatrico e il rapporto tra ragione e follia."
+                },
+                {
+                  q: 'Quale tra i seguenti filosofi è l’autore del libro "Discorso sul metodo"?',
+                  options: ['Descartes', 'Kant', 'Spinoza', 'Leibniz'],
+                  correct: 0,
+                  explain: 'René Descartes pubblicò il Discorso sul metodo nel 1637.'
+                },
+                {
+                  q: "L’esperimento mentale dei quadrati rossi è stato formulato dal filosofo?",
+                  options: ['Danto', 'Nagel', 'Jackson', 'Lewis'],
+                  correct: 0,
+                  explain: "Arthur Danto, con l'esperimento dei quadrati rossi, riflette sulla natura dell'arte e della rappresentazione."
+                },
+                {
+                  q: 'Quali sono le caratteristiche dell’ontologia?',
+                  options: ['Inemendabilità, invito, interazione', 'Universalità, necessità, astrazione', 'Contingenza, storicità, prassi', 'Soggettività, intuizione, fede'],
+                  correct: 0,
+                  explain: "Secondo la tradizione, l'ontologia presenta inemendabilità, invito all'interrogazione e interazione con le altre discipline."
+                },
+                {
+                  q: 'Chi tratta il concetto di verità come relazione tra epistemologia e ontologia, definendola "iperverità"?',
+                  options: ['Tarski', 'James', 'Rorty', 'Vico'],
+                  correct: 0,
+                  explain: "Alfred Tarski, con la sua teoria semantica della verità, ha posto la verità come relazione tra linguaggio e realtà."
+                },
+                {
+                  q: 'Quale filosofo ha proposto come criterio di verità la conversione del vero con il fatto?',
+                  options: ['Giambattista Vico', 'Cartesio', 'Kant', 'Hegel'],
+                  correct: 0,
+                  explain: 'Giambattista Vico, con il principio del verum ipsum factum: il vero è ciò che è fatto.'
+                },
+                {
+                  q: 'Il libro "La condizione postmoderna" è stato scritto dal filosofo?',
+                  options: ['Lyotard', 'Foucault', 'Derrida', 'Habermas'],
+                  correct: 0,
+                  explain: "Jean-François Lyotard, che ha teorizzato la fine delle grandi narrazioni nella postmodernità."
+                },
+                {
+                  q: 'Quale tra i seguenti filosofi non appartiene alla tradizione filosofica dell’ermeneutica?',
+                  options: ['Russell', 'Gadamer', 'Heidegger', 'Ricoeur'],
+                  correct: 0,
+                  explain: 'Bertrand Russell appartiene alla tradizione analitica, non a quella ermeneutica.'
+                },
+                {
+                  q: 'In filosofia cosa si intende con la nozione di "epistemologia"?',
+                  options: ['Quello che sappiamo su quello che c’è', 'La scienza delle leggi fisiche', 'Lo studio dell’essere in quanto essere', 'L’arte del discorso persuasivo'],
+                  correct: 0,
+                  explain: "L'epistemologia è la teoria della conoscenza: indaga natura, origine e validità del sapere."
+                },
+                {
+                  q: 'A chi dobbiamo il termine "verità" (nella filosofia antica)?',
+                  options: ['Parmenide', 'Eraclito', 'Platone', 'Aristotele'],
+                  correct: 0,
+                  explain: "Parmenide, nel poema Sulla natura, identifica la verità con l'essere e la via della persuasione."
+                },
+                {
+                  q: 'Chi dice "X è buono" (nel contesto della filosofia analitica)?',
+                  options: ['Thomas More', 'Moore', 'Hobbes', 'Hume'],
+                  correct: 0,
+                  explain: "George Edward Moore, con la sua riflessione sul bene come nozione indefinibile (fallacia naturalistica)."
+                },
+                {
+                  q: 'Chi indica la libertà come l’essenza razionale?',
+                  options: ['Hegel', 'Kant', 'Fichte', 'Schelling'],
+                  correct: 0,
+                  explain: "Hegel pensa la libertà come l'essenza dello spirito e il fine della storia."
+                },
+                {
+                  q: 'Al dibattito sulla relazione tra libertà e grazia divina presero parte?',
+                  options: ['D’Ipponia, Eriugena, D’Aquino', 'Cartesio, Spinoza, Leibniz', 'Kant, Fichte, Hegel', 'Agostino, Pelagio, Lutero'],
+                  correct: 0,
+                  explain: 'Agostino d’Ippona, Giovanni Scoto Eriugena e Tommaso d’Aquino affrontarono il rapporto tra libertà umana e grazia.'
+                },
+                {
+                  q: 'Concetto di "io", coincidenza tra oggetto del pensiero e soggetto pensante?',
+                  options: ['Descartes', 'Kant', 'Fichte', 'Husserl'],
+                  correct: 0,
+                  explain: "Cartesio, con il cogito, stabilisce l'identità tra soggetto pensante e oggetto del pensiero."
+                },
+                {
+                  q: 'Chi tratta il concetto di "volontà buona"?',
+                  options: ['Kant', 'Nietzsche', 'Schopenhauer', 'Hegel'],
+                  correct: 0,
+                  explain: "Immanuel Kant, nella Fondazione della metafisica dei costumi, pone la volontà buona come unico bene incondizionato."
+                },
+                {
+                  q: 'Chi pone l’io come coscienza distinta dall’"io penso"?',
+                  options: ['Kant', 'Fichte', 'Descartes', 'Hume'],
+                  correct: 0,
+                  explain: "Kant distingue l'Io penso (appercezione trascendentale) dalla coscienza empirica."
+                },
+                {
+                  q: 'Chi indica la Volontà come determinazione del vivente?',
+                  options: ['Nietzsche', 'Schopenhauer', 'Kant', 'Hegel'],
+                  correct: 0,
+                  explain: "Nietzsche parla della volontà di potenza come determinazione fondamentale del vivente."
+                },
+                {
+                  q: 'Chi ha coniato il termine "scuola del sospetto"?',
+                  options: ['Ricoeur', 'Foucault', 'Derrida', 'Lyotard'],
+                  correct: 0,
+                  explain: "Paul Ricoeur ha definito Marx, Nietzsche e Freud i maestri del sospetto."
+                },
+                {
+                  q: 'Quale filosofo concepisce la libertà come un’anticipazione che permette di superare la dimensione inautentica del vivere?',
+                  options: ['Heidegger', 'Sartre', 'Kant', 'Hegel'],
+                  correct: 0,
+                  explain: "Heidegger, con il concetto di essere-per-la-morte e di anticipazione, permette di superare l'esistenza inautentica."
+                },
+                {
+                  q: 'Cosa vuol dire monismo? Chi lo usa per la prima volta?',
+                  options: ['Unico, solo — Wolff', 'Molteplice — Leibniz', 'Dualismo — Descartes', 'Materialismo — Hobbes'],
+                  correct: 0,
+                  explain: "Monismo indica l'unicità della sostanza; il termine fu introdotto da Christian Wolff."
+                },
+                {
+                  q: 'Secondo quale filosofo la coscienza è considerabile come voce dell’anima?',
+                  options: ['Rousseau', 'Kant', 'Descartes', 'Locke'],
+                  correct: 0,
+                  explain: "Rousseau, nell'Emilio, parla della coscienza come voce dell'anima e guida morale naturale."
+                },
+                {
+                  q: 'Quali sono le 3 parti dell’anima secondo Aristotele?',
+                  options: ['Vegetativa, sensitiva, intellettiva', 'Razionale, concupiscibile, irascibile', 'Pensante, estesa, infinita', 'Passiva, attiva, contemplativa'],
+                  correct: 0,
+                  explain: 'Aristotele distingue anima vegetativa, sensitiva e intellettiva.'
+                },
+                {
+                  q: 'Platone individua 3 poteri nell’anima (partizioni), quali?',
+                  options: ['Razionale, concupiscibile, irascibile', 'Vegetativa, sensitiva, intellettiva', 'Logica, fisica, etica', 'Teoretica, pratica, poetica'],
+                  correct: 0,
+                  explain: 'Platone divide l’anima in razionale, concupiscibile e irascibile.'
+                },
+                {
+                  q: 'Come considera l’anima Platone?',
+                  options: ['Al pari delle idee, incorporea e immortale, dà la vita e permette il movimento', 'Materia sottile', 'Armonia del corpo', 'Forma del corpo'],
+                  correct: 0,
+                  explain: "Per Platone l'anima è incorporea, immortale, affine alle Idee e principio di vita e movimento."
+                },
+                {
+                  q: 'Cos’è la mimesi?',
+                  options: ['Imitazione e riproduzione alla base delle attività umane', 'Creazione dal nulla', 'Rivelazione divina', 'Ragionamento deduttivo'],
+                  correct: 0,
+                  explain: 'Mimesi è imitazione: Platone la critica come copia di copia, Aristotele la rivaluta come processo conoscitivo.'
+                },
+                {
+                  q: 'La registrazione è essenzialmente?',
+                  options: ['Scrittura', 'Memoria orale', 'Tradizione', 'Rito'],
+                  correct: 0,
+                  explain: 'La registrazione, in senso filosofico, è legata alla scrittura come tecnologia della memoria.'
+                },
+                {
+                  q: 'Concetto di res cogitans e res extensa nell’ipofisi è trattato dal filosofo?',
+                  options: ['Descartes', 'Spinoza', 'Leibniz', 'Malebranche'],
+                  correct: 0,
+                  explain: "Cartesio distingue res cogitans e res extensa e ipotizza l'interazione nella ghiandola pineale."
+                },
+                {
+                  q: 'Quale filosofo ha sostenuto che l’anima è aderente al mondo poiché essa è tutti gli enti che conosce?',
+                  options: ['Aristotele', 'Platone', 'Plotino', 'Agostino'],
+                  correct: 0,
+                  explain: "Aristotele, nel De anima, afferma che l'anima è in qualche modo tutte le cose."
+                },
+                {
+                  q: 'Quale filosofo ha teorizzato la dimensione profonda dell’inconscio, concepita come insieme di attività latenti e autonome rispetto al complesso lavoro della mente?',
+                  options: ['Freud', 'Jung', 'Nietzsche', 'Schopenhauer'],
+                  correct: 0,
+                  explain: 'Sigmund Freud, con la psicoanalisi, ha esplorato l’inconscio come dimensione autonoma e dinamica.'
+                },
+                {
+                  q: 'Nel dialogo platonico Filebo, Socrate dice che talvolta l’anima sembra somigliare a?',
+                  options: ['Un libro', 'Una caverna', 'Un carro alato', 'Un fiume'],
+                  correct: 0,
+                  explain: "Nel Filebo, Socrate paragona l'anima a un libro in cui si scrivono discorsi veri e falsi."
+                },
+                {
+                  q: 'La "Critica della ragion pura" è stata scritta dal filosofo?',
+                  options: ['Immanuel Kant', 'Hegel', 'Fichte', 'Schelling'],
+                  correct: 0,
+                  explain: 'Kant pubblicò la Critica della ragion pura nel 1781 (seconda edizione 1787).'
+                },
+                {
+                  q: 'Chi scrisse la "Teoria dei sentimenti morali"?',
+                  options: ['Smith', 'Hume', 'Kant', 'Rousseau'],
+                  correct: 0,
+                  explain: 'Adam Smith, noto anche per la Ricchezza delle nazioni, scrisse la Teoria dei sentimenti morali.'
+                },
+                {
+                  q: 'Quale filosofo considera la sensazione all’origine del processo conoscitivo?',
+                  options: ['Aristotele', 'Platone', 'Cartesio', 'Kant'],
+                  correct: 0,
+                  explain: 'Aristotele, con l’empirismo gnoseologico, pone la sensazione come inizio della conoscenza.'
+                },
+                {
+                  q: 'Chi considera anima e corpo come manifestazione di una unica sostanza, unico individuo?',
+                  options: ['Spinoza', 'Descartes', 'Platone', 'Leibniz'],
+                  correct: 0,
+                  explain: 'Spinoza, con il monismo, identifica anima e corpo come due attributi della stessa sostanza.'
+                },
+                {
+                  q: 'Chi, nel Discorso sul metodo, scrisse "io penso, dunque sono"?',
+                  options: ['Descartes', 'Kant', 'Hume', 'Locke'],
+                  correct: 0,
+                  explain: 'Cartesio, nel Discorso sul metodo (1637), formula il cogito ergo sum.'
+                },
+                {
+                  q: 'Filosofo che sostiene la separazione tra anima e corpo?',
+                  options: ['Platone', 'Aristotele', 'Spinoza', 'Hegel'],
+                  correct: 0,
+                  explain: 'Platone sostiene la separazione e l’immortalità dell’anima rispetto al corpo.'
+                },
+                {
+                  q: 'La concezione secondo la quale l’anima è immortale e imprigionata nel corpo caratterizza la riflessione del filosofo?',
+                  options: ['Platone', 'Aristotele', 'Cartesio', 'Kant'],
+                  correct: 0,
+                  explain: "Platone, nel Fedone, descrive l'anima come prigioniera del corpo e desiderosa di liberarsene."
+                },
+                {
+                  q: 'Il libro "L’espressione delle emozioni negli uomini e negli animali" è stato scritto da?',
+                  options: ['Darwin', 'Freud', 'James', 'Lange'],
+                  correct: 0,
+                  explain: 'Charles Darwin, con quest’opera del 1872, fonda lo studio evoluzionistico delle emozioni.'
+                },
+                {
+                  q: 'Il carattere passivo della sensazione e l’attività del pensiero sono sottolineati, in particolare, nella riflessione filosofica di?',
+                  options: ['Platone', 'Aristotele', 'Kant', 'Hume'],
+                  correct: 0,
+                  explain: "Platone distingue la passività della sensazione dall'attività del pensiero razionale."
+                },
+                {
+                  q: 'Secondo Aristotele il corpo è?',
+                  options: ['Strumento dell’anima', 'Prigione dell’anima', 'Sostanza autonoma', 'Illusione'],
+                  correct: 0,
+                  explain: "Aristotele considera il corpo come strumento (organon) dell'anima, in un rapporto ilemorfico."
+                },
+                {
+                  q: 'La contrapposizione tra anima e corpo è sottolineata attraverso una analisi linguistica nell’opera Cratilo dal filosofo?',
+                  options: ['Platone', 'Aristotele', 'Eraclito', 'Parmenide'],
+                  correct: 0,
+                  explain: "Nel Cratilo Platone analizza etimologicamente il termine 'soma' (corpo) come 'sema' (tomba) dell'anima."
+                },
+                {
+                  q: 'Storicamente, nella riflessione filosofica il sentimento è considerato diverso da emozione e passione perché rispetto ad esse è?',
+                  options: ['Più duraturo', 'Più intenso', 'Più corporeo', 'Più irrazionale'],
+                  correct: 0,
+                  explain: 'Il sentimento è una disposizione affettiva più stabile e duratura rispetto all’emozione passeggera.'
+                },
+                {
+                  q: 'Quale filosofo ha posto attenzione alle passioni per indagare il concetto di "potere" e il ruolo dello stato?',
+                  options: ['Hobbes', 'Machiavelli', 'Rousseau', 'Kant'],
+                  correct: 0,
+                  explain: 'Thomas Hobbes, nel Leviatano, analizza le passioni umane come base del potere politico.'
+                },
+                {
+                  q: 'Con la nozione di res cogitans il filosofo René Descartes si riferisce:',
+                  options: ['All’anima', 'Al corpo', 'A Dio', 'Al mondo'],
+                  correct: 0,
+                  explain: 'Res cogitans è la sostanza pensante, identificata con l’anima.'
+                },
+                {
+                  q: 'La necessità delle emozioni indica che?',
+                  options: ['Le emozioni non possono essere completamente governate dalla ragione', 'Le emozioni sono sempre razionali', 'Le emozioni sono illusioni', 'Le emozioni sono peccati'],
+                  correct: 0,
+                  explain: 'Le emozioni hanno una componente involontaria e corporea che la ragione non può dominare del tutto.'
+                },
+                {
+                  q: "In cosa Descartes considera possibile l'interazione tra anima e corpo?",
+                  options: ['Nella ghiandola pineale, o epifisi', 'Nel cuore', 'Nel cervello', 'Nel fegato'],
+                  correct: 0,
+                  explain: "Cartesio indica la ghiandola pineale come sede dell'interazione tra res cogitans e res extensa."
+                },
+                {
+                  q: 'Quale filosofo ha concepito corpo e anima come sostanze differenti tra le quali non vi è relazione causale?',
+                  options: ['Descartes', 'Spinoza', 'Leibniz', 'Malebranche'],
+                  correct: 0,
+                  explain: 'Cartesio, con il dualismo, separa anima e corpo; Malebranche risolverà con l’occasionalismo.'
+                },
+                {
+                  q: 'Tecnica in rapporto alla verità, come una forma di disvelamento:',
+                  options: ['Heidegger', 'Aristotele', 'Bacone', 'Cartesio'],
+                  correct: 0,
+                  explain: "Heidegger pensa la tecnica come un modo del disvelamento (aletheia) dell'essere."
+                },
+                {
+                  q: 'Quale filosofo è stato tra i primi a tracciare una distinzione tra tecnica e prassi?',
+                  options: ['Aristotele', 'Platone', 'Heidegger', 'Marx'],
+                  correct: 0,
+                  explain: 'Aristotele distingue tra poiesis (produzione) e praxis (azione morale e politica).'
+                },
+                {
+                  q: 'L’autore dell’"Etica nicomachea" è il filosofo?',
+                  options: ['Aristotele', 'Platone', 'Kant', 'Spinoza'],
+                  correct: 0,
+                  explain: 'L’Etica nicomachea è opera di Aristotele, dedicata alla virtù e alla felicità.'
+                },
+                {
+                  q: 'Qual è il principale fattore che permette alla praxis di trasformarsi in poiesis?',
+                  options: ['La registrazione', 'La ripetizione', 'La riflessione', 'La tecnica'],
+                  correct: 0,
+                  explain: 'La registrazione (scrittura, tecnologia) permette di oggettivare e trasmettere l’agire.'
+                },
+                {
+                  q: 'Con la nozione di "poiesis" si indica?',
+                  options: ['L’attività del produrre', 'L’azione morale', 'La contemplazione', 'Il discorso persuasivo'],
+                  correct: 0,
+                  explain: 'Poiesis è il fare produttivo, distinto dalla praxis come agire etico-politico.'
+                },
+                {
+                  q: 'Ai fini della mediazione resa possibile dalla tecnica, per la competenza sono decisive?',
+                  options: ['Le procedure interpretative', 'Le leggi fisiche', 'Le norme morali', 'Le intuizioni artistiche'],
+                  correct: 0,
+                  explain: 'La competenza tecnica richiede procedure interpretative e capacità di mediazione.'
+                },
+                {
+                  q: 'Quale filosofo è l’autore del libro "L’uomo a una dimensione"?',
+                  options: ['Marcuse', 'Adorno', 'Horkheimer', 'Habermas'],
+                  correct: 0,
+                  explain: "Herbert Marcuse, esponente della Scuola di Francoforte, critica la società industriale avanzata."
+                }
+              ];
+              /* ============================================================
+                 LOGICA DEL QUIZ
+                 ============================================================ */
+              let currentIndex = 0;
+              let score = 0;
+              let answered = false;
+              const stage = document.getElementById('quizStage');
+              const progressBar = document.getElementById('quizProgressBar');
+              const resultBox = document.getElementById('quizResult');
+              const resultTitle = document.getElementById('quizResultTitle');
+              const resultScore = document.getElementById('quizResultScore');
+              const resultMessage = document.getElementById('quizResultMessage');
+              const startBtn = document.getElementById('quizStartBtn');
+              const restartBtn = document.getElementById('quizRestartBtn');
+
+              function updateProgress() {
+                const pct = (currentIndex / questions.length) * 100;
+                progressBar.style.width = pct + '%';
+              }
+
+              function renderQuestion() {
+                if (currentIndex >= questions.length) {
+                  showResult();
+                  return;
+                }
+                answered = false;
+                const q = questions[currentIndex];
+                updateProgress();
+                stage.innerHTML = `
+      <div class="quiz-question-card">
+        <p class="quiz-question-text">${currentIndex + 1}. ${q.q}</p>
+        <div class="quiz-options">
+          ${q.options.map((opt, i) =>
+            `<button type="button" class="quiz-option" data-index="${i}">${opt}</button>`
+          ).join('')}
+        </div>
+        <div class="quiz-feedback-slot"></div>
       </div>
-    </div>
-  </div>
+    `;
+                stage.querySelectorAll('.quiz-option').forEach(btn => {
+                  btn.addEventListener('click', () => handleAnswer(parseInt(btn.dataset.index, 10)));
+                });
+              }
 
-  <!-- DILEMMI -->
-   <div class="giardino-panel" id="giardino-dilemmi" role="tabpanel" aria-labelledby="tab-dilemmi" tabindex="0">
-    <div id="giardinoDilemmaContent"></div>
-  </div>
-
-  <!-- RESPIRO -->
-  <div class="giardino-panel" id="giardino-respiro" role="tabpanel" aria-labelledby="tab-respiro" tabindex="0">
-    <div class="giardino-breath-wrap">
-      <div class="giardino-breath-circle-wrap">
-        <div class="giardino-breath-circle" id="giardinoBreathCircle"></div>
-        <div class="giardino-breath-label" id="giardinoBreathLabel">Pronto</div>
+              function handleAnswer(selected) {
+                if (answered) return;
+                answered = true;
+                const q = questions[currentIndex];
+                const options = stage.querySelectorAll('.quiz-option');
+                const slot = stage.querySelector('.quiz-feedback-slot');
+                options.forEach((btn, i) => {
+                  btn.disabled = true;
+                  if (i === q.correct) btn.classList.add('correct');
+                  else if (i === selected) btn.classList.add('wrong');
+                });
+                if (selected === q.correct) score++;
+                slot.innerHTML = `
+      <div class="quiz-feedback">
+        <strong>${selected === q.correct ? '✓ Corretto.' : '✗ Non è la risposta giusta.'}</strong>
+        ${q.explain}
       </div>
-      <div class="giardino-breath-quote">
-        <p id="giardinoBreathQuote"></p>
-      </div>
-      <button type="button" class="giardino-breath-toggle" id="giardinoBreathToggle">Inizia il respiro</button>
-    </div>
-  </div>
-</section>
+      <button type="button" class="quiz-next-btn" id="quizNextBtn">
+        ${currentIndex < questions.length - 1 ? 'Prossima domanda →' : 'Vedi il risultato →'}
+      </button>
+    `;
+                const nextBtn = document.getElementById('quizNextBtn');
+                nextBtn.addEventListener('click', () => {
+                  currentIndex++;
+                  renderQuestion();
+                });
+              }
 
+              function showResult() {
+                progressBar.style.width = '100%';
+                stage.hidden = true;
+                resultBox.hidden = false;
+                const total = questions.length;
+                const pct = Math.round((score / total) * 100);
+                resultTitle.textContent = pct >= 80 ? 'Ottimo lavoro, filosofo!' : pct >= 50 ? 'Buona base, continua a esplorare.' : 'Un inizio: la filosofia è un cammino.';
+                resultScore.textContent = `Hai risposto correttamente a ${score} domande su ${total} (${pct}%).`;
+                resultMessage.textContent = pct >= 80 ?
+                  'Conosci bene i concetti fondamentali. Potresti approfondire i nodi più complessi, come la teoria della verità o il rapporto anima-corpo.' :
+                  pct >= 50 ?
+                  'Hai una buona preparazione di base. Rivedi gli argomenti in cui hai sbagliato e prova di nuovo: la filosofia si costruisce per domande.' :
+                  'La filosofia è un viaggio, non una gara. Rileggi le spiegazioni, esplora i moduli e riprova: ogni errore è un’occasione per pensare meglio.';
+              }
 
-         
+              function startQuiz() {
+                currentIndex = 0;
+                score = 0;
+                resultBox.hidden = true;
+                stage.hidden = false;
+                renderQuestion();
+              }
+              startBtn.addEventListener('click', startQuiz);
+              restartBtn.addEventListener('click', startQuiz);
+              // Avvio automatico se si vuole (opzionale): decommentare la riga sotto
+              // startQuiz();
+            })();
+          </script>
 
           <section class=ua aria-label="Ultimi Articoli">
             <div class=ua-head>
@@ -6466,7 +7520,7 @@ a[role="button"] {
         function x() {
           p.classList.remove("open"), p.setAttribute("aria-hidden", "true")
         }
-               h && p && h.addEventListener("click", (e => {
+        h && p && h.addEventListener("click", (e => {
           e.preventDefault(), p.classList.add("open"), p.setAttribute("aria-hidden", "false");
           const first = p.querySelector('input[type="email"]');
           if (first) setTimeout(() => first.focus(), 30);
@@ -6475,7 +7529,10 @@ a[role="button"] {
         })), p && (p.addEventListener("click", (e => {
           e.target === p && x() && h && h.focus()
         })), document.addEventListener("keydown", (e => {
-          if ("Escape" === e.key && p.classList.contains("open")) { x(); h && h.focus(); }
+          if ("Escape" === e.key && p.classList.contains("open")) {
+            x();
+            h && h.focus();
+          }
         }))), v && v.addEventListener("submit", (async function(e) {
           e.preventDefault(), e.stopPropagation();
           const t = v.querySelector('input[type="email"]'),
@@ -7782,7 +8839,6 @@ a[role="button"] {
       }()
     </script>
 
-
     <script>
       ! function() {
         "use strict";
@@ -8305,7 +9361,7 @@ a[role="button"] {
         const btn = document.getElementById('foBtn');
         const resp = document.getElementById('foResponse');
         let busy = false;
-                form.addEventListener('submit', e => {
+        form.addEventListener('submit', e => {
           e.preventDefault();
           if (busy) return;
           const q = input.value.trim();
@@ -8334,10 +9390,8 @@ a[role="button"] {
           const label = btn.textContent;
           btn.textContent = 'Ascolta…';
           resp.innerHTML = '<span class="fo-listening">L\'oracolo ascolta…</span>';
-
           // Svuota l'input subito dopo l'invio (nuovo)
           input.value = '';
-
           setTimeout(() => {
             resp.innerHTML = constellationSVG() +
               '<div class="fo-fragment"><blockquote></blockquote><cite></cite></div>';
@@ -8348,7 +9402,6 @@ a[role="button"] {
             const f = pick(q);
             bq.textContent = f.t;
             ci.textContent = f.r;
-
             // Aggiungi bottone "Nuova domanda" (nuovo)
             const resetBtn = document.createElement('button');
             resetBtn.type = 'button';
@@ -8360,7 +9413,6 @@ a[role="button"] {
               input.focus();
             });
             box.appendChild(resetBtn);
-
             requestAnimationFrame(() => {
               c.classList.add('visible');
               setTimeout(() => box.classList.add('visible'), reduceMotion ? 50 : 900);
@@ -8398,410 +9450,640 @@ a[role="button"] {
         resizeRiver();
         requestAnimationFrame(loop);
       })();
-      
     </script>
     <script>
-(function(){
-  'use strict';
-  const root = document.querySelector('.giardino');
-  if (!root) return;
+      (function() {
+        'use strict';
+        const root = document.querySelector('.giardino');
+        if (!root) return;
+        /* ── TAB SWITCHING ── */
+        const tabs = root.querySelectorAll('.giardino-tabs button');
+        const panels = root.querySelectorAll('.giardino-panel');
+        tabs.forEach(tab => {
+          tab.addEventListener('click', () => {
+            const target = tab.dataset.tab;
+            tabs.forEach(t => {
+              const on = t === tab;
+              t.classList.toggle('active', on);
+              t.setAttribute('aria-selected', on ? 'true' : 'false');
+            });
+            panels.forEach(p => p.classList.toggle('active', p.id === 'giardino-' + target));
+          });
+        });
+        /* ============================================================
+           ORACOLO PROFONDO
+           ============================================================ */
+        const oracleData = {
+          amore: {
+            keywords: ['amore', 'amare', 'cuore', 'passione', 'innamor', 'amor'],
+            responses: [{
+                quote: "L'amore è il desiderio eterno di ciò che ci manca.",
+                author: "Platone · Simposio",
+                reflection: "Per Platone, amare è riconoscere una mancanza e cercare nell'altro la metà che ci completa. Ma l'amore più alto non è possesso: è contemplazione del bello, scala verso l'infinito. Chi ama davvero non trattiene, eleva."
+              },
+              {
+                quote: "Dove c'è amore, c'è sempre anche il rischio di soffrire.",
+                author: "Erich Fromm · L'arte di amare",
+                reflection: "Amare è un atto di coraggio: significa esporsi, senza garanzie. Fromm ci ricorda che l'amore maturo non è dipendenza ma unione tra due esseri che restano liberi. Il rischio non è un difetto dell'amore: è la sua sostanza."
+              }
+            ]
+          },
+          felicita: {
+            keywords: ['felic', 'gioia', 'content', 'soddisf', 'bene', 'seren'],
+            responses: [{
+                quote: "La felicità è il senso e lo scopo della vita, l'intero scopo dell'esistenza umana.",
+                author: "Aristotele · Etica Nicomachea",
+                reflection: "La felicità aristotelica — eudaimonia — non è un'emozione ma un'attività: l'esercizio eccellente delle proprie virtù. Non si è felici per caso: si diventa felici praticando ciò che ci rende pienamente umani."
+              },
+              {
+                quote: "Non è ricco chi ha molto, ma chi ha poco bisogno.",
+                author: "Epicuro · Lettera a Meneceo",
+                reflection: "Epicuro ci insegna che la felicità non si aggiunge, si sottrae: eliminando i desideri vani si scopre una gioia semplice e stabile. La pace interiore non dipende dal mondo, ma da ciò che decidiamo di desiderare."
+              }
+            ]
+          },
+          morte: {
+            keywords: ['morte', 'morire', 'fine', 'muoio', 'lutto', 'perdita', 'defunt'],
+            responses: [{
+                quote: "La morte non è nulla per noi: quando ci siamo noi, non c'è la morte; quando c'è la morte, non ci siamo noi.",
+                author: "Epicuro · Lettera a Meneceo",
+                reflection: "Epicuro affronta la morte con lucidità radicale: temerla è irrazionale, perché non possiamo incontrarla. Non è un'esperienza, è l'orizzonte di ogni esperienza. Accettarlo non è rassegnazione: è liberazione."
+              },
+              {
+                quote: "Chi non teme la morte ha già vinto la paura più grande.",
+                author: "Seneca · Lettere a Lucilio",
+                reflection: "Seneca invita a meditare ogni giorno sulla finitezza, non per disperazione ma per lucidità. Vivere come se ogni giorno fosse l'ultimo non è drammatizzare: è assaporare. La morte dà senso al tempo, non lo toglie."
+              }
+            ]
+          },
+          senso: {
+            keywords: ['senso', 'scopo', 'perché', 'vivere', 'esistere', 'significato', 'nulla', 'vuoto', 'perche'],
+            responses: [{
+                quote: "Chi ha un perché per vivere può sopportare quasi ogni come.",
+                author: "Nietzsche · Crepuscolo degli idoli",
+                reflection: "Nietzsche coglie un punto decisivo: l'essere umano non teme la sofferenza, teme la sofferenza senza scopo. Il senso non è dato, è creato. Chi trova una ragione per alzarsi al mattino può attraversare qualsiasi notte."
+              },
+              {
+                quote: "La vita non esaminata non vale la pena di essere vissuta.",
+                author: "Socrate · Apologia",
+                reflection: "Socrate intendeva che vivere senza porsi domande è rinunciare a essere pienamente umani. L'autenticità comincia con il coraggio di chiedersi: perché?"
+              }
+            ]
+          },
+          liberta: {
+            keywords: ['libert', 'libero', 'scelta', 'scegliere', 'destino', 'determin'],
+            responses: [{
+                quote: "L'uomo è condannato ad essere libero: condannato perché non si è creato da solo, libero perché, una volta gettato nel mondo, è responsabile di tutto ciò che fa.",
+                author: "Sartre · L'esistenzialismo è un umanismo",
+                reflection: "Per Sartre, la libertà non è un dono ma un peso: non possiamo non scegliere, anche non scegliere è una scelta. Ma proprio in questa condanna risiede la dignità umana: siamo gli autori — mai finiti — della nostra vita."
+              },
+              {
+                quote: "La libertà è la consapevolezza della necessità.",
+                author: "Hegel · Lezioni di filosofia della storia",
+                reflection: "Hegel ribalta l'idea comune: liberi non è chi fa ciò che vuole, ma chi comprende ciò che lo determina e vi si riconosce. La libertà è un cammino di conoscenza, non un'assenza di vincoli."
+              }
+            ]
+          },
+          verita: {
+            keywords: ['verità', 'vero', 'bugia', 'menzogna', 'realtà', 'conosc', 'sapere', 'dubbio', 'verita'],
+            responses: [{
+                quote: "Conosci te stesso.",
+                author: "Iscrizione del tempio di Delfi · Socrate",
+                reflection: "Il più antico degli imperativi filosofici. Non significa introspezione narcisistica, ma riconoscere i propri limiti, le proprie ombre, la propria ignoranza. Chi si conosce smette di mentirsi — e comincia a pensare."
+              },
+              {
+                quote: "Non esistono fatti, solo interpretazioni.",
+                author: "Nietzsche · Frammenti postumi",
+                reflection: "Nietzsche non nega la realtà: nega che possiamo guardarla da nessun luogo. Ogni sguardo è prospettico, ogni verità ha una storia. La saggezza non è raggiungere l'oggettività, ma moltiplicare le prospettive."
+              }
+            ]
+          },
+          tempo: {
+            keywords: ['tempo', 'passato', 'futuro', 'presente', 'ora', 'attimo', 'età', 'invecchi'],
+            responses: [{
+                quote: "Non si può entrare due volte nello stesso fiume.",
+                author: "Eraclito · Frammenti",
+                reflection: "Eraclito vede nell'acqua l'immagine dell'essere: tutto scorre, nulla permane. Non è una condanna ma una liberazione: se nulla è fisso, nulla è definitivo. Anche il dolore, come il fiume, passa."
+              },
+              {
+                quote: "Il tempo è un bambino che gioca, che sposta le pedine: il regno di un bambino.",
+                author: "Eraclito · Frammenti",
+                reflection: "Un'immagine enigmatica: il tempo non è lineare né finalistico. È gioco, caso, innocenza. Forse la saggezza non è controllare il tempo, ma giocare con lui senza pretendere di vincerlo."
+              }
+            ]
+          },
+          paura: {
+            keywords: ['paura', 'ansia', 'angosc', 'preoccup', 'spavent', 'terror', 'insicur'],
+            responses: [{
+                quote: "Non è perché le cose sono difficili che non osiamo: è perché non osiamo che sono difficili.",
+                author: "Seneca · Lettere a Lucilio",
+                reflection: "Seneca capovolge la logica della paura: spesso non evitiamo qualcosa perché è difficile, ma lo rendiamo difficile evitandolo. La paura cresce nell'ombra dell'evitamento. Affrontarla è l'unico modo per ridurla."
+              },
+              {
+                quote: "L'uomo che teme la morte non fa nulla da vivo.",
+                author: "Seneca · Lettere a Lucilio",
+                reflection: "La paura della fine paralizza l'inizio. Chi spende la vita a proteggerla dalla morte dimentica di viverla. La saggezza stoica è ricordare che la qualità del tempo conta più della sua quantità."
+              }
+            ]
+          },
+          se: {
+            keywords: ['io', 'identità', 'chi sono', 'me stesso', 'anima', 'personal', 'essere'],
+            responses: [{
+                quote: "Penso, dunque sono.",
+                author: "Cartesio · Discorso sul metodo",
+                reflection: "Nel dubbio radicale, Cartesio cerca un punto fermo: anche dubitando di tutto, non posso dubitare di stare dubitando. Il pensiero è la prima certezza. Ma essere un pensiero non esaurisce ciò che siamo."
+              },
+              {
+                quote: "L'uomo è la misura di tutte le cose.",
+                author: "Protagora · Frammenti",
+                reflection: "Protagora sposta il centro: non esiste una verità valida per tutti, ma ogni cosa è come appare a chi la osserva. Non è relativismo banale: è riconoscimento che la conoscenza passa sempre attraverso un soggetto."
+              }
+            ]
+          }
+        };
+        const defaultResponses = [{
+            quote: "La meraviglia è l'inizio della filosofia.",
+            author: "Aristotele · Metafisica",
+            reflection: "Prima di ogni risposta c'è una domanda, e prima di ogni domanda c'è la meraviglia: la capacità di vedere l'ordinario come straordinario. La filosofia non è un sapere in più, è uno sguardo in più."
+          },
+          {
+            quote: "Il gufo di Minerva spicca il volo solo al crepuscolo.",
+            author: "Hegel · Lineamenti di filosofia del diritto",
+            reflection: "La filosofia arriva sempre dopo: comprende il mondo quando è già accaduto. Non è una debolezza ma una vocazione: la saggezza non guida l'azione, la illumina quando è compiuta."
+          },
+          {
+            quote: "Ci sono più cose in cielo e in terra di quante ne sogni la tua filosofia.",
+            author: "Shakespeare · Amleto",
+            reflection: "Una delle più belle umiliazioni del pensiero: la realtà eccede sempre le nostre categorie. Il filosofo autentico non è chi ha tutte le risposte, ma chi sa che la sua mappa non è il territorio."
+          }
+        ];
+        const oracleInput = document.getElementById('giardinoOracleInput');
+        const oracleBtn = document.getElementById('giardinoOracleBtn');
+        const oracleResponse = document.getElementById('giardinoOracleResponse');
 
-  /* ── TAB SWITCHING ── */
-  const tabs = root.querySelectorAll('.giardino-tabs button');
-  const panels = root.querySelectorAll('.giardino-panel');
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      const target = tab.dataset.tab;
-      tabs.forEach(t => {
-        const on = t === tab;
-        t.classList.toggle('active', on);
-        t.setAttribute('aria-selected', on ? 'true' : 'false');
-      });
-      panels.forEach(p => p.classList.toggle('active', p.id === 'giardino-' + target));
-    });
-  });
-
-  /* ============================================================
-     ORACOLO PROFONDO
-     ============================================================ */
-  const oracleData = {
-    amore:{ keywords:['amore','amare','cuore','passione','innamor','amor'],
-      responses:[
-        {quote:"L'amore è il desiderio eterno di ciò che ci manca.", author:"Platone · Simposio", reflection:"Per Platone, amare è riconoscere una mancanza e cercare nell'altro la metà che ci completa. Ma l'amore più alto non è possesso: è contemplazione del bello, scala verso l'infinito. Chi ama davvero non trattiene, eleva."},
-        {quote:"Dove c'è amore, c'è sempre anche il rischio di soffrire.", author:"Erich Fromm · L'arte di amare", reflection:"Amare è un atto di coraggio: significa esporsi, senza garanzie. Fromm ci ricorda che l'amore maturo non è dipendenza ma unione tra due esseri che restano liberi. Il rischio non è un difetto dell'amore: è la sua sostanza."}
-      ]},
-    felicita:{ keywords:['felic','gioia','content','soddisf','bene','seren'],
-      responses:[
-        {quote:"La felicità è il senso e lo scopo della vita, l'intero scopo dell'esistenza umana.", author:"Aristotele · Etica Nicomachea", reflection:"La felicità aristotelica — eudaimonia — non è un'emozione ma un'attività: l'esercizio eccellente delle proprie virtù. Non si è felici per caso: si diventa felici praticando ciò che ci rende pienamente umani."},
-        {quote:"Non è ricco chi ha molto, ma chi ha poco bisogno.", author:"Epicuro · Lettera a Meneceo", reflection:"Epicuro ci insegna che la felicità non si aggiunge, si sottrae: eliminando i desideri vani si scopre una gioia semplice e stabile. La pace interiore non dipende dal mondo, ma da ciò che decidiamo di desiderare."}
-      ]},
-    morte:{ keywords:['morte','morire','fine','muoio','lutto','perdita','defunt'],
-      responses:[
-        {quote:"La morte non è nulla per noi: quando ci siamo noi, non c'è la morte; quando c'è la morte, non ci siamo noi.", author:"Epicuro · Lettera a Meneceo", reflection:"Epicuro affronta la morte con lucidità radicale: temerla è irrazionale, perché non possiamo incontrarla. Non è un'esperienza, è l'orizzonte di ogni esperienza. Accettarlo non è rassegnazione: è liberazione."},
-        {quote:"Chi non teme la morte ha già vinto la paura più grande.", author:"Seneca · Lettere a Lucilio", reflection:"Seneca invita a meditare ogni giorno sulla finitezza, non per disperazione ma per lucidità. Vivere come se ogni giorno fosse l'ultimo non è drammatizzare: è assaporare. La morte dà senso al tempo, non lo toglie."}
-      ]},
-    senso:{ keywords:['senso','scopo','perché','vivere','esistere','significato','nulla','vuoto','perche'],
-      responses:[
-        {quote:"Chi ha un perché per vivere può sopportare quasi ogni come.", author:"Nietzsche · Crepuscolo degli idoli", reflection:"Nietzsche coglie un punto decisivo: l'essere umano non teme la sofferenza, teme la sofferenza senza scopo. Il senso non è dato, è creato. Chi trova una ragione per alzarsi al mattino può attraversare qualsiasi notte."},
-        {quote:"La vita non esaminata non vale la pena di essere vissuta.", author:"Socrate · Apologia", reflection:"Socrate intendeva che vivere senza porsi domande è rinunciare a essere pienamente umani. L'autenticità comincia con il coraggio di chiedersi: perché?"}
-      ]},
-    liberta:{ keywords:['libert','libero','scelta','scegliere','destino','determin'],
-      responses:[
-        {quote:"L'uomo è condannato ad essere libero: condannato perché non si è creato da solo, libero perché, una volta gettato nel mondo, è responsabile di tutto ciò che fa.", author:"Sartre · L'esistenzialismo è un umanismo", reflection:"Per Sartre, la libertà non è un dono ma un peso: non possiamo non scegliere, anche non scegliere è una scelta. Ma proprio in questa condanna risiede la dignità umana: siamo gli autori — mai finiti — della nostra vita."},
-        {quote:"La libertà è la consapevolezza della necessità.", author:"Hegel · Lezioni di filosofia della storia", reflection:"Hegel ribalta l'idea comune: liberi non è chi fa ciò che vuole, ma chi comprende ciò che lo determina e vi si riconosce. La libertà è un cammino di conoscenza, non un'assenza di vincoli."}
-      ]},
-    verita:{ keywords:['verità','vero','bugia','menzogna','realtà','conosc','sapere','dubbio','verita'],
-      responses:[
-        {quote:"Conosci te stesso.", author:"Iscrizione del tempio di Delfi · Socrate", reflection:"Il più antico degli imperativi filosofici. Non significa introspezione narcisistica, ma riconoscere i propri limiti, le proprie ombre, la propria ignoranza. Chi si conosce smette di mentirsi — e comincia a pensare."},
-        {quote:"Non esistono fatti, solo interpretazioni.", author:"Nietzsche · Frammenti postumi", reflection:"Nietzsche non nega la realtà: nega che possiamo guardarla da nessun luogo. Ogni sguardo è prospettico, ogni verità ha una storia. La saggezza non è raggiungere l'oggettività, ma moltiplicare le prospettive."}
-      ]},
-    tempo:{ keywords:['tempo','passato','futuro','presente','ora','attimo','età','invecchi'],
-      responses:[
-        {quote:"Non si può entrare due volte nello stesso fiume.", author:"Eraclito · Frammenti", reflection:"Eraclito vede nell'acqua l'immagine dell'essere: tutto scorre, nulla permane. Non è una condanna ma una liberazione: se nulla è fisso, nulla è definitivo. Anche il dolore, come il fiume, passa."},
-        {quote:"Il tempo è un bambino che gioca, che sposta le pedine: il regno di un bambino.", author:"Eraclito · Frammenti", reflection:"Un'immagine enigmatica: il tempo non è lineare né finalistico. È gioco, caso, innocenza. Forse la saggezza non è controllare il tempo, ma giocare con lui senza pretendere di vincerlo."}
-      ]},
-    paura:{ keywords:['paura','ansia','angosc','preoccup','spavent','terror','insicur'],
-      responses:[
-        {quote:"Non è perché le cose sono difficili che non osiamo: è perché non osiamo che sono difficili.", author:"Seneca · Lettere a Lucilio", reflection:"Seneca capovolge la logica della paura: spesso non evitiamo qualcosa perché è difficile, ma lo rendiamo difficile evitandolo. La paura cresce nell'ombra dell'evitamento. Affrontarla è l'unico modo per ridurla."},
-        {quote:"L'uomo che teme la morte non fa nulla da vivo.", author:"Seneca · Lettere a Lucilio", reflection:"La paura della fine paralizza l'inizio. Chi spende la vita a proteggerla dalla morte dimentica di viverla. La saggezza stoica è ricordare che la qualità del tempo conta più della sua quantità."}
-      ]},
-    se:{ keywords:['io','identità','chi sono','me stesso','anima','personal','essere'],
-      responses:[
-        {quote:"Penso, dunque sono.", author:"Cartesio · Discorso sul metodo", reflection:"Nel dubbio radicale, Cartesio cerca un punto fermo: anche dubitando di tutto, non posso dubitare di stare dubitando. Il pensiero è la prima certezza. Ma essere un pensiero non esaurisce ciò che siamo."},
-        {quote:"L'uomo è la misura di tutte le cose.", author:"Protagora · Frammenti", reflection:"Protagora sposta il centro: non esiste una verità valida per tutti, ma ogni cosa è come appare a chi la osserva. Non è relativismo banale: è riconoscimento che la conoscenza passa sempre attraverso un soggetto."}
-      ]}
-  };
-  const defaultResponses = [
-    {quote:"La meraviglia è l'inizio della filosofia.", author:"Aristotele · Metafisica", reflection:"Prima di ogni risposta c'è una domanda, e prima di ogni domanda c'è la meraviglia: la capacità di vedere l'ordinario come straordinario. La filosofia non è un sapere in più, è uno sguardo in più."},
-    {quote:"Il gufo di Minerva spicca il volo solo al crepuscolo.", author:"Hegel · Lineamenti di filosofia del diritto", reflection:"La filosofia arriva sempre dopo: comprende il mondo quando è già accaduto. Non è una debolezza ma una vocazione: la saggezza non guida l'azione, la illumina quando è compiuta."},
-    {quote:"Ci sono più cose in cielo e in terra di quante ne sogni la tua filosofia.", author:"Shakespeare · Amleto", reflection:"Una delle più belle umiliazioni del pensiero: la realtà eccede sempre le nostre categorie. Il filosofo autentico non è chi ha tutte le risposte, ma chi sa che la sua mappa non è il territorio."}
-  ];
-
-  const oracleInput = document.getElementById('giardinoOracleInput');
-  const oracleBtn = document.getElementById('giardinoOracleBtn');
-  const oracleResponse = document.getElementById('giardinoOracleResponse');
-
-  function findResponse(q){
-    const lower = q.toLowerCase();
-    for (const data of Object.values(oracleData)){
-      if (data.keywords.some(k => lower.includes(k))){
-        return data.responses[Math.floor(Math.random() * data.responses.length)];
-      }
-    }
-    return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
-  }
-   function consultOracle(){
-    const q = oracleInput.value.trim();
-    if (!q){ oracleInput.focus(); return; }
-    oracleBtn.disabled = true;
-    oracleResponse.innerHTML = '<div class="giardino-consulting"><span class="glyph">✧</span><p>L\'oracolo consulta le stelle...</p></div>';
-
-    // Svuota subito l'input così puoi scrivere la prossima domanda
-    oracleInput.value = '';
-
-    setTimeout(() => {
-      const r = findResponse(q);
-      oracleResponse.innerHTML =
-        '<div class="giardino-oracle-card">' +
-          '<div class="giardino-oracle-quote">"' + r.quote + '"</div>' +
-          '<div class="giardino-oracle-author">— ' + r.author + '</div>' +
-          '<div class="giardino-oracle-reflection">' + r.reflection + '</div>' +
-          '<button type="button" class="giardino-next" id="giardinoOracleReset" ' +
-            'style="display:block;margin:20px auto 0;">↻ Nuova domanda</button>' +
-        '</div>';
-      oracleBtn.disabled = false;
-
-      // Reset: riporta lo stato iniziale e mette a fuoco l'input
-      document.getElementById('giardinoOracleReset').addEventListener('click', () => {
-        oracleResponse.innerHTML =
-          '<div class="giardino-consulting">' +
-            '<span class="glyph" style="animation:none;">✧</span>' +
-            '<p style="animation:none;">L\'oracolo attende la tua domanda...</p>' +
-          '</div>';
-        oracleInput.value = '';
-        oracleInput.focus();
-      });
-    }, 1700);
-  }
-  oracleBtn.addEventListener('click', consultOracle);
-  oracleInput.addEventListener('keypress', e => { if (e.key === 'Enter') consultOracle(); });
-
-  /* ============================================================
-     DILEMMI ETICI
-     ============================================================ */
-  const dilemmas = [
-    { text:"Un carro fuori controllo sta per travolgere cinque persone. Puoi azionare una leva che lo devierebbe su un altro binario, dove però si trova una sola persona. Cosa fai?",
-      choices:[
-        {text:"Non tocco la leva. Non voglio essere la causa diretta di una morte.", school:"Deontologismo · Kant", tag:"kantiano",
-         interpretation:"Per Kant, non possiamo mai usare un essere umano come mezzo per un fine, nemmeno nobile. La tua scelta rispetta l'inviolabilità della persona: meglio lasciare che accada che farlo accadere. Ma il prezzo è alto: cinque vite contro la purezza delle tue mani."},
-        {text:"Aziono la leva. Salvare cinque vite vale il sacrificio di una.", school:"Utilitarismo · Bentham, Mill", tag:"utilitarista",
-         interpretation:"La logica utilitarista è chiara: massimizzare il bene complessivo. Cinque vite pesano più di una. È una scelta razionale, calcolabile — ma chiede di accettare che una persona diventi un numero."},
-        {text:"Resto paralizzato. Non so decidere.", school:"Esistenzialismo · Kierkegaard, Sartre", tag:"esistenzialista",
-         interpretation:"L'angoscia non è debolezza: è la vertigine della libertà. Sartre direbbe che anche non scegliere è una scelta. Kierkegaard vedrebbe in questa paralisi il segno di un'autenticità che rifiuta soluzioni facili."}
-      ]},
-    { text:"Sei incatenato in una caverna e vedi solo ombre proiettate sul muro. Qualcuno ti dice che fuori esiste la vera realtà, ma uscire è doloroso e accecante. Cosa fai?",
-      choices:[
-        {text:"Esco. Voglio vedere la verità, anche se fa male.", school:"Platonismo · Platone", tag:"platonico",
-         interpretation:"Per Platone, la conoscenza è un cammino di liberazione: doloroso, faticoso, ma l'unico che conduce alla luce. Chi conosce la verità ha il dovere di non tornare indietro — o di tornare, per liberare gli altri, sapendo che lo derideranno."},
-        {text:"Resto. Le ombre sono confortanti e conosciute.", school:"Scetticismo · Pirrone", tag:"scettico",
-         interpretation:"Lo scettico osserva che la verità è inaccessibile e che la ricerca ossessiva genera sofferenza. Meglio la quiete dell'ombra che l'angoscia della luce. Ma è saggezza o paura? Lo scettico risponderebbe: chissà."},
-        {text:"Esco, vedo, e torno per liberare gli altri.", school:"Filosofia politica · Platone", tag:"politico",
-         interpretation:"Il filosofo non si salva da solo: la conoscenza è responsabilità collettiva. Ma Platone sa che chi torna nella caverna rischia di essere ucciso dagli abitanti delle ombre. La saggezza ha un prezzo politico."}
-      ]},
-    { text:"Trovi un anello che ti rende invisibile. Puoi fare qualsiasi cosa senza essere visto né punito. Come lo usi?",
-      choices:[
-        {text:"Lo uso solo per il bene. La virtù non ha bisogno di testimoni.", school:"Stoicismo · Epitteto, Marco Aurelio", tag:"stoico",
-         interpretation:"Lo stoico agisce bene perché è giusto, non perché conviene. L'invisibilità è la prova suprema: sei virtuoso anche quando nessuno ti vede? La morale non è un contratto sociale, è una scelta interiore."},
-        {text:"Lo uso per me stesso. Chi non lo farebbe?", school:"Realismo politico · Callicle, Nietzsche", tag:"nietzscheano",
-         interpretation:"Callicle sosteneva che le leggi sono fatte dai deboli per frenare i forti. Nietzsche vedrebbe nell'anello la possibilità di affermare la propria volontà senza ipocrisia. Ma chi diventa invisibile rischia di diventare cieco a se stesso."},
-        {text:"Lo distruggo. Il potere assoluto corrompe chiunque.", school:"Liberalismo · Montesquieu", tag:"liberale",
-         interpretation:"Montesquieu ha insegnato che il potere tende ad abusare di se stesso: la virtù non basta, servono contrappesi. Distruggere l'anello è un atto di umiltà: riconoscere che nessuno è abbastanza saggio per essere onnipotente."}
-      ]},
-    { text:"Sai che domani il mondo finirà. Cosa fai oggi?",
-      choices:[
-        {text:"Vivo come sempre. La virtù non dipende dagli eventi.", school:"Stoicismo · Seneca", tag:"stoico",
-         interpretation:"Lo stoico non cambia il proprio comportamento in base all'imminenza della fine: la vita buona è la vita buona, oggi come domani. È la prova più radicale di coerenza: sei ciò che sei anche nell'ultimo giorno."},
-        {text:"Faccio tutto ciò che ho rimandato. Ogni attimo conta.", school:"Epicureismo · Epicuro, Orazio", tag:"epicureo",
-         interpretation:"Il carpe diem epicureo non è edonismo sfrenato: è intensificazione del presente. Se tutto finisce, l'unica cosa che resta è la qualità dell'attimo."},
-        {text:"Passo ogni momento con chi amo.", school:"Relazionalità · Heidegger, Lévinas", tag:"relazionale",
-         interpretation:"Per Heidegger siamo esseri-per-la-morte, e proprio la consapevolezza della fine rivela l'essenziale: non le cose, ma gli altri. Lévinas direbbe che l'altro è l'unico vero infinito. La fine del mondo coincide con la fine delle relazioni."}
-      ]},
-    { text:"Se fossi condannato a spingere eternamente un masso su una collina, sapendo che rotolerà sempre giù, come vivresti questa condanna?",
-      choices:[
-        {text:"Con disperazione. È l'assurdo senza senso.", school:"Nichilismo · Leopardi, Cioran", tag:"nichilista",
-         interpretation:"Il nichilista vede lucidamente: la vita è sforzo senza scopo, e fingere il contrario è illusione. Ma anche la disperazione è una forma di lucidità. Cioran direbbe che la saggezza è non consolarsi."},
-        {text:"Con gioia. La lotta stessa basta a riempire il cuore.", school:"Assurdismo · Albert Camus", tag:"camusiano",
-         interpretation:"Camus immagina Sisifo felice: la rivolta contro l'assurdo è già vittoria. Non c'è senso dato, ma la lucidità di chi continua a spingere senza illusioni è la forma più alta di dignità."},
-        {text:"Cerco un senso più alto. Forse il masso è una metafora.", school:"Spiritualismo · Agostino, Kierkegaard", tag:"spirituale",
-         interpretation:"Per il pensiero spirituale, l'assurdo è il segno di un oltre. Agostino direbbe che il nostro cuore è inquieto finché non riposa in qualcosa di più grande. Kierkegaard vedrebbe nella fede il salto che dà senso all'assurdo."}
-      ]}
-  ];
-
-  const profiles = {
-    kantiano:{title:"Il Custode del Dovere", desc:"Il tuo pensiero è guidato da principi: credi che alcune cose non si facciano mai, nemmeno per un bene superiore. La tua bussola è l'intenzione, non il risultato. Sei rigoroso, forse a volte rigido — ma sai che la dignità umana non è negoziabile."},
-    utilitarista:{title:"Il Calcolatore del Bene", desc:"Vedi il mondo in termini di conseguenze: le scelte vanno pesate sulla bilancia del bene complessivo. Sei pragmatico, razionale, a volte freddo. Il tuo rischio è dimenticare che le persone non sono numeri — ma il tuo dono è non perdere mai di vista l'insieme."},
-    esistenzialista:{title:"L'Angosciato Autentico", desc:"Senti il peso della libertà: sai che ogni scelta ti definisce e che non esistono scuse. La tua angoscia non è debolezza, è lucidità. Forse fatichi a decidere — ma quando lo fai, è con tutto te stesso."},
-    platonico:{title:"Il Cercatore di Luce", desc:"Credi che esista una verità più profonda delle apparenze, e sei disposto a soffrire per raggiungerla. Sei idealista, forse utopico — ma senza il tuo sguardo verso l'alto, il mondo resterebbe nelle ombre."},
-    scettico:{title:"Il Saggio dell'Ombra", desc:"Diffidi delle certezze facili: sai che ogni verità ha il suo rovescio. La tua forza è l'umiltà del dubbio, il tuo rischio è la paralisi. Ma chi dubita davvero è più vicino alla saggezza di chi crede di sapere."},
-    politico:{title:"Il Filosofo Cittadino", desc:"Non concepisci la conoscenza come privilegio solitario: sai che la saggezza ha un dovere verso la comunità. Sei disposto a rischiare per gli altri — a volte anche contro la loro volontà. La tua sfida è la misura."},
-    stoico:{title:"La Rocca Interiore", desc:"Cerchi la virtù nel controllo di te stesso: ciò che non dipende da te non ti turba. Sei saldo, coerente, forse a volte distaccato. Ma la tua forza è rara: la serenità che non dipende dal mondo."},
-    nietzscheano:{title:"La Volontà che Afferma", desc:"Rifiuti la morale dei deboli e cerchi di affermare la tua potenza creativa. Sei audace, vitale, a volte spietato. Il tuo dono è il coraggio — il tuo rischio è la solitudine di chi guarda troppo in alto."},
-    liberale:{title:"Il Guardiano dei Contrappesi", desc:"Sai che il potere corrompe e che nessuno è abbastanza saggio per essere onnipotente. Sei prudente, misurato, forse diffidente. Ma la tua diffidenza è una forma di saggezza: proteggi la libertà da chi la minaccerebbe in nome di un bene superiore."},
-    epicureo:{title:"Il Giardino del Presente", desc:"Cerchi la gioia semplice e la pace, non l'accumulo. Sai che i desideri vani generano sofferenza e che la felicità è sottrazione, non addizione. Il tuo rischio è l'evasione, il tuo dono è la capacità di assaporare."},
-    relazionale:{title:"L'Essere-con", desc:"Sai che l'esistenza non è un monologo: sei definito dagli incontri, dagli sguardi, dalle mani che stringi. La tua profondità è rara: vivi la finitezza come apertura all'altro."},
-    nichilista:{title:"Lo Sguardo Lucido", desc:"Rifiuti le consolazioni: vedi l'assurdo e non lo addomestichi. La tua lucidità è coraggiosa — ma attenzione a non scambiare il coraggio con la chiusura. Anche l'abisso può essere abitato."},
-    camusiano:{title:"Sisifo Felice", desc:"Hai capito la lezione più difficile: la rivolta senza speranza è già vittoria. Non cerchi un senso dato, ma lo crei spingendo. Il tuo sorriso è raro e prezioso."},
-    spirituale:{title:"L'Inquietudine che Sale", desc:"Senti che la finitezza è il segno di un oltre. Sei aperto al mistero, alla fede, alla trascendenza. Il tuo rischio è l'evasione dal reale, il tuo dono è non accontentarti delle risposte facili."}
-  };
-
-  let currentDilemma = 0;
-  let chosenTags = [];
-  const dilemmaContent = document.getElementById('giardinoDilemmaContent');
-
-  function renderDilemma(){
-    if (currentDilemma >= dilemmas.length){ renderProfile(); return; }
-    const d = dilemmas[currentDilemma];
-    dilemmaContent.innerHTML =
-      '<div class="giardino-dilemma-progress">' +
-        dilemmas.map((_, i) => '<div class="giardino-dot ' + (i < currentDilemma ? 'done' : '') + ' ' + (i === currentDilemma ? 'active' : '') + '"></div>').join('') +
-      '</div>' +
-      '<div class="giardino-dilemma-text">' + d.text + '</div>' +
-      '<div class="giardino-choices">' +
-        d.choices.map((c, i) => '<button type="button" class="giardino-choice" data-index="' + i + '">' + c.text + '</button>').join('') +
-      '</div>' +
-      '<div id="giardinoInterpretationArea"></div>';
-
-    dilemmaContent.querySelectorAll('.giardino-choice').forEach(btn => {
-      btn.addEventListener('click', () => chooseDilemma(parseInt(btn.dataset.index, 10)));
-    });
-  }
-  function chooseDilemma(index){
-    const choice = dilemmas[currentDilemma].choices[index];
-    chosenTags.push(choice.tag);
-    const area = document.getElementById('giardinoInterpretationArea');
-    area.innerHTML =
-      '<div class="giardino-interpretation">' +
-        '<div class="giardino-interp-school">' + choice.school + '</div>' +
-        '<div class="giardino-interp-text">' + choice.interpretation + '</div>' +
-        '<button type="button" class="giardino-next" id="giardinoNextBtn">' +
-          (currentDilemma < dilemmas.length - 1 ? 'Prossimo dilemma →' : 'Scopri il tuo profilo →') +
-        '</button>' +
-      '</div>';
-    document.getElementById('giardinoNextBtn').addEventListener('click', () => {
-      currentDilemma++;
-      renderDilemma();
-    });
-    dilemmaContent.querySelectorAll('.giardino-choice').forEach(b => b.style.pointerEvents = 'none');
-  }
-  function renderProfile(){
-    const counts = {};
-    chosenTags.forEach(t => counts[t] = (counts[t] || 0) + 1);
-    const mainTag = Object.entries(counts).sort((a, b) => b[1] - a[1])[0][0];
-    const p = profiles[mainTag];
-    dilemmaContent.innerHTML =
-      '<div class="giardino-profile">' +
-        '<div class="giardino-profile-title">' + p.title + '</div>' +
-        '<div class="giardino-profile-desc">' + p.desc + '</div>' +
-        '<button type="button" class="giardino-next" id="giardinoRestartBtn">↻ Ricomincia il viaggio</button>' +
-      '</div>';
-    document.getElementById('giardinoRestartBtn').addEventListener('click', () => {
-      currentDilemma = 0; chosenTags = []; renderDilemma();
-    });
-  }
-  renderDilemma();
-
-  /* ============================================================
-     RESPIRO FILOSOFICO
-     ============================================================ */
-  const breathQuotes = [
-    {text:"Respira. Non c'è nulla da risolvere in questo istante.", author:"Saggezza contemporanea"},
-    {text:"L'attenzione al respiro è il primo passo verso la presenza.", author:"Tradizione buddhista"},
-    {text:"Il momento presente è l'unico luogo in cui la vita accade.", author:"Eckhart Tolle"},
-    {text:"In ogni respiro c'è l'universo intero che entra e esce da te.", author:"Thich Nhat Hanh"},
-    {text:"Il soffio vitale è il ponte tra corpo e mente.", author:"Tradizione yogica"},
-    {text:"Impara a stare fermo. Non per fuggire, ma per ascoltare.", author:"Saggezza stoica"},
-    {text:"Il silenzio non è assenza di suono: è presenza a se stessi.", author:"Tradizione contemplativa"},
-    {text:"Ogni espirazione è un piccolo lasciar andare.", author:"Saggezza zen"}
-  ];
-  let breathActive = false, breathInterval = null, quoteInterval = null, quoteIndex = 0, exhaleTimeout = null;
-  const breathCircle = document.getElementById('giardinoBreathCircle');
-  const breathLabel = document.getElementById('giardinoBreathLabel');
-  const breathToggle = document.getElementById('giardinoBreathToggle');
-  const breathQuoteText = document.getElementById('giardinoBreathQuote');
-
-  function cycleBreath(){
-    breathCircle.classList.remove('exhale');
-    breathCircle.classList.add('inhale');
-    breathLabel.textContent = 'Inspira';
-    clearTimeout(exhaleTimeout);
-    exhaleTimeout = setTimeout(() => {
-      if (!breathActive) return;
-      breathCircle.classList.remove('inhale');
-      breathCircle.classList.add('exhale');
-      breathLabel.textContent = 'Espira';
-    }, 4000);
-  }
-  function showBreathQuote(){
-    breathQuoteText.classList.remove('show');
-    setTimeout(() => {
-      if (!breathActive) return;
-      const q = breathQuotes[quoteIndex % breathQuotes.length];
-      breathQuoteText.innerHTML = '"' + q.text + '"<span>— ' + q.author + '</span>';
-      breathQuoteText.classList.add('show');
-      quoteIndex++;
-    }, 800);
-  }
-  function startBreath(){
-    breathActive = true;
-    breathToggle.textContent = 'Interrompi il respiro';
-    cycleBreath();
-    breathInterval = setInterval(cycleBreath, 8000);
-    showBreathQuote();
-    quoteInterval = setInterval(showBreathQuote, 12000);
-  }
-  function stopBreath(){
-    breathActive = false;
-    clearInterval(breathInterval);
-    clearInterval(quoteInterval);
-    clearTimeout(exhaleTimeout);
-    breathCircle.classList.remove('inhale', 'exhale');
-    breathLabel.textContent = 'Pronto';
-    breathQuoteText.classList.remove('show');
-    breathToggle.textContent = 'Inizia il respiro';
-  }
-  breathToggle.addEventListener('click', () => { breathActive ? stopBreath() : startBreath(); });
-})();
-</script>
-
-<script>
-(function () {
-  'use strict';
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-  const SELECTORS = '.atlante, .eco-giorno, .frammento, .dialoghi, .fo-section, .giardino, .ua';
-  const modules = document.querySelectorAll(SELECTORS);
-  if (!modules.length) return;
-
-  /* ============================================================
-     RISALITA (una tantum) — mostra il modulo quando entra in viewport
-     ============================================================ */
-  if (!('IntersectionObserver' in window)) {
-    modules.forEach(m => m.classList.add('is-visible'));
-  } else {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('is-visible');
-          observer.unobserve(e.target);
+        function findResponse(q) {
+          const lower = q.toLowerCase();
+          for (const data of Object.values(oracleData)) {
+            if (data.keywords.some(k => lower.includes(k))) {
+              return data.responses[Math.floor(Math.random() * data.responses.length)];
+            }
+          }
+          return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
         }
-      });
-    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
 
-    modules.forEach(m => observer.observe(m));
+        function consultOracle() {
+          const q = oracleInput.value.trim();
+          if (!q) {
+            oracleInput.focus();
+            return;
+          }
+          oracleBtn.disabled = true;
+          oracleResponse.innerHTML = '<div class="giardino-consulting"><span class="glyph">✧</span><p>L\'oracolo consulta le stelle...</p></div>';
+          // Svuota subito l'input così puoi scrivere la prossima domanda
+          oracleInput.value = '';
+          setTimeout(() => {
+            const r = findResponse(q);
+            oracleResponse.innerHTML =
+              '<div class="giardino-oracle-card">' +
+              '<div class="giardino-oracle-quote">"' + r.quote + '"</div>' +
+              '<div class="giardino-oracle-author">— ' + r.author + '</div>' +
+              '<div class="giardino-oracle-reflection">' + r.reflection + '</div>' +
+              '<button type="button" class="giardino-next" id="giardinoOracleReset" ' +
+              'style="display:block;margin:20px auto 0;">↻ Nuova domanda</button>' +
+              '</div>';
+            oracleBtn.disabled = false;
+            // Reset: riporta lo stato iniziale e mette a fuoco l'input
+            document.getElementById('giardinoOracleReset').addEventListener('click', () => {
+              oracleResponse.innerHTML =
+                '<div class="giardino-consulting">' +
+                '<span class="glyph" style="animation:none;">✧</span>' +
+                '<p style="animation:none;">L\'oracolo attende la tua domanda...</p>' +
+                '</div>';
+              oracleInput.value = '';
+              oracleInput.focus();
+            });
+          }, 1700);
+        }
+        oracleBtn.addEventListener('click', consultOracle);
+        oracleInput.addEventListener('keypress', e => {
+          if (e.key === 'Enter') consultOracle();
+        });
+        /* ============================================================
+           DILEMMI ETICI
+           ============================================================ */
+        const dilemmas = [{
+            text: "Un carro fuori controllo sta per travolgere cinque persone. Puoi azionare una leva che lo devierebbe su un altro binario, dove però si trova una sola persona. Cosa fai?",
+            choices: [{
+                text: "Non tocco la leva. Non voglio essere la causa diretta di una morte.",
+                school: "Deontologismo · Kant",
+                tag: "kantiano",
+                interpretation: "Per Kant, non possiamo mai usare un essere umano come mezzo per un fine, nemmeno nobile. La tua scelta rispetta l'inviolabilità della persona: meglio lasciare che accada che farlo accadere. Ma il prezzo è alto: cinque vite contro la purezza delle tue mani."
+              },
+              {
+                text: "Aziono la leva. Salvare cinque vite vale il sacrificio di una.",
+                school: "Utilitarismo · Bentham, Mill",
+                tag: "utilitarista",
+                interpretation: "La logica utilitarista è chiara: massimizzare il bene complessivo. Cinque vite pesano più di una. È una scelta razionale, calcolabile — ma chiede di accettare che una persona diventi un numero."
+              },
+              {
+                text: "Resto paralizzato. Non so decidere.",
+                school: "Esistenzialismo · Kierkegaard, Sartre",
+                tag: "esistenzialista",
+                interpretation: "L'angoscia non è debolezza: è la vertigine della libertà. Sartre direbbe che anche non scegliere è una scelta. Kierkegaard vedrebbe in questa paralisi il segno di un'autenticità che rifiuta soluzioni facili."
+              }
+            ]
+          },
+          {
+            text: "Sei incatenato in una caverna e vedi solo ombre proiettate sul muro. Qualcuno ti dice che fuori esiste la vera realtà, ma uscire è doloroso e accecante. Cosa fai?",
+            choices: [{
+                text: "Esco. Voglio vedere la verità, anche se fa male.",
+                school: "Platonismo · Platone",
+                tag: "platonico",
+                interpretation: "Per Platone, la conoscenza è un cammino di liberazione: doloroso, faticoso, ma l'unico che conduce alla luce. Chi conosce la verità ha il dovere di non tornare indietro — o di tornare, per liberare gli altri, sapendo che lo derideranno."
+              },
+              {
+                text: "Resto. Le ombre sono confortanti e conosciute.",
+                school: "Scetticismo · Pirrone",
+                tag: "scettico",
+                interpretation: "Lo scettico osserva che la verità è inaccessibile e che la ricerca ossessiva genera sofferenza. Meglio la quiete dell'ombra che l'angoscia della luce. Ma è saggezza o paura? Lo scettico risponderebbe: chissà."
+              },
+              {
+                text: "Esco, vedo, e torno per liberare gli altri.",
+                school: "Filosofia politica · Platone",
+                tag: "politico",
+                interpretation: "Il filosofo non si salva da solo: la conoscenza è responsabilità collettiva. Ma Platone sa che chi torna nella caverna rischia di essere ucciso dagli abitanti delle ombre. La saggezza ha un prezzo politico."
+              }
+            ]
+          },
+          {
+            text: "Trovi un anello che ti rende invisibile. Puoi fare qualsiasi cosa senza essere visto né punito. Come lo usi?",
+            choices: [{
+                text: "Lo uso solo per il bene. La virtù non ha bisogno di testimoni.",
+                school: "Stoicismo · Epitteto, Marco Aurelio",
+                tag: "stoico",
+                interpretation: "Lo stoico agisce bene perché è giusto, non perché conviene. L'invisibilità è la prova suprema: sei virtuoso anche quando nessuno ti vede? La morale non è un contratto sociale, è una scelta interiore."
+              },
+              {
+                text: "Lo uso per me stesso. Chi non lo farebbe?",
+                school: "Realismo politico · Callicle, Nietzsche",
+                tag: "nietzscheano",
+                interpretation: "Callicle sosteneva che le leggi sono fatte dai deboli per frenare i forti. Nietzsche vedrebbe nell'anello la possibilità di affermare la propria volontà senza ipocrisia. Ma chi diventa invisibile rischia di diventare cieco a se stesso."
+              },
+              {
+                text: "Lo distruggo. Il potere assoluto corrompe chiunque.",
+                school: "Liberalismo · Montesquieu",
+                tag: "liberale",
+                interpretation: "Montesquieu ha insegnato che il potere tende ad abusare di se stesso: la virtù non basta, servono contrappesi. Distruggere l'anello è un atto di umiltà: riconoscere che nessuno è abbastanza saggio per essere onnipotente."
+              }
+            ]
+          },
+          {
+            text: "Sai che domani il mondo finirà. Cosa fai oggi?",
+            choices: [{
+                text: "Vivo come sempre. La virtù non dipende dagli eventi.",
+                school: "Stoicismo · Seneca",
+                tag: "stoico",
+                interpretation: "Lo stoico non cambia il proprio comportamento in base all'imminenza della fine: la vita buona è la vita buona, oggi come domani. È la prova più radicale di coerenza: sei ciò che sei anche nell'ultimo giorno."
+              },
+              {
+                text: "Faccio tutto ciò che ho rimandato. Ogni attimo conta.",
+                school: "Epicureismo · Epicuro, Orazio",
+                tag: "epicureo",
+                interpretation: "Il carpe diem epicureo non è edonismo sfrenato: è intensificazione del presente. Se tutto finisce, l'unica cosa che resta è la qualità dell'attimo."
+              },
+              {
+                text: "Passo ogni momento con chi amo.",
+                school: "Relazionalità · Heidegger, Lévinas",
+                tag: "relazionale",
+                interpretation: "Per Heidegger siamo esseri-per-la-morte, e proprio la consapevolezza della fine rivela l'essenziale: non le cose, ma gli altri. Lévinas direbbe che l'altro è l'unico vero infinito. La fine del mondo coincide con la fine delle relazioni."
+              }
+            ]
+          },
+          {
+            text: "Se fossi condannato a spingere eternamente un masso su una collina, sapendo che rotolerà sempre giù, come vivresti questa condanna?",
+            choices: [{
+                text: "Con disperazione. È l'assurdo senza senso.",
+                school: "Nichilismo · Leopardi, Cioran",
+                tag: "nichilista",
+                interpretation: "Il nichilista vede lucidamente: la vita è sforzo senza scopo, e fingere il contrario è illusione. Ma anche la disperazione è una forma di lucidità. Cioran direbbe che la saggezza è non consolarsi."
+              },
+              {
+                text: "Con gioia. La lotta stessa basta a riempire il cuore.",
+                school: "Assurdismo · Albert Camus",
+                tag: "camusiano",
+                interpretation: "Camus immagina Sisifo felice: la rivolta contro l'assurdo è già vittoria. Non c'è senso dato, ma la lucidità di chi continua a spingere senza illusioni è la forma più alta di dignità."
+              },
+              {
+                text: "Cerco un senso più alto. Forse il masso è una metafora.",
+                school: "Spiritualismo · Agostino, Kierkegaard",
+                tag: "spirituale",
+                interpretation: "Per il pensiero spirituale, l'assurdo è il segno di un oltre. Agostino direbbe che il nostro cuore è inquieto finché non riposa in qualcosa di più grande. Kierkegaard vedrebbe nella fede il salto che dà senso all'assurdo."
+              }
+            ]
+          }
+        ];
+        const profiles = {
+          kantiano: {
+            title: "Il Custode del Dovere",
+            desc: "Il tuo pensiero è guidato da principi: credi che alcune cose non si facciano mai, nemmeno per un bene superiore. La tua bussola è l'intenzione, non il risultato. Sei rigoroso, forse a volte rigido — ma sai che la dignità umana non è negoziabile."
+          },
+          utilitarista: {
+            title: "Il Calcolatore del Bene",
+            desc: "Vedi il mondo in termini di conseguenze: le scelte vanno pesate sulla bilancia del bene complessivo. Sei pragmatico, razionale, a volte freddo. Il tuo rischio è dimenticare che le persone non sono numeri — ma il tuo dono è non perdere mai di vista l'insieme."
+          },
+          esistenzialista: {
+            title: "L'Angosciato Autentico",
+            desc: "Senti il peso della libertà: sai che ogni scelta ti definisce e che non esistono scuse. La tua angoscia non è debolezza, è lucidità. Forse fatichi a decidere — ma quando lo fai, è con tutto te stesso."
+          },
+          platonico: {
+            title: "Il Cercatore di Luce",
+            desc: "Credi che esista una verità più profonda delle apparenze, e sei disposto a soffrire per raggiungerla. Sei idealista, forse utopico — ma senza il tuo sguardo verso l'alto, il mondo resterebbe nelle ombre."
+          },
+          scettico: {
+            title: "Il Saggio dell'Ombra",
+            desc: "Diffidi delle certezze facili: sai che ogni verità ha il suo rovescio. La tua forza è l'umiltà del dubbio, il tuo rischio è la paralisi. Ma chi dubita davvero è più vicino alla saggezza di chi crede di sapere."
+          },
+          politico: {
+            title: "Il Filosofo Cittadino",
+            desc: "Non concepisci la conoscenza come privilegio solitario: sai che la saggezza ha un dovere verso la comunità. Sei disposto a rischiare per gli altri — a volte anche contro la loro volontà. La tua sfida è la misura."
+          },
+          stoico: {
+            title: "La Rocca Interiore",
+            desc: "Cerchi la virtù nel controllo di te stesso: ciò che non dipende da te non ti turba. Sei saldo, coerente, forse a volte distaccato. Ma la tua forza è rara: la serenità che non dipende dal mondo."
+          },
+          nietzscheano: {
+            title: "La Volontà che Afferma",
+            desc: "Rifiuti la morale dei deboli e cerchi di affermare la tua potenza creativa. Sei audace, vitale, a volte spietato. Il tuo dono è il coraggio — il tuo rischio è la solitudine di chi guarda troppo in alto."
+          },
+          liberale: {
+            title: "Il Guardiano dei Contrappesi",
+            desc: "Sai che il potere corrompe e che nessuno è abbastanza saggio per essere onnipotente. Sei prudente, misurato, forse diffidente. Ma la tua diffidenza è una forma di saggezza: proteggi la libertà da chi la minaccerebbe in nome di un bene superiore."
+          },
+          epicureo: {
+            title: "Il Giardino del Presente",
+            desc: "Cerchi la gioia semplice e la pace, non l'accumulo. Sai che i desideri vani generano sofferenza e che la felicità è sottrazione, non addizione. Il tuo rischio è l'evasione, il tuo dono è la capacità di assaporare."
+          },
+          relazionale: {
+            title: "L'Essere-con",
+            desc: "Sai che l'esistenza non è un monologo: sei definito dagli incontri, dagli sguardi, dalle mani che stringi. La tua profondità è rara: vivi la finitezza come apertura all'altro."
+          },
+          nichilista: {
+            title: "Lo Sguardo Lucido",
+            desc: "Rifiuti le consolazioni: vedi l'assurdo e non lo addomestichi. La tua lucidità è coraggiosa — ma attenzione a non scambiare il coraggio con la chiusura. Anche l'abisso può essere abitato."
+          },
+          camusiano: {
+            title: "Sisifo Felice",
+            desc: "Hai capito la lezione più difficile: la rivolta senza speranza è già vittoria. Non cerchi un senso dato, ma lo crei spingendo. Il tuo sorriso è raro e prezioso."
+          },
+          spirituale: {
+            title: "L'Inquietudine che Sale",
+            desc: "Senti che la finitezza è il segno di un oltre. Sei aperto al mistero, alla fede, alla trascendenza. Il tuo rischio è l'evasione dal reale, il tuo dono è non accontentarti delle risposte facili."
+          }
+        };
+        let currentDilemma = 0;
+        let chosenTags = [];
+        const dilemmaContent = document.getElementById('giardinoDilemmaContent');
 
-    setTimeout(() => {
-      modules.forEach(m => {
-        const r = m.getBoundingClientRect();
-        if (r.top < window.innerHeight && r.bottom > 0) m.classList.add('is-visible');
-      });
-    }, 1200);
-  }
+        function renderDilemma() {
+          if (currentDilemma >= dilemmas.length) {
+            renderProfile();
+            return;
+          }
+          const d = dilemmas[currentDilemma];
+          dilemmaContent.innerHTML =
+            '<div class="giardino-dilemma-progress">' +
+            dilemmas.map((_, i) => '<div class="giardino-dot ' + (i < currentDilemma ? 'done' : '') + ' ' + (i === currentDilemma ? 'active' : '') + '"></div>').join('') +
+            '</div>' +
+            '<div class="giardino-dilemma-text">' + d.text + '</div>' +
+            '<div class="giardino-choices">' +
+            d.choices.map((c, i) => '<button type="button" class="giardino-choice" data-index="' + i + '">' + c.text + '</button>').join('') +
+            '</div>' +
+            '<div id="giardinoInterpretationArea"></div>';
+          dilemmaContent.querySelectorAll('.giardino-choice').forEach(btn => {
+            btn.addEventListener('click', () => chooseDilemma(parseInt(btn.dataset.index, 10)));
+          });
+        }
 
-  /* ============================================================
-     SPOTLIGHT + HERO DISSOLVE — solo opacity + scale (composited)
-     ============================================================ */
-  const hero = document.querySelector('.hero');
-  let ticking = false;
+        function chooseDilemma(index) {
+          const choice = dilemmas[currentDilemma].choices[index];
+          chosenTags.push(choice.tag);
+          const area = document.getElementById('giardinoInterpretationArea');
+          area.innerHTML =
+            '<div class="giardino-interpretation">' +
+            '<div class="giardino-interp-school">' + choice.school + '</div>' +
+            '<div class="giardino-interp-text">' + choice.interpretation + '</div>' +
+            '<button type="button" class="giardino-next" id="giardinoNextBtn">' +
+            (currentDilemma < dilemmas.length - 1 ? 'Prossimo dilemma →' : 'Scopri il tuo profilo →') +
+            '</button>' +
+            '</div>';
+          document.getElementById('giardinoNextBtn').addEventListener('click', () => {
+            currentDilemma++;
+            renderDilemma();
+          });
+          dilemmaContent.querySelectorAll('.giardino-choice').forEach(b => b.style.pointerEvents = 'none');
+        }
 
-  function update() {
-    ticking = false;
-    const vh = window.innerHeight;
-    const center = vh / 2;
-    const range = vh * 0.85;
+        function renderProfile() {
+          const counts = {};
+          chosenTags.forEach(t => counts[t] = (counts[t] || 0) + 1);
+          const mainTag = Object.entries(counts).sort((a, b) => b[1] - a[1])[0][0];
+          const p = profiles[mainTag];
+          dilemmaContent.innerHTML =
+            '<div class="giardino-profile">' +
+            '<div class="giardino-profile-title">' + p.title + '</div>' +
+            '<div class="giardino-profile-desc">' + p.desc + '</div>' +
+            '<button type="button" class="giardino-next" id="giardinoRestartBtn">↻ Ricomincia il viaggio</button>' +
+            '</div>';
+          document.getElementById('giardinoRestartBtn').addEventListener('click', () => {
+            currentDilemma = 0;
+            chosenTags = [];
+            renderDilemma();
+          });
+        }
+        renderDilemma();
+        /* ============================================================
+           RESPIRO FILOSOFICO
+           ============================================================ */
+        const breathQuotes = [{
+            text: "Respira. Non c'è nulla da risolvere in questo istante.",
+            author: "Saggezza contemporanea"
+          },
+          {
+            text: "L'attenzione al respiro è il primo passo verso la presenza.",
+            author: "Tradizione buddhista"
+          },
+          {
+            text: "Il momento presente è l'unico luogo in cui la vita accade.",
+            author: "Eckhart Tolle"
+          },
+          {
+            text: "In ogni respiro c'è l'universo intero che entra e esce da te.",
+            author: "Thich Nhat Hanh"
+          },
+          {
+            text: "Il soffio vitale è il ponte tra corpo e mente.",
+            author: "Tradizione yogica"
+          },
+          {
+            text: "Impara a stare fermo. Non per fuggire, ma per ascoltare.",
+            author: "Saggezza stoica"
+          },
+          {
+            text: "Il silenzio non è assenza di suono: è presenza a se stessi.",
+            author: "Tradizione contemplativa"
+          },
+          {
+            text: "Ogni espirazione è un piccolo lasciar andare.",
+            author: "Saggezza zen"
+          }
+        ];
+        let breathActive = false,
+          breathInterval = null,
+          quoteInterval = null,
+          quoteIndex = 0,
+          exhaleTimeout = null;
+        const breathCircle = document.getElementById('giardinoBreathCircle');
+        const breathLabel = document.getElementById('giardinoBreathLabel');
+        const breathToggle = document.getElementById('giardinoBreathToggle');
+        const breathQuoteText = document.getElementById('giardinoBreathQuote');
 
-    // —— HERO DISSOLVE (senza blur) ——
-    if (hero) {
-      const heroH = hero.offsetHeight || 1;
-      const progress = Math.min(1, Math.max(0, window.scrollY / heroH));
-      hero.style.setProperty('--hero-op',    (1 - progress).toFixed(3));
-      hero.style.setProperty('--hero-scale', (1 + progress * 0.18).toFixed(3));
-      // rimosso: --hero-blur → causava repaint per frame
-    }
+        function cycleBreath() {
+          breathCircle.classList.remove('exhale');
+          breathCircle.classList.add('inhale');
+          breathLabel.textContent = 'Inspira';
+          clearTimeout(exhaleTimeout);
+          exhaleTimeout = setTimeout(() => {
+            if (!breathActive) return;
+            breathCircle.classList.remove('inhale');
+            breathCircle.classList.add('exhale');
+            breathLabel.textContent = 'Espira';
+          }, 4000);
+        }
 
-    // —— SPOTLIGHT sui moduli (senza blur) ——
-    modules.forEach(el => {
-      if (!el.classList.contains('is-visible')) return;
-      const rect = el.getBoundingClientRect();
-      const elCenter = rect.top + rect.height / 2;
-      const dist = Math.abs(elCenter - center);
-      const t = Math.min(1, dist / range);
-      const eased = t * t * (3 - 2 * t); // smoothstep
+        function showBreathQuote() {
+          breathQuoteText.classList.remove('show');
+          setTimeout(() => {
+            if (!breathActive) return;
+            const q = breathQuotes[quoteIndex % breathQuotes.length];
+            breathQuoteText.innerHTML = '"' + q.text + '"<span>— ' + q.author + '</span>';
+            breathQuoteText.classList.add('show');
+            quoteIndex++;
+          }, 800);
+        }
 
-      el.style.setProperty('--focus-scale', (1 - eased * 0.04).toFixed(3));
-      el.style.setProperty('--focus-op',    (1 - eased * 0.35).toFixed(3));
-      // rimosso: --focus-blur → causava repaint per frame
-    });
-  }
+        function startBreath() {
+          breathActive = true;
+          breathToggle.textContent = 'Interrompi il respiro';
+          cycleBreath();
+          breathInterval = setInterval(cycleBreath, 8000);
+          showBreathQuote();
+          quoteInterval = setInterval(showBreathQuote, 12000);
+        }
 
-  function requestUpdate() {
-    if (!ticking) {
-      ticking = true;
-      requestAnimationFrame(update);
-    }
-  }
+        function stopBreath() {
+          breathActive = false;
+          clearInterval(breathInterval);
+          clearInterval(quoteInterval);
+          clearTimeout(exhaleTimeout);
+          breathCircle.classList.remove('inhale', 'exhale');
+          breathLabel.textContent = 'Pronto';
+          breathQuoteText.classList.remove('show');
+          breathToggle.textContent = 'Inizia il respiro';
+        }
+        breathToggle.addEventListener('click', () => {
+          breathActive ? stopBreath() : startBreath();
+        });
+      })();
+    </script>
 
-  window.addEventListener('scroll', requestUpdate, { passive: true });
-  window.addEventListener('resize', requestUpdate, { passive: true });
+    <script>
+      (function() {
+        'use strict';
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        const SELECTORS = '.atlante, .eco-giorno, .frammento, .dialoghi, .fo-section, .giardino, .quiz-filosofia, .ua';
+        const modules = document.querySelectorAll(SELECTORS);
+        if (!modules.length) return;
+        /* ============================================================
+           RISALITA (una tantum) — mostra il modulo quando entra in viewport
+           ============================================================ */
+        if (!('IntersectionObserver' in window)) {
+          modules.forEach(m => m.classList.add('is-visible'));
+        } else {
+          const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+              if (e.isIntersecting) {
+                e.target.classList.add('is-visible');
+                observer.unobserve(e.target);
+              }
+            });
+          }, {
+            rootMargin: '0px 0px -8% 0px',
+            threshold: 0.08
+          });
+          modules.forEach(m => observer.observe(m));
+          setTimeout(() => {
+            modules.forEach(m => {
+              const r = m.getBoundingClientRect();
+              if (r.top < window.innerHeight && r.bottom > 0) m.classList.add('is-visible');
+            });
+          }, 1200);
+        }
+        /* ============================================================
+           SPOTLIGHT + HERO DISSOLVE — solo opacity + scale (composited)
+           ============================================================ */
+        const hero = document.querySelector('.hero');
+        let ticking = false;
 
-  // Ri-valuta quando RISALITA aggiunge .is-visible
-  if ('MutationObserver' in window) {
-    const mo = new MutationObserver(requestUpdate);
-    modules.forEach(el => mo.observe(el, { attributes: true, attributeFilter: ['class'] }));
-  }
+        function update() {
+          ticking = false;
+          const vh = window.innerHeight;
+          const center = vh / 2;
+          const range = vh * 0.85;
+          // —— HERO DISSOLVE (senza blur) ——
+          if (hero) {
+            const heroH = hero.offsetHeight || 1;
+            const progress = Math.min(1, Math.max(0, window.scrollY / heroH));
+            hero.style.setProperty('--hero-op', (1 - progress).toFixed(3));
+            hero.style.setProperty('--hero-scale', (1 + progress * 0.18).toFixed(3));
+            // rimosso: --hero-blur → causava repaint per frame
+          }
+          // —— SPOTLIGHT sui moduli (senza blur) ——
+          modules.forEach(el => {
+            if (!el.classList.contains('is-visible')) return;
+            const rect = el.getBoundingClientRect();
+            const elCenter = rect.top + rect.height / 2;
+            const dist = Math.abs(elCenter - center);
+            const t = Math.min(1, dist / range);
+            const eased = t * t * (3 - 2 * t); // smoothstep
+            el.style.setProperty('--focus-scale', (1 - eased * 0.04).toFixed(3));
+            el.style.setProperty('--focus-op', (1 - eased * 0.35).toFixed(3));
+            // rimosso: --focus-blur → causava repaint per frame
+          });
+        }
 
-  setTimeout(update, 150);
-})();
-</script>
+        function requestUpdate() {
+          if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(update);
+          }
+        }
+        window.addEventListener('scroll', requestUpdate, {
+          passive: true
+        });
+        window.addEventListener('resize', requestUpdate, {
+          passive: true
+        });
+        // Ri-valuta quando RISALITA aggiunge .is-visible
+        if ('MutationObserver' in window) {
+          const mo = new MutationObserver(requestUpdate);
+          modules.forEach(el => mo.observe(el, {
+            attributes: true,
+            attributeFilter: ['class']
+          }));
+        }
+        setTimeout(update, 150);
+      })();
+    </script>
   </body>
 
 </html>
