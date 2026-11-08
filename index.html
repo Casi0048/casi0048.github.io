@@ -9804,23 +9804,24 @@ body.recomposing > footer {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   if (document.getElementById('echi-recompose')) return;
 
-  /* ── Tema: leggo localStorage, non la classe ─────────────────── */
+  /* ── Tema: la classe sul body è la fonte più affidabile a init ──
+     Se il body ha già light-theme, siamo in tema chiaro, punto.
+     Solo se manca, consultiamo localStorage come fallback. */
   function readTheme() {
-    var theme = null;
-    try { theme = localStorage.getItem('theme'); } catch (e) {}
-    if (theme === 'light' || theme === 'dark') return theme;
-
-    // Se localStorage non è disponibile, uso la classe come fallback
     if (document.body.classList.contains('light-theme')) return 'light';
+    try {
+      var t = localStorage.getItem('theme');
+      if (t === 'light') return 'light';
+      if (t === 'dark') return 'dark';
+    } catch (e) {}
     return 'dark';
   }
 
-  function forceThemeClass(theme) {
-    if (theme === 'light') {
-      document.body.classList.add('light-theme');
-    } else {
-      document.body.classList.remove('light-theme');
-    }
+  /* Solo aggiunge, MAI rimuove: se il tuo applyTheme ha già messo
+     la classe, non la tocchiamo; se non l'ha messa ma il tema è light
+     (localStorage), la aggiungiamo noi per i cloni. */
+  function ensureLightThemeClass(isLight) {
+    if (isLight) document.body.classList.add('light-theme');
   }
 
   function bgFor(theme) {
@@ -9833,11 +9834,13 @@ body.recomposing > footer {
     var isLight = theme === 'light';
     var bgColor = bgFor(theme);
 
-    // Forzo la classe sul body: se il tuo script del tema non è ancora
-    // partito, lo faccio io in modo che i cloni abbiano i colori giusti.
-    forceThemeClass(theme);
+    ensureLightThemeClass(isLight);
 
-    console.log('[recompose] theme:', theme, '· isLight:', isLight, '· bg:', bgColor);
+    console.log('[recompose] theme:', theme,
+                '· isLight:', isLight,
+                '· body.light-theme:',
+                document.body.classList.contains('light-theme'),
+                '· bg:', bgColor);
 
     var duration = window.innerWidth <= 650 ? 1200 : 1500;
     var scrollY  = window.scrollY || window.pageYOffset || 0;
@@ -9872,8 +9875,6 @@ body.recomposing > footer {
     var left  = createHalf('left');
     var right = createHalf('right');
 
-    // Se per qualche motivo i cloni sono vuoti, meglio non fare nulla
-    // che mostrare una maschera scura vuota.
     if (!left.firstChild || !right.firstChild) {
       console.warn('[recompose] cloni vuoti — salto animazione');
       return;
@@ -9886,25 +9887,29 @@ body.recomposing > footer {
     /* ── Monto l'overlay + blocco la pagina sottostante ─────────── */
     document.body.appendChild(overlay);
 
-    // Anche `html` va allineato al tema, altrimenti il suo bg scuro
-    // traspare nei bordi e nei gap dei cloni.
+    // Allineo il fondo di <html> durante l'animazione.
+    // Salvo il valore precedente per ripristinarlo a fine animazione
+    // (così la regola CSS :has(body.light-theme) riprende il controllo).
     var htmlPrevBg = document.documentElement.style.backgroundColor;
     document.documentElement.style.backgroundColor = bgColor;
 
     document.body.classList.add('recomposing');
 
-    /* ── Safety net: rimuove l'overlay comunque entro 8s ────────── */
+    /* ── Cleanup idempotente ────────────────────────────────────── */
     var finished = false;
+    var safetyId = null;
+
     function cleanup(reason) {
       if (finished) return;
       finished = true;
       if (reason) console.warn('[recompose] cleanup:', reason);
-      clearTimeout(safety);
+      if (safetyId) clearTimeout(safetyId);
       document.body.classList.remove('recomposing');
       document.documentElement.style.backgroundColor = htmlPrevBg;
       if (overlay.parentNode) overlay.remove();
     }
-    var safety = setTimeout(function () { cleanup('safety-timeout'); }, 8000);
+
+    safetyId = setTimeout(function () { cleanup('safety-timeout'); }, 8000);
 
     /* ── Animazioni ─────────────────────────────────────────────── */
     var easing  = 'cubic-bezier(.16, 1, .3, 1)';
@@ -9954,9 +9959,8 @@ body.recomposing > footer {
       .catch(function (err) { cleanup('animation-error: ' + err); });
   }
 
-  /* ── Avvio: aspetto il tema, poi parte ────────────────────────── */
+  /* ── Avvio: doppio rAF per aspettare che il tema sia dipinto ─── */
   function start() {
-    // Doppio rAF: garantisce che il paint del tema sia avvenuto
     requestAnimationFrame(function () {
       requestAnimationFrame(init);
     });
