@@ -9790,7 +9790,12 @@ body.recomposing > footer {
   overlay.id = 'echi-recompose';
   overlay.setAttribute('aria-hidden', 'true');
   overlay.inert = true;
+// Riproduce lo sfondo effettivo del tema corrente
+const pageStyle = getComputedStyle(document.body);
 
+overlay.style.backgroundColor = pageStyle.backgroundColor;
+overlay.style.backgroundImage = pageStyle.backgroundImage;
+overlay.style.backgroundAttachment = pageStyle.backgroundAttachment;
 
 function createHalf(side) {
   const wrapper = document.createElement('div');
