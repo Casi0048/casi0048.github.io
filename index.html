@@ -732,13 +732,21 @@
         }
       }
 
-      @font-face {
-        font-family: Inter;
-        src: url(/fonts/inter/Inter-Regular.woff2) format("woff2");
-        font-weight: 400;
-        font-style: normal;
-        font-display: swap
-      }
+     @font-face {
+  font-family: Inter;
+  src: url(/fonts/inter/Inter-Regular.woff2) format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap
+}
+
+html:has(body.light-theme) {
+  background: #eaf2ed;
+}
+
+html {
+  overflow-x: clip;
+}
 
       :root {
         --bg: #080a12;
@@ -7400,6 +7408,7 @@ body.recomposing > footer {
       function applyTheme(theme) {
         const isLight = theme === "light";
         document.body.classList.toggle("light-theme", isLight);
+         document.documentElement.style.backgroundColor = isLight ? "#eaf2ed" : "#080a12"; 
         if (themeLabel) themeLabel.textContent = isLight ? "Chiaro" : "Scuro";
         if (iconMoon) iconMoon.style.display = isLight ? "none" : "block";
         if (iconSun) iconSun.style.display = isLight ? "block" : "none";
