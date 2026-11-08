@@ -9786,22 +9786,38 @@
   overlay.setAttribute('aria-hidden', 'true');
   overlay.inert = true;
 
-  function createHalf(side) {
-    const wrapper = document.createElement('div');
-    wrapper.className = 'half ' + side;
 
-    const copy = document.body.cloneNode(true);
+function createHalf(side) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'half ' + side;
 
-    copy.querySelectorAll('script').forEach(s => s.remove());
+  // Contenitore visivo leggero
+  const copy = document.createElement('div');
+  copy.className = 'page-copy';
 
-    copy.classList.add('page-copy');
-    copy.style.setProperty('--scroll-offset', `-${scrollY}px`);
+  copy.style.setProperty(
+    '--scroll-offset',
+    `-${scrollY}px`
+  );
 
-    wrapper.appendChild(copy);
-    overlay.appendChild(wrapper);
+  // Duplica soltanto intestazione e contenuto principale
+  const header = document.querySelector('.site-header');
+  const main = document.querySelector('#main');
 
-    return copy;
+  if (header) {
+    copy.appendChild(header.cloneNode(true));
   }
+
+  if (main) {
+    copy.appendChild(main.cloneNode(true));
+  }
+
+  wrapper.appendChild(copy);
+  overlay.appendChild(wrapper);
+
+  return copy;
+}
+
 
   const left = createHalf('left');
   const right = createHalf('right');
