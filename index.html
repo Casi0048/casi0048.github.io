@@ -9710,11 +9710,13 @@ body.recomposing > footer {
         }], "contemporaneo")
       }()
     </script>
-
-
-
- <style>
-  /* RICOMPOSIZIONE ECHI DI SOFIA - V3 (fixed theme + no black mask) */
+<style>
+  /* ═══════════════════════════════════════════════════════════════
+     ECHI DI SOFIA — RICOMPOSIZIONE V4
+     - Niente maschera scura su tema chiaro
+     - Niente flash "pagina → sipario → pagina"
+     - Niente overlay appeso se un'animazione non finisce
+     ═══════════════════════════════════════════════════════════════ */
 
   #echi-recompose {
     position: fixed;
@@ -9722,18 +9724,12 @@ body.recomposing > footer {
     z-index: 1000000;
     overflow: hidden;
     pointer-events: none;
-    /* FIX 1: sfondo solido via variabile CSS, non da backgroundColor del body
-       (che sul tema scuro è trasparente: causava "duplicazione" con la pagina
-       sottostante, e sul tema chiaro lasciava trasparire la pagina bianca) */
-    background-color: var(--bg, #080a12);
+    /* Fallback: verrà sovrascritto inline con il colore corretto */
+    background-color: #080a12;
   }
 
-  /* FIX 2: nasconde la pagina originale durante l'animazione.
-     Il selettore `>` tocca solo i figli diretti del body, quindi NON nasconde
-     i cloni dentro #echi-recompose. Prima mancava del tutto questa regola:
-     la pagina originale restava visibile, contribuendo all'effetto
-     "contenuto duplicato / maschera accanto al tema chiaro". */
-  body.recomposing > *:not(#echi-recompose):not(script):not(style):not(link) {
+  /* Nasconde la pagina originale durante l'animazione */
+  body.recomposing > *:not(#echi-recompose):not(script):not(style):not(link):not(noscript) {
     visibility: hidden !important;
   }
 
@@ -9742,31 +9738,25 @@ body.recomposing > footer {
     inset: 0;
     overflow: hidden;
   }
-
-  #echi-recompose .half.left {
-    clip-path: inset(0 50% 0 0);
-  }
-
-  #echi-recompose .half.right {
-    clip-path: inset(0 0 0 50%);
-  }
+  #echi-recompose .half.left  { clip-path: inset(0 50% 0 0); }
+  #echi-recompose .half.right { clip-path: inset(0 0 0 50%); }
 
   #echi-recompose .page-copy {
     position: absolute;
-    top: var(--scroll-offset);
+    top: var(--scroll-offset, 0);
     left: 0;
     width: 100%;
     min-height: 100vh;
     margin: 0;
     pointer-events: none;
   }
+  @supports (min-height: 100dvh) {
+    #echi-recompose .page-copy { min-height: 100dvh; }
+  }
 
-  /* Giunzione centrale */
   #echi-recompose .center-seam {
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 50%;
+    top: 0; bottom: 0; left: 50%;
     width: 1px;
     transform: translateX(-50%);
     background: linear-gradient(
@@ -9787,76 +9777,118 @@ body.recomposing > footer {
 
 <script>
 (function () {
+  'use strict';
+
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   if (document.getElementById('echi-recompose')) return;
 
-  // FIX 3: esegue DOPO che il tema è stato applicato al body.
-  // Il tuo script del tema usa DOMContentLoaded; setTimeout(init, 0) dentro
-  // un listener DOMContentLoaded garantisce che init parta in una macrotask
-  // successiva, quando tutte le altre callback di DOMContentLoaded
-  // (incluso applyTheme) hanno già finito.
-  function init() {
-    const duration = window.innerWidth <= 650 ? 1200 : 1500;
-    const scrollY = window.scrollY;
-    const isLight = document.body.classList.contains('light-theme');
+  /* ── Tema: leggo localStorage, non la classe ─────────────────── */
+  function readTheme() {
+    var theme = null;
+    try { theme = localStorage.getItem('theme'); } catch (e) {}
+    if (theme === 'light' || theme === 'dark') return theme;
 
-    const overlay = document.createElement('div');
+    // Se localStorage non è disponibile, uso la classe come fallback
+    if (document.body.classList.contains('light-theme')) return 'light';
+    return 'dark';
+  }
+
+  function forceThemeClass(theme) {
+    if (theme === 'light') {
+      document.body.classList.add('light-theme');
+    } else {
+      document.body.classList.remove('light-theme');
+    }
+  }
+
+  function bgFor(theme) {
+    return theme === 'light' ? '#eaf2ed' : '#080a12';
+  }
+
+  /* ── Init ────────────────────────────────────────────────────── */
+  function init() {
+    var theme   = readTheme();
+    var isLight = theme === 'light';
+    var bgColor = bgFor(theme);
+
+    // Forzo la classe sul body: se il tuo script del tema non è ancora
+    // partito, lo faccio io in modo che i cloni abbiano i colori giusti.
+    forceThemeClass(theme);
+
+    console.log('[recompose] theme:', theme, '· isLight:', isLight, '· bg:', bgColor);
+
+    var duration = window.innerWidth <= 650 ? 1200 : 1500;
+    var scrollY  = window.scrollY || window.pageYOffset || 0;
+
+    /* ── Overlay ────────────────────────────────────────────────── */
+    var overlay = document.createElement('div');
     overlay.id = 'echi-recompose';
     overlay.setAttribute('aria-hidden', 'true');
     overlay.inert = true;
+    overlay.style.backgroundColor = bgColor;
 
-    // FIX 4: sfondo — usa --bg (sempre definita su :root e su body.light-theme)
-    // invece di backgroundColor, che sul tema scuro è trasparente.
-    const bodyStyle = getComputedStyle(document.body);
-    const bgColor = bodyStyle.getPropertyValue('--bg').trim();
-    if (bgColor) overlay.style.backgroundColor = bgColor;
-
-    // Gradiente del tema chiaro (opzionale ma mantiene l'aspetto identico)
-    const bgImage = bodyStyle.backgroundImage;
-    if (bgImage && bgImage !== 'none') {
-      overlay.style.backgroundImage = bgImage;
-    }
-
+    /* ── Copia di una metà ──────────────────────────────────────── */
     function createHalf(side) {
-      const wrapper = document.createElement('div');
+      var wrapper = document.createElement('div');
       wrapper.className = 'half ' + side;
 
-      const copy = document.createElement('div');
+      var copy = document.createElement('div');
       copy.className = 'page-copy';
-
-      // Qui `isLight` è stato letto dopo che il tema è stato applicato,
-      // quindi rispecchia davvero lo stato corrente (chiaro o scuro).
       if (isLight) copy.classList.add('light-theme');
+      copy.style.setProperty('--scroll-offset', '-' + scrollY + 'px');
 
-      copy.style.setProperty('--scroll-offset', `-${scrollY}px`);
-
-      const header = document.querySelector('.site-header');
-      const main = document.querySelector('#main');
-
+      var header = document.querySelector('.site-header');
+      var main   = document.querySelector('#main');
       if (header) copy.appendChild(header.cloneNode(true));
-      if (main) copy.appendChild(main.cloneNode(true));
+      if (main)   copy.appendChild(main.cloneNode(true));
 
       wrapper.appendChild(copy);
       overlay.appendChild(wrapper);
       return copy;
     }
 
-    const left = createHalf('left');
-    const right = createHalf('right');
+    var left  = createHalf('left');
+    var right = createHalf('right');
 
-    const seam = document.createElement('div');
+    // Se per qualche motivo i cloni sono vuoti, meglio non fare nulla
+    // che mostrare una maschera scura vuota.
+    if (!left.firstChild || !right.firstChild) {
+      console.warn('[recompose] cloni vuoti — salto animazione');
+      return;
+    }
+
+    var seam = document.createElement('div');
     seam.className = 'center-seam';
     overlay.appendChild(seam);
 
-    // Aggiunge l'overlay PRIMA di nascondere l'originale: così non c'è
-    // nessun frame in cui lo schermo è vuoto.
+    /* ── Monto l'overlay + blocco la pagina sottostante ─────────── */
     document.body.appendChild(overlay);
+
+    // Anche `html` va allineato al tema, altrimenti il suo bg scuro
+    // traspare nei bordi e nei gap dei cloni.
+    var htmlPrevBg = document.documentElement.style.backgroundColor;
+    document.documentElement.style.backgroundColor = bgColor;
+
     document.body.classList.add('recomposing');
 
-    const easing = 'cubic-bezier(.16, 1, .3, 1)';
-    const options = { duration, easing, fill: 'both' };
+    /* ── Safety net: rimuove l'overlay comunque entro 8s ────────── */
+    var finished = false;
+    function cleanup(reason) {
+      if (finished) return;
+      finished = true;
+      if (reason) console.warn('[recompose] cleanup:', reason);
+      clearTimeout(safety);
+      document.body.classList.remove('recomposing');
+      document.documentElement.style.backgroundColor = htmlPrevBg;
+      if (overlay.parentNode) overlay.remove();
+    }
+    var safety = setTimeout(function () { cleanup('safety-timeout'); }, 8000);
 
-    const animations = [
+    /* ── Animazioni ─────────────────────────────────────────────── */
+    var easing  = 'cubic-bezier(.16, 1, .3, 1)';
+    var options = { duration: duration, easing: easing, fill: 'both' };
+
+    var animations = [
       left.animate(
         [{ transform: 'translateX(-50vw)' }, { transform: 'translateX(0)' }],
         options
@@ -9871,49 +9903,51 @@ body.recomposing > footer {
           { opacity: .25, offset: .55 },
           { opacity: 0 }
         ],
-        { duration, easing: 'ease-out', fill: 'both' }
+        { duration: duration, easing: 'ease-out', fill: 'both' }
       )
     ];
 
     function animateCenter(copy) {
-      const blocks = copy.querySelectorAll('.col-centrale > *');
-      blocks.forEach((block, index) => {
-        const animation = block.animate([
-          { opacity: 0, transform: 'translateY(110px)' },
-          { opacity: 0.35, transform: 'translateY(65px)', offset: 0.45 },
-          { opacity: 1, transform: 'translateY(0)' }
-        ], {
-          duration: 1500,
-          delay: 850 + index * 220,
-          easing: 'cubic-bezier(.22, 1, .36, 1)',
-          fill: 'both'
-        });
-        animations.push(animation);
+      var blocks = copy.querySelectorAll('.col-centrale > *');
+      blocks.forEach(function (block, index) {
+        animations.push(
+          block.animate([
+            { opacity: 0,    transform: 'translateY(110px)' },
+            { opacity: 0.35, transform: 'translateY(65px)', offset: 0.45 },
+            { opacity: 1,    transform: 'translateY(0)' }
+          ], {
+            duration: 1500,
+            delay: 850 + index * 220,
+            easing: 'cubic-bezier(.22, 1, .36, 1)',
+            fill: 'both'
+          })
+        );
       });
     }
-
     animateCenter(left);
     animateCenter(right);
 
-    Promise.all(animations.map(a => a.finished))
-      .then(() => {
-        document.body.classList.remove('recomposing');
-        overlay.remove();
-      })
-      .catch(() => {
-        document.body.classList.remove('recomposing');
-        overlay.remove();
-      });
+    Promise.all(animations.map(function (a) { return a.finished; }))
+      .then(function () { cleanup('animations-finished'); })
+      .catch(function (err) { cleanup('animation-error: ' + err); });
+  }
+
+  /* ── Avvio: aspetto il tema, poi parte ────────────────────────── */
+  function start() {
+    // Doppio rAF: garantisce che il paint del tema sia avvenuto
+    requestAnimationFrame(function () {
+      requestAnimationFrame(init);
+    });
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => setTimeout(init, 0), { once: true });
+    document.addEventListener('DOMContentLoaded', start, { once: true });
   } else {
-    setTimeout(init, 0);
+    start();
   }
 })();
 </script>
 
-  </body>
+ </body>
 
 </html>
