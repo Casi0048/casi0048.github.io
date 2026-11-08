@@ -9804,9 +9804,7 @@ body.recomposing > footer {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   if (document.getElementById('echi-recompose')) return;
 
-  /* ── Tema: la classe sul body è la fonte più affidabile a init ──
-     Se il body ha già light-theme, siamo in tema chiaro, punto.
-     Solo se manca, consultiamo localStorage come fallback. */
+  /* ── Tema: la classe sul body è la fonte più affidabile a init ── */
   function readTheme() {
     if (document.body.classList.contains('light-theme')) return 'light';
     try {
@@ -9817,15 +9815,23 @@ body.recomposing > footer {
     return 'dark';
   }
 
-  /* Solo aggiunge, MAI rimuove: se il tuo applyTheme ha già messo
-     la classe, non la tocchiamo; se non l'ha messa ma il tema è light
-     (localStorage), la aggiungiamo noi per i cloni. */
+  /* Solo aggiunge, MAI rimuove */
   function ensureLightThemeClass(isLight) {
     if (isLight) document.body.classList.add('light-theme');
   }
 
   function bgFor(theme) {
     return theme === 'light' ? '#eaf2ed' : '#080a12';
+  }
+
+  /* ── Rimuove gli id duplicati dai cloni (accessibilità) ── */
+  function stripIds(root) {
+    if (!root) return root;
+    if (root.removeAttribute) root.removeAttribute('id');
+    root.querySelectorAll('[id]').forEach(function (el) {
+      el.removeAttribute('id');
+    });
+    return root;
   }
 
   /* ── Init ────────────────────────────────────────────────────── */
@@ -9852,7 +9858,7 @@ body.recomposing > footer {
     overlay.inert = true;
     overlay.style.backgroundColor = bgColor;
 
-    /* ── Copia di una metà ──────────────────────────────────────── */
+    /* ── Copia di una metà (con stripIds) ───────────────────────── */
     function createHalf(side) {
       var wrapper = document.createElement('div');
       wrapper.className = 'half ' + side;
@@ -9864,8 +9870,9 @@ body.recomposing > footer {
 
       var header = document.querySelector('.site-header');
       var main   = document.querySelector('#main');
-      if (header) copy.appendChild(header.cloneNode(true));
-      if (main)   copy.appendChild(main.cloneNode(true));
+
+      if (header) copy.appendChild(stripIds(header.cloneNode(true)));
+      if (main)   copy.appendChild(stripIds(main.cloneNode(true)));
 
       wrapper.appendChild(copy);
       overlay.appendChild(wrapper);
@@ -9887,9 +9894,6 @@ body.recomposing > footer {
     /* ── Monto l'overlay + blocco la pagina sottostante ─────────── */
     document.body.appendChild(overlay);
 
-    // Allineo il fondo di <html> durante l'animazione.
-    // Salvo il valore precedente per ripristinarlo a fine animazione
-    // (così la regola CSS :has(body.light-theme) riprende il controllo).
     var htmlPrevBg = document.documentElement.style.backgroundColor;
     document.documentElement.style.backgroundColor = bgColor;
 
@@ -9959,7 +9963,7 @@ body.recomposing > footer {
       .catch(function (err) { cleanup('animation-error: ' + err); });
   }
 
-  /* ── Avvio: doppio rAF per aspettare che il tema sia dipinto ─── */
+  /* ── Avvio ──────────────────────────────────────────────────── */
   function start() {
     requestAnimationFrame(function () {
       requestAnimationFrame(init);
