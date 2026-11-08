@@ -9796,14 +9796,19 @@ function createHalf(side) {
   const wrapper = document.createElement('div');
   wrapper.className = 'half ' + side;
 
-  // Contenitore visivo leggero
-  const copy = document.createElement('div');
-  copy.className = 'page-copy';
+// Contenitore visivo leggero
+const copy = document.createElement('div');
+copy.className = 'page-copy';
 
-  copy.style.setProperty(
-    '--scroll-offset',
-    `-${scrollY}px`
-  );
+// Mantiene il tema corrente nella copia
+if (document.body.classList.contains('light-theme')) {
+  copy.classList.add('light-theme');
+}
+
+copy.style.setProperty(
+  '--scroll-offset',
+  `-${scrollY}px`
+);
 
   // Duplica soltanto intestazione e contenuto principale
   const header = document.querySelector('.site-header');
@@ -9916,8 +9921,6 @@ function createHalf(side) {
 
 })();
 </script>
-
-
 
   </body>
 
