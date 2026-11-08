@@ -9761,9 +9761,14 @@ body.recomposing > footer {
     background-color: #080a12;
   }
 
-  /* Nasconde la pagina originale durante l'animazione */
-body.recomposing > *:not(#echi-recompose):not(script):not(style):not(link):not(noscript) {
+/* Regola 1: tutto tranne <main> diventa invisibile, come prima */
+body.recomposing > *:not(#echi-recompose):not(script):not(style):not(link):not(noscript):not(main) {
   opacity: 0 !important;
+}
+
+/* Regola 2: tutto (incluso <main>) non è cliccabile durante l'animazione.
+   <main> resta visibile ma sotto l'overlay opaco → l'utente lo vede coperto. */
+body.recomposing > *:not(#echi-recompose):not(script):not(style):not(link):not(noscript) {
   pointer-events: none !important;
 }
 
