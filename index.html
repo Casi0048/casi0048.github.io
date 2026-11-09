@@ -748,6 +748,11 @@
         overflow-x: clip;
       }
 
+      body {
+        overflow-x: clip;
+        /* 'clip' invece di 'hidden' — non crea scroll container */
+      }
+
       :root {
         --bg: #080a12;
         --bg-soft: #0d101a;
@@ -819,7 +824,8 @@
         font-family: var(--sans);
         font-weight: 400;
         line-height: 1.6;
-        overflow-x: hidden;
+        overflow-x: clip;
+        /* ← era 'hidden', ora 'clip' */
         transition: background-color .4s ease, color .4s ease
       }
 
@@ -5620,7 +5626,7 @@
           flex-direction: column;
           text-align: center;
         }
-      }
+
 
       .music-player {
         right: 15px;
@@ -5663,7 +5669,7 @@
       .quote-block {
         min-height: 120px
       }
-
+  }
       @media (max-width:560px) {
         .eco-giorno-body {
           grid-template-columns: 1fr
@@ -5964,10 +5970,78 @@
         contain-intrinsic-size: auto 500px;
       }
 
-      body.recomposing>header,
-      body.recomposing>main,
-      body.recomposing>footer {
-        visibility: hidden;
+      /* ═══════════════════════════════════════════════════════════════
+   ECHI DI SOFIA — RICOMPOSIZIONE V5
+   Versione pulita: no perspective inutile, no transform-origin,
+   no overflow hidden, no visibility nascosta (main resta a11y-ok).
+   ═══════════════════════════════════════════════════════════════ */
+      #echi-recompose {
+        position: fixed;
+        inset: 0;
+        z-index: 1000000;
+        overflow: hidden;
+        pointer-events: none;
+        background-color: #080a12;
+        /* sovrascritto inline dal JS */
+        contain: layout style paint;
+      }
+
+      /* Durante l'animazione: niente click sulla pagina sotto.
+   NON nascondiamo nulla: l'overlay opaco copre già tutto,
+   e <main> resta nell'accessibility tree → Lighthouse OK. */
+      body.recomposing>*:not(#echi-recompose):not(script):not(style):not(link):not(noscript) {
+        pointer-events: none !important;
+      }
+
+      #echi-recompose .half {
+        position: absolute;
+        inset: 0;
+      }
+
+      #echi-recompose .half.left {
+        clip-path: inset(0 50% 0 0);
+      }
+
+      #echi-recompose .half.right {
+        clip-path: inset(0 0 0 50%);
+      }
+
+      #echi-recompose .page-copy {
+        position: absolute;
+        top: var(--scroll-offset, 0);
+        left: 0;
+        width: 100%;
+        min-height: 100vh;
+        margin: 0;
+        pointer-events: none;
+      }
+
+      @supports (min-height: 100dvh) {
+        #echi-recompose .page-copy {
+          min-height: 100dvh;
+        }
+      }
+
+      #echi-recompose .center-seam {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        width: 1px;
+        transform: translateX(-50%);
+        background: linear-gradient(to bottom,
+            transparent,
+            rgba(214, 174, 82, .28) 20%,
+            rgba(214, 174, 82, .20) 80%,
+            transparent);
+        box-shadow: 0 0 12px rgba(214, 174, 82, .12);
+        opacity: .7;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        #echi-recompose {
+          display: none !important;
+        }
       }
     </style>
   </head>
@@ -10117,110 +10191,17 @@
         }], "contemporaneo")
       }()
     </script>
-    <style>
-      /* ═══════════════════════════════════════════════════════════════
-     ECHI DI SOFIA — RICOMPOSIZIONE V4
-     - Niente maschera scura su tema chiaro
-     - Niente flash "pagina → sipario → pagina"
-     - Niente overlay appeso se un'animazione non finisce
-     ═══════════════════════════════════════════════════════════════ */
-      #echi-recompose {
-        position: fixed;
-        inset: 0;
-        z-index: 1000000;
-        overflow: hidden;
-        pointer-events: none;
-        /* Fallback: verrà sovrascritto inline con il colore corretto */
-        background-color: #080a12;
-      }
-
-      #echi-recompose {
-        perspective: 1800px;
-      }
-
-      /* Durante l'animazione: niente click sulla pagina originale.
-   Non nascondiamo nulla: l'overlay #echi-recompose (z-index 1000000,
-   background-color opaco) copre già visivamente l'intera pagina. */
-      body.recomposing>*:not(#echi-recompose):not(script):not(style):not(link):not(noscript) {
-        pointer-events: none !important;
-      }
-
-      #echi-recompose .half {
-        position: absolute;
-        inset: 0;
-        perspective: 500px;
-      }
-
-      #echi-recompose .half.left {
-        clip-path: inset(0 50% 0 0);
-      }
-
-      #echi-recompose .half.right {
-        clip-path: inset(0 0 0 50%);
-      }
-
-      #echi-recompose .page-copy {
-        position: absolute;
-        top: var(--scroll-offset, 0);
-        left: 0;
-        width: 100%;
-        min-height: 100vh;
-        margin: 0;
-        pointer-events: none;
-      }
-
-      #echi-recompose .half.left .page-copy {
-        transform-origin: 100% 50%;
-      }
-
-      #echi-recompose .half.right .page-copy {
-        transform-origin: 0% 50%;
-      }
-
-      @supports (min-height: 100dvh) {
-        #echi-recompose .page-copy {
-          min-height: 100dvh;
-        }
-      }
-
-      #echi-recompose .center-seam {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 50%;
-        width: 1px;
-        transform: translateX(-50%);
-        background: linear-gradient(to bottom,
-            transparent,
-            rgba(214, 174, 82, .28) 20%,
-            rgba(214, 174, 82, .20) 80%,
-            transparent);
-        box-shadow: 0 0 12px rgba(214, 174, 82, .12);
-        opacity: .7;
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        #echi-recompose {
-          display: none !important;
-        }
-      }
-    </style>
 
     <script>
       (function() {
         'use strict';
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
         if (document.getElementById('echi-recompose')) return;
-        /* ── LIGHTHOUSE SKIP ──────────────────────────────────────────
-           Salta l'animazione su Lighthouse / PageSpeed / HeadlessChrome
-           e su browser di test automatici. Evita falsi negativi su
-           "main landmark", "forced reflow", TBT, ecc.
-           L'utente reale vede il sipario normalmente. */
         if (/Lighthouse|PageSpeed|Chrome-Lighthouse|HeadlessChrome|GTmetrix|PTST/i
           .test(navigator.userAgent || '')) {
           return;
         }
-        /* ── Tema: la classe sul body è la fonte più affidabile a init ── */
+        /* ── Tema ─────────────────────────────────────────────────────── */
         function readTheme() {
           if (document.body.classList.contains('light-theme')) return 'light';
           try {
@@ -10230,7 +10211,7 @@
           } catch (e) {}
           return 'dark';
         }
-        /* Solo aggiunge, MAI rimuove */
+
         function ensureLightThemeClass(isLight) {
           if (isLight) document.body.classList.add('light-theme');
         }
@@ -10238,7 +10219,7 @@
         function bgFor(theme) {
           return theme === 'light' ? '#eaf2ed' : '#080a12';
         }
-        /* ── Rimuove gli id duplicati dai cloni (accessibilità) ── */
+
         function stripIds(root) {
           if (!root) return root;
           if (root.removeAttribute) root.removeAttribute('id');
@@ -10247,26 +10228,27 @@
           });
           return root;
         }
-        /* ── Init ────────────────────────────────────────────────────── */
+        /* ── Init ─────────────────────────────────────────────────────── */
         function init() {
           var theme = readTheme();
           var isLight = theme === 'light';
           var bgColor = bgFor(theme);
           ensureLightThemeClass(isLight);
-          console.log('[recompose] theme:', theme,
+          console.log(
+            '[recompose] theme:', theme,
             '· isLight:', isLight,
-            '· body.light-theme:',
-            document.body.classList.contains('light-theme'),
-            '· bg:', bgColor);
+            '· body.light-theme:', document.body.classList.contains('light-theme'),
+            '· bg:', bgColor
+          );
           var duration = window.innerWidth <= 650 ? 1200 : 1500;
           var scrollY = window.scrollY || window.pageYOffset || 0;
-          /* ── Overlay ────────────────────────────────────────────────── */
+          /* ── Overlay ─────────────────────────────────────────────────── */
           var overlay = document.createElement('div');
           overlay.id = 'echi-recompose';
           overlay.setAttribute('aria-hidden', 'true');
           overlay.inert = true;
           overlay.style.backgroundColor = bgColor;
-          /* ── Copia di una metà (con stripIds) ───────────────────────── */
+          /* ── Copia di una metà (tutta la pagina: header + main) ────── */
           function createHalf(side) {
             var wrapper = document.createElement('div');
             wrapper.className = 'half ' + side;
@@ -10291,9 +10273,8 @@
           var seam = document.createElement('div');
           seam.className = 'center-seam';
           overlay.appendChild(seam);
-          /* ── Monto l'overlay + blocco la pagina sottostante ─────────── */
+          /* ── Monto l'overlay ─────────────────────────────────────────── */
           document.body.appendChild(overlay);
-          // Overlay appare con una dissolvenza di 250ms
           overlay.style.opacity = '0';
           overlay.style.transition = 'opacity .25s ease';
           requestAnimationFrame(function() {
@@ -10304,7 +10285,7 @@
           var htmlPrevBg = document.documentElement.style.backgroundColor;
           document.documentElement.style.backgroundColor = bgColor;
           document.body.classList.add('recomposing');
-          /* ── Cleanup idempotente ────────────────────────────────────── */
+          /* ── Cleanup ────────────────────────────────────────────────── */
           var finished = false;
           var safetyId = null;
 
@@ -10320,8 +10301,8 @@
           safetyId = setTimeout(function() {
             cleanup('safety-timeout');
           }, 8000);
-          /* ── Animazioni: crescita pulita dal centro ─────────────────── */
-          var easing = 'cubic-bezier(.22, 1, .36, 1)'; /* smooth, NIENTE overshoot */
+          /* ── Animazioni: TUTTO il .page-copy fa il vortice ─────────── */
+          var easing = 'cubic-bezier(.22, 1, .36, 1)';
           var options = {
             duration: duration,
             easing: easing,
@@ -10329,30 +10310,30 @@
           };
           var animations = [
             left.animate([{
-                transform: 'translateX(0) rotateZ(-540deg) scale(0.1)',
+                transform: 'rotateZ(-540deg) scale(0.1)',
                 opacity: 0
               },
               {
-                transform: 'translateX(0) rotateZ(-270deg) scale(0.5)',
+                transform: 'rotateZ(-270deg) scale(0.5)',
                 opacity: 1,
                 offset: 0.3
               },
               {
-                transform: 'translateX(0) rotateZ(0) scale(1)',
+                transform: 'rotateZ(0) scale(1)',
                 opacity: 1
               }
             ], options),
             right.animate([{
-                transform: 'translateX(0) rotateZ(540deg) scale(0.1)',
+                transform: 'rotateZ(540deg) scale(0.1)',
                 opacity: 0
               },
               {
-                transform: 'translateX(0) rotateZ(270deg) scale(0.5)',
+                transform: 'rotateZ(270deg) scale(0.5)',
                 opacity: 1,
                 offset: 0.3
               },
               {
-                transform: 'translateX(0) rotateZ(0) scale(1)',
+                transform: 'rotateZ(0) scale(1)',
                 opacity: 1
               }
             ], options),
@@ -10372,57 +10353,30 @@
               fill: 'both'
             })
           ];
-          /* animateCenter RIMOSSO: i pannelli crescono come un tutt'uno
-             con il loro contenuto, senza scatti interni. */
-          function animateCenter(copy) {
-            var blocks = copy.querySelectorAll('.col-centrale > *');
-            blocks.forEach(function(block, index) {
-              animations.push(block.animate([{
-                  opacity: 0,
-                  transform: 'translateY(40px)'
-                },
-                {
-                  opacity: 1,
-                  transform: 'translateY(0)'
-                }
-              ], {
-                duration: 800,
-                delay: 200 + index * 80,
-                /* parte subito, non a 850ms */
-                easing: 'cubic-bezier(.22, 1, .36, 1)',
-                fill: 'both'
-              }));
-            });
-          }
-          animateCenter(left);
-          animateCenter(right);
-
+          /* Blocchi centrali: entrano sfalsati (parte integrante del vortice) */
           function animateCenter(copy) {
             var blocks = copy.querySelectorAll('.col-centrale > *');
             blocks.forEach(function(block, index) {
               animations.push(
                 block.animate([{
                     opacity: 0,
-                    transform: 'translateY(110px)'
-                  },
-                  {
-                    opacity: 0.35,
-                    transform: 'translateY(65px)',
-                    offset: 0.45
+                    transform: 'translateY(40px)'
                   },
                   {
                     opacity: 1,
                     transform: 'translateY(0)'
                   }
                 ], {
-                  duration: 1500,
-                  delay: 850 + index * 220,
+                  duration: 800,
+                  delay: 200 + index * 80,
                   easing: 'cubic-bezier(.22, 1, .36, 1)',
                   fill: 'both'
                 })
               );
             });
           }
+          animateCenter(left);
+          animateCenter(right);
           Promise.all(animations.map(function(a) {
               return a.finished;
             }))
@@ -10433,7 +10387,7 @@
               cleanup('animation-error: ' + err);
             });
         }
-        /* ── Avvio ──────────────────────────────────────────────────── */
+
         function start() {
           requestAnimationFrame(function() {
             requestAnimationFrame(init);
@@ -10448,7 +10402,6 @@
         }
       })();
     </script>
-
   </body>
 
 </html>
