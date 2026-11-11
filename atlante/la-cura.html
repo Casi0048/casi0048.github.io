@@ -1,1 +1,572 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>La Cura (Sorge) — Atlante delle Idee · Echi di Sofia</title>
+  <meta name="description" content="La Cura secondo Heidegger: la struttura dell'esistenza umana tra gettatezza, proiezione e angoscia. Scheda completa dell'Atlante delle Idee.">
+  <meta name="theme-color" content="#080a12">
+  <link rel="icon" type="image/svg+xml" href="/favicon_io/favicon.svg">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "La Cura (Sorge)",
+    "description": "La struttura dell'esistenza umana: gettatezza, proiezione, angoscia.",
+    "author": { "@type": "Organization", "name": "Echi di Sofia" },
+    "publisher": { "@type": "Organization", "name": "Echi di Sofia" },
+    "inLanguage": "it",
+    "isPartOf": { "@type": "WebSite", "name": "Atlante delle Idee" }
+  }
+  </script>
+  <style>
+    :root {
+      --bg:#080a12; --bg-soft:#0d101a;
+      --surface:rgba(255,255,255,.035); --surface-hover:rgba(255,255,255,.055);
+      --text:#d9fbe8; --text-soft:#a8d8bb; --text-muted:#8eb5a1;
+      --gold:#EFBF04; --gold-soft:rgba(239,191,4,.16); --gold-line:rgba(239,191,4,.24);
+      --border:rgba(255,255,255,.08);
+      --serif:"Cormorant Garamond",Georgia,serif;
+      --display:"Cinzel",Georgia,serif;
+      --sans:"Inter",Arial,sans-serif;
+      --radius:14px;
+      --ease-expo:cubic-bezier(.16,1,.3,1);
+    }
+    body.light-theme {
+      --bg:#eaf2ed; --bg-soft:#dce8e0;
+      --text:#0f1f16; --text-soft:#1a3628; --text-muted:#2e4d3d;
+      --gold:#00a86b; --gold-soft:rgba(0,168,107,.1); --gold-line:rgba(0,168,107,.25);
+      --border:rgba(0,0,0,.06);
+      --surface:rgba(0,168,107,.04); --surface-hover:rgba(0,168,107,.08);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;background:var(--bg)}
+    body{
+      min-height:100vh;background:var(--bg);color:var(--text);
+      font-family:var(--sans);line-height:1.65;
+      transition:background-color .4s,color .4s;
+    }
+    a{color:inherit;text-decoration:none}
+    button{font:inherit;cursor:pointer}
+    .container{width:min(820px,calc(100% - 40px));margin:0 auto}
+    .skip{position:fixed;top:8px;left:8px;transform:translateY(-200%);
+      background:var(--gold);color:var(--bg);padding:10px 16px;border-radius:6px;
+      font-size:.85rem;font-weight:700;z-index:100}
+    .skip:focus{transform:translateY(0)}
 
+    /* ── Header minimale ─────────────────────────────── */
+    .scheda-header{
+      position:sticky;top:0;z-index:50;
+      background:color-mix(in srgb,var(--bg) 92%,transparent);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid var(--border);
+    }
+    .scheda-header .container{
+      display:flex;align-items:center;justify-content:space-between;
+      gap:20px;padding:14px 0;
+    }
+    .scheda-back{
+      display:inline-flex;align-items:center;gap:8px;
+      font-size:.78rem;letter-spacing:1.2px;text-transform:uppercase;
+      color:var(--text-soft);transition:color .3s;
+    }
+    .scheda-back:hover{color:var(--gold)}
+    .scheda-back svg{width:16px;height:16px}
+    .scheda-logo{
+      font-family:var(--display);font-size:.82rem;letter-spacing:2px;
+      color:var(--gold);
+    }
+    .scheda-theme{
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:30px;padding:.3rem .9rem;
+      font-size:.72rem;letter-spacing:.8px;color:var(--text-soft);
+      transition:border-color .3s,color .3s;
+    }
+    .scheda-theme:hover{border-color:var(--gold-line);color:var(--text)}
+
+    /* ── Hero ─────────────────────────────────────────── */
+    .scheda-hero{padding:48px 0 36px;text-align:center;border-bottom:1px solid var(--gold-line)}
+    .scheda-regione{
+      display:inline-block;margin-bottom:18px;padding:5px 14px;
+      border:1px solid var(--gold-line);border-radius:100px;
+      font-size:.66rem;letter-spacing:2.2px;text-transform:uppercase;
+      color:var(--gold);background:var(--gold-soft);
+    }
+    .scheda-titolo{
+      font-family:var(--display);font-weight:500;
+      font-size:clamp(2rem,5vw,3.2rem);letter-spacing:2px;
+      line-height:1.1;color:var(--text);margin-bottom:10px;
+    }
+    .scheda-titolo em{
+      display:block;margin-top:8px;
+      font-family:var(--serif);font-style:italic;font-weight:500;
+      font-size:.55em;letter-spacing:.5px;color:var(--gold);opacity:.9;
+    }
+    .scheda-meta{
+      display:flex;align-items:center;justify-content:center;
+      flex-wrap:wrap;gap:16px;margin-top:20px;
+      font-size:.72rem;letter-spacing:1px;color:var(--text-muted);
+    }
+    .scheda-meta span{display:inline-flex;align-items:center;gap:6px}
+    .scheda-tags{
+      display:flex;flex-wrap:wrap;justify-content:center;gap:8px;
+      margin-top:18px;
+    }
+    .scheda-tags span{
+      padding:3px 10px;border-radius:100px;
+      border:1px solid var(--border);
+      font-family:var(--sans);font-size:.68rem;
+      color:var(--text-muted);
+    }
+
+    /* ── Indice sticky ────────────────────────────────── */
+    .scheda-indice{
+      position:sticky;top:57px;z-index:40;
+      background:color-mix(in srgb,var(--bg) 94%,transparent);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--border);
+    }
+    .scheda-indice-inner{
+      display:flex;gap:4px;overflow-x:auto;
+      padding:10px 0;scrollbar-width:none;
+    }
+    .scheda-indice-inner::-webkit-scrollbar{display:none}
+    .scheda-indice a{
+      flex:0 0 auto;padding:6px 14px;border-radius:100px;
+      font-size:.72rem;letter-spacing:.6px;color:var(--text-muted);
+      border:1px solid transparent;transition:all .25s;
+      white-space:nowrap;
+    }
+    .scheda-indice a:hover,.scheda-indice a.active{
+      color:var(--gold);border-color:var(--gold-line);background:var(--gold-soft);
+    }
+
+    /* ── Sezioni ──────────────────────────────────────── */
+    .scheda-main{padding:40px 0 60px}
+    .scheda-section{
+      margin-bottom:56px;scroll-margin-top:120px;
+    }
+    .scheda-section-head{
+      display:flex;align-items:baseline;gap:14px;
+      margin-bottom:22px;padding-bottom:12px;
+      border-bottom:1px solid var(--gold-line);
+    }
+    .scheda-section-num{
+      font-family:var(--display);font-size:1.4rem;
+      color:var(--gold);opacity:.85;
+    }
+    .scheda-section-title{
+      font-family:var(--display);font-weight:500;
+      font-size:1.05rem;letter-spacing:2px;text-transform:uppercase;
+      color:var(--gold);
+    }
+    .scheda-section-body{
+      font-family:var(--serif);font-size:1.08rem;
+      line-height:1.75;color:var(--text-soft);
+    }
+    .scheda-section-body p{margin-bottom:16px}
+    .scheda-section-body p:last-child{margin-bottom:0}
+    .scheda-section-body strong{color:var(--text);font-weight:600}
+    .scheda-section-body em{color:var(--text);font-style:italic}
+
+    /* Coordinate: testo grande, pull-quote */
+    .scheda-pull{
+      position:relative;
+      padding:24px 28px 24px 44px;
+      border-left:2px solid var(--gold);
+      background:linear-gradient(90deg,var(--gold-soft),transparent 70%);
+      border-radius:0 var(--radius) var(--radius) 0;
+      font-family:var(--serif);font-size:1.18rem;
+      font-style:italic;line-height:1.7;color:var(--text);
+    }
+    .scheda-pull::before{
+      content:"“";position:absolute;left:12px;top:6px;
+      font-family:var(--display);font-size:2.4rem;
+      color:var(--gold);opacity:.5;line-height:1;
+    }
+
+    /* Etimologia: due colonne */
+    .scheda-etimo{
+      display:grid;grid-template-columns:1fr 1.4fr;
+      gap:28px;align-items:start;
+    }
+    .scheda-etimo-term{
+      padding:18px 20px;
+      background:var(--bg-soft);border:1px solid var(--gold-line);
+      border-radius:var(--radius);
+    }
+    .scheda-etimo-term h3{
+      font-family:var(--display);font-size:.7rem;font-weight:500;
+      letter-spacing:2px;text-transform:uppercase;color:var(--gold);
+      margin-bottom:10px;
+    }
+    .scheda-etimo-term ul{list-style:none;padding:0}
+    .scheda-etimo-term li{
+      padding:8px 0;border-bottom:1px dashed var(--border);
+      font-family:var(--serif);font-size:1rem;color:var(--text-soft);
+    }
+    .scheda-etimo-term li:last-child{border-bottom:0}
+    .scheda-etimo-term li strong{
+      display:block;font-family:var(--display);font-size:.88rem;
+      color:var(--gold);font-weight:500;margin-bottom:2px;
+    }
+
+    /* Tornanti: timeline verticale */
+    .scheda-timeline{position:relative;padding-left:40px}
+    .scheda-timeline::before{
+      content:"";position:absolute;left:15px;top:8px;bottom:8px;
+      width:1px;background:linear-gradient(to bottom,transparent,var(--gold-line) 10%,var(--gold-line) 90%,transparent);
+    }
+    .scheda-momento{position:relative;margin-bottom:28px}
+    .scheda-momento:last-child{margin-bottom:0}
+    .scheda-momento::before{
+      content:"";position:absolute;left:-32px;top:6px;
+      width:11px;height:11px;border-radius:50%;
+      background:var(--bg);border:2px solid var(--gold);
+      box-shadow:0 0 0 4px var(--gold-soft);
+    }
+    .scheda-momento-label{
+      display:inline-block;margin-bottom:6px;
+      font-size:.66rem;letter-spacing:2px;text-transform:uppercase;
+      color:var(--gold);font-weight:500;
+    }
+    .scheda-momento-title{
+      font-family:var(--display);font-size:1rem;font-weight:500;
+      color:var(--text);margin-bottom:8px;line-height:1.35;
+    }
+    .scheda-momento-text{
+      font-family:var(--serif);font-size:1rem;line-height:1.7;
+      color:var(--text-soft);
+    }
+
+    /* Ponti: griglia 2 colonne */
+    .scheda-ponti{
+      display:grid;grid-template-columns:1fr 1fr;
+      gap:18px;
+    }
+    .scheda-ponte{
+      padding:20px 22px;
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:var(--radius);
+      transition:border-color .3s,background .3s,transform .3s;
+    }
+    .scheda-ponte:hover{
+      border-color:var(--gold-line);background:var(--surface-hover);
+      transform:translateY(-2px);
+    }
+    .scheda-ponte-label{
+      display:block;margin-bottom:10px;
+      font-size:.62rem;letter-spacing:2px;text-transform:uppercase;
+      color:var(--gold);
+    }
+    .scheda-ponte h4{
+      font-family:var(--display);font-size:.95rem;font-weight:500;
+      color:var(--text);margin-bottom:8px;line-height:1.35;
+    }
+    .scheda-ponte p{
+      font-family:var(--serif);font-size:.95rem;line-height:1.6;
+      color:var(--text-soft);
+    }
+
+    /* Bussola: box dorato */
+    .scheda-bussola{
+      padding:28px 30px;
+      background:linear-gradient(135deg,var(--gold-soft),transparent 80%);
+      border:1px solid var(--gold-line);border-radius:var(--radius);
+    }
+    .scheda-domanda{
+      margin-bottom:24px;padding-bottom:20px;
+      border-bottom:1px dashed var(--gold-line);
+    }
+    .scheda-domanda-label{
+      display:block;margin-bottom:10px;
+      font-size:.66rem;letter-spacing:2px;text-transform:uppercase;
+      color:var(--gold);
+    }
+    .scheda-domanda p{
+      font-family:var(--serif);font-size:1.22rem;font-style:italic;
+      line-height:1.6;color:var(--text);
+    }
+    .scheda-letture h4{
+      font-size:.66rem;letter-spacing:2px;text-transform:uppercase;
+      color:var(--gold);margin-bottom:10px;font-weight:500;
+    }
+    .scheda-letture h4 + ul{margin-bottom:18px}
+    .scheda-letture ul{list-style:none;padding:0}
+    .scheda-letture li{
+      padding:8px 0;font-family:var(--serif);
+      font-size:.98rem;line-height:1.5;color:var(--text-soft);
+      border-bottom:1px dashed var(--border);
+    }
+    .scheda-letture li:last-child{border-bottom:0}
+    .scheda-letture li strong{color:var(--text);font-weight:600}
+
+    /* ── Prev/Next ────────────────────────────────────── */
+    .scheda-nav{
+      display:grid;grid-template-columns:1fr 1fr;gap:16px;
+      margin-top:56px;padding-top:32px;
+      border-top:1px solid var(--gold-line);
+    }
+    .scheda-nav a{
+      display:flex;flex-direction:column;gap:6px;
+      padding:18px 20px;
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:var(--radius);
+      transition:border-color .3s,background .3s,transform .3s;
+    }
+    .scheda-nav a:hover{
+      border-color:var(--gold-line);background:var(--surface-hover);
+      transform:translateY(-2px);
+    }
+    .scheda-nav a.next{text-align:right}
+    .scheda-nav-label{
+      font-size:.6rem;letter-spacing:2px;text-transform:uppercase;
+      color:var(--text-muted);
+    }
+    .scheda-nav-title{
+      font-family:var(--display);font-size:1rem;color:var(--gold);
+    }
+
+    /* ── Footer minimale ──────────────────────────────── */
+    .scheda-footer{
+      padding:30px 0;border-top:1px solid var(--border);
+      text-align:center;font-size:.68rem;
+      letter-spacing:.6px;color:var(--text-muted);
+    }
+
+    @media (max-width:640px){
+      .scheda-etimo{grid-template-columns:1fr}
+      .scheda-ponti{grid-template-columns:1fr}
+      .scheda-nav{grid-template-columns:1fr}
+      .scheda-hero{padding:32px 0 28px}
+      .scheda-section{margin-bottom:44px}
+      .scheda-bussola{padding:22px 20px}
+      .scheda-pull{padding:20px 20px 20px 36px;font-size:1.05rem}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{transition-duration:0s !important;animation-duration:0s !important}
+      html{scroll-behavior:auto}
+    }
+  </style>
+</head>
+<body>
+  <a href="#main" class="skip">Salta al contenuto</a>
+
+  <header class="scheda-header">
+    <div class="container">
+      <a href="/atlante/" class="scheda-back" aria-label="Torna alla mappa">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Atlante
+      </a>
+      <span class="scheda-logo">ECHI DI SOFIA</span>
+      <button class="scheda-theme" id="themeToggle" type="button" aria-label="Cambia tema">◐ Tema</button>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ═══ HERO ═══ -->
+    <section class="scheda-hero">
+      <div class="container">
+        <span class="scheda-regione">Esistenza, Tempo e Antropologia</span>
+        <h1 class="scheda-titolo">
+          La Cura
+          <em>(Sorge)</em>
+        </h1>
+        <div class="scheda-meta">
+          <span>⏱ 7 minuti di lettura</span>
+          <span>✦ Scheda n. 14 di 18</span>
+        </div>
+        <div class="scheda-tags">
+          <span>#cura</span><span>#heidegger</span><span>#angoscia</span>
+          <span>#finitezza</span><span>#relazione</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ INDICE STICKY ═══ -->
+    <nav class="scheda-indice" aria-label="Indice della scheda">
+      <div class="container">
+        <div class="scheda-indice-inner">
+          <a href="#coordinate">Coordinate</a>
+          <a href="#etimologia">Etimologia</a>
+          <a href="#tornanti">Tornanti</a>
+          <a href="#ponti">Ponti</a>
+          <a href="#bussola">Bussola</a>
+        </div>
+      </div>
+    </nav>
+
+    <article class="scheda-main">
+      <div class="container">
+
+        <!-- 1. COORDINATE -->
+        <section class="scheda-section" id="coordinate">
+          <div class="scheda-section-head">
+            <span class="scheda-section-num">01</span>
+            <h2 class="scheda-section-title">Le Coordinate</h2>
+          </div>
+          <div class="scheda-section-body">
+            <p class="scheda-pull">La <strong>Cura</strong> non è un sentimento, né una virtù, né un dovere. È la struttura stessa dell'esistenza umana: l'essere che, prima di ogni scelta, si trova già gettato nel mondo, proiettato verso possibilità che non ha scelto, accompagnato dalla preoccupazione per ciò che sarà.</p>
+            <p>Non «l'uomo ha cura delle cose»: l'uomo <em>è</em> cura. È il modo in cui Heidegger risponde alla domanda «chi siamo?» senza cadere nell'astrazione del soggetto cartesiano o dell'animale razionale aristotelico.</p>
+          </div>
+        </section>
+
+        <!-- 2. ETIMOLOGIA -->
+        <section class="scheda-section" id="etimologia">
+          <div class="scheda-section-head">
+            <span class="scheda-section-num">02</span>
+            <h2 class="scheda-section-title">Archeologia della Parola</h2>
+          </div>
+          <div class="scheda-etimo">
+            <div class="scheda-etimo-term">
+              <h3>Radici</h3>
+              <ul>
+                <li><strong>Latino</strong>cura — premura, sollecitudine, ma anche affanno</li>
+                <li><strong>Tedesco</strong>Sorge — preoccupazione, ma anche provvidenza</li>
+                <li><strong>Greco</strong>μέριμνα (mérimna) — pensiero che veglia</li>
+              </ul>
+            </div>
+            <div class="scheda-section-body">
+              <p>Prima di Heidegger, <em>cura</em> era una virtù pratica: l'attenzione medica, la custodia delle cose, la <em>pietas</em> verso i propri cari. Il latino indica insieme premura e affanno — la stessa ambivalenza che il tedesco <em>Sorge</em> conserva: la provvidenza materna e l'angoscia notturna.</p>
+              <p>L'archeologia vera è nel mito che Heidegger cita da Igino: <strong>Cura</strong> plasma l'uomo dal fango e chiede a Giove di darle lo spirito. Litigano sul nome. Saturno decide: «Tu, Cura, che l'hai plasmato per primo, lo possiederai finché vive; Giove ne avrà lo spirito alla morte; ma poiché la contesa è sul nome, si chiamerà <em>homo</em>, perché fatto di <em>humus</em>».</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. TORNANTI -->
+        <section class="scheda-section" id="tornanti">
+          <div class="scheda-section-head">
+            <span class="scheda-section-num">03</span>
+            <h2 class="scheda-section-title">I Tornanti Storici</h2>
+          </div>
+          <div class="scheda-timeline">
+            <div class="scheda-momento">
+              <span class="scheda-momento-label">① La Nascita · I secolo d.C.</span>
+              <h3 class="scheda-momento-title">Il mito di Cura (Igino, Favole 220)</h3>
+              <p class="scheda-momento-text">La favola antica custodisce già tutto: l'uomo è impasto di terra e preoccupazione. Ma per secoli il mito resta marginale — i filosofi preferiscono definire l'uomo come animale razionale o come immagine di Dio. La cura resta una virtù, non un'ontologia.</p>
+            </div>
+            <div class="scheda-momento">
+              <span class="scheda-momento-label">② La Svolta · 1927</span>
+              <h3 class="scheda-momento-title">Heidegger, <em>Essere e tempo</em></h3>
+              <p class="scheda-momento-text">La <em>Sorge</em> non è un atteggiamento tra gli altri: è la struttura dell'esserci. L'uomo è quell'ente per cui <em>nel suo essere ne va del suo essere stesso</em>. La cura si articola in esistenzialità (proiezione), fattezza (essere gettati), caduta (dispersione nelle cose) — e si manifesta autenticamente nell'angoscia e nell'essere-per-la-morte.</p>
+            </div>
+            <div class="scheda-momento">
+              <span class="scheda-momento-label">③ L'Oggi · 1980–oggi</span>
+              <h3 class="scheda-momento-title">L'etica della cura e il «care» digitale</h3>
+              <p class="scheda-momento-text">Carol Gilligan e Joan Tronto spostano la cura dall'ontologia all'etica: pratica relazionale, lavoro spesso invisibile, tessuto delle società. Oggi la cura è anche algoritmo: i social «si prendono cura» di noi personalizzando i contenuti, le app di salute mentale ci chiedono di «prenderci cura di noi stessi», il <em>care</em> è diventato business. Heidegger avrebbe riconosciuto qui la sua <em>caduta</em>: la cura autentica sostituita dalla rassicurazione che ci chiude in noi stessi.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. PONTI -->
+        <section class="scheda-section" id="ponti">
+          <div class="scheda-section-head">
+            <span class="scheda-section-num">04</span>
+            <h2 class="scheda-section-title">I Ponti</h2>
+          </div>
+          <div class="scheda-ponti">
+            <div class="scheda-ponte">
+              <span class="scheda-ponte-label">Arte · Cinema · Letteratura</span>
+              <h4>Il figlio (2022, Florian Zeller)</h4>
+              <p>Un padre che si prende cura del figlio adolescente scopre che la cura non è mai solo tecnica: è esposizione, vulnerabilità, tempo che non si possiede.</p>
+            </div>
+            <div class="scheda-ponte">
+              <span class="scheda-ponte-label">Arte · Cinema · Letteratura</span>
+              <h4>Stalker (1979, Tarkovskij)</h4>
+              <p>La Zona non è un luogo da esplorare: è lo spazio in cui la cura si manifesta come attesa e responsabilità verso chi verrà dopo.</p>
+            </div>
+            <div class="scheda-ponte">
+              <span class="scheda-ponte-label">Scienza · Tecnologia · Attualità</span>
+              <h4>L'economia della cura</h4>
+              <p>Il 75% del lavoro di cura globale non è retribuito, quasi interamente femminile. La pandemia ha reso visibile ciò che la filosofia sapeva da Heidegger: senza cura, nessuna società sta in piedi.</p>
+            </div>
+            <div class="scheda-ponte">
+              <span class="scheda-ponte-label">Scienza · Tecnologia · Attualità</span>
+              <h4>L'AI e il «care fittizio»</h4>
+              <p>I chatbot empatici simulano la cura — ma possono prendersi cura di noi solo nel senso dell'<em>aver cura</em> (occuparsi di), mai del <em>prendersi cura</em> (lasciar essere l'altro nella sua alterità).</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. BUSSOLA -->
+        <section class="scheda-section" id="bussola">
+          <div class="scheda-section-head">
+            <span class="scheda-section-num">05</span>
+            <h2 class="scheda-section-title">La Bussola</h2>
+          </div>
+          <div class="scheda-bussola">
+            <div class="scheda-domanda">
+              <span class="scheda-domanda-label">Una domanda per te</span>
+              <p>Quando ti prendi cura di qualcuno, lo stai <em>lasciando essere</em> nella sua libertà — o stai <em>riempiendo</em> il suo vuoto con la tua presenza? La differenza è tutto.</p>
+            </div>
+            <div class="scheda-letture">
+              <h4>Per iniziare (lettura breve, accessibile)</h4>
+              <ul>
+                <li><strong>M. Heidegger</strong>, <em>Essere e tempo</em>, § 39–42 (solo queste pagine, per iniziare)</li>
+                <li><strong>U. Galimberti</strong>, <em>Heidegger e il nuovo</em>, capitolo sulla cura</li>
+              </ul>
+              <h4>Per scavare (testo classico, fondamentale)</h4>
+              <ul>
+                <li><strong>M. Heidegger</strong>, <em>Essere e tempo</em> (1927), § 39–44</li>
+                <li><strong>J. Tronto</strong>, <em>Moral Boundaries</em> (1993) — per l'etica della cura contemporanea</li>
+                <li><strong>Igino</strong>, <em>Favole</em>, 220 — il mito di Cura</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- PREV / NEXT -->
+        <nav class="scheda-nav" aria-label="Navigazione tra concetti">
+          <a href="/atlante/il-tempo.html">
+            <span class="scheda-nav-label">← Concetto precedente</span>
+            <span class="scheda-nav-title">Il Tempo</span>
+          </a>
+          <a href="/atlante/l-amore.html" class="next">
+            <span class="scheda-nav-label">Concetto successivo →</span>
+            <span class="scheda-nav-title">L'Amore</span>
+          </a>
+        </nav>
+
+      </div>
+    </article>
+  </main>
+
+  <footer class="scheda-footer">
+    <div class="container">© 2026 Echi di Sofia · Atlante delle Idee</div>
+  </footer>
+
+  <script>
+    // Toggle tema (coerente col resto del sito)
+    (function(){
+      const KEY = 'theme';
+      const btn = document.getElementById('themeToggle');
+      function apply(t){
+        const light = t === 'light';
+        document.body.classList.toggle('light-theme', light);
+        document.documentElement.style.backgroundColor = light ? '#eaf2ed' : '#080a12';
+        btn.textContent = light ? '☀ Tema' : '◐ Tema';
+        try{ localStorage.setItem(KEY, t); }catch(e){}
+      }
+      apply(localStorage.getItem(KEY) || 'dark');
+      btn.addEventListener('click', () => {
+        apply(document.body.classList.contains('light-theme') ? 'dark' : 'light');
+      });
+    })();
+
+    // Indice sticky: evidenzia sezione in viewport
+    (function(){
+      const links = document.querySelectorAll('.scheda-indice a');
+      const sections = document.querySelectorAll('.scheda-section');
+      if (!('IntersectionObserver' in window)) return;
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id));
+          }
+        });
+      }, { rootMargin: '-120px 0px -70% 0px', threshold: 0 });
+      sections.forEach(s => io.observe(s));
+    })();
+  </script>
+</body>
+</html>
