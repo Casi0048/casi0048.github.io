@@ -1,1 +1,626 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atlante delle Idee — Echi di Sofia</title>
+  <meta name="description" content="La mappa interattiva dei concetti filosofici: 6 regioni, 18 idee, tutte le connessioni. Clicca un nodo per esplorare.">
+  <meta name="theme-color" content="#080a12">
+  <link rel="icon" type="image/svg+xml" href="/favicon_io/favicon.svg">
+  <style>
+    :root{
+      --bg:#080a12;--bg-soft:#0d101a;
+      --surface:rgba(255,255,255,.035);--surface-hover:rgba(255,255,255,.055);
+      --text:#d9fbe8;--text-soft:#a8d8bb;--text-muted:#8eb5a1;
+      --gold:#EFBF04;--gold-soft:rgba(239,191,4,.16);--gold-line:rgba(239,191,4,.24);
+      --border:rgba(255,255,255,.08);
+      --serif:"Cormorant Garamond",Georgia,serif;
+      --display:"Cinzel",Georgia,serif;
+      --sans:"Inter",Arial,sans-serif;
+      --radius:14px;
+    }
+    body.light-theme{
+      --bg:#eaf2ed;--bg-soft:#dce8e0;
+      --text:#0f1f16;--text-soft:#1a3628;--text-muted:#2e4d3d;
+      --gold:#00a86b;--gold-soft:rgba(0,168,107,.1);--gold-line:rgba(0,168,107,.25);
+      --border:rgba(0,0,0,.06);
+      --surface:rgba(0,168,107,.04);--surface-hover:rgba(0,168,107,.08);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{
+      min-height:100vh;background:var(--bg);color:var(--text);
+      font-family:var(--sans);line-height:1.6;
+    }
+    a{color:inherit;text-decoration:none}
+    button{font:inherit;cursor:pointer;border:0;background:0 0;color:inherit}
+    .container{width:min(1100px,calc(100% - 40px));margin:0 auto}
 
+    /* Header */
+    .atl-header{
+      position:sticky;top:0;z-index:50;
+      background:color-mix(in srgb,var(--bg) 92%,transparent);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid var(--border);
+    }
+    .atl-header .container{
+      display:flex;align-items:center;justify-content:space-between;
+      gap:20px;padding:14px 0;
+    }
+    .atl-back,.atl-theme{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:6px 12px;border-radius:100px;
+      font-size:.75rem;letter-spacing:1px;color:var(--text-soft);
+      border:1px solid var(--border);transition:all .3s;
+    }
+    .atl-back:hover,.atl-theme:hover{
+      border-color:var(--gold-line);color:var(--gold);
+    }
+    .atl-back svg{width:16px;height:16px}
+    .atl-logo{
+      font-family:var(--display);font-size:.85rem;letter-spacing:2px;color:var(--gold);
+    }
+
+    /* Hero */
+    .atl-hero{padding:48px 0 32px;text-align:center;border-bottom:1px solid var(--gold-line)}
+    .atl-title{
+      font-family:var(--display);font-weight:500;
+      font-size:clamp(1.8rem,4vw,2.8rem);letter-spacing:3px;
+      color:var(--gold);margin-bottom:12px;
+    }
+    .atl-sub{
+      max-width:560px;margin:0 auto;
+      font-family:var(--serif);font-style:italic;font-size:1.02rem;
+      color:var(--text-muted);line-height:1.6;
+    }
+
+    /* Filter tabs */
+    .atl-filters{
+      display:flex;flex-wrap:wrap;justify-content:center;
+      gap:8px;padding:24px 0;
+    }
+    .atl-filter{
+      padding:7px 16px;border-radius:100px;
+      border:1px solid var(--gold-line);
+      font-size:.72rem;letter-spacing:1px;
+      color:var(--text-soft);
+      transition:all .25s;
+    }
+    .atl-filter:hover{border-color:var(--gold);color:var(--gold)}
+    .atl-filter.active{
+      background:var(--gold-soft);border-color:var(--gold);color:var(--gold);
+    }
+
+    /* Layout mappa + pannello */
+    .atl-layout{
+      display:grid;grid-template-columns:minmax(0,1fr) 320px;
+      gap:28px;align-items:start;
+      padding-bottom:60px;
+    }
+    @media (max-width:900px){
+      .atl-layout{grid-template-columns:1fr}
+    }
+
+    /* SVG mappa */
+    .atl-map-wrap{
+      background:radial-gradient(ellipse at center,var(--gold-soft),transparent 70%);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:20px;
+      position:relative;
+    }
+    .atl-map{
+      display:block;width:100%;height:auto;
+      overflow:visible;
+    }
+    .atl-node{cursor:pointer;outline:0;transition:opacity .3s}
+    .atl-node circle{transition:all .3s var(--ease-expo, cubic-bezier(.16,1,.3,1))}
+    .atl-node text{
+      pointer-events:none;user-select:none;
+      transition:fill .3s,font-weight .3s;
+    }
+    .atl-node:hover circle,
+    .atl-node:focus-visible circle{
+      stroke:var(--gold);stroke-width:2.5;
+      filter:drop-shadow(0 0 8px var(--gold-soft));
+    }
+    .atl-node:hover text,
+    .atl-node:focus-visible text{fill:var(--gold)}
+    .atl-node.active circle{
+      stroke:var(--gold);stroke-width:3;
+      fill:color-mix(in srgb,var(--gold) 12%,var(--bg-soft));
+      filter:drop-shadow(0 0 10px color-mix(in srgb,var(--gold) 50%,transparent));
+    }
+    .atl-node.active text{fill:var(--gold);font-weight:600}
+    .atl-node.dim{opacity:.25}
+    .atl-center circle{stroke:var(--gold)}
+    .atl-center text{
+      font-family:"Cinzel",serif;font-size:16px;
+      fill:var(--gold);letter-spacing:2px;
+    }
+    .atl-link{
+      stroke:var(--gold-line);stroke-width:1;
+      transition:stroke .3s,stroke-opacity .3s,stroke-width .3s;
+    }
+    .atl-link.active{
+      stroke:var(--gold);stroke-opacity:.9;stroke-width:2;
+    }
+    .atl-hub-label{
+      font-family:var(--sans);font-size:11px;
+      fill:var(--text-muted);letter-spacing:.5px;
+      pointer-events:none;user-select:none;
+      transition:fill .3s,font-weight .3s;
+    }
+    .atl-hub-label.active{fill:var(--gold);font-weight:600}
+
+    /* Pannello info */
+    .atl-info{
+      position:sticky;top:80px;
+      padding:24px 22px;
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      min-height:280px;
+      transition:border-color .3s;
+    }
+    .atl-info.has-selection{border-color:var(--gold-line)}
+    .atl-info-empty{
+      text-align:center;padding:40px 0;
+      font-family:var(--serif);font-style:italic;
+      color:var(--text-muted);line-height:1.7;
+    }
+    .atl-info-empty .glyph{
+      display:block;margin-bottom:14px;
+      font-size:2rem;color:var(--gold);opacity:.5;
+    }
+    .atl-info-regione{
+      display:inline-block;margin-bottom:12px;
+      padding:3px 10px;border-radius:100px;
+      border:1px solid var(--gold-line);
+      font-size:.6rem;letter-spacing:1.6px;
+      text-transform:uppercase;color:var(--gold);
+      background:var(--gold-soft);
+    }
+    .atl-info-title{
+      font-family:var(--display);font-weight:500;
+      font-size:1.3rem;letter-spacing:1px;
+      color:var(--text);margin-bottom:4px;
+    }
+    .atl-info-orig{
+      display:block;margin-bottom:14px;
+      font-family:var(--serif);font-style:italic;
+      font-size:.9rem;color:var(--gold);opacity:.85;
+    }
+    .atl-info-desc{
+      font-family:var(--serif);font-size:.98rem;
+      line-height:1.65;color:var(--text-soft);
+      margin-bottom:16px;
+    }
+    .atl-info-tags{
+      display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;
+    }
+    .atl-info-tags span{
+      padding:2px 8px;border-radius:100px;
+      border:1px solid var(--border);
+      font-size:.62rem;color:var(--text-muted);
+    }
+    .atl-info-cta{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:9px 18px;border-radius:100px;
+      background:var(--gold-soft);
+      border:1px solid var(--gold);
+      font-size:.72rem;letter-spacing:1px;
+      text-transform:uppercase;color:var(--gold);
+      transition:all .3s;
+    }
+    .atl-info-cta:hover{
+      background:var(--gold);color:var(--bg);
+    }
+
+    /* Griglia concetti sotto (per SEO + mobile fallback) */
+    .atl-grid-wrap{padding:0 0 60px}
+    .atl-grid-title{
+      font-family:var(--display);font-size:1rem;font-weight:500;
+      letter-spacing:2px;text-transform:uppercase;
+      color:var(--gold);margin-bottom:20px;
+      padding-bottom:10px;border-bottom:1px solid var(--gold-line);
+    }
+    .atl-grid{
+      display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+      gap:14px;
+    }
+    .atl-card{
+      display:flex;flex-direction:column;gap:8px;
+      padding:16px 18px;
+      background:var(--bg-soft);
+      border:1px solid var(--border);
+      border-radius:12px;
+      transition:all .3s;
+    }
+    .atl-card:hover{
+      border-color:var(--gold-line);
+      background:var(--surface);
+      transform:translateY(-2px);
+    }
+    .atl-card-regione{
+      font-size:.6rem;letter-spacing:1.6px;
+      text-transform:uppercase;color:var(--gold);
+    }
+    .atl-card-title{
+      font-family:var(--display);font-size:1rem;
+      font-weight:500;color:var(--text);
+      line-height:1.3;
+    }
+    .atl-card-desc{
+      font-family:var(--serif);font-size:.88rem;
+      color:var(--text-muted);line-height:1.5;
+      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+      overflow:hidden;
+    }
+    .atl-card-link{
+      margin-top:auto;font-size:.7rem;letter-spacing:1px;
+      text-transform:uppercase;color:var(--gold);
+    }
+
+    @media (prefers-reduced-motion:reduce){
+      *{transition-duration:0s !important;animation-duration:0s !important}
+    }
+  </style>
+</head>
+<body>
+  <header class="atl-header">
+    <div class="container">
+      <a href="/" class="atl-back" aria-label="Torna alla home">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Home
+      </a>
+      <span class="atl-logo">ATLANTE DELLE IDEE</span>
+      <button class="atl-theme" id="themeToggle" type="button" aria-label="Cambia tema">◐</button>
+    </div>
+  </header>
+
+  <section class="atl-hero">
+    <div class="container">
+      <h1 class="atl-title">✦ Atlante delle Idee</h1>
+      <p class="atl-sub">Sei regioni, diciotto concetti, tutte le connessioni. Clicca un nodo per esplorare, o filtra per regione.</p>
+    </div>
+  </section>
+
+  <div class="atl-filters" id="atlFilters" role="tablist" aria-label="Filtra per regione">
+    <button class="atl-filter active" data-region="all" role="tab" aria-selected="true">Tutte</button>
+    <!-- popolato via JS -->
+  </div>
+
+  <div class="container">
+    <div class="atl-layout">
+      <div class="atl-map-wrap">
+        <svg class="atl-map" id="atlMap" viewBox="0 0 900 700"
+             role="img" aria-label="Mappa concettuale interattiva delle idee filosofiche"></svg>
+      </div>
+      <aside class="atl-info" id="atlInfo" aria-live="polite">
+        <div class="atl-info-empty">
+          <span class="glyph">✦</span>
+          Seleziona un concetto<br>sulla mappa per esplorarlo.
+        </div>
+      </aside>
+    </div>
+
+    <div class="atl-grid-wrap">
+      <h2 class="atl-grid-title">Tutti i concetti</h2>
+      <div class="atl-grid" id="atlGrid"></div>
+    </div>
+  </div>
+
+  <script>
+  (function(){
+    'use strict';
+
+    /* ── Configurazione layout ─────────────────────────────── */
+    const CENTER = { x: 450, y: 350 };
+    const HUB_RADIUS = 150;      // raggio dei nodi-regione
+    const CONCEPT_RADIUS = 265;  // raggio dei nodi-concetto
+    const SPREAD = 40;           // ampiezza dell'arco per regione (gradi)
+    const NODE_R = 26;           // raggio nodi-concetto
+    const HUB_R = 36;            // raggio nodi-regione
+
+    /* ── Stato ─────────────────────────────────────────────── */
+    let data = null;
+    let selectedId = null;
+    let activeFilter = 'all';
+
+    const svg = document.getElementById('atlMap');
+    const info = document.getElementById('atlInfo');
+    const filtersEl = document.getElementById('atlFilters');
+    const gridEl = document.getElementById('atlGrid');
+
+    /* ── Utility ───────────────────────────────────────────── */
+    function polar(angleDeg, radius) {
+      const rad = angleDeg * Math.PI / 180;
+      return { x: CENTER.x + radius * Math.cos(rad), y: CENTER.y + radius * Math.sin(rad) };
+    }
+    function esc(s){
+      return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({
+        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+      }[c]));
+    }
+    function slugFromUrl(url){
+      return url.replace(/^.*\//, '').replace(/\.html$/, '');
+    }
+
+    /* ── Calcolo posizioni ─────────────────────────────────── */
+    function computeLayout(data) {
+      const regions = data.regioni;
+      const concepts = data.concetti;
+
+      // Hub di regione
+      const hubs = regions.map(r => {
+        const pos = polar(r.angolo, HUB_RADIUS);
+        return { ...r, x: pos.x, y: pos.y };
+      });
+
+      // Concetti: distribuiti attorno al proprio hub
+      const byRegion = {};
+      concepts.forEach(c => {
+        (byRegion[c.regione] = byRegion[c.regione] || []).push(c);
+      });
+
+      const positioned = [];
+      Object.keys(byRegion).forEach(regId => {
+        const hub = hubs.find(h => h.id === regId);
+        if (!hub) return;
+        const list = byRegion[regId];
+        const n = list.length;
+        list.forEach((c, i) => {
+          const offset = n === 1 ? 0 : (i - (n - 1) / 2) * (SPREAD / Math.max(n - 1, 1));
+          const ang = hub.angolo + offset;
+          const pos = polar(ang, CONCEPT_RADIUS);
+          positioned.push({ ...c, x: pos.x, y: pos.y, hubId: regId });
+        });
+      });
+
+      return { hubs, concepts: positioned };
+    }
+
+    /* ── Render SVG ─────────────────────────────────────────── */
+    function render() {
+      const layout = computeLayout(data);
+      const { hubs, concepts } = layout;
+
+      // Indice per id
+      const byId = {};
+      concepts.forEach(c => byId[c.id] = c);
+
+      // Collegamenti unici (A→B, B→A → una sola linea)
+      const linkSet = new Set();
+      const links = [];
+      concepts.forEach(c => {
+        (c.collegamenti || []).forEach(targetId => {
+          const target = byId[targetId];
+          if (!target) return;
+          const key = [c.id, targetId].sort().join('|');
+          if (linkSet.has(key)) return;
+          linkSet.add(key);
+          links.push({ from: c, to: target, ids: [c.id, targetId] });
+        });
+      });
+
+      let html = '';
+
+      // Defs: gradient alone
+      html += `
+        <defs>
+          <radialGradient id="atlCenterGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="var(--gold)" stop-opacity="0.15"/>
+            <stop offset="100%" stop-color="var(--gold)" stop-opacity="0"/>
+          </radialGradient>
+        </defs>`;
+
+      // Alone centrale
+      html += `<circle cx="${CENTER.x}" cy="${CENTER.y}" r="140" fill="url(#atlCenterGlow)" pointer-events="none"/>`;
+
+      // Linee: hub → centro, e concetto ↔ concetto
+      hubs.forEach(h => {
+        html += `<line class="atl-link" x1="${CENTER.x}" y1="${CENTER.y}" x2="${h.x.toFixed(1)}" y2="${h.y.toFixed(1)}"
+                  data-hub="${h.id}" pointer-events="none"/>`;
+      });
+
+      // Linee tra concetti
+      links.forEach((l, i) => {
+        html += `<line class="atl-link" x1="${l.from.x.toFixed(1)}" y1="${l.from.y.toFixed(1)}"
+                  x2="${l.to.x.toFixed(1)}" y2="${l.to.y.toFixed(1)}"
+                  data-link="${l.ids.join('|')}" pointer-events="none"/>`;
+      });
+
+      // Nodo centrale
+      html += `
+        <g class="atl-node atl-center" aria-hidden="true" pointer-events="none">
+          <circle cx="${CENTER.x}" cy="${CENTER.y}" r="50" fill="var(--bg-soft)" stroke="var(--gold)" stroke-width="1.5"/>
+          <circle cx="${CENTER.x}" cy="${CENTER.y}" r="44" fill="none" stroke="var(--gold-line)" stroke-width="0.5" stroke-dasharray="1 3"/>
+          <text x="${CENTER.x}" y="${CENTER.y}" text-anchor="middle" dy="0.35em">SOFIA</text>
+        </g>`;
+
+      // Hub di regione
+      hubs.forEach(h => {
+        html += `
+          <g class="atl-node atl-hub" data-hub="${h.id}" role="button" tabindex="0" aria-label="Regione: ${esc(h.nome)}">
+            <circle cx="${h.x.toFixed(1)}" cy="${h.y.toFixed(1)}" r="${HUB_R}"
+                    fill="var(--bg-soft)" stroke="var(--gold-line)" stroke-width="1.5"/>
+            <text class="atl-hub-label" x="${h.x.toFixed(1)}" y="${h.y.toFixed(1)}"
+                  text-anchor="middle" dy="0.35em">${esc(h.nome.split(' ')[0])}</text>
+          </g>`;
+      });
+
+      // Nodi concetto
+      concepts.forEach(c => {
+        html += `
+          <g class="atl-node atl-concept" data-id="${c.id}" data-region="${c.regione}"
+             role="button" tabindex="0" aria-label="${esc(c.titolo)}">
+            <circle cx="${c.x.toFixed(1)}" cy="${c.y.toFixed(1)}" r="${NODE_R}"
+                    fill="var(--bg-soft)" stroke="var(--border)" stroke-width="1.2"/>
+            <text x="${c.x.toFixed(1)}" y="${c.y.toFixed(1)}"
+                  text-anchor="middle" dy="0.35em"
+                  font-family="Inter,sans-serif" font-size="10.5"
+                  fill="var(--text-soft)" letter-spacing="0.3">${esc(c.titolo)}</text>
+          </g>`;
+      });
+
+      svg.innerHTML = html;
+      bindEvents();
+    }
+
+    /* ── Eventi ─────────────────────────────────────────────── */
+    function bindEvents() {
+      svg.querySelectorAll('.atl-concept').forEach(node => {
+        const id = node.dataset.id;
+        node.addEventListener('click', () => selectConcept(id));
+        node.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            selectConcept(id);
+          }
+        });
+        node.addEventListener('mouseenter', () => highlightLinks(id, true));
+        node.addEventListener('mouseleave', () => highlightLinks(id, false));
+        node.addEventListener('focus', () => highlightLinks(id, true));
+        node.addEventListener('blur', () => highlightLinks(id, false));
+      });
+    }
+
+    /* ── Selezione concetto ─────────────────────────────────── */
+    function selectConcept(id) {
+      selectedId = id;
+      const c = data.concetti.find(x => x.id === id);
+      if (!c) return;
+
+      // Evidenzia nodo
+      svg.querySelectorAll('.atl-concept').forEach(n => {
+        n.classList.toggle('active', n.dataset.id === id);
+      });
+
+      // Evidenzia link collegati
+      svg.querySelectorAll('.atl-link[data-link]').forEach(l => {
+        const ids = l.dataset.link.split('|');
+        l.classList.toggle('active', ids.includes(id));
+      });
+
+      // Pannello info
+      const reg = data.regioni.find(r => r.id === c.regione);
+      info.classList.add('has-selection');
+      info.innerHTML = `
+        <span class="atl-info-regione">${esc(reg ? reg.nome : '')}</span>
+        <h2 class="atl-info-title">${esc(c.titolo)}</h2>
+        <span class="atl-info-orig">${esc(c.titolo_originale || '')}</span>
+        <p class="atl-info-desc">${esc(c.anteprima || '')}</p>
+        <div class="atl-info-tags">
+          ${(c.tag || []).map(t => `<span>${esc(t)}</span>`).join('')}
+        </div>
+        <a class="atl-info-cta" href="${esc(c.url)}">Leggi la scheda completa →</a>
+      `;
+    }
+
+    /* ── Hover: evidenzia solo i link del nodo ──────────────── */
+    function highlightLinks(id, on) {
+      if (selectedId) return; // se c'è una selezione, non override
+      svg.querySelectorAll('.atl-link[data-link]').forEach(l => {
+        const ids = l.dataset.link.split('|');
+        if (ids.includes(id)) l.classList.toggle('active', on);
+      });
+    }
+
+    /* ── Filtro regioni ─────────────────────────────────────── */
+    function applyFilter(regionId) {
+      activeFilter = regionId;
+      const isAll = regionId === 'all';
+
+      svg.querySelectorAll('.atl-concept').forEach(n => {
+        n.classList.toggle('dim', !isAll && n.dataset.region !== regionId);
+      });
+      svg.querySelectorAll('.atl-hub').forEach(n => {
+        const lbl = n.querySelector('.atl-hub-label');
+        if (lbl) lbl.classList.toggle('active', !isAll && n.dataset.hub === regionId);
+        n.classList.toggle('dim', !isAll && n.dataset.hub !== regionId);
+      });
+      svg.querySelectorAll('.atl-link[data-hub]').forEach(l => {
+        l.style.opacity = isAll || l.dataset.hub === regionId ? '' : '0.15';
+      });
+      svg.querySelectorAll('.atl-link[data-link]').forEach(l => {
+        const ids = l.dataset.link.split('|');
+        const visible = isAll || ids.some(id => {
+          const c = data.concetti.find(x => x.id === id);
+          return c && c.regione === regionId;
+        });
+        l.style.opacity = visible ? '' : '0.1';
+      });
+
+      filtersEl.querySelectorAll('.atl-filter').forEach(b => {
+        const on = b.dataset.region === regionId;
+        b.classList.toggle('active', on);
+        b.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+    }
+
+    /* ── Griglia concetti ───────────────────────────────────── */
+    function renderGrid() {
+      gridEl.innerHTML = data.concetti.map(c => {
+        const reg = data.regioni.find(r => r.id === c.regione);
+        return `
+          <a class="atl-card" href="${esc(c.url)}">
+            <span class="atl-card-regione">${esc(reg ? reg.nome : '')}</span>
+            <span class="atl-card-title">${esc(c.titolo)}</span>
+            <p class="atl-card-desc">${esc(c.anteprima || '')}</p>
+            <span class="atl-card-link">Leggi →</span>
+          </a>`;
+      }).join('');
+    }
+
+    /* ── Filtri UI ──────────────────────────────────────────── */
+    function renderFilters() {
+      const buttons = data.regioni.map(r => `
+        <button class="atl-filter" data-region="${r.id}" role="tab" aria-selected="false">${esc(r.nome)}</button>
+      `).join('');
+      filtersEl.insertAdjacentHTML('beforeend', buttons);
+      filtersEl.addEventListener('click', e => {
+        const btn = e.target.closest('.atl-filter');
+        if (!btn) return;
+        applyFilter(btn.dataset.region);
+      });
+    }
+
+    /* ── Bootstrap ──────────────────────────────────────────── */
+    async function init() {
+      try {
+        const res = await fetch('/atlante/atlante-index.json', { cache: 'no-cache' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        data = await res.json();
+        renderFilters();
+        render();
+        renderGrid();
+      } catch (err) {
+        console.error('[atlante] Errore caricamento:', err);
+        svg.innerHTML = `<text x="450" y="350" text-anchor="middle"
+          font-family="Cormorant Garamond,serif" font-size="16" font-style="italic"
+          fill="var(--text-muted)">Impossibile caricare la mappa. Ricarica la pagina.</text>`;
+      }
+    }
+
+    // Theme toggle (coerente col sito)
+    (function(){
+      const KEY = 'theme';
+      const btn = document.getElementById('themeToggle');
+      function apply(t){
+        const light = t === 'light';
+        document.body.classList.toggle('light-theme', light);
+        document.documentElement.style.backgroundColor = light ? '#eaf2ed' : '#080a12';
+        btn.textContent = light ? '☀' : '◐';
+        try { localStorage.setItem(KEY, t); } catch(e){}
+      }
+      apply(localStorage.getItem(KEY) || 'dark');
+      btn.addEventListener('click', () => {
+        apply(document.body.classList.contains('light-theme') ? 'dark' : 'light');
+      });
+    })();
+
+    init();
+  })();
+  </script>
+</body>
+</html>
