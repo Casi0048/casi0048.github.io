@@ -3,173 +3,552 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Scheda in preparazione — Atlante delle Idee · Echi di Sofia</title>
-  <meta name="description" content="La scheda di questo concetto filosofico è in preparazione. Esplora l'Atlante delle Idee nel frattempo.">
-  <meta name="robots" content="noindex,follow">
+  <title>Il Sublime (Sublimis) — Atlante delle Idee · Echi di Sofia</title>
+  <meta name="description" content="Il sublime da Longino a Kant, dal Romanticismo a Lyotard: il piacere che nasce dal limite, ciò che ci supera e ci eleva. Tra bellezza e terrore.">
   <meta name="theme-color" content="#080a12">
   <link rel="icon" type="image/svg+xml" href="/favicon_io/favicon.svg">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Il Sublime (Sublimis)",
+    "description": "Il piacere che nasce dal limite: ciò che ci supera e ci eleva. Da Longino a Kant, dal Romanticismo all'arte contemporanea.",
+    "author": { "@type": "Organization", "name": "Echi di Sofia" },
+    "publisher": { "@type": "Organization", "name": "Echi di Sofia" },
+    "inLanguage": "it",
+    "isPartOf": { "@type": "WebSite", "name": "Atlante delle Idee" }
+  }
+  </script>
   <style>
-    :root{
-      --bg:#080a12;--bg-soft:#0d101a;
-      --text:#d9fbe8;--text-soft:#a8d8bb;--text-muted:#8eb5a1;
-      --gold:#EFBF04;--gold-soft:rgba(239,191,4,.16);--gold-line:rgba(239,191,4,.24);
+    :root {
+      --bg:#080a12; --bg-soft:#0d101a;
+      --surface:rgba(255,255,255,.035); --surface-hover:rgba(255,255,255,.055);
+      --text:#d9fbe8; --text-soft:#a8d8bb; --text-muted:#8eb5a1;
+      --gold:#EFBF04; --gold-soft:rgba(239,191,4,.16); --gold-line:rgba(239,191,4,.24);
       --border:rgba(255,255,255,.08);
       --serif:"Cormorant Garamond",Georgia,serif;
       --display:"Cinzel",Georgia,serif;
       --sans:"Inter",Arial,sans-serif;
+      --radius:14px;
+    }
+    body.light-theme {
+      --bg:#eaf2ed; --bg-soft:#dce8e0;
+      --text:#0f1f16; --text-soft:#1a3628; --text-muted:#2e4d3d;
+      --gold:#00a86b; --gold-soft:rgba(0,168,107,.1); --gold-line:rgba(0,168,107,.25);
+      --border:rgba(0,0,0,.06);
+      --surface:rgba(0,168,107,.04); --surface-hover:rgba(0,168,107,.08);
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;background:var(--bg)}
     body{
       min-height:100vh;background:var(--bg);color:var(--text);
-      font-family:var(--sans);line-height:1.6;
-      display:flex;flex-direction:column;
+      font-family:var(--sans);line-height:1.65;
+      transition:background-color .4s,color .4s;
     }
     a{color:inherit;text-decoration:none}
-    .wrap{width:min(720px,calc(100% - 40px));margin:0 auto;padding:48px 0;flex:1;
-      display:flex;flex-direction:column;justify-content:center}
-    .badge{
-      display:inline-block;margin-bottom:24px;padding:5px 14px;
+    button{font:inherit;cursor:pointer}
+    .container{width:min(820px,calc(100% - 40px));margin:0 auto}
+    .skip{position:fixed;top:8px;left:8px;transform:translateY(-200%);
+      background:var(--gold);color:var(--bg);padding:10px 16px;border-radius:6px;
+      font-size:.85rem;font-weight:700;z-index:100}
+    .skip:focus{transform:translateY(0)}
+
+    .scheda-header{
+      position:sticky;top:0;z-index:50;
+      background:color-mix(in srgb,var(--bg) 92%,transparent);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid var(--border);
+    }
+    .scheda-header .container{
+      display:flex;align-items:center;justify-content:space-between;
+      gap:20px;padding:14px 0;
+    }
+    .scheda-back{
+      display:inline-flex;align-items:center;gap:8px;
+      font-size:.78rem;letter-spacing:1.2px;text-transform:uppercase;
+      color:var(--text-soft);transition:color .3s;
+    }
+    .scheda-back:hover{color:var(--gold)}
+    .scheda-back svg{width:16px;height:16px}
+    .scheda-logo{
+      font-family:var(--display);font-size:.82rem;letter-spacing:2px;
+      color:var(--gold);
+    }
+    .scheda-theme{
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:30px;padding:.3rem .9rem;
+      font-size:.72rem;letter-spacing:.8px;color:var(--text-soft);
+      transition:border-color .3s,color .3s;
+    }
+    .scheda-theme:hover{border-color:var(--gold-line);color:var(--text)}
+
+    .scheda-hero{padding:48px 0 36px;text-align:center;border-bottom:1px solid var(--gold-line)}
+    .scheda-regione{
+      display:inline-block;margin-bottom:18px;padding:5px 14px;
       border:1px solid var(--gold-line);border-radius:100px;
       font-size:.66rem;letter-spacing:2.2px;text-transform:uppercase;
       color:var(--gold);background:var(--gold-soft);
-      width:fit-content;
     }
-    h1{
+    .scheda-titolo{
       font-family:var(--display);font-weight:500;
-      font-size:clamp(2rem,5vw,3rem);letter-spacing:2px;
-      line-height:1.1;color:var(--text);margin-bottom:16px;
+      font-size:clamp(2rem,5vw,3.2rem);letter-spacing:2px;
+      line-height:1.1;color:var(--text);margin-bottom:10px;
     }
-    h1 em{
+    .scheda-titolo em{
       display:block;margin-top:8px;
       font-family:var(--serif);font-style:italic;font-weight:500;
       font-size:.55em;letter-spacing:.5px;color:var(--gold);opacity:.9;
     }
-    .lead{
-      font-family:var(--serif);font-size:1.15rem;font-style:italic;
-      line-height:1.7;color:var(--text-soft);margin-bottom:36px;
+    .scheda-meta{
+      display:flex;align-items:center;justify-content:center;
+      flex-wrap:wrap;gap:16px;margin-top:20px;
+      font-size:.72rem;letter-spacing:1px;color:var(--text-muted);
     }
-    .lead::before{content:"« ";color:var(--gold);opacity:.5}
-    .lead::after{content:" »";color:var(--gold);opacity:.5}
-    .actions{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:36px}
-    .btn{
-      display:inline-flex;align-items:center;gap:8px;
-      padding:11px 22px;border-radius:100px;
-      font-family:var(--sans);font-size:.78rem;
-      letter-spacing:1.2px;text-transform:uppercase;
-      transition:all .3s cubic-bezier(.16,1,.3,1);
+    .scheda-meta span{display:inline-flex;align-items:center;gap:6px}
+    .scheda-tags{
+      display:flex;flex-wrap:wrap;justify-content:center;gap:8px;
+      margin-top:18px;
     }
-    .btn-primary{
-      background:var(--gold);color:var(--bg);border:1px solid var(--gold);
+    .scheda-tags span{
+      padding:3px 10px;border-radius:100px;
+      border:1px solid var(--border);
+      font-family:var(--sans);font-size:.68rem;
+      color:var(--text-muted);
     }
-    .btn-primary:hover{
-      filter:brightness(1.08);transform:translateY(-2px);
-      box-shadow:0 6px 20px var(--gold-soft);
+
+    .scheda-indice{
+      position:sticky;top:57px;z-index:40;
+      background:color-mix(in srgb,var(--bg) 94%,transparent);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--border);
     }
-    .btn-secondary{
-      background:transparent;color:var(--gold);
-      border:1px solid var(--gold-line);
+    .scheda-indice-inner{
+      display:flex;gap:4px;overflow-x:auto;
+      padding:10px 0;scrollbar-width:none;
     }
-    .btn-secondary:hover{
-      background:var(--gold-soft);border-color:var(--gold);
+    .scheda-indice-inner::-webkit-scrollbar{display:none}
+    .scheda-indice a{
+      flex:0 0 auto;padding:6px 14px;border-radius:100px;
+      font-size:.72rem;letter-spacing:.6px;color:var(--text-muted);
+      border:1px solid transparent;transition:all .25s;
+      white-space:nowrap;
     }
-    .related{
-      margin-top:36px;padding-top:28px;
+    .scheda-indice a:hover,.scheda-indice a.active{
+      color:var(--gold);border-color:var(--gold-line);background:var(--gold-soft);
+    }
+
+    .scheda-main{padding:40px 0 60px}
+    .scheda-section{margin-bottom:56px;scroll-margin-top:120px}
+    .scheda-section-head{
+      display:flex;align-items:baseline;gap:14px;
+      margin-bottom:22px;padding-bottom:12px;
+      border-bottom:1px solid var(--gold-line);
+    }
+    .scheda-section-num{
+      font-family:var(--display);font-size:1.4rem;
+      color:var(--gold);opacity:.85;
+    }
+    .scheda-section-title{
+      font-family:var(--display);font-weight:500;
+      font-size:1.05rem;letter-spacing:2px;text-transform:uppercase;
+      color:var(--gold);
+    }
+    .scheda-section-body{
+      font-family:var(--serif);font-size:1.08rem;
+      line-height:1.75;color:var(--text-soft);
+    }
+    .scheda-section-body p{margin-bottom:16px}
+    .scheda-section-body p:last-child{margin-bottom:0}
+    .scheda-section-body strong{color:var(--text);font-weight:600}
+    .scheda-section-body em{color:var(--text);font-style:italic}
+
+    .scheda-pull{
+      position:relative;
+      padding:24px 28px 24px 44px;
+      border-left:2px solid var(--gold);
+      background:linear-gradient(90deg,var(--gold-soft),transparent 70%);
+      border-radius:0 var(--radius) var(--radius) 0;
+      font-family:var(--serif);font-size:1.18rem;
+      font-style:italic;line-height:1.7;color:var(--text);
+    }
+    .scheda-pull::before{
+      content:"“";position:absolute;left:12px;top:6px;
+      font-family:var(--display);font-size:2.4rem;
+      color:var(--gold);opacity:.5;line-height:1;
+    }
+
+    .scheda-etimo{
+      display:grid;grid-template-columns:1fr 1.4fr;
+      gap:28px;align-items:start;
+    }
+    .scheda-etimo-term{
+      padding:18px 20px;
+      background:var(--bg-soft);border:1px solid var(--gold-line);
+      border-radius:var(--radius);
+    }
+    .scheda-etimo-term h3{
+      font-family:var(--display);font-size:.7rem;font-weight:500;
+      letter-spacing:2px;text-transform:uppercase;color:var(--gold);
+      margin-bottom:10px;
+    }
+    .scheda-etimo-term ul{list-style:none;padding:0}
+    .scheda-etimo-term li{
+      padding:8px 0;border-bottom:1px dashed var(--border);
+      font-family:var(--serif);font-size:1rem;color:var(--text-soft);
+    }
+    .scheda-etimo-term li:last-child{border-bottom:0}
+    .scheda-etimo-term li strong{
+      display:block;font-family:var(--display);font-size:.88rem;
+      color:var(--gold);font-weight:500;margin-bottom:2px;
+    }
+
+    .scheda-timeline{position:relative;padding-left:40px}
+    .scheda-timeline::before{
+      content:"";position:absolute;left:15px;top:8px;bottom:8px;
+      width:1px;background:linear-gradient(to bottom,transparent,var(--gold-line) 10%,var(--gold-line) 90%,transparent);
+    }
+    .scheda-momento{position:relative;margin-bottom:28px}
+    .scheda-momento:last-child{margin-bottom:0}
+    .scheda-momento::before{
+      content:"";position:absolute;left:-32px;top:6px;
+      width:11px;height:11px;border-radius:50%;
+      background:var(--bg);border:2px solid var(--gold);
+      box-shadow:0 0 0 4px var(--gold-soft);
+    }
+    .scheda-momento-label{
+      display:inline-block;margin-bottom:6px;
+      font-size:.66rem;letter-spacing:2px;text-transform:uppercase;
+      color:var(--gold);font-weight:500;
+    }
+    .scheda-momento-title{
+      font-family:var(--display);font-size:1rem;font-weight:500;
+      color:var(--text);margin-bottom:8px;line-height:1.35;
+    }
+    .scheda-momento-text{
+      font-family:var(--serif);font-size:1rem;line-height:1.7;
+      color:var(--text-soft);
+    }
+
+    .scheda-ponti{
+      display:grid;grid-template-columns:1fr 1fr;
+      gap:18px;
+    }
+    .scheda-ponte{
+      padding:20px 22px;
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:var(--radius);
+      transition:border-color .3s,background .3s,transform .3s;
+    }
+    .scheda-ponte:hover{
+      border-color:var(--gold-line);background:var(--surface-hover);
+      transform:translateY(-2px);
+    }
+    .scheda-ponte-label{
+      display:block;margin-bottom:10px;
+      font-size:.62rem;letter-spacing:2px;text-transform:uppercase;
+      color:var(--gold);
+    }
+    .scheda-ponte h4{
+      font-family:var(--display);font-size:.95rem;font-weight:500;
+      color:var(--text);margin-bottom:8px;line-height:1.35;
+    }
+    .scheda-ponte p{
+      font-family:var(--serif);font-size:.95rem;line-height:1.6;
+      color:var(--text-soft);
+    }
+
+    .scheda-bussola{
+      padding:28px 30px;
+      background:linear-gradient(135deg,var(--gold-soft),transparent 80%);
+      border:1px solid var(--gold-line);border-radius:var(--radius);
+    }
+    .scheda-domanda{
+      margin-bottom:24px;padding-bottom:20px;
+      border-bottom:1px dashed var(--gold-line);
+    }
+    .scheda-domanda-label{
+      display:block;margin-bottom:10px;
+      font-size:.66rem;letter-spacing:2px;text-transform:uppercase;
+      color:var(--gold);
+    }
+    .scheda-domanda p{
+      font-family:var(--serif);font-size:1.22rem;font-style:italic;
+      line-height:1.6;color:var(--text);
+    }
+    .scheda-letture h4{
+      font-size:.66rem;letter-spacing:2px;text-transform:uppercase;
+      color:var(--gold);margin-bottom:10px;font-weight:500;
+    }
+    .scheda-letture h4 + ul{margin-bottom:18px}
+    .scheda-letture ul{list-style:none;padding:0}
+    .scheda-letture li{
+      padding:8px 0;font-family:var(--serif);
+      font-size:.98rem;line-height:1.5;color:var(--text-soft);
+      border-bottom:1px dashed var(--border);
+    }
+    .scheda-letture li:last-child{border-bottom:0}
+    .scheda-letture li strong{color:var(--text);font-weight:600}
+
+    .scheda-nav{
+      display:grid;grid-template-columns:1fr 1fr;gap:16px;
+      margin-top:56px;padding-top:32px;
       border-top:1px solid var(--gold-line);
     }
-    .related h2{
-      font-family:var(--display);font-size:.72rem;font-weight:500;
-      letter-spacing:2.5px;text-transform:uppercase;
-      color:var(--gold);margin-bottom:16px;
+    .scheda-nav a{
+      display:flex;flex-direction:column;gap:6px;
+      padding:18px 20px;
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:var(--radius);
+      transition:border-color .3s,background .3s,transform .3s;
     }
-    .related ul{list-style:none;display:flex;flex-direction:column;gap:8px}
-    .related li a{
-      display:flex;align-items:center;gap:10px;
-      padding:10px 14px;border-radius:8px;
-      font-family:var(--serif);font-size:1rem;
-      color:var(--text-soft);
-      border:1px solid transparent;
-      transition:all .25s;
+    .scheda-nav a:hover{
+      border-color:var(--gold-line);background:var(--surface-hover);
+      transform:translateY(-2px);
     }
-    .related li a:hover{
-      border-color:var(--gold-line);background:var(--gold-soft);
-      color:var(--gold);padding-left:18px;
-    }
-    .related li a::before{
-      content:"→";color:var(--gold);opacity:.6;font-size:.9rem;
-    }
-    .footer{
-      padding:24px 0;text-align:center;
-      font-size:.68rem;letter-spacing:.6px;
+    .scheda-nav a.next{text-align:right}
+    .scheda-nav-label{
+      font-size:.6rem;letter-spacing:2px;text-transform:uppercase;
       color:var(--text-muted);
-      border-top:1px solid var(--border);
     }
-    .footer a{color:var(--gold)}
-    .footer a:hover{text-decoration:underline}
+    .scheda-nav-title{
+      font-family:var(--display);font-size:1rem;color:var(--gold);
+    }
+
+    .scheda-footer{
+      padding:30px 0;border-top:1px solid var(--border);
+      text-align:center;font-size:.68rem;
+      letter-spacing:.6px;color:var(--text-muted);
+    }
+
+    @media (max-width:640px){
+      .scheda-etimo{grid-template-columns:1fr}
+      .scheda-ponti{grid-template-columns:1fr}
+      .scheda-nav{grid-template-columns:1fr}
+      .scheda-hero{padding:32px 0 28px}
+      .scheda-section{margin-bottom:44px}
+      .scheda-bussola{padding:22px 20px}
+      .scheda-pull{padding:20px 20px 20px 36px;font-size:1.05rem}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{transition-duration:0s !important;animation-duration:0s !important}
+      html{scroll-behavior:auto}
+    }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <span class="badge" id="regione">Atlante delle Idee</span>
-    <h1>
-      <span id="titolo">Scheda in preparazione</span>
-      <em id="originale"></em>
-    </h1>
-    <p class="lead" id="anteprima">
-      Stiamo lavorando a questa scheda. Nel frattempo esplora l'Atlante completo
-      o leggi uno degli articoli correlati.
-    </p>
+  <a href="#main" class="skip">Salta al contenuto</a>
 
-    <div class="actions">
-      <a class="btn btn-primary" href="/atlante/index.html">✦ Torna all'Atlante</a>
-      <a class="btn btn-secondary" href="/">Vai alla Home</a>
+  <header class="scheda-header">
+    <div class="container">
+      <a href="/atlante/index.html" class="scheda-back" aria-label="Torna alla mappa">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Atlante
+      </a>
+      <span class="scheda-logo">ECHI DI SOFIA</span>
+      <button class="scheda-theme" id="themeToggle" type="button" aria-label="Cambia tema">◐ Tema</button>
     </div>
+  </header>
 
-    <div class="related" id="related" hidden>
-      <h2>Approfondimenti correlati</h2>
-      <ul id="relatedList"></ul>
-    </div>
-  </div>
+  <main id="main">
+    <section class="scheda-hero">
+      <div class="container">
+        <span class="scheda-regione">Estetica e Cultura</span>
+        <h1 class="scheda-titolo">
+          Il Sublime
+          <em>(Sublimis)</em>
+        </h1>
+        <div class="scheda-meta">
+          <span>⏱ 7 minuti di lettura</span>
+          <span>✦ Scheda n. 13 di 18</span>
+        </div>
+        <div class="scheda-tags">
+          <span>#sublime</span><span>#kant</span><span>#burke</span>
+          <span>#romanticismo</span><span>#limite</span>
+        </div>
+      </div>
+    </section>
 
-  <footer class="footer">
-    © 2026 Echi di Sofia · <a href="/pagine/pagina-contatti.html">Contatti</a>
+    <nav class="scheda-indice" aria-label="Indice della scheda">
+      <div class="container">
+        <div class="scheda-indice-inner">
+          <a href="#coordinate">Coordinate</a>
+          <a href="#etimologia">Etimologia</a>
+          <a href="#tornanti">Tornanti</a>
+          <a href="#ponti">Ponti</a>
+          <a href="#bussola">Bussola</a>
+        </div>
+      </div>
+    </nav>
+
+    <article class="scheda-main">
+      <div class="container">
+
+        <section class="scheda-section" id="coordinate">
+          <div class="scheda-section-head">
+            <span class="scheda-section-num">01</span>
+            <h2 class="scheda-section-title">Le Coordinate</h2>
+          </div>
+          <div class="scheda-section-body">
+            <p class="scheda-pull">Il sublime non è <strong>il bello più grande</strong>. È un'esperienza diversa, e più radicale: è il <em>piacere che nasce dal limite</em>. Davanti a una tempesta, a una montagna vertiginosa, a un'opera d'arte che ci schiaccia con la sua potenza, proviamo insieme <strong>terrore e piacere</strong>: sentiamo di essere piccoli, sopraffatti — e proprio in questa sopraffazione scopriamo una grandezza che ci appartiene. Il sublime è il sentimento di ciò che <em>ci supera</em> e <em>ci eleva</em> nello stesso atto. Per <strong>Kant</strong> è il segno della nostra destinazione soprasensibile: di fronte alla natura che ci schiaccia, la ragione rivela la propria superiorità. Per <strong>Lyotard</strong> è il sentimento dell'<em>impresentabile</em>: ciò che l'arte contemporanea cerca di mostrare, sapendo di non poterlo fare. Per il <strong>Romanticismo</strong> è il sentimento dell'infinito: la nostalgia di ciò che non si può possedere.</p>
+            <p>La storia del sublime è la storia di un'idea che si sposta. Nasce nella retorica antica (Longino, I secolo d.C.) come <strong>grandezza del discorso</strong>: è sublime l'oratore che trascina con la parola. Nel Settecento diventa una categoria estetica (Burke, 1757): è sublime ciò che produce <em>terrore dilettevole</em>, che ci fa sentire piccoli ma vivi. Con Kant (1790) diventa una categoria filosofica: è sublime l'esperienza in cui la ragione si scopre superiore all'immaginazione. Nel Romanticismo diventa un sentimento cosmico: la <em>Sehnsucht</em>, la nostalgia dell'infinito. E nel Novecento (Lyotard, 1979) diventa una categoria estetica per l'arte contemporanea: è sublime l'arte che cerca di presentare l'impresentabile. Un solo concetto, cinque trasformazioni: la sua storia è un piccolo trattato di filosofia della cultura.</p>
+          </div>
+        </section>
+
+        <section class="scheda-section" id="etimologia">
+          <div class="scheda-section-head">
+            <span class="scheda-section-num">02</span>
+            <h2 class="scheda-section-title">Archeologia della Parola</h2>
+          </div>
+          <div class="scheda-etimo">
+            <div class="scheda-etimo-term">
+              <h3>Radici</h3>
+              <ul>
+                <li><strong>Latino</strong>sublimis — «che va fino alla soglia», da <em>sub</em> (sotto) + <em>limen</em> (soglia)</li>
+                <li><strong>Latino</strong>sublimare — innalzare, elevare</li>
+                <li><strong>Greco</strong>hýpsos (ὕψος) — altezza, elevatezza (Longino)</li>
+                <li><strong>Greco</strong>hýpsēlos (ὑψηλός) — elevato, sublime</li>
+                <li><strong>Inglese</strong>sublime — dal francese <em>sublime</em> (Burke, Kant)</li>
+                <li><strong>Tedesco</strong>das Erhabene — «l'elevato», il sublime (Kant)</li>
+              </ul>
+            </div>
+            <div class="scheda-section-body">
+              <p>Il latino <em>sublimis</em> è una parola affascinante: significa letteralmente <strong>«che va sotto la soglia»</strong> (<em>sub-limen</em>), ma — paradossalmente — indica anche ciò che sta <strong>in alto</strong>, ciò che è elevato, nobile. Come si conciliano i due sensi? L'ipotesi più accreditata è che <em>sublimis</em> indicasse in origine ciò che si trova <em>in alto, sulla soglia</em> (la trave sopra la porta, il punto più alto dell'edificio) — e da lì sia passato a indicare l'elevatezza morale e poi quella estetica. È una parola che contiene già il paradosso del sublime: <strong>un'elevatezza che passa attraverso un limite</strong>.</p>
+              <p>Ma la parola che ha fondato il concetto è greca: <strong><em>hýpsos</em></strong>, «altezza». Il trattato <em>Sul sublime</em> attribuito a Longino (I secolo d.C.) è il primo testo dedicato al tema, e non è un trattato di estetica: è un trattato di <strong>retorica</strong>. Il sublime è la qualità dell'oratore che «rapisce» l'ascoltatore, che lo fa uscire da sé, che produce <em>éxtasis</em> (l'«uscita da sé»). La parola greca è importante: <em>hýpsos</em> non è «bellezza», è <strong>altezza</strong>. È un movimento verso l'alto, una verticalità — non un'armonia. Il sublime ha sempre a che fare con la <em>verticalità</em>: il cielo, la montagna, l'abisso, il genio. Ed è per questo che il cristianesimo la adotterà: il sublime è il modo in cui l'uomo si rapporta a Dio, cioè a ciò che <em>infinite volte</em> lo supera. Da Longino a Kant, da Burke al Romanticismo, il sublime è sempre il sentimento della <strong>distanza</strong>: tra l'uomo e l'infinito, tra la parola e la cosa, tra il visibile e l'invisibile.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="scheda-section" id="tornanti">
+          <div class="scheda-section-head">
+            <span class="scheda-section-num">03</span>
+            <h2 class="scheda-section-title">I Tornanti Storici</h2>
+          </div>
+          <div class="scheda-timeline">
+            <div class="scheda-momento">
+              <span class="scheda-momento-label">① La Nascita · I secolo d.C.</span>
+              <h3 class="scheda-momento-title">Longino: il sublime come retorica</h3>
+              <p class="scheda-momento-text">Il trattato <em>Sul sublime</em> (attribuito a un certo Longino, forse Cassio Longino, I secolo d.C.) è il primo testo filosofico sul tema. Il sublime non è uno stile, è una <strong>qualità dell'anima</strong> che si manifesta nella parola: è ciò che fa «rapire» l'ascoltatore, che lo trascina fuori da sé. Le fonti del sublime sono cinque: grandezza dei pensieri, passione veemente, figure retoriche, nobiltà dell'espressione, composizione armoniosa. Il sublime è il contrario del <em>decorum</em>, della misura: è <strong>eccesso</strong>, è ciò che rompe le regole e proprio per questo le trascende. È un'idea che attraverserà tutta la storia dell'estetica: il sublime è il momento in cui l'arte <em>eccede</em> se stessa. Il trattato è stato riscoperto nel Seicento e tradotto in tutte le lingue europee: da lì nascerà il sublime moderno.</p>
+            </div>
+            <div class="scheda-momento">
+              <span class="scheda-momento-label">② La Svolta · 1757–1790</span>
+              <h3 class="scheda-momento-title">Burke e Kant: il sublime come esperienza</h3>
+              <p class="scheda-momento-text">Nel 1757 Edmund Burke pubblica <em>Indagine filosofica sulla origine delle nostre idee del sublime e del bello</em>, il primo grande trattato moderno. Il sublime è legato al <strong>terrore</strong>: è ciò che produce <em>delight</em> (diletto) ma non <em>pleasure</em> (piacere), perché nasce dalla minaccia. Le fonti del sublime sono l'oscurità, la vastità, l'infinità, la difficoltà, la potenza. È un'esperienza <strong>ambivalente</strong>: ci attira e ci respinge, ci fa sentire vivi perché ci mette di fronte alla morte. Pochi decenni dopo, nel 1790, Kant riprende Burke ma compie una mossa filosofica più radicale. Per Kant il sublime non è negli oggetti: è <strong>nel soggetto</strong>. Di fronte alla natura che ci schiaccia (la tempesta, la montagna), l'immaginazione fallisce — ma la ragione rivela la propria superiorità: siamo esseri capaci di pensare l'infinito, e quindi <em>superiori</em> a ciò che ci supera. Il sublime è il sentimento di questa <strong>destinazione soprasensibile</strong>. Kant distingue il sublime <em>matematico</em> (la grandezza) dal sublime <em>dinamico</em> (la potenza): il primo ci schiaccia con l'immensità, il secondo con la forza. In entrambi i casi, il piacere nasce da un <strong>dolore superato</strong>.</p>
+            </div>
+            <div class="scheda-momento">
+              <span class="scheda-momento-label">③ L'Oggi · 1798–oggi</span>
+              <h3 class="scheda-momento-title">Il Romanticismo e Lyotard: l'infinito e l'impresentabile</h3>
+              <p class="scheda-momento-text">Il Romanticismo fa del sublime il proprio sentimento centrale. La <em>Sehnsucht</em> tedesca (nostalgia dell'infinito), il <em>pittoresco</em> inglese (la natura selvaggia), il <em>patetico</em> italiano: tutte variazioni del sublime come sentimento della distanza. Caspar David Friedrich dipinge <em>Il viandante sul mare di nebbia</em> (1818), l'immagine perfetta del sublime romantico: un uomo solo davanti all'infinito, piccolo e grande insieme. Nel Novecento, Jean-François Lyotard (<em>La condizione postmoderna</em>, 1979; <em>Lezioni sull'analitica del sublime</em>, 1991) riprende Kant per leggere l'arte contemporanea. Per Lyotard il sublime è il sentimento dell'<strong>impresentabile</strong>: l'arte contemporanea cerca di mostrare ciò che non può essere mostrato (l'orrore, l'infinito, il vuoto), e proprio in questo fallimento rivela la sua grandezza. Da Barnett Newman a Anselm Kiefer, da Bill Viola a Rothko, l'arte contemporanea è un <em>sublime senza natura</em>. E oggi, di fronte ai cambiamenti climatici, alle catastrofi ecologiche, alle guerre globali, il sublime torna come <strong>esperienza politica</strong>: ci sono cose che ci superano — e che dobbiamo imparare a pensare.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="scheda-section" id="ponti">
+          <div class="scheda-section-head">
+            <span class="scheda-section-num">04</span>
+            <h2 class="scheda-section-title">I Ponti</h2>
+          </div>
+          <div class="scheda-ponti">
+            <div class="scheda-ponte">
+              <span class="scheda-ponte-label">Arte · Cinema · Letteratura</span>
+              <h4>2001: Odissea nello spazio (1968, Kubrick)</h4>
+              <p>Il film è una <strong>fenomenologia del sublime</strong>: dal monolito nero alla vertigine dello spazio, dalle luci di Giove al feto stellare che osserva la Terra, Kubrick costruisce immagini che schiacciano e insieme elevano. Lo spettatore è come il viandante di Friedrich: solo davanti all'infinito, senza parole. Il sublime, come diceva Kant, non è negli oggetti: è nel <em>sentimento</em> di chi li guarda. E Kubrick lo sa.</p>
+            </div>
+            <div class="scheda-ponte">
+              <span class="scheda-ponte-label">Arte · Cinema · Letteratura</span>
+              <h4>Mary Shelley, <em>Frankenstein</em> (1818)</h4>
+              <p>Il romanzo gotico è un manuale del sublime romantico: le Alpi, i ghiacciai, la tempesta, la notte artica — la natura è sempre <em>troppo grande</em> per l'uomo. La creatura è a sua volta sublime: un essere che ci fa orrore e pietà insieme, che ci respinge e ci attira. Shelley mette in scena l'ambivalenza del sublime: ciò che ci supera non è solo <strong>terrore</strong>, è anche <strong>meraviglia</strong>. E la meraviglia, come diceva Aristotele, è l'inizio della filosofia.</p>
+            </div>
+            <div class="scheda-ponte">
+              <span class="scheda-ponte-label">Scienza · Tecnologia · Attualità</span>
+              <h4>Il sublime digitale: dai videogiochi alle AI</h4>
+              <p>I videogiochi hanno riscoperto il sublime: pensiamo a <em>Journey</em>, a <em>Shadow of the Colossus</em>, a <em>Death Stranding</em> — giochi che ci mettono davanti a paesaggi immensi, a creature enormi, a solitudini sconfinate. Il sublime digitale non è solo visivo, è <strong>interattivo</strong>: non guardiamo l'infinito, ci <em>camminiamo dentro</em>. E l'intelligenza artificiale generativa produce immagini che possono essere sublimi (paesaggi impossibili, creature inesistenti) senza essere reali. Il sublime contemporaneo è <em>prodotto</em>, non <em>incontrato</em>: non è la natura che ci schiaccia, è un algoritmo che ci sorprende. Che cosa resta del sublime, quando anche l'infinito è calcolabile?</p>
+            </div>
+            <div class="scheda-ponte">
+              <span class="scheda-ponte-label">Scienza · Tecnologia · Attualità</span>
+              <h4>Il sublime ecologico</h4>
+              <p>Di fronte al cambiamento climatico, alla sesta estinzione di massa, alla possibilità di un collasso ambientale, proviamo qualcosa che assomiglia al sublime: <strong>terrore e meraviglia</strong>, piccolezza e responsabilità. Il filosofo Timothy Morton parla di <em>dark ecology</em>: un'esperienza estetica in cui l'uomo non è più al centro, in cui la natura è <em>troppo grande</em> per essere controllata. Il sublime ecologico non è un invito alla contemplazione, è un <strong>appello all'azione</strong>: ciò che ci supera è anche ciò di cui siamo responsabili. Kant avrebbe riconosciuto la struttura: il sublime è il sentimento di un limite, e ogni limite è un compito.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="scheda-section" id="bussola">
+          <div class="scheda-section-head">
+            <span class="scheda-section-num">05</span>
+            <h2 class="scheda-section-title">La Bussola</h2>
+          </div>
+          <div class="scheda-bussola">
+            <div class="scheda-domanda">
+              <span class="scheda-domanda-label">Una domanda per te</span>
+              <p>C'è qualcosa che ti fa sentire <strong>piccolo</strong> — e proprio per questo <strong>vivo</strong>? Il sublime non è un'esperienza rassicurante: è la scoperta che esiste qualcosa che ci supera, e che proprio in questa scoperta diventiamo pienamente umani. La domanda non è retorica: in un mondo che tende a togliere i limiti, <em>il sublime è ciò che li restituisce</em>.</p>
+            </div>
+            <div class="scheda-letture">
+              <h4>Per iniziare (lettura breve, accessibile)</h4>
+              <ul>
+                <li><strong>Immanuel Kant</strong>, <em>Critica del giudizio</em> (1790), §§ 23–29 (il sublime — 30 pagine, ma decisive)</li>
+                <li><strong>Edmund Burke</strong>, <em>Indagine filosofica sul sublime e sul bello</em> (1757), parte II (il terrore)</li>
+              </ul>
+              <h4>Per scavare (testo classico, fondamentale)</h4>
+              <ul>
+                <li><strong>Pseudo-Longino</strong>, <em>Sul sublime</em> (I secolo d.C.) — il testo fondativo</li>
+                <li><strong>Immanuel Kant</strong>, <em>Critica del giudizio</em> (1790), parte I, libro II (analitica del sublime)</li>
+                <li><strong>Edmund Burke</strong>, <em>Indagine filosofica sul sublime e sul bello</em> (1757) — integrale</li>
+                <li><strong>Friedrich Schiller</strong>, <em>Sul sublime</em> (1801) — il sublime e la libertà</li>
+                <li><strong>Jean-François Lyotard</strong>, <em>Lezioni sull'analitica del sublime</em> (1991)</li>
+                <li><strong>Remo Bodei</strong>, <em>Le forme del bello</em> (1995) — la ricostruzione più chiara</li>
+                <li><strong>Timothy Morton</strong>, <em>Dark Ecology</em> (2016) — il sublime ecologico</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <nav class="scheda-nav" aria-label="Navigazione tra concetti">
+          <a href="/atlante/il-bello.html">
+            <span class="scheda-nav-label">← Concetto precedente</span>
+            <span class="scheda-nav-title">Il Bello</span>
+          </a>
+          <a href="/atlante/il-mito.html" class="next">
+            <span class="scheda-nav-label">Concetto successivo →</span>
+            <span class="scheda-nav-title">Il Mito</span>
+          </a>
+        </nav>
+
+      </div>
+    </article>
+  </main>
+
+  <footer class="scheda-footer">
+    <div class="container">© 2026 Echi di Sofia · Atlante delle Idee</div>
   </footer>
 
   <script>
-    /* Legge lo slug dall'URL e popola il contenuto */
     (function(){
-      const slug = location.pathname.replace(/^.*\//, '').replace(/\.html$/, '');
-      const MAPPA = {
-        'bene':       { titolo:'Bene',         originale:'Agathón',              regione:'Ontologia e Metafisica',     articoli:[['Platonismo — articolo','/articoli/platonismo.html'],['Filosofia antica — panorama','/filosofia/antica.html']] },
-        'verita':     { titolo:'Verità',       originale:'Alétheia',             regione:'Ontologia e Metafisica',     articoli:[['Filosofia classica — Platone e Aristotele','/filosofia/classica.html']] },
-        'il-simulacro':{titolo:'Il Simulacro', originale:'Simulacrum',           regione:'Ontologia e Metafisica',     articoli:[['Filosofia contemporanea — Baudrillard','/filosofia/contemporanea.html']] },
-        'dio':        { titolo:'Dio',          originale:'Deus',                 regione:'Ontologia e Metafisica',     articoli:[['Filosofia medievale','/filosofia/medievale.html']] },
-        'il-dubbio':  { titolo:'Il Dubbio',    originale:'Dubium',               regione:'Epistemologia e Mente',      articoli:[['Filosofia moderna — Descartes','/filosofia/moderna.html']] },
-        'la-coscienza':{titolo:'La Coscienza', originale:'Conscientia',          regione:'Epistemologia e Mente',      articoli:[['Filosofia contemporanea — mente','/filosofia/contemporanea.html']] },
-        'liberta':    { titolo:'Libertà',      originale:'Libertas',             regione:'Etica e Morale',             articoli:[['Stoicismo — articolo','/articoli/stoicismo.html'],['Filosofia moderna — Spinoza e Kant','/filosofia/moderna.html']] },
-        'la-virtu':   { titolo:'La Virtù',     originale:'Areté',                regione:'Etica e Morale',             articoli:[['Filosofia classica — Aristotele','/filosofia/classica.html']] },
-        'il-male':    { titolo:'Il Male',      originale:'Malum',                regione:'Etica e Morale',             articoli:[['Filosofia medievale — Agostino','/filosofia/medievale.html']] },
-        'la-giustizia':{titolo:'La Giustizia', originale:'Iustitia',             regione:'Politica e Società',         articoli:[['Filosofia classica — Platone','/filosofia/classica.html']] },
-        'la-democrazia':{titolo:'La Democrazia',originale:'Demokratía',          regione:'Politica e Società',         articoli:[['Filosofia antica — Atene','/filosofia/antica.html']] },
-        'il-bello':   { titolo:'Il Bello',     originale:'Kalón',                regione:'Estetica e Cultura',         articoli:[['Filosofia classica — Platone','/filosofia/classica.html']] },
-        'il-sublime': { titolo:'Il Sublime',   originale:'Sublimis',             regione:'Estetica e Cultura',         articoli:[['Filosofia moderna — Kant','/filosofia/moderna.html']] },
-        'il-mito':    { titolo:'Il Mito',      originale:'Mythos',               regione:'Estetica e Cultura',         articoli:[['Filosofia antica — mythos e logos','/filosofia/antica.html']] },
-        'anima':      { titolo:'Anima',        originale:'Psyché',               regione:'Esistenza e Antropologia',   articoli:[['Filosofia antica — anima platonica','/filosofia/antica.html']] },
-        'il-tempo':   { titolo:'Il Tempo',     originale:'Chrónos',              regione:'Esistenza e Antropologia',   articoli:[['Filosofia contemporanea — Heidegger','/filosofia/contemporanea.html']] },
-        'l-amore':    { titolo:'L\'Amore',     originale:'Eros',                 regione:'Esistenza e Antropologia',   articoli:[['Filosofia classica — Platone','/filosofia/classica.html']] }
-      };
-      const info = MAPPA[slug];
-      if (!info) return;
-      document.getElementById('titolo').textContent = info.titolo;
-      document.getElementById('originale').textContent = info.originale ? '(' + info.originale + ')' : '';
-      document.getElementById('regione').textContent = info.regione;
-      document.title = info.titolo + ' — in preparazione · Atlante delle Idee';
-      if (info.articoli && info.articoli.length) {
-        const list = document.getElementById('relatedList');
-        list.innerHTML = info.articoli.map(([label, href]) =>
-          '<li><a href="' + href + '">' + label + '</a></li>'
-        ).join('');
-        document.getElementById('related').hidden = false;
+      const KEY = 'theme';
+      const btn = document.getElementById('themeToggle');
+      function apply(t){
+        const light = t === 'light';
+        document.body.classList.toggle('light-theme', light);
+        document.documentElement.style.backgroundColor = light ? '#eaf2ed' : '#080a12';
+        btn.textContent = light ? '☀ Tema' : '◐ Tema';
+        try{ localStorage.setItem(KEY, t); }catch(e){}
       }
+      apply(localStorage.getItem(KEY) || 'dark');
+      btn.addEventListener('click', () => {
+        apply(document.body.classList.contains('light-theme') ? 'dark' : 'light');
+      });
+    })();
+
+    (function(){
+      const links = document.querySelectorAll('.scheda-indice a');
+      const sections = document.querySelectorAll('.scheda-section');
+      if (!('IntersectionObserver' in window)) return;
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id));
+          }
+        });
+      }, { rootMargin: '-120px 0px -70% 0px', threshold: 0 });
+      sections.forEach(s => io.observe(s));
     })();
   </script>
 </body>
