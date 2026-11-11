@@ -788,7 +788,7 @@
         --text: #0f1f16;
         --text-soft: #1a3628;
         --text-muted: #2e4d3d;
-        --gold:  #ff0800;                                                     #00a86b;
+        --gold:  #ff0800;                                                    
         --gold-soft: rgba(0, 168, 107, .1);
         --gold-line: rgba(0, 168, 107, .25);
         --border: rgba(0, 0, 0, .06);
@@ -9324,25 +9324,35 @@ html.echi-has-consent .echi-cookie-banner {
           c = o("atlanteInfoClose");
         let d = null;
 
-        function m(o) {
-          const c = e[o];
-          if (!c) return;
-          a.querySelectorAll(".atlante-node.active").forEach((e => e.classList.remove("active"))), a.querySelectorAll(".atlante-links line.active").forEach((e => e.classList.remove("active")));
-          const m = a.querySelector('.atlante-node[data-concept="' + o + '"]');
-          m && m.classList.add("active");
-          const f = a.querySelector('.atlante-links line[data-link="' + o + '"]');
-          f && f.classList.add("active"), l.textContent = c.titolo, n.textContent = c.desc, s.innerHTML = c.filosofi.map((e => "<span>" + e + "</span>")).join(""), r.href = '/atlante/' + o.toLowerCase().replace(/ /g, '-') + '.html';
-r.textContent = 'Apri l\'Atlante →';, i.hidden = !0, t.hidden = !1, d = o
-        }
-        a.querySelectorAll(".atlante-node[data-concept]").forEach((e => {
-          const o = e.dataset.concept;
-          e.addEventListener("click", (() => m(o))), e.addEventListener("keydown", (e => {
-            "Enter" !== e.key && " " !== e.key || (e.preventDefault(), m(o))
-          }))
-        })), c && c.addEventListener("click", (function() {
-          a.querySelectorAll(".atlante-node.active").forEach((e => e.classList.remove("active"))), a.querySelectorAll(".atlante-links line.active").forEach((e => e.classList.remove("active"))), d = null, t.hidden = !0, i.hidden = !1
-        }))
-      }()
+     function m(o) {
+  const c = e[o];
+  if (!c) return;
+  a.querySelectorAll(".atlante-node.active").forEach((e => e.classList.remove("active")));
+  a.querySelectorAll(".atlante-links line.active").forEach((e => e.classList.remove("active")));
+  const m = a.querySelector('.atlante-node[data-concept="' + o + '"]');
+  m && m.classList.add("active");
+  const f = a.querySelector('.atlante-links line[data-link="' + o + '"]');
+  f && f.classList.add("active");
+  l.textContent = c.titolo;
+  n.textContent = c.desc;
+  s.innerHTML = c.filosofi.map((e => "<span>" + e + "</span>")).join("");
+  // Mapping nome → slug del file nella cartella /atlante/
+  const ATLANTE_SLUGS = {
+    'Bene': 'bene',
+    'Verità': 'verita',
+    'Libertà': 'liberta',
+    'Anima': 'anima',
+    'Tempo': 'il-tempo',
+    'Male': 'il-male',
+    'Dio': 'dio',
+    'Amore': 'l-amore'
+  };
+  r.href = '/atlante/' + (ATLANTE_SLUGS[o] || o.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '-')) + '.html';
+  r.textContent = "Apri l'Atlante →";
+  i.hidden = true;
+  t.hidden = false;
+  d = o;
+}
     </script>
     <script>
       ! function() {
