@@ -1,176 +1,587 @@
-
 <!doctype html>
 <html lang="it">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Scheda in preparazione — Atlante delle Idee · Echi di Sofia</title>
-  <meta name="description" content="La scheda di questo concetto filosofico è in preparazione. Esplora l'Atlante delle Idee nel frattempo.">
-  <meta name="robots" content="noindex,follow">
+  <title>Il Mito (Mythos) — Atlante delle Idee · Echi di Sofia</title>
+  <meta name="description" content="Il mito da Omero a Blumenberg: la parola che racconta prima della filosofia, mythos e logos, la narrazione come forma di conoscenza, il ritorno del mito nella contemporaneità.">
   <meta name="theme-color" content="#080a12">
   <link rel="icon" type="image/svg+xml" href="/favicon_io/favicon.svg">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Il Mito (Mythos)",
+    "description": "La parola che racconta prima della filosofia. Da Omero a Blumenberg: il mito non è l'infanzia del logos, è la sua ombra.",
+    "author": { "@type": "Organization", "name": "Echi di Sofia" },
+    "publisher": { "@type": "Organization", "name": "Echi di Sofia" },
+    "inLanguage": "it",
+    "isPartOf": { "@type": "WebSite", "name": "Atlante delle Idee" }
+  }
+  </script>
   <style>
-    :root{
-      --bg:#080a12;--bg-soft:#0d101a;
-      --text:#d9fbe8;--text-soft:#a8d8bb;--text-muted:#8eb5a1;
-      --gold:#EFBF04;--gold-soft:rgba(239,191,4,.16);--gold-line:rgba(239,191,4,.24);
+    :root {
+      --bg:#080a12; --bg-soft:#0d101a;
+      --surface:rgba(255,255,255,.035); --surface-hover:rgba(255,255,255,.055);
+      --text:#d9fbe8; --text-soft:#a8d8bb; --text-muted:#8eb5a1;
+      --gold:#EFBF04; --gold-soft:rgba(239,191,4,.16); --gold-line:rgba(239,191,4,.24);
       --border:rgba(255,255,255,.08);
       --serif:"Cormorant Garamond",Georgia,serif;
       --display:"Cinzel",Georgia,serif;
       --sans:"Inter",Arial,sans-serif;
+      --radius:14px;
+    }
+    body.light-theme {
+      --bg:#eaf2ed; --bg-soft:#dce8e0;
+      --text:#0f1f16; --text-soft:#1a3628; --text-muted:#2e4d3d;
+      --gold:#00a86b; --gold-soft:rgba(0,168,107,.1); --gold-line:rgba(0,168,107,.25);
+      --border:rgba(0,0,0,.06);
+      --surface:rgba(0,168,107,.04); --surface-hover:rgba(0,168,107,.08);
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;background:var(--bg)}
     body{
       min-height:100vh;background:var(--bg);color:var(--text);
-      font-family:var(--sans);line-height:1.6;
-      display:flex;flex-direction:column;
+      font-family:var(--sans);line-height:1.65;
+      transition:background-color .4s,color .4s;
     }
     a{color:inherit;text-decoration:none}
-    .wrap{width:min(720px,calc(100% - 40px));margin:0 auto;padding:48px 0;flex:1;
-      display:flex;flex-direction:column;justify-content:center}
-    .badge{
-      display:inline-block;margin-bottom:24px;padding:5px 14px;
+    button{font:inherit;cursor:pointer}
+    .container{width:min(820px,calc(100% - 40px));margin:0 auto}
+    .skip{position:fixed;top:8px;left:8px;transform:translateY(-200%);
+      background:var(--gold);color:var(--bg);padding:10px 16px;border-radius:6px;
+      font-size:.85rem;font-weight:700;z-index:100}
+    .skip:focus{transform:translateY(0)}
+
+    .scheda-header{
+      position:sticky;top:0;z-index:50;
+      background:color-mix(in srgb,var(--bg) 92%,transparent);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid var(--border);
+    }
+    .scheda-header .container{
+      display:flex;align-items:center;justify-content:space-between;
+      gap:20px;padding:14px 0;
+    }
+    .scheda-back{
+      display:inline-flex;align-items:center;gap:8px;
+      font-size:.78rem;letter-spacing:1.2px;text-transform:uppercase;
+      color:var(--text-soft);transition:color .3s;
+    }
+    .scheda-back:hover{color:var(--gold)}
+    .scheda-back svg{width:16px;height:16px}
+    .scheda-logo{
+      font-family:var(--display);font-size:.82rem;letter-spacing:2px;
+      color:var(--gold);
+    }
+    .scheda-theme{
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:30px;padding:.3rem .9rem;
+      font-size:.72rem;letter-spacing:.8px;color:var(--text-soft);
+      transition:border-color .3s,color .3s;
+    }
+    .scheda-theme:hover{border-color:var(--gold-line);color:var(--text)}
+
+    .scheda-hero{padding:48px 0 36px;text-align:center;border-bottom:1px solid var(--gold-line)}
+    .scheda-regione{
+      display:inline-block;margin-bottom:18px;padding:5px 14px;
       border:1px solid var(--gold-line);border-radius:100px;
       font-size:.66rem;letter-spacing:2.2px;text-transform:uppercase;
       color:var(--gold);background:var(--gold-soft);
-      width:fit-content;
     }
-    h1{
+    .scheda-titolo{
       font-family:var(--display);font-weight:500;
-      font-size:clamp(2rem,5vw,3rem);letter-spacing:2px;
-      line-height:1.1;color:var(--text);margin-bottom:16px;
+      font-size:clamp(2rem,5vw,3.2rem);letter-spacing:2px;
+      line-height:1.1;color:var(--text);margin-bottom:10px;
     }
-    h1 em{
+    .scheda-titolo em{
       display:block;margin-top:8px;
       font-family:var(--serif);font-style:italic;font-weight:500;
       font-size:.55em;letter-spacing:.5px;color:var(--gold);opacity:.9;
     }
-    .lead{
-      font-family:var(--serif);font-size:1.15rem;font-style:italic;
-      line-height:1.7;color:var(--text-soft);margin-bottom:36px;
+    .scheda-meta{
+      display:flex;align-items:center;justify-content:center;
+      flex-wrap:wrap;gap:16px;margin-top:20px;
+      font-size:.72rem;letter-spacing:1px;color:var(--text-muted);
     }
-    .lead::before{content:"« ";color:var(--gold);opacity:.5}
-    .lead::after{content:" »";color:var(--gold);opacity:.5}
-    .actions{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:36px}
-    .btn{
-      display:inline-flex;align-items:center;gap:8px;
-      padding:11px 22px;border-radius:100px;
-      font-family:var(--sans);font-size:.78rem;
-      letter-spacing:1.2px;text-transform:uppercase;
-      transition:all .3s cubic-bezier(.16,1,.3,1);
+    .scheda-meta span{display:inline-flex;align-items:center;gap:6px}
+    .scheda-tags{
+      display:flex;flex-wrap:wrap;justify-content:center;gap:8px;
+      margin-top:18px;
     }
-    .btn-primary{
-      background:var(--gold);color:var(--bg);border:1px solid var(--gold);
+    .scheda-tags span{
+      padding:3px 10px;border-radius:100px;
+      border:1px solid var(--border);
+      font-family:var(--sans);font-size:.68rem;
+      color:var(--text-muted);
     }
-    .btn-primary:hover{
-      filter:brightness(1.08);transform:translateY(-2px);
-      box-shadow:0 6px 20px var(--gold-soft);
+
+    .scheda-indice{
+      position:sticky;top:57px;z-index:40;
+      background:color-mix(in srgb,var(--bg) 94%,transparent);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--border);
     }
-    .btn-secondary{
-      background:transparent;color:var(--gold);
-      border:1px solid var(--gold-line);
+    .scheda-indice-inner{
+      display:flex;gap:4px;overflow-x:auto;
+      padding:10px 0;scrollbar-width:none;
     }
-    .btn-secondary:hover{
-      background:var(--gold-soft);border-color:var(--gold);
+    .scheda-indice-inner::-webkit-scrollbar{display:none}
+    .scheda-indice a{
+      flex:0 0 auto;padding:6px 14px;border-radius:100px;
+      font-size:.72rem;letter-spacing:.6px;color:var(--text-muted);
+      border:1px solid transparent;transition:all .25s;
+      white-space:nowrap;
     }
-    .related{
-      margin-top:36px;padding-top:28px;
+    .scheda-indice a:hover,.scheda-indice a.active{
+      color:var(--gold);border-color:var(--gold-line);background:var(--gold-soft);
+    }
+
+    .scheda-main{padding:40px 0 60px}
+    .scheda-section{margin-bottom:56px;scroll-margin-top:120px}
+    .scheda-section-head{
+      display:flex;align-items:baseline;gap:14px;
+      margin-bottom:22px;padding-bottom:12px;
+      border-bottom:1px solid var(--gold-line);
+    }
+    .scheda-section-num{
+      font-family:var(--display);font-size:1.4rem;
+      color:var(--gold);opacity:.85;
+    }
+    .scheda-section-title{
+      font-family:var(--display);font-weight:500;
+      font-size:1.05rem;letter-spacing:2px;text-transform:uppercase;
+      color:var(--gold);
+    }
+    .scheda-section-body{
+      font-family:var(--serif);font-size:1.08rem;
+      line-height:1.75;color:var(--text-soft);
+    }
+    .scheda-section-body p{margin-bottom:16px}
+    .scheda-section-body p:last-child{margin-bottom:0}
+    .scheda-section-body strong{color:var(--text);font-weight:600}
+    .scheda-section-body em{color:var(--text);font-style:italic}
+
+    .scheda-pull{
+      position:relative;
+      padding:24px 28px 24px 44px;
+      border-left:2px solid var(--gold);
+      background:linear-gradient(90deg,var(--gold-soft),transparent 70%);
+      border-radius:0 var(--radius) var(--radius) 0;
+      font-family:var(--serif);font-size:1.18rem;
+      font-style:italic;line-height:1.7;color:var(--text);
+    }
+    .scheda-pull::before{
+      content:"“";position:absolute;left:12px;top:6px;
+      font-family:var(--display);font-size:2.4rem;
+      color:var(--gold);opacity:.5;line-height:1;
+    }
+
+    .scheda-etimo{
+      display:grid;grid-template-columns:1fr 1.4fr;
+      gap:28px;align-items:start;
+    }
+    .scheda-etimo-term{
+      padding:18px 20px;
+      background:var(--bg-soft);border:1px solid var(--gold-line);
+      border-radius:var(--radius);
+    }
+    .scheda-etimo-term h3{
+      font-family:var(--display);font-size:.7rem;font-weight:500;
+      letter-spacing:2px;text-transform:uppercase;color:var(--gold);
+      margin-bottom:10px;
+    }
+    .scheda-etimo-term ul{list-style:none;padding:0}
+    .scheda-etimo-term li{
+      padding:8px 0;border-bottom:1px dashed var(--border);
+      font-family:var(--serif);font-size:1rem;color:var(--text-soft);
+    }
+    .scheda-etimo-term li:last-child{border-bottom:0}
+    .scheda-etimo-term li strong{
+      display:block;font-family:var(--display);font-size:.88rem;
+      color:var(--gold);font-weight:500;margin-bottom:2px;
+    }
+
+    .scheda-timeline{position:relative;padding-left:40px}
+    .scheda-timeline::before{
+      content:"";position:absolute;left:15px;top:8px;bottom:8px;
+      width:1px;background:linear-gradient(to bottom,transparent,var(--gold-line) 10%,var(--gold-line) 90%,transparent);
+    }
+    .scheda-momento{position:relative;margin-bottom:28px}
+    .scheda-momento:last-child{margin-bottom:0}
+    .scheda-momento::before{
+      content:"";position:absolute;left:-32px;top:6px;
+      width:11px;height:11px;border-radius:50%;
+      background:var(--bg);border:2px solid var(--gold);
+      box-shadow:0 0 0 4px var(--gold-soft);
+    }
+    .scheda-momento-label{
+      display:inline-block;margin-bottom:6px;
+      font-size:.66rem;letter-spacing:2px;text-transform:uppercase;
+      color:var(--gold);font-weight:500;
+    }
+    .scheda-momento-title{
+      font-family:var(--display);font-size:1rem;font-weight:500;
+      color:var(--text);margin-bottom:8px;line-height:1.35;
+    }
+    .scheda-momento-text{
+      font-family:var(--serif);font-size:1rem;line-height:1.7;
+      color:var(--text-soft);
+    }
+
+    .scheda-ponti{
+      display:grid;grid-template-columns:1fr 1fr;
+      gap:18px;
+    }
+    .scheda-ponte{
+      padding:20px 22px;
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:var(--radius);
+      transition:border-color .3s,background .3s,transform .3s;
+    }
+    .scheda-ponte:hover{
+      border-color:var(--gold-line);background:var(--surface-hover);
+      transform:translateY(-2px);
+    }
+    .scheda-ponte-label{
+      display:block;margin-bottom:10px;
+      font-size:.62rem;letter-spacing:2px;text-transform:uppercase;
+      color:var(--gold);
+    }
+    .scheda-ponte h4{
+      font-family:var(--display);font-size:.95rem;font-weight:500;
+      color:var(--text);margin-bottom:8px;line-height:1.35;
+    }
+    .scheda-ponte p{
+      font-family:var(--serif);font-size:.95rem;line-height:1.6;
+      color:var(--text-soft);
+    }
+
+    .scheda-bussola{
+      padding:28px 30px;
+      background:linear-gradient(135deg,var(--gold-soft),transparent 80%);
+      border:1px solid var(--gold-line);border-radius:var(--radius);
+    }
+    .scheda-domanda{
+      margin-bottom:24px;padding-bottom:20px;
+      border-bottom:1px dashed var(--gold-line);
+    }
+    .scheda-domanda-label{
+      display:block;margin-bottom:10px;
+      font-size:.66rem;letter-spacing:2px;text-transform:uppercase;
+      color:var(--gold);
+    }
+    .scheda-domanda p{
+      font-family:var(--serif);font-size:1.22rem;font-style:italic;
+      line-height:1.6;color:var(--text);
+    }
+    .scheda-letture h4{
+      font-size:.66rem;letter-spacing:2px;text-transform:uppercase;
+      color:var(--gold);margin-bottom:10px;font-weight:500;
+    }
+    .scheda-letture h4 + ul{margin-bottom:18px}
+    .scheda-letture ul{list-style:none;padding:0}
+    .scheda-letture li{
+      padding:8px 0;font-family:var(--serif);
+      font-size:.98rem;line-height:1.5;color:var(--text-soft);
+      border-bottom:1px dashed var(--border);
+    }
+    .scheda-letture li:last-child{border-bottom:0}
+    .scheda-letture li strong{color:var(--text);font-weight:600}
+
+    .scheda-nav{
+      display:grid;grid-template-columns:1fr 1fr;gap:16px;
+      margin-top:56px;padding-top:32px;
       border-top:1px solid var(--gold-line);
     }
-    .related h2{
-      font-family:var(--display);font-size:.72rem;font-weight:500;
-      letter-spacing:2.5px;text-transform:uppercase;
-      color:var(--gold);margin-bottom:16px;
+    .scheda-nav a{
+      display:flex;flex-direction:column;gap:6px;
+      padding:18px 20px;
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:var(--radius);
+      transition:border-color .3s,background .3s,transform .3s;
     }
-    .related ul{list-style:none;display:flex;flex-direction:column;gap:8px}
-    .related li a{
-      display:flex;align-items:center;gap:10px;
-      padding:10px 14px;border-radius:8px;
-      font-family:var(--serif);font-size:1rem;
-      color:var(--text-soft);
-      border:1px solid transparent;
-      transition:all .25s;
+    .scheda-nav a:hover{
+      border-color:var(--gold-line);background:var(--surface-hover);
+      transform:translateY(-2px);
     }
-    .related li a:hover{
-      border-color:var(--gold-line);background:var(--gold-soft);
-      color:var(--gold);padding-left:18px;
-    }
-    .related li a::before{
-      content:"→";color:var(--gold);opacity:.6;font-size:.9rem;
-    }
-    .footer{
-      padding:24px 0;text-align:center;
-      font-size:.68rem;letter-spacing:.6px;
+    .scheda-nav a.next{text-align:right}
+    .scheda-nav-label{
+      font-size:.6rem;letter-spacing:2px;text-transform:uppercase;
       color:var(--text-muted);
-      border-top:1px solid var(--border);
     }
-    .footer a{color:var(--gold)}
-    .footer a:hover{text-decoration:underline}
+    .scheda-nav-title{
+      font-family:var(--display);font-size:1rem;color:var(--gold);
+    }
+
+    /* Chiusura dell'Atlante */
+    .scheda-chiusura{
+      margin-top:48px;padding:32px 30px;
+      text-align:center;
+      background:linear-gradient(135deg,var(--gold-soft),transparent 80%);
+      border:1px solid var(--gold-line);border-radius:var(--radius);
+    }
+    .scheda-chiusura-glyph{
+      font-size:2rem;color:var(--gold);opacity:.7;
+      margin-bottom:12px;display:block;
+    }
+    .scheda-chiusura-title{
+      font-family:var(--display);font-size:1.1rem;font-weight:500;
+      letter-spacing:2px;text-transform:uppercase;
+      color:var(--gold);margin-bottom:12px;
+    }
+    .scheda-chiusura-text{
+      font-family:var(--serif);font-size:1.02rem;
+      line-height:1.7;color:var(--text-soft);
+      max-width:520px;margin:0 auto;
+    }
+    .scheda-chiusura-text em{color:var(--text);font-style:italic}
+
+    .scheda-footer{
+      padding:30px 0;border-top:1px solid var(--border);
+      text-align:center;font-size:.68rem;
+      letter-spacing:.6px;color:var(--text-muted);
+    }
+
+    @media (max-width:640px){
+      .scheda-etimo{grid-template-columns:1fr}
+      .scheda-ponti{grid-template-columns:1fr}
+      .scheda-nav{grid-template-columns:1fr}
+      .scheda-hero{padding:32px 0 28px}
+      .scheda-section{margin-bottom:44px}
+      .scheda-bussola{padding:22px 20px}
+      .scheda-pull{padding:20px 20px 20px 36px;font-size:1.05rem}
+      .scheda-chiusura{padding:24px 20px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{transition-duration:0s !important;animation-duration:0s !important}
+      html{scroll-behavior:auto}
+    }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <span class="badge" id="regione">Atlante delle Idee</span>
-    <h1>
-      <span id="titolo">Scheda in preparazione</span>
-      <em id="originale"></em>
-    </h1>
-    <p class="lead" id="anteprima">
-      Stiamo lavorando a questa scheda. Nel frattempo esplora l'Atlante completo
-      o leggi uno degli articoli correlati.
-    </p>
+  <a href="#main" class="skip">Salta al contenuto</a>
 
-    <div class="actions">
-      <a class="btn btn-primary" href="/atlante/index.html">✦ Torna all'Atlante</a>
-      <a class="btn btn-secondary" href="/">Vai alla Home</a>
+  <header class="scheda-header">
+    <div class="container">
+      <a href="/atlante/index.html" class="scheda-back" aria-label="Torna alla mappa">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Atlante
+      </a>
+      <span class="scheda-logo">ECHI DI SOFIA</span>
+      <button class="scheda-theme" id="themeToggle" type="button" aria-label="Cambia tema">◐ Tema</button>
     </div>
+  </header>
 
-    <div class="related" id="related" hidden>
-      <h2>Approfondimenti correlati</h2>
-      <ul id="relatedList"></ul>
-    </div>
-  </div>
+  <main id="main">
+    <section class="scheda-hero">
+      <div class="container">
+        <span class="scheda-regione">Estetica e Cultura</span>
+        <h1 class="scheda-titolo">
+          Il Mito
+          <em>(Mythos)</em>
+        </h1>
+        <div class="scheda-meta">
+          <span>⏱ 8 minuti di lettura</span>
+          <span>✦ Scheda n. 14 di 18 — l'ultima</span>
+        </div>
+        <div class="scheda-tags">
+          <span>#mito</span><span>#logos</span><span>#blumenberg</span>
+          <span>#cassirer</span><span>#narrazione</span>
+        </div>
+      </div>
+    </section>
 
-  <footer class="footer">
-    © 2026 Echi di Sofia · <a href="/pagine/pagina-contatti.html">Contatti</a>
+    <nav class="scheda-indice" aria-label="Indice della scheda">
+      <div class="container">
+        <div class="scheda-indice-inner">
+          <a href="#coordinate">Coordinate</a>
+          <a href="#etimologia">Etimologia</a>
+          <a href="#tornanti">Tornanti</a>
+          <a href="#ponti">Ponti</a>
+          <a href="#bussola">Bussola</a>
+        </div>
+      </div>
+    </nav>
+
+    <article class="scheda-main">
+      <div class="container">
+
+        <section class="scheda-section" id="coordinate">
+          <div class="scheda-section-head">
+            <span class="scheda-section-num">01</span>
+            <h2 class="scheda-section-title">Le Coordinate</h2>
+          </div>
+          <div class="scheda-section-body">
+            <p class="scheda-pull">Il mito non è <strong>la favola dei popoli antichi</strong>. È il modo in cui l'umanità ha cominciato a pensare. Prima della filosofia, prima della scienza, prima della storia, c'è il <strong>mythos</strong>: il racconto che dà forma al mondo, che spiega l'origine delle cose, che orienta la vita. Il mito non è <em>falso</em> — è <em>un altro modo</em> di dire la verità. Platone lo usa continuamente (il mito della caverna, di Er, di Eros): sa che il mito non dimostra, ma <strong>mostra</strong>. Cassirer lo definisce una «forma simbolica»: un modo di dare senso all'esperienza, accanto al linguaggio, all'arte, alla scienza. Blumenberg rovescia il quadro: il mito non è l'infanzia del logos, è la sua <strong>ombra</strong> — il tentativo, sempre rinnovato, di dare un nome all'<em>assoluto</em> che non si lascia nominare.</p>
+            <p>La storia del mito in filosofia è la storia di un progressivo <strong>disprezzo e di una progressiva riscoperta</strong>. I greci lo hanno <em>superato</em> (il passaggio dal mythos al logos è il racconto che la filosofia fa di se stessa); il cristianesimo lo ha <em>redento</em> (il mito come <em>integumentum</em>, velo che nasconde una verità più profonda); l'Illuminismo lo ha <em>criticato</em> (il mito come superstizione da smascherare); il Romanticismo lo ha <em>riscoperto</em> (il mito come voce dell'infanzia dell'umanità); il Novecento lo ha <em>ripensato</em> (Freud, Jung, Cassirer, Blumenberg, Lévi-Strauss). Oggi il mito è tornato al centro del dibattito: <em>storytelling</em>, <em>fake news</em>, <em>narrazioni politiche</em> — il mito non è mai morto, ha solo cambiato forma. E forse, come dice Blumenberg, <strong>non muore mai</strong>: perché il logos non può sostituirlo, può solo <em>lavorarci sopra</em>.</p>
+          </div>
+        </section>
+
+        <section class="scheda-section" id="etimologia">
+          <div class="scheda-section-head">
+            <span class="scheda-section-num">02</span>
+            <h2 class="scheda-section-title">Archeologia della Parola</h2>
+          </div>
+          <div class="scheda-etimo">
+            <div class="scheda-etimo-term">
+              <h3>Radici</h3>
+              <ul>
+                <li><strong>Greco</strong>mŷthos (μῦθος) — racconto, parola, discorso; ma anche «favola», «leggenda»</li>
+                <li><strong>Greco</strong>lógos (λόγος) — discorso razionale, argomentazione, ragione</li>
+                <li><strong>Greco</strong>epos (ἔπος) — parola epica, racconto orale</li>
+                <li><strong>Latino</strong>fabula — racconto, favola (da <em>fari</em>, «parlare»)</li>
+                <li><strong>Latino</strong>mythus — calco del greco, «mito», ma con sfumatura di «favola»</li>
+                <li><strong>Tedesco</strong>Mythos — il mito come forma di pensiero (Cassirer, Blumenberg)</li>
+              </ul>
+            </div>
+            <div class="scheda-section-body">
+              <p>All'inizio, <em>mŷthos</em> e <em>lógos</em> non erano opposti. Significavano entrambi <strong>«parola»</strong>, <strong>«discorso»</strong>: il primo indicava la parola <em>raccontata</em>, il secondo la parola <em>argomentata</em>. Omero usa <em>mŷthos</em> per indicare il discorso dell'eroe, il racconto che si fa in assemblea; Eraclito usa <em>lógos</em> per indicare la legge razionale del cosmo. La contrapposizione viene dopo: i filosofi (Platone, Aristotele) cominciano a distinguere il mito — che <em>racconta</em> senza dimostrare — dal logos — che <em>dimostra</em> senza raccontare. Il mito diventa così qualcosa di <em>pre-filosofico</em>: la parola dei poeti, dei sacerdoti, delle origini. È una mossa che fonda la filosofia <em>escludendo</em> qualcosa — e questo qualcosa tornerà.</p>
+              <p>Il latino <em>fabula</em> (da <em>fari</em>, «parlare») aggiunge una sfumatura: la <em>fabula</em> è il racconto che <em>non è vero</em>, la finzione. Il mito, nel mondo romano, è già <em>favola</em>: qualcosa che si racconta per diletto, non per conoscere. Il cristianesimo complica il quadro: da un lato condanna i miti pagani come falsi (Agostino), dall'altro usa il mito per parlare di Dio (la Genesi, il racconto di Babele, il mito cristiano stesso). La parola <em>mythus</em> entra nel latino cristiano con un significato ambivalente: <em>mito</em> come <em>verità velata</em> (Origene) o come <em>menzogna da respingere</em> (Lattanzio). Il Novecento, infine, restituisce al mito il suo statuto filosofico: Cassirer lo studia come <strong>forma simbolica</strong>, Blumenberg come <strong>lavoro sul mito</strong>, Lévi-Strauss come <strong>struttura del pensiero selvaggio</strong>. Il cerchio si chiude: il mito torna ad essere una <em>parola che dice qualcosa</em>, non solo una favola da raccontare.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="scheda-section" id="tornanti">
+          <div class="scheda-section-head">
+            <span class="scheda-section-num">03</span>
+            <h2 class="scheda-section-title">I Tornanti Storici</h2>
+          </div>
+          <div class="scheda-timeline">
+            <div class="scheda-momento">
+              <span class="scheda-momento-label">① La Nascita · VIII secolo a.C.</span>
+              <h3 class="scheda-momento-title">Omero ed Esiodo: il mito come enciclopedia</h3>
+              <p class="scheda-momento-text">Prima della filosofia, il mito è il modo in cui i greci <strong>pensano il mondo</strong>. L'<em>Iliade</em> e l'<em>Odissea</em> non sono solo poemi epici: sono enciclopedie del sapere antico, raccolgono cosmologia, etica, politica, religione, tecnica. Esiodo, nella <em>Teogonia</em>, racconta l'origine degli dèi e del cosmo: è la prima <strong>cosmogonia</strong> della tradizione occidentale. Il mito non è «falso» in opposizione al vero: è il <em>modo</em> in cui una civiltà si racconta le proprie origini, i propri valori, le proprie paure. I filosofi presocratici (Talete, Anassimandro, Eraclito) si porranno in continuità e in rottura con questa tradizione: cercheranno l'<em>arché</em>, il principio razionale, ma continueranno a usare il linguaggio del mito (il <em>lógos</em> di Eraclito è un principio quasi divino). La filosofia nasce <em>dal</em> mito, non <em>contro</em> di esso: questa è la lezione che il Novecento riscoprirà.</p>
+            </div>
+            <div class="scheda-momento">
+              <span class="scheda-momento-label">② La Svolta · 1800–1925</span>
+              <h3 class="scheda-momento-title">Il Romanticismo e la riscoperta del mito</h3>
+              <p class="scheda-momento-text">L'Illuminismo aveva condannato il mito come superstizione, come «infanzia dell'umanità» da superare. Il Romanticismo rovescia il giudizio: il mito è la <strong>voce autentica</strong> dell'umanità, la sua poesia originaria, la sua sapienza più profonda. Schelling parla di una «nuova mitologia»; Hölderlin cerca negli dèi greci una via per pensare l'assoluto; Nietzsche scrive <em>La nascita della tragedia</em> (1872) e mostra che l'arte greca nasce dall'incontro tra <em>apollineo</em> (la forma, il sogno, l'individuazione) e <em>dionisiaco</em> (l'ebbrezza, il caos, la dissoluzione). Il mito non è più il passato da superare: è una <strong>forza del presente</strong>, un modo di dire ciò che la ragione non riesce a dire. Nel 1925 Ernst Cassirer pubblica il secondo volume della <em>Filosofia delle forme simboliche</em>, dedicato al <strong>pensiero mitico</strong>: il mito è una forma simbolica, come il linguaggio, l'arte, la scienza — un modo di dare senso all'esperienza, non un errore da correggere. Da qui il mito diventa oggetto di una vera filosofia.</p>
+            </div>
+            <div class="scheda-momento">
+              <span class="scheda-momento-label">③ L'Oggi · 1979–oggi</span>
+              <h3 class="scheda-momento-title">Blumenberg e il ritorno del mito</h3>
+              <p class="scheda-momento-text">Nel 1979 Hans Blumenberg pubblica <em>Elaborazione del mito</em>, il libro che ha cambiato il modo di pensare il rapporto tra mito e logos. La tesi è radicale: il mito non è l'infanzia del logos, è la sua <strong>ombra</strong>. Non esiste una ragione «pura» che si sostituisce al mito: la ragione è <em>sempre</em> alle prese con qualcosa che la eccede — l'assoluto, l'origine, il dolore, la morte. Il mito è il modo in cui l'umanità ha <strong>lavorato</strong> questo eccedente, dandogli nomi, figure, racconti. Blumenberg parla di «lavoro sul mito» (<em>Arbeit am Mythos</em>): il mito non si abolisce, si <em>trasforma</em>. Da qui una conseguenza enorme: il mito non è finito con la filosofia, non è finito con la scienza, non è finito con la modernità. Torna nella <strong>pubblicità</strong> (che racconta storie di successo), nella <strong>politica</strong> (che costruisce narrazioni identitarie), nella <strong>rete</strong> (che amplifica storie virali). Il mito è la forma in cui l'umanità continua a raccontarsi — e forse, come dice Blumenberg, non possiamo fare a meno di raccontarci.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="scheda-section" id="ponti">
+          <div class="scheda-section-head">
+            <span class="scheda-section-num">04</span>
+            <h2 class="scheda-section-title">I Ponti</h2>
+          </div>
+          <div class="scheda-ponti">
+            <div class="scheda-ponte">
+              <span class="scheda-ponte-label">Arte · Cinema · Letteratura</span>
+              <h4>Apocalypse Now (1979, Francis Ford Coppola)</h4>
+              <p>Il viaggio del capitano Willard lungo il fiume verso il colonnello Kurtz è la riscrittura del <strong>mito di Ulisse</strong> nel cuore del Novecento: l'eroe che attraversa il mondo per conoscere se stesso, l'incontro con l'alterità, la discesa agli inferi. Ma il film è anche una <strong>riflessione sul mito stesso</strong>: l'America ha creduto di raccontare una storia (la guerra del Vietnam), e si è trovata in un incubo senza senso. Il mito non è un rifugio dal reale, è ciò che ci permette di <em>vedere</em> il reale quando la ragione non basta.</p>
+            </div>
+            <div class="scheda-ponte">
+              <span class="scheda-ponte-label">Arte · Cinema · Letteratura</span>
+              <h4>Italo Calvino, <em>Le città invisibili</em> (1972)</h4>
+              <p>Marco Polo racconta a Kublai Khan città che non esistono — o che esistono solo nel racconto. Il libro è una <strong>fenomenologia del mito</strong>: le città invisibili sono miti che danno forma al desiderio, alla paura, alla memoria. Calvino non dice se sono vere o false: dice che <em>funzionano</em>, che ci aiutano a pensare. Il mito, come diceva Cassirer, non è un errore da correggere: è una forma simbolica che dà senso all'esperienza. E la letteratura è il modo in cui il mito continua a vivere, anche quando nessuno ci crede più.</p>
+            </div>
+            <div class="scheda-ponte">
+              <span class="scheda-ponte-label">Scienza · Tecnologia · Attualità</span>
+              <h4>Lo storytelling politico</h4>
+              <p>Ogni campagna elettorale, ogni movimento politico, ogni leader racconta una <strong>storia</strong>: un passato mitico (la nazione, il popolo, l'età dell'oro), un presente di crisi, un futuro di redenzione. Lo <em>storytelling</em> non è una tecnica retorica neutra: è la forma contemporanea del <strong>mito politico</strong>, che il Novecento ha conosciuto nelle versioni più tragiche (nazismo, fascismo, stalinismo) e che oggi ritorna in forme più soft ma non meno potenti. La domanda di Platone è quanto mai attuale: <em>che cosa distingue il mito che illumina dal mito che acceca?</em> Non c'è una risposta semplice, ma una pista: il mito che acceca è quello che non si lascia <em>confutare</em>, che pretende di essere <em>verità</em>. Il mito che illumina è quello che sa di essere <em>racconto</em>.</p>
+            </div>
+            <div class="scheda-ponte">
+              <span class="scheda-ponte-label">Scienza · Tecnologia · Attualità</span>
+              <h4>Il mito nell'epoca dei social</h4>
+              <p>I social media sono la più grande <strong>fabbrica di miti</strong> della storia umana: storie di successo, di caduta, di redenzione, di eroi e di mostri, prodotte e consumate ogni giorno da miliardi di persone. Non è un caso che la parola <em>storytelling</em> sia diventata un mantra del marketing: le storie si vendono, le storie si credono, le storie si condividono. Ma il mito contemporaneo ha una caratteristica nuova: è <strong>prodotto</strong>, non <em>ricevuto</em>. Non c'è una tradizione che lo trasmette, c'è un algoritmo che lo amplifica. La domanda di Blumenberg — <em>che cosa facciamo con il mito?</em> — diventa oggi più urgente: <em>chi produce i nostri miti? E chi ne è responsabile?</em></p>
+            </div>
+          </div>
+        </section>
+
+        <section class="scheda-section" id="bussola">
+          <div class="scheda-section-head">
+            <span class="scheda-section-num">05</span>
+            <h2 class="scheda-section-title">La Bussola</h2>
+          </div>
+          <div class="scheda-bussola">
+            <div class="scheda-domanda">
+              <span class="scheda-domanda-label">Una domanda per te</span>
+              <p>Qual è il <strong>mito</strong> che racconti su te stesso? La storia che ti dici su chi sei, da dove vieni, dove vai? Non è una domanda retorica: la filosofia (e la psicologia, e la letteratura) ci dicono che <em>siamo fatti di racconti</em>. La domanda è se il tuo racconto ti <strong>apre</strong> al mondo o ti <strong>chiude</strong>. Il mito non è il contrario della verità: è il modo in cui la verità prende forma nella tua vita.</p>
+            </div>
+            <div class="scheda-letture">
+              <h4>Per iniziare (lettura breve, accessibile)</h4>
+              <ul>
+                <li><strong>Platone</strong>, <em>Repubblica</em>, libro VII (il mito della caverna — 10 pagine)</li>
+                <li><strong>Hans Blumenberg</strong>, <em>Elaborazione del mito</em> (1979), introduzione (30 pagine)</li>
+              </ul>
+              <h4>Per scavare (testo classico, fondamentale)</h4>
+              <ul>
+                <li><strong>Omero</strong>, <em>Iliade</em> e <em>Odissea</em> — il mito come enciclopedia</li>
+                <li><strong>Esiodo</strong>, <em>Teogonia</em> — la prima cosmogonia greca</li>
+                <li><strong>Ernst Cassirer</strong>, <em>Filosofia delle forme simboliche</em>, vol. II (1925) — il pensiero mitico</li>
+                <li><strong>Friedrich Nietzsche</strong>, <em>La nascita della tragedia</em> (1872) — apollineo e dionisiaco</li>
+                <li><strong>Hans Blumenberg</strong>, <em>Elaborazione del mito</em> (1979) — integrale</li>
+                <li><strong>Claude Lévi-Strauss</strong>, <em>Il pensiero selvaggio</em> (1962) — la struttura del mito</li>
+                <li><strong>Jean-Luc Nancy</strong>, <em>Il mito nazista</em> (1991) — il mito che acceca</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- CHIUSURA DELL'ATLANTE -->
+        <section class="scheda-chiusura">
+          <span class="scheda-chiusura-glyph">✦</span>
+          <h2 class="scheda-chiusura-title">Fine dell'Atlante</h2>
+          <p class="scheda-chiusura-text">
+            Questa era l'ultima scheda. L'Atlante delle Idee è completo: <em>sei regioni, diciotto concetti, tutte le connessioni</em>. Ma un atlante non è mai davvero finito: ogni idea ne apre altre, ogni concetto è un punto di partenza. L'Atlante è una mappa, non un territorio — e il territorio è là fuori, nelle domande che continui a porti.
+          </p>
+        </section>
+
+        <nav class="scheda-nav" aria-label="Navigazione tra concetti">
+          <a href="/atlante/il-sublime.html">
+            <span class="scheda-nav-label">← Concetto precedente</span>
+            <span class="scheda-nav-title">Il Sublime</span>
+          </a>
+          <a href="/atlante/index.html" class="next">
+            <span class="scheda-nav-label">Torna all'inizio →</span>
+            <span class="scheda-nav-title">Atlante delle Idee</span>
+          </a>
+        </nav>
+
+      </div>
+    </article>
+  </main>
+
+  <footer class="scheda-footer">
+    <div class="container">© 2026 Echi di Sofia · Atlante delle Idee</div>
   </footer>
 
   <script>
-    /* Legge lo slug dall'URL e popola il contenuto */
     (function(){
-      const slug = location.pathname.replace(/^.*\//, '').replace(/\.html$/, '');
-      const MAPPA = {
-        'bene':       { titolo:'Bene',         originale:'Agathón',              regione:'Ontologia e Metafisica',     articoli:[['Platonismo — articolo','/articoli/platonismo.html'],['Filosofia antica — panorama','/filosofia/antica.html']] },
-        'verita':     { titolo:'Verità',       originale:'Alétheia',             regione:'Ontologia e Metafisica',     articoli:[['Filosofia classica — Platone e Aristotele','/filosofia/classica.html']] },
-        'il-simulacro':{titolo:'Il Simulacro', originale:'Simulacrum',           regione:'Ontologia e Metafisica',     articoli:[['Filosofia contemporanea — Baudrillard','/filosofia/contemporanea.html']] },
-        'dio':        { titolo:'Dio',          originale:'Deus',                 regione:'Ontologia e Metafisica',     articoli:[['Filosofia medievale','/filosofia/medievale.html']] },
-        'il-dubbio':  { titolo:'Il Dubbio',    originale:'Dubium',               regione:'Epistemologia e Mente',      articoli:[['Filosofia moderna — Descartes','/filosofia/moderna.html']] },
-        'la-coscienza':{titolo:'La Coscienza', originale:'Conscientia',          regione:'Epistemologia e Mente',      articoli:[['Filosofia contemporanea — mente','/filosofia/contemporanea.html']] },
-        'liberta':    { titolo:'Libertà',      originale:'Libertas',             regione:'Etica e Morale',             articoli:[['Stoicismo — articolo','/articoli/stoicismo.html'],['Filosofia moderna — Spinoza e Kant','/filosofia/moderna.html']] },
-        'la-virtu':   { titolo:'La Virtù',     originale:'Areté',                regione:'Etica e Morale',             articoli:[['Filosofia classica — Aristotele','/filosofia/classica.html']] },
-        'il-male':    { titolo:'Il Male',      originale:'Malum',                regione:'Etica e Morale',             articoli:[['Filosofia medievale — Agostino','/filosofia/medievale.html']] },
-        'la-giustizia':{titolo:'La Giustizia', originale:'Iustitia',             regione:'Politica e Società',         articoli:[['Filosofia classica — Platone','/filosofia/classica.html']] },
-        'la-democrazia':{titolo:'La Democrazia',originale:'Demokratía',          regione:'Politica e Società',         articoli:[['Filosofia antica — Atene','/filosofia/antica.html']] },
-        'il-bello':   { titolo:'Il Bello',     originale:'Kalón',                regione:'Estetica e Cultura',         articoli:[['Filosofia classica — Platone','/filosofia/classica.html']] },
-        'il-sublime': { titolo:'Il Sublime',   originale:'Sublimis',             regione:'Estetica e Cultura',         articoli:[['Filosofia moderna — Kant','/filosofia/moderna.html']] },
-        'il-mito':    { titolo:'Il Mito',      originale:'Mythos',               regione:'Estetica e Cultura',         articoli:[['Filosofia antica — mythos e logos','/filosofia/antica.html']] },
-        'anima':      { titolo:'Anima',        originale:'Psyché',               regione:'Esistenza e Antropologia',   articoli:[['Filosofia antica — anima platonica','/filosofia/antica.html']] },
-        'il-tempo':   { titolo:'Il Tempo',     originale:'Chrónos',              regione:'Esistenza e Antropologia',   articoli:[['Filosofia contemporanea — Heidegger','/filosofia/contemporanea.html']] },
-        'l-amore':    { titolo:'L\'Amore',     originale:'Eros',                 regione:'Esistenza e Antropologia',   articoli:[['Filosofia classica — Platone','/filosofia/classica.html']] }
-      };
-      const info = MAPPA[slug];
-      if (!info) return;
-      document.getElementById('titolo').textContent = info.titolo;
-      document.getElementById('originale').textContent = info.originale ? '(' + info.originale + ')' : '';
-      document.getElementById('regione').textContent = info.regione;
-      document.title = info.titolo + ' — in preparazione · Atlante delle Idee';
-      if (info.articoli && info.articoli.length) {
-        const list = document.getElementById('relatedList');
-        list.innerHTML = info.articoli.map(([label, href]) =>
-          '<li><a href="' + href + '">' + label + '</a></li>'
-        ).join('');
-        document.getElementById('related').hidden = false;
+      const KEY = 'theme';
+      const btn = document.getElementById('themeToggle');
+      function apply(t){
+        const light = t === 'light';
+        document.body.classList.toggle('light-theme', light);
+        document.documentElement.style.backgroundColor = light ? '#eaf2ed' : '#080a12';
+        btn.textContent = light ? '☀ Tema' : '◐ Tema';
+        try{ localStorage.setItem(KEY, t); }catch(e){}
       }
+      apply(localStorage.getItem(KEY) || 'dark');
+      btn.addEventListener('click', () => {
+        apply(document.body.classList.contains('light-theme') ? 'dark' : 'light');
+      });
+    })();
+
+    (function(){
+      const links = document.querySelectorAll('.scheda-indice a');
+      const sections = document.querySelectorAll('.scheda-section');
+      if (!('IntersectionObserver' in window)) return;
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id));
+          }
+        });
+      }, { rootMargin: '-120px 0px -70% 0px', threshold: 0 });
+      sections.forEach(s => io.observe(s));
     })();
   </script>
 </body>
