@@ -9259,101 +9259,152 @@ html.echi-has-consent .echi-cookie-banner {
         }))
       }()
     </script>
-    <script>
-      ! function() {
-        "use strict";
-        const e = {
-            Bene: {
-              titolo: "Bene",
-              desc: "Che cos'è il bene? Per Platone è l'Idea suprema, il sole che illumina tutte le altre. Per Aristotele è la felicità come attività conforme a virtù. Per Kant è la legge morale dentro di noi. Per Lévinas è l'altro che ci chiama alla responsabilità.",
-              filosofi: ["Platone", "Aristotele", "Kant", "Lévinas"],
-              link: "articoli/platonismo.html"
-            },
-            "Verità": {
-              titolo: "Verità",
-              desc: "La verità è ciò che è. Ma come la conosciamo? Parmenide la identifica con l'essere; Platone la vede come reminiscenza; Aristotele la definisce adeguazione dell'intelletto alla cosa; Heidegger la pensa come disvelamento. La filosofia è, da sempre, una lotta per la verità.",
-              filosofi: ["Parmenide", "Platone", "Aristotele", "Tommaso", "Heidegger"],
-              link: "filosofia/classica.html"
-            },
-            "Libertà": {
-              titolo: "Libertà",
-              desc: "Siamo davvero liberi? Gli stoici la pensano come accettazione del destino; Spinoza come comprensione della necessità; Kant come autonomia della volontà; Sartre come condanna. La libertà è il problema più radicale dell'esistenza umana.",
-              filosofi: ["Epitteto", "Spinoza", "Kant", "Sartre"],
-              link: "articoli/stoicismo.html"
-            },
-            Anima: {
-              titolo: "Anima",
-              desc: "L'anima è ciò che anima il corpo. Per Platone è prigioniera e cerca il ritorno alle Idee; per Aristotele è forma del corpo; per Agostino è l'uomo interiore; per Descartes è la res cogitans. Il rapporto anima-corpo attraversa tutta la storia della filosofia.",
-              filosofi: ["Platone", "Aristotele", "Agostino", "Descartes"],
-              link: "filosofia/antica.html"
-            },
-            Tempo: {
-              titolo: "Tempo",
-              desc: "Che cos'è il tempo? Eraclito vede il divenire come fiume; Agostino confessa di non saperlo, ma lo pensa come distensione dell'anima; Kant lo considera forma del senso interno; Bergson lo distingue dalla durata; Heidegger lo lega all'essere-per-la-morte.",
-              filosofi: ["Eraclito", "Agostino", "Kant", "Bergson", "Heidegger"],
-              link: "filosofia/contemporanea.html"
-            },
-            Male: {
-              titolo: "Male",
-              desc: "Da dove viene il male? Agostino lo pensa come privazione del bene; Leibniz come parte di un ordine più grande; Kant come male radicale; Nietzsche come eredità del platonismo; Arendt come banalità. Il problema del male è il cuore della teodicea.",
-              filosofi: ["Agostino", "Leibniz", "Kant", "Nietzsche", "Arendt"],
-              link: "filosofia/moderna.html"
-            },
-            Dio: {
-              titolo: "Dio",
-              desc: "Dio è il nome di ciò che ci supera. Anselmo lo dimostra con l'argomento ontologico; Tommaso con le cinque vie; Spinoza lo identifica con la Natura; Pascal ne fa il Dio del cuore; Nietzsche ne annuncia la morte. Ogni epoca ha pensato Dio a modo suo.",
-              filosofi: ["Anselmo", "Tommaso", "Spinoza", "Pascal", "Nietzsche"],
-              link: "filosofia/medievale.html"
-            },
-            Amore: {
-              titolo: "Amore",
-              desc: "L'amore è forza cosmica e legame umano. Per Platone è Eros, figlio di Poros e Penia, che spinge verso il bello; per Aristotele è philia, amicizia politica; per Agostino è caritas; per Kierkegaard è dono che si fa senza garanzia. Amare è pensare l'altro.",
-              filosofi: ["Platone", "Aristotele", "Agostino", "Kierkegaard"],
-              link: "filosofia/classica.html"
-            }
-          },
-          o = e => document.getElementById(e),
-          a = o("atlanteMap");
-        if (!a) return;
-        const i = o("atlanteInfoEmpty"),
-          t = o("atlanteInfoContent"),
-          l = o("atlanteInfoTitle"),
-          n = o("atlanteInfoDesc"),
-          s = o("atlanteFilosofi"),
-          r = o("atlanteInfoLink"),
-          c = o("atlanteInfoClose");
-        let d = null;
+   <script>
+  /* ═══════════════════════════════════════════════════════════════
+     ATLANTE DELLE IDEE — homepage (8 nodi fissi)
+     Corretto: niente SyntaxError, eventi collegati, slug → /atlante/
+     ═══════════════════════════════════════════════════════════════ */
+  (function () {
+    "use strict";
 
- function m(o) {
-  const c = e[o];
-  if (!c) return;
-  a.querySelectorAll(".atlante-node.active").forEach((e => e.classList.remove("active")));
-  a.querySelectorAll(".atlante-links line.active").forEach((e => e.classList.remove("active")));
-  const m = a.querySelector('.atlante-node[data-concept="' + o + '"]');
-  m && m.classList.add("active");
-  const f = a.querySelector('.atlante-links line[data-link="' + o + '"]');
-  f && f.classList.add("active");
-  l.textContent = c.titolo;
-  n.textContent = c.desc;
-  s.innerHTML = c.filosofi.map((e => "<span>" + e + "</span>")).join("");
-  // Mapping nome → slug del file nella cartella /atlante/
-  const ATLANTE_SLUGS = {
-    'Bene': 'bene',
-    'Verità': 'verita',
-    'Libertà': 'liberta',
-    'Anima': 'anima',
-    'Tempo': 'il-tempo',
-    'Male': 'il-male',
-    'Dio': 'dio',
-    'Amore': 'l-amore'
-  };
-  r.href = '/atlante/' + (ATLANTE_SLUGS[o] || o.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '-')) + '.html';
-  r.textContent = "Apri l'Atlante →";
-  i.hidden = true;
-  t.hidden = false;
-  d = o;
-}
-    </script>
+    /* ── 1. DATI ────────────────────────────────────────────────── */
+    const CONCEPTS = {
+      "Bene": {
+        titolo: "Bene",
+        desc: "Che cos'è il bene? Per Platone è l'Idea suprema, il sole che illumina tutte le altre. Per Aristotele è la felicità come attività conforme a virtù. Per Kant è la legge morale dentro di noi. Per Lévinas è l'altro che ci chiama alla responsabilità.",
+        filosofi: ["Platone", "Aristotele", "Kant", "Lévinas"]
+      },
+      "Verità": {
+        titolo: "Verità",
+        desc: "La verità è ciò che è. Ma come la conosciamo? Parmenide la identifica con l'essere; Platone la vede come reminiscenza; Aristotele la definisce adeguazione dell'intelletto alla cosa; Heidegger la pensa come disvelamento. La filosofia è, da sempre, una lotta per la verità.",
+        filosofi: ["Parmenide", "Platone", "Aristotele", "Tommaso", "Heidegger"]
+      },
+      "Libertà": {
+        titolo: "Libertà",
+        desc: "Siamo davvero liberi? Gli stoici la pensano come accettazione del destino; Spinoza come comprensione della necessità; Kant come autonomia della volontà; Sartre come condanna. La libertà è il problema più radicale dell'esistenza umana.",
+        filosofi: ["Epitteto", "Spinoza", "Kant", "Sartre"]
+      },
+      "Anima": {
+        titolo: "Anima",
+        desc: "L'anima è ciò che anima il corpo. Per Platone è prigioniera e cerca il ritorno alle Idee; per Aristotele è forma del corpo; per Agostino è l'uomo interiore; per Descartes è la res cogitans. Il rapporto anima-corpo attraversa tutta la storia della filosofia.",
+        filosofi: ["Platone", "Aristotele", "Agostino", "Descartes"]
+      },
+      "Tempo": {
+        titolo: "Tempo",
+        desc: "Che cos'è il tempo? Eraclito vede il divenire come fiume; Agostino confessa di non saperlo, ma lo pensa come distensione dell'anima; Kant lo considera forma del senso interno; Bergson lo distingue dalla durata; Heidegger lo lega all'essere-per-la-morte.",
+        filosofi: ["Eraclito", "Agostino", "Kant", "Bergson", "Heidegger"]
+      },
+      "Male": {
+        titolo: "Male",
+        desc: "Da dove viene il male? Agostino lo pensa come privazione del bene; Leibniz come parte di un ordine più grande; Kant come male radicale; Nietzsche come eredità del platonismo; Arendt come banalità. Il problema del male è il cuore della teodicea.",
+        filosofi: ["Agostino", "Leibniz", "Kant", "Nietzsche", "Arendt"]
+      },
+      "Dio": {
+        titolo: "Dio",
+        desc: "Dio è il nome di ciò che ci supera. Anselmo lo dimostra con l'argomento ontologico; Tommaso con le cinque vie; Spinoza lo identifica con la Natura; Pascal ne fa il Dio del cuore; Nietzsche ne annuncia la morte. Ogni epoca ha pensato Dio a modo suo.",
+        filosofi: ["Anselmo", "Tommaso", "Spinoza", "Pascal", "Nietzsche"]
+      },
+      "Amore": {
+        titolo: "Amore",
+        desc: "L'amore è forza cosmica e legame umano. Per Platone è Eros, figlio di Poros e Penia, che spinge verso il bello; per Aristotele è philia, amicizia politica; per Agostino è caritas; per Kierkegaard è dono che si fa senza garanzia. Amare è pensare l'altro.",
+        filosofi: ["Platone", "Aristotele", "Agostino", "Kierkegaard"]
+      }
+    };
+
+    /* ── 2. SLUG per /atlante/*.html ─────────────────────────────── */
+    const SLUGS = {
+      "Bene": "bene",
+      "Verità": "verita",
+      "Libertà": "liberta",
+      "Anima": "anima",
+      "Tempo": "il-tempo",
+      "Male": "il-male",
+      "Dio": "dio",
+      "Amore": "l-amore"
+    };
+
+    /* ── 3. DOM REFS ─────────────────────────────────────────────── */
+    const $ = id => document.getElementById(id);
+    const map = $("atlanteMap");
+    if (!map) return;
+
+    const infoEmpty   = $("atlanteInfoEmpty");
+    const infoContent = $("atlanteInfoContent");
+    const infoTitle   = $("atlanteInfoTitle");
+    const infoDesc    = $("atlanteInfoDesc");
+    const infoFilosofi= $("atlanteFilosofi");
+    const infoLink    = $("atlanteInfoLink");
+    const infoClose   = $("atlanteInfoClose");
+
+    /* ── 4. STATO ────────────────────────────────────────────────── */
+    let currentConcept = null;
+
+    /* ── 5. RESET attivi ─────────────────────────────────────────── */
+    function clearActive() {
+      map.querySelectorAll(".atlante-node.active").forEach(n => n.classList.remove("active"));
+      map.querySelectorAll(".atlante-links line.active").forEach(l => l.classList.remove("active"));
+    }
+
+    /* ── 6. MOSTRA un concetto ───────────────────────────────────── */
+    function showConcept(key) {
+      const data = CONCEPTS[key];
+      if (!data) return;
+
+      // pulisce attivi precedenti
+      clearActive();
+
+      // evidenzia nodo + linea
+      const node = map.querySelector('.atlante-node[data-concept="' + key + '"]');
+      if (node) node.classList.add("active");
+
+      const line = map.querySelector('.atlante-links line[data-link="' + key + '"]');
+      if (line) line.classList.add("active");
+
+      // popola pannello
+      infoTitle.textContent  = data.titolo;
+      infoDesc.textContent   = data.desc;
+      infoFilosofi.innerHTML = data.filosofi.map(f => "<span>" + f + "</span>").join("");
+
+      // link "Apri l'Atlante →"
+      const slug = SLUGS[key] || key.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, "-");
+      infoLink.href = "/atlante/" + slug + ".html";
+      infoLink.textContent = "Apri l'Atlante →";
+
+      // toggle pannello
+      infoEmpty.hidden    = true;
+      infoContent.hidden  = false;
+
+      currentConcept = key;
+    }
+
+    /* ── 7. CHIUDI pannello ──────────────────────────────────────── */
+    function closePanel() {
+      clearActive();
+      currentConcept  = null;
+      infoContent.hidden = true;
+      infoEmpty.hidden   = false;
+    }
+
+    /* ── 8. EVENTI sui nodi ──────────────────────────────────────── */
+    map.querySelectorAll(".atlante-node[data-concept]").forEach(node => {
+      const key = node.dataset.concept;
+
+      node.addEventListener("click", () => showConcept(key));
+
+      node.addEventListener("keydown", ev => {
+        if (ev.key === "Enter" || ev.key === " ") {
+          ev.preventDefault();
+          showConcept(key);
+        }
+      });
+    });
+
+    /* ── 9. EVENTO pulsante "×" ──────────────────────────────────── */
+    if (infoClose) {
+      infoClose.addEventListener("click", closePanel);
+    }
+  })();
+</script>
     <script>
       ! function() {
         "use strict";
