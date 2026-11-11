@@ -1,1 +1,589 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Indice alfabetico — Atlante delle Idee · Echi di Sofia</title>
+  <meta name="description" content="Tutti i 18 concetti dell'Atlante delle Idee, dalla A alla Z. Cerca per titolo, regione o parola chiave, oppure salta a una lettera.">
+  <meta name="theme-color" content="#080a12">
+  <link rel="icon" type="image/svg+xml" href="/favicon_io/favicon.svg">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Indice alfabetico dell'Atlante delle Idee",
+    "description": "Tutti i concetti filosofici dell'Atlante, ordinati dalla A alla Z.",
+    "inLanguage": "it",
+    "isPartOf": { "@type": "WebSite", "name": "Atlante delle Idee" }
+  }
+  </script>
+  <style>
+    :root {
+      --bg:#080a12; --bg-soft:#0d101a;
+      --surface:rgba(255,255,255,.035); --surface-hover:rgba(255,255,255,.055);
+      --text:#d9fbe8; --text-soft:#a8d8bb; --text-muted:#8eb5a1;
+      --gold:#EFBF04; --gold-soft:rgba(239,191,4,.16); --gold-line:rgba(239,191,4,.24);
+      --border:rgba(255,255,255,.08);
+      --serif:"Cormorant Garamond",Georgia,serif;
+      --display:"Cinzel",Georgia,serif;
+      --sans:"Inter",Arial,sans-serif;
+      --radius:14px;
+    }
+    body.light-theme {
+      --bg:#eaf2ed; --bg-soft:#dce8e0;
+      --text:#0f1f16; --text-soft:#1a3628; --text-muted:#2e4d3d;
+      --gold:#00a86b; --gold-soft:rgba(0,168,107,.1); --gold-line:rgba(0,168,107,.25);
+      --border:rgba(0,0,0,.06);
+      --surface:rgba(0,168,107,.04); --surface-hover:rgba(0,168,107,.08);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;background:var(--bg)}
+    body{
+      min-height:100vh;background:var(--bg);color:var(--text);
+      font-family:var(--sans);line-height:1.65;
+      transition:background-color .4s,color .4s;
+    }
+    a{color:inherit;text-decoration:none}
+    button{font:inherit;cursor:pointer}
+    input{font:inherit}
+    .container{width:min(1000px,calc(100% - 40px));margin:0 auto}
+    .skip{position:fixed;top:8px;left:8px;transform:translateY(-200%);
+      background:var(--gold);color:var(--bg);padding:10px 16px;border-radius:6px;
+      font-size:.85rem;font-weight:700;z-index:100}
+    .skip:focus{transform:translateY(0)}
 
+    /* ── Header ───────────────────────────────────── */
+    .indice-header{
+      position:sticky;top:0;z-index:50;
+      background:color-mix(in srgb,var(--bg) 92%,transparent);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid var(--border);
+    }
+    .indice-header .container{
+      display:flex;align-items:center;justify-content:space-between;
+      gap:20px;padding:14px 0;
+    }
+    .indice-back{
+      display:inline-flex;align-items:center;gap:8px;
+      font-size:.78rem;letter-spacing:1.2px;text-transform:uppercase;
+      color:var(--text-soft);transition:color .3s;
+    }
+    .indice-back:hover{color:var(--gold)}
+    .indice-back svg{width:16px;height:16px}
+    .indice-logo{
+      font-family:var(--display);font-size:.82rem;letter-spacing:2px;
+      color:var(--gold);
+    }
+    .indice-theme{
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:30px;padding:.3rem .9rem;
+      font-size:.72rem;letter-spacing:.8px;color:var(--text-soft);
+      transition:border-color .3s,color .3s;
+    }
+    .indice-theme:hover{border-color:var(--gold-line);color:var(--text)}
+
+    /* ── Hero ─────────────────────────────────────── */
+    .indice-hero{padding:48px 0 32px;text-align:center;border-bottom:1px solid var(--gold-line)}
+    .indice-hero h1{
+      font-family:var(--display);font-weight:500;
+      font-size:clamp(1.8rem,4vw,2.6rem);letter-spacing:2px;
+      color:var(--text);margin-bottom:10px;line-height:1.1;
+    }
+    .indice-hero h1 em{
+      display:block;font-family:var(--serif);font-style:italic;
+      font-weight:500;font-size:.55em;letter-spacing:.5px;
+      color:var(--gold);opacity:.9;margin-top:6px;
+    }
+    .indice-hero p{
+      max-width:560px;margin:16px auto 0;
+      font-family:var(--serif);font-size:1.02rem;font-style:italic;
+      color:var(--text-muted);line-height:1.6;
+    }
+    .indice-count{
+      display:inline-flex;gap:6px;align-items:baseline;
+      margin-top:16px;padding:4px 12px;
+      border:1px solid var(--gold-line);border-radius:100px;
+      font-family:var(--sans);font-size:.68rem;
+      letter-spacing:1.2px;text-transform:uppercase;
+      color:var(--gold);background:var(--gold-soft);
+    }
+
+    /* ── Toolbar (ricerca + filtri) ───────────────── */
+    .indice-toolbar{padding:24px 0 0;border-bottom:1px solid var(--border)}
+    .indice-search{
+      position:relative;max-width:520px;margin:0 auto 18px;
+    }
+    .indice-search input{
+      width:100%;padding:11px 18px 11px 44px;
+      border:1px solid var(--border);border-radius:100px;
+      background:var(--bg-soft);color:var(--text);
+      font-family:var(--serif);font-size:1rem;font-style:italic;
+      outline:0;
+      transition:border-color .3s,box-shadow .3s;
+    }
+    .indice-search input::placeholder{color:var(--text-muted)}
+    .indice-search input:focus{
+      border-color:var(--gold);
+      box-shadow:0 0 0 3px var(--gold-soft);
+    }
+    .indice-search svg{
+      position:absolute;left:16px;top:50%;transform:translateY(-50%);
+      width:18px;height:18px;color:var(--text-muted);pointer-events:none;
+    }
+    .region-filters{
+      display:flex;flex-wrap:wrap;justify-content:center;
+      gap:6px;padding-bottom:22px;
+    }
+    .region-filters button{
+      padding:5px 12px;border-radius:100px;
+      border:1px solid var(--border);
+      background:transparent;color:var(--text-muted);
+      font-family:var(--sans);font-size:.7rem;letter-spacing:.6px;
+      transition:all .25s;
+    }
+    .region-filters button:hover{
+      border-color:var(--gold-line);color:var(--text-soft);
+    }
+    .region-filters button.active{
+      background:var(--gold-soft);border-color:var(--gold);
+      color:var(--gold);
+    }
+
+    /* ── A-Z nav (sticky) ─────────────────────────── */
+    .az-nav{
+      position:sticky;top:56px;z-index:40;
+      background:color-mix(in srgb,var(--bg) 94%,transparent);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--border);
+      padding:10px 0;
+    }
+    .az-nav .container{
+      display:flex;gap:3px;flex-wrap:wrap;
+      justify-content:center;
+    }
+    .az-nav a{
+      display:inline-flex;align-items:center;justify-content:center;
+      min-width:32px;height:32px;padding:0 8px;
+      border:1px solid transparent;border-radius:6px;
+      font-family:var(--sans);font-size:.78rem;font-weight:500;
+      color:var(--text-muted);
+      transition:all .2s;
+    }
+    .az-nav a:hover{
+      color:var(--gold);border-color:var(--gold-line);
+      background:var(--gold-soft);
+    }
+    .az-nav a.dim{
+      opacity:.3;pointer-events:none;
+    }
+    .az-nav a.active{
+      background:var(--gold-soft);border-color:var(--gold);
+      color:var(--gold);
+    }
+
+    /* ── Content ──────────────────────────────────── */
+    main{padding:40px 0 60px}
+
+    .letter-section{
+      margin-bottom:48px;scroll-margin-top:110px;
+    }
+    .letter-section.is-empty{
+      display:none;
+    }
+    .letter-head{
+      display:flex;align-items:center;gap:16px;
+      margin-bottom:20px;
+    }
+    .letter-head h2{
+      font-family:var(--display);font-size:2rem;font-weight:500;
+      color:var(--gold);line-height:1;
+      letter-spacing:2px;
+      min-width:44px;
+    }
+    .letter-head .line{
+      flex:1;height:1px;
+      background:linear-gradient(90deg,var(--gold-line),transparent);
+    }
+    .indice-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+      gap:14px;
+    }
+    .indice-card{
+      display:flex;flex-direction:column;gap:6px;
+      padding:18px 20px;
+      background:var(--bg-soft);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      transition:all .3s cubic-bezier(.16,1,.3,1);
+    }
+    .indice-card:hover{
+      border-color:var(--gold-line);
+      background:var(--surface);
+      transform:translateY(-2px);
+    }
+    .indice-card-region{
+      font-family:var(--sans);font-size:.6rem;
+      letter-spacing:1.8px;text-transform:uppercase;
+      color:var(--gold);opacity:.85;
+    }
+    .indice-card-title{
+      font-family:var(--display);font-size:1.1rem;font-weight:500;
+      color:var(--text);line-height:1.25;
+    }
+    .indice-card-title em{
+      display:block;margin-top:2px;
+      font-family:var(--serif);font-size:.85rem;font-style:italic;
+      color:var(--gold);opacity:.85;font-weight:400;
+    }
+    .indice-card-desc{
+      font-family:var(--serif);font-size:.92rem;
+      color:var(--text-muted);line-height:1.5;
+      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+      overflow:hidden;
+      margin-top:2px;
+    }
+    .indice-card-cta{
+      margin-top:8px;
+      font-family:var(--sans);font-size:.68rem;
+      letter-spacing:1.2px;text-transform:uppercase;
+      color:var(--gold);opacity:.7;
+      transition:opacity .25s;
+    }
+    .indice-card:hover .indice-card-cta{opacity:1}
+
+    /* ── Stato vuoto / errore ─────────────────────── */
+    .indice-empty,
+    .indice-error{
+      padding:60px 20px;text-align:center;
+      font-family:var(--serif);font-size:1.05rem;font-style:italic;
+      color:var(--text-muted);line-height:1.7;
+    }
+    .indice-empty[hidden]{display:none}
+
+    /* ── Footer ───────────────────────────────────── */
+    .indice-footer{
+      padding:30px 0;border-top:1px solid var(--border);
+      text-align:center;font-size:.68rem;
+      letter-spacing:.6px;color:var(--text-muted);
+    }
+    .indice-footer a{color:var(--gold)}
+    .indice-footer a:hover{text-decoration:underline}
+
+    @media (max-width:640px){
+      .indice-hero{padding:36px 0 24px}
+      .az-nav{top:53px;padding:8px 0}
+      .az-nav a{min-width:28px;height:28px;font-size:.72rem}
+      .letter-head h2{font-size:1.6rem;min-width:34px}
+      .indice-grid{grid-template-columns:1fr}
+      .region-filters button{font-size:.65rem;padding:4px 10px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{transition-duration:0s !important;animation-duration:0s !important}
+      html{scroll-behavior:auto}
+    }
+  </style>
+</head>
+<body>
+  <a href="#main" class="skip">Salta al contenuto</a>
+
+  <header class="indice-header">
+    <div class="container">
+      <a href="/atlante/index.html" class="indice-back" aria-label="Torna alla mappa">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Atlante
+      </a>
+      <span class="indice-logo">ECHI DI SOFIA</span>
+      <button class="indice-theme" id="themeToggle" type="button" aria-label="Cambia tema">◐ Tema</button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="indice-hero">
+      <div class="container">
+        <h1>Indice alfabetico<em>Dalla A alla Z</em></h1>
+        <p>Tutti i concetti dell'Atlante delle Idee in ordine alfabetico. Usa la ricerca, filtra per regione, o salta direttamente a una lettera.</p>
+        <span class="indice-count" id="indiceCount">18 concetti · 6 regioni</span>
+      </div>
+    </section>
+
+    <section class="indice-toolbar">
+      <div class="container">
+        <div class="indice-search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="m16 16 4 4"></path>
+          </svg>
+          <input type="search" id="searchInput" placeholder="Cerca un concetto…" aria-label="Cerca un concetto per titolo, regione o tag">
+        </div>
+        <div class="region-filters" id="regionFilters" role="group" aria-label="Filtra per regione"></div>
+      </div>
+    </section>
+
+    <nav class="az-nav" id="azNav" aria-label="Salta a una lettera">
+      <div class="container" id="azNavInner"></div>
+    </nav>
+
+    <div class="container">
+      <div id="indiceContent"></div>
+      <p class="indice-empty" id="indiceEmpty" hidden>Nessun concetto corrisponde alla tua ricerca.</p>
+    </div>
+  </main>
+
+  <footer class="indice-footer">
+    <div class="container">
+      © 2026 Echi di Sofia · <a href="/atlante/index.html">Atlante delle Idee</a>
+    </div>
+  </footer>
+
+  <script>
+  (function () {
+    'use strict';
+
+    /* ── Tema ─────────────────────────────────────── */
+    (function () {
+      const KEY = 'theme';
+      const btn = document.getElementById('themeToggle');
+      function apply(t) {
+        const light = t === 'light';
+        document.body.classList.toggle('light-theme', light);
+        document.documentElement.style.backgroundColor = light ? '#eaf2ed' : '#080a12';
+        btn.textContent = light ? '☀ Tema' : '◐ Tema';
+        try { localStorage.setItem(KEY, t); } catch (e) {}
+      }
+      apply(localStorage.getItem(KEY) || 'dark');
+      btn.addEventListener('click', () => {
+        apply(document.body.classList.contains('light-theme') ? 'dark' : 'light');
+      });
+    })();
+
+    /* ── Helper: sort key (rimuove articoli) ─────── */
+    function getSortKey(titolo) {
+      const articles = ['il', 'lo', 'la', 'i', 'gli', 'le'];
+      const lower = titolo.toLowerCase();
+      for (const art of articles) {
+        if (lower.startsWith(art + ' ')) {
+          return titolo.slice(art.length + 1);
+        }
+      }
+      if (/^l['\u2019]/i.test(titolo)) {
+        return titolo.slice(2);
+      }
+      return titolo;
+    }
+
+    /* ── Escape HTML ──────────────────────────────── */
+    function esc(s) {
+      return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[c]));
+    }
+
+    /* ── Stato ────────────────────────────────────── */
+    const state = {
+      concepts: [],
+      regions: [],
+      regionById: {},
+      activeRegion: 'all',
+      search: '',
+      letters: []
+    };
+
+    /* ── Init ─────────────────────────────────────── */
+    async function init() {
+      const content = document.getElementById('indiceContent');
+      try {
+        const res = await fetch('/atlante/atlante-index.json', { cache: 'no-cache' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+
+        state.regions = data.regioni || [];
+        state.regionById = Object.fromEntries(state.regions.map(r => [r.id, r.nome]));
+
+        state.concepts = (data.concetti || []).map(c => {
+          const sortKey = getSortKey(c.titolo || '');
+          return {
+            ...c,
+            sortKey,
+            letter: sortKey.charAt(0).toUpperCase(),
+            regionName: state.regionById[c.regione] || c.regione || ''
+          };
+        });
+
+        state.concepts.sort((a, b) =>
+          a.sortKey.localeCompare(b.sortKey, 'it', { sensitivity: 'base' })
+        );
+
+        state.letters = [...new Set(state.concepts.map(c => c.letter))].sort();
+
+        document.getElementById('indiceCount').textContent =
+          state.concepts.length + ' concetti · ' + state.regions.length + ' regioni';
+
+        renderFilters();
+        renderAzNav();
+        renderContent();
+      } catch (err) {
+        console.error('[indice] Errore:', err);
+        content.innerHTML = '<p class="indice-error">Impossibile caricare l\'indice. Ricarica la pagina o <a href="/atlante/index.html">torna alla mappa</a>.</p>';
+      }
+    }
+
+    /* ── Filtri di regione ────────────────────────── */
+    function renderFilters() {
+      const wrap = document.getElementById('regionFilters');
+      const allBtn = document.createElement('button');
+      allBtn.type = 'button';
+      allBtn.textContent = 'Tutte';
+      allBtn.className = 'active';
+      allBtn.dataset.region = 'all';
+      allBtn.addEventListener('click', () => setRegion('all'));
+      wrap.appendChild(allBtn);
+
+      state.regions.forEach(r => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = r.nome;
+        btn.dataset.region = r.id;
+        btn.addEventListener('click', () => setRegion(r.id));
+        wrap.appendChild(btn);
+      });
+    }
+
+    function setRegion(id) {
+      state.activeRegion = id;
+      document.querySelectorAll('#regionFilters button').forEach(b => {
+        b.classList.toggle('active', b.dataset.region === id);
+      });
+      renderContent();
+    }
+
+    /* ── A-Z nav ──────────────────────────────────── */
+    function renderAzNav() {
+      const inner = document.getElementById('azNavInner');
+      inner.innerHTML = '';
+      const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+      alphabet.forEach(L => {
+        const hasLetter = state.letters.includes(L);
+        const a = document.createElement('a');
+        a.href = '#lettera-' + L;
+        a.textContent = L;
+        a.dataset.letter = L;
+        if (!hasLetter) {
+          a.classList.add('dim');
+          a.tabIndex = -1;
+          a.setAttribute('aria-hidden', 'true');
+        }
+        inner.appendChild(a);
+      });
+    }
+
+    /* ── Filtro: applica ricerca + regione ────────── */
+    function filterConcepts() {
+      const q = state.search.trim().toLowerCase();
+      return state.concepts.filter(c => {
+        const matchRegion = state.activeRegion === 'all' || c.regione === state.activeRegion;
+        if (!matchRegion) return false;
+        if (!q) return true;
+        const haystack = [
+          c.titolo, c.sortKey, c.titolo_originale, c.regionName,
+          (c.tag || []).join(' '), c.anteprima
+        ].join(' ').toLowerCase();
+        return haystack.includes(q);
+      });
+    }
+
+    /* ── Render contenuto ─────────────────────────── */
+    function renderContent() {
+      const content = document.getElementById('indiceContent');
+      const emptyMsg = document.getElementById('indiceEmpty');
+      const filtered = filterConcepts();
+
+      if (filtered.length === 0) {
+        content.innerHTML = '';
+        emptyMsg.hidden = false;
+        updateAzNav(filtered);
+        return;
+      }
+      emptyMsg.hidden = true;
+
+      // Raggruppa per lettera
+      const groups = {};
+      filtered.forEach(c => {
+        (groups[c.letter] = groups[c.letter] || []).push(c);
+      });
+
+      const orderedLetters = Object.keys(groups).sort((a, b) => a.localeCompare(b, 'it'));
+
+      content.innerHTML = orderedLetters.map(L => {
+        const items = groups[L];
+        return `
+          <section class="letter-section" id="lettera-${L}">
+            <div class="letter-head">
+              <h2>${L}</h2>
+              <span class="line"></span>
+            </div>
+            <div class="indice-grid">
+              ${items.map(c => renderCard(c)).join('')}
+            </div>
+          </section>
+        `;
+      }).join('');
+
+      updateAzNav(filtered);
+    }
+
+    function renderCard(c) {
+      return `
+        <a href="${esc(c.url || '/atlante/index.html')}" class="indice-card">
+          <span class="indice-card-region">${esc(c.regionName)}</span>
+          <span class="indice-card-title">
+            ${esc(c.titolo)}
+            ${c.titolo_originale ? `<em>(${esc(c.titolo_originale)})</em>` : ''}
+          </span>
+          ${c.anteprima ? `<p class="indice-card-desc">${esc(c.anteprima)}</p>` : ''}
+          <span class="indice-card-cta">Leggi →</span>
+        </a>
+      `;
+    }
+
+    function updateAzNav(filtered) {
+      const visibleLetters = new Set(filtered.map(c => c.letter));
+      document.querySelectorAll('#azNavInner a').forEach(a => {
+        const L = a.dataset.letter;
+        const has = visibleLetters.has(L);
+        a.classList.toggle('dim', !has);
+        if (has) {
+          a.removeAttribute('tabindex');
+          a.removeAttribute('aria-hidden');
+        } else {
+          a.tabIndex = -1;
+          a.setAttribute('aria-hidden', 'true');
+        }
+      });
+    }
+
+    /* ── Search: live + debounce ──────────────────── */
+    let searchTimer = null;
+    document.addEventListener('DOMContentLoaded', () => {
+      const input = document.getElementById('searchInput');
+      if (input) {
+        input.addEventListener('input', () => {
+          clearTimeout(searchTimer);
+          searchTimer = setTimeout(() => {
+            state.search = input.value;
+            renderContent();
+          }, 150);
+        });
+      }
+    });
+
+    /* ── Boot ─────────────────────────────────────── */
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init, { once: true });
+    } else {
+      init();
+    }
+  })();
+  </script>
+</body>
+</html>
