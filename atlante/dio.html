@@ -3,173 +3,552 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Scheda in preparazione — Atlante delle Idee · Echi di Sofia</title>
-  <meta name="description" content="La scheda di questo concetto filosofico è in preparazione. Esplora l'Atlante delle Idee nel frattempo.">
-  <meta name="robots" content="noindex,follow">
+  <title>Dio (Deus) — Atlante delle Idee · Echi di Sofia</title>
+  <meta name="description" content="Dio da Anselmo a Nietzsche: l'argomento ontologico, le cinque vie di Tommaso, il Deus sive Natura di Spinoza, il Dio del cuore di Pascal, la morte di Dio.">
   <meta name="theme-color" content="#080a12">
   <link rel="icon" type="image/svg+xml" href="/favicon_io/favicon.svg">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Dio (Deus)",
+    "description": "Il nome di ciò che ci supera: argomento ontologico, cinque vie, Deus sive Natura, morte di Dio.",
+    "author": { "@type": "Organization", "name": "Echi di Sofia" },
+    "publisher": { "@type": "Organization", "name": "Echi di Sofia" },
+    "inLanguage": "it",
+    "isPartOf": { "@type": "WebSite", "name": "Atlante delle Idee" }
+  }
+  </script>
   <style>
-    :root{
-      --bg:#080a12;--bg-soft:#0d101a;
-      --text:#d9fbe8;--text-soft:#a8d8bb;--text-muted:#8eb5a1;
-      --gold:#EFBF04;--gold-soft:rgba(239,191,4,.16);--gold-line:rgba(239,191,4,.24);
+    :root {
+      --bg:#080a12; --bg-soft:#0d101a;
+      --surface:rgba(255,255,255,.035); --surface-hover:rgba(255,255,255,.055);
+      --text:#d9fbe8; --text-soft:#a8d8bb; --text-muted:#8eb5a1;
+      --gold:#EFBF04; --gold-soft:rgba(239,191,4,.16); --gold-line:rgba(239,191,4,.24);
       --border:rgba(255,255,255,.08);
       --serif:"Cormorant Garamond",Georgia,serif;
       --display:"Cinzel",Georgia,serif;
       --sans:"Inter",Arial,sans-serif;
+      --radius:14px;
+    }
+    body.light-theme {
+      --bg:#eaf2ed; --bg-soft:#dce8e0;
+      --text:#0f1f16; --text-soft:#1a3628; --text-muted:#2e4d3d;
+      --gold:#00a86b; --gold-soft:rgba(0,168,107,.1); --gold-line:rgba(0,168,107,.25);
+      --border:rgba(0,0,0,.06);
+      --surface:rgba(0,168,107,.04); --surface-hover:rgba(0,168,107,.08);
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;background:var(--bg)}
     body{
       min-height:100vh;background:var(--bg);color:var(--text);
-      font-family:var(--sans);line-height:1.6;
-      display:flex;flex-direction:column;
+      font-family:var(--sans);line-height:1.65;
+      transition:background-color .4s,color .4s;
     }
     a{color:inherit;text-decoration:none}
-    .wrap{width:min(720px,calc(100% - 40px));margin:0 auto;padding:48px 0;flex:1;
-      display:flex;flex-direction:column;justify-content:center}
-    .badge{
-      display:inline-block;margin-bottom:24px;padding:5px 14px;
+    button{font:inherit;cursor:pointer}
+    .container{width:min(820px,calc(100% - 40px));margin:0 auto}
+    .skip{position:fixed;top:8px;left:8px;transform:translateY(-200%);
+      background:var(--gold);color:var(--bg);padding:10px 16px;border-radius:6px;
+      font-size:.85rem;font-weight:700;z-index:100}
+    .skip:focus{transform:translateY(0)}
+
+    .scheda-header{
+      position:sticky;top:0;z-index:50;
+      background:color-mix(in srgb,var(--bg) 92%,transparent);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid var(--border);
+    }
+    .scheda-header .container{
+      display:flex;align-items:center;justify-content:space-between;
+      gap:20px;padding:14px 0;
+    }
+    .scheda-back{
+      display:inline-flex;align-items:center;gap:8px;
+      font-size:.78rem;letter-spacing:1.2px;text-transform:uppercase;
+      color:var(--text-soft);transition:color .3s;
+    }
+    .scheda-back:hover{color:var(--gold)}
+    .scheda-back svg{width:16px;height:16px}
+    .scheda-logo{
+      font-family:var(--display);font-size:.82rem;letter-spacing:2px;
+      color:var(--gold);
+    }
+    .scheda-theme{
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:30px;padding:.3rem .9rem;
+      font-size:.72rem;letter-spacing:.8px;color:var(--text-soft);
+      transition:border-color .3s,color .3s;
+    }
+    .scheda-theme:hover{border-color:var(--gold-line);color:var(--text)}
+
+    .scheda-hero{padding:48px 0 36px;text-align:center;border-bottom:1px solid var(--gold-line)}
+    .scheda-regione{
+      display:inline-block;margin-bottom:18px;padding:5px 14px;
       border:1px solid var(--gold-line);border-radius:100px;
       font-size:.66rem;letter-spacing:2.2px;text-transform:uppercase;
       color:var(--gold);background:var(--gold-soft);
-      width:fit-content;
     }
-    h1{
+    .scheda-titolo{
       font-family:var(--display);font-weight:500;
-      font-size:clamp(2rem,5vw,3rem);letter-spacing:2px;
-      line-height:1.1;color:var(--text);margin-bottom:16px;
+      font-size:clamp(2rem,5vw,3.2rem);letter-spacing:2px;
+      line-height:1.1;color:var(--text);margin-bottom:10px;
     }
-    h1 em{
+    .scheda-titolo em{
       display:block;margin-top:8px;
       font-family:var(--serif);font-style:italic;font-weight:500;
       font-size:.55em;letter-spacing:.5px;color:var(--gold);opacity:.9;
     }
-    .lead{
-      font-family:var(--serif);font-size:1.15rem;font-style:italic;
-      line-height:1.7;color:var(--text-soft);margin-bottom:36px;
+    .scheda-meta{
+      display:flex;align-items:center;justify-content:center;
+      flex-wrap:wrap;gap:16px;margin-top:20px;
+      font-size:.72rem;letter-spacing:1px;color:var(--text-muted);
     }
-    .lead::before{content:"« ";color:var(--gold);opacity:.5}
-    .lead::after{content:" »";color:var(--gold);opacity:.5}
-    .actions{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:36px}
-    .btn{
-      display:inline-flex;align-items:center;gap:8px;
-      padding:11px 22px;border-radius:100px;
-      font-family:var(--sans);font-size:.78rem;
-      letter-spacing:1.2px;text-transform:uppercase;
-      transition:all .3s cubic-bezier(.16,1,.3,1);
+    .scheda-meta span{display:inline-flex;align-items:center;gap:6px}
+    .scheda-tags{
+      display:flex;flex-wrap:wrap;justify-content:center;gap:8px;
+      margin-top:18px;
     }
-    .btn-primary{
-      background:var(--gold);color:var(--bg);border:1px solid var(--gold);
+    .scheda-tags span{
+      padding:3px 10px;border-radius:100px;
+      border:1px solid var(--border);
+      font-family:var(--sans);font-size:.68rem;
+      color:var(--text-muted);
     }
-    .btn-primary:hover{
-      filter:brightness(1.08);transform:translateY(-2px);
-      box-shadow:0 6px 20px var(--gold-soft);
+
+    .scheda-indice{
+      position:sticky;top:57px;z-index:40;
+      background:color-mix(in srgb,var(--bg) 94%,transparent);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--border);
     }
-    .btn-secondary{
-      background:transparent;color:var(--gold);
-      border:1px solid var(--gold-line);
+    .scheda-indice-inner{
+      display:flex;gap:4px;overflow-x:auto;
+      padding:10px 0;scrollbar-width:none;
     }
-    .btn-secondary:hover{
-      background:var(--gold-soft);border-color:var(--gold);
+    .scheda-indice-inner::-webkit-scrollbar{display:none}
+    .scheda-indice a{
+      flex:0 0 auto;padding:6px 14px;border-radius:100px;
+      font-size:.72rem;letter-spacing:.6px;color:var(--text-muted);
+      border:1px solid transparent;transition:all .25s;
+      white-space:nowrap;
     }
-    .related{
-      margin-top:36px;padding-top:28px;
+    .scheda-indice a:hover,.scheda-indice a.active{
+      color:var(--gold);border-color:var(--gold-line);background:var(--gold-soft);
+    }
+
+    .scheda-main{padding:40px 0 60px}
+    .scheda-section{margin-bottom:56px;scroll-margin-top:120px}
+    .scheda-section-head{
+      display:flex;align-items:baseline;gap:14px;
+      margin-bottom:22px;padding-bottom:12px;
+      border-bottom:1px solid var(--gold-line);
+    }
+    .scheda-section-num{
+      font-family:var(--display);font-size:1.4rem;
+      color:var(--gold);opacity:.85;
+    }
+    .scheda-section-title{
+      font-family:var(--display);font-weight:500;
+      font-size:1.05rem;letter-spacing:2px;text-transform:uppercase;
+      color:var(--gold);
+    }
+    .scheda-section-body{
+      font-family:var(--serif);font-size:1.08rem;
+      line-height:1.75;color:var(--text-soft);
+    }
+    .scheda-section-body p{margin-bottom:16px}
+    .scheda-section-body p:last-child{margin-bottom:0}
+    .scheda-section-body strong{color:var(--text);font-weight:600}
+    .scheda-section-body em{color:var(--text);font-style:italic}
+
+    .scheda-pull{
+      position:relative;
+      padding:24px 28px 24px 44px;
+      border-left:2px solid var(--gold);
+      background:linear-gradient(90deg,var(--gold-soft),transparent 70%);
+      border-radius:0 var(--radius) var(--radius) 0;
+      font-family:var(--serif);font-size:1.18rem;
+      font-style:italic;line-height:1.7;color:var(--text);
+    }
+    .scheda-pull::before{
+      content:"“";position:absolute;left:12px;top:6px;
+      font-family:var(--display);font-size:2.4rem;
+      color:var(--gold);opacity:.5;line-height:1;
+    }
+
+    .scheda-etimo{
+      display:grid;grid-template-columns:1fr 1.4fr;
+      gap:28px;align-items:start;
+    }
+    .scheda-etimo-term{
+      padding:18px 20px;
+      background:var(--bg-soft);border:1px solid var(--gold-line);
+      border-radius:var(--radius);
+    }
+    .scheda-etimo-term h3{
+      font-family:var(--display);font-size:.7rem;font-weight:500;
+      letter-spacing:2px;text-transform:uppercase;color:var(--gold);
+      margin-bottom:10px;
+    }
+    .scheda-etimo-term ul{list-style:none;padding:0}
+    .scheda-etimo-term li{
+      padding:8px 0;border-bottom:1px dashed var(--border);
+      font-family:var(--serif);font-size:1rem;color:var(--text-soft);
+    }
+    .scheda-etimo-term li:last-child{border-bottom:0}
+    .scheda-etimo-term li strong{
+      display:block;font-family:var(--display);font-size:.88rem;
+      color:var(--gold);font-weight:500;margin-bottom:2px;
+    }
+
+    .scheda-timeline{position:relative;padding-left:40px}
+    .scheda-timeline::before{
+      content:"";position:absolute;left:15px;top:8px;bottom:8px;
+      width:1px;background:linear-gradient(to bottom,transparent,var(--gold-line) 10%,var(--gold-line) 90%,transparent);
+    }
+    .scheda-momento{position:relative;margin-bottom:28px}
+    .scheda-momento:last-child{margin-bottom:0}
+    .scheda-momento::before{
+      content:"";position:absolute;left:-32px;top:6px;
+      width:11px;height:11px;border-radius:50%;
+      background:var(--bg);border:2px solid var(--gold);
+      box-shadow:0 0 0 4px var(--gold-soft);
+    }
+    .scheda-momento-label{
+      display:inline-block;margin-bottom:6px;
+      font-size:.66rem;letter-spacing:2px;text-transform:uppercase;
+      color:var(--gold);font-weight:500;
+    }
+    .scheda-momento-title{
+      font-family:var(--display);font-size:1rem;font-weight:500;
+      color:var(--text);margin-bottom:8px;line-height:1.35;
+    }
+    .scheda-momento-text{
+      font-family:var(--serif);font-size:1rem;line-height:1.7;
+      color:var(--text-soft);
+    }
+
+    .scheda-ponti{
+      display:grid;grid-template-columns:1fr 1fr;
+      gap:18px;
+    }
+    .scheda-ponte{
+      padding:20px 22px;
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:var(--radius);
+      transition:border-color .3s,background .3s,transform .3s;
+    }
+    .scheda-ponte:hover{
+      border-color:var(--gold-line);background:var(--surface-hover);
+      transform:translateY(-2px);
+    }
+    .scheda-ponte-label{
+      display:block;margin-bottom:10px;
+      font-size:.62rem;letter-spacing:2px;text-transform:uppercase;
+      color:var(--gold);
+    }
+    .scheda-ponte h4{
+      font-family:var(--display);font-size:.95rem;font-weight:500;
+      color:var(--text);margin-bottom:8px;line-height:1.35;
+    }
+    .scheda-ponte p{
+      font-family:var(--serif);font-size:.95rem;line-height:1.6;
+      color:var(--text-soft);
+    }
+
+    .scheda-bussola{
+      padding:28px 30px;
+      background:linear-gradient(135deg,var(--gold-soft),transparent 80%);
+      border:1px solid var(--gold-line);border-radius:var(--radius);
+    }
+    .scheda-domanda{
+      margin-bottom:24px;padding-bottom:20px;
+      border-bottom:1px dashed var(--gold-line);
+    }
+    .scheda-domanda-label{
+      display:block;margin-bottom:10px;
+      font-size:.66rem;letter-spacing:2px;text-transform:uppercase;
+      color:var(--gold);
+    }
+    .scheda-domanda p{
+      font-family:var(--serif);font-size:1.22rem;font-style:italic;
+      line-height:1.6;color:var(--text);
+    }
+    .scheda-letture h4{
+      font-size:.66rem;letter-spacing:2px;text-transform:uppercase;
+      color:var(--gold);margin-bottom:10px;font-weight:500;
+    }
+    .scheda-letture h4 + ul{margin-bottom:18px}
+    .scheda-letture ul{list-style:none;padding:0}
+    .scheda-letture li{
+      padding:8px 0;font-family:var(--serif);
+      font-size:.98rem;line-height:1.5;color:var(--text-soft);
+      border-bottom:1px dashed var(--border);
+    }
+    .scheda-letture li:last-child{border-bottom:0}
+    .scheda-letture li strong{color:var(--text);font-weight:600}
+
+    .scheda-nav{
+      display:grid;grid-template-columns:1fr 1fr;gap:16px;
+      margin-top:56px;padding-top:32px;
       border-top:1px solid var(--gold-line);
     }
-    .related h2{
-      font-family:var(--display);font-size:.72rem;font-weight:500;
-      letter-spacing:2.5px;text-transform:uppercase;
-      color:var(--gold);margin-bottom:16px;
+    .scheda-nav a{
+      display:flex;flex-direction:column;gap:6px;
+      padding:18px 20px;
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:var(--radius);
+      transition:border-color .3s,background .3s,transform .3s;
     }
-    .related ul{list-style:none;display:flex;flex-direction:column;gap:8px}
-    .related li a{
-      display:flex;align-items:center;gap:10px;
-      padding:10px 14px;border-radius:8px;
-      font-family:var(--serif);font-size:1rem;
-      color:var(--text-soft);
-      border:1px solid transparent;
-      transition:all .25s;
+    .scheda-nav a:hover{
+      border-color:var(--gold-line);background:var(--surface-hover);
+      transform:translateY(-2px);
     }
-    .related li a:hover{
-      border-color:var(--gold-line);background:var(--gold-soft);
-      color:var(--gold);padding-left:18px;
-    }
-    .related li a::before{
-      content:"→";color:var(--gold);opacity:.6;font-size:.9rem;
-    }
-    .footer{
-      padding:24px 0;text-align:center;
-      font-size:.68rem;letter-spacing:.6px;
+    .scheda-nav a.next{text-align:right}
+    .scheda-nav-label{
+      font-size:.6rem;letter-spacing:2px;text-transform:uppercase;
       color:var(--text-muted);
-      border-top:1px solid var(--border);
     }
-    .footer a{color:var(--gold)}
-    .footer a:hover{text-decoration:underline}
+    .scheda-nav-title{
+      font-family:var(--display);font-size:1rem;color:var(--gold);
+    }
+
+    .scheda-footer{
+      padding:30px 0;border-top:1px solid var(--border);
+      text-align:center;font-size:.68rem;
+      letter-spacing:.6px;color:var(--text-muted);
+    }
+
+    @media (max-width:640px){
+      .scheda-etimo{grid-template-columns:1fr}
+      .scheda-ponti{grid-template-columns:1fr}
+      .scheda-nav{grid-template-columns:1fr}
+      .scheda-hero{padding:32px 0 28px}
+      .scheda-section{margin-bottom:44px}
+      .scheda-bussola{padding:22px 20px}
+      .scheda-pull{padding:20px 20px 20px 36px;font-size:1.05rem}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{transition-duration:0s !important;animation-duration:0s !important}
+      html{scroll-behavior:auto}
+    }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <span class="badge" id="regione">Atlante delle Idee</span>
-    <h1>
-      <span id="titolo">Scheda in preparazione</span>
-      <em id="originale"></em>
-    </h1>
-    <p class="lead" id="anteprima">
-      Stiamo lavorando a questa scheda. Nel frattempo esplora l'Atlante completo
-      o leggi uno degli articoli correlati.
-    </p>
+  <a href="#main" class="skip">Salta al contenuto</a>
 
-    <div class="actions">
-      <a class="btn btn-primary" href="/atlante/index.html">✦ Torna all'Atlante</a>
-      <a class="btn btn-secondary" href="/">Vai alla Home</a>
+  <header class="scheda-header">
+    <div class="container">
+      <a href="/atlante/index.html" class="scheda-back" aria-label="Torna alla mappa">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Atlante
+      </a>
+      <span class="scheda-logo">ECHI DI SOFIA</span>
+      <button class="scheda-theme" id="themeToggle" type="button" aria-label="Cambia tema">◐ Tema</button>
     </div>
+  </header>
 
-    <div class="related" id="related" hidden>
-      <h2>Approfondimenti correlati</h2>
-      <ul id="relatedList"></ul>
-    </div>
-  </div>
+  <main id="main">
+    <section class="scheda-hero">
+      <div class="container">
+        <span class="scheda-regione">Ontologia e Metafisica</span>
+        <h1 class="scheda-titolo">
+          Dio
+          <em>(Deus)</em>
+        </h1>
+        <div class="scheda-meta">
+          <span>⏱ 8 minuti di lettura</span>
+          <span>✦ Scheda n. 4 di 18</span>
+        </div>
+        <div class="scheda-tags">
+          <span>#dio</span><span>#anselmo</span><span>#tommaso</span>
+          <span>#spinoza</span><span>#nietzsche</span>
+        </div>
+      </div>
+    </section>
 
-  <footer class="footer">
-    © 2026 Echi di Sofia · <a href="/pagine/pagina-contatti.html">Contatti</a>
+    <nav class="scheda-indice" aria-label="Indice della scheda">
+      <div class="container">
+        <div class="scheda-indice-inner">
+          <a href="#coordinate">Coordinate</a>
+          <a href="#etimologia">Etimologia</a>
+          <a href="#tornanti">Tornanti</a>
+          <a href="#ponti">Ponti</a>
+          <a href="#bussola">Bussola</a>
+        </div>
+      </div>
+    </nav>
+
+    <article class="scheda-main">
+      <div class="container">
+
+        <section class="scheda-section" id="coordinate">
+          <div class="scheda-section-head">
+            <span class="scheda-section-num">01</span>
+            <h2 class="scheda-section-title">Le Coordinate</h2>
+          </div>
+          <div class="scheda-section-body">
+            <p class="scheda-pull"><strong>Dio</strong> è il nome che l'uomo dà a ciò che lo supera. Ma che cosa significa «superare»? Per <strong>Anselmo</strong> Dio è <em>ciò di cui non si può pensare nulla di più grande</em>: un'idea così perfetta che la sua stessa pensabilità ne dimostra l'esistenza. Per <strong>Tommaso</strong> Dio è il <em>motore immobile</em>, la causa prima, il fine ultimo: non si dimostra a priori, si risale a lui a posteriori, dal mondo. Per <strong>Spinoza</strong> Dio è la <em>Natura stessa</em> (Deus sive Natura): non un essere personale che ci guarda, ma l'ordine necessario e razionale dell'universo. Per <strong>Pascal</strong> Dio è il <em>Dio del cuore</em>, che si incontra nell'esperienza, non nella dimostrazione. Per <strong>Nietzsche</strong> Dio è morto: non nel senso che è scomparso, ma nel senso che non è più il centro di gravità della nostra cultura.</p>
+            <p>Cinque risposte incompatibili, e tutte hanno segnato la storia dell'Occidente. Ma la domanda filosofica non è «Dio esiste?» — è più radicale: <strong>che cosa intendiamo, quando diciamo «Dio»?</strong> Un essere personale o un principio impersonale? Una causa prima o un'esperienza interiore? Un'idea della ragione o un evento della storia? Il dibattito contemporaneo (teismo, ateismo, agnosticismo, ateismo religioso, teologia della liberazione, teologia del processo) mostra che la domanda non si è chiusa. E dopo Auschwitz, dopo la Shoah, dopo i genocidi del Novecento, la domanda si è fatta più urgente: <em>che Dio può ancora essere pensato, dopo la morte dell'uomo?</em></p>
+          </div>
+        </section>
+
+        <section class="scheda-section" id="etimologia">
+          <div class="scheda-section-head">
+            <span class="scheda-section-num">02</span>
+            <h2 class="scheda-section-title">Archeologia della Parola</h2>
+          </div>
+          <div class="scheda-etimo">
+            <div class="scheda-etimo-term">
+              <h3>Radici</h3>
+              <ul>
+                <li><strong>Latino</strong>deus — dio, divinità (radice indoeuropea <em>deyw-</em>, «essere celeste, luminoso»)</li>
+                <li><strong>Greco</strong>theós (θεός) — dio, divinità (forse da <em>tithénai</em>, «porre, stabilire»)</li>
+                <li><strong>Ebraico</strong>El / Elohim (אֵל / אֱלֹהִים) — potente, signore; plurale di maestà</li>
+                <li><strong>Ebraico</strong>YHWH (יהוה) — il Tetragramma, «Io sono colui che sono»</li>
+                <li><strong>Greco</strong>óntōs ón (ὄντως ὄν) — l'essere realmente</li>
+                <li><strong>Tedesco</strong>Gott — affine all'inglese <em>God</em></li>
+              </ul>
+            </div>
+            <div class="scheda-section-body">
+              <p>Le parole per «Dio» sono diverse, e la loro diversità è filosofia. Il latino <em>deus</em> e il greco <em>theós</em> indicano la <strong>divinità</strong> in generale: un essere superiore, immortale, potente. L'ebraico <strong>El / Elohim</strong> indica invece la <em>potenza</em> e la <em>maestà</em> di un Dio che si rivela, che parla, che entra nella storia. Il Tetragramma <strong>YHWH</strong> è il nome proprio di Dio, impronunciabile, che nella tradizione ebraica non si legge e che Mosè riceve sul Sinai: <em>«Io sono colui che sono»</em> (Es 3,14). È un nome che identifica Dio con l'<strong>essere</strong> stesso — e da qui nascerà tutta la metafisica occidentale.</p>
+              <p>La tradizione cristiana eredita tre lingue: l'ebraico (Dio che si rivela), il greco (Dio come essere, come <em>óntōs ón</em>, l'«essente realmente»), il latino (Dio come <em>ens summum</em>, essere supremo). Tommaso d'Aquino sintetizza le tre tradizioni: Dio è <em>ipsum esse subsistens</em>, l'essere stesso sussistente, colui in cui essenza ed esistenza coincidono. È una formula tecnica, ma il suo senso è immenso: Dio non è <strong>un ente</strong> tra gli enti, <em>è l'essere</em> in cui tutto ciò che è partecipa. Da qui nascerà l'ateismo moderno: se Dio è l'essere stesso, allora dire «Dio non esiste» è dire «l'essere non è». Ma forse è proprio questa identificazione che la filosofia contemporanea ha messo in crisi: Dio non è l'Essere, Dio è un <strong>evento</strong>, una <strong>relazione</strong>, un <strong>volto</strong>.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="scheda-section" id="tornanti">
+          <div class="scheda-section-head">
+            <span class="scheda-section-num">03</span>
+            <h2 class="scheda-section-title">I Tornanti Storici</h2>
+          </div>
+          <div class="scheda-timeline">
+            <div class="scheda-momento">
+              <span class="scheda-momento-label">① La Nascita · 1078</span>
+              <h3 class="scheda-momento-title">Anselmo: l'argomento ontologico</h3>
+              <p class="scheda-momento-text">Nel <em>Proslogion</em> Anselmo d'Aosta formula l'argomento più famoso e più contestato della storia della filosofia. Dio è <em>«ciò di cui non si può pensare nulla di più grande»</em>. Ma se io lo penso come il più grande pensabile, e poi lo penso come <strong>esistente</strong>, allora Dio esiste <em>anche nella realtà</em>: un Dio solo pensato sarebbe meno grande di un Dio pensato ed esistente. Dunque Dio esiste necessariamente. L'argomento è elegante, e Tommaso lo rifiutò, Kant lo demolì (<em>l'esistenza non è un predicato</em>), ma il Novecento lo ha riscoperto (Malcom, Plantinga). Ha un merito che va oltre la sua validità: pone la domanda <em>che cosa significa «esistere» quando si parla di Dio?</em> — e obbliga a distinguere l'essere delle cose dall'Essere in sé.</p>
+            </div>
+            <div class="scheda-momento">
+              <span class="scheda-momento-label">② La Svolta · 1265–1677</span>
+              <h3 class="scheda-momento-title">Tommaso, Spinoza, Pascal: tre volti di Dio</h3>
+              <p class="scheda-momento-text">Nella <em>Summa Theologiae</em> Tommaso formula le <strong>cinque vie</strong>: cinque argomenti <em>a posteriori</em> che risalgono a Dio dal mondo (il moto, la causalità, la contingenza, i gradi di perfezione, il finalismo). Dio non si dimostra <em>a priori</em> (come voleva Anselmo), perché il nostro intelletto non può cogliere l'essenza divina. Pochi secoli dopo Spinoza compie la mossa opposta: Dio è la <strong>Natura stessa</strong>, la sostanza unica e infinita che coincide con l'universo. Non un Dio personale, ma un ordine necessario e razionale: <em>Deus sive Natura</em>. È una forma di panteismo che scandalizzò i suoi contemporanei (fu scomunicato dalla sinagoga di Amsterdam). Intanto Pascal, scienziato e credente, scrive nei <em>Pensieri</em> il contrario di tutto: <em>«Il Dio di Abramo, il Dio di Isacco, il Dio di Giacobbe, non il Dio dei filosofi e degli scienziati»</em>. Il Dio di Pascal non si dimostra: si incontra. È il <strong>Dio del cuore</strong>, che sta fuori dalla ragione geometrica.</p>
+            </div>
+            <div class="scheda-momento">
+              <span class="scheda-momento-label">③ L'Oggi · 1882–oggi</span>
+              <h3 class="scheda-momento-title">Nietzsche: «Dio è morto». E dopo?</h3>
+              <p class="scheda-momento-text">Nell'aforisma 125 della <em>Gaia scienza</em> (1882) Nietzsche fa pronunciare a un «uomo folle» la frase più celebre della filosofia moderna: <em>«Dio è morto! Dio resta morto! E noi lo abbiamo ucciso!»</em>. Non è una dichiarazione di ateismo: è una <strong>diagnosi culturale</strong>. Dio è morto perché la cultura occidentale — la scienza, la tecnica, la critica storica, la stessa metafisica cristiana — ha eroso le condizioni che lo rendevano credibile. L'uomo folle non annuncia una vittoria: annuncia una <strong>catastrofe</strong>. Senza Dio, che cosa resta dei valori? Della verità? Del senso? Nietzsche pone la domanda che il Novecento raccoglierà: nichilismo, ateismo, «ateismo devoto», teologia dopo Auschwitz. Bonhoeffer, dal carcere nazista, parla di un «Dio senza religione». Jonas formula una «idea di Dio dopo Auschwitz». La teologia della liberazione riscopre il Dio dei poveri. Il dibattito è più vivo che mai — ma il Dio di cui si discute non è più quello di Anselmo.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="scheda-section" id="ponti">
+          <div class="scheda-section-head">
+            <span class="scheda-section-num">04</span>
+            <h2 class="scheda-section-title">I Ponti</h2>
+          </div>
+          <div class="scheda-ponti">
+            <div class="scheda-ponte">
+              <span class="scheda-ponte-label">Arte · Cinema · Letteratura</span>
+              <h4>Il Vangelo secondo Matteo (1964, Pier Paolo Pasolini)</h4>
+              <p>Pasolini, ateo e marxista, gira il film più radicale su Gesù del Novecento. Non c'è devozione, non c'è teologia: c'è il <strong>volto di un uomo</strong> che parla ai poveri con una durezza che scandalizza. Il film ci ricorda che il Dio cristiano non è un'idea filosofica: è una persona che entra nella storia. Forse è questa la ragione per cui il Dio dei filosofi è sempre un po' più freddo del Dio dei Vangeli.</p>
+            </div>
+            <div class="scheda-ponte">
+              <span class="scheda-ponte-label">Arte · Cinema · Letteratura</span>
+              <h4>Dostoevskij, <em>I fratelli Karamazov</em> — il problema del male</h4>
+              <p>Ivan non nega Dio: gli <strong>restituisce il biglietto</strong>. Se anche esistesse un disegno armonioso in cui ogni sofferenza è riscattata, lui non lo accetterebbe, perché nessuna armonia vale le lacrime di un solo bambino. È la pagina più radicale della letteratura sul problema del male, e la più onesta: la teodicea non si confuta, si <em>rifiuta</em>. Dopo Ivan, ogni discorso su Dio deve fare i conti con il dolore innocente.</p>
+            </div>
+            <div class="scheda-ponte">
+              <span class="scheda-ponte-label">Scienza · Tecnologia · Attualità</span>
+              <h4>Il dibattito sul «Dio dei margini» e il multiverso</h4>
+              <p>Le scoperte della cosmologia (Big Bang, multiverso, materia oscura) hanno riaperto il dibattito filosofico su Dio. Alcuni vedono nell'universo una <strong>fine-tuned</strong> («finemente regolato») che richiede un regolatore — l'argomento teleologico, oggi nella versione di Swinburne. Altri rispondono che il multiverso rende superfluo il regolatore. Altri ancora (Hawking, Krauss) sostengono che l'universo possa nascere dal nulla senza bisogno di Dio. Il dibattito è aperto, ma ha una caratteristica nuova: non si svolge più tra filosofi, si svolge tra <em>fisici</em> che parlano di Dio senza essere teologi. E la domanda di fondo resta quella di Leibniz: <em>perché c'è qualcosa piuttosto che nulla?</em></p>
+            </div>
+            <div class="scheda-ponte">
+              <span class="scheda-ponte-label">Scienza · Tecnologia · Attualità</span>
+              <h4>Le religioni nell'epoca della globalizzazione</h4>
+              <p>Il Novecento ha annunciato la secolarizzazione: la religione sarebbe scomparsa con la modernità. Non è successo. Le religioni sono tornate al centro della scena — non sempre nel modo più rassicurante: fondamentalismi, terrorismi, identità etniche e religiose. Ma anche: teologie della liberazione, dialogo interreligioso, spiritualità senza religione. La domanda filosofica su Dio si intreccia oggi con la <strong>domanda politica</strong>: che ruolo hanno le fedi nello spazio pubblico? Che rapporto c'è tra laicità e pluralismo religioso? È il tema di Rawls, Habermas, Taylor — tre filosofi laici che hanno preso sul serio la religione come interlocutore.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="scheda-section" id="bussola">
+          <div class="scheda-section-head">
+            <span class="scheda-section-num">05</span>
+            <h2 class="scheda-section-title">La Bussola</h2>
+          </div>
+          <div class="scheda-bussola">
+            <div class="scheda-domanda">
+              <span class="scheda-domanda-label">Una domanda per te</span>
+              <p>Quando dici «Dio» — a chi o a che cosa pensi? A un essere personale che ascolta, a un principio cosmico, a un'esperienza interiore, a un nome dell'Assoluto, a una proiezione della nostra mente? La domanda non è teorica: è il modo in cui l'<strong>Assoluto</strong> entra nella tua vita — o non ci entra.</p>
+            </div>
+            <div class="scheda-letture">
+              <h4>Per iniziare (lettura breve, accessibile)</h4>
+              <ul>
+                <li><strong>Anselmo d'Aosta</strong>, <em>Proslogion</em>, capitoli 2–4 (l'argomento ontologico — 5 pagine)</li>
+                <li><strong>Friedrich Nietzsche</strong>, <em>La gaia scienza</em>, aforisma 125 (l'uomo folle — 3 pagine)</li>
+                <li><strong>Blaise Pascal</strong>, <em>Pensieri</em>, fr. 423 e 913 (il Dio del cuore e il memoriale — 5 pagine)</li>
+              </ul>
+              <h4>Per scavare (testo classico, fondamentale)</h4>
+              <ul>
+                <li><strong>Tommaso d'Aquino</strong>, <em>Summa Theologiae</em>, I, q. 2 (le cinque vie)</li>
+                <li><strong>Baruch Spinoza</strong>, <em>Etica</em>, parte I (Deus sive Natura)</li>
+                <li><strong>Friedrich Nietzsche</strong>, <em>La gaia scienza</em> (1882) — integrale, e la <em>Genealogia della morale</em></li>
+                <li><strong>Hans Jonas</strong>, <em>Il concetto di Dio dopo Auschwitz</em> (1984) — 50 pagine, decisive</li>
+                <li><strong>Emmanuel Lévinas</strong>, <em>Totalità e infinito</em> (1961), sezione «Dio e la filosofia»</li>
+                <li><strong>Charles Taylor</strong>, <em>L'età secolare</em> (2007) — la ricostruzione contemporanea più importante</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <nav class="scheda-nav" aria-label="Navigazione tra concetti">
+          <a href="/atlante/il-simulacro.html">
+            <span class="scheda-nav-label">← Concetto precedente</span>
+            <span class="scheda-nav-title">Il Simulacro</span>
+          </a>
+          <a href="/atlante/il-dubbio.html" class="next">
+            <span class="scheda-nav-label">Concetto successivo →</span>
+            <span class="scheda-nav-title">Il Dubbio</span>
+          </a>
+        </nav>
+
+      </div>
+    </article>
+  </main>
+
+  <footer class="scheda-footer">
+    <div class="container">© 2026 Echi di Sofia · Atlante delle Idee</div>
   </footer>
 
   <script>
-    /* Legge lo slug dall'URL e popola il contenuto */
     (function(){
-      const slug = location.pathname.replace(/^.*\//, '').replace(/\.html$/, '');
-      const MAPPA = {
-        'bene':       { titolo:'Bene',         originale:'Agathón',              regione:'Ontologia e Metafisica',     articoli:[['Platonismo — articolo','/articoli/platonismo.html'],['Filosofia antica — panorama','/filosofia/antica.html']] },
-        'verita':     { titolo:'Verità',       originale:'Alétheia',             regione:'Ontologia e Metafisica',     articoli:[['Filosofia classica — Platone e Aristotele','/filosofia/classica.html']] },
-        'il-simulacro':{titolo:'Il Simulacro', originale:'Simulacrum',           regione:'Ontologia e Metafisica',     articoli:[['Filosofia contemporanea — Baudrillard','/filosofia/contemporanea.html']] },
-        'dio':        { titolo:'Dio',          originale:'Deus',                 regione:'Ontologia e Metafisica',     articoli:[['Filosofia medievale','/filosofia/medievale.html']] },
-        'il-dubbio':  { titolo:'Il Dubbio',    originale:'Dubium',               regione:'Epistemologia e Mente',      articoli:[['Filosofia moderna — Descartes','/filosofia/moderna.html']] },
-        'la-coscienza':{titolo:'La Coscienza', originale:'Conscientia',          regione:'Epistemologia e Mente',      articoli:[['Filosofia contemporanea — mente','/filosofia/contemporanea.html']] },
-        'liberta':    { titolo:'Libertà',      originale:'Libertas',             regione:'Etica e Morale',             articoli:[['Stoicismo — articolo','/articoli/stoicismo.html'],['Filosofia moderna — Spinoza e Kant','/filosofia/moderna.html']] },
-        'la-virtu':   { titolo:'La Virtù',     originale:'Areté',                regione:'Etica e Morale',             articoli:[['Filosofia classica — Aristotele','/filosofia/classica.html']] },
-        'il-male':    { titolo:'Il Male',      originale:'Malum',                regione:'Etica e Morale',             articoli:[['Filosofia medievale — Agostino','/filosofia/medievale.html']] },
-        'la-giustizia':{titolo:'La Giustizia', originale:'Iustitia',             regione:'Politica e Società',         articoli:[['Filosofia classica — Platone','/filosofia/classica.html']] },
-        'la-democrazia':{titolo:'La Democrazia',originale:'Demokratía',          regione:'Politica e Società',         articoli:[['Filosofia antica — Atene','/filosofia/antica.html']] },
-        'il-bello':   { titolo:'Il Bello',     originale:'Kalón',                regione:'Estetica e Cultura',         articoli:[['Filosofia classica — Platone','/filosofia/classica.html']] },
-        'il-sublime': { titolo:'Il Sublime',   originale:'Sublimis',             regione:'Estetica e Cultura',         articoli:[['Filosofia moderna — Kant','/filosofia/moderna.html']] },
-        'il-mito':    { titolo:'Il Mito',      originale:'Mythos',               regione:'Estetica e Cultura',         articoli:[['Filosofia antica — mythos e logos','/filosofia/antica.html']] },
-        'anima':      { titolo:'Anima',        originale:'Psyché',               regione:'Esistenza e Antropologia',   articoli:[['Filosofia antica — anima platonica','/filosofia/antica.html']] },
-        'il-tempo':   { titolo:'Il Tempo',     originale:'Chrónos',              regione:'Esistenza e Antropologia',   articoli:[['Filosofia contemporanea — Heidegger','/filosofia/contemporanea.html']] },
-        'l-amore':    { titolo:'L\'Amore',     originale:'Eros',                 regione:'Esistenza e Antropologia',   articoli:[['Filosofia classica — Platone','/filosofia/classica.html']] }
-      };
-      const info = MAPPA[slug];
-      if (!info) return;
-      document.getElementById('titolo').textContent = info.titolo;
-      document.getElementById('originale').textContent = info.originale ? '(' + info.originale + ')' : '';
-      document.getElementById('regione').textContent = info.regione;
-      document.title = info.titolo + ' — in preparazione · Atlante delle Idee';
-      if (info.articoli && info.articoli.length) {
-        const list = document.getElementById('relatedList');
-        list.innerHTML = info.articoli.map(([label, href]) =>
-          '<li><a href="' + href + '">' + label + '</a></li>'
-        ).join('');
-        document.getElementById('related').hidden = false;
+      const KEY = 'theme';
+      const btn = document.getElementById('themeToggle');
+      function apply(t){
+        const light = t === 'light';
+        document.body.classList.toggle('light-theme', light);
+        document.documentElement.style.backgroundColor = light ? '#eaf2ed' : '#080a12';
+        btn.textContent = light ? '☀ Tema' : '◐ Tema';
+        try{ localStorage.setItem(KEY, t); }catch(e){}
       }
+      apply(localStorage.getItem(KEY) || 'dark');
+      btn.addEventListener('click', () => {
+        apply(document.body.classList.contains('light-theme') ? 'dark' : 'light');
+      });
+    })();
+
+    (function(){
+      const links = document.querySelectorAll('.scheda-indice a');
+      const sections = document.querySelectorAll('.scheda-section');
+      if (!('IntersectionObserver' in window)) return;
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id));
+          }
+        });
+      }, { rootMargin: '-120px 0px -70% 0px', threshold: 0 });
+      sections.forEach(s => io.observe(s));
     })();
   </script>
 </body>
