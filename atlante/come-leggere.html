@@ -1,1 +1,638 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Come leggere questa mappa — Atlante delle Idee · Echi di Sofia</title>
+  <meta name="description" content="Introduzione all'Atlante delle Idee: perché una mappa e non un'enciclopedia, come funzionano le sei regioni, come si legge una scheda, tre modi per attraversare il progetto.">
+  <meta name="theme-color" content="#080a12">
+  <link rel="icon" type="image/svg+xml" href="/favicon_io/favicon.svg">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Come leggere questa mappa",
+    "description": "Introduzione all'Atlante delle Idee: filosofia del progetto, struttura, come navigarlo.",
+    "author": { "@type": "Organization", "name": "Echi di Sofia" },
+    "publisher": { "@type": "Organization", "name": "Echi di Sofia" },
+    "inLanguage": "it",
+    "isPartOf": { "@type": "WebSite", "name": "Atlante delle Idee" }
+  }
+  </script>
+  <style>
+    :root {
+      --bg:#080a12; --bg-soft:#0d101a;
+      --surface:rgba(255,255,255,.035); --surface-hover:rgba(255,255,255,.055);
+      --text:#d9fbe8; --text-soft:#a8d8bb; --text-muted:#8eb5a1;
+      --gold:#EFBF04; --gold-soft:rgba(239,191,4,.16); --gold-line:rgba(239,191,4,.24);
+      --border:rgba(255,255,255,.08);
+      --serif:"Cormorant Garamond",Georgia,serif;
+      --display:"Cinzel",Georgia,serif;
+      --sans:"Inter",Arial,sans-serif;
+      --radius:14px;
+    }
+    body.light-theme {
+      --bg:#eaf2ed; --bg-soft:#dce8e0;
+      --text:#0f1f16; --text-soft:#1a3628; --text-muted:#2e4d3d;
+      --gold:#00a86b; --gold-soft:rgba(0,168,107,.1); --gold-line:rgba(0,168,107,.25);
+      --border:rgba(0,0,0,.06);
+      --surface:rgba(0,168,107,.04); --surface-hover:rgba(0,168,107,.08);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;background:var(--bg)}
+    body{
+      min-height:100vh;background:var(--bg);color:var(--text);
+      font-family:var(--sans);line-height:1.65;
+      transition:background-color .4s,color .4s;
+    }
+    a{color:inherit;text-decoration:none}
+    button{font:inherit;cursor:pointer}
+    .container{width:min(820px,calc(100% - 40px));margin:0 auto}
+    .skip{position:fixed;top:8px;left:8px;transform:translateY(-200%);
+      background:var(--gold);color:var(--bg);padding:10px 16px;border-radius:6px;
+      font-size:.85rem;font-weight:700;z-index:100}
+    .skip:focus{transform:translateY(0)}
 
+    .scheda-header{
+      position:sticky;top:0;z-index:50;
+      background:color-mix(in srgb,var(--bg) 92%,transparent);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid var(--border);
+    }
+    .scheda-header .container{
+      display:flex;align-items:center;justify-content:space-between;
+      gap:20px;padding:14px 0;
+    }
+    .scheda-back{
+      display:inline-flex;align-items:center;gap:8px;
+      font-size:.78rem;letter-spacing:1.2px;text-transform:uppercase;
+      color:var(--text-soft);transition:color .3s;
+    }
+    .scheda-back:hover{color:var(--gold)}
+    .scheda-back svg{width:16px;height:16px}
+    .scheda-logo{
+      font-family:var(--display);font-size:.82rem;letter-spacing:2px;
+      color:var(--gold);
+    }
+    .scheda-theme{
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:30px;padding:.3rem .9rem;
+      font-size:.72rem;letter-spacing:.8px;color:var(--text-soft);
+      transition:border-color .3s,color .3s;
+    }
+    .scheda-theme:hover{border-color:var(--gold-line);color:var(--text)}
+
+    .scheda-hero{padding:56px 0 40px;text-align:center;border-bottom:1px solid var(--gold-line)}
+    .scheda-kicker{
+      display:inline-block;margin-bottom:18px;padding:5px 14px;
+      border:1px solid var(--gold-line);border-radius:100px;
+      font-size:.66rem;letter-spacing:2.2px;text-transform:uppercase;
+      color:var(--gold);background:var(--gold-soft);
+    }
+    .scheda-titolo{
+      font-family:var(--display);font-weight:500;
+      font-size:clamp(2rem,5vw,3.2rem);letter-spacing:2px;
+      line-height:1.1;color:var(--text);margin-bottom:10px;
+    }
+    .scheda-titolo em{
+      display:block;margin-top:8px;
+      font-family:var(--serif);font-style:italic;font-weight:500;
+      font-size:.55em;letter-spacing:.5px;color:var(--gold);opacity:.9;
+    }
+    .scheda-meta{
+      display:flex;align-items:center;justify-content:center;
+      flex-wrap:wrap;gap:16px;margin-top:20px;
+      font-size:.72rem;letter-spacing:1px;color:var(--text-muted);
+    }
+    .scheda-meta span{display:inline-flex;align-items:center;gap:6px}
+    .scheda-lead{
+      max-width:600px;margin:24px auto 0;
+      font-family:var(--serif);font-size:1.15rem;font-style:italic;
+      line-height:1.7;color:var(--text-soft);
+    }
+
+    .scheda-indice{
+      position:sticky;top:57px;z-index:40;
+      background:color-mix(in srgb,var(--bg) 94%,transparent);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--border);
+    }
+    .scheda-indice-inner{
+      display:flex;gap:4px;overflow-x:auto;
+      padding:10px 0;scrollbar-width:none;
+    }
+    .scheda-indice-inner::-webkit-scrollbar{display:none}
+    .scheda-indice a{
+      flex:0 0 auto;padding:6px 14px;border-radius:100px;
+      font-size:.72rem;letter-spacing:.6px;color:var(--text-muted);
+      border:1px solid transparent;transition:all .25s;
+      white-space:nowrap;
+    }
+    .scheda-indice a:hover,.scheda-indice a.active{
+      color:var(--gold);border-color:var(--gold-line);background:var(--gold-soft);
+    }
+
+    .scheda-main{padding:48px 0 60px}
+    .scheda-section{margin-bottom:60px;scroll-margin-top:120px}
+    .scheda-section-head{
+      display:flex;align-items:baseline;gap:14px;
+      margin-bottom:22px;padding-bottom:12px;
+      border-bottom:1px solid var(--gold-line);
+    }
+    .scheda-section-num{
+      font-family:var(--display);font-size:1.4rem;
+      color:var(--gold);opacity:.85;
+    }
+    .scheda-section-title{
+      font-family:var(--display);font-weight:500;
+      font-size:1.05rem;letter-spacing:2px;text-transform:uppercase;
+      color:var(--gold);
+    }
+    .scheda-section-body{
+      font-family:var(--serif);font-size:1.08rem;
+      line-height:1.8;color:var(--text-soft);
+    }
+    .scheda-section-body p{margin-bottom:18px}
+    .scheda-section-body p:last-child{margin-bottom:0}
+    .scheda-section-body strong{color:var(--text);font-weight:600}
+    .scheda-section-body em{color:var(--text);font-style:italic}
+
+    .scheda-pull{
+      position:relative;
+      margin:28px 0;
+      padding:24px 28px 24px 44px;
+      border-left:2px solid var(--gold);
+      background:linear-gradient(90deg,var(--gold-soft),transparent 70%);
+      border-radius:0 var(--radius) var(--radius) 0;
+      font-family:var(--serif);font-size:1.18rem;
+      font-style:italic;line-height:1.7;color:var(--text);
+    }
+    .scheda-pull::before{
+      content:"“";position:absolute;left:12px;top:6px;
+      font-family:var(--display);font-size:2.4rem;
+      color:var(--gold);opacity:.5;line-height:1;
+    }
+
+    /* Griglia delle 6 regioni */
+    .regione-grid{
+      display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+      gap:14px;margin-top:24px;
+    }
+    .regione-card{
+      display:flex;flex-direction:column;gap:8px;
+      padding:18px 20px;
+      background:var(--bg-soft);border:1px solid var(--border);
+      border-radius:var(--radius);
+      transition:all .3s cubic-bezier(.16,1,.3,1);
+    }
+    .regione-card:hover{
+      border-color:var(--gold-line);background:var(--surface);
+      transform:translateY(-2px);
+    }
+    .regione-card-num{
+      font-family:var(--display);font-size:.62rem;font-weight:500;
+      letter-spacing:2px;text-transform:uppercase;
+      color:var(--gold);opacity:.85;
+    }
+    .regione-card h3{
+      font-family:var(--display);font-size:1rem;font-weight:500;
+      color:var(--text);line-height:1.3;
+    }
+    .regione-card p{
+      font-family:var(--serif);font-size:.92rem;font-style:italic;
+      color:var(--text-muted);line-height:1.55;
+    }
+
+    /* Passi numerati (Anatomia) */
+    .anatomia-list{
+      list-style:none;display:flex;flex-direction:column;gap:0;
+      margin-top:20px;
+    }
+    .anatomia-item{
+      display:grid;grid-template-columns:56px 1fr;gap:20px;
+      padding:20px 0;
+      border-bottom:1px solid var(--border);
+      align-items:start;
+    }
+    .anatomia-item:last-child{border-bottom:0}
+    .anatomia-num{
+      font-family:var(--display);font-size:1.6rem;font-weight:500;
+      color:var(--gold);opacity:.7;line-height:1;
+      padding-top:4px;text-align:center;
+    }
+    .anatomia-content h3{
+      font-family:var(--display);font-size:1.02rem;font-weight:500;
+      color:var(--text);margin-bottom:6px;letter-spacing:.5px;
+    }
+    .anatomia-content p{
+      font-family:var(--serif);font-size:1rem;
+      line-height:1.7;color:var(--text-soft);
+    }
+    .anatomia-content p em{color:var(--text);font-style:italic}
+
+    /* Tre porte d'ingresso */
+    .porte-grid{
+      display:grid;grid-template-columns:1fr 1fr 1fr;
+      gap:14px;margin-top:24px;
+    }
+    .porta{
+      display:flex;flex-direction:column;gap:8px;
+      padding:22px 20px;
+      background:linear-gradient(135deg,var(--gold-soft),transparent 80%);
+      border:1px solid var(--gold-line);
+      border-radius:var(--radius);
+      transition:all .3s;
+    }
+    .porta:hover{transform:translateY(-2px)}
+    .porta-icona{
+      font-size:1.6rem;color:var(--gold);margin-bottom:4px;
+      line-height:1;
+    }
+    .porta h3{
+      font-family:var(--display);font-size:.95rem;font-weight:500;
+      color:var(--gold);letter-spacing:1px;text-transform:uppercase;
+    }
+    .porta p{
+      font-family:var(--serif);font-size:.94rem;line-height:1.6;
+      color:var(--text-soft);
+    }
+    .porta-cta{
+      margin-top:auto;padding-top:10px;
+      font-family:var(--sans);font-size:.7rem;
+      letter-spacing:1.2px;text-transform:uppercase;
+      color:var(--gold);opacity:.8;
+    }
+
+    /* Chiusura */
+    .saggio-chiusura{
+      margin-top:48px;padding:36px 30px;
+      text-align:center;
+      background:linear-gradient(135deg,var(--gold-soft),transparent 80%);
+      border:1px solid var(--gold-line);border-radius:var(--radius);
+    }
+    .saggio-chiusura-glyph{
+      font-size:2rem;color:var(--gold);opacity:.7;
+      margin-bottom:14px;display:block;
+    }
+    .saggio-chiusura-text{
+      font-family:var(--serif);font-size:1.15rem;
+      font-style:italic;line-height:1.7;color:var(--text);
+      max-width:540px;margin:0 auto 24px;
+    }
+    .saggio-chiusura-cta{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:12px 26px;border-radius:100px;
+      background:var(--gold);color:var(--bg);
+      font-family:var(--sans);font-size:.78rem;font-weight:600;
+      letter-spacing:1.5px;text-transform:uppercase;
+      transition:all .3s cubic-bezier(.16,1,.3,1);
+    }
+    .saggio-chiusura-cta:hover{
+      transform:translateY(-2px);
+      box-shadow:0 8px 24px var(--gold-soft);
+    }
+
+    .scheda-nav{
+      display:grid;grid-template-columns:1fr 1fr;gap:16px;
+      margin-top:56px;padding-top:32px;
+      border-top:1px solid var(--gold-line);
+    }
+    .scheda-nav a{
+      display:flex;flex-direction:column;gap:6px;
+      padding:18px 20px;
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:var(--radius);
+      transition:border-color .3s,background .3s,transform .3s;
+    }
+    .scheda-nav a:hover{
+      border-color:var(--gold-line);background:var(--surface-hover);
+      transform:translateY(-2px);
+    }
+    .scheda-nav a.next{text-align:right}
+    .scheda-nav-label{
+      font-size:.6rem;letter-spacing:2px;text-transform:uppercase;
+      color:var(--text-muted);
+    }
+    .scheda-nav-title{
+      font-family:var(--display);font-size:1rem;color:var(--gold);
+    }
+
+    .scheda-footer{
+      padding:30px 0;border-top:1px solid var(--border);
+      text-align:center;font-size:.68rem;
+      letter-spacing:.6px;color:var(--text-muted);
+    }
+
+    @media (max-width:720px){
+      .porte-grid{grid-template-columns:1fr}
+      .scheda-hero{padding:36px 0 28px}
+      .scheda-section{margin-bottom:44px}
+      .scheda-lead{font-size:1rem}
+    }
+    @media (max-width:560px){
+      .regione-grid{grid-template-columns:1fr}
+      .scheda-nav{grid-template-columns:1fr}
+      .scheda-pull{padding:20px 20px 20px 36px;font-size:1.05rem}
+      .anatomia-item{grid-template-columns:1fr;gap:6px}
+      .anatomia-num{text-align:left;font-size:1.2rem;padding-top:0}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{transition-duration:0s !important;animation-duration:0s !important}
+      html{scroll-behavior:auto}
+    }
+  </style>
+</head>
+<body>
+  <a href="#main" class="skip">Salta al contenuto</a>
+
+  <header class="scheda-header">
+    <div class="container">
+      <a href="/atlante/index.html" class="scheda-back" aria-label="Torna alla mappa">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Atlante
+      </a>
+      <span class="scheda-logo">ECHI DI SOFIA</span>
+      <button class="scheda-theme" id="themeToggle" type="button" aria-label="Cambia tema">◐ Tema</button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="scheda-hero">
+      <div class="container">
+        <span class="scheda-kicker">Introduzione all'Atlante</span>
+        <h1 class="scheda-titolo">
+          Come leggere
+          <em>questa mappa</em>
+        </h1>
+        <div class="scheda-meta">
+          <span>⏱ 6 minuti di lettura</span>
+          <span>✦ Prima di iniziare il viaggio</span>
+        </div>
+        <p class="scheda-lead">
+          Ogni atlante è un tradimento. La terra non è fatta di pagine, i fiumi non scorrono dritti, le montagne non hanno etichette. Eppure abbiamo bisogno di mappe: per orientarci, per ricordare, per scegliere una direzione. Anche la filosofia ha bisogno di mappe. Non di elenchi — di mappe.
+        </p>
+      </div>
+    </section>
+
+    <nav class="scheda-indice" aria-label="Indice del saggio">
+      <div class="container">
+        <div class="scheda-indice-inner">
+          <a href="#manifesto">Manifesto</a>
+          <a href="#regioni">Le sei regioni</a>
+          <a href="#concetti">I diciotto concetti</a>
+          <a href="#porte">Tre porte</a>
+          <a href="#anatomia">Anatomia di una scheda</a>
+          <a href="#navigare">Come navigare</a>
+        </div>
+      </div>
+    </nav>
+
+    <article class="scheda-main">
+      <div class="container">
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- 01 — MANIFESTO                          -->
+        <!-- ═══════════════════════════════════════ -->
+        <section class="scheda-section" id="manifesto">
+          <div class="scheda-section-head">
+            <span class="scheda-section-num">01</span>
+            <h2 class="scheda-section-title">Perché una mappa (e non un dizionario)</h2>
+          </div>
+          <div class="scheda-section-body">
+            <p>Un'enciclopedia ordina le voci alfabeticamente: sai già cosa cerchi, e la trovi. Un atlante fa un'altra cosa: <strong>ti mostra la forma del territorio</strong>. Non ti dice solo dove sono i concetti, ti dice quanto sono vicini, quali strade li collegano, quali confini li separano.</p>
+            <p>Anche la filosofia è stata mappata molte volte. Le mappe più comuni sono <em>cronologiche</em>: antichi, medievali, moderni, contemporanei. È una mappa utile, ma risponde a una sola domanda: <em>quando?</em> Questo Atlante propone un'altra mappa, che risponde a una domanda diversa: <em>intorno a che cosa?</em></p>
+            <div class="scheda-pull">
+              Il tempo passa <em>dentro</em> i concetti, non solo tra un concetto e l'altro. Platone, Kant e Lévinas non sono tre punti su una linea: sono tre voci che si rispondono intorno a una domanda comune.
+            </div>
+            <p>Le due mappe non si escludono. Anzi, ogni scheda di questo Atlante contiene al suo interno la dimensione temporale (i <em>Tornanti Storici</em>): è lì che vedi come un concetto è nato, è esploso, si è trasformato. Ma la struttura portante non è il tempo: è il <strong>problema</strong>. Le sei regioni dell'Atlante non sono sei dipartimenti universitari: sono sei grandi domande che l'essere umano si è posto da quando ha cominciato a pensare.</p>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- 02 — LE SEI REGIONI                     -->
+        <!-- ═══════════════════════════════════════ -->
+        <section class="scheda-section" id="regioni">
+          <div class="scheda-section-head">
+            <span class="scheda-section-num">02</span>
+            <h2 class="scheda-section-title">Le sei regioni</h2>
+          </div>
+          <div class="scheda-section-body">
+            <p>Ogni mappa ha le sue regioni. Queste sei non sono territori chiusi, sono <strong>grappoli di domande</strong> che si tengono insieme. Ogni concetto vive in una regione primaria, ma dialoga con le altre: è per questo che le schede sono collegate tra loro.</p>
+          </div>
+          <div class="regione-grid">
+            <a href="/atlante/index.html" class="regione-card">
+              <span class="regione-card-num">Regione I</span>
+              <h3>Ontologia e Metafisica</h3>
+              <p>Che cosa c'è? Che cos'è l'essere, la sostanza, la realtà?</p>
+            </a>
+            <a href="/atlante/index.html" class="regione-card">
+              <span class="regione-card-num">Regione II</span>
+              <h3>Epistemologia e Mente</h3>
+              <p>Come lo conosciamo? Che cos'è la verità, il dubbio, la coscienza?</p>
+            </a>
+            <a href="/atlante/index.html" class="regione-card">
+              <span class="regione-card-num">Regione III</span>
+              <h3>Etica e Morale</h3>
+              <p>Come dovremmo agire? Che cos'è la virtù, la libertà, il male?</p>
+            </a>
+            <a href="/atlante/index.html" class="regione-card">
+              <span class="regione-card-num">Regione IV</span>
+              <h3>Politica e Società</h3>
+              <p>Come conviviamo? Che cos'è la giustizia, la democrazia, il potere?</p>
+            </a>
+            <a href="/atlante/index.html" class="regione-card">
+              <span class="regione-card-num">Regione V</span>
+              <h3>Estetica e Cultura</h3>
+              <p>Come diamo senso al bello e al simbolo? Il bello, il sublime, il mito.</p>
+            </a>
+            <a href="/atlante/index.html" class="regione-card">
+              <span class="regione-card-num">Regione VI</span>
+              <h3>Esistenza e Antropologia</h3>
+              <p>Chi siamo nel tempo? L'anima, il tempo, l'amore, la cura.</p>
+            </a>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- 03 — I DICIOTTO CONCETTI                -->
+        <!-- ═══════════════════════════════════════ -->
+        <section class="scheda-section" id="concetti">
+          <div class="scheda-section-head">
+            <span class="scheda-section-num">03</span>
+            <h2 class="scheda-section-title">I diciotto concetti</h2>
+          </div>
+          <div class="scheda-section-body">
+            <p>Diciotto concetti, tre per regione. Non sono tutti i concetti della filosofia — sarebbe impossibile, e sarebbe un'enciclopedia, non un atlante. Sono <strong>diciotto punti di ingresso</strong>, scelti perché ognuno apre una regione intera: dal concetto puoi arrivare ai filosofi, dai filosofi alle scuole, dalle scuole alle epoche.</p>
+            <p>Ogni concetto ha un nome italiano e un nome originale (greco, latino o tedesco). <em>Anima</em> è <em>Psyché</em>. <em>Verità</em> è <em>Alétheia</em>. <em>La Cura</em> è <em>Sorge</em>. Il nome originale non è un ornamento: è una traccia. Ti dice da dove viene quell'idea, in quale lingua è stata pensata per la prima volta.</p>
+            <div class="scheda-pull">
+              Un atlante non è mai completo. Diciotto concetti non esauriscono la filosofia: la aprono. Ogni scheda è un punto di partenza, non una conclusione.
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- 04 — TRE PORTE D'INGRESSO               -->
+        <!-- ═══════════════════════════════════════ -->
+        <section class="scheda-section" id="porte">
+          <div class="scheda-section-head">
+            <span class="scheda-section-num">04</span>
+            <h2 class="scheda-section-title">Tre porte d'ingresso</h2>
+          </div>
+          <div class="scheda-section-body">
+            <p>L'Atlante non si attraversa in un solo modo. Ci sono tre ingressi, e ognuno serve a uno scopo diverso. Puoi usarli tutti, in momenti diversi.</p>
+          </div>
+          <div class="porte-grid">
+            <a href="/atlante/index.html" class="porta">
+              <span class="porta-icona">✦</span>
+              <h3>La mappa</h3>
+              <p>Per <strong>esplorare</strong>. Vedi le sei regioni, i diciotto concetti e le connessioni tra loro. Clicca un nodo per leggere l'anteprima, clicca un hub per filtrare la regione.</p>
+              <span class="porta-cta">Apri la mappa →</span>
+            </a>
+            <a href="/atlante/indice-alfabetico.html" class="porta">
+              <span class="porta-icona">📖</span>
+              <h3>L'indice</h3>
+              <p>Per <strong>cercare</strong>. Se sai già cosa cerchi, l'indice alfabetico ha ricerca live, filtri di regione e salto A-Z. È la via più diretta.</p>
+              <span class="porta-cta">Apri l'indice →</span>
+            </a>
+            <a href="/atlante/la-cura.html" class="porta">
+              <span class="porta-icona">❦</span>
+              <h3>Le schede</h3>
+              <p>Per <strong>leggere</strong>. Ogni concetto ha una scheda di 7–8 minuti, strutturata in cinque sezioni (te le spiego sotto). È la via più profonda.</p>
+              <span class="porta-cta">Apri una scheda →</span>
+            </a>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- 05 — ANATOMIA DI UNA SCHEDA             -->
+        <!-- ═══════════════════════════════════════ -->
+        <section class="scheda-section" id="anatomia">
+          <div class="scheda-section-head">
+            <span class="scheda-section-num">05</span>
+            <h2 class="scheda-section-title">Anatomia di una scheda</h2>
+          </div>
+          <div class="scheda-section-body">
+            <p>Ogni scheda dell'Atlante ha la stessa struttura in cinque sezioni. Non è una scelta arbitraria: ogni sezione risponde a una domanda diversa, e insieme raccontano il concetto da tutti i lati.</p>
+          </div>
+          <ol class="anatomia-list">
+            <li class="anatomia-item">
+              <span class="anatomia-num">01</span>
+              <div class="anatomia-content">
+                <h3>Le Coordinate</h3>
+                <p>Che cos'è questo concetto, in tre righe? Non una definizione da dizionario: una <em>domanda</em> che apre il problema. È il punto in cui il lettore capisce di che cosa stiamo parlando.</p>
+              </div>
+            </li>
+            <li class="anatomia-item">
+              <span class="anatomia-num">02</span>
+              <div class="anatomia-content">
+                <h3>Archeologia della Parola</h3>
+                <p>Da dove viene la parola? Quale immagine concreta c'era prima che diventasse un concetto astratto? È la sezione più sorprendente: quasi sempre scopri che una parola che usi ogni giorno ha una storia che non immaginavi.</p>
+              </div>
+            </li>
+            <li class="anatomia-item">
+              <span class="anatomia-num">03</span>
+              <div class="anatomia-content">
+                <h3>I Tornanti Storici</h3>
+                <p>Come è cambiato il concetto nel tempo? Tre momenti: la nascita, la svolta, l'oggi. Non è una lista di filosofi: è la <em>storia</em> del concetto, con le sue rotture e le sue rinascite.</p>
+              </div>
+            </li>
+            <li class="anatomia-item">
+              <span class="anatomia-num">04</span>
+              <div class="anatomia-content">
+                <h3>I Ponti</h3>
+                <p>Dove ritrovi questo concetto fuori dai libri di filosofia? Nell'arte, nel cinema, nella letteratura, nella scienza, nell'attualità. È la sezione che mostra che la filosofia non è un sapere astratto: è un modo di guardare il mondo.</p>
+              </div>
+            </li>
+            <li class="anatomia-item">
+              <span class="anatomia-num">05</span>
+              <div class="anatomia-content">
+                <h3>La Bussola</h3>
+                <p>Che cosa farne? Una domanda aperta per portare il concetto nella tua vita, e una breve bibliografia (per iniziare, per scavare) per chi vuole andare oltre. La filosofia non finisce con la scheda: comincia con te.</p>
+              </div>
+            </li>
+          </ol>
+        </section>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- 06 — COME NAVIGARE                      -->
+        <!-- ═══════════════════════════════════════ -->
+        <section class="scheda-section" id="navigare">
+          <div class="scheda-section-head">
+            <span class="scheda-section-num">06</span>
+            <h2 class="scheda-section-title">Come navigare</h2>
+          </div>
+          <div class="scheda-section-body">
+            <p>Non c'è un modo giusto di attraversare l'Atlante. Ce ne sono almeno quattro, e dipendono da che cosa stai cercando.</p>
+            <p><strong>Se sei curioso</strong>, apri la mappa e clicca il primo concetto che ti attira. Non c'è un ordine giusto: ogni nodo è un punto di partenza.</p>
+            <p><strong>Se cerchi qualcosa di specifico</strong>, usa l'indice alfabetico: ricerca live, filtri di regione, salto A-Z. In tre secondi hai quello che ti serve.</p>
+            <p><strong>Se vuoi un percorso</strong>, segui i collegamenti in fondo a ogni scheda: ogni concetto ha un "← precedente" e un "successivo →", pensati per creare un filo tra concetti vicini.</p>
+            <p><strong>Se vuoi leggere tutto</strong>, parti da una scheda che ti interessa e segui i "Prev/Next" per un po'. L'Atlante è fatto per essere attraversato, non consultato: lascia che le connessioni ti portino dove non sapevi di voler andare.</p>
+            <div class="scheda-pull">
+              Una mappa non chiede di essere creduta. Chiede di essere attraversata. Non è una verità: è un percorso. E come ogni percorso, è fatto per essere lasciato.
+            </div>
+          </div>
+        </section>
+
+        <!-- CHIUSURA -->
+        <section class="saggio-chiusura">
+          <span class="saggio-chiusura-glyph">✦</span>
+          <p class="saggio-chiusura-text">
+            Sei pronto. La mappa è aperta, i diciotto concetti ti aspettano. Non c'è un ordine giusto — c'è solo il tuo.
+          </p>
+          <a href="/atlante/index.html" class="saggio-chiusura-cta">
+            Inizia a esplorare →
+          </a>
+        </section>
+
+        <nav class="scheda-nav" aria-label="Navigazione">
+          <a href="/atlante/index.html">
+            <span class="scheda-nav-label">← Torna alla mappa</span>
+            <span class="scheda-nav-title">Atlante delle Idee</span>
+          </a>
+          <a href="/atlante/indice-alfabetico.html" class="next">
+            <span class="scheda-nav-label">Vai all'indice →</span>
+            <span class="scheda-nav-title">Indice alfabetico</span>
+          </a>
+        </nav>
+
+      </div>
+    </article>
+  </main>
+
+  <footer class="scheda-footer">
+    <div class="container">© 2026 Echi di Sofia · Atlante delle Idee</div>
+  </footer>
+
+  <script>
+    (function(){
+      const KEY = 'theme';
+      const btn = document.getElementById('themeToggle');
+      function apply(t){
+        const light = t === 'light';
+        document.body.classList.toggle('light-theme', light);
+        document.documentElement.style.backgroundColor = light ? '#eaf2ed' : '#080a12';
+        btn.textContent = light ? '☀ Tema' : '◐ Tema';
+        try{ localStorage.setItem(KEY, t); }catch(e){}
+      }
+      apply(localStorage.getItem(KEY) || 'dark');
+      btn.addEventListener('click', () => {
+        apply(document.body.classList.contains('light-theme') ? 'dark' : 'light');
+      });
+    })();
+
+    (function(){
+      const links = document.querySelectorAll('.scheda-indice a');
+      const sections = document.querySelectorAll('.scheda-section');
+      if (!('IntersectionObserver' in window)) return;
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id));
+          }
+        });
+      }, { rootMargin: '-120px 0px -70% 0px', threshold: 0 });
+      sections.forEach(s => io.observe(s));
+    })();
+  </script>
+</body>
+</html>
