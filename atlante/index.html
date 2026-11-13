@@ -645,7 +645,16 @@
         applyFilter(btn.dataset.region);
       });
     }
-
+// Solo se non è "all" e se la griglia è fuori viewport
+if (!isAll) {
+  const gridWrap = document.querySelector('.atl-grid-wrap');
+  if (gridWrap) {
+    const rect = gridWrap.getBoundingClientRect();
+    if (rect.top > window.innerHeight) {
+      gridWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+}
     /* ── Bootstrap ──────────────────────────────────────────── */
     async function init() {
       try {
