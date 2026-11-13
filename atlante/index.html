@@ -318,17 +318,17 @@
     </div>
   </div>
 
-  <script>
+ <script>
   (function(){
     'use strict';
 
     /* ── Configurazione layout ─────────────────────────────── */
     const CENTER = { x: 450, y: 350 };
-    const HUB_RADIUS = 150;      // raggio dei nodi-regione
-    const CONCEPT_RADIUS = 265;  // raggio dei nodi-concetto
-    const SPREAD = 40;           // ampiezza dell'arco per regione (gradi)
-    const NODE_R = 26;           // raggio nodi-concetto
-    const HUB_R = 36;            // raggio nodi-regione
+    const HUB_RADIUS = 150;
+    const CONCEPT_RADIUS = 265;
+    const SPREAD = 40;
+    const NODE_R = 26;
+    const HUB_R = 36;
 
     /* ── Stato ─────────────────────────────────────────────── */
     let data = null;
@@ -350,22 +350,17 @@
         '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
       }[c]));
     }
-    function slugFromUrl(url){
-      return url.replace(/^.*\//, '').replace(/\.html$/, '');
-    }
 
     /* ── Calcolo posizioni ─────────────────────────────────── */
     function computeLayout(data) {
       const regions = data.regioni;
       const concepts = data.concetti;
 
-      // Hub di regione
       const hubs = regions.map(r => {
         const pos = polar(r.angolo, HUB_RADIUS);
         return { ...r, x: pos.x, y: pos.y };
       });
 
-      // Concetti: distribuiti attorno al proprio hub
       const byRegion = {};
       concepts.forEach(c => {
         (byRegion[c.regione] = byRegion[c.regione] || []).push(c);
@@ -393,11 +388,9 @@
       const layout = computeLayout(data);
       const { hubs, concepts } = layout;
 
-      // Indice per id
       const byId = {};
       concepts.forEach(c => byId[c.id] = c);
 
-      // Collegamenti unici (A→B, B→A → una sola linea)
       const linkSet = new Set();
       const links = [];
       concepts.forEach(c => {
@@ -413,7 +406,6 @@
 
       let html = '';
 
-      // Defs: gradient alone
       html += `
         <defs>
           <radialGradient id="atlCenterGlow" cx="50%" cy="50%" r="50%">
@@ -422,23 +414,19 @@
           </radialGradient>
         </defs>`;
 
-      // Alone centrale
       html += `<circle cx="${CENTER.x}" cy="${CENTER.y}" r="140" fill="url(#atlCenterGlow)" pointer-events="none"/>`;
 
-      // Linee: hub → centro, e concetto ↔ concetto
       hubs.forEach(h => {
         html += `<line class="atl-link" x1="${CENTER.x}" y1="${CENTER.y}" x2="${h.x.toFixed(1)}" y2="${h.y.toFixed(1)}"
                   data-hub="${h.id}" pointer-events="none"/>`;
       });
 
-      // Linee tra concetti
       links.forEach((l, i) => {
         html += `<line class="atl-link" x1="${l.from.x.toFixed(1)}" y1="${l.from.y.toFixed(1)}"
                   x2="${l.to.x.toFixed(1)}" y2="${l.to.y.toFixed(1)}"
                   data-link="${l.ids.join('|')}" pointer-events="none"/>`;
       });
 
-      // Nodo centrale
       html += `
         <g class="atl-node atl-center" aria-hidden="true" pointer-events="none">
           <circle cx="${CENTER.x}" cy="${CENTER.y}" r="50" fill="var(--bg-soft)" stroke="var(--gold)" stroke-width="1.5"/>
@@ -446,10 +434,9 @@
           <text x="${CENTER.x}" y="${CENTER.y}" text-anchor="middle" dy="0.35em">SOFIA</text>
         </g>`;
 
-      // Hub di regione
       hubs.forEach(h => {
         html += `
-          <g class="atl-node atl-hub" data-hub="${h.id}" role="button" tabindex="0" aria-label="Regione: ${esc(h.nome)}">
+          <g class="atl-node atl-hub" data-hub="${h.id}" role="button" tabindex="0" aria-label="Filtra per regione: ${esc(h.nome)}">
             <circle cx="${h.x.toFixed(1)}" cy="${h.y.toFixed(1)}" r="${HUB_R}"
                     fill="var(--bg-soft)" stroke="var(--gold-line)" stroke-width="1.5"/>
             <text class="atl-hub-label" x="${h.x.toFixed(1)}" y="${h.y.toFixed(1)}"
@@ -457,7 +444,6 @@
           </g>`;
       });
 
-      // Nodi concetto
       concepts.forEach(c => {
         html += `
           <g class="atl-node atl-concept" data-id="${c.id}" data-region="${c.regione}"
@@ -477,6 +463,7 @@
 
     /* ── Eventi ─────────────────────────────────────────────── */
     function bindEvents() {
+      /* Concetti */
       svg.querySelectorAll('.atl-concept').forEach(node => {
         const id = node.dataset.id;
         node.addEventListener('click', () => selectConcept(id));
@@ -491,6 +478,18 @@
         node.addEventListener('focus', () => highlightLinks(id, true));
         node.addEventListener('blur', () => highlightLinks(id, false));
       });
+
+      /* Hub di regione → filtrano la mappa E la griglia */
+      svg.querySelectorAll('.atl-hub').forEach(node => {
+        const id = node.dataset.hub;
+        node.addEventListener('click', () => applyFilter(id));
+        node.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            applyFilter(id);
+          }
+        });
+      });
     }
 
     /* ── Selezione concetto ─────────────────────────────────── */
@@ -499,18 +498,15 @@
       const c = data.concetti.find(x => x.id === id);
       if (!c) return;
 
-      // Evidenzia nodo
       svg.querySelectorAll('.atl-concept').forEach(n => {
         n.classList.toggle('active', n.dataset.id === id);
       });
 
-      // Evidenzia link collegati
       svg.querySelectorAll('.atl-link[data-link]').forEach(l => {
         const ids = l.dataset.link.split('|');
         l.classList.toggle('active', ids.includes(id));
       });
 
-      // Pannello info
       const reg = data.regioni.find(r => r.id === c.regione);
       info.classList.add('has-selection');
       info.innerHTML = `
@@ -525,9 +521,21 @@
       `;
     }
 
+    /* ── Reset pannello ─────────────────────────────────────── */
+    function resetInfo() {
+      selectedId = null;
+      info.classList.remove('has-selection');
+      info.innerHTML = `
+        <div class="atl-info-empty">
+          <span class="glyph">✦</span>
+          Seleziona un concetto<br>sulla mappa per esplorarlo.
+        </div>
+      `;
+    }
+
     /* ── Hover: evidenzia solo i link del nodo ──────────────── */
     function highlightLinks(id, on) {
-      if (selectedId) return; // se c'è una selezione, non override
+      if (selectedId) return;
       svg.querySelectorAll('.atl-link[data-link]').forEach(l => {
         const ids = l.dataset.link.split('|');
         if (ids.includes(id)) l.classList.toggle('active', on);
@@ -539,6 +547,15 @@
       activeFilter = regionId;
       const isAll = regionId === 'all';
 
+      /* Reset della selezione se il concetto è fuori dalla nuova regione */
+      if (selectedId && !isAll) {
+        const selected = data.concetti.find(x => x.id === selectedId);
+        if (selected && selected.regione !== regionId) {
+          resetInfo();
+        }
+      }
+
+      /* Mappa */
       svg.querySelectorAll('.atl-concept').forEach(n => {
         n.classList.toggle('dim', !isAll && n.dataset.region !== regionId);
       });
@@ -559,16 +576,52 @@
         l.style.opacity = visible ? '' : '0.1';
       });
 
+      /* Pulsanti in alto */
       filtersEl.querySelectorAll('.atl-filter').forEach(b => {
         const on = b.dataset.region === regionId;
         b.classList.toggle('active', on);
         b.setAttribute('aria-selected', on ? 'true' : 'false');
       });
+
+      /* Griglia sotto */
+      renderGrid(regionId);
+
+      /* Titolo griglia */
+      const gridTitle = document.querySelector('.atl-grid-title');
+      if (gridTitle) {
+        if (isAll) {
+          gridTitle.textContent = 'Tutti i concetti';
+        } else {
+          const reg = data.regioni.find(r => r.id === regionId);
+          const count = data.concetti.filter(c => c.regione === regionId).length;
+          gridTitle.textContent = `${reg ? reg.nome : ''} · ${count} concett${count === 1 ? 'o' : 'i'}`;
+        }
+      }
+
+      /* Scroll dolce alla griglia se fuori viewport */
+      if (!isAll) {
+        const gridWrap = document.querySelector('.atl-grid-wrap');
+        if (gridWrap) {
+          const rect = gridWrap.getBoundingClientRect();
+          if (rect.top > window.innerHeight - 100) {
+            gridWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }
+      }
     }
 
-    /* ── Griglia concetti ───────────────────────────────────── */
-    function renderGrid() {
-      gridEl.innerHTML = data.concetti.map(c => {
+    /* ── Griglia concetti (accetta filtro) ──────────────────── */
+    function renderGrid(filter = 'all') {
+      const concepts = filter === 'all'
+        ? data.concetti
+        : data.concetti.filter(c => c.regione === filter);
+
+      if (!concepts.length) {
+        gridEl.innerHTML = `<p class="atl-empty" style="text-align:center;font-family:var(--serif);font-style:italic;color:var(--text-muted);grid-column:1/-1;">Nessun concetto in questa regione.</p>`;
+        return;
+      }
+
+      gridEl.innerHTML = concepts.map(c => {
         const reg = data.regioni.find(r => r.id === c.regione);
         return `
           <a class="atl-card" href="${esc(c.url)}">
@@ -610,7 +663,7 @@
       }
     }
 
-    // Theme toggle (coerente col sito)
+    /* ── Theme toggle ───────────────────────────────────────── */
     (function(){
       const KEY = 'theme';
       const btn = document.getElementById('themeToggle');
@@ -629,6 +682,6 @@
 
     init();
   })();
-  </script>
+</script>
 </body>
 </html>
