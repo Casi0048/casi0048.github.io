@@ -72,6 +72,22 @@
       font-family:var(--serif);font-style:italic;font-size:1.02rem;
       color:var(--text-muted);line-height:1.6;
     }
+    .atl-hero-links{
+      margin-top:20px;
+      display:flex;flex-wrap:wrap;justify-content:center;gap:10px;
+    }
+    .atl-hero-btn{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:6px 16px;border-radius:100px;
+      border:1px solid var(--gold-line);
+      font-family:var(--sans);font-size:.72rem;letter-spacing:1px;
+      text-transform:uppercase;color:var(--gold);
+      font-style:normal;
+      transition:all .25s;
+    }
+    .atl-hero-btn:hover{
+      background:var(--gold-soft);border-color:var(--gold);
+    }
 
     /* Filter tabs */
     .atl-filters{
@@ -216,7 +232,7 @@
       background:var(--gold);color:var(--bg);
     }
 
-    /* Griglia concetti sotto (per SEO + mobile fallback) */
+    /* Griglia concetti sotto */
     .atl-grid-wrap{padding:0 0 60px}
     .atl-grid-title{
       font-family:var(--display);font-size:1rem;font-weight:500;
@@ -282,6 +298,10 @@
     <div class="container">
       <h1 class="atl-title">✦ Atlante delle Idee</h1>
       <p class="atl-sub">Sei regioni, diciotto concetti, tutte le connessioni. Clicca un nodo per esplorare, o filtra per regione.</p>
+      <div class="atl-hero-links">
+        <a href="/atlante/come-leggere.html" class="atl-hero-btn">✦ Come leggere questa mappa</a>
+        <a href="/atlante/indice-alfabetico.html" class="atl-hero-btn">📖 Indice alfabetico</a>
+      </div>
     </div>
   </section>
 
@@ -289,15 +309,7 @@
     <button class="atl-filter active" data-region="all" role="tab" aria-selected="true">Tutte</button>
     <!-- popolato via JS -->
   </div>
-<div style="text-align:center;padding:0 0 20px;">
-  <a href="/atlante/indice-alfabetico.html"
-     style="display:inline-flex;align-items:center;gap:8px;
-            padding:6px 16px;border:1px solid var(--gold-line);
-            border-radius:100px;font-size:.72rem;letter-spacing:1px;
-            text-transform:uppercase;color:var(--gold);">
-    📖 Indice alfabetico
-  </a>
-</div>
+
   <div class="container">
     <div class="atl-layout">
       <div class="atl-map-wrap">
@@ -547,7 +559,6 @@
       activeFilter = regionId;
       const isAll = regionId === 'all';
 
-      /* Reset della selezione se il concetto è fuori dalla nuova regione */
       if (selectedId && !isAll) {
         const selected = data.concetti.find(x => x.id === selectedId);
         if (selected && selected.regione !== regionId) {
@@ -555,7 +566,6 @@
         }
       }
 
-      /* Mappa */
       svg.querySelectorAll('.atl-concept').forEach(n => {
         n.classList.toggle('dim', !isAll && n.dataset.region !== regionId);
       });
@@ -576,17 +586,14 @@
         l.style.opacity = visible ? '' : '0.1';
       });
 
-      /* Pulsanti in alto */
       filtersEl.querySelectorAll('.atl-filter').forEach(b => {
         const on = b.dataset.region === regionId;
         b.classList.toggle('active', on);
         b.setAttribute('aria-selected', on ? 'true' : 'false');
       });
 
-      /* Griglia sotto */
       renderGrid(regionId);
 
-      /* Titolo griglia */
       const gridTitle = document.querySelector('.atl-grid-title');
       if (gridTitle) {
         if (isAll) {
@@ -598,7 +605,6 @@
         }
       }
 
-      /* Scroll dolce alla griglia se fuori viewport */
       if (!isAll) {
         const gridWrap = document.querySelector('.atl-grid-wrap');
         if (gridWrap) {
