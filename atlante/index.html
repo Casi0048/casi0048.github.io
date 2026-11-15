@@ -396,6 +396,7 @@
     }
 
     /* ── Render SVG ─────────────────────────────────────────── */
+     /* ── Render SVG ─────────────────────────────────────────── */
     function render() {
       const layout = computeLayout(data);
       const { hubs, concepts } = layout;
@@ -439,29 +440,32 @@
                   data-link="${l.ids.join('|')}" pointer-events="none"/>`;
       });
 
+      // NODO CENTRALE (Ora usa var(--surface))
       html += `
         <g class="atl-node atl-center" aria-hidden="true" pointer-events="none">
-          <circle cx="${CENTER.x}" cy="${CENTER.y}" r="50" fill="var(--bg-soft)" stroke="var(--gold)" stroke-width="1.5"/>
+          <circle cx="${CENTER.x}" cy="${CENTER.y}" r="50" fill="var(--surface)" stroke="var(--gold)" stroke-width="1.5"/>
           <circle cx="${CENTER.x}" cy="${CENTER.y}" r="44" fill="none" stroke="var(--gold-line)" stroke-width="0.5" stroke-dasharray="1 3"/>
           <text x="${CENTER.x}" y="${CENTER.y}" text-anchor="middle" dy="0.35em">SOFIA</text>
         </g>`;
 
+      // HUB DI REGIONE (Ora usa var(--surface))
       hubs.forEach(h => {
         html += `
           <g class="atl-node atl-hub" data-hub="${h.id}" role="button" tabindex="0" aria-label="Filtra per regione: ${esc(h.nome)}">
             <circle cx="${h.x.toFixed(1)}" cy="${h.y.toFixed(1)}" r="${HUB_R}"
-                    fill="var(--bg-soft)" stroke="var(--gold-line)" stroke-width="1.5"/>
+                    fill="var(--surface)" stroke="var(--gold-line)" stroke-width="1.5"/>
             <text class="atl-hub-label" x="${h.x.toFixed(1)}" y="${h.y.toFixed(1)}"
                   text-anchor="middle" dy="0.35em">${esc(h.nome.split(' ')[0])}</text>
           </g>`;
       });
 
+      // NODI CONCETTO (Ora usa var(--surface))
       concepts.forEach(c => {
         html += `
           <g class="atl-node atl-concept" data-id="${c.id}" data-region="${c.regione}"
              role="button" tabindex="0" aria-label="${esc(c.titolo)}">
             <circle cx="${c.x.toFixed(1)}" cy="${c.y.toFixed(1)}" r="${NODE_R}"
-                    fill="var(--bg-soft)" stroke="var(--border)" stroke-width="1.2"/>
+                    fill="var(--surface)" stroke="var(--border)" stroke-width="1.2"/>
             <text x="${c.x.toFixed(1)}" y="${c.y.toFixed(1)}"
                   text-anchor="middle" dy="0.35em"
                   font-family="Inter,sans-serif" font-size="10.5"
