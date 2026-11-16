@@ -1464,43 +1464,6 @@
         animation: waveSinusoidal 7s var(--ease-breathe) infinite
       }
 
-      .philosophy-quotes {
-        padding: 10px 0 0;
-        text-align: center;
-        position: relative;
-        z-index: 2;
-        transform: scale(var(--hero-scale, 1));
-        transform-origin: 50% 35%;
-        transition: transform .08s linear
-      }
-
-      .quote-wrapper {
-        position: relative;
-        max-width: 780px;
-        margin: 0 auto;
-        padding: 20px 40px
-      }
-
-      .quote-mark {
-        position: absolute;
-        font-family: var(--serif);
-        font-size: 5rem;
-        line-height: 1;
-        color: var(--gold);
-        opacity: .15;
-        user-select: none;
-        pointer-events: none;
-        top: -10px;
-        left: -10px
-      }
-
-      .quote-mark-end {
-        top: auto;
-        left: auto;
-        bottom: -30px;
-        right: -10px
-      }
-
       .quote-block {
         margin: 0;
         padding: 0;
@@ -10826,73 +10789,71 @@
         }) : o())
       }(), setTimeout(ensureParadoxVisible, 2500), window.openParadox = openParadox, window.toggleSolution = toggleSolution, window.ensureParadoxVisible = ensureParadoxVisible
     </script>
-   <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    // 1. Inietta l'SVG
-    var template = document.getElementById("cosmic-sky-template");
-    if (template) {
-      var clone = template.content.cloneNode(true);
-      document.body.prepend(clone);
-      var svg = document.querySelector(".cosmic-sky");
-      if (svg) {
-        requestAnimationFrame(function() {
-          svg.classList.add("loaded");
-        });
-      }
-    }
-
-    // 2. Logica della collisione sincronizzata con l'SVG
-    const svgEl = document.querySelector(".cosmic-sky");
-    const sound = document.getElementById("collisionSound");
-    if (!svgEl || !sound) return;
-
-    let audioUnlocked = false;
-    let lastCycle = -1;
-
-    // Sblocca l'audio al primo clic
-    function unlock() {
-      if (audioUnlocked) return;
-      sound.muted = true;
-      sound.play().then(() => {
-        sound.pause(); sound.currentTime = 0; sound.muted = false;
-        audioUnlocked = true;
-        ["click", "touchstart", "keydown", "pointerdown"].forEach(e => document.removeEventListener(e, unlock, true));
-      }).catch(() => {});
-    }
-    ["click", "touchstart", "keydown", "pointerdown"].forEach(e => document.addEventListener(e, unlock, { capture: true, passive: true }));
-
-    // Fa partire il suono e il tremolio
-    function boom() {
-      if (!audioUnlocked || document.body.classList.contains("light-theme")) return;
-      sound.currentTime = 0;
-      sound.volume = 0.6;
-      sound.play().catch(() => {});
-      
-      document.body.classList.add("shake");
-      setTimeout(() => document.body.classList.remove("shake"), 400);
-    }
-
-    // Controlla costantemente il tempo dell'SVG
-    function check() {
-      if (svgEl && svgEl.getCurrentTime) {
-        try {
-          const t = svgEl.getCurrentTime();
-          // L'animazione dura 24s. La collisione avviene a metà (12s).
-          // Calcoliamo in che "ciclo" siamo (0 per i primi 12s, 1 per i successivi 24s, ecc.)
-          const cycle = Math.floor((t - 12) / 24);
-          
-          // Se superiamo i 12s e non abbiamo ancora suonato per questo ciclo, suoniamo!
-          if (t >= 12 && cycle > lastCycle) {
-            lastCycle = cycle;
-            boom();
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        // 1. Inietta l'SVG
+        var template = document.getElementById("cosmic-sky-template");
+        if (template) {
+          var clone = template.content.cloneNode(true);
+          document.body.prepend(clone);
+          var svg = document.querySelector(".cosmic-sky");
+          if (svg) {
+            requestAnimationFrame(function() {
+              svg.classList.add("loaded");
+            });
           }
-        } catch(e) {}
-      }
-      requestAnimationFrame(check);
-    }
-    requestAnimationFrame(check);
-  });
-</script>
+        }
+        // 2. Logica della collisione sincronizzata con l'SVG
+        const svgEl = document.querySelector(".cosmic-sky");
+        const sound = document.getElementById("collisionSound");
+        if (!svgEl || !sound) return;
+        let audioUnlocked = false;
+        let lastCycle = -1;
+        // Sblocca l'audio al primo clic
+        function unlock() {
+          if (audioUnlocked) return;
+          sound.muted = true;
+          sound.play().then(() => {
+            sound.pause();
+            sound.currentTime = 0;
+            sound.muted = false;
+            audioUnlocked = true;
+            ["click", "touchstart", "keydown", "pointerdown"].forEach(e => document.removeEventListener(e, unlock, true));
+          }).catch(() => {});
+        }
+        ["click", "touchstart", "keydown", "pointerdown"].forEach(e => document.addEventListener(e, unlock, {
+          capture: true,
+          passive: true
+        }));
+        // Fa partire il suono e il tremolio
+        function boom() {
+          if (!audioUnlocked || document.body.classList.contains("light-theme")) return;
+          sound.currentTime = 0;
+          sound.volume = 0.6;
+          sound.play().catch(() => {});
+          document.body.classList.add("shake");
+          setTimeout(() => document.body.classList.remove("shake"), 400);
+        }
+        // Controlla costantemente il tempo dell'SVG
+        function check() {
+          if (svgEl && svgEl.getCurrentTime) {
+            try {
+              const t = svgEl.getCurrentTime();
+              // L'animazione dura 24s. La collisione avviene a metà (12s).
+              // Calcoliamo in che "ciclo" siamo (0 per i primi 12s, 1 per i successivi 24s, ecc.)
+              const cycle = Math.floor((t - 12) / 24);
+              // Se superiamo i 12s e non abbiamo ancora suonato per questo ciclo, suoniamo!
+              if (t >= 12 && cycle > lastCycle) {
+                lastCycle = cycle;
+                boom();
+              }
+            } catch (e) {}
+          }
+          requestAnimationFrame(check);
+        }
+        requestAnimationFrame(check);
+      });
+    </script>
   </body>
 
 </html>
