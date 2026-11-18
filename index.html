@@ -11318,6 +11318,8 @@
         }
 
         function boom() {
+          // Su mobile: niente suono, niente shake
+          if (window.matchMedia("(max-width: 768px)").matches) return;
           // Shake SEMPRE (tranne su light-theme)
           if (document.body.classList.contains("light-theme")) return;
           // Suono solo se disponibile e sbloccato
@@ -11357,7 +11359,9 @@
           }
           requestAnimationFrame(check);
         }
-        requestAnimationFrame(check);
+        if (!window.matchMedia("(max-width: 768px)").matches) {
+          requestAnimationFrame(check);
+        }
       });
     </script>
   </body>
