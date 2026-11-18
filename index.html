@@ -6387,6 +6387,21 @@
       .quote-mark {
      display: none;
       }
+
+
+      @keyframes shakeBody {
+  0%, 100% { transform: translate(0, 0); }
+  15%  { transform: translate(-4px, 2px); }
+  30%  { transform: translate(4px, -2px); }
+  45%  { transform: translate(-3px, -1px); }
+  60%  { transform: translate(3px, 1px); }
+  75%  { transform: translate(-2px, 2px); }
+  90%  { transform: translate(2px, -1px); }
+}
+
+body.shake {
+  animation: shakeBody .45s ease-in-out;
+}
     </style>
   </head>
 
@@ -11240,71 +11255,83 @@
         }) : o())
       }(), setTimeout(ensureParadoxVisible, 2500), window.openParadox = openParadox, window.toggleSolution = toggleSolution, window.ensureParadoxVisible = ensureParadoxVisible
     </script>
-    <script>
-      document.addEventListener("DOMContentLoaded", function() {
-        // 1. Inietta l'SVG
-        var template = document.getElementById("cosmic-sky-template");
-        if (template) {
-          var clone = template.content.cloneNode(true);
-          document.body.prepend(clone);
-          var svg = document.querySelector(".cosmic-sky");
-          if (svg) {
-            requestAnimationFrame(function() {
-              svg.classList.add("loaded");
-            });
-          }
-        }
-        // 2. Logica della collisione sincronizzata con l'SVG
-        const svgEl = document.querySelector(".cosmic-sky");
-        const sound = document.getElementById("collisionSound");
-        if (!svgEl || !sound) return;
-        let audioUnlocked = false;
-        let lastCycle = -1;
-        // Sblocca l'audio al primo clic
-        function unlock() {
-          if (audioUnlocked) return;
-          sound.muted = true;
-          sound.play().then(() => {
-            sound.pause();
-            sound.currentTime = 0;
-            sound.muted = false;
-            audioUnlocked = true;
-            ["click", "touchstart", "keydown", "pointerdown"].forEach(e => document.removeEventListener(e, unlock, true));
-          }).catch(() => {});
-        }
-        ["click", "touchstart", "keydown", "pointerdown"].forEach(e => document.addEventListener(e, unlock, {
-          capture: true,
-          passive: true
-        }));
-        // Fa partire il suono e il tremolio
-        function boom() {
-          if (!audioUnlocked || document.body.classList.contains("light-theme")) return;
-          sound.currentTime = 0;
-          sound.volume = 0.6;
-          sound.play().catch(() => {});
-          document.body.classList.add("shake");
-          setTimeout(() => document.body.classList.remove("shake"), 400);
-        }
-        // Controlla costantemente il tempo dell'SVG
-        function check() {
-          if (svgEl && svgEl.getCurrentTime) {
-            try {
-              const t = svgEl.getCurrentTime();
-              // L'animazione dura 24s. La collisione avviene a metà (12s).
-              // Calcoliamo in che "ciclo" siamo (0 per i primi 12s, 1 per i successivi 24s, ecc.)
-              const cycle = Math.floor((t - 12) / 24);
-              // Se superiamo i 12s e non abbiamo ancora suonato per questo ciclo, suoniamo!
-              if (t >= 12 && cycle > lastCycle) {
-                lastCycle = cycle;
-                boom();
-              }
-            } catch (e) {}
-          }
-          requestAnimationFrame(check);
-        }
-        requestAnimationFrame(check);
+   <script>
+document.addEventListener("DOMContentLoaded", function () {
+  // 1. Inietta l'SVG
+  var template = document.getElementById("cosmic-sky-template");
+  if (template) {
+    var clone = template.content.cloneNode(true);
+    document.body.prepend(clone);
+    var svg = document.querySelector(".cosmic-sky");
+    if (svg) requestAnimationFrame(function () { svg.classList.add("loaded"); });
+  }
+
+  var svgEl = document.querySelector(".cosmic-sky");
+  if (!svgEl) return;
+
+  // Audio opzionale: se c'è #collisionSound lo usa, altrimenti prosegue senza
+  var sound = document.getElementById("collisionSound");
+  var audioUnlocked = false;
+
+  function unlock() {
+    if (audioUnlocked || !sound) return;
+    sound.muted = true;
+    sound.play().then(function () {
+      sound.pause(); sound.currentTime = 0; sound.muted = false;
+      audioUnlocked = true;
+      ["click","touchstart","keydown","pointerdown"].forEach(function (e) {
+        document.removeEventListener(e, unlock, true);
       });
-    </script>
+    }).catch(function () {});
+  }
+  if (sound) {
+    ["click","touchstart","keydown","pointerdown"].forEach(function (e) {
+      document.addEventListener(e, unlock, { capture: true, passive: true });
+    });
+  }
+
+  function boom() {
+    // Shake SEMPRE (tranne su light-theme)
+    if (document.body.classList.contains("light-theme")) return;
+
+    // Suono solo se disponibile e sbloccato
+    if (sound && audioUnlocked) {
+      try {
+        sound.currentTime = 0;
+        sound.volume = 0.6;
+        sound.play().catch(function () {});
+      } catch (e) {}
+    }
+
+    // Forza il reflow per far ripartire l'animazione se era già attiva
+    document.body.classList.remove("shake");
+    void document.body.offsetWidth;
+    document.body.classList.add("shake");
+    setTimeout(function () { document.body.classList.remove("shake"); }, 450);
+  }
+
+  var lastCycle = -1;
+  function check() {
+    // Se le animazioni sono in pausa (mobile), getCurrentTime() resta fermo:
+    // in quel caso non fare nulla, oppure forza un ciclo a intervalli regolari.
+    var paused = false;
+    try { paused = svgEl.animationsPaused && svgEl.animationsPaused(); } catch (e) {}
+
+    if (!paused && typeof svgEl.getCurrentTime === "function") {
+      try {
+        var t = svgEl.getCurrentTime();
+        var cycle = Math.floor((t - 12) / 24);
+        if (t >= 12 && cycle > lastCycle) {
+          lastCycle = cycle;
+          boom();
+        }
+      } catch (e) {}
+    }
+    requestAnimationFrame(check);
+  }
+  requestAnimationFrame(check);
+});
+</script>
   </body>
 
 </html>
