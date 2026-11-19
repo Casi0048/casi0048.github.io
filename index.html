@@ -6387,7 +6387,7 @@
     </style>
   </head>
 
-  <body> <a href=#main class=skip-link>Salta al contenuto principale</a>
+  <body>
     <template id="cosmic-sky-template">
       <svg class="cosmic-sky" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <defs>
@@ -10862,37 +10862,23 @@
         }) : o())
       }(), setTimeout(ensureParadoxVisible, 2500), window.openParadox = openParadox, window.toggleSolution = toggleSolution, window.ensureParadoxVisible = ensureParadoxVisible
     </script>
-    <script>
-      document.addEventListener("DOMContentLoaded", function() {
-        // 1. Inietta l'SVG
-        var template = document.getElementById("cosmic-sky-template");
-        if (template) {
-          var clone = template.content.cloneNode(true);
-          document.body.prepend(clone);
-          var svg = document.querySelector(".cosmic-sky");
-          if (svg) {
-            requestAnimationFrame(function() {
-              svg.classList.add("loaded");
-            });
-          }
-        }
-        // Controlla costantemente il tempo dell'SVG
-        function check() {
-          if (svgEl && svgEl.getCurrentTime) {
-            try {
-              const t = svgEl.getCurrentTime();
-              const cycle = Math.floor((t - 12) / 24);
-              if (t >= 12 && cycle > lastCycle) {
-                lastCycle = cycle;
-                boom();
-              }
-            } catch (e) {}
-          }
-          requestAnimationFrame(check);
-        }
-        requestAnimationFrame(check);
-      });
-    </script>
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // 1. Inietta l'SVG di sfondo
+    var template = document.getElementById("cosmic-sky-template");
+    if (!template) return;
+
+    var clone = template.content.cloneNode(true);
+    document.body.prepend(clone);
+
+    var svg = document.querySelector(".cosmic-sky");
+    if (!svg) return;
+
+    requestAnimationFrame(function () {
+      svg.classList.add("loaded");
+    });
+  });
+</script>
   </body>
 
 </html>
