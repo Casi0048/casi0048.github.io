@@ -1342,28 +1342,85 @@
         letter-spacing: .5px
       }
 
-      .hero {
-        padding: clamp(30px, 4vw, 55px)0 clamp(10px, 1.5vw, 18px);
-        text-align: center;
-        position: relative;
-        isolation: isolate;
-        opacity: var(--hero-op, 1);
-        transition: opacity .08s linear
-      }
 
-      .hero .container {
-        position: relative;
-        z-index: 2;
-        transform: scale(var(--hero-scale, 1));
-        transform-origin: 50% 35%;
-        transition: transform .08s linear
-      }
 
-      .hero h1,
-      .hero-kicker {
-        font-weight: 500;
-        opacity: 0
-      }
+.hero {
+  padding: clamp(30px, 4vw, 55px) 0 clamp(10px, 1.5vw, 18px);
+  text-align: center;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+
+  opacity: var(--hero-op, 1);
+  transition: opacity .08s linear;
+
+  background-image: url(/immagini/scuola-atene.webp);
+  background-repeat: no-repeat;
+  background-position: center 30%;
+  background-size: cover;
+}
+
+.hero .container {
+  position: relative;
+  z-index: 2;
+  transform: scale(var(--hero-scale, 1));
+  transform-origin: 50% 35%;
+  transition: transform .08s linear;
+}
+
+.hero h1,
+.hero-kicker {
+  font-weight: 500;
+  opacity: 0;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse at 50% 40%,
+      rgba(10, 26, 46, .55) 0%,
+      rgba(10, 26, 46, .85) 60%,
+      rgba(10, 26, 46, .98) 100%
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(10, 26, 46, .4),
+      rgba(10, 26, 46, .95)
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 65% 75% at 50% 40%,
+    rgba(130, 155, 205, .32) 0%,
+    rgba(100, 130, 190, .15) 40%,
+    transparent 75%
+  );
+  pointer-events: none;
+  z-index: 1;
+  animation: heroBreathe 8s ease-in-out infinite;
+}
+
+.hero > .container {
+  position: relative;
+  z-index: 2;
+}
+
+body.light-theme .hero {
+  background-image: none;
+}
+
+body.light-theme .hero::before {
+  display: none;
+}
+
 
       .hero-kicker {
         margin-bottom: 18px;
@@ -1408,60 +1465,7 @@
       }
 
 
-.hero {
-  position: relative;
-  background-image: url(/immagini/scuola-atene.webp);
-  background-repeat: no-repeat;
-  background-position: center 30%;
-  background-size: cover;
-  overflow: hidden;
-  isolation: isolate;
-}
 
-.hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(
-      ellipse 55% 65% at 50% 42%,
-      rgba(91, 104, 145, .25) 0%,
-      rgba(91, 104, 145, .12) 35%,
-      transparent 75%
-    ),
-    radial-gradient(
-      ellipse at 50% 40%,
-      rgba(10, 26, 46, .55) 0%,
-      rgba(10, 26, 46, .85) 60%,
-      rgba(10, 26, 46, .98) 100%
-    ),
-    linear-gradient(
-      to bottom,
-      rgba(10, 26, 46, .4),
-      rgba(10, 26, 46, .95)
-    );
-  pointer-events: none;
-  z-index: 0;
-  animation: heroBreathe 8s ease-in-out infinite;
-}
-
-.hero > .container {
-  position: relative;
-  z-index: 2;
-}
-
-
-      body.light-theme .hero {
-        background-image: none
-      }
-
-      .hero::before {
-        background: radial-gradient(ellipse at 50% 45%, rgba(10, 26, 46, .6), rgba(10, 26, 46, .97))
-      }
-
-      body.light-theme .hero::before {
-        display: none
-      }
 
 
 .wave-glow {
