@@ -1397,7 +1397,18 @@
         color: var(--text-soft)
       }
 
-    .hero::before {
+  .hero {
+  position: relative;
+  background-image: url(/immagini/scuola-atene.webp);
+  background-repeat: no-repeat;
+  background-position: center 30%;
+  background-size: cover;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Velo scuro sopra l'immagine */
+.hero::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -1416,6 +1427,8 @@
   pointer-events: none;
   z-index: 0;
 }
+
+/* Alone luminoso pulsante */
 .hero::after {
   content: "";
   position: absolute;
@@ -1431,37 +1444,22 @@
   z-index: 1;
   animation: heroBreathe 8s ease-in-out infinite;
 }
-      .hero {
-        position: relative;
-        background-image: url(/immagini/scuola-atene.webp);
-        background-repeat: no-repeat;
-        background-position: center 30%;
-        background-size: cover;
-        overflow: hidden;
-        isolation: isolate
-      }
 
+/* Contenuto sopra i due livelli */
+.hero > .container {
+  position: relative;
+  z-index: 2;
+}
 
+/* Tema chiaro: niente immagine né sovrapposizioni */
+body.light-theme .hero {
+  background-image: none;
+}
 
-      .hero>.container {
-        position: relative;
-        z-index: 2
-      }
-
-      body.light-theme .hero {
-        background-image: none
-      }
-
-     
-
-        .hero::before {
-          background: radial-gradient(ellipse at 50% 45%, rgba(10, 26, 46, .6), rgba(10, 26, 46, .97))
-        }
-      
-
-      body.light-theme .hero::before {
-        display: none
-      }
+body.light-theme .hero::before,
+body.light-theme .hero::after {
+  display: none;
+}
 
       .hero-line,
       .wave-svg {
