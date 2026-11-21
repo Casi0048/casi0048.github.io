@@ -1397,59 +1397,60 @@
         color: var(--text-soft)
       }
 
+      .hero {
+        position: relative;
+        background-image: url(/immagini/scuola-atene.webp);
+        background-repeat: no-repeat;
+        background-position: center 30%;
+        background-size: cover;
+        overflow: hidden;
+        isolation: isolate;
+      }
+
+      /* Velo scuro */
       .hero::before {
         content: "";
         position: absolute;
         inset: 0;
-        background: radial-gradient(ellipse 55% 65%at 50% 42%, rgba(91, 104, 145, .55)0, rgba(91, 104, 145, .22) 28%, rgba(91, 104, 145, .08) 52%, transparent 75%);
+        background:
+          radial-gradient(ellipse at 50% 40%,
+            rgba(10, 26, 46, .55) 0%,
+            rgba(10, 26, 46, .85) 60%,
+            rgba(10, 26, 46, .98) 100%),
+          linear-gradient(to bottom,
+            rgba(10, 26, 46, .4),
+            rgba(10, 26, 46, .95));
         pointer-events: none;
-        z-index: -1;
-        animation: heroBreathe 8s ease-in-out infinite
+        z-index: 0;
       }
 
+      /* Luce pulsante */
+      .hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse 65% 75% at 50% 40%,
+            rgba(130, 155, 205, .32) 0%,
+            rgba(100, 130, 190, .15) 40%,
+            transparent 75%);
+        pointer-events: none;
+        z-index: 1;
+        animation: heroBreathe 8s ease-in-out infinite;
+      }
 
-.hero {
-  position: relative;
-  background-image: url(/immagini/scuola-atene.webp);
-  background-repeat: no-repeat;
-  background-position: center 30%;
-  background-size: cover;
-  overflow: hidden;
-  isolation: isolate;
-}
+      .hero>.container {
+        position: relative;
+        z-index: 2;
+      }
 
-.hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(
-      ellipse 55% 65% at 50% 42%,
-      rgba(91, 104, 145, .25) 0%,
-      rgba(91, 104, 145, .12) 35%,
-      transparent 75%
-    ),
-    radial-gradient(
-      ellipse at 50% 40%,
-      rgba(10, 26, 46, .55) 0%,
-      rgba(10, 26, 46, .85) 60%,
-      rgba(10, 26, 46, .98) 100%
-    ),
-    linear-gradient(
-      to bottom,
-      rgba(10, 26, 46, .4),
-      rgba(10, 26, 46, .95)
-    );
-  pointer-events: none;
-  z-index: 0;
-  animation: heroBreathe 8s ease-in-out infinite;
-}
+      body.light-theme .hero {
+        background-image: none;
+      }
 
-.hero > .container {
-  position: relative;
-  z-index: 2;
-}
-
+      body.light-theme .hero::before,
+      body.light-theme .hero::after {
+        display: none;
+      }
 
       body.light-theme .hero {
         background-image: none
@@ -1463,46 +1464,46 @@
         display: none
       }
 
+      .wave-glow {
+        fill: none;
+        stroke: url(#waveGlow);
+        stroke-width: 2.5;
+        stroke-linecap: round;
+        opacity: .8;
+        transform-box: fill-box;
+        transform-origin: center;
+        animation: waveSinusoidal 7s ease-in-out infinite;
+      }
 
-.wave-glow {
-  fill: none;
-  stroke: url(#waveGlow);
-  stroke-width: 2.5;
-  stroke-linecap: round;
-  opacity: .8;
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: waveSinusoidal 7s ease-in-out infinite;
-}
+      @keyframes waveSinusoidal {
 
-@keyframes waveSinusoidal {
-  0%, 100% {
-    transform: translateX(-8px);
-  }
+        0%,
+        100% {
+          transform: translateX(-8px);
+        }
 
-  50% {
-    transform: translateX(0);
-  }
-}
+        50% {
+          transform: translateX(0);
+        }
+      }
 
-.hero-line,
-.wave-svg {
-  width: 100%;
-  overflow: visible;
-}
+      .hero-line,
+      .wave-svg {
+        width: 100%;
+        overflow: visible;
+      }
 
-.hero-line {
-  max-width: 300px;
-  height: 30px;
-  margin: 14px auto 0;
-  position: relative;
-}
+      .hero-line {
+        max-width: 300px;
+        height: 30px;
+        margin: 14px auto 0;
+        position: relative;
+      }
 
-.wave-svg {
-  height: 100%;
-  display: block;
-}
-
+      .wave-svg {
+        height: 100%;
+        display: block;
+      }
 
       .philosophy-quotes {
         padding: 10px 0 0;
@@ -1594,29 +1595,29 @@
         margin-top: 0
       }
 
-    .quote-info {
-  display: inline-flex;
-  width: 18px;
-  height: 18px;
-  padding: 0;
-  border: 1px solid #e05252;
-  border-radius: 50%;
-  background: rgba(224, 82, 82, .12);
-  color: #ff7070;
-  font-family: var(--serif);
-  font-weight: 700;
-  font-size: .72rem;
-  line-height: 1;
-  cursor: pointer;
-  opacity: 1;
-  align-items: center;
-  justify-content: center;
-}
+      .quote-info {
+        display: inline-flex;
+        width: 18px;
+        height: 18px;
+        padding: 0;
+        border: 1px solid #e05252;
+        border-radius: 50%;
+        background: rgba(224, 82, 82, .12);
+        color: #ff7070;
+        font-family: var(--serif);
+        font-weight: 700;
+        font-size: .72rem;
+        line-height: 1;
+        cursor: pointer;
+        opacity: 1;
+        align-items: center;
+        justify-content: center;
+      }
 
-.quote-info:hover {
-  background: rgba(224, 82, 82, .24);
-  transform: scale(1.08);
-}
+      .quote-info:hover {
+        background: rgba(224, 82, 82, .24);
+        transform: scale(1.08);
+      }
 
       .quote-source {
         max-width: 500px;
