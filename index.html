@@ -1427,31 +1427,32 @@
         display: none;
       }
 
-      /* Stile base: solo colore e spessore */
       .wave-glow {
         fill: none;
         stroke: url(#waveGlow);
         stroke-width: 2.5;
         stroke-linecap: round;
+        opacity: .8;
         transform-box: fill-box;
+        /* FONDAMENTALE per far muovere l'SVG */
         transform-origin: center;
+        /* FONDAMENTALE per far muovere l'SVG */
+        animation: waveSinusoidal 7s ease-in-out infinite;
+        /* Ho sostituito var(--ease-breathe) con ease-in-out */
       }
 
-      /* L'animazione: usiamo !important per forzare il movimento e ignorare vecchie regole */
-      .wave-float {
-        animation: waveFloat 3s ease-in-out infinite !important;
-      }
-
-      /* Movimento dolce su e giù (fluttuazione) */
-      @keyframes waveFloat {
+      @keyframes waveSinusoidal {
 
         0%,
         100% {
-          transform: translateY(0px);
+          transform: translateX(-8px);
+          opacity: .55;
         }
 
         50% {
-          transform: translateY(-6px);
+          transform: translateX(8px);
+          /* L'onda va a destra e sinistra */
+          opacity: .85;
         }
       }
 
@@ -6575,8 +6576,9 @@
                   <stop offset="100%" stop-color="transparent" />
                 </linearGradient>
               </defs>
-              <!-- Unico path con classe wave-float -->
-              <path class="wave-glow wave-float" d="M0 15 C15 5,25 25,40 15 C55 5,65 25,80 15 C95 5,105 25,120 15" />
+
+              <!-- UNICO PATH: niente tag <animate> -->
+              <path class="wave-glow" d="M0 15 C15 5,25 25,40 15 C55 5,65 25,80 15 C95 5,105 25,120 15" />
             </svg>
           </div>
           <div class=philosophy-quotes role=group aria-label="Frasi filosofiche">
