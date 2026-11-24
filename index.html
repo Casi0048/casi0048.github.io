@@ -1654,7 +1654,7 @@
         position: absolute;
         width: 130px;
         left: 5%;
-        top: 60%;
+        top: 52%;
         transform: translateY(-50%);
         display: flex;
         flex-direction: column;
@@ -1908,7 +1908,7 @@
         position: absolute;
         width: 160px;
         right: 5%;
-        top: 60%;
+        top: 52%;
         transform: translateY(-50%);
         display: flex;
         flex-direction: column;
@@ -2085,17 +2085,13 @@
         margin-top: 0
       }
 
-
-/* Opacità controllata via JS (--sidebar-op) */
-.col-sinistra,
-.col-destra {
-  opacity: var(--sidebar-op, 1);
-  transition: opacity .2s ease-out;
-  will-change: opacity;
-}
-
-
-
+      /* Opacità controllata via JS (--sidebar-op) */
+      .col-sinistra,
+      .col-destra {
+        opacity: var(--sidebar-op, 1);
+        transition: opacity .2s ease-out;
+        will-change: opacity;
+      }
 
       .box ul,
       .col-sinistra ul {
@@ -6458,76 +6454,78 @@
         display: none;
       }
 
-
-
-
-/* ═══════════════════════════════════════════════════════════════
+      /* ═══════════════════════════════════════════════════════════════
    PROVA: RIDUZIONE HERO ~30%
    Cancella questo blocco per tornare all'hero originale.
    ═══════════════════════════════════════════════════════════════ */
+      /* Padding verticali dell'hero */
+      .hero {
+        padding: clamp(20px, 2.8vw, 38px) 0 clamp(6px, 1vw, 12px);
+      }
 
-/* Padding verticali dell'hero */
-.hero {
-  padding: clamp(20px, 2.8vw, 38px) 0 clamp(6px, 1vw, 12px);
-}
+      /* Titolo principale: leggermente più piccolo */
+      .hero h1 {
+        font-size: clamp(1.55rem, 3.2vw, 2.75rem);
+        letter-spacing: 3.5px;
+        line-height: 1.08;
+      }
 
-/* Titolo principale: leggermente più piccolo */
-.hero h1 {
-  font-size: clamp(1.55rem, 3.2vw, 2.75rem);
-  letter-spacing: 3.5px;
-  line-height: 1.08;
-}
+      /* Kicker sopra il titolo */
+      .hero-kicker {
+        margin-bottom: 12px;
+        font-size: .65rem;
+        letter-spacing: 3px;
+      }
 
-/* Kicker sopra il titolo */
-.hero-kicker {
-  margin-bottom: 12px;
-  font-size: .65rem;
-  letter-spacing: 3px;
-}
+      /* Testo descrittivo */
+      .hero-lead {
+        margin: 18px auto 0;
+        font-size: clamp(.8rem, 1.15vw, .9rem);
+        line-height: 1.45;
+      }
 
-/* Testo descrittivo */
-.hero-lead {
-  margin: 18px auto 0;
-  font-size: clamp(.8rem, 1.15vw, .9rem);
-  line-height: 1.45;
-}
+      /* Linea decorativa (onda) */
+      .hero-line {
+        margin: 10px auto 0;
+        height: 24px;
+        /* era 30px */
+        max-width: 260px;
+        /* era 300px */
+      }
 
-/* Linea decorativa (onda) */
-.hero-line {
-  margin: 10px auto 0;
-  height: 24px;                 /* era 30px */
-  max-width: 260px;             /* era 300px */
-}
+      /* Blocco citazioni */
+      .philosophy-quotes {
+        padding: 4px 0 0;
+      }
 
-/* Blocco citazioni */
-.philosophy-quotes {
-  padding: 4px 0 0;
-}
+      .quote-wrapper {
+        padding: 14px 40px;
+        /* era 20px 40px */
+      }
 
-.quote-wrapper {
-  padding: 14px 40px;           /* era 20px 40px */
-}
+      .quote-block {
+        min-height: 62px;
+        /* era 90px */
+      }
 
-.quote-block {
-  min-height: 62px;             /* era 90px */
-}
+      .quote-text {
+        font-size: .92rem;
+        /* era 1rem */
+        line-height: 1.4;
+      }
 
-.quote-text {
-  font-size: .92rem;            /* era 1rem */
-  line-height: 1.4;
-}
+      .quote-author {
+        margin-top: 10px;
+        /* era 14px */
+      }
 
-.quote-author {
-  margin-top: 10px;             /* era 14px */
-}
-
-/* Albero e orologio: spostali più in basso per evitare sovrapposizioni */
-.knowledge-tree,
-.heraclitus-clock {
-  top: 72%;                     /* era 66% — con hero più bassa, il 66%
+      /* Albero e orologio: spostali più in basso per evitare sovrapposizioni */
+      .knowledge-tree,
+      .heraclitus-clock {
+        top: 52%;
+        /* era 66% — con hero più bassa, il 66%
                                    finirebbe troppo vicino al testo */
-}
-
+      }
     </style>
   </head>
 
@@ -10485,133 +10483,128 @@
         }))
       }()
     </script>
-   <script>
-! function() {
-  "use strict";
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-  var e = document.querySelectorAll(".atlante, .eco-giorno, .frammento, .dialoghi, .fo-section, .giardino, .quiz-filosofia, .ua");
-  if (!e.length) return;
-
-  /* ── Sidebar references ── */
-  var leftBar  = document.querySelector('.col-sinistra');
-  var rightBar = document.querySelector('.col-destra');
-
-  /* ── Parametri fade sidebar (tutti in "viewport heights") ──
-     SIDEBAR_START_VH = 0.2 → fade inizia dopo 20% di una schermata (216px)
-     SIDEBAR_END_VH   = 2.5 → fade completa dopo 2.5 schermate (2700px)
-     SIDEBAR_MIN      = 0.35 → opacità finale (35%)
-     Modifica questi valori per calibrare. */
-  var SIDEBAR_START_VH = 0.2;
-  var SIDEBAR_END_VH   = 2.5;
-  var SIDEBAR_MIN      = 0.35;
-
-  /* ── IntersectionObserver per reveal iniziale ── */
-  if ("IntersectionObserver" in window) {
-    var io = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-          io.unobserve(entry.target);
+    <script>
+      ! function() {
+        "use strict";
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        var e = document.querySelectorAll(".atlante, .eco-giorno, .frammento, .dialoghi, .fo-section, .giardino, .quiz-filosofia, .ua");
+        if (!e.length) return;
+        /* ── Sidebar references ── */
+        var leftBar = document.querySelector('.col-sinistra');
+        var rightBar = document.querySelector('.col-destra');
+        /* ── Parametri fade sidebar (tutti in "viewport heights") ──
+           SIDEBAR_START_VH = 0.2 → fade inizia dopo 20% di una schermata (216px)
+           SIDEBAR_END_VH   = 2.5 → fade completa dopo 2.5 schermate (2700px)
+           SIDEBAR_MIN      = 0.35 → opacità finale (35%)
+           Modifica questi valori per calibrare. */
+        var SIDEBAR_START_VH = 0.2;
+        var SIDEBAR_END_VH = 2.5;
+        var SIDEBAR_MIN = 0.35;
+        /* ── IntersectionObserver per reveal iniziale ── */
+        if ("IntersectionObserver" in window) {
+          var io = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                io.unobserve(entry.target);
+              }
+            });
+          }, {
+            rootMargin: "0px 0px -8% 0px",
+            threshold: .08
+          });
+          e.forEach(function(el) {
+            io.observe(el);
+          });
+          setTimeout(function() {
+            e.forEach(function(el) {
+              var r = el.getBoundingClientRect();
+              if (r.top < window.innerHeight && r.bottom > 0) el.classList.add("is-visible");
+            });
+          }, 1200);
+        } else {
+          e.forEach(function(el) {
+            el.classList.add("is-visible");
+          });
         }
-      });
-    }, { rootMargin: "0px 0px -8% 0px", threshold: .08 });
+        var hero = document.querySelector(".hero");
+        var ticking = false;
+        /* ── Fade sidebar (basato su scrollY, perché sono sticky) ── */
+        function updateSidebars() {
+          if (!leftBar && !rightBar) return;
+          /* Sotto 1100px le sidebar non sono sticky → fade disattivato */
+          if (window.innerWidth <= 1100) {
+            if (leftBar) leftBar.style.setProperty("--sidebar-op", "1");
+            if (rightBar) rightBar.style.setProperty("--sidebar-op", "1");
+            return;
+          }
+          var vh = window.innerHeight;
+          var startAt = vh * SIDEBAR_START_VH;
+          var endAt = vh * SIDEBAR_END_VH;
+          var scrollY = window.scrollY;
+          var opacity = 1;
+          if (scrollY > startAt) {
+            var t01 = (scrollY - startAt) / (endAt - startAt);
+            t01 = Math.max(0, Math.min(1, t01));
+            opacity = 1 - t01 * (1 - SIDEBAR_MIN);
+          }
+          if (leftBar) leftBar.style.setProperty("--sidebar-op", opacity.toFixed(3));
+          if (rightBar) rightBar.style.setProperty("--sidebar-op", opacity.toFixed(3));
+        }
+        /* ── Handler principale ── */
+        function update() {
+          ticking = false;
+          var vh = window.innerHeight;
+          var midY = vh / 2;
+          var range = .85 * vh;
+          /* Hero */
+          if (hero) {
+            var heroH = hero.offsetHeight || 1;
+            var heroProgress = Math.min(1, Math.max(0, window.scrollY / heroH));
+            hero.style.setProperty("--hero-op", (1 - heroProgress).toFixed(3));
+            hero.style.setProperty("--hero-scale", (1 + .18 * heroProgress).toFixed(3));
+          }
+          /* Sezioni (focus + scale) */
+          e.forEach(function(el) {
+            if (!el.classList.contains("is-visible")) return;
+            var r = el.getBoundingClientRect();
+            var elMidY = r.top + r.height / 2;
+            var dist = Math.abs(elMidY - midY);
+            var t01 = Math.min(1, dist / range);
+            var smooth = t01 * t01 * (3 - 2 * t01);
+            el.style.setProperty("--focus-scale", (1 - .04 * smooth).toFixed(3));
+            el.style.setProperty("--focus-op", (1 - .35 * smooth).toFixed(3));
+          });
+          /* Sidebar */
+          updateSidebars();
+        }
 
-    e.forEach(function(el) { io.observe(el); });
-
-    setTimeout(function() {
-      e.forEach(function(el) {
-        var r = el.getBoundingClientRect();
-        if (r.top < window.innerHeight && r.bottom > 0) el.classList.add("is-visible");
-      });
-    }, 1200);
-  } else {
-    e.forEach(function(el) { el.classList.add("is-visible"); });
-  }
-
-  var hero = document.querySelector(".hero");
-  var ticking = false;
-
-  /* ── Fade sidebar (basato su scrollY, perché sono sticky) ── */
-  function updateSidebars() {
-    if (!leftBar && !rightBar) return;
-
-    /* Sotto 1100px le sidebar non sono sticky → fade disattivato */
-    if (window.innerWidth <= 1100) {
-      if (leftBar)  leftBar.style.setProperty("--sidebar-op", "1");
-      if (rightBar) rightBar.style.setProperty("--sidebar-op", "1");
-      return;
-    }
-
-    var vh      = window.innerHeight;
-    var startAt = vh * SIDEBAR_START_VH;
-    var endAt   = vh * SIDEBAR_END_VH;
-    var scrollY = window.scrollY;
-    var opacity = 1;
-
-    if (scrollY > startAt) {
-      var t01 = (scrollY - startAt) / (endAt - startAt);
-      t01 = Math.max(0, Math.min(1, t01));
-      opacity = 1 - t01 * (1 - SIDEBAR_MIN);
-    }
-
-    if (leftBar)  leftBar.style.setProperty("--sidebar-op", opacity.toFixed(3));
-    if (rightBar) rightBar.style.setProperty("--sidebar-op", opacity.toFixed(3));
-  }
-
-  /* ── Handler principale ── */
-  function update() {
-    ticking = false;
-    var vh    = window.innerHeight;
-    var midY  = vh / 2;
-    var range = .85 * vh;
-
-    /* Hero */
-    if (hero) {
-      var heroH = hero.offsetHeight || 1;
-      var heroProgress = Math.min(1, Math.max(0, window.scrollY / heroH));
-      hero.style.setProperty("--hero-op",    (1 - heroProgress).toFixed(3));
-      hero.style.setProperty("--hero-scale", (1 + .18 * heroProgress).toFixed(3));
-    }
-
-    /* Sezioni (focus + scale) */
-    e.forEach(function(el) {
-      if (!el.classList.contains("is-visible")) return;
-      var r       = el.getBoundingClientRect();
-      var elMidY  = r.top + r.height / 2;
-      var dist    = Math.abs(elMidY - midY);
-      var t01     = Math.min(1, dist / range);
-      var smooth  = t01 * t01 * (3 - 2 * t01);
-      el.style.setProperty("--focus-scale", (1 - .04 * smooth).toFixed(3));
-      el.style.setProperty("--focus-op",    (1 - .35 * smooth).toFixed(3));
-    });
-
-    /* Sidebar */
-    updateSidebars();
-  }
-
-  function onScroll() {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(update);
-  }
-
-  window.addEventListener("scroll", onScroll, { passive: true });
-  window.addEventListener("resize", onScroll, { passive: true });
-
-  /* MutationObserver per ricalcolare quando cambia la visibilità delle sezioni */
-  if ("MutationObserver" in window) {
-    var mo = new MutationObserver(onScroll);
-    e.forEach(function(el) {
-      mo.observe(el, { attributes: true, attributeFilter: ["class"] });
-    });
-  }
-
-  /* Init */
-  setTimeout(update, 150);
-  updateSidebars();
-}()
-</script>
+        function onScroll() {
+          if (ticking) return;
+          ticking = true;
+          requestAnimationFrame(update);
+        }
+        window.addEventListener("scroll", onScroll, {
+          passive: true
+        });
+        window.addEventListener("resize", onScroll, {
+          passive: true
+        });
+        /* MutationObserver per ricalcolare quando cambia la visibilità delle sezioni */
+        if ("MutationObserver" in window) {
+          var mo = new MutationObserver(onScroll);
+          e.forEach(function(el) {
+            mo.observe(el, {
+              attributes: true,
+              attributeFilter: ["class"]
+            });
+          });
+        }
+        /* Init */
+        setTimeout(update, 150);
+        updateSidebars();
+      }()
+    </script>
     <script>
       function ensureParadoxVisible() {
         document.querySelectorAll(".paradox-module").forEach((e => {
