@@ -6394,61 +6394,68 @@
            display: none;
          }
 
-         /* ═══════════════════════════════════════════════════════════
+        /* ═══════════════════════════════════════════════════════════
    GTRANSLATE — Stile personalizzato per il selettore lingua
    ═══════════════════════════════════════════════════════════ */
-         /* Allinea il contenitore */
-         .gtranslate_wrapper {
-           display: inline-flex;
-           align-items: center;
-           margin-left: 4px;
-         }
 
-         /* Stile del menu a tendina generato da GTranslate */
-         .gtranslate_wrapper select {
-           appearance: none;
-           -webkit-appearance: none;
-           -moz-appearance: none;
-           background-color: var(--surface);
-           border: 1px solid var(--border);
-           border-radius: 30px;
-           /* Larghezza fissa per non far sballare la navbar */
-           width: 105px;
-           max-width: 105px;
-           /* Padding: sopra/sotto, destra (per la freccia), sinistra */
-           padding: 0.3rem 1.6rem 0.3rem 0.9rem;
-           font-family: var(--sans);
-           font-size: 0.72rem;
-           letter-spacing: 0.8px;
-           color: var(--text-soft);
-           cursor: pointer;
-           outline: none;
-           /* Evita che il testo lungo esca dai bordi */
-           text-overflow: ellipsis;
-           white-space: nowrap;
-           overflow: hidden;
-           transition: border-color var(--dur-base) var(--ease-smooth), color var(--dur-base) var(--ease-smooth), background var(--dur-base) var(--ease-smooth);
-           /* Freccia personalizzata (SVG in linea, usa il colore del testo) */
-           background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238eb5a1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-           background-repeat: no-repeat;
-           background-position: right 0.6rem center;
-           background-size: 12px;
-         }
+/* Allinea il contenitore */
+.gtranslate_wrapper {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 4px;
+}
 
-         /* Effetto Hover identico al tuo pulsante tema */
-         .gtranslate_wrapper select:hover {
-           border-color: var(--gold-line);
-           color: var(--text);
-           background-color: var(--surface-hover);
-         }
+/* Stile del menu a tendina generato da GTranslate */
+.gtranslate_wrapper select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 30px;
 
-         /* Stile per il menu a tendina aperto (le opzioni) */
-         .gtranslate_wrapper select option {
-           background-color: var(--bg-soft);
-           color: var(--text);
-           font-family: var(--sans);
-           font-size: 0.85rem;
-         }
+  /* Larghezza fissa per non far sballare la navbar */
+  width: 105px;
+  max-width: 105px;
+
+  /* Padding: sopra/sotto, destra (per la freccia), sinistra */
+  padding: 0.3rem 1.6rem 0.3rem 0.9rem;
+
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.8px;
+  color: var(--text-soft);
+  cursor: pointer;
+  outline: none;
+
+  /* Evita che il testo lungo esca dai bordi */
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+
+  transition: border-color var(--dur-base) var(--ease-smooth), color var(--dur-base) var(--ease-smooth), background var(--dur-base) var(--ease-smooth);
+
+  /* Freccia personalizzata (SVG in linea, usa il colore del testo) */
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238eb5a1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.6rem center;
+  background-size: 12px;
+}
+
+/* Effetto Hover identico al tuo pulsante tema */
+.gtranslate_wrapper select:hover {
+  border-color: var(--gold-line);
+  color: var(--text);
+  background-color: var(--surface-hover);
+}
+
+/* Stile per il menu a tendina aperto (le opzioni) */
+.gtranslate_wrapper select option {
+  background-color: var(--bg-soft);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 0.85rem;
+}
        </style>
      </head>
 
@@ -10025,72 +10032,68 @@
                io.observe(el);
              });
              setTimeout(function() {
-               if ('requestIdleCallback' in window) {
-                 requestIdleCallback(function() {
-                   e.forEach(function(el) {
-                     var r = el.getBoundingClientRect();
-                     if (r.top < window.innerHeight && r.bottom > 0) el.classList.add("is-visible");
-                   });
-                 });
-               } else {
-                 e.forEach(function(el) {
-                   var r = el.getBoundingClientRect();
-                   if (r.top < window.innerHeight && r.bottom > 0) el.classList.add("is-visible");
-                 });
-               }
-             }, 2000); // Aumentato a 2000ms
-             var hero = document.querySelector(".hero");
-             var ticking = false;
-             /* ── Handler principale (Hero + Sezioni) ── */
-             function update() {
-               ticking = false;
-               var vh = window.innerHeight;
-               var midY = vh / 2;
-               var range = .85 * vh;
-               /* Hero */
-               if (hero) {
-                 var heroH = hero.offsetHeight || 1;
-                 var heroProgress = Math.min(1, Math.max(0, window.scrollY / heroH));
-                 hero.style.setProperty("--hero-op", (1 - heroProgress).toFixed(3));
-                 hero.style.setProperty("--hero-scale", (1 + .18 * heroProgress).toFixed(3));
-               }
-               /* Sezioni (focus + scale) */
                e.forEach(function(el) {
-                 if (!el.classList.contains("is-visible")) return;
                  var r = el.getBoundingClientRect();
-                 var elMidY = r.top + r.height / 2;
-                 var dist = Math.abs(elMidY - midY);
-                 var t01 = Math.min(1, dist / range);
-                 var smooth = t01 * t01 * (3 - 2 * t01);
-                 el.style.setProperty("--focus-scale", (1 - .04 * smooth).toFixed(3));
-                 el.style.setProperty("--focus-op", (1 - .35 * smooth).toFixed(3));
+                 if (r.top < window.innerHeight && r.bottom > 0) el.classList.add("is-visible");
                });
+             }, 1200);
+           } else {
+             e.forEach(function(el) {
+               el.classList.add("is-visible");
+             });
+           }
+           var hero = document.querySelector(".hero");
+           var ticking = false;
+           /* ── Handler principale (Hero + Sezioni) ── */
+           function update() {
+             ticking = false;
+             var vh = window.innerHeight;
+             var midY = vh / 2;
+             var range = .85 * vh;
+             /* Hero */
+             if (hero) {
+               var heroH = hero.offsetHeight || 1;
+               var heroProgress = Math.min(1, Math.max(0, window.scrollY / heroH));
+               hero.style.setProperty("--hero-op", (1 - heroProgress).toFixed(3));
+               hero.style.setProperty("--hero-scale", (1 + .18 * heroProgress).toFixed(3));
              }
+             /* Sezioni (focus + scale) */
+             e.forEach(function(el) {
+               if (!el.classList.contains("is-visible")) return;
+               var r = el.getBoundingClientRect();
+               var elMidY = r.top + r.height / 2;
+               var dist = Math.abs(elMidY - midY);
+               var t01 = Math.min(1, dist / range);
+               var smooth = t01 * t01 * (3 - 2 * t01);
+               el.style.setProperty("--focus-scale", (1 - .04 * smooth).toFixed(3));
+               el.style.setProperty("--focus-op", (1 - .35 * smooth).toFixed(3));
+             });
+           }
 
-             function onScroll() {
-               if (ticking) return;
-               ticking = true;
-               requestAnimationFrame(update);
-             }
-             window.addEventListener("scroll", onScroll, {
-               passive: true
-             });
-             window.addEventListener("resize", onScroll, {
-               passive: true
-             });
-             /* MutationObserver per ricalcolare quando cambia la visibilità delle sezioni */
-             if ("MutationObserver" in window) {
-               var mo = new MutationObserver(onScroll);
-               e.forEach(function(el) {
-                 mo.observe(el, {
-                   attributes: true,
-                   attributeFilter: ["class"]
-                 });
+           function onScroll() {
+             if (ticking) return;
+             ticking = true;
+             requestAnimationFrame(update);
+           }
+           window.addEventListener("scroll", onScroll, {
+             passive: true
+           });
+           window.addEventListener("resize", onScroll, {
+             passive: true
+           });
+           /* MutationObserver per ricalcolare quando cambia la visibilità delle sezioni */
+           if ("MutationObserver" in window) {
+             var mo = new MutationObserver(onScroll);
+             e.forEach(function(el) {
+               mo.observe(el, {
+                 attributes: true,
+                 attributeFilter: ["class"]
                });
-             }
-             /* Init */
-             setTimeout(update, 150);
-           }()
+             });
+           }
+           /* Init */
+           setTimeout(update, 150);
+         }()
        </script>
 
        <script>
@@ -10616,21 +10619,16 @@
                  }))
                }))
              }
-            h(s), h(c), Promise.race([Promise.all(z.map((e => e.finished))), new Promise(((e, i) => setTimeout((() => i("timeout")), 7e3)))]).then((() => {
-  if ('requestIdleCallback' in window) {
-    requestIdleCallback(() => g("animations-finished"));
-  } else {
-    setTimeout(() => g("animations-finished"), 200);
-  }
-})).catch((e => g("animation-error: " + e)))
+             h(s), h(c), Promise.race([Promise.all(z.map((e => e.finished))), new Promise(((e, i) => setTimeout((() => i("timeout")), 7e3)))]).then((() => g("animations-finished"))).catch((e => g("animation-error: " + e)))
+           }
 
-             function o() {
-               requestAnimationFrame((() => requestAnimationFrame(i)))
-             }
-             window.matchMedia("(prefers-reduced-motion: reduce)").matches || document.getElementById("echi-recompose") || /Lighthouse|PageSpeed|Chrome-Lighthouse|HeadlessChrome|GTmetrix|PTST/i.test(navigator.userAgent || "") || ("loading" === document.readyState ? document.addEventListener("DOMContentLoaded", o, {
-               once: !0
-             }) : o())
-           }(), setTimeout(ensureParadoxVisible, 2500), window.openParadox = openParadox, window.toggleSolution = toggleSolution, window.ensureParadoxVisible = ensureParadoxVisible
+           function o() {
+             requestAnimationFrame((() => requestAnimationFrame(i)))
+           }
+           window.matchMedia("(prefers-reduced-motion: reduce)").matches || document.getElementById("echi-recompose") || /Lighthouse|PageSpeed|Chrome-Lighthouse|HeadlessChrome|GTmetrix|PTST/i.test(navigator.userAgent || "") || ("loading" === document.readyState ? document.addEventListener("DOMContentLoaded", o, {
+             once: !0
+           }) : o())
+         }(), setTimeout(ensureParadoxVisible, 2500), window.openParadox = openParadox, window.toggleSolution = toggleSolution, window.ensureParadoxVisible = ensureParadoxVisible
        </script>
        <script>
          document.addEventListener("DOMContentLoaded", function() {
