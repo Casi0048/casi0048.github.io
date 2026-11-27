@@ -2066,26 +2066,6 @@
            gap: 16px
          }
 
-         /* Rimuove i pallini e l'indentazione dalle liste nelle colonne laterali */
-         .col-sinistra ul,
-         .col-sinistra li,
-         .box ul,
-         .box li {
-           list-style: none !important;
-           /* Rimuove il pallino */
-           list-style-type: none !important;
-           padding-left: 0 !important;
-           /* Rimuove lo spazio a sinistra creato dal browser */
-           margin-left: 0 !important;
-         }
-
-         /* Sicurezza extra: nel caso i pallini siano generati da un "finto" elemento (::before) */
-         .col-sinistra li::before,
-         .box li::before {
-           content: none !important;
-           display: none !important;
-         }
-
          .box {
            padding: 16px 18px;
            background: var(--surface);
@@ -5608,51 +5588,36 @@
              width: min(100% - 30px, 1180px);
            }
 
-           /* Fa andare a capo il menu sotto il logo */
-           .header-inner {
-             min-height: 68px;
-             flex-wrap: wrap;
-             gap: 10px 14px;
-             padding: 8px 0;
-           }
-
-           /* Dispone i link e i pulsanti su più righe, centrandoli */
-           .main-nav {
-             flex-wrap: wrap;
-             justify-content: center;
-             gap: 10px 14px;
-             width: 100%;
-             margin-right: 0;
-           }
-
            .hero {
              background-position: center calc(10% - 55px);
              padding-top: 70px;
            }
 
-           /* TRADUTTORE SU MOBILE */
            .gtranslate_wrapper {
              margin-left: 0;
+             /* Rimuove il margine su mobile */
            }
 
            .gtranslate_wrapper select {
              font-size: 0.65rem;
+             /* Testo leggermente più piccolo come gli altri */
              padding: 0.2rem 1.8rem 0.2rem 0.6rem;
+             /* Adatta il padding */
            }
+         }
 
-           .hero h1 {
-             letter-spacing: 2px;
-           }
+         .hero h1 {
+           letter-spacing: 2px;
+         }
 
-           .footer-main,
-           .resources-inner {
-             grid-template-columns: 1fr;
-           }
+         .footer-main,
+         .resources-inner {
+           grid-template-columns: 1fr;
+         }
 
-           .footer-bottom {
-             flex-direction: column;
-             text-align: center;
-           }
+         .footer-bottom {
+           flex-direction: column;
+           text-align: center;
          }
 
          .music-player {
@@ -6394,68 +6359,61 @@
            display: none;
          }
 
-        /* ═══════════════════════════════════════════════════════════
+         /* ═══════════════════════════════════════════════════════════
    GTRANSLATE — Stile personalizzato per il selettore lingua
    ═══════════════════════════════════════════════════════════ */
+         /* Allinea il contenitore */
+         .gtranslate_wrapper {
+           display: inline-flex;
+           align-items: center;
+           margin-left: 4px;
+         }
 
-/* Allinea il contenitore */
-.gtranslate_wrapper {
-  display: inline-flex;
-  align-items: center;
-  margin-left: 4px;
-}
+         /* Stile del menu a tendina generato da GTranslate */
+         .gtranslate_wrapper select {
+           appearance: none;
+           -webkit-appearance: none;
+           -moz-appearance: none;
+           background-color: var(--surface);
+           border: 1px solid var(--border);
+           border-radius: 30px;
+           /* Larghezza fissa per non far sballare la navbar */
+           width: 105px;
+           max-width: 105px;
+           /* Padding: sopra/sotto, destra (per la freccia), sinistra */
+           padding: 0.3rem 1.6rem 0.3rem 0.9rem;
+           font-family: var(--sans);
+           font-size: 0.72rem;
+           letter-spacing: 0.8px;
+           color: var(--text-soft);
+           cursor: pointer;
+           outline: none;
+           /* Evita che il testo lungo esca dai bordi */
+           text-overflow: ellipsis;
+           white-space: nowrap;
+           overflow: hidden;
+           transition: border-color var(--dur-base) var(--ease-smooth), color var(--dur-base) var(--ease-smooth), background var(--dur-base) var(--ease-smooth);
+           /* Freccia personalizzata (SVG in linea, usa il colore del testo) */
+           background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238eb5a1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+           background-repeat: no-repeat;
+           background-position: right 0.6rem center;
+           background-size: 12px;
+         }
 
-/* Stile del menu a tendina generato da GTranslate */
-.gtranslate_wrapper select {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  background-color: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 30px;
+         /* Effetto Hover identico al tuo pulsante tema */
+         .gtranslate_wrapper select:hover {
+           border-color: var(--gold-line);
+           color: var(--text);
+           background-color: var(--surface-hover);
+         }
 
-  /* Larghezza fissa per non far sballare la navbar */
-  width: 105px;
-  max-width: 105px;
-
-  /* Padding: sopra/sotto, destra (per la freccia), sinistra */
-  padding: 0.3rem 1.6rem 0.3rem 0.9rem;
-
-  font-family: var(--sans);
-  font-size: 0.72rem;
-  letter-spacing: 0.8px;
-  color: var(--text-soft);
-  cursor: pointer;
-  outline: none;
-
-  /* Evita che il testo lungo esca dai bordi */
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-
-  transition: border-color var(--dur-base) var(--ease-smooth), color var(--dur-base) var(--ease-smooth), background var(--dur-base) var(--ease-smooth);
-
-  /* Freccia personalizzata (SVG in linea, usa il colore del testo) */
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238eb5a1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: right 0.6rem center;
-  background-size: 12px;
-}
-
-/* Effetto Hover identico al tuo pulsante tema */
-.gtranslate_wrapper select:hover {
-  border-color: var(--gold-line);
-  color: var(--text);
-  background-color: var(--surface-hover);
-}
-
-/* Stile per il menu a tendina aperto (le opzioni) */
-.gtranslate_wrapper select option {
-  background-color: var(--bg-soft);
-  color: var(--text);
-  font-family: var(--sans);
-  font-size: 0.85rem;
-}
+         /* Stile per il menu a tendina aperto (le opzioni) */
+         .gtranslate_wrapper select option {
+           background-color: var(--bg-soft);
+           color: var(--text);
+           font-family: var(--sans);
+           font-size: 0.85rem;
+         }
        </style>
      </head>
 
@@ -10619,14 +10577,8 @@
                  }))
                }))
              }
-            h(s), h(c), Promise.race([Promise.all(z.map((e => e.finished))), new Promise(((e, i) => setTimeout((() => i("timeout")), 7e3)))]).then((() => {
-  if ('requestIdleCallback' in window) {
-    requestIdleCallback(() => g("animations-finished"));
-  } else {
-    setTimeout(() => g("animations-finished"), 200);
-  }
-})).catch((e => g("animation-error: " + e)))
-}
+             h(s), h(c), Promise.race([Promise.all(z.map((e => e.finished))), new Promise(((e, i) => setTimeout((() => i("timeout")), 7e3)))]).then((() => g("animations-finished"))).catch((e => g("animation-error: " + e)))
+           }
 
            function o() {
              requestAnimationFrame((() => requestAnimationFrame(i)))
