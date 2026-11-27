@@ -2066,26 +2066,6 @@
            gap: 16px
          }
 
-         /* Rimuove i pallini e l'indentazione dalle liste nelle colonne laterali */
-         .col-sinistra ul,
-         .col-sinistra li,
-         .box ul,
-         .box li {
-           list-style: none !important;
-           /* Rimuove il pallino */
-           list-style-type: none !important;
-           padding-left: 0 !important;
-           /* Rimuove lo spazio a sinistra creato dal browser */
-           margin-left: 0 !important;
-         }
-
-         /* Sicurezza extra: nel caso i pallini siano generati da un "finto" elemento (::before) */
-         .col-sinistra li::before,
-         .box li::before {
-           content: none !important;
-           display: none !important;
-         }
-
          .box {
            padding: 16px 18px;
            background: var(--surface);
@@ -5613,56 +5593,69 @@
              padding-top: 70px;
            }
 
-           .hero h1 {
-             letter-spacing: 2px;
+           .gtranslate_wrapper {
+             margin-left: 0;
+             /* Rimuove il margine su mobile */
            }
 
-           .footer-main,
-           .resources-inner {
-             grid-template-columns: 1fr;
+           .gtranslate_wrapper select {
+             font-size: 0.65rem;
+             /* Testo leggermente più piccolo come gli altri */
+             padding: 0.2rem 1.8rem 0.2rem 0.6rem;
+             /* Adatta il padding */
            }
+         }
 
-           .footer-bottom {
-             flex-direction: column;
-             text-align: center;
-           }
+         .hero h1 {
+           letter-spacing: 2px;
+         }
 
-           .music-player {
-             right: 15px;
-             bottom: 15px
-           }
+         .footer-main,
+         .resources-inner {
+           grid-template-columns: 1fr;
+         }
 
-           .video-player {
-             right: 15px;
-             bottom: 68px
-           }
+         .footer-bottom {
+           flex-direction: column;
+           text-align: center;
+         }
 
-           .video-panel {
-             width: min(440px, calc(100vw - 30px))
-           }
+         .music-player {
+           right: 15px;
+           bottom: 15px
+         }
 
-           .philosophy-quotes {
-             padding: 8px 0 0
-           }
+         .video-player {
+           right: 15px;
+           bottom: 68px
+         }
 
-           .quote-wrapper {
-             padding: 15px 25px
-           }
+         .video-panel {
+           width: min(440px, calc(100vw - 30px))
+         }
 
-           .quote-mark {
-             font-size: 3.5rem;
-             top: -5px;
-             left: -5px
-           }
+         .philosophy-quotes {
+           padding: 8px 0 0
+         }
 
-           .quote-mark-end {
-             bottom: -20px;
-             right: -5px
-           }
+         .quote-wrapper {
+           padding: 15px 25px
+         }
 
-           .quote-block {
-             min-height: 120px
-           }
+         .quote-mark {
+           font-size: 3.5rem;
+           top: -5px;
+           left: -5px
+         }
+
+         .quote-mark-end {
+           bottom: -20px;
+           right: -5px
+         }
+
+         .quote-block {
+           min-height: 120px
+         }
          }
 
          @media (max-width:560px) {
@@ -6365,6 +6358,56 @@
          .quote-mark-end {
            display: none;
          }
+
+         /* ═══════════════════════════════════════════════════════════
+   GTRANSLATE — Stile personalizzato per il selettore lingua
+   ═══════════════════════════════════════════════════════════ */
+         /* Allinea il contenitore */
+         .gtranslate_wrapper {
+           display: inline-flex;
+           align-items: center;
+           margin-left: 4px;
+           /* Piccolo spazio dal pulsante tema */
+         }
+
+         /* Stile del menu a tendina generato da GTranslate */
+         .gtranslate_wrapper select {
+           appearance: none;
+           -webkit-appearance: none;
+           -moz-appearance: none;
+           background-color: var(--surface);
+           border: 1px solid var(--border);
+           border-radius: 30px;
+           padding: 0.3rem 2rem 0.3rem 0.9rem;
+           /* Spazio a destra per la freccia */
+           font-family: var(--sans);
+           font-size: 0.72rem;
+           letter-spacing: 0.8px;
+           color: var(--text-soft);
+           cursor: pointer;
+           outline: none;
+           transition: border-color var(--dur-base) var(--ease-smooth), color var(--dur-base) var(--ease-smooth), background var(--dur-base) var(--ease-smooth);
+           /* Freccia personalizzata (SVG in linea, usa il colore del testo) */
+           background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238eb5a1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+           background-repeat: no-repeat;
+           background-position: right 0.6rem center;
+           background-size: 12px;
+         }
+
+         /* Effetto Hover identico al tuo pulsante tema */
+         .gtranslate_wrapper select:hover {
+           border-color: var(--gold-line);
+           color: var(--text);
+           background-color: var(--surface-hover);
+         }
+
+         /* Stile per il menu a tendina aperto (le opzioni) */
+         .gtranslate_wrapper select option {
+           background-color: var(--bg-soft);
+           color: var(--text);
+           font-family: var(--sans);
+           font-size: 0.85rem;
+         }
        </style>
      </head>
 
@@ -6515,9 +6558,11 @@
                    <line x1=4.22 y1=19.78 x2=5.64 y2=18.36 />
                    <line x1=18.36 y1=5.64 x2=19.78 y2=4.22 />
                  </svg></span><span id=themeLabel>Scuro</span></button>
-
+             <!-- TRADUTTORE GTRANSLATE -->
+             <div class="gtranslate_wrapper"></div>
            </nav>
          </div>
+
        </header>
        <div id=siteSearch class=site-search-panel hidden>
          <div class=site-search>
@@ -10548,6 +10593,22 @@
            svg.classList.add("loaded");
          });
        </script>
+       <script>
+         window.gtranslateSettings = {
+           "default_language": "it",
+           /* <--- CAMBIATO IN ITALIANO */
+           "languages": ["it", "en", "es", "de", "fr", "pt", "zh-CN", "pl"],
+           /* Ho aggiunto il polacco */
+           "wrapper_selector": ".gtranslate_wrapper",
+           "flag_size": 16,
+           "switcher_horizontal_position": "right",
+           "switcher_vertical_position": "top",
+           "alt_flags": {
+             "pt": "portugal"
+           } /* Opzionale per evitare bandiere sbagliate (es. brasiliana) */
+         }
+       </script>
+       <script src="https://cdn.gtranslate.net/widgets/latest/dropdown.js" defer></script>
      </body>
 
    </html>
