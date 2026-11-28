@@ -10879,55 +10879,57 @@
          });
        </script>
        <audio id=collisionSound preload=none src=/suoni/explosion-1.mp3></audio>
-        <script>
-      ! function() {
-        if (window.matchMedia("(max-width: 768px)").matches) return;
-        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-        const e = 400,
-          t = 0,
-          n = document.getElementById("collision"),
-          o = document.getElementById("collisionSound"),
-          c = document.querySelector(".cosmic-sky");
-        if (!n || !o || !c) return;
-        const i = n.querySelectorAll("animate, animateTransform");
-        let a = !1;
+       <script>
+         ! function() {
+           if (window.matchMedia("(max-width: 768px)").matches) return;
+           if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+           const e = 400,
+             t = 0,
+             n = document.getElementById("collision"),
+             o = document.getElementById("collisionSound"),
+             c = document.querySelector(".cosmic-sky");
+           if (!n || !o || !c) return;
+           const i = n.querySelectorAll("animate, animateTransform");
+           let a = !1;
 
-        function r() {
-          a || (o.muted = !0, o.play().then((() => {
-            o.pause(), o.currentTime = 0, o.muted = !1, a = !0, ["click", "touchstart", "keydown", "pointerdown"].forEach((e => document.removeEventListener(e, r, !0)))
-          })).catch((() => {})))
-        }
+           function r() {
+             a || (o.muted = !0, o.play().then((() => {
+               o.pause(), o.currentTime = 0, o.muted = !1, a = !0, ["click", "touchstart", "keydown", "pointerdown"].forEach((e => document.removeEventListener(e, r, !0)))
+             })).catch((() => {})))
+           }
 
-        function d() {
-          if (a) try {
-            o.pause(), o.currentTime = 0, o.volume = .6;
-            const e = o.play();
-            e && e.catch && e.catch((() => {}))
-          } catch (e) {}
-        }
+           function d() {
+             // Se siamo su uno schermo mobile (es. sotto 1024px), non far partire l'audio
+             if (window.matchMedia("(max-width: 1024px)").matches) return;
+             if (a) try {
+               o.pause(), o.currentTime = 0, o.volume = .6;
+               const e = o.play();
+               e && e.catch && e.catch((() => {}))
+             } catch (e) {}
+           }
 
-        function u() {
-          document.body.classList.remove("shake"), document.body.offsetWidth, document.body.classList.add("shake"), setTimeout((() => document.body.classList.remove("shake")), e), 0 === t ? d() : setTimeout(d, t)
-        }
+           function u() {
+             document.body.classList.remove("shake"), document.body.offsetWidth, document.body.classList.add("shake"), setTimeout((() => document.body.classList.remove("shake")), e), 0 === t ? d() : setTimeout(d, t)
+           }
 
-        function m() {
-          i.forEach((e => {
-            try {
-              e.beginElement()
-            } catch (e) {}
-          }));
-          let e = -1;
-          ! function t() {
-            const n = c.getCurrentTime(),
-              o = Math.floor((n - 12) / 24);
-            o !== e && (o >= 0 && u(), e = o), requestAnimationFrame(t)
-          }()
-        } ["click", "touchstart", "keydown", "pointerdown"].forEach((e => document.addEventListener(e, r, {
-          capture: !0,
-          passive: !0
-        }))), "complete" === document.readyState ? m() : window.addEventListener("load", m)
-      }()
-    </script>
+           function m() {
+             i.forEach((e => {
+               try {
+                 e.beginElement()
+               } catch (e) {}
+             }));
+             let e = -1;
+             ! function t() {
+               const n = c.getCurrentTime(),
+                 o = Math.floor((n - 12) / 24);
+               o !== e && (o >= 0 && u(), e = o), requestAnimationFrame(t)
+             }()
+           } ["click", "touchstart", "keydown", "pointerdown"].forEach((e => document.addEventListener(e, r, {
+             capture: !0,
+             passive: !0
+           }))), "complete" === document.readyState ? m() : window.addEventListener("load", m)
+         }()
+       </script>
      </body>
 
    </html>
